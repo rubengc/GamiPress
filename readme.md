@@ -1,11 +1,4 @@
 # GamiPress #
-Contributors: rubengc, tsunoa
-Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
-Requires at least: 4.0
-Tested up to: 4.8
-Stable tag: 1.0.0
-License: GNU AGPLv3
-License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
 The most flexible and powerful gamification system for WordPress.
 
@@ -89,15 +82,24 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 ## Screenshots ##
 
+![Frontend shortcodes and widgets demo](https://ps.w.org/gamipress/assets/screenshot-1.png "Frontend shortcodes and widgets demo")
 1. Frontend shortcodes and widgets demo
+
+![Requirements edit screen](https://ps.w.org/gamipress/assets/screenshot-2.png "Requirements edit screen")
 2. Requirements edit screen
+
+![Live shortcode embedder](https://ps.w.org/gamipress/assets/screenshot-3.png "Live shortcode embedder")
 3. Live shortcode embedder
+
+![Builtin widgets](https://ps.w.org/gamipress/assets/screenshot-4.png "Builtin widgets")
 4. Builtin widgets
+
+![Logs edit screen](https://ps.w.org/gamipress/assets/screenshot-5.png "Logs edit screen")
 5. Logs edit screen
 
 ## Frequently Asked Questions ##
 
-*  Which shortcodes come bundled with GamiPress?
+#### Which shortcodes come bundled with GamiPress? ####
 
 GamiPress comes with the next shortcodes:
 
@@ -109,7 +111,7 @@ GamiPress comes with the next shortcodes:
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of shortcodes as well as a description of all parameters each one supports.
 
-*  Which widgets come bundled with GamiPress?
+#### Which widgets come bundled with GamiPress? ####
 
 GamiPress comes with the next shortcodes:
 
