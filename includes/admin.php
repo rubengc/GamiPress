@@ -23,8 +23,11 @@ function gamipress_admin_menu() {
     // Set minimum role setting for menus
     $minimum_role = gamipress_get_manager_capability();
 
+    // Achievement types
+    $achievement_types = gamipress_get_achievement_types();
+
     // Achievements menu
-    if( ! empty( gamipress_get_achievement_types() ) ) {
+    if( ! empty( $achievement_types ) ) {
         add_menu_page( __( 'Achivements', 'gamipress' ), __( 'Achievements', 'gamipress' ), $minimum_role, 'gamipress_achievements', 'gamipress_achievements', 'dashicons-awards', 54 );
     }
 
