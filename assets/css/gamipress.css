@@ -1,0 +1,147 @@
+.gamipress-spinner {
+	display: block;
+	margin: 4px auto;
+	width: 20px;
+	height: 20px;
+	background: url('../img/spinner.gif');
+}
+
+#gamipress-achievements-filter {
+	float: left;
+	margin-bottom: 1em;
+}
+#gamipress-achievements-search {
+	margin-right: 5px;
+	margin-bottom: 1em;
+	float: right;
+}
+#gamipress-achievements-container, #achievements_list_load_more, #gamipress-achievements-filters-wrap {
+	display: block;
+	margin: 0 auto;
+	clear: both;
+}
+#gamipress-achievements-container {
+	border-top: 1px solid #aaa;
+}
+#gamipress-achievements-filter select {
+	max-width: 100%;
+	margin-left: 5px;
+}
+.gamipress-achievements-list .gamipress-achievement {
+	clear: both;
+	padding: 20px 0;
+	border-bottom: 1px solid #aaa;
+	overflow: hidden;
+}
+.gamipress-achievements-list .gamipress-achievement .gamipress-achievement-image {
+	width: 16%;
+	padding-right: 4%;
+	display: block;
+	float: left;
+	/*margin: 0 10px 10px 0;*/
+	opacity: .4;
+}
+.gamipress-achievements-list .gamipress-achievement .gamipress-achievement-image img {
+	width: 100%;
+	height: auto;
+}
+.gamipress-achievements-list .gamipress-achievement .gamipress-achievement-description {
+	width: 80%;
+	float: right;
+}
+.gamipress-achievement-points {
+	font-weight: bold;
+}
+.gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-achievement-image {
+	opacity: 1;
+}
+#gamipress-achievements-container .gamipress-achievement-title {
+	display: inline-block;
+	margin-top: 0;
+}
+#achievements_list_load_more {
+	margin: 20px auto;
+}
+.gamipress-open-close-switch {
+	text-align: right;
+}
+.gamipress-open-close-switch a {
+	display: block;
+}
+.gamipress-extras-window {
+	display: none;
+	clear: both;
+}
+.gamipress-required-achievements .user-has-earned, .gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-extras-window li,
+.gamipress-points-awards .user-has-earned {
+	text-decoration: line-through;
+}
+.gamipress-required-achievements .user-has-earned:hover, .gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-extras-window li:hover,
+.gamipress-points-awards .user-has-earned:hover {
+	text-decoration: none;
+}
+.show-hide-open:after, .show-hide-close:after {
+	content: '';
+	display: block;
+	overflow: hidden;
+	background: url('../img/arrows.png') top no-repeat;
+	width: 22px;
+	height: 7px;
+	float:right;
+	margin: .7em 0 0 5px;
+	background-position: 0 -14px;
+}
+.show-hide-close:after {
+	background-position: 0 -21px;
+}
+ul.gamipress-achievement-earners-list {
+	list-style:none;
+	margin:0;
+	padding:0;
+}
+ul.gamipress-achievement-earners-list li {
+	position: relative;
+	float: left;
+	margin:5px;
+	padding:0;
+}
+
+.gamipress-achievement-congratulations {
+	background: #F0F0F0;
+	padding: 10px;
+	margin:1em auto 2em;
+	border-radius: 5px;
+}
+
+/* Single template */
+.achievement-wrap {
+	clear: both;
+	padding: 0 0 20px;
+	margin: 0 0 20px;
+	border-bottom: 1px dotted #aaa;
+	overflow: hidden;
+}
+.achievement-wrap {
+	padding: 20px 0;
+	margin: 20px 0;
+	border-top: 1px dotted #aaa;
+}
+.achievement-wrap .gamipress-achievement-image {
+	margin: 0 15px 15px 0;
+	opacity: .4;
+}
+.user-has-earned .achievement-wrap .gamipress-achievement-image {
+	opacity: 1;
+}
+.gamipress-achievement-points {
+	font-weight: bold;
+}
+.gamipress-required-achievements {
+	clear: both;
+}
+.gamipress-required-achievements .user-has-earned {
+	text-decoration: line-through;
+}
+.gamipress-required-achievements .user-has-earned:hover {
+	text-decoration: none;
+}

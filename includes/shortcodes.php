@@ -1,0 +1,190 @@
+<?php
+/**
+ * Shortcodes
+ *
+ * @package     GamiPress\Shortcodes
+ * @since       1.0.0
+ */
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
+
+// GamiPress Shortcodes Editor
+require_once GAMIPRESS_DIR . 'includes/shortcodes/shortcodes-editor.php';
+
+// GamiPress Shortcodes
+require_once GAMIPRESS_DIR . 'includes/shortcodes/shortcode.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievement.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievements.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_logs.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points_types.php';
+
+/**
+ * Register a new GamiPress Shortcode
+ *
+ * @since  1.0.0
+ *
+ * @param  array  $args Shortcode Args.
+ * @return object       Shortcode Object.
+ */
+function gamipress_register_shortcode( $shortcode, $args ) {
+	GamiPress()->shortcodes[ $shortcode ] = new GamiPress_Shortcode( $shortcode, $args );
+}
+
+/**
+ * Get all registered GamiPress shortcodes.
+ *
+ * @since  1.0.0
+ *
+ * @return array Registered GamiPress shortcodes.
+ */
+function gamipress_get_shortcodes() {
+	return apply_filters( 'gamipress_shortcodes', array() );
+}
+
+/**
+ * Add all shortcodes to the help page.
+ *
+ * @since 1.0.0
+ */
+function gamipress_help_support_page_shortcodes() {
+	foreach ( gamipress_get_shortcodes() as $shortcode ) {
+		gamipress_shortcode_help_render_help( $shortcode );
+	}
+}
+add_action( 'gamipress_help_support_page_shortcodes', 'gamipress_help_support_page_shortcodes' );
+
+/**
+ * Render help section for a given shortcode.
+ *
+ * @since 1.0.0
+ *
+ * @param object $shortcode Shortcode object.
+ */
+function gamipress_shortcode_help_render_help( $shortcode = array() ) {
+	printf(
+		'
+		<hr/>
+		<h3>%1$s &ndash; [%2$s]</h3>
+		<p>%3$s</p>
+		<ul style="margin:1em 2em; padding:1em;">
+		<li><strong>%4$s</strong></li>
+		%5$s
+		</ul>
+		<p>%6$s</p>
+		',
+		$shortcode->name,
+		$shortcode->slug,
+		$shortcode->description,
+		__( 'Attributes:', 'gamipress' ),
+		gamipress_shortcode_help_render_fields( $shortcode->fields ),
+		gamipress_shortcode_help_render_example( $shortcode )
+	);
+}
+
+/**
+ * Render attributes portion of shordcode help section.
+ *
+ * @since  1.0.0
+ *
+ * @param  array $attributes Shortcode attributes.
+ * @return string            HTML Markup.
+ */
+function gamipress_shortcode_help_render_fields( $fields ) {
+	$output = '';
+	if ( ! empty( $fields ) ) {
+		foreach ( $fields as $field_id => $field ) {
+			$accepts = ! empty( $field['options'] ) ? sprintf( __( 'Accepts: %s', 'gamipress' ), '<code>' . implode( '</code>, <code>', array_keys( $field['options'] ) ) . '</code>' ) : '';
+			$default = ! empty( $field['default'] ) ? sprintf( __( 'Default: %s', 'gamipress' ), '<code>' . $field['default'] . '</code>' ) : '';
+			$output .= sprintf(
+				'<li><strong>%1$s</strong> – %2$s <em>%3$s %4$s</em></li>',
+				esc_attr( $field_id ),
+				esc_html( $field['description'] ),
+				$accepts,
+				$default
+			);
+
+		}
+	}
+	return $output;
+}
+
+/**
+ * Render example shortcode usage for help section.
+ *
+ * @since  1.0.0
+ *
+ * @param  array  $shortcode Shortcode object.
+ * @return string            HTML Markup.
+ */
+function gamipress_shortcode_help_render_example( $shortcode = array() ) {
+	$fields = wp_list_pluck( $shortcode->fields, 'default' );
+	$examples = array_map( 'gamipress_shortcode_help_attributes', array_keys( $fields ), array_values( $fields ) );
+	$flattened_examples = implode( ' ', $examples );
+	return sprintf( __( 'Example: %s', 'gamipress' ), "<code>[{$shortcode->slug} {$flattened_examples}]</code>" );
+}
+
+/**
+ * Render attribute="value" for attributes in shortcode example.
+ *
+ * @since  1.0.0
+ *
+ * @param  string $key   Key name.
+ * @param  string $value Value.
+ * @return string        key="value".
+ */
+function gamipress_shortcode_help_attributes( $key, $value ) {
+	return "{$key}=\"$value\"";
+}
+
+/**
+ * Helper function to turn an shortcode att value to bool
+ *
+ * @param $att
+ * @return bool
+ */
+function gamipress_shortcode_att_to_bool( $att ) {
+	if( $att === 'true' || $att === 'yes' || $att === 'on' || $att === '1' || (bool) $att ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Options callback for select2 fields assigned to posts
+function gamipress_options_cb_posts( $field ) {
+	$value = $field->escaped_value;
+	$options = array();
+
+	if( ! empty( $value ) ) {
+		if( ! is_array( $value ) ) {
+			$value = array( $value );
+		}
+
+		foreach( $value as $post_id ) {
+			$options[$post_id] = get_post_field( 'post_title', $post_id );
+		}
+	}
+
+	return $options;
+}
+
+// Options callback for select2 fields assigned to users
+function gamipress_options_cb_users( $field ) {
+	$value = $field->escaped_value;
+	$options = array();
+
+	if( ! empty( $value ) ) {
+		if( ! is_array( $value ) ) {
+			$value = array( $value );
+		}
+
+		foreach( $value as $user_id ) {
+			$user_data = get_userdata($user_id);
+
+			$options[$user_id] = $user_data->user_login;
+		}
+	}
+
+	return $options;
+}
