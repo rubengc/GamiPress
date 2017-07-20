@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-07-20 16:44+0200\n"
+"POT-Creation-Date: 2017-07-20 17:20+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1207,6 +1207,16 @@ msgstr ""
 
 #: includes/triggers.php:37
 msgid "All Achievements of Type"
+msgstr ""
+
+#: includes/triggers.php:86
+#, php-format
+msgid "Comment on %s"
+msgstr ""
+
+#: includes/triggers.php:87
+#, php-format
+msgid "Visit %s"
 msgstr ""
 
 #: includes/triggers.php:117

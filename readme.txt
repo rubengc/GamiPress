@@ -97,7 +97,7 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 == Frequently Asked Questions ==
 
-*  Which shortcodes come bundled with GamiPress?
+= Which shortcodes come bundled with GamiPress? =
 
 GamiPress comes with the next shortcodes:
 
@@ -109,7 +109,7 @@ GamiPress comes with the next shortcodes:
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of shortcodes as well as a description of all parameters each one supports.
 
-*  Which widgets come bundled with GamiPress?
+= Which widgets come bundled with GamiPress? =
 
 GamiPress comes with the next shortcodes:
 

@@ -83,8 +83,8 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
  */
 function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
 	$specific_activity_trigger_labels = apply_filters( 'gamipress_specific_activity_trigger_label', array(
-		'gamipress_specific_new_comment' 	=> 'Comment on %s',
-		'gamipress_specific_post_visit'  	=> 'Visit %s',
+		'gamipress_specific_new_comment' 	=> __( 'Comment on %s', 'gamipress' ),
+		'gamipress_specific_post_visit'  	=> __( 'Visit %s', 'gamipress' ),
 	) );
 
 	if( isset( $specific_activity_trigger_labels[$activity_trigger] ) ) {
