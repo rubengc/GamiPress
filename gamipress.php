@@ -260,18 +260,34 @@ final class GamiPress {
 		// Include our important bits
 		$this->includes();
 
+		// Create Credits point type
+		if ( ! get_page_by_title( 'Credits', 'OBJECT', 'points-type' ) ) {
+
+			$credits_post_id = wp_insert_post( array(
+				'post_title'   => __( 'Credits', 'gamipress'),
+				'post_content' => __( 'Credits points type', 'gamipress' ),
+				'post_status'  => 'publish',
+				'post_author'  => 1,
+				'post_type'    => 'points-type',
+			) );
+
+			update_post_meta( $credits_post_id, '_gamipress_singular_name', __( 'Credit', 'gamipress' ) );
+			update_post_meta( $credits_post_id, '_gamipress_plural_name', __( 'Credits', 'gamipress' ) );
+		}
+
 		// Create Badges achievement type
 		if ( ! get_page_by_title( 'Badges', 'OBJECT', 'achievement-type' ) ) {
 
-			$badge_post_id = wp_insert_post( array(
+			$badges_post_id = wp_insert_post( array(
 				'post_title'   => __( 'Badges', 'gamipress'),
-				'post_content' => __( 'Badges badge type', 'gamipress' ),
+				'post_content' => __( 'Badges achievement type', 'gamipress' ),
 				'post_status'  => 'publish',
 				'post_author'  => 1,
 				'post_type'    => 'achievement-type',
 			) );
 
-			update_post_meta( $badge_post_id, '_gamipress_singular_name', __( 'Badge', 'gamipress' ) );
+			update_post_meta( $badges_post_id, '_gamipress_singular_name', __( 'Badge', 'gamipress' ) );
+			update_post_meta( $badges_post_id, '_gamipress_plural_name', __( 'Badges', 'gamipress' ) );
 		}
 
 		// Setup default GamiPress options
