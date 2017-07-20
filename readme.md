@@ -82,20 +82,20 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 ## Screenshots ##
 
+**Frontend shortcodes and widgets demo**
 ![Frontend shortcodes and widgets demo](https://ps.w.org/gamipress/assets/screenshot-1.png "Frontend shortcodes and widgets demo")
-1. Frontend shortcodes and widgets demo
 
+**Requirements edit screen**
 ![Requirements edit screen](https://ps.w.org/gamipress/assets/screenshot-2.png "Requirements edit screen")
-2. Requirements edit screen
 
+**Live shortcode embedder**
 ![Live shortcode embedder](https://ps.w.org/gamipress/assets/screenshot-3.png "Live shortcode embedder")
-3. Live shortcode embedder
 
+**Builtin widgets**
 ![Builtin widgets](https://ps.w.org/gamipress/assets/screenshot-4.png "Builtin widgets")
-4. Builtin widgets
 
+**Logs edit screen**
 ![Logs edit screen](https://ps.w.org/gamipress/assets/screenshot-5.png "Logs edit screen")
-5. Logs edit screen
 
 ## Frequently Asked Questions ##
 
