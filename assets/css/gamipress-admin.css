@@ -270,9 +270,9 @@ GamiPress switch control
 .gamipress-switch input + label:after {
 	display: block;
 	position: absolute;
-	top: 1px;
+	top: 0;
+	bottom: 0;
 	left: 1px;
-	bottom: 1px;
 	content: "";
 
 	width: 44px;
@@ -314,4 +314,16 @@ GamiPress forms on widgets area
 
 .widget[id*="_gamipress_"] .widget-content .cmb-td {
     padding: 0 0 10px 0;
+}
+
+/*
+GamiPress Settings
+*/
+.gamipress_page_gamipress_settings .gamipress-switch input + label:before,
+.gamipress_page_gamipress_settings .gamipress-switch input + label:after {
+	top: 22px;
+}
+
+.gamipress_page_gamipress_settings .gamipress-switch input:not(:checked) + label:before {
+	background-color: #ebebeb;
 }

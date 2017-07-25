@@ -15,16 +15,24 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return null
  */
 function gamipress_do_single_filters() {
+
 	// check we're in the right place
 	gamipress_is_main_loop();
-	// enqueue our stylesheet
-	wp_enqueue_style( 'gamipress' );
+
+	// enqueue our stylesheet if not disabled
+	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
+		wp_enqueue_style( 'gamipress-css' );
+	}
+
 	// no worries.. we'll add back later
 	remove_filter( 'the_content', 'wpautop' );
+
 	// filter out the post title
 	// add_filter( 'the_title', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
+
 	// and filter out the post image
 	add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
+
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
 
@@ -55,7 +63,9 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  */
 function gamipress_reformat_entries( $content ) {
 
-	wp_enqueue_style( 'gamipress' );
+	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
+		wp_enqueue_style( 'gamipress-css' );
+	}
 
 	$achievement_id = get_the_ID();
 

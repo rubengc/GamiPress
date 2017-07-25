@@ -673,31 +673,16 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0 ) {
 }
 
 /**
- * Check if admin settings are set to show all achievements across a multisite network
- *
- * @since  1.0.0
- * @return boolean
- */
-function gamipress_ms_show_all_achievements(){
-	$ms_show_all_achievements = NULL;
-	if ( is_multisite() ) {
-    	$gamipress_settings = get_option( 'gamipress_settings' );
-    	$ms_show_all_achievements = ( isset( $gamipress_settings['ms_show_all_achievements'] ) ) ? $gamipress_settings['ms_show_all_achievements'] : 'disabled';
-    	if( 'enabled' == $ms_show_all_achievements )
-    		return true;
-    }
-    return false;
-}
-
-/**
  * Create array of blog ids in the network if multisite setting is on
  *
  * @since  1.0.0
  * @return array Array of blog_ids
  */
 function gamipress_get_network_site_ids() {
+
 	global $wpdb;
-    if( gamipress_ms_show_all_achievements() ) {
+
+    if( is_multisite() && (bool) gamipress_get_option( 'ms_show_all_achievements', false ) ) {
         $blog_ids = $wpdb->get_results( "SELECT blog_id FROM " . $wpdb->base_prefix . "blogs" );
 		foreach ($blog_ids as $key => $value ) {
             $sites[] = $value->blog_id;
@@ -705,7 +690,9 @@ function gamipress_get_network_site_ids() {
     } else {
     	$sites[] = get_current_blog_id();
     }
+
     return $sites;
+
 }
 
 /**

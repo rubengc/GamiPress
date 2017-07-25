@@ -34,7 +34,9 @@ add_action( 'init', 'gamipress_register_scripts' );
  */
 function gamipress_enqueue_scripts( $hook ) {
     // Stylesheets
-    wp_enqueue_style('gamipress-css');
+    if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
+        wp_enqueue_style( 'gamipress-css' );
+    }
 
     // Localize scripts
     wp_localize_script( 'gamipress-js', 'gamipress', array(

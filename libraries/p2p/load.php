@@ -45,5 +45,5 @@ function _gamipress_p2p_load_admin() {
 	new P2P_Box_Factory;
 	new P2P_Column_Factory;
 	new P2P_Dropdown_Factory;
-	new P2P_Tools_Page;
+	//new P2P_Tools_Page;
 }

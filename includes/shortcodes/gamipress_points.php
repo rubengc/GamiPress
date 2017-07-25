@@ -78,7 +78,9 @@ function gamipress_points_shortcode( $atts = array () ) {
 
     $atts['wpms'] = gamipress_shortcode_att_to_bool( $atts['wpms'] );
 
-    wp_enqueue_style( 'gamipress' );
+    if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
+        wp_enqueue_style( 'gamipress-css' );
+    }
 
     // Single type check to use dynamic template
     $is_single_type = false;

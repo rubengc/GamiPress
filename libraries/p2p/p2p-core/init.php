@@ -13,6 +13,6 @@ P2P_Query_User::init();
 
 P2P_URL_Query::init();
 
-P2P_Widget::init();
-P2P_Shortcodes::init();
+//P2P_Widget::init();
+//P2P_Shortcodes::init();
 

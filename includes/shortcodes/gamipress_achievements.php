@@ -169,7 +169,9 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'steps'	  => 'yes',
 	), $atts, 'gamipress_achievements' );
 
-	wp_enqueue_style( 'gamipress' );
+	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
+		wp_enqueue_style( 'gamipress-css' );
+	}
 
 	// Single type check to use dynamic template
 	$is_single_type = false;

@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.0.0
+ * Version:         1.0.1
  * Author:          Tsunoa
  * Author URI:      https://tsunoa.com/
  * Text Domain:     gamipress
@@ -112,6 +112,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
 		require_once GAMIPRESS_DIR . 'libraries/select-multiple-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/select-with-groups-field-type.php';
+		require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
     }
 
 	/**
@@ -249,7 +250,11 @@ final class GamiPress {
 	 * Register custom WordPress image size(s)
 	 */
 	function register_image_sizes() {
-		add_image_size( 'gamipress-achievement', 100, 100 );
+
+		$achievement_image_size = gamipress_get_option( 'achievement_image_size', array( 'width' => 100, 'height' => 100 ) );
+
+		add_image_size( 'gamipress-achievement', absint( $achievement_image_size['width'] ), absint( $achievement_image_size['height'] ) );
+
 	}
 
 	/**
@@ -292,8 +297,12 @@ final class GamiPress {
 
 		// Setup default GamiPress options
 		$gamipress_settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();
+
 		if ( empty( $gamipress_settings ) ) {
-			$gamipress_settings['minimum_role']     = 'manage_options';
+
+			$gamipress_settings['minimum_role'] = 'manage_options';
+			$gamipress_settings['achievement_image_size'] = array( 'width' => 100, 'height' => 100 );
+
 			update_option( 'gamipress_settings', $gamipress_settings );
 		}
 
