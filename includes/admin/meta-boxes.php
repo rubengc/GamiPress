@@ -158,28 +158,6 @@ function gamipress_meta_boxes() {
 		), $prefix )
 	) );
 
-    $gamipress_log_pattern_tags = array(
-        '{user}' => 'User assigned to this log.',
-        '{admin}' => 'Admin that award this log.',
-        '{achievement}' => 'Achievement user has earned.',
-        '{achievement_type}' => 'Type of the achievement earned.',
-        '{trigger_type}' => 'Event type user has triggered.',
-        '{count}' => 'Times user triggered this event.',
-        '{points}' => 'Points user has earned.',
-        '{points_type}' => 'Type of the points earned.',
-        '{total_points}' => 'Points user has earned until this log.',
-    );
-
-    $log_pattern_tags_legend = '<ul class="gamipress-log-pattern-tags-list">';
-
-    foreach( $gamipress_log_pattern_tags as $tag => $description ) {
-        $attr_id = 'tag-' . str_replace( array( '{', '}', '_' ), array( '', '', '-' ), $tag );
-
-        $log_pattern_tags_legend .= "<li id='{$attr_id}'><code>{$tag}</code> - {$description}</li>";
-    }
-
-    $log_pattern_tags_legend .= '</ul>';
-
 	// Log
 	new_cmb2_box(array(
 		'id'           	=> 'log-data',
@@ -204,7 +182,7 @@ function gamipress_meta_boxes() {
             ),
 			array(
 				'name' 	=> __( 'Pattern', 'gamipress' ),
-				'desc' 	=> __( 'The log output pattern. Available tags:', 'gamipress' ) . $log_pattern_tags_legend,
+				'desc' 	=> __( 'The log output pattern. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html(),
 				'id'   	=> $prefix . 'pattern',
 				'type' 	=> 'text',
 			),

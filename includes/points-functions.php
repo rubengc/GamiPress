@@ -106,11 +106,11 @@ function gamipress_log_users_points( $user_id, $new_points, $total_points, $admi
 	if ( $admin_id ) {
 		$access = 'private';
 
-		$log_meta['pattern'] = __( '{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' );
+		$log_meta['pattern'] = gamipress_get_option( 'points_awarded_log_pattern', __( '{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
         $log_meta['type'] = 'points_award';
         $log_meta['admin_id'] = $admin_id;
     } else {
-		$log_meta['pattern'] = __( '{user} earned {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' );
+		$log_meta['pattern'] = gamipress_get_option( 'points_earned_log_pattern', __( '{user} earned {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
         $log_meta['type'] = 'points_earn';
     }
 

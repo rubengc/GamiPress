@@ -38,13 +38,14 @@ function gamipress_enqueue_scripts( $hook ) {
         wp_enqueue_style( 'gamipress-css' );
     }
 
-    // Localize scripts
-    wp_localize_script( 'gamipress-js', 'gamipress', array(
-        'ajaxurl' => esc_url( admin_url( 'admin-ajax.php', 'relative' ) )
-    ) );
-
     // Scripts
-    wp_enqueue_script( 'gamipress-js' );
+    if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
+        wp_localize_script( 'gamipress-js', 'gamipress', array(
+            'ajaxurl' => esc_url( admin_url( 'admin-ajax.php', 'relative' ) )
+        ) );
+
+        wp_enqueue_script( 'gamipress-js' );
+    }
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_enqueue_scripts', 100 );
 

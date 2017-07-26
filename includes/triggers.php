@@ -165,7 +165,7 @@ function gamipress_trigger_event() {
 	// Mark the count in the log entry
 	gamipress_insert_log( $user_id, 'private', array(
 		'type' => 'event_trigger',
-		'pattern' => '{user} triggered {trigger_type} (x{count})',
+		'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
 		'count' => $new_count,
 		'trigger_type' => $this_trigger,
 	) );

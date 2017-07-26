@@ -133,6 +133,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.2 ###
+
+* Improvements in settings page.
+* New settings: Default logs patterns.
+* New setting: Disable frontend Javascript.
+
 ### 1.0.1 ###
 
 * New settings API.

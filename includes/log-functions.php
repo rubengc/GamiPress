@@ -26,6 +26,55 @@ function gamipress_get_log_types() {
 }
 
 /**
+ * Get an array of log pattern tags
+ *
+ * @since  1.0.2
+
+ * @return array The registered log pattern tags
+ */
+function gamipress_get_log_pattern_tags() {
+    return apply_filters( 'gamipress_log_pattern_tags', array(
+        '{user}'                =>  __(  'User assigned.', 'gamipress' ),
+        '{admin}'               =>  __(  'Admin that awards.', 'gamipress' ),
+        '{achievement}'         =>  __(  'Achievement user has earned.', 'gamipress' ),
+        '{achievement_type}'    =>  __(  'Type of the achievement earned.', 'gamipress' ),
+        '{trigger_type}'        =>  __(  'Event type user has triggered.', 'gamipress' ),
+        '{count}'               =>  __(  'Times user triggered this event.', 'gamipress' ),
+        '{points}'              =>  __(  'Points user has earned.', 'gamipress' ),
+        '{points_type}'         =>  __(  'Type of the points earned.', 'gamipress' ),
+        '{total_points}'        =>  __(  'Points user has earned until this log.', 'gamipress' ),
+    ) );
+}
+
+/**
+ * Get a string with the desired log pattern tags html markup
+ *
+ * @since  1.0.2
+ *
+ * @param array $specific_tags
+ *
+ * @return string Log pattern tags html markup
+ */
+function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
+    $output = '<ul class="gamipress-log-pattern-tags-list">';
+
+    foreach( gamipress_get_log_pattern_tags() as $tag => $description ) {
+
+        if( ! empty( $specific_tags ) && ! in_array( $tag, $specific_tags ) ) {
+            continue;
+        }
+
+        $attr_id = 'tag-' . str_replace( array( '{', '}', '_' ), array( '', '', '-' ), $tag );
+
+        $output .= "<li id='{$attr_id}'><code>{$tag}</code> - {$description}</li>";
+    }
+
+    $output .= '</ul>';
+
+    return $output;
+}
+
+/**
  * Posts a log entry when a user unlocks any achievement post
  *
  * @since  1.0.0

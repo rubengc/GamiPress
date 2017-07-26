@@ -77,7 +77,9 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 		wp_enqueue_style( 'gamipress-css' );
 	}
 
-	wp_enqueue_script( 'gamipress-js' );
+	if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
+		wp_enqueue_script('gamipress-js');
+	}
 
 	// get the post content and format the badge display
 	$achievement = get_post( $atts['id'] );

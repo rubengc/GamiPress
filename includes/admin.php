@@ -32,11 +32,9 @@ function gamipress_admin_menu() {
     }
 
     // GamiPress menu
-    //add_menu_page( 'GamiPress', 'GamiPress', $minimum_role, 'gamipress', 'gamipress_settings', 'dashicons-awards', 55 );
     add_menu_page( 'GamiPress', 'GamiPress', $minimum_role, 'gamipress', 'gamipress_settings', 'dashicons-gamipress', 55 );
 
-    // GamiPress sub menu
-    add_submenu_page( 'gamipress', __( 'GamiPress Settings', 'gamipress' ), __( 'Settings', 'gamipress' ), $minimum_role, 'gamipress_settings', 'gamipress_settings_page' );
+    // GamiPress sub menus
     add_submenu_page( 'gamipress', __( 'Help / Support', 'gamipress' ), __( 'Help / Support', 'gamipress' ), $minimum_role, 'gamipress_sub_help_support', 'gamipress_help_support_page' );
 
 }

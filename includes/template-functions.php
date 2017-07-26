@@ -42,11 +42,13 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
 
     setup_postdata( $post );
 
-    // make sure our JS and CSS is enqueued
-    wp_enqueue_script( 'gamipress-js' );
-
+    // Enqueue assets
     if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
         wp_enqueue_style( 'gamipress-css' );
+    }
+
+    if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
+        wp_enqueue_script( 'gamipress-js' );
     }
 
     // Try to load achievement-{post_type}.php, if not exists then load achievement.php

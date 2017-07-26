@@ -25,9 +25,11 @@ add_action( 'admin_init', 'gamipress_register_settings' );
  */
 function gamipress_get_option( $option_name, $default = false ) {
 
-    $gamipress_settings = get_option( 'gamipress_settings' );
+    if( GamiPress()->settings === null ) {
+        GamiPress()->settings = get_option( 'gamipress_settings' );
+    }
 
-    return isset( $gamipress_settings[ $option_name ] ) ? $gamipress_settings[ $option_name ] : $default;
+    return isset( GamiPress()->settings[ $option_name ] ) ? GamiPress()->settings[ $option_name ] : $default;
 
 }
 
@@ -40,37 +42,105 @@ function gamipress_get_option( $option_name, $default = false ) {
  */
 function gamipress_get_settings() {
 
+
+
     $gamipress_settings = array(
-        'minimum_role' => array(
-            'name' => __( 'Minimum role to administer GamiPress', 'gamipress' ),
-            'description' => '',
-            'type' => 'select',
-            'options' => array(
-                'manage_options' => __( 'Administrator', 'gamipress' ),
-                'delete_others_posts' => __( 'Editor', 'gamipress' ),
-                'publish_posts' => __( 'Author', 'gamipress' ),
-            ),
-        ),
-        'achievement_image_size' => array(
-            'name' => __( 'Achievment Image Size', 'gamipress' ),
-            'description' => '',
-            'type' => 'size',
-        ),
-        'disable_css' => array(
-            'name' => __( 'Disable frontend CSS', 'gamipress' ),
-            'description' => '',
-            'type' => 'checkbox',
-            'classes' => 'gamipress-switch',
+		'general' => array(
+			'name' => __( 'General', 'gamipress' ),
+			'icon' => 'dashicons-admin-settings',
+			'fields' => array(
+				'minimum_role' => array(
+					'name' => __( 'Minimum role to administer GamiPress', 'gamipress' ),
+					'type' => 'select',
+					'options' => array(
+						'manage_options' => __( 'Administrator', 'gamipress' ),
+						'delete_others_posts' => __( 'Editor', 'gamipress' ),
+						'publish_posts' => __( 'Author', 'gamipress' ),
+					),
+				),
+				'achievement_image_size' => array(
+					'name' => __( 'Achievement Image Size', 'gamipress' ),
+					'type' => 'size',
+				),
+			)
+		),
+		'style' => array(
+			'name' => __( 'Style', 'gamipress' ),
+			'icon' => 'dashicons-admin-appearance',
+			'fields' => array(
+				'disable_css' => array(
+					'name' => __( 'Disable frontend CSS', 'gamipress' ),
+					'type' => 'checkbox',
+					'classes' => 'gamipress-switch',
+				),
+				'disable_js' => array(
+					'name' => __( 'Disable frontend Javascript', 'gamipress' ),
+					'type' => 'checkbox',
+					'classes' => 'gamipress-switch',
+				),
+			)
+		),
+        'logs' => array(
+            'name' => __( 'Logs', 'gamipress' ),
+            'icon' => 'dashicons-editor-alignleft',
+            'fields' => array(
+                'log_pattern_title' => array(
+                    'name' => __( 'Logs Patterns', 'gamipress' ),
+                    'description' => __( 'From this settings you can modify the default pattern for upcoming log entries of each category.', 'gamipress' ),
+                    'type' => 'title',
+                ),
+                'trigger_log_pattern' => array(
+                    'name' => __( 'Activity trigger', 'gamipress' ),
+                    'description' => __( 'Used to register user activity triggered. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{trigger_type}', '{count}' ) ),
+                    'type' => 'text',
+                    'default' => __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ),
+                ),
+                'points_earned_log_pattern' => array(
+                    'name' => __( 'Points earned', 'gamipress' ),
+                    'description' => __( 'Used when user earns points. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{points}', '{points_type}', '{total_points}' ) ),
+                    'type' => 'text',
+                    'default' => __( '{user} earned {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ),
+                ),
+                'requirement_complete_log_pattern' => array(
+                    'name' => __( 'Points award/step complete', 'gamipress' ),
+                    'description' => __( 'Used when user completes a points award or step. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{achievement}', '{achievement_type}' ) ),
+                    'type' => 'text',
+                    'default' => __( '{user} completed the {achievement_type} {achievement}', 'gamipress' ),
+                ),
+                'achievement_earned_log_pattern' => array(
+                    'name' => __( 'Achievement earned', 'gamipress' ),
+                    'description' => __( 'Used when user earns an achievement. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{achievement}', '{achievement_type}' ) ),
+                    'type' => 'text',
+                    'default' => __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' ),
+                ),
+                'points_awarded_log_pattern' => array(
+                    'name' => __( 'Points awarded', 'gamipress' ),
+                    'description' => __( 'Used when an admin awards an user with points. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{points}', '{points_type}', '{total_points}' ) ),
+                    'type' => 'text',
+                    'default' => __( '{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ),
+                ),
+                'achievement_awarded_log_pattern' => array(
+                    'name' => __( 'Achievement awarded', 'gamipress' ),
+                    'description' => __( 'Used when an admin awards an user with an achievement. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{achievement}', '{achievement_type}' ) ),
+                    'type' => 'text',
+                    'default' => __( '{admin} awarded {user} with the the {achievement} {achievement_type}', 'gamipress' ),
+                ),
+            )
         ),
     );
 
     if( is_multisite() ) {
-        $gamipress_settings['ms_show_all_achievements'] = array(
-            'name' => __( 'Show achievements earned across all sites on the network', 'gamipress' ),
-            'description' => '',
-            'type' => 'checkbox',
-            'classes' => 'gamipress-switch',
-        );
+		$gamipress_settings['network'] = array(
+			'name' => __( 'Network', 'gamipress' ),
+			'icon' => 'dashicons-networking',
+			'fields' => array(
+				'ms_show_all_achievements' => array(
+					'name' => __( 'Show achievements earned across all sites on the network', 'gamipress' ),
+					'type' => 'checkbox',
+					'classes' => 'gamipress-switch',
+				)
+			),
+		);
     }
 
     return apply_filters( 'gamipress_settings', $gamipress_settings );
@@ -78,79 +148,71 @@ function gamipress_get_settings() {
 }
 
 /**
- * Register GamiPress Settings CMB2 Form.
+ * Register settings page.
  *
- * @since  1.0.1
+ * @since  1.0.2
  *
  * @return void
  */
-function gamipress_register_settings_form() {
+function gamipress_register_settings_page() {
 
-    $fields = array();
+    $tabs = array();
+    $boxes = array();
 
     // Parse GamiPress settings
-    foreach( gamipress_get_settings() as $field_id => $field ) {
-        $field['id'] = $field_id;
+    foreach( gamipress_get_settings() as $section_id => $section ) {
 
-        $fields[] = $field;
+        $section_fields = array();
+
+        foreach ($section['fields'] as $field_id => $field) {
+            $field['id'] = $field_id;
+
+            $section_fields[] = $field;
+        }
+
+        // Section
+        $box = new_cmb2_box( array(
+            'id'      => $section_id,
+            'title'   => $section['name'],
+            'show_on' =>array(
+                'key'   => 'options-page',
+                'value' => array( 'gamipress_settings' ),
+            ),
+            'fields' => $section_fields
+        ) );
+
+        $box->object_type( 'options-page' );
+
+        $boxes[] = $box;
+
+        $tabs[] = array(
+            'id'    => $section_id,
+            'title' => ( ( isset( $section['icon'] ) ) ? '<i class="dashicons ' . $section['icon'] . '"></i>' : '' ) . $section['name'],
+            'desc'  => '',
+            'boxes' => array(
+                $section_id,
+            ),
+        );
     }
 
-	new_cmb2_box( array(
-		'id'         => 'gamipress_settings_box',
-		'hookup'     => false,
-		'cmb_styles' => false,
-		'show_on'    => array(
-			'key'   => 'options-page',
-			'value' => array( 'gamipress_settings' )
-		),
-		'fields' => $fields
-	) );
+    // Create the options page
+    new Cmb2_Metatabs_Options( array(
+        'key'      => 'gamipress_settings',
+        'title'    => __( 'Settings', 'gamipress' ),
+        'topmenu'  => 'gamipress',
+        'view_capability' => gamipress_get_manager_capability(),
+        'cols'     => 1,
+        'boxes'    => $boxes,
+        'tabs'     => $tabs,
+        'menuargs' => array(
+            'menu_title' => __( 'Settings', 'gamipress' ),
+        ),
+        'savetxt' => __( 'Save Settings', 'gamipress' ),
+        'resettxt' => __( 'Reset Settings', 'gamipress' ),
+    ) );
+
 }
-add_action( 'cmb2_admin_init', 'gamipress_register_settings_form' );
-
-/**
- * Settings page notices.
- *
- * @since  1.0.1
- *
- * @return void
- */
-function gamipress_settings_notices( $object_id, $updated ) {
-
-	if ( $object_id !== 'gamipress_settings' || empty( $updated ) ) {
-		return;
-	}
-
-	add_settings_error( 'gamipress_settings_notices', '', __( 'Settings updated successfully.', 'gamipress' ), 'updated' );
-
-	settings_errors( 'gamipress_settings_notices' );
-}
-add_action( 'cmb2_save_options-page_fields_gamipress_settings_box', 'gamipress_settings_notices', 10, 2 );
-
-/**
- * GamiPress main settings page output
- *
- * @since  1.0.0
- *
- * @return void
- */
-function gamipress_settings_page() {
-	?>
-	<div class="wrap" >
-
-		<h2><?php _e( 'GamiPress Settings', 'gamipress' ); ?></h2>
-
-		<?php cmb2_metabox_form(
-            'gamipress_settings_box',
-            'gamipress_settings',
-            array(
-                'save_button' => __( 'Save Settings', 'gamipress' )
-            )
-        ); ?>
-
-	</div>
-	<?php
-}
+add_action( 'cmb2_admin_init', 'gamipress_register_settings_page' );
 
 /**
  * Get capability required for GamiPress administration.

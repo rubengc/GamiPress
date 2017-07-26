@@ -979,14 +979,14 @@ function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin
 	if ( $admin_id ) {
 		$access = 'private';
 
-		$log_meta['pattern'] = __( '{admin} awarded {user} with the the {achievement} {achievement_type}', 'gamipress' );
+		$log_meta['pattern'] =  gamipress_get_option( 'achievement_awarded_log_pattern', __( '{admin} awarded {user} with the the {achievement} {achievement_type}', 'gamipress' ) );
 		$log_meta['type'] = 'achievement_award';
 		$log_meta['admin_id'] = $admin_id;
 	} else {
-        if( $post_type === 'step' || $post_type === 'point-award' ) {
-            $log_meta['pattern'] = __( '{user} completed the {achievement_type} {achievement}', 'gamipress' );
+        if( $post_type === 'step' || $post_type === 'points-award' ) {
+            $log_meta['pattern'] = gamipress_get_option( 'requirement_complete_log_pattern', __( '{user} completed the {achievement_type} {achievement}', 'gamipress' ) );
         } else {
-            $log_meta['pattern'] = __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' );
+            $log_meta['pattern'] = gamipress_get_option( 'achievement_earned_log_pattern', __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' ) );
         }
 
 		$log_meta['type'] = 'achievement_earn';

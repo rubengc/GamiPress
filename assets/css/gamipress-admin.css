@@ -1,46 +1,49 @@
 /* GamiPress Icon */
+@font-face {
+	font-family: 'GamiPress';
+	src:  url('../fonts/gamipress.eot?6ncb0e');
+	src:  url('../fonts/gamipress.eot?6ncb0e#iefix') format('embedded-opentype'),
+	url('../fonts/gamipress.ttf?6ncb0e') format('truetype'),
+	url('../fonts/gamipress.woff?6ncb0e') format('woff'),
+	url('../fonts/gamipress.svg?6ncb0e#gamipress') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.dashicons-gamipress, .dashicons-gamipress:before,
+.widget[id*="_gamipress_"] .widget-title h3:before {
+	font-family: 'GamiPress' !important;
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+
+	content: "\e900";
+}
+
 .dashicons-gamipress:before {
-	display: inline-block;
-	content: "";
-	width: 20px;
-	height: 20px;
-
-    -webkit-mask: url('../img/gamipress.svg') no-repeat 100% 100%;
-    mask: url('../img/gamipress.svg') no-repeat 100% 100%;
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-
+	content: "\e900";
 }
 
-.widget[id*="_gamipress_achievement_widget"] .widget-title h3:before,
-.widget[id*="_gamipress_achievements_widget"] .widget-title h3:before,
-.widget[id*="_gamipress_logs_widget"] .widget-title h3:before,
-.widget[id*="_gamipress_points_widget"] .widget-title h3:before,
-.widget[id*="_gamipress_points_types_widget"] .widget-title h3:before {
+.wp-media-buttons-icon.dashicons-gamipress,
+.wp-media-buttons-icon.dashicons-gamipress:before {
+	line-height: 18px !important;
+}
+
+.widget[id*="_gamipress_"] .widget-title h3:before {
 	display: inline-block;
-	content: "";
 	width: 20px;
-	height: 20px;
-
-	-webkit-mask: url('../img/gamipress.svg') no-repeat 100% 100%;
-	mask: url('../img/gamipress.svg') no-repeat 100% 100%;
-	-webkit-mask-size: 100% 100%;
-	mask-size: 100% 100%;
-
-	margin-top: -4px;
-	margin-bottom: -4px;
+	height: 14px;
+	font-size: 20px;
+	line-height: 8px;
+	vertical-align: middle;
+	text-align: center;
 	margin-right: 2px;
-	background-color: #23282d;
-}
-
-span.wp-media-buttons-icon.dashicons-gamipress:before {
-    background-color: #82878c;
-}
-
-div.wp-menu-image.dashicons-gamipress:before {
-    width: 22px;
-    height: 22px;
-    background-color: rgba(240,245,250,0.6);
 }
 
 /* Log edit screen */
@@ -54,6 +57,10 @@ div.wp-menu-image.dashicons-gamipress:before {
 	font-style: italic;
 	margin: 0;
 	padding-top: .5em;
+}
+
+.gamipress-log-pattern-tags-list li {
+	font-size: 13px !important;
 }
 
 .gamipress-log-pattern-tags-list code {
@@ -324,6 +331,12 @@ GamiPress Settings
 	top: 22px;
 }
 
-.gamipress_page_gamipress_settings .gamipress-switch input:not(:checked) + label:before {
-	background-color: #ebebeb;
+.gamipress_page_gamipress_settings .nav-tab .dashicons {
+	vertical-align: text-bottom;
+	margin-right: 2px;
+}
+
+.gamipress_page_gamipress_settings input[name="submit-cmb"] {
+	float: left;
+	margin-right: 12px;
 }

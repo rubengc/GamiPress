@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.0.1
+ * Version:         1.0.2
  * Author:          Tsunoa
  * Author URI:      https://tsunoa.com/
  * Text Domain:     gamipress
@@ -37,6 +37,12 @@ final class GamiPress {
 	 * @since       1.0.0
 	 */
 	private static $instance;
+
+	/**
+	 * @var         array $settings GamiPress stored settings
+	 * @since       1.0.2
+	 */
+	public $settings = null;
 
 	/**
 	 * @var         array $points_types GamiPress registered points types
@@ -110,6 +116,7 @@ final class GamiPress {
     private function libraries() {
         require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
 		require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
+		require_once GAMIPRESS_DIR . 'libraries/cmb2-metatabs-options/cmb2_metatabs_options.php';
 		require_once GAMIPRESS_DIR . 'libraries/select-multiple-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/select-with-groups-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
