@@ -97,7 +97,7 @@ final class GamiPress {
 	 */
 	private function constants() {
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.0.0' );
+		define( 'GAMIPRESS_VER', '1.0.2' );
 
 		// Plugin path
 		define( 'GAMIPRESS_DIR', plugin_dir_path( __FILE__ ) );
