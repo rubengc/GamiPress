@@ -67,44 +67,30 @@ function gamipress_reformat_entries( $content ) {
 		wp_enqueue_style( 'gamipress-css' );
 	}
 
-	$achievement_id = get_the_ID();
-
 	// filter, but only on the main loop!
-	if ( !gamipress_is_main_loop( $achievement_id ) )
+	if ( ! gamipress_is_main_loop( get_the_ID() ) )
 		return wpautop( $content );
 
 	// now that we're where we want to be, tell the filters to stop removing
 	$GLOBALS['gamipress_reformat_content'] = true;
 
-	// check if user has earned this Achievement, and add an 'earned' class
-	$class = gamipress_get_user_achievements( array( 'achievement_id' => absint( $achievement_id ) ) ) ? ' earned' : '';
+    global $gamipress_template_args;
 
-	// wrap our content, add the thumbnail and title and add wpautop back
-	$newcontent = '<div class="achievement-wrap'. $class .'">';
+    // Initialize GamiPress template args global
+    $gamipress_template_args = array();
 
-	// Check if current user has earned this achievement
-	$newcontent .= gamipress_render_earned_achievement_text( $achievement_id, get_current_user_id() );
+    $gamipress_template_args['original_content'] = $content;
 
-	$newcontent .= '<div class="alignleft gamipress-achievement-image">'. gamipress_get_achievement_post_thumbnail( $achievement_id ) .'</div>';
-	// $newcontent .= $title;
+    ob_start();
 
-	// Points for badge
-	$newcontent .= gamipress_achievement_points_markup();
-	$newcontent .= wpautop( $content );
+    gamipress_get_template_part( 'single-achievement', get_post_type( get_the_ID() ) );
 
-	// Include output for our steps
-	$newcontent .= gamipress_get_required_achievements_for_achievement_list( $achievement_id );
-
-	// Include achievement earners, if this achievement supports it
-	if ( $show_earners = get_post_meta( $achievement_id, '_gamipress_show_earners', true ) )
-		$newcontent .= gamipress_get_achievement_earners_list( $achievement_id );
-
-	$newcontent .= '</div><!-- .achievement-wrap -->';
+    $new_content = ob_get_clean();
 
 	// Ok, we're done reformating
 	$GLOBALS['gamipress_reformat_content'] = false;
 
-	return $newcontent;
+	return $new_content;
 }
 add_filter( 'the_content', 'gamipress_reformat_entries', 9 );
 
@@ -418,8 +404,10 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 function gamipress_add_earned_class_single( $classes = array() ) {
 	global $user_ID;
 
-	// check if current user has earned the achievement they're viewing
-	$classes[] = gamipress_get_user_achievements( array( 'user_id' => $user_ID, 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
+	if( is_singular( gamipress_get_achievement_types_slugs() ) ) {
+		// check if current user has earned the achievement they're viewing
+		$classes[] = gamipress_get_user_achievements( array( 'user_id' => $user_ID, 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
+	}
 
 	return $classes;
 }
@@ -519,7 +507,6 @@ add_filter('next_post_link', 'gamipress_hide_next_hidden_achievement_link');
  */
 function gamipress_hide_previous_hidden_achievement_link($link) {
 
-
 	if($link) {
 
 		//Get current achievement id
@@ -537,7 +524,7 @@ function gamipress_hide_previous_hidden_achievement_link($link) {
 add_filter('previous_post_link', 'gamipress_hide_previous_hidden_achievement_link');
 
 
-/*
+/**
  * Get post link without hidden achievement link
  *
  * @param $achievement_id

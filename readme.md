@@ -133,6 +133,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.3 ###
+
+* New dynamic template: Single Achievement.
+* Improvements on content filters.
+* Improvements on settings API to allow register group of settings.
+
 ### 1.0.2 ###
 
 * Improvements in settings page.

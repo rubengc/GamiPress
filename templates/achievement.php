@@ -20,6 +20,13 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
         <div class="gamipress-achievement-image">
             <a href="<?php the_permalink(); ?>"><?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?></a>
         </div><!-- .gamipress-achievement-image -->
+
+        <?php
+        /**
+         * After achievement thumbnail
+         */
+        do_action( 'after_achievement_thumbnail', get_the_ID() );
+        ?>
     <?php endif; ?>
 
     <?php // Achievement Content ?>
@@ -28,16 +35,37 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
         <?php // Achievement Title ?>
         <h2 class="gamipress-achievement-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
+        <?php
+        /**
+         * After achievement title
+         */
+        do_action( 'after_achievement_title', get_the_ID() );
+        ?>
+
         <?php // Achievement Short Description
         if( $gamipress_template_args['excerpt'] ) :  ?>
             <div class="gamipress-achievement-excerpt">
                 <?php echo gamipress_achievement_points_markup( get_the_ID() ); ?>
 
                 <?php
+                /**
+                 * After achievement points
+                 */
+                do_action( 'after_achievement_points', get_the_ID() );
+                ?>
+
+                <?php
                 $excerpt = has_excerpt() ? get_post_field( 'post_excerpt', get_the_ID() ) : get_post_field( 'post_content', get_the_ID() );
                 echo wpautop( apply_filters( 'get_the_excerpt', $excerpt ) );
                 ?>
             </div><!-- .gamipress-achievement-excerpt -->
+
+            <?php
+            /**
+             * After achievement excerpt
+             */
+            do_action( 'after_achievement_excerpt', get_the_ID() );
+            ?>
         <?php endif; ?>
 
         <?php // Achievement Steps
@@ -53,6 +81,13 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
                 </div><!-- .gamipress-extras-window -->
 
             </div><!-- .gamipress-achievement-attached -->
+
+            <?php
+            /**
+             * After achievement steps
+             */
+            do_action( 'after_achievement_steps', get_the_ID() );
+            ?>
         <?php endif; ?>
 
     </div><!-- .gamipress-achievement-description -->

@@ -3,7 +3,7 @@ Contributors: rubengc, tsunoa
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -130,6 +130,12 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+= 1.0.3 =
+
+* New dynamic template: Single Achievement.
+* Improvements on content filters.
+* Improvements on settings API to allow register group of settings.
 
 = 1.0.2 =
 

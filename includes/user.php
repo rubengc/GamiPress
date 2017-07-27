@@ -41,7 +41,7 @@ function gamipress_get_user_achievements( $args = array() ) {
 	// Otherwise, we only want the specific site's achievements
 	$achievements = $achievements[$args['site_id']];
 
-	if ( is_array( $achievements) && ! empty( $achievements ) ) {
+	if ( is_array( $achievements ) && ! empty( $achievements ) ) {
 		foreach ( $achievements as $key => $achievement ) {
 
 			// Drop any achievements earned before our since timestamp
@@ -56,11 +56,14 @@ function gamipress_get_user_achievements( $args = array() ) {
 			if ( ! empty( $args['achievement_type'] ) && ( $args['achievement_type'] != $achievement->post_type && ( !is_array( $args['achievement_type'] ) || !in_array( $achievement->post_type, $args['achievement_type'] ) ) ) )
 				unset($achievements[$key]);
 
-			//unset hidden achievements
-			$hidden = gamipress_get_hidden_achievement_by_id( $achievement->ID );
-			if( !empty( $hidden ) && isset($args['display']))
-				unset($achievements[$key]);
+			if( isset( $args['display'] ) && $args['display'] ) {
+				// Unset hidden achievements on display context
+				$hidden = gamipress_get_hidden_achievement_by_id( $achievement->ID );
 
+				if( ! empty( $hidden ) ) {
+					unset( $achievements[$key] );
+				}
+			}
 		}
 	}
 

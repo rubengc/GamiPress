@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.0.2
+ * Version:         1.0.3
  * Author:          Tsunoa
  * Author URI:      https://tsunoa.com/
  * Text Domain:     gamipress
@@ -97,7 +97,7 @@ final class GamiPress {
 	 */
 	private function constants() {
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.0.2' );
+		define( 'GAMIPRESS_VER', '1.0.3' );
 
 		// Plugin path
 		define( 'GAMIPRESS_DIR', plugin_dir_path( __FILE__ ) );
