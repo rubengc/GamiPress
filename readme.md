@@ -74,6 +74,8 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * [Contact Form 7 integration](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
 * [bbPress integration](https://wordpress.org/plugins/gamipress-bbpress-integration/)
 * [Ninja Forms integration](https://wordpress.org/plugins/gamipress-ninja-forms-integration/)
+* [LearnPress integration](https://wordpress.org/plugins/gamipress-learnpress-integration/)
+* [Gravity Forms integration](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
 
 ## Installation ##
 
