@@ -88,7 +88,7 @@ function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = arr
     $args = array(
         'post_type' 	=> 'gamipress-log',
         'post_status'	=> ( ( $access === 'public' ) ? 'publish' : 'private' ),
-        'post_author'	=> $user_id,
+        'post_author'	=> $user_id === 0 ? get_current_user_id() : $user_id,
         'post_parent'	=> 0,
         'post_title'	=> '',
         'post_content'	=> ''
@@ -164,7 +164,7 @@ function gamipress_parse_achievement_log_pattern( $log_data, $log_meta ) {
         // Achievement pattern replacements
         $achievement       = get_post( $log_meta['achievement_id'] );
         $achievement_types = gamipress_get_achievement_types();
-        $achievement_type  = ( $achievement && isset( $achievement_types[$achievement->post_type]['single_name'] ) ) ? $achievement_types[$achievement->post_type]['single_name'] : '';
+        $achievement_type  = ( $achievement && isset( $achievement_types[$achievement->post_type]['singular_name'] ) ) ? $achievement_types[$achievement->post_type]['singular_name'] : '';
 
         // {achievement} tag
         $gamipress_pattern_replacements['{achievement}'] = $achievement->post_title;
@@ -232,7 +232,7 @@ function gamipress_maybe_apply_log_pattern( $data = array(), $post_args = array(
         return $data;
     }
 
-    if ( $post_args['post_type'] === 'gamipress-log') {
+    if ( $post_args['ID'] !== 0 && $post_args['post_type'] === 'gamipress-log' ) {
         $data['post_title'] = gamipress_get_parsed_log( $post_args['ID'] );
     }
 

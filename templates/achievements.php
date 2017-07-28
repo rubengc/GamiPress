@@ -21,7 +21,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
     <div id="gamipress-achievements-filters-wrap">
 
         <?php // Filter
-        if ( ! gamipress_shortcode_att_to_bool( $gamipress_template_args['show_filter'] ) ) :
+        if ( $gamipress_template_args['show_filter'] === 'no' ) :
             $filter_value = 'all';
 
             if( $gamipress_template_args['user_id'] ) :
@@ -51,7 +51,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
         <?php endif;
 
         // Search
-        if ( gamipress_shortcode_att_to_bool( $gamipress_template_args['show_search'] ) ) :
+        if ( $gamipress_template_args['show_search'] === 'yes' ) :
             $search = isset( $_POST['achievements_list_search'] ) ? $_POST['achievements_list_search'] : ''; ?>
 
             <div id="gamipress-achievements-search">

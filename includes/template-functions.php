@@ -29,10 +29,6 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
         'steps'	    => 'yes',
     ), $template_args, '' );
 
-    foreach( $gamipress_template_args as $att => $value ) {
-        $gamipress_template_args[$att] = gamipress_shortcode_att_to_bool( $value );
-    }
-
     // If we were given an ID, get the post
     if ( is_numeric( $achievement ) ) {
         $post = get_post( $achievement );

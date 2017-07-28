@@ -137,20 +137,6 @@ function gamipress_shortcode_help_attributes( $key, $value ) {
 	return "{$key}=\"$value\"";
 }
 
-/**
- * Helper function to turn an shortcode att value to bool
- *
- * @param $att
- * @return bool
- */
-function gamipress_shortcode_att_to_bool( $att ) {
-	if( $att === 'true' || $att === 'yes' || $att === 'on' || $att === '1' || (bool) $att ) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
 // Options callback for select2 fields assigned to posts
 function gamipress_options_cb_posts( $field ) {
 	$value = $field->escaped_value;

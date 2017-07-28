@@ -135,6 +135,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.4 ###
+
+* Improvements on settings API.
+* Fix on [gamipress_achievements] shortcode ajax query by user.
+* Fix on log pattern update functions.
+
 ### 1.0.3 ###
 
 * New dynamic template: Single Achievement.

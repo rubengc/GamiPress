@@ -194,7 +194,7 @@ add_action( 'init', 'gamipress_register_post_types' );
 function gamipress_register_points_type( $points_type_id = 0, $points_name_singular = '', $points_name_plural = '' ) {
 	GamiPress()->points_types[sanitize_title( strtolower( $points_name_singular ) )] = array(
         'ID' => $points_type_id,
-        'single_name' => $points_name_singular,
+        'singular_name' => $points_name_singular,
         'plural_name' => $points_name_plural,
     );
 }
@@ -250,7 +250,7 @@ add_action( 'init', 'gamipress_register_points_types', 6 );
 function gamipress_register_achievement_type( $achievement_type_id = 0, $achievement_name_singular = '', $achievement_name_plural = '' ) {
 	GamiPress()->achievement_types[sanitize_title( strtolower( $achievement_name_singular ) )] = array(
 		'ID' => $achievement_type_id,
-		'single_name' => $achievement_name_singular,
+		'singular_name' => $achievement_name_singular,
 		'plural_name' => $achievement_name_plural,
 	);
 }

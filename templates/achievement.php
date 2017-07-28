@@ -16,7 +16,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
     <?php do_action( 'gamipress_before_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
 
     <?php // Achievement Image
-    if( $gamipress_template_args['thumbnail'] ) : ?>
+    if( $gamipress_template_args['thumbnail'] === 'yes' ) : ?>
         <div class="gamipress-achievement-image">
             <a href="<?php the_permalink(); ?>"><?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?></a>
         </div><!-- .gamipress-achievement-image -->
@@ -43,7 +43,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
         ?>
 
         <?php // Achievement Short Description
-        if( $gamipress_template_args['excerpt'] ) :  ?>
+        if( $gamipress_template_args['excerpt'] === 'yes' ) :  ?>
             <div class="gamipress-achievement-excerpt">
                 <?php echo gamipress_achievement_points_markup( get_the_ID() ); ?>
 
@@ -69,7 +69,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
         <?php endif; ?>
 
         <?php // Achievement Steps
-        if ( $gamipress_template_args['steps'] && $steps = gamipress_get_required_achievements_for_achievement( get_the_ID() ) ) : ?>
+        if ( $gamipress_template_args['steps'] === 'yes' && $steps = gamipress_get_required_achievements_for_achievement( get_the_ID() ) ) : ?>
             <div class="gamipress-achievement-attached">
 
                 <div id="show-more-<?php the_ID(); ?>" class="gamipress-open-close-switch">

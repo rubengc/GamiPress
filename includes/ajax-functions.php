@@ -15,7 +15,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function gamipress_ajax_get_achievements() {
-	global $user_ID, $blog_id;
+	global $blog_id;
 
 	// Setup our AJAX query vars
 	$type       = isset( $_REQUEST['type'] )       ? $_REQUEST['type']       : false;
@@ -54,15 +54,15 @@ function gamipress_ajax_get_achievements() {
 
 	// Get the current user if one wasn't specified
 	if( ! $user_id )
-		$user_id = $user_ID;
+		$user_id = get_current_user_id();
 
 	// Build $include array
-	if ( !is_array( $include ) ) {
+	if ( ! is_array( $include ) ) {
 		$include = explode( ',', $include );
 	}
 
 	// Build $exclude array
-	if ( !is_array( $exclude ) ) {
+	if ( ! is_array( $exclude ) ) {
 		$exclude = explode( ',', $exclude );
 	}
 
@@ -89,7 +89,7 @@ function gamipress_ajax_get_achievements() {
 			switch_to_blog( $site_blog_id );
 		}
 
-		// Grab our earned badges (used to filter the query)
+		// Grab user earned achievements (used to filter the query)
 		$earned_ids = gamipress_get_user_earned_achievement_ids( $user_id, $type );
 
 		// Query Achievements
@@ -105,7 +105,7 @@ function gamipress_ajax_get_achievements() {
 
 		// Filter - query completed or non completed achievements
 		if ( $filter == 'completed' ) {
-			$args[ 'post__in' ] = array_merge( array( 0 ), $earned_ids );
+			$args[ 'post__in' ] = $earned_ids;
 		}elseif( $filter == 'not-completed' ) {
 			$args[ 'post__not_in' ] = array_merge( $hidden, $earned_ids );
 		}
@@ -116,13 +116,13 @@ function gamipress_ajax_get_achievements() {
 		}
 
 		// Include certain achievements
-		if ( !empty( $include ) ) {
+		if ( ! empty( $include ) ) {
 			$args[ 'post__not_in' ] = array_diff( $args[ 'post__not_in' ], $include );
-			$args[ 'post__in' ] = array_merge( array( 0 ), array_diff( $include, $args[ 'post__in' ] ) );
+			$args[ 'post__in' ] = array_merge( $args[ 'post__in' ], $include  );
 		}
 
 		// Exclude certain achievements
-		if ( !empty( $exclude ) ) {
+		if ( ! empty( $exclude ) ) {
 			$args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $exclude );
 		}
 

@@ -67,8 +67,6 @@ function gamipress_points_types_shortcode( $atts = array () ) {
         'wpms'        => 'no',
     ), $atts, 'gamipress_points' );
 
-    $atts['wpms'] = gamipress_shortcode_att_to_bool( $atts['wpms'] );
-
     if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
         wp_enqueue_style( 'gamipress-css' );
     }
@@ -84,7 +82,7 @@ function gamipress_points_types_shortcode( $atts = array () ) {
     }
 
     // If we're polling all sites, grab an array of site IDs
-    if( $atts['wpms'] )
+    if( $atts['wpms'] === 'yes' )
         $sites = gamipress_get_network_site_ids();
     // Otherwise, use only the current site
     else

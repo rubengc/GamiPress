@@ -236,9 +236,9 @@ function gamipress_profile_user_achievements( $user = null ) {
             ) );
 
             echo '<tr>';
-            echo '<td>'. gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ) .'</td>';
-            echo '<td>', edit_post_link( get_the_title( $achievement->ID ), '', '', $achievement->ID ), ' </td>';
-            echo '<td> <span class="delete"><a class="error" href="'.esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ).'">' . __( 'Revoke Award', 'gamipress' ) . '</a></span></td>';
+            echo '<td>' . gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ) . '</td>';
+            echo '<td>' . ( ( $achievement->post_type === 'step' || $achievement->post_type === 'points-award' ) ? get_the_title( $achievement->ID ) : '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>' ) . '</td>';
+            echo '<td> <span class="delete"><a class="error" href="' . esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ) . '">' . __( 'Revoke Award', 'gamipress' ) . '</a></span></td>';
             echo '</tr>';
         }
         echo '</table>';
@@ -275,7 +275,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 				<option>Choose an achievement type</option>
 				<?php
 				foreach ( $achievement_types as $achievement_slug => $achievement_type ) {
-					echo '<option value="'. $achievement_slug .'">' . ucwords( $achievement_type['single_name'] ) .'</option>';
+					echo '<option value="'. $achievement_slug .'">' . ucwords( $achievement_type['singular_name'] ) .'</option>';
 				}
 				?>
 				</select>
@@ -288,7 +288,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 			<table id="<?php echo esc_attr( $achievement_slug ); ?>" class="widefat gamipress-table">
 				<thead><tr>
 					<th><?php _e( 'Image', 'gamipress' ); ?></th>
-					<th><?php echo ucwords( $achievement_type['single_name'] ); ?></th>
+					<th><?php echo ucwords( $achievement_type['singular_name'] ); ?></th>
 					<th><?php _e( 'Action', 'gamipress' ); ?></th>
 					<th><?php _e( 'Awarded', 'gamipress' ); ?></th>
 				</tr></thead>
@@ -315,10 +315,10 @@ function gamipress_profile_award_achievement( $user = null ) {
 						<tr>
 							<td><?php the_post_thumbnail( array( 50, 50 ) ); ?></td>
 							<td>
-								<?php echo edit_post_link( get_the_title() ); ?>
+								<?php echo ( ( $achievement_slug === 'step' || $achievement_slug === 'points-award' ) ? get_the_title( get_the_ID() ) : '<a href="' . get_edit_post_link( get_the_ID() ) . '">' . get_the_title( get_the_ID() ) . '</a>' ); ?>
 							</td>
 							<td>
-								<a href="<?php echo esc_url( wp_nonce_url( $award_url, 'gamipress_award_achievement' ) ); ?>"><?php printf( __( 'Award %s', 'gamipress' ), ucwords( $achievement_type['single_name'] ) ); ?></a>
+								<a href="<?php echo esc_url( wp_nonce_url( $award_url, 'gamipress_award_achievement' ) ); ?>"><?php printf( __( 'Award %s', 'gamipress' ), ucwords( $achievement_type['singular_name'] ) ); ?></a>
 								<?php if ( in_array( get_the_ID(), (array) $achievement_ids ) ) :
 									// Setup our revoke URL
 									$revoke_url = add_query_arg( array(

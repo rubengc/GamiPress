@@ -667,7 +667,7 @@ function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
  */
 function gamipress_log_title_format( $title, $id ) {
 
-	if( get_post_type($id) === 'gamipress-log' ) {
+	if( get_post_type( $id ) === 'gamipress-log' ) {
 		$title = gamipress_get_parsed_log( $id );
 	}
 
