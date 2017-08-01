@@ -98,7 +98,7 @@ class Cmb2_Metatabs_Options {
 	 * @since 1.0.2  turned menuargs into array to match WP functions
 	 * @since 1.0.0
 	 */
-	private static $props = [];
+	private static $props = array();
 	
 	/**
 	 * Properties which can be injected via constructor, a subset of self::$props
@@ -109,14 +109,14 @@ class Cmb2_Metatabs_Options {
 	 * @since 1.1.1 added 'class'
 	 * @since 1.1.0 moved from self::$props to prevent problems with multiple options pages
 	 */
-	private $defaults = [
+	private $defaults = array(
 		'key'       => 'my_options',
 		'regkey'    => TRUE,
 		'title'     => 'My Options',
 		'topmenu'   => '',
 		'postslug'  => '',
 		'class'     => '',
-		'menuargs'  => [
+		'menuargs'  => array(
 			'parent_slug'     => '',
 			'page_title'      => '',
 			'menu_title'      => '',
@@ -126,18 +126,18 @@ class Cmb2_Metatabs_Options {
 			'position'        => NULL,
 			'network'         => FALSE,
 			'view_capability' => '',
-		],
+		),
 		'jsuri'     => '',
-		'boxes'     => [],
+		'boxes'     => array(),
 		'getboxes'  => TRUE,
 		'plugincss' => TRUE,
 		'admincss'  => '',
-		'tabs'      => [],
+		'tabs'      => array(),
 		'cols'      => 1,
 		'resettxt'  => 'Reset',
 		'savetxt'   => 'Save',
-		'load'      => [],
-	];
+		'load'      => array(),
+	);
 	
 	/**
 	 * Inject anything within the self::$defaults array by matching the argument keys.
@@ -449,7 +449,7 @@ class Cmb2_Metatabs_Options {
 	 */
 	private function build_menu_args( $id ) {
 		
-		$args = [];
+		$args = array();
 		
 		// set the top menu if either topmenu or the menuargs parent_slug is set
 		$parent = self::$props[ $id ]['topmenu'] ? self::$props[ $id ]['topmenu'] : '';

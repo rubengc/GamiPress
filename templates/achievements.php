@@ -20,8 +20,13 @@ if ( 'all' === $gamipress_template_args['type'] ) {
 
     <div id="gamipress-achievements-filters-wrap">
 
+        <?php // Hidden fields for AJAX request
+        foreach( $gamipress_template_args as $template_arg => $template_arg_value ) : ?>
+            <input type="hidden" name="<?php echo $template_arg; ?>" value="<?php echo $template_arg_value; ?>">
+        <?php endforeach; ?>
+
         <?php // Filter
-        if ( $gamipress_template_args['show_filter'] === 'no' ) :
+        if ( $gamipress_template_args['filter'] === 'no' ) :
             $filter_value = 'all';
 
             if( $gamipress_template_args['user_id'] ) :
@@ -41,7 +46,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
                     <option value="completed"><?php echo sprintf( __( 'Completed %s', 'gamipress' ), $post_type_plural ); ?></option>
                     <option value="not-completed"><?php echo sprintf( __( 'Not Completed %s', 'gamipress' ), $post_type_plural ); ?></option>
                     <?php
-                    // TODO: if show_points is true "Badges by Points" option
+                    // TODO: if points is true "Achievements by Points" option
                     // TODO: if dev adds a custom taxonomy to this post type then load all of the terms to filter by or add a new filter by this taxonomy
                     ?>
                 </select>
@@ -51,7 +56,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
         <?php endif;
 
         // Search
-        if ( $gamipress_template_args['show_search'] === 'yes' ) :
+        if ( $gamipress_template_args['search'] === 'yes' ) :
             $search = isset( $_POST['achievements_list_search'] ) ? $_POST['achievements_list_search'] : ''; ?>
 
             <div id="gamipress-achievements-search">
@@ -65,11 +70,6 @@ if ( 'all' === $gamipress_template_args['type'] ) {
             </div>
 
         <?php endif; ?>
-
-        <?php // Hidden fields for AJAX request
-            foreach( $gamipress_template_args as $template_arg => $template_arg_value ) : ?>
-                <input type="hidden" name="<?php echo $template_arg; ?>" value="<?php echo $template_arg_value; ?>">
-        <?php endforeach; ?>
 
     </div><!-- #gamipress-achievements-filters-wrap -->
 

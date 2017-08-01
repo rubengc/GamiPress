@@ -33,6 +33,14 @@ function gamipress_ajax_get_achievements() {
 	$meta_key   = isset( $_REQUEST['meta_key'] )   ? $_REQUEST['meta_key']   : '';
 	$meta_value = isset( $_REQUEST['meta_value'] ) ? $_REQUEST['meta_value'] : '';
 
+	// Setup template vars
+	$template_args = array(
+		'thumbnail' => isset( $_REQUEST['thumbnail'] ) ? $_REQUEST['thumbnail'] : 'yes',
+		'excerpt'	=> isset( $_REQUEST['excerpt'] ) ? $_REQUEST['excerpt'] : 'yes',
+		'steps'	    => isset( $_REQUEST['steps'] ) ? $_REQUEST['steps'] : 'yes',
+		'earners'	=> isset( $_REQUEST['earners'] ) ? $_REQUEST['earners'] : 'no',
+	);
+
 	// Convert $type to properly support multiple achievement types
 	if ( 'all' == $type ) {
 		$type = gamipress_get_achievement_types_slugs();
@@ -135,7 +143,7 @@ function gamipress_ajax_get_achievements() {
 		$achievement_posts = new WP_Query( $args );
 		$query_count += $achievement_posts->found_posts;
 		while ( $achievement_posts->have_posts() ) : $achievement_posts->the_post();
-			$achievements .= gamipress_render_achievement( get_the_ID() );
+			$achievements .= gamipress_render_achievement( get_the_ID(), $template_args );
 			$achievement_count++;
 		endwhile;
 
@@ -287,3 +295,54 @@ function gamipress_ajax_get_achievements_options() {
 	wp_send_json_success( $results );
 }
 add_action( 'wp_ajax_gamipress_get_achievements_options', 'gamipress_ajax_get_achievements_options' );
+
+/**
+ * AJAX helper for getting our posts and returning select options
+ *
+ * @since   1.0.0
+ * @updated 1.0.5
+ */
+function gamipress_achievement_post_ajax_handler() {
+
+    // Grab our achievement type from the AJAX request
+    $type = $_REQUEST['type'];
+
+    if( ! in_array( $type, array( 'step', 'points-award' ) ) ) {
+        die();
+    }
+
+    $achievement_type = $_REQUEST['achievement_type'];
+    $exclude_posts = (array) $_REQUEST['excluded_posts'];
+
+    if( $type === 'step' ) {
+        $requirements = gamipress_get_step_requirements( $_REQUEST['step_id'] );
+    } else {
+        $requirements = gamipress_get_points_award_requirements( $_REQUEST['points_award_id'] );
+    }
+
+    // If we don't have an achievement type, bail now
+    if ( empty( $achievement_type ) ) {
+        die();
+    }
+
+    // Grab all our posts for this achievement type
+    $achievements = get_posts( array(
+        'post_type'      => $achievement_type,
+        'post__not_in'   => $exclude_posts,
+        'posts_per_page' => -1,
+        'orderby'        => 'title',
+        'order'          => 'ASC',
+    ));
+
+    // Setup our output
+    $output = '<option value="">' . __( 'Choose an achievement', 'gamipress') . '</option>';
+    foreach ( $achievements as $achievement ) {
+        $output .= '<option value="' . $achievement->ID . '" ' . selected( $requirements['achievement_post'], $achievement->ID, false ) . '>' . $achievement->post_title . '</option>';
+    }
+
+    // Send back our results and die like a man
+    echo $output;
+    die();
+
+}
+add_action( 'wp_ajax_gamipress_requirement_achievement_post', 'gamipress_achievement_post_ajax_handler' );

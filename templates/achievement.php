@@ -90,6 +90,17 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
             ?>
         <?php endif; ?>
 
+        <?php // Achievement Earners
+        if ( $gamipress_template_args['earners'] === 'yes' ) :
+            echo gamipress_get_achievement_earners_list( get_the_ID() );
+
+            /**
+             * After achievement steps
+             */
+            do_action( 'after_achievement_earners', get_the_ID() );
+            ?>
+        <?php endif; ?>
+
     </div><!-- .gamipress-achievement-description -->
 
     <?php do_action( 'gamipress_after_render_achievement', get_the_ID(), $gamipress_template_args ); ?>

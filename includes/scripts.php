@@ -59,19 +59,18 @@ function gamipress_admin_register_scripts() {
     // Use minified libraries if SCRIPT_DEBUG is turned off
     $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
+    // Libraries
+    wp_register_style( 'gamipress-select2-css', GAMIPRESS_URL . 'assets/libs/select2/css/select2' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
+    wp_register_script( 'gamipress-select2-js', GAMIPRESS_URL . 'assets/libs/select2/js/select2.full' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
+
     // Stylesheets
     wp_register_style( 'gamipress-admin-css', GAMIPRESS_URL . 'assets/css/gamipress-admin' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
 
     // Scripts
     wp_register_script( 'gamipress-admin-js', GAMIPRESS_URL . 'assets/js/gamipress-admin' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-admin-widgets-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-widgets' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-points-awards-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-points-awards-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-steps-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-steps-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-log-extra-data-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-log-extra-data-ui' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
-
-    // Libraries
-    wp_register_style( 'gamipress-select2-css', GAMIPRESS_URL . 'assets/libs/select2/css/select2' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
-    wp_register_script( 'gamipress-select2-js', GAMIPRESS_URL . 'assets/libs/select2/js/select2.full' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
 }
 add_action( 'admin_init', 'gamipress_admin_register_scripts' );
 
@@ -99,25 +98,15 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         wp_enqueue_style( 'gamipress-select2-css' );
     }
 
-    // Points type scripts
-    if ( $post_type === 'points-type' ) {
-        wp_localize_script( 'gamipress-points-awards-ui-js', 'gamipress_points_awards_ui', array(
-            'post_placeholder' => __( 'Select a Post', 'gamipress' ),
-            'specific_activity_triggers' => gamipress_get_specific_activity_triggers(),
-        ) );
-
-        wp_enqueue_script( 'gamipress-points-awards-ui-js' );
-    }
-
-    // Achievements scripts
-    if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
-        // Localize steps ui script
-        wp_localize_script( 'gamipress-steps-ui-js', 'gamipress_steps_ui', array(
+    // Requirements ui script
+    if ( $post_type === 'points-type' || in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
+        // Localize requirements ui script
+        wp_localize_script( 'gamipress-requirements-ui-js', 'gamipress_requirements_ui', array(
             'post_placeholder' => __( 'Select a Post', 'gamipress' ),
             'specific_activity_triggers' => gamipress_get_specific_activity_triggers()
         ) );
 
-        wp_enqueue_script( 'gamipress-steps-ui-js' );
+        wp_enqueue_script( 'gamipress-requirements-ui-js' );
     }
 
     // Logs scripts

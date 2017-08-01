@@ -18,7 +18,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_is_achievement( $post = null ) {
 
-	// Assume we are working with an achievment object
+	// Assume we are working with an achievement object
 	$return = true;
 
 	// If post type is NOT a registered achievement type, it cannot be an achievement

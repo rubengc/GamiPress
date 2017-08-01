@@ -319,6 +319,8 @@ function gamipress_profile_award_achievement( $user = null ) {
 							</td>
 							<td>
 								<a href="<?php echo esc_url( wp_nonce_url( $award_url, 'gamipress_award_achievement' ) ); ?>"><?php printf( __( 'Award %s', 'gamipress' ), ucwords( $achievement_type['singular_name'] ) ); ?></a>
+							</td>
+							<td>
 								<?php if ( in_array( get_the_ID(), (array) $achievement_ids ) ) :
 									// Setup our revoke URL
 									$revoke_url = add_query_arg( array(
@@ -336,7 +338,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 				<?php else : ?>
 					<tr>
-						<th><?php printf( __( 'No %s found.', 'gamipress' ), $achievement_type['plural_name'] ); ?></th>
+						<td><?php printf( __( 'No %s found.', 'gamipress' ), $achievement_type['plural_name'] ); ?></td>
 					</tr>
 				<?php endif; wp_reset_postdata(); ?>
 

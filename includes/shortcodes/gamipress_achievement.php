@@ -47,6 +47,12 @@ function gamipress_register_achievement_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+			'earners' => array(
+				'name'        => __( 'Show Earners', 'gamipress' ),
+				'description' => __( 'Display a list of users that has earned the achievement.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
 		),
 	) );
 }
@@ -67,6 +73,7 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 	  'thumbnail' => 'yes',
 	  'excerpt'	  => 'yes',
 	  'steps'	  => 'yes',
+	  'earners'	  => 'no',
 	), $atts, 'gamipress_achievement' );
 
 	// return if post id not specified

@@ -23,11 +23,12 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
-    $gamipress_template_args = shortcode_atts( array(
+    $gamipress_template_args = wp_parse_args( $template_args, array(
         'thumbnail' => 'yes',
         'excerpt'	=> 'yes',
         'steps'	    => 'yes',
-    ), $template_args, '' );
+        'earners'	=> 'no',
+    ) );
 
     // If we were given an ID, get the post
     if ( is_numeric( $achievement ) ) {

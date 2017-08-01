@@ -59,14 +59,20 @@ function gamipress_register_achievements_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
-			'show_filter' => array(
+			'earners' => array(
+				'name'        => __( 'Show Earners', 'gamipress' ),
+				'description' => __( 'Display a list of users that has earned the achievement.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+			),
+			'filter' => array(
 				'name'        => __( 'Show Filter', 'gamipress' ),
 				'description' => __( 'Display filter controls.', 'gamipress' ),
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
-			'show_search' => array(
+			'search' => array(
 				'name'        => __( 'Show Search', 'gamipress' ),
 				'description' => __( 'Display a search input.', 'gamipress' ),
 				'type' 	=> 'checkbox',
@@ -148,25 +154,30 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
 
+	// TODO: Backward compatibility for change on 1.0.5
+	if( isset( $atts['show_filter'] ) ) $atts['filter'] = $atts['show_filter'];
+	if( isset( $atts['show_search'] ) ) $atts['search'] = $atts['show_search'];
+
 	$atts = shortcode_atts( array(
 		// Achievements atts
-		'type'        => 'all',
-		'limit'       => '10',
-		'show_filter' => 'yes',
-		'show_search' => 'yes',
-		'user_id'     => '0',
-		'wpms'        => 'no',
-		'orderby'     => 'menu_order',
-		'order'       => 'ASC',
-		'include'     => '',
-		'exclude'     => '',
-		'meta_key'    => '',
-		'meta_value'  => '',
+		'type'        	=> 'all',
+		'limit'       	=> '10',
+		'filter' 	  	=> 'yes',
+		'search' 	  	=> 'yes',
+		'user_id'     	=> '0',
+		'wpms'        	=> 'no',
+		'orderby'     	=> 'menu_order',
+		'order'       	=> 'ASC',
+		'include'     	=> '',
+		'exclude'     	=> '',
+		'meta_key'    	=> '',
+		'meta_value'  	=> '',
 
 		// Single achievement atts
-		'thumbnail' => 'yes',
-		'excerpt'	  => 'yes',
-		'steps'	  => 'yes',
+		'thumbnail' 	=> 'yes',
+		'excerpt'	  	=> 'yes',
+		'steps'	  		=> 'yes',
+		'earners'	  	=> 'no',
 	), $atts, 'gamipress_achievements' );
 
 	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {

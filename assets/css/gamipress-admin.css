@@ -11,6 +11,7 @@
 }
 
 .dashicons-gamipress, .dashicons-gamipress:before,
+#dashboard-widgets #gamipress h2:before,
 .widget[id*="_gamipress_"] .widget-title h3:before {
 	font-family: 'GamiPress' !important;
 	speak: none;
@@ -32,9 +33,11 @@
 
 .wp-media-buttons-icon.dashicons-gamipress,
 .wp-media-buttons-icon.dashicons-gamipress:before {
+	color: #0098d7;
 	line-height: 18px !important;
 }
 
+#dashboard-widgets #gamipress h2:before,
 .widget[id*="_gamipress_"] .widget-title h3:before {
 	display: inline-block;
 	width: 20px;
@@ -44,6 +47,130 @@
 	vertical-align: middle;
 	text-align: center;
 	margin-right: 2px;
+	color: #0098d7;
+}
+
+/* Dashboard widgets */
+#dashboard-widgets #gamipress h3 {
+	border-bottom: 1px solid #eee;
+	border-top: 1px solid #eee;
+	clear: both;
+	margin: 0 -12px;
+	padding: 6px 12px;
+}
+
+#dashboard-widgets #gamipress .gamipress-registered-posts ul li a:before {
+	color: #82878c;
+	font: normal 20px/1 dashicons;
+	speak: none;
+	display: inline-block;
+	padding: 0;
+	position: relative;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-decoration: none !important;
+	vertical-align: top;
+
+	width: 20px;
+	content: "";
+}
+
+#dashboard-widgets #gamipress .gamipress-registered-posts ul li a#points-types:before {
+	content: "\f155";
+}
+
+#dashboard-widgets #gamipress .gamipress-registered-posts ul li a#achievement-types:before {
+	content: "\f313";
+}
+
+#dashboard-widgets #gamipress .gamipress-registered-posts ul {
+	float: left;
+	width: 50%;
+	margin-top: 0;
+}
+
+#dashboard-widgets #gamipress .gamipress-latest-logs ul {
+	margin: 0 -12px -12px;
+}
+
+#dashboard-widgets #gamipress .gamipress-latest-logs ul li {
+	margin: 0;
+	padding: 4px 12px;
+	border-bottom: 1px solid #eee;
+}
+
+#dashboard-widgets #gamipress .gamipress-latest-logs ul li:nth-child(2n+1) {
+	background-color: #fafafa;
+}
+
+#dashboard-widgets #gamipress .gamipress-latest-logs ul li:last-child {
+	border-bottom: none;
+}
+
+#dashboard-widgets #gamipress .gamipress-latest-logs ul li a {
+	display: block;
+}
+
+#dashboard-widgets #gamipress .gamipress-latest-logs ul li span {
+	color: #72777c;
+}
+
+/* Requirements UI */
+#gamipress-requirements-ui .spinner{
+	float: none;
+	margin-top: 0;
+}
+
+li.requirement-row {
+	background: #fff;
+	border: 1px solid #DDD;
+	padding: 5px 10px;
+	position: relative;
+}
+
+li.requirement-row .requirement-handle {
+	display: block;
+	background:url( '../img/ui_handle.png' );
+	width:7px;
+	height:4em;
+	margin:5px 10px 5px 0;
+	position: relative;
+	float: left;
+}
+
+.post-type-points-type li.requirement-row .requirement-handle {
+	height: 6.5em;
+}
+
+li.requirement-row .required-duration {
+	text-align: right;
+}
+
+li.requirement-row .requirement-title {
+	display: block;
+	padding-top:5px;
+}
+
+li.requirement-row .title {
+	width: 400px;
+}
+
+li.requirement-row .delete-requirement {
+	display: table;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	right: 10px;
+	margin: auto 0;
+}
+
+li.requirement-row input, li.requirement-row select {
+	vertical-align: middle;
+}
+
+li.requirement-row label {
+	width: 50px;
+	display: inline-block;
 }
 
 /* Log edit screen */
@@ -68,108 +195,16 @@
 	padding: 3px 2px 2px 2px;
 }
 
-/* Points Awards UI */
-li.points-award-row {
-	background:#fff;
-	border: 1px solid #DDD;
-	padding: 5px 10px;
-	position: relative;
-}
-li.points-award-row .points-award-handle {
-	display: block;
-	background:url( '../img/ui_handle.png' );
-	width:7px;
-	height:6.5em;
-	margin:5px 10px 5px 0;
-	position: relative;
-	float: left;
-}
-li.points-award-row .required-duration {
-	text-align: right;
-}
-li.points-award-row .points-award-title {
-	display: block;
-	padding-top:5px;
-}
-li.points-award-row .title {
-	width:300px;
-}
-li.points-award-row .delete-points-award {
-	display: table;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	right: 10px;
-	margin: auto 0;
-}
-li.points-award-row input,
-li.points-award-row select {
-	vertical-align: middle;
-}
-li.points-award-row label {
-	width: 50px;
-	display: inline-block;
-}
-
-/* Steps UI */
-li.step-row {
-	background:#fff;
-	border: 1px solid #DDD;
-	padding: 5px 10px;
-	position: relative;
-}
-li.step-row .step-handle {
-	display: block;
-	background:url( '../img/ui_handle.png' );
-	width:7px;
-	height:4em;
-	margin:5px 10px 5px 0;
-	position: relative;
-	float: left;
-}
-li.step-row .required-duration {
-	text-align: right;
-}
-li.step-row .step-title {
-	display: block;
-	padding-top:5px;
-}
-li.step-row .title {
-	width:300px;
-}
-li.step-row .delete-step {
-	display: table;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	right: 10px;
-	margin: auto 0;
-}
-li.step-row input,
-li.step-row select {
-	vertical-align: middle;
-}
-li.step-row label {
-	width: 50px;
-	display: inline-block;
-}
-
 /* User Profile Area */
-.gamipress-table tr {
-	/*padding: 5px 10px;*/
-}
 .gamipress-table th {
 	font-weight: bold;
 	padding: 8px 10px;
-	text-transform: uppercase;
 }
 .gamipress-table a.error {
 	color: #a00;
 }
 
-/*
-Shortcode Editor styles
- */
+/* Shortcode Editor styles */
 .gamipress-shortcode-thickbox #TB_ajaxContent {
 	width: 100% !important;
 	max-height: 100%;
@@ -212,16 +247,13 @@ Shortcode Editor styles
 	}
 }
 
-/*
-GamiPress Select2
- */
+/* GamiPress Select2 */
 .gamipress-select2 {
 	width: 100% !important;
 	z-index: 100051;
 }
 
-#points_awards_list .gamipress-select2,
-#steps_list .gamipress-select2 {
+#requirements-list .gamipress-select2 {
 	max-width: 200px;
 }
 
@@ -256,9 +288,7 @@ GamiPress Select2
 	font-style: normal !important;
 }
 
-/*
-GamiPress switch control
-*/
+/* GamiPress switch control */
 .gamipress-switch .cmb-td {
 	position: relative;
     min-height: 14px;
@@ -311,9 +341,7 @@ GamiPress switch control
 	margin-left: 22px;
 }
 
-/*
-GamiPress forms on widgets area
-*/
+/* GamiPress forms on widgets area */
 .widget[id*="_gamipress_"] .widget-content .cmb-th {
     padding: 0;
 	width: 100%;
@@ -323,9 +351,7 @@ GamiPress forms on widgets area
     padding: 0 0 10px 0;
 }
 
-/*
-GamiPress Settings
-*/
+/* GamiPress Settings */
 .gamipress_page_gamipress_settings .gamipress-switch input + label:before,
 .gamipress_page_gamipress_settings .gamipress-switch input + label:after {
 	top: 22px;

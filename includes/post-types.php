@@ -79,6 +79,7 @@ function gamipress_register_post_types() {
     ) );
 
 	gamipress_register_achievement_type( 0, 'Points Award', 'Points Awards' );
+	gamipress_register_requirement_type( 'Points Award', 'Points Awards' );
 
 	// Register Achivement Types
 	register_post_type( 'achievement-type', array(
@@ -147,6 +148,7 @@ function gamipress_register_post_types() {
 
 	) );
 	gamipress_register_achievement_type( 0, 'Step', 'Steps' );
+	gamipress_register_requirement_type( 'Step', 'Steps' );
 
 	// Register Log
 	register_post_type( 'gamipress-log', array(
@@ -186,9 +188,11 @@ add_action( 'init', 'gamipress_register_post_types' );
  * Register our various points types for use in the rules engine
  *
  * @since  1.0.0
+ *
  * @param  integer $points_type_id Post id of the points type
- * @param  string $points_name_singular The singular name
- * @param  string $points_name_plural  The plural name
+ * @param  string  $points_name_singular The singular name
+ * @param  string  $points_name_plural  The plural name
+ *
  * @return void
  */
 function gamipress_register_points_type( $points_type_id = 0, $points_name_singular = '', $points_name_plural = '' ) {
@@ -242,9 +246,11 @@ add_action( 'init', 'gamipress_register_points_types', 6 );
  * Register our various achievement types for use in the rules engine
  *
  * @since  1.0.0
+ *
  * @param  integer 	$achievement_type_id 		Post id of the achievement type
  * @param  string 	$achievement_name_singular 	The singular name
  * @param  string 	$achievement_name_plural  	The plural name
+ *
  * @return void
  */
 function gamipress_register_achievement_type( $achievement_type_id = 0, $achievement_name_singular = '', $achievement_name_plural = '' ) {
@@ -259,6 +265,7 @@ function gamipress_register_achievement_type( $achievement_type_id = 0, $achieve
  * Register each of our Achivement Types as WordPress post type
  *
  * @since  1.0.0
+ *
  * @return void
  */
 function gamipress_register_achievement_types() {
@@ -327,3 +334,20 @@ function gamipress_register_achievement_types() {
 	}
 }
 add_action( 'init', 'gamipress_register_achievement_types', 8 );
+
+/**
+ * Register a requirement type
+ *
+ * @since  1.0.5
+ *
+ * @param  string $requirement_name_singular The singular name
+ * @param  string $requirement_name_plural  The plural name
+ *
+ * @return void
+ */
+function gamipress_register_requirement_type( $requirement_name_singular = '', $requirement_name_plural = '' ) {
+	GamiPress()->requirement_types[sanitize_title( strtolower( $requirement_name_singular ) )] = array(
+		'singular_name' => $requirement_name_singular,
+		'plural_name' => $requirement_name_plural,
+	);
+}

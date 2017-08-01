@@ -1,9 +1,9 @@
 ﻿=== GamiPress ===
-Contributors: rubengc, tsunoa
+Contributors: tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.0.4
+Stable tag: 1.0.5
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -84,6 +84,16 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * [LearnPress integration](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [Gravity Forms integration](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
 
+= Helpful Links =
+
+GamiPress is made available by [Tsunoa](https://tsunoa.com/ "Tsunoa"). Here are some ways to stay connected and to see what else we are up to:
+
+* [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress official website
+* [Documentation](https://gamipress.com/docs "GamiPress documentation") - GamiPress online documentation
+* [Conctact](https://gamipress.com/contact-us "GamiPress contact") - GamiPress contact page
+* [GitHub](https://github.com/rubengc/gamipress "GamiPress on GitHub") - GamiPress GitHub repository
+* [Tsunoa.com](https://tsunoa.com/ "Tsunoa") - Tsunoa official website
+
 == Installation ==
 
 = From WordPress backend =
@@ -132,6 +142,16 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+= 1.0.5 =
+
+* Dashboard widget with GamiPress related information.
+* New [gamipress_achievement] attribute: earners.
+* New [gamipress_achievements] attribute: earners.
+* [gamipress_achievements] attribute rename: show_filter -> filter.
+* [gamipress_achievements] attribute rename: show_search -> search.
+* Complete rework of the UI for edit Points Awards and Steps.
+* Fix on user profile achievements tables.
 
 = 1.0.4 =
 

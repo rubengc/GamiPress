@@ -214,38 +214,6 @@ function gamipress_points_award_link_title_to_achievement( $title = '', $points_
 add_filter( 'gamipress_points_award_title_display', 'gamipress_points_award_link_title_to_achievement', 10, 2 );
 
 /**
- * Filter our points awards titles to add points awarded
- *
- * @since  1.0.0
- * @param  string $title 			Our points award title
- * @param  object $points_award  	Our points award's post object
- * @return string        			Our potentially updated title
- */
-function gamipress_points_award_prefix_title_with_points( $title = '', $points_award = null ) {
-
-	// Grab our points award requirements
-	$points_award_requirements = gamipress_get_points_award_requirements( $points_award->ID );
-
-	// Setup a prefix with points amount
-	if ( ! empty( $points_award_requirements['points'] ) ) {
-        $points_type = gamipress_get_points_award_points_type( $points_award->ID );
-
-        if( $points_type ) {
-            $plural_name = get_post_meta( '_gamipress_plural_name', $points_type->ID, true );
-
-            if( ! $plural_name ) {
-                $plural_name = $points_type->post_title;
-            }
-
-            $title = sprintf( __( '%d %s for', 'gamipress' ), absint( $points_award_requirements['points'] ), $plural_name ) . ' ' . $title;
-        }
-	}
-
-	return $title;
-}
-add_filter( 'gamipress_points_award_title_display', 'gamipress_points_award_prefix_title_with_points', 11, 2 );
-
-/**
  * Gets achivement's required steps and returns HTML markup for these steps
  *
  * @since  1.0.0

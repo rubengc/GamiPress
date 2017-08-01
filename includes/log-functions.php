@@ -81,9 +81,12 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
  *
  * @param  int      $user_id  	The user ID
  * @param  string   $access     Access to this log ( public|private )
+ * @param  array    $log_meta   Log meta data
+ *
  * @return integer             	The post ID of the newly created log entry
  */
 function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = array() ) {
+
     // Post data
     $args = array(
         'post_type' 	=> 'gamipress-log',
@@ -108,6 +111,7 @@ function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = arr
     }
 
     return $log_id;
+
 }
 
 /**
@@ -275,6 +279,7 @@ function gamipress_get_parsed_log( $log_id = null ) {
  *
  * @param $log_meta
  * @param $log_id
+ *
  * @return mixed
  */
 function gamipress_get_log_meta_data_defaults( $log_meta, $log_id ) {
@@ -313,5 +318,3 @@ function gamipress_get_log_meta_data_defaults( $log_meta, $log_id ) {
     return $log_meta;
 }
 add_filter( 'gamipress_get_log_meta_data', 'gamipress_get_log_meta_data_defaults', 10, 2 );
-
-

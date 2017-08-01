@@ -125,12 +125,14 @@ function gamipress_meta_boxes() {
 				'desc' => ' '.__( 'Yes, steps must be completed in order.', 'gamipress' ),
 				'id'   => $prefix . 'sequential',
 				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
 			),
 			array(
 				'name' => __( 'Show Earners', 'gamipress' ),
 				'desc' => ' '.__( 'Yes, display a list of users who have earned this achievement.', 'gamipress' ),
 				'id'   => $prefix . 'show_earners',
 				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
 			),
 			array(
 				'name' => __( 'Congratulations Text', 'gamipress' ),

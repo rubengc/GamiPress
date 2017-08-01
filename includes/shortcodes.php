@@ -94,6 +94,11 @@ function gamipress_shortcode_help_render_fields( $fields ) {
 	$output = '';
 	if ( ! empty( $fields ) ) {
 		foreach ( $fields as $field_id => $field ) {
+
+			if( $field['type'] === 'checkbox' && empty( $field['default'] ) ) {
+				$field['default'] = 'no';
+			}
+
 			$accepts = ! empty( $field['options'] ) ? sprintf( __( 'Accepts: %s', 'gamipress' ), '<code>' . implode( '</code>, <code>', array_keys( $field['options'] ) ) . '</code>' ) : '';
 			$default = ! empty( $field['default'] ) ? sprintf( __( 'Default: %s', 'gamipress' ), '<code>' . $field['default'] . '</code>' ) : '';
 			$output .= sprintf(
@@ -118,7 +123,7 @@ function gamipress_shortcode_help_render_fields( $fields ) {
  * @return string            HTML Markup.
  */
 function gamipress_shortcode_help_render_example( $shortcode = array() ) {
-	$fields = wp_list_pluck( $shortcode->fields, 'default' );
+	$fields = @wp_list_pluck( $shortcode->fields, 'default' );
 	$examples = array_map( 'gamipress_shortcode_help_attributes', array_keys( $fields ), array_values( $fields ) );
 	$flattened_examples = implode( ' ', $examples );
 	return sprintf( __( 'Example: %s', 'gamipress' ), "<code>[{$shortcode->slug} {$flattened_examples}]</code>" );
@@ -134,6 +139,16 @@ function gamipress_shortcode_help_render_example( $shortcode = array() ) {
  * @return string        key="value".
  */
 function gamipress_shortcode_help_attributes( $key, $value ) {
+
+	switch( $key ) {
+		case 'user_id':
+			$value = get_current_user_id();
+			break;
+		case 'wpms':
+			$value = is_multisite() ? 'yes' : 'no';
+			break;
+	}
+
 	return "{$key}=\"$value\"";
 }
 
