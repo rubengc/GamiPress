@@ -90,7 +90,7 @@ GamiPress is made available by [Tsunoa](https://tsunoa.com/ "Tsunoa"). Here are 
 
 * [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress official website
 * [Documentation](https://gamipress.com/docs "GamiPress documentation") - GamiPress online documentation
-* [Conctact](https://gamipress.com/contact-us "GamiPress contact") - GamiPress contact page
+* [Contact](https://gamipress.com/contact-us "GamiPress contact") - GamiPress contact page
 * [GitHub](https://github.com/rubengc/gamipress "GamiPress on GitHub") - GamiPress GitHub repository
 * [Tsunoa.com](https://tsunoa.com/ "Tsunoa") - Tsunoa official website
 
