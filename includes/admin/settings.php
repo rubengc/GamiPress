@@ -5,6 +5,8 @@
  * @package     GamiPress\Admin\Settings
  * @since       1.0.0
  */
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Register GamiPress Settings with Settings API.
@@ -92,6 +94,11 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
             'achievement_image_size' => array(
                 'name' => __( 'Achievement Image Size', 'gamipress' ),
                 'type' => 'size',
+            ),
+            'debug_mode' => array(
+                'name' => __( 'Enable Debug Mode', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
             ),
         ) )
     );
@@ -234,6 +241,13 @@ function gamipress_register_settings_page() {
 
         $meta_boxes = array();
 
+        /**
+         * Filter: gamipress_settings_{$section_id}_meta_boxes
+         *
+         * @param array $meta_boxes
+         *
+         * @return array
+         */
         $meta_boxes = apply_filters( "gamipress_settings_{$section_id}_meta_boxes", $meta_boxes );
 
         if( ! empty( $meta_boxes ) ) {

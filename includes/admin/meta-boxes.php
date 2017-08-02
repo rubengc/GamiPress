@@ -29,8 +29,11 @@ function gamipress_meta_boxes() {
 	// Grab our achievement types as an array
 	$achievement_types = gamipress_get_achievement_types_slugs();
 
+	// Grab our requirement types as an array
+	$requirement_types = gamipress_get_requirement_types_slugs();
+
 	// Points Type
-	new_cmb2_box(array(
+	new_cmb2_box( array(
 		'id'           	=> 'points-type-data',
 		'title'        	=> __( 'Points Type Data', 'gamipress' ),
 		'object_types' 	=> array( 'points-type' ),
@@ -50,10 +53,10 @@ function gamipress_meta_boxes() {
 				'type' 	=> 'text_medium',
 			),
 		), $prefix )
-	));
+	) );
 
 	// Achievement Type
-	new_cmb2_box(array(
+	new_cmb2_box( array(
 		'id'           	=> 'achievement-type-data',
 		'title'        	=> __( 'Achievement Type Data', 'gamipress' ),
 		'object_types' 	=> array( 'achievement-type' ),
@@ -73,25 +76,25 @@ function gamipress_meta_boxes() {
 				'type' 	=> 'text_medium',
 			),
 		), $prefix )
-	));
+	) );
 
 	// Achievements
 	new_cmb2_box( array(
 		'id'         	=> 'achievement-data',
 		'title'      	=> __( 'Achievement Data', 'gamipress' ),
-		'object_types'  => $achievement_types,
+		'object_types'  => array_diff( $achievement_types, array( 'step', 'points-award' ) ),
 		'context'    	=> 'advanced',
 		'priority'   	=> 'high',
 		'fields' 		=> apply_filters( 'gamipress_achievement_data_meta_box_fields', array(
 			array(
 				'name' => __( 'Points Awarded', 'gamipress' ),
-				'desc' => ' '.__( 'Points awarded for earning this achievement (optional). Leave empty if no points are awarded.', 'gamipress' ),
+				'desc' => __( 'Points awarded for earning this achievement (optional). Leave empty if no points are awarded.', 'gamipress' ),
 				'id'   => $prefix . 'points',
 				'type' => 'text_small',
 			),
             array(
                 'name' => __( 'Points Type', 'gamipress' ),
-                'desc' => ' '.__( 'Points type to award for earning this achievement (optional).', 'gamipress' ),
+                'desc' => __( 'Points type to award for earning this achievement (optional).', 'gamipress' ),
                 'id'   => $prefix . 'points_type',
                 'type' => 'select',
                 'options' => $points_types_options
@@ -109,27 +112,27 @@ function gamipress_meta_boxes() {
 			),
 			array(
 				'name' => __( 'Minimum Points Required', 'gamipress' ),
-				'desc' => ' '.__( 'Fewest number of points required for earning this achievement.', 'gamipress' ),
+				'desc' => __( 'Fewest number of points required for earning this achievement.', 'gamipress' ),
 				'id'   => $prefix . 'points_required',
 				'type' => 'text_small',
 			),
             array(
                 'name' => __( 'Points Type Required', 'gamipress' ),
-                'desc' => ' '.__( 'Points type of points required for earning this achievement (optional).', 'gamipress' ),
+                'desc' => __( 'Points type of points required for earning this achievement (optional).', 'gamipress' ),
                 'id'   => $prefix . 'points_type_required',
                 'type' => 'select',
                 'options' => $points_types_options
             ),
 			array(
 				'name' => __( 'Sequential Steps', 'gamipress' ),
-				'desc' => ' '.__( 'Yes, steps must be completed in order.', 'gamipress' ),
+				'desc' => __( 'Yes, steps must be completed in order.', 'gamipress' ),
 				'id'   => $prefix . 'sequential',
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
 			array(
 				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => ' '.__( 'Yes, display a list of users who have earned this achievement.', 'gamipress' ),
+				'desc' => __( 'Yes, display a list of users who have earned this achievement.', 'gamipress' ),
 				'id'   => $prefix . 'show_earners',
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
@@ -142,7 +145,7 @@ function gamipress_meta_boxes() {
 			),
 			array(
 				'name' => __( 'Maximum Earnings', 'gamipress' ),
-				'desc' => ' '.__( 'Number of times a user can earn this achievement (leave empty for no maximum).', 'gamipress' ),
+				'desc' => __( 'Number of times a user can earn this achievement (leave empty for no maximum).', 'gamipress' ),
 				'id'   => $prefix . 'maximum_earnings',
 				'type' => 'text_small',
 				'default' => '1',
@@ -160,8 +163,76 @@ function gamipress_meta_boxes() {
 		), $prefix )
 	) );
 
+	// Requirements
+	new_cmb2_box( array(
+		'id'         	=> 'requirement-data',
+		'title'      	=> __( 'Requirement Data', 'gamipress' ),
+		'object_types'  => $requirement_types,
+		'context'    	=> 'normal',
+		'priority'   	=> 'high',
+		'fields' 		=> apply_filters( 'gamipress_requirement_data_meta_box_fields', array(
+            array(
+                'name' => __( 'Trigger Type', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'trigger_type',
+                'type' => 'select_with_groups',
+                'options' => gamipress_get_activity_triggers()
+            ),
+			array(
+				'name' => __( 'Count', 'gamipress' ),
+				'desc' => '',
+				'id'   => $prefix . 'count',
+				'type' => 'text_small',
+			),
+            array(
+                'name' => __( 'Limit', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'limit',
+                'type' => 'text_small',
+            ),
+            array(
+                'name' => __( 'Limit Type', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'limit_type',
+                'type' => 'select',
+                'options' => array(
+                    'unlimited' => __( 'Unlimited', 'gamipress' ),
+                    'daily'     => __( 'Per Day', 'gamipress' ),
+                    'weekly'    => __( 'Per Week', 'gamipress' ),
+                    'monthly'   => __( 'Per Month', 'gamipress' ),
+                    'yearly'    => __( 'Per Year', 'gamipress' ),
+                )
+            ),
+            array(
+                'name' => __( 'Achievement Type', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'achievement_type',
+                'type' => 'text',
+            ),
+            array(
+                'name' => __( 'Achievement Post', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'achievement_post',
+                'type' => 'text_small',
+            ),
+            array(
+                'name' => __( 'Points', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'points',
+                'type' => 'text_small',
+            ),
+            array(
+                'name' => __( 'Points Type', 'gamipress' ),
+                'desc' => '',
+                'id'   => $prefix . 'points_type',
+                'type' => 'select',
+                'options' => $points_types_options
+            ),
+		), $prefix ),
+	) );
+
 	// Log
-	new_cmb2_box(array(
+	new_cmb2_box( array(
 		'id'           	=> 'log-data',
 		'title'        	=> __( 'Log Data', 'gamipress' ),
 		'object_types' 	=> array( 'gamipress-log' ),
@@ -189,7 +260,7 @@ function gamipress_meta_boxes() {
 				'type' 	=> 'text',
 			),
 		), $prefix )
-	));
+	) );
 
 }
 add_action( 'cmb2_admin_init', 'gamipress_meta_boxes' );

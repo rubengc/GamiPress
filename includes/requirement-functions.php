@@ -94,3 +94,69 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
     // Available filter for overriding elsewhere
     return apply_filters( 'gamipress_requirement_object', $requirement, $requirement_id );
 }
+
+/**
+ * Get the the ID of a P2P connection (p2p_id) to a given requirement ID (p2p_from)
+ *
+ * @since  1.0.6
+ *
+ * @param  integer $requirement_id The given post ID
+ *
+ * @return integer           The resulting connection
+ */
+function gamipress_get_requirement_connection_id( $requirement_id = 0 ) {
+
+    global $wpdb;
+
+    $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_from = %d ", $requirement_id ) );
+
+    return $p2p_id;
+
+}
+
+/**
+ * Get the the ID of a P2P connected object (p2p_to) to a given requirement ID (p2p_from)
+ *
+ * @since  1.0.6
+ *
+ * @param  integer $requirement_id The given post ID
+ *
+ * @return integer           The resulting connected post ID
+ */
+function gamipress_get_requirement_connected_id( $requirement_id = 0 ) {
+
+    global $wpdb;
+
+    $p2p_to = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from = %d ", $requirement_id ) );
+
+    return $p2p_to;
+
+}
+
+/**
+ * Get requirements that by some way have been unassigned from their achievement (normally it happens if achievement has been removed but not the requirements)
+ *
+ * @since  1.0.6
+ *
+ * @return array|bool                  Array of the requirements, or false if none
+ */
+function gamipress_get_unassigned_requirements() {
+
+    global $wpdb;
+
+    $points_awards = $wpdb->get_results( "
+        SELECT p.ID
+        FROM {$wpdb->posts} AS p
+        LEFT JOIN {$wpdb->p2p} AS p2p
+        ON p2p.p2p_from = p.ID
+        WHERE p.post_type IN( 'points-award', 'step' )
+        AND p2p.p2p_from IS NULL
+    ", ARRAY_A );
+
+    // If it has a points type, return it, otherwise return false
+    if ( ! empty( $points_awards ) )
+        return $points_awards;
+    else
+        return false;
+
+}

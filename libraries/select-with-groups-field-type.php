@@ -14,7 +14,7 @@
  * @return void
  */
 function cmb2_render_select_with_groups_field_type( $field, $escaped_value, $object_id, $object_type, $field_type_object ) {
-    $output = '<select class="widefat" name="' . $field->args['_name'] . '" id="' . $field->args['_id'] . '"';
+    $output = '<select class="cmb_select cmb2_select_with_groups" name="' . $field->args['_name'] . '" id="' . $field->args['_id'] . '"';
     foreach ( $field->args['attributes'] as $attribute => $value ) {
         $output .= " $attribute=\"$value\"";
     }

@@ -305,16 +305,16 @@ add_action( 'wp_ajax_gamipress_get_achievements_options', 'gamipress_ajax_get_ac
 function gamipress_achievement_post_ajax_handler() {
 
     // Grab our achievement type from the AJAX request
-    $type = $_REQUEST['type'];
+    $requirement_type = $_REQUEST['requirement_type'];
 
-    if( ! in_array( $type, array( 'step', 'points-award' ) ) ) {
+    if( ! in_array( $requirement_type, gamipress_get_requirement_types_slugs() ) ) {
         die();
     }
 
     $achievement_type = $_REQUEST['achievement_type'];
     $exclude_posts = (array) $_REQUEST['excluded_posts'];
 
-    if( $type === 'step' ) {
+    if( $requirement_type === 'step' ) {
         $requirements = gamipress_get_step_requirements( $_REQUEST['step_id'] );
     } else {
         $requirements = gamipress_get_points_award_requirements( $_REQUEST['points_award_id'] );

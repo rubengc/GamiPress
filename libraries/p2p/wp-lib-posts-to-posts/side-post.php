@@ -22,7 +22,7 @@ class P2P_Side_Post extends P2P_Side {
 		$ptype_object = get_post_type_object( $ptype );
 
 		if ( !$ptype_object ) {
-			throw new P2P_Exception( "Can't find $ptype." );
+			throw new P2P_Exception( "Can't find post type $ptype." );
 		}
 
 		return $ptype_object;

@@ -33,3 +33,9 @@ class P2P_Autoload {
 	}
 }
 
+
+P2P_Autoload::register( 'P2P_', dirname( __FILE__ ) );
+
+require_once dirname( __FILE__ ) . '/util.php';
+require_once dirname( __FILE__ ) . '/api.php';
+

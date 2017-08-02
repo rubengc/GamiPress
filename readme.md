@@ -145,6 +145,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.6 ###
+
+* Added a switchable debug mode.
+* Debug functions to discover all registered points awards and steps.
+* Debug functions to check points awards and steps connections with their respectives points type/achievement.
+
 ### 1.0.5 ###
 
 * Dashboard widget with GamiPress related information.

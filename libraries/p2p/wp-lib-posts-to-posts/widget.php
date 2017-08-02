@@ -75,16 +75,14 @@ class P2P_Widget extends scbWidget {
 
 		$title = apply_filters( 'widget_title', $instance['title'], $instance, $this->id_base );
 
-		extract( $args );
-
-		echo $before_widget;
+		echo $args['before_widget'];
 
 		if ( ! empty( $title ) )
-			echo $before_title . $title . $after_title;
+			echo $args['before_title'] . $title . $args['after_title'];
 
 		echo $output;
 
-		echo $after_widget;
+		echo $args['after_widget'];
 	}
 }
 

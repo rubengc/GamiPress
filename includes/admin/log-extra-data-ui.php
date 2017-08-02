@@ -5,6 +5,8 @@
  * @package     GamiPress\Admin\Log_Extra_Data_UI
  * @since       1.0.0
  */
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Add Points Awards metabox to the Badge post editor

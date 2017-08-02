@@ -51,7 +51,8 @@
         // Setup our necessary variables
         var achievement_selector = $(this);
         var achievement_type     = achievement_selector.val();
-        var requirement_id      = achievement_selector.parent('li').attr('data-requirement-id');
+        var requirement_id       = achievement_selector.parent('li').attr('data-requirement-id');
+        var requirement_type     = achievement_selector.siblings('input[name="requirement_type"]').val();
         var excluded_posts       = [achievement_selector.siblings('input[name="post_id"]').val()];
         var trigger_type         = achievement_selector.siblings('.select-trigger-type').val();
 
@@ -65,9 +66,9 @@
                 ajaxurl,
                 {
                     action: 'gamipress_requirement_achievement_post',
-                    type: 'requirement',
-                    achievement_type: achievement_type,
                     requirement_id: requirement_id,
+                    requirement_type: requirement_type,
+                    achievement_type: achievement_type,
                     excluded_posts: excluded_posts
                 },
                 function( response ) {

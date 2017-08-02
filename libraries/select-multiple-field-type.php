@@ -19,7 +19,7 @@ function cmb2_render_select_multiple_field_type( $field, $escaped_value, $object
         $escaped_value = array( $escaped_value );
     }
 
-    $select_multiple = '<select class="cmb2_select_multiple" multiple name="' . $field->args['_name'] . '[]" id="' . $field->args['_id'] . '"';
+    $select_multiple = '<select class="cmb_select cmb2_select_multiple" multiple name="' . $field->args['_name'] . '[]" id="' . $field->args['_id'] . '"';
     foreach ( $field->args['attributes'] as $attribute => $value ) {
         $select_multiple .= " $attribute=\"$value\"";
     }

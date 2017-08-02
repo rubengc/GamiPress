@@ -5,6 +5,8 @@
  * @package     GamiPress\Admin\Requirements_UI
  * @since       1.0.0
  */
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Add Points Awards and Steps meta boxes
@@ -41,6 +43,7 @@ add_action( 'add_meta_boxes', 'gamipress_add_requirements_ui_meta_box' );
  */
 function gamipress_requirements_ui_meta_box( $post = null ) {
 
+    // Define the requirement type to use
     $requirement_type = '';
 
     if( $post->post_type === 'points-type' ) {
@@ -49,6 +52,7 @@ function gamipress_requirements_ui_meta_box( $post = null ) {
         $requirement_type = 'step';
     }
 
+    // Get assigned requirements
     $assigned_requirements = gamipress_get_assigned_requirements( $post->ID, $requirement_type );
 
     if( ! $assigned_requirements ) {
@@ -373,7 +377,7 @@ function gamipress_update_requirements_ajax_handler() {
             }
 
             // Update the requirement order
-            p2p_update_meta( gamipress_get_p2p_id_from_child_id( $requirement_id ), 'order', $key );
+            p2p_update_meta( gamipress_get_requirement_connection_id( $requirement_id ), 'order', $key );
 
             // Update our relevant meta
             update_post_meta( $requirement_id, '_gamipress_count', $required_count );
@@ -533,19 +537,4 @@ function gamipress_get_requirement_menu_order( $requirement_id = 0 ) {
 function gamipress_compare_requirements_order( $requirement_x = 0, $requirement_y = 0 ) {
     if ( $requirement_x->order == $requirement_y->order ) return 0;
     return ( $requirement_x->order < $requirement_y->order ) ? -1 : 1;
-}
-
-/**
- * Get the the ID of a post connected to a given child post ID
- *
- * @since  1.0.0
- *
- * @param  integer $child_id The given child's post ID
- *
- * @return integer           The resulting connected post ID
- */
-function gamipress_get_p2p_id_from_child_id( $child_id = 0 ) {
-    global $wpdb;
-    $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_from = %d ", $child_id ) );
-    return $p2p_id;
 }

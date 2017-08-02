@@ -8,11 +8,13 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
-require_once GAMIPRESS_DIR . 'includes/admin/settings.php';
-require_once GAMIPRESS_DIR . 'includes/admin/support.php';
+require_once GAMIPRESS_DIR . 'includes/admin/debug.php';
 require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes.php';
+require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
+require_once GAMIPRESS_DIR . 'includes/admin/settings.php';
+require_once GAMIPRESS_DIR . 'includes/admin/support.php';
 
 /**
  * Create GamiPress Settings menus
@@ -146,6 +148,4 @@ function gamipress_dashboard_widget() {
     }
 
     wp_reset_postdata();
-    ?>
-    <?php
 }
