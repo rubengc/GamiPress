@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-08-02 16:04+0200\n"
+"POT-Creation-Date: 2017-08-03 13:33+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -67,15 +67,15 @@ msgstr ""
 msgid "widgets"
 msgstr ""
 
-#: includes/achievement-functions.php:982 includes/admin/settings.php:192
+#: includes/achievement-functions.php:982 includes/admin/settings.php:196
 msgid "{admin} awarded {user} with the the {achievement} {achievement_type}"
 msgstr ""
 
-#: includes/achievement-functions.php:987 includes/admin/settings.php:174
+#: includes/achievement-functions.php:987 includes/admin/settings.php:178
 msgid "{user} completed the {achievement_type} {achievement}"
 msgstr ""
 
-#: includes/achievement-functions.php:989 includes/admin/settings.php:180
+#: includes/achievement-functions.php:989 includes/admin/settings.php:184
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
@@ -198,7 +198,7 @@ msgstr ""
 msgid "Total points user has earned until this log."
 msgstr ""
 
-#: includes/admin/log-extra-data-ui.php:120 includes/admin/settings.php:89
+#: includes/admin/log-extra-data-ui.php:120 includes/admin/settings.php:93
 msgid "Administrator"
 msgstr ""
 
@@ -569,131 +569,135 @@ msgstr ""
 msgid "Logs"
 msgstr ""
 
-#: includes/admin/settings.php:64
+#: includes/admin/settings.php:61
+msgid "Add-ons"
+msgstr ""
+
+#: includes/admin/settings.php:68
 msgid "Network"
 msgstr ""
 
-#: includes/admin/settings.php:83
+#: includes/admin/settings.php:87
 msgid "General Settings"
 msgstr ""
 
-#: includes/admin/settings.php:86
+#: includes/admin/settings.php:90
 msgid "Minimum role to administer GamiPress"
 msgstr ""
 
-#: includes/admin/settings.php:90
+#: includes/admin/settings.php:94
 msgid "Editor"
 msgstr ""
 
-#: includes/admin/settings.php:91
+#: includes/admin/settings.php:95
 msgid "Author"
 msgstr ""
 
-#: includes/admin/settings.php:95
+#: includes/admin/settings.php:99
 msgid "Achievement Image Size"
 msgstr ""
 
-#: includes/admin/settings.php:99
+#: includes/admin/settings.php:103
 msgid "Enable Debug Mode"
 msgstr ""
 
-#: includes/admin/settings.php:121
+#: includes/admin/settings.php:125
 msgid "Style Settings"
 msgstr ""
 
-#: includes/admin/settings.php:124
+#: includes/admin/settings.php:128
 msgid "Disable frontend CSS"
 msgstr ""
 
-#: includes/admin/settings.php:129
+#: includes/admin/settings.php:133
 msgid "Disable frontend Javascript"
 msgstr ""
 
-#: includes/admin/settings.php:151
+#: includes/admin/settings.php:155
 msgid "Logs Patterns"
 msgstr ""
 
-#: includes/admin/settings.php:155
+#: includes/admin/settings.php:159
 msgid "From this settings you can modify the default pattern for upcoming log entries of each category."
 msgstr ""
 
-#: includes/admin/settings.php:159
+#: includes/admin/settings.php:163
 msgid "Activity trigger"
 msgstr ""
 
-#: includes/admin/settings.php:160
+#: includes/admin/settings.php:164
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings.php:162 includes/triggers.php:168
+#: includes/admin/settings.php:166 includes/triggers.php:168
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
-#: includes/admin/settings.php:165
+#: includes/admin/settings.php:169
 msgid "Points earned"
 msgstr ""
 
-#: includes/admin/settings.php:166
+#: includes/admin/settings.php:170
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings.php:168 includes/points-functions.php:113
+#: includes/admin/settings.php:172 includes/points-functions.php:113
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
-#: includes/admin/settings.php:171
+#: includes/admin/settings.php:175
 msgid "Points award/step complete"
 msgstr ""
 
-#: includes/admin/settings.php:172
+#: includes/admin/settings.php:176
 msgid "Used when user completes a points award or step. Available tags:"
 msgstr ""
 
-#: includes/admin/settings.php:177
+#: includes/admin/settings.php:181
 msgid "Achievement earned"
 msgstr ""
 
-#: includes/admin/settings.php:178
+#: includes/admin/settings.php:182
 msgid "Used when user earns an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings.php:183
+#: includes/admin/settings.php:187
 msgid "Points awarded"
 msgstr ""
 
-#: includes/admin/settings.php:184
+#: includes/admin/settings.php:188
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings.php:186 includes/points-functions.php:109
+#: includes/admin/settings.php:190 includes/points-functions.php:109
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
-#: includes/admin/settings.php:189
+#: includes/admin/settings.php:193
 msgid "Achievement awarded"
 msgstr ""
 
-#: includes/admin/settings.php:190
+#: includes/admin/settings.php:194
 msgid "Used when an admin awards an user with an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings.php:212
+#: includes/admin/settings.php:216
 msgid "Network Settings"
 msgstr ""
 
-#: includes/admin/settings.php:215
+#: includes/admin/settings.php:219
 msgid "Show achievements earned across all sites on the network"
 msgstr ""
 
-#: includes/admin/settings.php:298 includes/admin/settings.php:305
+#: includes/admin/settings.php:302 includes/admin/settings.php:309
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/settings.php:307
+#: includes/admin/settings.php:311
 msgid "Save Settings"
 msgstr ""
 
-#: includes/admin/settings.php:308
+#: includes/admin/settings.php:312
 msgid "Reset Settings"
 msgstr ""
 

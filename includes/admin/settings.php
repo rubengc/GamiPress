@@ -57,6 +57,10 @@ function gamipress_get_settings_sections() {
             'title' => __( 'Logs', 'gamipress' ),
             'icon' => 'dashicons-editor-alignleft',
         ),
+        'addons' => array(
+            'title' => __( 'Add-ons', 'gamipress' ),
+            'icon' => 'dashicons-admin-plugins',
+        ),
     );
 
     if( is_multisite() ) {
