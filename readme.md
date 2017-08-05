@@ -145,6 +145,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.7 ###
+
+* Compatibility with older PHP versions.
+* Add-ons tab in settings (just visible when an add-on add some settings).
+
 ### 1.0.6 ###
 
 * Added a switchable debug mode.

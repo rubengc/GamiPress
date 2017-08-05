@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.0.6
+ * Version:         1.0.7
  * Author:          Tsunoa
  * Author URI:      https://tsunoa.com/
  * Text Domain:     gamipress

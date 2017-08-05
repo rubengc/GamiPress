@@ -99,5 +99,7 @@ add_action( 'admin_notices', '_gamipress_p2p_maybe_install' );
 function _gamipress_p2p_db_exists() {
 	global $wpdb;
 
-	return ! empty( $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( "{$wpdb->prefix}p2p" ) ) ) );
+	$exists = $wpdb->get_var( $wpdb->prepare( "SHOW TABLES LIKE %s", $wpdb->esc_like( "{$wpdb->prefix}p2p" ) ) );
+
+	return ! empty( $exists );
 }

@@ -16,11 +16,11 @@ class GamiPress_Shortcode {
 	public $output_callback = '';
 	public $fields      = array();
 
-	public function __construct( $slug, $_args = array() ) {
+	public function __construct( $slug, $args = array() ) {
 		$this->slug = $slug;
 
 		// Setup this shortcode's properties
-		$this->_set_properties( $_args );
+		$this->_set_properties( $args );
 
 		// Register this shortcode with WP and GamiPress
 		add_shortcode( $this->slug, $this->output_callback );
@@ -69,7 +69,7 @@ class GamiPress_Shortcode {
 		return $cmb2;
 	}
 
-	private function _set_properties( $_args = array() ) {
+	private function _set_properties( $args = array() ) {
 
 		$defaults = array(
 			'name'            => '',
@@ -78,12 +78,14 @@ class GamiPress_Shortcode {
 			'fields'      	  => array(),
 		);
 
-		$args = wp_parse_args( $_args, $defaults );
+		$args = wp_parse_args( $args, $defaults );
 
 		$this->name            = $args['name'];
 		$this->description     = $args['description'];
 		$this->output_callback = $args['output_callback'];
-		$this->fields      	   = $args['fields'];
+
+		// Filter to register custom shortcode fields
+		$this->fields      	   = apply_filters( "gamipress_{$this->slug}_shortcode_fields", $args['fields'] );
 	}
 
 	public function register_shortcode( $shortcodes = array() ) {
