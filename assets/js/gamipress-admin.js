@@ -1,4 +1,4 @@
-(function ($) {
+(function ( $ ) {
 
 	// Dynamically show/hide achievement meta inputs based on "Award By" selection
 	$("#_gamipress_earned_by").change( function() {
@@ -23,10 +23,10 @@
 	}).change();
 
 	// Throw a warning on Achievement Type editor if title is > 20 characters
-	$('#titlewrap').on( 'keyup', 'input[name=post_title]', function() {
+	$('#titlewrap').on( 'keyup', 'input[name="post_title"]', function() {
 
 		// Make sure we're editing an achievement type
-		if ( 'achievement-type' == $('#post_type').val() ) {
+		if ( 'achievement-type' === $('#post_type').val() || 'points-type' === $('#post_type').val() ) {
 			// Cache the title input selector
 			var $title = $(this);
 			if ( $title.val().length > 20 ) {
@@ -44,4 +44,14 @@
 		}
 	} );
 
-})(jQuery);
+	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {
+		var preview = $(this).next('.cmb2-metabox-description').find('.gamipress-post-name');
+
+		if( preview.length ) {
+			preview.text($(this).val());
+		}
+	});
+
+	$('.gamipress-form input#post_name').trigger( 'keyup' );
+
+})( jQuery );

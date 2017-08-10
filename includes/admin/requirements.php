@@ -65,4 +65,4 @@ function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
         <span style="color: #a00;"><?php printf( __( 'Missed %s', 'gamipress' ), $connected_label ); ?></span>
     <?php endif;
 }
-add_action('manage_posts_custom_column', 'gamipress_requirements_posts_custom_columns', 10, 2);
+add_action( 'manage_posts_custom_column', 'gamipress_requirements_posts_custom_columns', 10, 2 );

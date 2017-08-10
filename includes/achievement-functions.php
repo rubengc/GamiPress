@@ -475,7 +475,7 @@ function gamipress_get_required_achievements_for_achievement( $achievement_id = 
 	}
 
 	// Don't retrieve requirements if achievement is not earned by steps
-	if ( get_post_meta( $achievement_id, '_gamipress_earned_by', true ) != 'triggers' )
+	if ( get_post_meta( $achievement_id, '_gamipress_earned_by', true ) !== 'triggers' )
 		return false;
 
 	// Grab our requirements for this achievement
@@ -723,7 +723,7 @@ add_action( 'transition_post_status', 'gamipress_flush_rewrite_on_published_achi
 function gamipress_maybe_update_achievement_type( $data = array(), $post_args = array() ) {
     if ( gamipress_achievement_type_changed( $post_args ) ) {
         $original_type = get_post( $post_args['ID'] )->post_name;
-        $new_type = wp_unique_post_slug( sanitize_title( $post_args['post_title'] ), $post_args['ID'], $post_args['post_status'], $post_args['post_type'], $post_args['post_parent'] );
+        $new_type = $post_args['post_name'];
         $data['post_name'] = gamipress_update_achievement_types( $original_type, $new_type );
         add_filter( 'redirect_post_location', 'gamipress_achievement_type_rename_redirect', 99 );
     }
@@ -752,7 +752,7 @@ function gamipress_achievement_type_changed( $post_args = array() ) {
 			'achievement-type' === $post_args['post_type']
 			&& $original_post->post_status !== 'auto-draft'
 			&& ! empty( $original_post->post_name )
-			&& $original_post->post_title !== $post_args['post_title']
+			&& $original_post->post_name !== $post_args['post_name']
 		) {
 			$status = true;
 		}

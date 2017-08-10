@@ -11,6 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Register GamiPress Settings with Settings API.
  *
+ * @since  1.0.0
+ *
  * @return void
  */
 function gamipress_register_settings() {
@@ -22,6 +24,9 @@ add_action( 'admin_init', 'gamipress_register_settings' );
  * Helper function to get an option value.
  *
  * @since  1.0.1
+ *
+ * @param string    $option_name
+ * @param bool      $default
  *
  * @return mixed Option value or default parameter value if not exists.
  */
@@ -77,9 +82,11 @@ function gamipress_get_settings_sections() {
 /**
  * General Settings meta boxes
  *
- * @param $meta_boxes
+ * @since  1.0.0
  *
- * @return mixed
+ * @param array $meta_boxes
+ *
+ * @return array
  */
 function gamipress_settings_general_meta_boxes( $meta_boxes ) {
 
@@ -115,9 +122,11 @@ add_filter( 'gamipress_settings_general_meta_boxes', 'gamipress_settings_general
 /**
  * Style Settings meta boxes
  *
- * @param $meta_boxes
+ * @since  1.0.0
  *
- * @return mixed
+ * @param array $meta_boxes
+ *
+ * @return array
  */
 function gamipress_settings_style_meta_boxes( $meta_boxes ) {
 
@@ -145,17 +154,19 @@ add_filter( 'gamipress_settings_style_meta_boxes', 'gamipress_settings_style_met
 /**
  * Logs Settings meta boxes
  *
- * @param $meta_boxes
+ * @since  1.0.0
  *
- * @return mixed
+ * @param array $meta_boxes
+ *
+ * @return array
  */
 function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['logs-patterns-settings'] = array(
-        'title' => __( 'Logs Patterns', 'gamipress' ),
+        'title' => __( 'Logs', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_logs_patterns_settings_fields', array(
-            'log_pattern_title' => array(
-                'name' => '',
+            'log_patterns_title' => array(
+                'name' => __( 'Logs Patterns', 'gamipress' ),
                 'description' => __( 'From this settings you can modify the default pattern for upcoming log entries of each category.', 'gamipress' ),
                 'type' => 'title',
             ),
@@ -206,9 +217,11 @@ add_filter( 'gamipress_settings_logs_meta_boxes', 'gamipress_settings_logs_meta_
 /**
  * Network Settings meta boxes
  *
- * @param $meta_boxes
+ * @since  1.0.0
  *
- * @return mixed
+ * @param array $meta_boxes
+ *
+ * @return array
  */
 function gamipress_settings_network_meta_boxes( $meta_boxes ) {
 
@@ -230,6 +243,8 @@ add_filter( 'gamipress_settings_network_meta_boxes', 'gamipress_settings_network
 
 /**
  * Register settings page.
+ *
+ * @since  1.0.0
  *
  * @since  1.0.2
  *

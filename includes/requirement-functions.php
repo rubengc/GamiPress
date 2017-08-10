@@ -83,11 +83,11 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         if ( ! empty( $connected_activities ) ) {
             $requirements['achievement_post'] = $connected_activities[0]->ID;
         }
-    } elseif ( in_array( $requirement['trigger_type'], array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+    } else if ( in_array( $requirement['trigger_type'], array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
         $achievement_post = absint( get_post_meta( $requirement_id, '_gamipress_achievement_post', true ) );
 
-        if ( 0 < $achievement_post ) {
-            $requirements[ 'achievement_post' ] = $achievement_post;
+        if ( $achievement_post > 0  ) {
+            $requirement['achievement_post'] = $achievement_post;
         }
     }
 

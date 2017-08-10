@@ -149,3 +149,60 @@ function gamipress_dashboard_widget() {
 
     wp_reset_postdata();
 }
+
+/**
+ * Register our custom columns
+ *
+ * @since 1.0.6
+ *
+ * @param $posts_columns
+ * @param $post_type
+ *
+ * @return mixed
+ */
+function gamipress_posts_columns( $posts_columns, $post_type ) {
+    if( ! in_array( $post_type, array( 'points-type', 'achievement-type' ) ) ) {
+        return $posts_columns;
+    }
+
+    $posts_columns['title'] = __( 'Singular Name', 'gamipress' );
+
+    // Try to place our column before date column
+    $pos = array_search( 'date', array_keys( $posts_columns ) );
+
+    if ( ! is_int( $pos ) ) {
+        $pos = 1;
+    }
+
+    // Place our column in our desired position
+    $chunks                     = array_chunk( $posts_columns, $pos, true );
+    $chunks[0]['plural_name']   = __( 'Plural Name', 'gamipress' );
+    $chunks[0]['post_name']     = __( 'Slug', 'gamipress' );
+
+    return call_user_func_array( 'array_merge', $chunks );
+}
+add_filter( 'manage_posts_columns', 'gamipress_posts_columns', 10, 2 );
+
+/**
+ * Output for our custom columns
+ *
+ * @since 1.0.6
+ *
+ * @param $column_name
+ * @param $post_id
+ */
+function gamipress_posts_custom_columns( $column_name, $post_id ) {
+    if( ! in_array( get_post_type( $post_id ), array( 'points-type', 'achievement-type' ) ) ) {
+        return;
+    }
+
+    switch( $column_name ) {
+        case 'plural_name':
+            echo get_post_meta( $post_id, '_gamipress_plural_name', true );
+            break;
+        case 'post_name':
+            echo get_post_field( 'post_name', $post_id );
+            break;
+    }
+}
+add_action( 'manage_posts_custom_column', 'gamipress_posts_custom_columns', 10, 2 );

@@ -45,6 +45,7 @@ function gamipress_log_extra_data_ui_meta_box( $post  = null ) {
 function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
     // Start with an underscore to hide fields from custom fields list
     $prefix = '_gamipress_';
+    $fields = array();
 
     if( $type === null ) {
         $type = get_post_meta( $post_id, $prefix .'type', true );
@@ -56,7 +57,7 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
                 'name' 	=> __( 'Trigger', 'gamipress' ),
                 'desc' 	=> __( 'The event user has triggered.', 'gamipress' ),
                 'id'   	=> $prefix . 'trigger_type',
-                'type' 	=> 'select_with_groups',
+                'type' 	=> 'advanced_select',
                 'options' 	=> gamipress_get_activity_triggers(),
             ),
             array(
@@ -128,13 +129,15 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
         }
     }
 
-    if( isset( $fields ) ) {
+    $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $post_id, $type );
+
+    if( ! empty( $fields ) ) {
         // Create a new box to render the form
         $cmb2 = new CMB2( array(
-            'id'      => 'log_extra_data_ui_box', // Option name is taken from the WP_Widget class.
+            'id'      => 'log_extra_data_ui_box',
             'hookup'  => false,
             'show_on' => array(
-                'key'   => 'gamipress-log', // Post type
+                'key'   => 'gamipress-log',
                 'value' => $post_id
             ),
             'fields' => $fields

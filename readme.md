@@ -145,6 +145,16 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.8 ###
+
+* Completely rework on points/achievement types admin views.
+* Improvements on points/achievement types registration.
+* Improvements on requirements UI.
+* Improvements on content filters (more accurated).
+* Improvements on rules engine (more restrictive).
+* Improvements on admin styles.
+* Added more hooks to improve extensibility.
+
 ### 1.0.7 ###
 
 * Compatibility with older PHP versions.

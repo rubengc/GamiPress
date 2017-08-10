@@ -15,7 +15,8 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function gamipress_register_post_types() {
-	// Register Points Types
+
+	// Register Points Type
 	register_post_type( 'points-type', array(
 		'labels' => array(
 			'name'               	=> __( 'Points Types', 'gamipress' ),
@@ -81,7 +82,7 @@ function gamipress_register_post_types() {
 	gamipress_register_achievement_type( 0, 'Points Award', 'Points Awards' );
 	gamipress_register_requirement_type( 'Points Award', 'Points Awards' );
 
-	// Register Achivement Types
+	// Register Achievement Type
 	register_post_type( 'achievement-type', array(
 		'labels' => array(
 			'name'               	=> __( 'Achievement Types', 'gamipress' ),
@@ -112,7 +113,7 @@ function gamipress_register_post_types() {
 		'has_archive'        => false,
 		'hierarchical'       => false,
 		'menu_position'      => null,
-		'supports'           => array( 'title', 'thumbnail', 'page-attributes' ),
+		'supports'           => array( 'thumbnail' ),
 	) );
 
 	// Register Step
@@ -189,18 +190,25 @@ add_action( 'init', 'gamipress_register_post_types' );
  *
  * @since  1.0.0
  *
- * @param  integer $points_type_id Post id of the points type
- * @param  string  $points_name_singular The singular name
- * @param  string  $points_name_plural  The plural name
+ * @param  integer  $points_type_id 		Post id of the points type
+ * @param  string   $points_name_singular 	The singular name
+ * @param  string   $points_name_plural  	The plural name
+ * @param  string 	$slug  						If null or empty, slug will be auto-generated from singular name
  *
  * @return void
  */
-function gamipress_register_points_type( $points_type_id = 0, $points_name_singular = '', $points_name_plural = '' ) {
-	GamiPress()->points_types[sanitize_title( strtolower( $points_name_singular ) )] = array(
+function gamipress_register_points_type( $points_type_id = 0, $points_name_singular = '', $points_name_plural = '', $slug = null ) {
+
+    if( $slug === null || empty( $slug ) ) {
+        $slug = sanitize_title( strtolower( $points_name_singular ) );
+    }
+
+	GamiPress()->points_types[sanitize_key( $slug )] = array(
         'ID' => $points_type_id,
         'singular_name' => $points_name_singular,
         'plural_name' => $points_name_plural,
     );
+
 }
 
 /**
@@ -221,24 +229,23 @@ function gamipress_register_points_types() {
     foreach ( $points_types as $points_type ) {
 
         // Grab our points name
-        $points_name = $points_type->post_title;
+        $points_slug = $points_type->post_name;
 
-        if( empty( $points_name ) ) {
+        if( empty( $points_slug ) ) {
             continue;
         }
 
         // Update our post meta to use the points name, if it's empty
-        if ( ! get_post_meta( $points_type->ID, '_gamipress_singular_name', true ) ) update_post_meta( $points_type->ID, '_gamipress_singular_name', $points_name );
-        if ( ! get_post_meta( $points_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $points_type->ID, '_gamipress_plural_name', $points_name );
+        if ( ! get_post_meta( $points_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $points_type->ID, '_gamipress_plural_name', $points_slug );
 
         // Setup our singular and plural versions to use the corresponding meta
-        $points_name_singular = get_post_meta( $points_type->ID, '_gamipress_singular_name', true );
+        $points_name_singular = $points_type->post_title;
         $points_name_plural   = get_post_meta( $points_type->ID, '_gamipress_plural_name', true );
 
         // Register the Achievement type
-        gamipress_register_points_type( $points_type->ID, $points_name_singular, $points_name_plural );
-
+        gamipress_register_points_type( $points_type->ID, $points_name_singular, $points_name_plural, $points_slug );
     }
+
 }
 add_action( 'init', 'gamipress_register_points_types', 6 );
 
@@ -250,15 +257,20 @@ add_action( 'init', 'gamipress_register_points_types', 6 );
  * @param  integer 	$achievement_type_id 		Post id of the achievement type
  * @param  string 	$achievement_name_singular 	The singular name
  * @param  string 	$achievement_name_plural  	The plural name
- *
- * @return void
+ * @param  string 	$slug  						If null or empty, slug will be auto-generated from singular name
  */
-function gamipress_register_achievement_type( $achievement_type_id = 0, $achievement_name_singular = '', $achievement_name_plural = '' ) {
-	GamiPress()->achievement_types[sanitize_title( strtolower( $achievement_name_singular ) )] = array(
+function gamipress_register_achievement_type( $achievement_type_id = 0, $achievement_name_singular = '', $achievement_name_plural = '', $slug = null ) {
+
+	if( $slug === null || empty( $slug ) ) {
+		$slug = sanitize_title( strtolower( $achievement_name_singular ) );
+	}
+
+	GamiPress()->achievement_types[sanitize_key( $slug )] = array(
 		'ID' => $achievement_type_id,
 		'singular_name' => $achievement_name_singular,
 		'plural_name' => $achievement_name_plural,
 	);
+
 }
 
 /**
@@ -280,22 +292,21 @@ function gamipress_register_achievement_types() {
 	foreach ( $achievement_types as $achievement_type ) {
 
 		// Grab our achievement name
-		$achievement_name = $achievement_type->post_title;
+		$achievement_slug = $achievement_type->post_name;
 
-        if( empty( $achievement_name ) ) {
+        if( empty( $achievement_slug ) ) {
             continue;
         }
 
 		// Update our post meta to use the achievement name, if it's empty
-		if ( ! get_post_meta( $achievement_type->ID, '_gamipress_singular_name', true ) ) update_post_meta( $achievement_type->ID, '_gamipress_singular_name', $achievement_name );
-		if ( ! get_post_meta( $achievement_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $achievement_type->ID, '_gamipress_plural_name', $achievement_name );
+		if ( ! get_post_meta( $achievement_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $achievement_type->ID, '_gamipress_plural_name', $achievement_slug );
 
 		// Setup our singular and plural versions to use the corresponding meta
-		$achievement_name_singular = get_post_meta( $achievement_type->ID, '_gamipress_singular_name', true );
-		$achievement_name_plural   = get_post_meta( $achievement_type->ID, '_gamipress_plural_name', true );
+		$achievement_name_singular 	= $achievement_type->post_title;
+		$achievement_name_plural   	= get_post_meta( $achievement_type->ID, '_gamipress_plural_name', true );
 
 		// Register the post type
-		register_post_type( sanitize_title( substr( strtolower( $achievement_name_singular ), 0, 20 ) ), array(
+		register_post_type( $achievement_slug, array(
 			'labels'             => array(
 				'name'               => $achievement_name_plural,
 				'singular_name'      => $achievement_name_singular,
@@ -320,7 +331,7 @@ function gamipress_register_achievement_types() {
 			'show_ui'            => current_user_can( gamipress_get_manager_capability() ),
 			'show_in_menu'       => 'gamipress_achievements',
 			'query_var'          => true,
-			'rewrite'            => array( 'slug' => sanitize_title( strtolower( $achievement_name_singular ) ) ),
+			'rewrite'            => array( 'slug' => $achievement_slug ),
 			'capability_type'    => 'post',
 			'has_archive'        => true,
 			'hierarchical'       => true,
@@ -329,7 +340,7 @@ function gamipress_register_achievement_types() {
 		) );
 
 		// Register the Achievement type
-		gamipress_register_achievement_type( $achievement_type->ID, $achievement_name_singular, $achievement_name_plural );
+		gamipress_register_achievement_type( $achievement_type->ID, $achievement_name_singular, $achievement_name_plural, $achievement_slug );
 
 	}
 }
@@ -346,8 +357,10 @@ add_action( 'init', 'gamipress_register_achievement_types', 8 );
  * @return void
  */
 function gamipress_register_requirement_type( $requirement_name_singular = '', $requirement_name_plural = '' ) {
-	GamiPress()->requirement_types[sanitize_title( strtolower( $requirement_name_singular ) )] = array(
+
+	GamiPress()->requirement_types[sanitize_key( sanitize_title( strtolower( $requirement_name_singular ) ) )] = array(
 		'singular_name' => $requirement_name_singular,
 		'plural_name' => $requirement_name_plural,
 	);
+
 }

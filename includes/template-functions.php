@@ -71,6 +71,7 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
  * @param string $slug
  * @param string $name Optional. Default null
  * @param bool   $load
+ *
  * @return string
  */
 function gamipress_get_template_part( $slug, $name = null, $load = true ) {
@@ -106,10 +107,10 @@ function gamipress_get_template_part( $slug, $name = null, $load = true ) {
  *
  * @since 1.0.0
  *
- * @param string|array $template_names Template file(s) to search for, in order.
- * @param bool $load If true the template file will be loaded if it is found.
- * @param bool $require_once Whether to require_once or require. Default true.
- *   Has no effect if $load is false.
+ * @param string|array  $template_names Template file(s) to search for, in order.
+ * @param bool          $load           If true the template file will be loaded if it is found.
+ * @param bool          $require_once   Whether to require_once or require. Default true. Has no effect if $load is false.
+ *
  * @return string The template filename if one is located.
  */
 function gamipress_locate_template( $template_names, $load = false, $require_once = true ) {
@@ -150,6 +151,7 @@ function gamipress_locate_template( $template_names, $load = false, $require_onc
  * Returns a list of paths to check for template locations
  *
  * @since 1.0.0
+ *
  * @return array
  */
 function gamipress_get_theme_template_paths() {

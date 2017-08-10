@@ -57,14 +57,16 @@ function gamipress_register_logs_shortcode() {
             'include' => array(
                 'name'        => __( 'Include', 'gamipress' ),
                 'description' => __( 'Comma-separated list of specific log entries IDs to include.', 'gamipress' ),
-                'type'        => 'select_multiple',
+                'type'        => 'advanced_select',
+                'multiple'    => true,
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_posts'
             ),
             'exclude' => array(
                 'name'        => __( 'Exclude', 'gamipress' ),
                 'description' => __( 'Comma-separated list of specific log entries IDs to exclude.', 'gamipress' ),
-                'type'        => 'select_multiple',
+                'type'        => 'advanced_select',
+                'multiple'    => true,
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_posts'
             ),

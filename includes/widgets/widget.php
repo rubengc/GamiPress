@@ -252,6 +252,7 @@ class GamiPress_Widget extends WP_Widget {
         // Create a new box in the class
         $cmb2 = new CMB2( array(
             'id'      => $this->option_name .'_box', // Option name is taken from the WP_Widget class.
+            'classes' => 'gamipress-form gamipress-widget-form',
             'hookup'  => false,
             'show_on' => array(
                 'key'   => 'options-page',

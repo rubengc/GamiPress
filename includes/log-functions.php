@@ -88,7 +88,7 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
 function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = array() ) {
 
     // Post data
-    $args = array(
+    $log_data = array(
         'post_type' 	=> 'gamipress-log',
         'post_status'	=> ( ( $access === 'public' ) ? 'publish' : 'private' ),
         'post_author'	=> $user_id === 0 ? get_current_user_id() : $user_id,
@@ -98,10 +98,10 @@ function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = arr
     );
 
     // Auto-generated post title
-    $args['post_title'] = gamipress_parse_log_pattern( $log_meta['pattern'], $args, $log_meta );
+    $log_data['post_title'] = gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
 
     // Store log entry
-    $log_id = wp_insert_post( $args );
+    $log_id = wp_insert_post( $log_data );
 
     // Store log meta data
     if ( $log_id && ! empty( $log_meta ) ) {
@@ -109,6 +109,9 @@ function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = arr
             update_post_meta( $log_id, '_gamipress_' . sanitize_key( $key ), $meta );
         }
     }
+
+    // Hook to add custom data
+    do_action( 'gamipress_insert_log', $log_id, $log_data, $log_meta, $user_id );
 
     return $log_id;
 

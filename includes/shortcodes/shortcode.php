@@ -53,6 +53,7 @@ class GamiPress_Shortcode {
 		// Create a new box to render the form
 		$cmb2 = new CMB2( array(
 			'id'      => $this->slug .'_box', // Option name is taken from the WP_Widget class.
+			'classes' => 'gamipress-form gamipress-shortcode-form',
 			'hookup'  => false,
 			'show_on' => array(
 				'key'   => 'options-page', // Tells CMB2 to handle this as an option

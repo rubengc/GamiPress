@@ -27,6 +27,10 @@
     // Listen for our change to our trigger type selectors
     $('#requirements-list').on( 'change', '.select-trigger-type', function() {
 
+        if( ! $(this).hasClass('select2-hidden-accessible') ) {
+            $(this).select2({ theme: 'default gamipress-select2' });
+        }
+
         // Grab our selected trigger type and achievement selector
         var trigger_type = $(this).val();
         var achievement_selector = $(this).siblings('.select-achievement-type');
@@ -42,10 +46,11 @@
         achievement_selector.change();
 
     });
+
     // Trigger a change for our trigger type post selector to determine if it should show
     $( '.select-trigger-type' ).change();
 
-    // Listen for a change to our achivement type selectors
+    // Listen for a change to our achievement type selectors
     $('#requirements-list').on( 'change', '.select-achievement-type', function() {
 
         // Setup our necessary variables
@@ -86,7 +91,9 @@
 
             if ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ) {
                 achievement_selector.siblings('.select-post').show().data( 'post-type', gamipress_requirements_ui.specific_activity_triggers[trigger_type].join(',') );
-                achievement_selector.siblings('.select-post.select2-hidden-accessible').next().show();
+                achievement_selector.siblings('.select-post.select2-hidden-accessible')
+                    .val('').change()   // Reset value
+                    .next().show();     // Show
 
                 achievement_selector.siblings( '.select-post:not(.select2-hidden-accessible)' ).select2({
                     ajax: {
@@ -138,8 +145,7 @@
         }
     });
 
-    // Trigger a change for our achievement type post selector to determine if it should show
-    $( '.select-achievement-type' ).change();
+    // Trigger a change for our limit type to determine if limit should show
     $( '.limit-type' ).change();
 })(jQuery);
 

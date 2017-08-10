@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.0.7
+ * Version:         1.0.8
  * Author:          Tsunoa
  * Author URI:      https://tsunoa.com/
  * Text Domain:     gamipress
@@ -103,7 +103,7 @@ final class GamiPress {
 	 */
 	private function constants() {
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.0.6' );
+		define( 'GAMIPRESS_VER', '1.0.8' );
 
 		// Plugin path
 		define( 'GAMIPRESS_DIR', plugin_dir_path( __FILE__ ) );
@@ -123,8 +123,7 @@ final class GamiPress {
         require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
 		require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
 		require_once GAMIPRESS_DIR . 'libraries/cmb2-metatabs-options/cmb2_metatabs_options.php';
-		require_once GAMIPRESS_DIR . 'libraries/select-multiple-field-type.php';
-		require_once GAMIPRESS_DIR . 'libraries/select-with-groups-field-type.php';
+		require_once GAMIPRESS_DIR . 'libraries/advanced-select-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
     }
 
@@ -278,36 +277,6 @@ final class GamiPress {
 
 		// Include our important bits
 		$this->includes();
-
-		// Create Credits point type
-		if ( ! get_page_by_title( 'Credits', 'OBJECT', 'points-type' ) ) {
-
-			$credits_post_id = wp_insert_post( array(
-				'post_title'   => __( 'Credits', 'gamipress'),
-				'post_content' => __( 'Credits points type', 'gamipress' ),
-				'post_status'  => 'publish',
-				'post_author'  => 1,
-				'post_type'    => 'points-type',
-			) );
-
-			update_post_meta( $credits_post_id, '_gamipress_singular_name', __( 'Credit', 'gamipress' ) );
-			update_post_meta( $credits_post_id, '_gamipress_plural_name', __( 'Credits', 'gamipress' ) );
-		}
-
-		// Create Badges achievement type
-		if ( ! get_page_by_title( 'Badges', 'OBJECT', 'achievement-type' ) ) {
-
-			$badges_post_id = wp_insert_post( array(
-				'post_title'   => __( 'Badges', 'gamipress'),
-				'post_content' => __( 'Badges achievement type', 'gamipress' ),
-				'post_status'  => 'publish',
-				'post_author'  => 1,
-				'post_type'    => 'achievement-type',
-			) );
-
-			update_post_meta( $badges_post_id, '_gamipress_singular_name', __( 'Badge', 'gamipress' ) );
-			update_post_meta( $badges_post_id, '_gamipress_plural_name', __( 'Badges', 'gamipress' ) );
-		}
 
 		// Setup default GamiPress options
 		$gamipress_settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();

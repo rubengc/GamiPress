@@ -39,7 +39,9 @@ function gamipress_register_shortcode( $shortcode, $args ) {
  * @return array Registered GamiPress shortcodes.
  */
 function gamipress_get_shortcodes() {
-	return apply_filters( 'gamipress_shortcodes', array() );
+
+	return apply_filters( 'gamipress_shortcodes', GamiPress()->shortcodes );
+
 }
 
 /**
@@ -48,9 +50,11 @@ function gamipress_get_shortcodes() {
  * @since 1.0.0
  */
 function gamipress_help_support_page_shortcodes() {
+
 	foreach ( gamipress_get_shortcodes() as $shortcode ) {
 		gamipress_shortcode_help_render_help( $shortcode );
 	}
+
 }
 add_action( 'gamipress_help_support_page_shortcodes', 'gamipress_help_support_page_shortcodes' );
 
@@ -59,9 +63,9 @@ add_action( 'gamipress_help_support_page_shortcodes', 'gamipress_help_support_pa
  *
  * @since 1.0.0
  *
- * @param object $shortcode Shortcode object.
+ * @param GamiPress_Shortcode $shortcode Shortcode object.
  */
-function gamipress_shortcode_help_render_help( $shortcode = array() ) {
+function gamipress_shortcode_help_render_help( $shortcode ) {
 	printf(
 		'
 		<hr/>
@@ -87,20 +91,24 @@ function gamipress_shortcode_help_render_help( $shortcode = array() ) {
  *
  * @since  1.0.0
  *
- * @param  array $attributes Shortcode attributes.
- * @return string            HTML Markup.
+ * @param  array 	$fields Shortcode fields.
+ * @return string           HTML Markup.
  */
 function gamipress_shortcode_help_render_fields( $fields ) {
+
 	$output = '';
+
 	if ( ! empty( $fields ) ) {
 		foreach ( $fields as $field_id => $field ) {
 
+			// Checkboxes without default means 'no' as default
 			if( $field['type'] === 'checkbox' && empty( $field['default'] ) ) {
 				$field['default'] = 'no';
 			}
 
 			$accepts = ! empty( $field['options'] ) ? sprintf( __( 'Accepts: %s', 'gamipress' ), '<code>' . implode( '</code>, <code>', array_keys( $field['options'] ) ) . '</code>' ) : '';
 			$default = ! empty( $field['default'] ) ? sprintf( __( 'Default: %s', 'gamipress' ), '<code>' . $field['default'] . '</code>' ) : '';
+
 			$output .= sprintf(
 				'<li><strong>%1$s</strong> – %2$s <em>%3$s %4$s</em></li>',
 				esc_attr( $field_id ),
@@ -111,7 +119,9 @@ function gamipress_shortcode_help_render_fields( $fields ) {
 
 		}
 	}
+
 	return $output;
+
 }
 
 /**
@@ -119,14 +129,17 @@ function gamipress_shortcode_help_render_fields( $fields ) {
  *
  * @since  1.0.0
  *
- * @param  array  $shortcode Shortcode object.
- * @return string            HTML Markup.
+ * @param  GamiPress_Shortcode $shortcode 	Shortcode object.
+ * @return string            				HTML Markup.
  */
-function gamipress_shortcode_help_render_example( $shortcode = array() ) {
+function gamipress_shortcode_help_render_example( $shortcode ) {
+
 	$fields = @wp_list_pluck( $shortcode->fields, 'default' );
 	$examples = array_map( 'gamipress_shortcode_help_attributes', array_keys( $fields ), array_values( $fields ) );
 	$flattened_examples = implode( ' ', $examples );
+
 	return sprintf( __( 'Example: %s', 'gamipress' ), "<code>[{$shortcode->slug} {$flattened_examples}]</code>" );
+
 }
 
 /**
@@ -150,10 +163,12 @@ function gamipress_shortcode_help_attributes( $key, $value ) {
 	}
 
 	return "{$key}=\"$value\"";
+
 }
 
 // Options callback for select2 fields assigned to posts
 function gamipress_options_cb_posts( $field ) {
+
 	$value = $field->escaped_value;
 	$options = array();
 
@@ -168,10 +183,12 @@ function gamipress_options_cb_posts( $field ) {
 	}
 
 	return $options;
+
 }
 
 // Options callback for select2 fields assigned to users
 function gamipress_options_cb_users( $field ) {
+
 	$value = $field->escaped_value;
 	$options = array();
 
@@ -188,4 +205,5 @@ function gamipress_options_cb_users( $field ) {
 	}
 
 	return $options;
+
 }

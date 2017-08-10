@@ -255,7 +255,7 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
 function gamipress_maybe_update_points_type( $data = array(), $post_args = array() ) {
 	if ( gamipress_points_type_changed( $post_args ) ) {
 		$original_type = get_post( $post_args['ID'] )->post_name;
-		$new_type = wp_unique_post_slug( sanitize_title( $post_args['post_title'] ), $post_args['ID'], $post_args['post_status'], $post_args['post_type'], $post_args['post_parent'] );
+		$new_type = $post_args['post_name'];
 		$data['post_name'] = gamipress_update_points_types( $original_type, $new_type );
 		add_filter( 'redirect_post_location', 'gamipress_points_type_rename_redirect', 99 );
 	}
@@ -284,7 +284,7 @@ function gamipress_points_type_changed( $post_args = array() ) {
 			'points-type' === $post_args['post_type']
 			&& $original_post->post_status !== 'auto-draft'
 			&& ! empty( $original_post->post_name )
-			&& $original_post->post_title !== $post_args['post_title']
+			&& $original_post->post_name !== $post_args['post_name']
 		) {
 			$status = true;
 		}

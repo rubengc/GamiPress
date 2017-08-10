@@ -82,6 +82,7 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
  * @return string
  */
 function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
+
 	$specific_activity_trigger_labels = apply_filters( 'gamipress_specific_activity_trigger_label', array(
 		'gamipress_specific_new_comment' 	=> __( 'Comment on %s', 'gamipress' ),
 		'gamipress_specific_post_visit'  	=> __( 'Visit %s', 'gamipress' ),
@@ -92,6 +93,7 @@ function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
 	}
 
 	return '';
+
 }
 
 /**
@@ -162,13 +164,19 @@ function gamipress_trigger_event() {
 	// Update hook count for this user
 	$new_count = gamipress_update_user_trigger_count( $user_id, $this_trigger, $site_id, $args );
 
-	// Mark the count in the log entry
-	gamipress_insert_log( $user_id, 'private', array(
+	// Log meta data
+	$log_meta = array(
 		'type' => 'event_trigger',
 		'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
 		'count' => $new_count,
 		'trigger_type' => $this_trigger,
-	) );
+	);
+
+	// Available filter to insert custom meta data
+	$log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $this_trigger, $site_id, $args );
+
+	// Mark the count in the log entry
+	gamipress_insert_log( $user_id, 'private', $log_meta );
 
 	// Now determine if any badges are earned based on this trigger event
 	$triggered_achievements = $wpdb->get_results( $wpdb->prepare(
@@ -194,6 +202,7 @@ function gamipress_trigger_event() {
  *
  * @param  string  $trigger Trigger name.
  * @param  array   $args    Passed trigger args.
+ *
  * @return integer          User ID.
  */
 function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
@@ -220,6 +229,64 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 	}
 
 	return apply_filters( 'gamipress_trigger_get_user_id', $user_id, $trigger, $args );
+}
+
+/**
+ * Get the id for a given specific trigger action.
+ *
+ * @since  1.0.8
+ *
+ * @param  string  $trigger Trigger name.
+ * @param  array   $args    Passed trigger args.
+ *
+ * @return integer          Specific ID.
+ */
+function gamipress_specific_trigger_get_id( $trigger = '', $args = array() ) {
+
+	switch ( $trigger ) {
+		case 'gamipress_specific_new_comment':
+			$specific_id = $args[2];
+			break;
+		case 'gamipress_specific_post_visit':
+		default :
+			$specific_id = $args[0];
+			break;
+	}
+
+	return absint( apply_filters( 'gamipress_specific_trigger_get_id', $specific_id, $trigger, $args ) );
+}
+
+/**
+ * Check if trigger has listeners
+ *
+ * @since 1.0.8
+ *
+ * @param string 	$trigger
+ * @param integer 	$site_id
+ * @param array 	$args
+ *
+ * @return bool
+ */
+function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
+
+	global $wpdb;
+
+	$listeners_count = $wpdb->get_var( $wpdb->prepare(
+		"
+		SELECT COUNT(*)
+		FROM   $wpdb->posts AS p
+		LEFT JOIN $wpdb->postmeta AS pm
+		ON ( p.ID = pm.post_id )
+		WHERE p.post_status = %s
+			AND ( pm.meta_key = %s AND pm.meta_value = %s )
+		",
+		'publish',
+		'_gamipress_trigger_type', $trigger
+	) );
+
+	$has_listeners = ( absint($listeners_count) > 0 );
+
+	return apply_filters( 'gamipress_trigger_has_listeners', $has_listeners, $trigger, $site_id, $args );
 }
 
 /**

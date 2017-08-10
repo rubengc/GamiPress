@@ -32,8 +32,9 @@ function gamipress_register_points_types_shortcode() {
             'type' => array(
                 'name'        => __( 'Points Type(s)', 'gamipress' ),
                 'description' => __( 'Single, or comma-separated list of, points type(s) to display.', 'gamipress' ),
-                'type'        => 'select_multiple',
-                'options'      => $points_types,
+                'type'        => 'advanced_select',
+                'multiple'    => true,
+                'options'     => $points_types,
                 'default'     => 'all',
             ),
             'wpms' => array(

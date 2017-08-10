@@ -17,7 +17,9 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_do_single_filters() {
 
 	// check we're in the right place
-	gamipress_is_main_loop();
+	if( ! gamipress_is_main_loop() ) {
+		return;
+	}
 
 	// enqueue our stylesheet if not disabled
 	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
@@ -55,7 +57,7 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
 }
 
 /**
- * Filter badge content to add our removed content back
+ * Filter achievement content to add our removed content back
  *
  * @since  1.0.0
  * @param  string $content The page content
@@ -63,13 +65,13 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  */
 function gamipress_reformat_entries( $content ) {
 
+	// filter, but only on the main loop!
+	if ( ! gamipress_is_main_loop( get_the_ID() ) )
+		return $content;
+
 	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
 		wp_enqueue_style( 'gamipress-css' );
 	}
-
-	// filter, but only on the main loop!
-	if ( ! gamipress_is_main_loop( get_the_ID() ) )
-		return wpautop( $content );
 
 	// now that we're where we want to be, tell the filters to stop removing
 	$GLOBALS['gamipress_reformat_content'] = true;

@@ -134,7 +134,9 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
     <li class="requirement-row requirement-<?php echo $requirement_id; ?>" data-requirement-id="<?php echo $requirement_id; ?>">
         <div class="requirement-handle"></div>
-        <a class="delete-requirement" href="javascript: gamipress_delete_requirement( <?php echo $requirement_id; ?> );"><?php _e( 'Delete', 'gamipress' ); ?></a>
+        <a class="delete-requirement" href="javascript: gamipress_delete_requirement( <?php echo $requirement_id; ?> );">
+            <span class="dashicons dashicons-no-alt"></span>
+        </a>
 
         <input type="hidden" name="requirement_id" value="<?php echo $requirement_id; ?>" />
         <input type="hidden" name="requirement_type" value="<?php echo $requirement_type; ?>" />
@@ -395,6 +397,9 @@ function gamipress_update_requirements_ajax_handler() {
                 update_post_meta( $requirement_id, '_gamipress_points_type', $points_type );
             }
 
+            // Action to store custom requirement data
+            do_action( 'gamipress_ajax_update_requirement', $requirement_id, $requirement );
+
             // Update our original post with the new title
             $post_title = ! empty( $requirement['title'] ) ? $requirement['title'] : gamipress_build_requirement_title( $requirement_id, $requirement );
             wp_update_post( array( 'ID' => $requirement_id, 'post_title' => $post_title ) );
@@ -459,6 +464,9 @@ function gamipress_build_requirement_title( $requirement_id, $requirement ) {
             $title = sprintf( gamipress_get_specific_activity_trigger_label( $trigger_type ),  get_the_title( $achievement_post_id ) );
         }
     }
+
+    // Filter to completely override activity trigger label
+    $title = apply_filters( 'gamipress_activity_trigger_label', $title, $requirement_id, $requirement );
 
     // Prepend "%d %s for" with the points to title
     if( $requirement_type === 'points-award' ) {

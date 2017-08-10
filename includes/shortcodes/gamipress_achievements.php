@@ -34,8 +34,9 @@ function gamipress_register_achievements_shortcode() {
 			'type' => array(
 				'name'        => __( 'Achievement Type(s)', 'gamipress' ),
 				'description' => __( 'Single, or comma-separated list of, achievement type(s) to display.', 'gamipress' ),
-				'type'        => 'select_multiple',
-				'options'      => $achievement_types,
+				'type'        => 'advanced_select',
+				'multiple'    => true,
+				'options'     => $achievement_types,
 				'default'     => 'all',
 			),
 			'thumbnail' => array(
@@ -117,14 +118,16 @@ function gamipress_register_achievements_shortcode() {
 			'include' => array(
 				'name'        => __( 'Include', 'gamipress' ),
 				'description' => __( 'Comma-separated list of specific achievement IDs to include.', 'gamipress' ),
-				'type'        => 'select_multiple',
+				'type'        => 'advanced_select',
+				'multiple'    => true,
 				'default'     => '',
 				'options_cb'  => 'gamipress_options_cb_posts'
 			),
 			'exclude' => array(
 				'name'        => __( 'Exclude', 'gamipress' ),
 				'description' => __( 'Comma-separated list of specific achievement IDs to exclude.', 'gamipress' ),
-				'type'        => 'select_multiple',
+				'type'        => 'advanced_select',
+				'multiple'    => true,
 				'default'     => '',
 				'options_cb'  => 'gamipress_options_cb_posts'
 			),
@@ -155,6 +158,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	$gamipress_template_args = array();
 
 	// TODO: Backward compatibility for change on 1.0.5
+	// TODO: Remove on 1.1.0
 	if( isset( $atts['show_filter'] ) ) $atts['filter'] = $atts['show_filter'];
 	if( isset( $atts['show_search'] ) ) $atts['search'] = $atts['show_search'];
 
