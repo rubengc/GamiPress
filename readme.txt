@@ -3,7 +3,7 @@ Contributors: tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.0.8
+Stable tag: 1.0.9
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
