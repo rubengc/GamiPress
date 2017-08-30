@@ -101,6 +101,10 @@ function gamipress_shortcode_help_render_fields( $fields ) {
 	if ( ! empty( $fields ) ) {
 		foreach ( $fields as $field_id => $field ) {
 
+			if( $field['type'] === 'title' ) {
+				continue;
+			}
+
 			// Checkboxes without default means 'no' as default
 			if( $field['type'] === 'checkbox' && empty( $field['default'] ) ) {
 				$field['default'] = 'no';

@@ -71,6 +71,9 @@ function gamipress_meta_boxes() {
 	// Grab our requirement types as an array
 	$requirement_types = gamipress_get_requirement_types_slugs();
 
+	// Check if points awards are public
+	$public_points_awards = apply_filters( 'gamipress_public_points_awards', false );
+
 	// Points Type
 	gamipress_add_meta_box(
 		'points-type-data',
@@ -89,8 +92,11 @@ function gamipress_meta_boxes() {
 			),
 			'post_name' => array(
 				'name' 	=> __( 'Slug', 'gamipress' ),
-				'desc' 	=>  '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span>',
+				'desc' 	=>  (( $public_points_awards ) ? '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' : '' ) . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this points type from any other (leave blank to automatically generate one).', 'gamipress' ),
 				'type' 	=> 'text_medium',
+				'attributes' => array(
+					'maxlength' => 20
+				)
 			),
 		),
 		array( 'priority' => 'high', )
@@ -114,8 +120,11 @@ function gamipress_meta_boxes() {
 			),
 			'post_name' => array(
 				'name' 	=> __( 'Slug', 'gamipress' ),
-				'desc' 	=> '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span>',
+				'desc' 	=> '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this achievement type from any other (leave blank to automatically generate one).', 'gamipress' ),
 				'type' 	=> 'text_medium',
+				'attributes' => array(
+					'maxlength' => 20
+				)
 			),
 		),
 		array( 'priority' => 'high', )
@@ -307,17 +316,27 @@ function gamipress_cmb_render_text_only(  $field, $value, $object_id, $object_ty
 }
 add_action( 'cmb2_render_text_only', 'gamipress_cmb_render_text_only', 10, 5 );
 
-/*
+/**
  * Override the title/content field retrieval so CMB2 doesn't look in post-meta.
  */
-function cmb2_override_post_title_display( $data, $post_id ) {
+function gamipress_cmb2_override_post_title_display( $data, $post_id ) {
+
+	if( get_post_field( 'post_status', $post_id ) === 'auto-draft' ) {
+		return '';
+	}
+
 	return get_post_field( 'post_title', $post_id );
+
 }
-function cmb2_override_post_name_display( $data, $post_id ) {
+add_filter( 'cmb2_override_post_title_meta_value', 'gamipress_cmb2_override_post_title_display', 10, 2 );
+
+function gamipress_cmb2_override_post_name_display( $data, $post_id ) {
+
 	return get_post_field( 'post_name', $post_id );
+
 }
-add_filter( 'cmb2_override_post_title_meta_value', 'cmb2_override_post_title_display', 10, 2 );
-add_filter( 'cmb2_override_post_name_meta_value', 'cmb2_override_post_name_display', 10, 2 );
+add_filter( 'cmb2_override_post_name_meta_value', 'gamipress_cmb2_override_post_name_display', 10, 2 );
+
 /*
  * WP will handle the saving for us, so don't save title/content to meta.
  */

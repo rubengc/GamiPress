@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-08-10 18:01+0200\n"
+"POT-Creation-Date: 2017-08-30 19:11+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -118,18 +118,18 @@ msgstr ""
 msgid "Nothing to show :)"
 msgstr ""
 
-#: includes/admin.php:168 includes/admin/meta-boxes.php:81
-#: includes/admin/meta-boxes.php:106
+#: includes/admin.php:168 includes/admin/meta-boxes.php:84
+#: includes/admin/meta-boxes.php:112
 msgid "Singular Name"
 msgstr ""
 
-#: includes/admin.php:179 includes/admin/meta-boxes.php:86
-#: includes/admin/meta-boxes.php:111
+#: includes/admin.php:179 includes/admin/meta-boxes.php:89
+#: includes/admin/meta-boxes.php:117
 msgid "Plural Name"
 msgstr ""
 
-#: includes/admin.php:180 includes/admin/meta-boxes.php:91
-#: includes/admin/meta-boxes.php:116
+#: includes/admin.php:180 includes/admin/meta-boxes.php:94
+#: includes/admin/meta-boxes.php:122
 msgid "Slug"
 msgstr ""
 
@@ -145,7 +145,7 @@ msgstr ""
 msgid "The event user has triggered."
 msgstr ""
 
-#: includes/admin/log-extra-data-ui.php:64 includes/admin/meta-boxes.php:213
+#: includes/admin/log-extra-data-ui.php:64 includes/admin/meta-boxes.php:222
 msgid "Count"
 msgstr ""
 
@@ -162,7 +162,7 @@ msgstr ""
 msgid "Achievement user has earned."
 msgstr ""
 
-#: includes/admin/log-extra-data-ui.php:96 includes/admin/meta-boxes.php:245
+#: includes/admin/log-extra-data-ui.php:96 includes/admin/meta-boxes.php:254
 #: templates/points.php:15
 msgid "Points"
 msgstr ""
@@ -171,8 +171,8 @@ msgstr ""
 msgid "Points user has earned."
 msgstr ""
 
-#: includes/admin/log-extra-data-ui.php:102 includes/admin/meta-boxes.php:136
-#: includes/admin/meta-boxes.php:250 includes/admin/requirements.php:35
+#: includes/admin/log-extra-data-ui.php:102 includes/admin/meta-boxes.php:145
+#: includes/admin/meta-boxes.php:259 includes/admin/requirements.php:35
 #: includes/admin/requirements.php:54 includes/post-types.php:23
 msgid "Points Type"
 msgstr ""
@@ -201,199 +201,207 @@ msgstr ""
 msgid "No extra data registered"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:77
+#: includes/admin/meta-boxes.php:80
 msgid "Points Type Data"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:82
+#: includes/admin/meta-boxes.php:85
 msgid "The singular name for this points type."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:87
+#: includes/admin/meta-boxes.php:90
 msgid "The plural name for this points type."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:102
+#: includes/admin/meta-boxes.php:95
+msgid "Slug is used for internal references, as some shortcode attributes, to completely differentiate this points type from any other (leave blank to automatically generate one)."
+msgstr ""
+
+#: includes/admin/meta-boxes.php:108
 msgid "Achievement Type Data"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:107
+#: includes/admin/meta-boxes.php:113
 msgid "The singular name for this achievement type."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:112
+#: includes/admin/meta-boxes.php:118
 msgid "The plural name for this achievement type."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:127
+#: includes/admin/meta-boxes.php:123
+msgid "Slug is used for internal references, as some shortcode attributes, to completely differentiate this achievement type from any other (leave blank to automatically generate one)."
+msgstr ""
+
+#: includes/admin/meta-boxes.php:136
 msgid "Achievement Data"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:131
+#: includes/admin/meta-boxes.php:140
 msgid "Points Awarded"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:132
+#: includes/admin/meta-boxes.php:141
 msgid "Points awarded for earning this achievement (optional). Leave empty if no points are awarded."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:137
+#: includes/admin/meta-boxes.php:146
 msgid "Points type to award for earning this achievement (optional)."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:142
+#: includes/admin/meta-boxes.php:151
 msgid "Earned By:"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:143
+#: includes/admin/meta-boxes.php:152
 msgid "How this achievement can be earned."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:146
+#: includes/admin/meta-boxes.php:155
 msgid "Completing Steps"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:147
+#: includes/admin/meta-boxes.php:156
 msgid "Minimum Number of Points"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:148
+#: includes/admin/meta-boxes.php:157
 msgid "Admin-awarded Only"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:152
+#: includes/admin/meta-boxes.php:161
 msgid "Minimum Points Required"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:153
+#: includes/admin/meta-boxes.php:162
 msgid "Fewest number of points required for earning this achievement."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:157
+#: includes/admin/meta-boxes.php:166
 msgid "Points Type Required"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:158
+#: includes/admin/meta-boxes.php:167
 msgid "Points type of points required for earning this achievement (optional)."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:163
+#: includes/admin/meta-boxes.php:172
 msgid "Sequential Steps"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:164
+#: includes/admin/meta-boxes.php:173
 msgid "Yes, steps must be completed in order."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:169
+#: includes/admin/meta-boxes.php:178
 #: includes/shortcodes/gamipress_achievement.php:51
 #: includes/shortcodes/gamipress_achievements.php:64
 msgid "Show Earners"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:170
+#: includes/admin/meta-boxes.php:179
 msgid "Yes, display a list of users who have earned this achievement."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:175
+#: includes/admin/meta-boxes.php:184
 msgid "Congratulations Text"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:176
+#: includes/admin/meta-boxes.php:185
 msgid "Displayed after achievement is earned."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:180
+#: includes/admin/meta-boxes.php:189
 msgid "Maximum Earnings"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:181
+#: includes/admin/meta-boxes.php:190
 msgid "Number of times a user can earn this achievement (leave empty for no maximum)."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:186
+#: includes/admin/meta-boxes.php:195
 msgid "Hidden?"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:189
+#: includes/admin/meta-boxes.php:198
 msgid "Show to User"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:190
+#: includes/admin/meta-boxes.php:199
 msgid "Hidden to User"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:203
+#: includes/admin/meta-boxes.php:212
 msgid "Requirement Data"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:207
+#: includes/admin/meta-boxes.php:216
 msgid "Trigger Type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:218
+#: includes/admin/meta-boxes.php:227
 #: includes/shortcodes/gamipress_achievements.php:84
 #: includes/shortcodes/gamipress_logs.php:30
 msgid "Limit"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:223
+#: includes/admin/meta-boxes.php:232
 msgid "Limit Type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:227 includes/admin/requirements-ui.php:200
+#: includes/admin/meta-boxes.php:236 includes/admin/requirements-ui.php:200
 msgid "Unlimited"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:228 includes/admin/requirements-ui.php:201
+#: includes/admin/meta-boxes.php:237 includes/admin/requirements-ui.php:201
 msgid "Per Day"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:229 includes/admin/requirements-ui.php:202
+#: includes/admin/meta-boxes.php:238 includes/admin/requirements-ui.php:202
 msgid "Per Week"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:230 includes/admin/requirements-ui.php:203
+#: includes/admin/meta-boxes.php:239 includes/admin/requirements-ui.php:203
 msgid "Per Month"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:231 includes/admin/requirements-ui.php:204
+#: includes/admin/meta-boxes.php:240 includes/admin/requirements-ui.php:204
 msgid "Per Year"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:235 includes/post-types.php:89
+#: includes/admin/meta-boxes.php:244 includes/post-types.php:89
 msgid "Achievement Type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:240
+#: includes/admin/meta-boxes.php:249
 msgid "Achievement Post"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:262
+#: includes/admin/meta-boxes.php:271
 msgid "Log Data"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:266
+#: includes/admin/meta-boxes.php:275
 msgid "User"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:267
+#: includes/admin/meta-boxes.php:276
 msgid "User assigned to this log."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:272
+#: includes/admin/meta-boxes.php:281
 msgid "Type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:273
+#: includes/admin/meta-boxes.php:282
 msgid "The log type."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:278
+#: includes/admin/meta-boxes.php:287
 msgid "Pattern"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:279
+#: includes/admin/meta-boxes.php:288
 msgid "The log output pattern. Available tags:"
 msgstr ""
 
@@ -1077,17 +1085,17 @@ msgstr ""
 msgid "Attributes:"
 msgstr ""
 
-#: includes/shortcodes.php:109
+#: includes/shortcodes.php:113
 #, php-format
 msgid "Accepts: %s"
 msgstr ""
 
-#: includes/shortcodes.php:110
+#: includes/shortcodes.php:114
 #, php-format
 msgid "Default: %s"
 msgstr ""
 
-#: includes/shortcodes.php:141
+#: includes/shortcodes.php:145
 #, php-format
 msgid "Example: %s"
 msgstr ""

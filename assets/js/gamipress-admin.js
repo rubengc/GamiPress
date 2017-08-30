@@ -8,7 +8,7 @@
 		var gamipress_points_required = $('#_gamipress_points_required').parent().parent();
 		var gamipress_points_type_required = $('#_gamipress_points_type_required').parent().parent();
 
-		// // Hide our potentially unnecessary inputs
+		// Hide our potentially unnecessary inputs
 		gamipress_sequential.hide();
 		gamipress_points_required.hide();
 		gamipress_points_type_required.hide();
@@ -22,33 +22,29 @@
 		}
 	}).change();
 
-	// Throw a warning on Achievement Type editor if title is > 20 characters
-	$('#titlewrap').on( 'keyup', 'input[name="post_title"]', function() {
-
-		// Make sure we're editing an achievement type
-		if ( 'achievement-type' === $('#post_type').val() || 'points-type' === $('#post_type').val() ) {
-			// Cache the title input selector
-			var $title = $(this);
-			if ( $title.val().length > 20 ) {
-				// Set input to look like danger
-				$title.css({'background':'#faa', 'color':'#a00', 'border-color':'#a55' });
-
-				// Output a custom warning (and delete any existing version of that warning)
-				$('#title-warning').remove();
-				$title.parent().append('<p id="title-warning">Achievement Type supports a maximum of 20 characters. Please choose a shorter title.</p>');
-			} else {
-				// Set the input to standard style, hide our custom warning
-				$title.css({'background':'#fff', 'color':'#333', 'border-color':'#DFDFDF'});
-				$('#title-warning').remove();
-			}
-		}
-	} );
-
 	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {
+		var label = $('#post_type').val() === 'achievement-type' ? 'Achievement Type' : 'Points type';
+		var field = $(this);
+		var slug = $(this).val();
 		var preview = $(this).next('.cmb2-metabox-description').find('.gamipress-post-name');
 
 		if( preview.length ) {
-			preview.text($(this).val());
+			preview.text(slug);
+		}
+
+		// Delete any existing version of this warning
+		$('#slug-warning').remove();
+
+		// Throw a warning on Points/Achievement Type editor if slig is > 20 characters
+		if ( slug.length > 20 ) {
+			// Set input to look like danger
+			field.css({'background':'#faa', 'color':'#a00', 'border-color':'#a55' });
+
+			// Output a custom warning
+			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + label + '\'s slug supports a maximum of 20 characters.</span>');
+		} else {
+			// Restore the input style
+			field.css({'background':'', 'color':'', 'border-color':''});
 		}
 	});
 

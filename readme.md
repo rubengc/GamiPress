@@ -145,6 +145,10 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.0.9 ###
+
+* Improvements on points/achievement types registration.
+
 ### 1.0.8 ###
 
 * Completely rework on points/achievement types admin views.
