@@ -116,7 +116,7 @@ function gamipress_shortcode_help_render_fields( $fields ) {
 			$output .= sprintf(
 				'<li><strong>%1$s</strong> – %2$s <em>%3$s %4$s</em></li>',
 				esc_attr( $field_id ),
-				esc_html( $field['description'] ),
+				isset( $field['description'] ) ? $field['description'] : '',
 				$accepts,
 				$default
 			);

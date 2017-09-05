@@ -18,7 +18,23 @@ if ( 'all' === $gamipress_template_args['type'] ) {
 
 <div id="gamipress-achievements-list" class="gamipress-achievements-list">
 
+    <?php
+    /**
+     * Before render achievements list
+     *
+     * @param $template_args array Template received arguments
+     */
+    do_action( 'gamipress_before_render_achievements_list', $gamipress_template_args ); ?>
+
     <div id="gamipress-achievements-filters-wrap">
+
+        <?php
+        /**
+         * Before render achievements list filters
+         *
+         * @param $template_args array Template received arguments
+         */
+        do_action( 'gamipress_before_render_achievements_list_filters', $gamipress_template_args ); ?>
 
         <?php // Hidden fields for AJAX request
         foreach( $gamipress_template_args as $template_arg => $template_arg_value ) : ?>
@@ -71,16 +87,32 @@ if ( 'all' === $gamipress_template_args['type'] ) {
 
         <?php endif; ?>
 
+        <?php
+        /**
+         * After render achievements list filters
+         *
+         * @param $template_args array Template received arguments
+         */
+        do_action( 'gamipress_after_render_achievements_list_filters', $gamipress_template_args ); ?>
+
     </div><!-- #gamipress-achievements-filters-wrap -->
 
     <?php // Content Container ?>
-    <div id="gamipress-achievements-container" class="gamipress-achievements-list"></div>
+    <div id="gamipress-achievements-container" class="gamipress-achievements-container"></div>
 
     <?php // Hidden fields and Load More button ?>
     <input type="hidden" id="gamipress_achievements_offset" value="0">
     <input type="hidden" id="gamipress_achievements_count" value="0">
     <input type="button" id="achievements_list_load_more" value="<?php echo esc_attr__( 'Load More', 'gamipress' ); ?>" style="display:none;">
     <div class="gamipress-spinner"></div>
+
+    <?php
+    /**
+     * After render achievements list
+     *
+     * @param $template_args array Template received arguments
+     */
+    do_action( 'gamipress_after_render_achievements_list', $gamipress_template_args ); ?>
 
 </div>
 

@@ -176,8 +176,13 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 			'since' => absint( gamipress_achievement_last_user_activity( $points_award->ID, $user_id ) )
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
 
-		// get step title and if it doesn't have a title get the step trigger type post-meta
-		$title = ! empty( $points_award->post_title ) ? $points_award->post_title : get_post_meta( $points_award->ID, '_gamipress_trigger_type', true );
+		$title = $points_award->post_title;
+
+		// If points award doesn't have a title, then try to build one
+		if( empty( $title ) ) {
+			$title = gamipress_build_requirement_title( $points_award->ID );
+		}
+
 		$output .= '<li class="'. apply_filters( 'gamipress_points_award_class', $earned_status, $points_award ) .'">'. apply_filters( 'gamipress_points_award_title_display', $title, $points_award ) . '</li>';
 	}
 
@@ -296,8 +301,13 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 			'since' => absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) )
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
 
-		// get step title and if it doesn't have a title get the step trigger type post-meta
-		$title = !empty( $step->post_title ) ? $step->post_title : get_post_meta( $step->ID, '_gamipress_trigger_type', true );
+		$title = $step->post_title;
+
+		// If step doesn't have a title, then try to build one
+		if( empty( $title ) ) {
+			$title = gamipress_build_requirement_title( $step->ID );
+		}
+
 		$output .= '<li class="'. apply_filters( 'gamipress_step_class', $earned_status, $step ) .'">'. apply_filters( 'gamipress_step_title_display', $title, $step ) . '</li>';
 	}
 

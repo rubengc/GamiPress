@@ -13,7 +13,14 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
 
 <div id="gamipress-achievement-<?php the_ID(); ?>" class="gamipress-achievement <?php echo ( $earned ? 'user-has-earned' : 'user-has-not-earned' ); ?>">
 
-    <?php do_action( 'gamipress_before_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
+    <?php
+    /**
+     * Before render achievement
+     *
+     * @param $achievement_id   integer The Achievement ID
+     * @param $template_args    array   Template received arguments
+     */
+    do_action( 'gamipress_before_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
 
     <?php // Achievement Image
     if( $gamipress_template_args['thumbnail'] === 'yes' ) : ?>
@@ -24,9 +31,12 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
         <?php
         /**
          * After achievement thumbnail
+         *
+         * @param $achievement_id   integer The Achievement ID
+         * @param $template_args    array   Template received arguments
          */
-        do_action( 'after_achievement_thumbnail', get_the_ID() );
-        ?>
+        do_action( 'gamipress_after_achievement_thumbnail', get_the_ID(), $gamipress_template_args ); ?>
+
     <?php endif; ?>
 
     <?php // Achievement Content ?>
@@ -38,9 +48,11 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
         <?php
         /**
          * After achievement title
+         *
+         * @param $achievement_id   integer The Achievement ID
+         * @param $template_args    array   Template received arguments
          */
-        do_action( 'after_achievement_title', get_the_ID() );
-        ?>
+        do_action( 'gamipress_after_achievement_title', get_the_ID(), $gamipress_template_args ); ?>
 
         <?php // Achievement Short Description
         if( $gamipress_template_args['excerpt'] === 'yes' ) :  ?>
@@ -50,9 +62,11 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
                 <?php
                 /**
                  * After achievement points
+                 *
+                 * @param $achievement_id   integer The Achievement ID
+                 * @param $template_args    array   Template received arguments
                  */
-                do_action( 'after_achievement_points', get_the_ID() );
-                ?>
+                do_action( 'gamipress_after_achievement_points', get_the_ID(), $gamipress_template_args ); ?>
 
                 <?php
                 $excerpt = has_excerpt() ? get_post_field( 'post_excerpt', get_the_ID() ) : get_post_field( 'post_content', get_the_ID() );
@@ -63,9 +77,11 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
             <?php
             /**
              * After achievement excerpt
+             *
+             * @param $achievement_id   integer The Achievement ID
+             * @param $template_args    array   Template received arguments
              */
-            do_action( 'after_achievement_excerpt', get_the_ID() );
-            ?>
+            do_action( 'gamipress_after_achievement_excerpt', get_the_ID(), $gamipress_template_args ); ?>
         <?php endif; ?>
 
         <?php // Achievement Steps
@@ -85,9 +101,12 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
             <?php
             /**
              * After achievement steps
+             *
+             * @param $achievement_id   integer The Achievement ID
+             * @param $template_args    array   Template received arguments
              */
-            do_action( 'after_achievement_steps', get_the_ID() );
-            ?>
+            do_action( 'gamipress_after_achievement_steps', get_the_ID(), $gamipress_template_args ); ?>
+
         <?php endif; ?>
 
         <?php // Achievement Earners
@@ -96,13 +115,23 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
 
             /**
              * After achievement steps
+             *
+             * @param $achievement_id   integer The Achievement ID
+             * @param $template_args    array   Template received arguments
              */
-            do_action( 'after_achievement_earners', get_the_ID() );
-            ?>
+            do_action( 'gamipress_after_achievement_earners', get_the_ID(), $gamipress_template_args ); ?>
+
         <?php endif; ?>
 
     </div><!-- .gamipress-achievement-description -->
 
-    <?php do_action( 'gamipress_after_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
+    <?php
+    /**
+     * After render achievement
+     *
+     * @param $achievement_id   integer The Achievement ID
+     * @param $template_args    array   Template received arguments
+     */
+    do_action( 'gamipress_after_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
 
 </div><!-- .gamipress-achievements-list-item -->

@@ -246,8 +246,6 @@ add_filter( 'gamipress_settings_network_meta_boxes', 'gamipress_settings_network
  *
  * @since  1.0.0
  *
- * @since  1.0.2
- *
  * @return void
  */
 function gamipress_register_settings_page() {

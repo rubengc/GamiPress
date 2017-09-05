@@ -3,9 +3,9 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.0.9
- * Author:          Tsunoa
- * Author URI:      https://tsunoa.com/
+ * Version:         1.1.0
+ * Author:          GamiPress
+ * Author URI:      https://gamipress.com/
  * Text Domain:     gamipress
  * License:         GNU AGPL v3.0 (http://www.gnu.org/licenses/agpl.txt)
  *
@@ -82,16 +82,20 @@ final class GamiPress {
 	 * @return      object self::$instance The one true GamiPress
 	 */
 	public static function instance() {
+
 		if( !self::$instance ) {
+
 			self::$instance = new GamiPress();
 			self::$instance->constants();
 			self::$instance->libraries();
 			self::$instance->includes();
 			self::$instance->hooks();
 			self::$instance->load_textdomain();
+
 		}
 
 		return self::$instance;
+
 	}
 
 	/**
@@ -102,14 +106,16 @@ final class GamiPress {
 	 * @return      void
 	 */
 	private function constants() {
+
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.0.9' );
+		define( 'GAMIPRESS_VER', '1.1.0' );
 
 		// Plugin path
 		define( 'GAMIPRESS_DIR', plugin_dir_path( __FILE__ ) );
 
 		// Plugin URL
 		define( 'GAMIPRESS_URL', plugin_dir_url( __FILE__ ) );
+
 	}
 
     /**
@@ -120,11 +126,13 @@ final class GamiPress {
      * @return      void
      */
     private function libraries() {
+
         require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
 		require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
 		require_once GAMIPRESS_DIR . 'libraries/cmb2-metatabs-options/cmb2_metatabs_options.php';
 		require_once GAMIPRESS_DIR . 'libraries/advanced-select-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
+
     }
 
 	/**
@@ -135,6 +143,7 @@ final class GamiPress {
 	 * @return      void
 	 */
 	private function includes() {
+
 		require_once GAMIPRESS_DIR . 'includes/admin.php';
 		require_once GAMIPRESS_DIR . 'includes/post-types.php';
 		require_once GAMIPRESS_DIR . 'includes/achievement-functions.php';
@@ -153,6 +162,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/triggers.php';
 		require_once GAMIPRESS_DIR . 'includes/user.php';
 		require_once GAMIPRESS_DIR . 'includes/widgets.php';
+
 	}
 
 	/**
@@ -163,6 +173,7 @@ final class GamiPress {
 	 * @return      void
 	 */
 	private function hooks() {
+
 		// Setup our activation and deactivation hooks
 		register_activation_hook( __FILE__, array( $this, 'activate' ) );
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
@@ -171,6 +182,7 @@ final class GamiPress {
 		add_action( 'init', array( $this, 'register_points_relationships' ) );
 		add_action( 'init', array( $this, 'register_achievement_relationships' ) );
 		add_action( 'init', array( $this, 'register_image_sizes' ) );
+
 	}
 
 	/**
@@ -278,26 +290,15 @@ final class GamiPress {
 		// Include our important bits
 		$this->includes();
 
-		// Setup default GamiPress options
-		$gamipress_settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();
+		require_once GAMIPRESS_DIR . 'includes/install.php';
 
-		if ( empty( $gamipress_settings ) ) {
-
-			$gamipress_settings['minimum_role'] = 'manage_options';
-			$gamipress_settings['achievement_image_size'] = array( 'width' => 100, 'height' => 100 );
-
-			update_option( 'gamipress_settings', $gamipress_settings );
-		}
-
-		// Register our post types and flush rewrite rules
-		gamipress_flush_rewrite_rules();
+		gamipress_install();
 	}
 
 	/**
 	 * Deactivation hook for the plugin.
 	 */
 	function deactivate() {
-		global $wp_rewrite;
 		flush_rewrite_rules();
 	}
 

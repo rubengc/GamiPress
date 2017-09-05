@@ -227,6 +227,21 @@ li.requirement-row label {
 	display: inline-block;
 }
 
+@media screen and (max-width: 782px) {
+	li.requirement-row {
+		font-size: 16px;
+	}
+
+	li.requirement-row label {
+		padding: 10px 0;
+		width: 100%;
+	}
+
+	li.requirement-row label:first-child {
+		padding-top: 0;
+	}
+}
+
 /* Log edit screen */
 .gamipress-log-title-preview h1 {
 	padding-top: 0;
@@ -250,6 +265,12 @@ li.requirement-row label {
 .gamipress-log-pattern-tags-list code {
 	color: #444;
 	padding: 3px 2px 2px 2px;
+}
+
+@media screen and (max-width: 782px) {
+	#log-extra-data-ui .cmb-td {
+		padding-left: 0;
+	}
 }
 
 /* User Profile Area */
@@ -320,6 +341,26 @@ li.requirement-row label {
 	}
 }
 
+/* GamiPress Forms */
+@media screen and (max-width: 782px) {
+	.gamipress-box-form .cmb-th {
+		width: 100%;
+		padding-bottom: 20px;
+	}
+
+	.gamipress-box-form .cmb-th + .cmb-td {
+		width: 100%;
+	}
+
+	.gamipress-box-form .cmb-row:not(:last-of-type) .cmb-td {
+		padding-bottom: 20px;
+	}
+	
+	.gamipress-box-form .cmb2-metabox-description {
+		display: block;
+	}
+}
+
 /* GamiPress Select2 */
 .gamipress-select2 {
 	width: 100% !important;
@@ -359,6 +400,22 @@ li.requirement-row label {
 	background-color: #f5f5f5 !important;
 	border-color: #ddd !important;
 	font-style: normal !important;
+}
+
+@media screen and (max-width: 782px) {
+	.gamipress-select2 .select2-selection,
+	.gamipress-select2 .select2-search--dropdown .select2-search__field,
+	.gamipress-select2.select2-container--focus .select2-selection--multiple {
+		min-height: 36px !important;
+	}
+
+	.gamipress-select2 .select2-selection--single .select2-selection__arrow {
+		height: 36px !important;
+	}
+	.gamipress-select2 .select2-selection--single .select2-selection__rendered {
+		line-height: 36px !important;
+		font-size: 16px;
+	}
 }
 
 /* GamiPress switch control */
@@ -461,4 +518,107 @@ li.requirement-row label {
 .gamipress_page_gamipress_settings input[name="submit-cmb"] {
 	float: left;
 	margin-right: 12px;
+}
+
+@media screen and (max-width: 782px) {
+	.gamipress_page_gamipress_settings .cmb-th {
+		width: 100%;
+	}
+
+	.gamipress_page_gamipress_settings .cmb-td {
+		padding: 15px 0;
+	}
+
+	.gamipress_page_gamipress_settings .gamipress-switch input + label:before,
+	.gamipress_page_gamipress_settings .gamipress-switch input + label:after {
+		top: 4px;
+	}
+}
+
+/* GamiPress Add-ons */
+.gamipress-plugin-card .name, .gamipress-plugin-card .desc {
+	margin-left: 0;
+	margin-right: 0;
+}
+
+.gamipress-plugin-card .thumbnail {
+	margin: -20px -20px 10px;
+}
+
+.gamipress-plugin-card .thumbnail a {
+	display: block;
+	line-height: 0;
+}
+
+.gamipress-plugin-card .action-links {
+	position: relative;
+	top: 0;
+	right: 0;
+	width: 100%;
+}
+
+.gamipress-plugin-card .action-links .plugin-action-buttons {
+	float: none;
+	margin: 0;
+
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+
+	-webkit-flex-direction: row-reverse;
+	-ms-flex-direction: row-reverse;
+	flex-direction: row-reverse;
+
+	-webkit-align-items: center;
+	align-items: center;
+}
+
+.gamipress-plugin-card .action-links .plugin-action-buttons li {
+	margin: 0;
+	width: 50%;
+}
+
+.gamipress-plugin-card .action-links .plugin-action-buttons li .more-details {
+	float: left;
+}
+
+@media screen and (min-width: 1600px) {
+	.gamipress-plugin-card {
+		width: 24%;
+		width: -webkit-calc( 24% - 8px );
+		width: calc( 24% - 8px );
+	}
+
+	.gamipress-plugin-card:nth-child(3n+1) {
+		clear: none;
+		margin-left: 8px;
+	}
+
+	.gamipress-plugin-card:nth-child(4n+1) {
+		clear: both;
+		margin-left: 0;
+	}
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1600px) {
+	.gamipress-plugin-card {
+		width: 30%;
+		width: -webkit-calc( 33% - 8px );
+		width: calc( 33% - 8px );
+	}
+
+	.gamipress-plugin-card:nth-child(odd) {
+		clear: none;
+		margin-left: 8px;
+	}
+
+	.gamipress-plugin-card:nth-child(3n+1) {
+		clear: both;
+		margin-left: 0;
+	}
 }

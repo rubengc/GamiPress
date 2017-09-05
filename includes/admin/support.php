@@ -1,8 +1,8 @@
 <?php
 /**
- * Admin Support Page
+ * Admin Help and Support Page
  *
- * @package     GamiPress\Admin\Support
+ * @package     GamiPress\Admin\Help_Support
  * @since       1.0.0
  */
 // Exit if accessed directly
@@ -10,13 +10,15 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 /**
  * Help and Support page
+ *
  * @since  1.0.0
+ *
  * @return void
  */
 function gamipress_help_support_page() { ?>
-    <div class="wrap" >
+    <div class="wrap">
         <div id="icon-options-general" class="icon32"></div>
-        <h2><?php _e( 'GamiPress Help and Support', 'gamipress' ); ?></h2>
+        <h1 class="wp-heading-inline"><?php _e( 'GamiPress Help and Support', 'gamipress' ); ?></h1>
 
         <h2><?php _e( 'About GamiPress', 'gamipress' ); ?>:</h2>
         <p><?php echo __( 'GamiPress is plugin to WordPress that allows your site\'s users to complete tasks, demonstrate achievements, and earn points. You define the points and achievement types, organize your requirements any way you like, and choose from a range of options to determine whether each task or requirement has been achieved.', 'gamipress' ); ?></p>

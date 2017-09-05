@@ -1,9 +1,9 @@
 ﻿=== GamiPress ===
-Contributors: tsunoa, rubengc, eneribs
+Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -143,65 +143,14 @@ GamiPress comes with the following widgets:
 
 == Changelog ==
 
-= 1.0.9 =
+= 1.1.0 =
 
-* Improvements on points/achievement types registration.
-
-= 1.0.8 =
-
-* Completely rework on points/achievement types admin views.
-* Improvements on points/achievement types registration.
-* Improvements on requirements UI.
-* Improvements on content filters (more accurated).
-* Improvements on rules engine (more restrictive).
-* Improvements on admin styles.
-* Added more hooks to improve extensibility.
-
-= 1.0.7 =
-
-* Compatibility with older PHP versions.
-* Add-ons tab in settings (just visible when an add-on add some settings).
-
-= 1.0.6 =
-
-* Added a switchable debug mode.
-* Debug functions to discover all registered points awards and steps.
-* Debug functions to check points awards and steps connections with their respectives points type/achievement.
-
-= 1.0.5 =
-
-* Dashboard widget with GamiPress related information.
-* New [gamipress_achievement] attribute: earners.
-* New [gamipress_achievements] attribute: earners.
-* [gamipress_achievements] attribute rename: show_filter -> filter.
-* [gamipress_achievements] attribute rename: show_search -> search.
-* Complete rework of the UI for edit Points Awards and Steps.
-* Fix on user profile achievements tables.
-
-= 1.0.4 =
-
-* Improvements on settings API.
-* Fix on [gamipress_achievements] shortcode ajax query by user.
-* Fix on log pattern update functions.
-
-= 1.0.3 =
-
-* New dynamic template: Single Achievement.
-* Improvements on content filters.
-* Improvements on settings API to allow register group of settings.
-
-= 1.0.2 =
-
-* Improvements in settings page.
-* New settings: Default logs patterns.
-* New setting: Disable frontend Javascript.
-
-= 1.0.1 =
-
-* New settings API.
-* New setting: Achievement image size.
-* New setting: Disable frontend CSS.
-
-= 1.0.0 =
-
-* GamiPress earn 100 points to complete "Get approved on WordPress" achievement.
+* Added a lot of hooks on all plugin templates.
+* Added contextual helps in all edit screens to help configure GamiPress.
+* Added the Add-ons page.
+* Improvements on daily visit listeners.
+* Improvements on logs count functions.
+* Improvements on logs forms.
+* Improvements on admin area forms on small screens.
+* Added install and upgrade functions.
+* Reset public changelog (moved old changelog to changelog.txt file).

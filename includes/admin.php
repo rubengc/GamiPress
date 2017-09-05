@@ -8,8 +8,11 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+require_once GAMIPRESS_DIR . 'includes/admin/add-ons.php';
+require_once GAMIPRESS_DIR . 'includes/admin/contextual-help.php';
 require_once GAMIPRESS_DIR . 'includes/admin/debug.php';
 require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes.php';
+require_once GAMIPRESS_DIR . 'includes/admin/plugins.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
@@ -36,7 +39,8 @@ function gamipress_admin_menu() {
     add_menu_page( 'GamiPress', 'GamiPress', $minimum_role, 'gamipress', 'gamipress_settings', 'dashicons-gamipress', 55 );
 
     // GamiPress sub menus
-    add_submenu_page( 'gamipress', __( 'Help / Support', 'gamipress' ), __( 'Help / Support', 'gamipress' ), $minimum_role, 'gamipress_sub_help_support', 'gamipress_help_support_page' );
+    add_submenu_page( 'gamipress', __( 'Add-ons', 'gamipress' ), __( 'Add-ons', 'gamipress' ), $minimum_role, 'gamipress_add_ons', 'gamipress_add_ons_page' );
+    add_submenu_page( 'gamipress', __( 'Help / Support', 'gamipress' ), __( 'Help / Support', 'gamipress' ), $minimum_role, 'gamipress_help_support', 'gamipress_help_support_page' );
 
 }
 add_action( 'admin_menu', 'gamipress_admin_menu' );

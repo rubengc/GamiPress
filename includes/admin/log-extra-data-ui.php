@@ -52,6 +52,7 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
     }
 
     if( $type === 'event_trigger' ) {
+
         $fields = array(
             array(
                 'name' 	=> __( 'Trigger', 'gamipress' ),
@@ -67,6 +68,24 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
                 'type' 	=> 'text',
             ),
         );
+
+        $trigger = get_post_meta( $post_id, $prefix . 'trigger_type', true );
+
+        // If is a specific activity trigger, then add the achievement_post field
+        if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+
+            $achievement_post_id = get_post_meta( $post_id, $prefix . 'achievement_post', true );
+
+            $fields[] = array(
+                'name' 	=> __( 'Assigned Post', 'gamipress' ),
+                'desc' 	=> __( 'Attached post to this log.', 'gamipress' ),
+                'id'   	=> $prefix . 'achievement_post',
+                'type' 	=> 'select',
+                'options' 	=> array(
+                    $achievement_post_id => get_post_field( 'post_title', $achievement_post_id ),
+                ),
+            );
+        }
     } else if( $type === 'achievement_earn' || $type === 'achievement_award' ) {
         $achievement_id = get_post_meta( $post_id, $prefix . 'achievement_id', true );
 
@@ -135,6 +154,7 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
         // Create a new box to render the form
         $cmb2 = new CMB2( array(
             'id'      => 'log_extra_data_ui_box',
+            'classes' => 'gamipress-form gamipress-box-form',
             'hookup'  => false,
             'show_on' => array(
                 'key'   => 'gamipress-log',

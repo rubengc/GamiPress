@@ -11,12 +11,31 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Listener for content publishing
  *
+ * Triggers: gamipress_login
+ *
+ * @since  1.1.0
+ *
+ * @param string  $user_login Username.
+ * @param WP_User $user       WP_User object of the logged-in user.
+ *
+ * @return void
+ */
+function gamipress_login_listener( $user_login, $user ) {
+    do_action( 'gamipress_login', $user->ID, $user );
+}
+add_action( 'wp_login', 'gamipress_login_listener', 10, 2 );
+
+/**
+ * Listener for content publishing
+ *
  * Triggers: gamipress_new_{$post_type}
  *
  * @since  1.0.0
+ *
  * @param  string   $new_status The new post status
  * @param  string   $old_status The old post status
  * @param  WP_Post  $post       The post
+ *
  * @return void
  */
 function gamipress_transition_post_status_listener( $new_status, $old_status, $post ) {
@@ -40,8 +59,10 @@ add_action( 'transition_post_status', 'gamipress_transition_post_status_listener
  * Triggers: gamipress_new_comment, gamipress_specific_new_comment
  *
  * @since  1.0.0
+ *
  * @param  integer $comment_ID The comment ID
  * @param  array|object $comment The comment array
+ *
  * @return void
  */
 function gamipress_approved_comment_listener( $comment_ID, $comment ) {
@@ -69,6 +90,7 @@ add_action( 'wp_insert_comment', 'gamipress_approved_comment_listener', 10, 2 );
  * Triggers: gamipress_site_visit, gamipress_specific_post_visit
  *
  * @since  1.0.0
+ *
  * @return void
  */
 function gamipress_site_visit_listener() {
@@ -87,35 +109,29 @@ function gamipress_site_visit_listener() {
         return;
     }
 
-    // Website daily visit
     // Current User ID
     $user_id = get_current_user_id();
     $now = current_time( 'timestamp' );
 
-    // Cookie lifespan
-    $lifespan = (int) ( 24*3600 ) - ( date( 'H', $now ) * 3600 + date( 'i', $now ) * 60 + date( 's', $now ) );
+    // Website daily visit
+    $count = gamipress_get_user_trigger_count_from_logs( $user_id, 'gamipress_site_visit', $now );
 
-    if( ! isset( $_COOKIE['gamipress_site_visit'] ) ) {
-        // Set cookie
-        if ( ! headers_sent() )  {
-            setcookie( 'gamipress_site_visit', 1, $lifespan, COOKIEPATH, COOKIE_DOMAIN );
-        }
-
-        // Trigger daily visit action
+    // Trigger daily visit action if not triggered today
+    if( $count === 0 ) {
         do_action( 'gamipress_site_visit', $user_id );
     }
 
     // Post daily visit
     global $post;
 
-    if( $post && ! isset( $_COOKIE['gamipress_specific_post_visit_' . $post->ID] ) ) {
-        // Set cookie
-        if ( ! headers_sent() )  {
-            setcookie('gamipress_specific_post_visit_' . $post->ID, 1, $lifespan, COOKIEPATH, COOKIE_DOMAIN );
-        }
+    if( $post ) {
 
-        // Trigger specific daily visit action
-        do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
+        $count = gamipress_get_user_trigger_count_from_logs( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
+
+        // Trigger specific daily visit action if not triggered today
+        if( $count === 0 ) {
+            do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
+        }
     }
 }
 add_action( 'wp_head', 'gamipress_site_visit_listener' );

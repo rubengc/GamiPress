@@ -207,9 +207,9 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
         <?php do_action( 'gamipress_requirement_ui_html_after_limit', $requirement_id, $post_id ); ?>
 
         <?php if( $requirement_type === 'points-award' ) :
-            $points            = ! empty( $requirements['points'] ) ? $requirements['points'] : 1;
-            $points_singular_name = get_post_meta( $post_id, '_gamipress_singular_name', true );
-            $points_type       = sanitize_title( strtolower( $points_singular_name ) );
+            $points                 = ! empty( $requirements['points'] ) ? $requirements['points'] : 1;
+            $points_singular_name   = get_post_meta( $post_id, '_gamipress_singular_name', true );
+            $points_type            = get_post_field( 'post_name', $post_id );
 
             if( ! $points_singular_name ) {
                 $points_singular_name = __( 'point(s)', 'gamipress' );
@@ -410,7 +410,7 @@ function gamipress_update_requirements_ajax_handler() {
         }
 
         // Send back all our requirement titles
-        echo json_encode($new_titles);
+        echo json_encode( $new_titles );
 
     }
 
@@ -425,9 +425,16 @@ add_action( 'wp_ajax_gamipress_update_requirements', 'gamipress_update_requireme
  *
  * @since 1.0.5
  *
+ * @param $requirement_id   integer The requirement ID
+ * @param $requirement      array The requirement array object (Optional)
+ *
  * @return string
  */
-function gamipress_build_requirement_title( $requirement_id, $requirement ) {
+function gamipress_build_requirement_title( $requirement_id, $requirement = array() ) {
+
+    if( empty( $requirement ) ) {
+        $requirement = gamipress_get_requirement_object( $requirement_id );
+    }
 
     $requirement_type = get_post_type( $requirement_id );
     $required_count   = ( ! empty( $requirement['required_count'] ) ) ? absint( $requirement['required_count'] ) : 1;
