@@ -253,11 +253,27 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
  * @return array            Updated post data.
  */
 function gamipress_maybe_update_points_type( $data = array(), $post_args = array() ) {
+
+	// If user set an empty slug, then generate it
+	if( empty( $post_args['post_name'] ) ) {
+		$post_args['post_name'] = wp_unique_post_slug(
+			sanitize_title( $post_args['post_title'] ),
+			$post_args['ID'],
+			$post_args['post_status'],
+			$post_args['post_type'],
+			$post_args['post_parent']
+		);
+	}
+
 	if ( gamipress_points_type_changed( $post_args ) ) {
+
 		$original_type = get_post( $post_args['ID'] )->post_name;
 		$new_type = $post_args['post_name'];
+
 		$data['post_name'] = gamipress_update_points_types( $original_type, $new_type );
+
 		add_filter( 'redirect_post_location', 'gamipress_points_type_rename_redirect', 99 );
+
 	}
 
 	return $data;
@@ -311,6 +327,7 @@ function gamipress_update_points_types( $original_type = '', $new_type = '' ) {
 
 	gamipress_update_user_meta_points_types( $original_type, $new_type );
 	gamipress_flush_rewrite_rules();
+
 	return $new_type;
 }
 
@@ -324,7 +341,9 @@ function gamipress_update_points_types( $original_type = '', $new_type = '' ) {
  * @return integer                 User metas updated count.
  */
 function gamipress_update_user_meta_points_types( $original_type = '', $new_type = '' ) {
+
 	global $wpdb;
+
 	return $wpdb->get_results( $wpdb->prepare(
 		"
 		UPDATE $wpdb->usermeta
@@ -334,6 +353,7 @@ function gamipress_update_user_meta_points_types( $original_type = '', $new_type
 		"_gamipress_{$new_type}_points",
 		"_gamipress_{$original_type}_points"
 	) );
+
 }
 
 
@@ -346,8 +366,11 @@ function gamipress_update_user_meta_points_types( $original_type = '', $new_type
  * @return string           Updated URI.
  */
 function gamipress_points_type_rename_redirect( $location = '' ) {
+
 	remove_filter( 'redirect_post_location', __FUNCTION__, 99 );
+
 	return add_query_arg( 'message', 99, $location );
+
 }
 
 /**
@@ -360,9 +383,11 @@ function gamipress_points_type_rename_redirect( $location = '' ) {
  * @return array $messages Compiled list of messages.
  */
 function gamipress_points_type_update_messages( $messages ) {
+
 	$messages['points-type'] = array_fill( 1, 10, __( 'Points Type saved successfully.', 'gamipress' ) );
 	$messages['points-type']['99'] = sprintf( __('Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>.', 'gamipress'), '<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . __( 'widgets', 'gamipress' ) . '</a>' );
 
 	return $messages;
+
 }
 add_filter( 'post_updated_messages', 'gamipress_points_type_update_messages' );

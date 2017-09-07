@@ -535,6 +535,61 @@ li.requirement-row label {
 	}
 }
 
+/* GamiPress Licensing Settings */
+.gamipress_page_gamipress_settings #opt-content-licenses .meta-box-sortables {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	margin-left: -8px;
+	margin-right: -8px;
+}
+
+.gamipress_page_gamipress_settings #opt-content-licenses .postbox {
+	width: 100%;
+	margin: 0 8px 16px;
+}
+
+.gamipress_page_gamipress_settings #opt-content-licenses .gamipress-license-thumbnail {
+	margin: -6px -12px 0;
+}
+
+.gamipress_page_gamipress_settings #opt-content-licenses .cmb-th,
+.gamipress_page_gamipress_settings #opt-content-licenses .cmb-td {
+	width: 100%;
+	padding: 6px 0;
+}
+
+.gamipress_page_gamipress_settings #opt-content-licenses .cmb-td input {
+	width: 100%;
+}
+
+.gamipress_page_gamipress_settings #opt-content-licenses .license-expiration-notice,
+.gamipress_page_gamipress_settings #opt-content-licenses .renew-license-notice {
+	display: inline;
+}
+
+.gamipress_page_gamipress_settings #opt-content-licenses .renew-license-notice:before {
+	content: ' '; /* Add a space between expiration and renew notices */
+}
+
+@media screen and (min-width: 1600px) {
+
+	.gamipress_page_gamipress_settings #opt-content-licenses .postbox {
+		width: 25%;
+	}
+
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1600px) {
+	.gamipress_page_gamipress_settings #opt-content-licenses .postbox {
+		width: 33.333333333%;
+	}
+}
+
 /* GamiPress Add-ons */
 .gamipress-plugin-card .name, .gamipress-plugin-card .desc {
 	margin-left: 0;
@@ -602,6 +657,10 @@ li.requirement-row label {
 	.gamipress-plugin-card:nth-child(4n+1) {
 		clear: both;
 		margin-left: 0;
+	}
+
+	.gamipress-plugin-card:nth-child(3n) {
+		margin-right: 8px;
 	}
 }
 

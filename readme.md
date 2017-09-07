@@ -145,6 +145,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.1 ###
+
+* Fixed points/achievement type renaming functionality.
+* Added Chinese translation by 张无忌 (Zhang Wuji).
+
 ### 1.1.0 ###
 
 * Added a lot of hooks on all plugin templates.

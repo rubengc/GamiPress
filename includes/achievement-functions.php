@@ -721,11 +721,27 @@ add_action( 'transition_post_status', 'gamipress_flush_rewrite_on_published_achi
  * @return array            Updated post data.
  */
 function gamipress_maybe_update_achievement_type( $data = array(), $post_args = array() ) {
+
+	// If user set an empty slug, then generate it
+	if( empty( $post_args['post_name'] ) ) {
+		$post_args['post_name'] = wp_unique_post_slug(
+			sanitize_title( $post_args['post_title'] ),
+			$post_args['ID'],
+			$post_args['post_status'],
+			$post_args['post_type'],
+			$post_args['post_parent']
+		);
+	}
+
     if ( gamipress_achievement_type_changed( $post_args ) ) {
+
         $original_type = get_post( $post_args['ID'] )->post_name;
         $new_type = $post_args['post_name'];
+
         $data['post_name'] = gamipress_update_achievement_types( $original_type, $new_type );
+
         add_filter( 'redirect_post_location', 'gamipress_achievement_type_rename_redirect', 99 );
+
     }
 
 	return $data;
@@ -741,12 +757,14 @@ add_filter( 'wp_insert_post_data' , 'gamipress_maybe_update_achievement_type' , 
  * @return bool             True if name has changed, otherwise false.
  */
 function gamipress_achievement_type_changed( $post_args = array() ) {
+
 	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 		return false;
 	}
 
 	$original_post = ( !empty( $post_args['ID'] ) && isset( $post_args['ID'] ) ) ? get_post( $post_args['ID'] ) : null;
 	$status = false;
+
 	if ( is_object( $original_post ) ) {
 		if (
 			'achievement-type' === $post_args['post_type']
@@ -782,7 +800,9 @@ function gamipress_update_achievement_types( $original_type = '', $new_type = ''
 	gamipress_update_earned_meta_achievement_types( $original_type, $new_type );
 	gamipress_update_active_meta_achievement_types( $original_type, $new_type );
 	gamipress_flush_rewrite_rules();
+
 	return $new_type;
+
 }
 
 /**
@@ -794,15 +814,18 @@ function gamipress_update_achievement_types( $original_type = '', $new_type = ''
  * @param string $new_type      New achievement type.
  */
 function gamipress_update_achievements_achievement_types( $original_type = '', $new_type = '' ) {
+
 	$items = get_posts( array(
 		'posts_per_page' => -1,
 		'post_status'    => 'any',
 		'post_type'      => $original_type,
 		'fields'         => 'id',
 	) );
+
 	foreach ( $items as $item ) {
 		set_post_type( $item->ID, $new_type );
 	}
+
 }
 
 /**
@@ -814,15 +837,19 @@ function gamipress_update_achievements_achievement_types( $original_type = '', $
  * @param string $new_type      New achievement type.
  */
 function gamipress_update_p2p_achievement_types( $original_type = '', $new_type = '' ) {
+
 	global $wpdb;
+
 	$p2p_relationships = array(
 		"step-to-{$original_type}" => "step-to-{$new_type}",
 		"{$original_type}-to-step" => "{$new_type}-to-step",
 		"{$original_type}-to-points-award" => "{$new_type}-to-points-award",
 	);
+
 	foreach ( $p2p_relationships as $old => $new ) {
 		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->p2p SET p2p_type = %s WHERE p2p_type = %s", $new, $old ) );
 	}
+
 }
 
 /**
@@ -834,7 +861,9 @@ function gamipress_update_p2p_achievement_types( $original_type = '', $new_type 
  * @param string $new_type      New achievement type.
  */
 function gamipress_update_earned_meta_achievement_types( $original_type = '', $new_type = '' ) {
+
 	$metas = gamipress_get_unserialized_achievement_metas( '_gamipress_achievements', $original_type );
+
 	if ( ! empty( $metas ) ) {
 		foreach ( $metas as $meta ) {
 			foreach ( $meta->meta_value as $site_id => $achievements ) {
@@ -843,6 +872,7 @@ function gamipress_update_earned_meta_achievement_types( $original_type = '', $n
 			update_user_meta( $meta->user_id, $meta->meta_key, $meta->meta_value );
 		}
 	}
+
 }
 
 /**
@@ -854,13 +884,17 @@ function gamipress_update_earned_meta_achievement_types( $original_type = '', $n
  * @param string $new_type      New achievement type.
  */
 function gamipress_update_active_meta_achievement_types( $original_type = '', $new_type = '' ) {
+
 	$metas = gamipress_get_unserialized_achievement_metas( '_gamipress_active_achievements', $original_type );
+
 	if ( ! empty( $metas ) ) {
 		foreach ( $metas as $meta ) {
 			$meta->meta_value = gamipress_update_meta_achievement_types( $meta->meta_value, $original_type, $new_type );
+
 			update_user_meta( $meta->user_id, $meta->meta_key, $meta->meta_value );
 		}
 	}
+
 }
 
 /**
@@ -874,12 +908,15 @@ function gamipress_update_active_meta_achievement_types( $original_type = '', $n
  */
 function gamipress_get_unserialized_achievement_metas( $meta_key = '', $original_type = '' ) {
 	$metas = gamipress_get_achievement_metas( $meta_key, $original_type );
+
 	if ( ! empty( $metas ) ) {
 		foreach ( $metas as $key => $meta ) {
 			$metas[ $key ]->meta_value = maybe_unserialize( $meta->meta_value );
 		}
 	}
+
 	return $metas;
+
 }
 
 /**
@@ -892,7 +929,9 @@ function gamipress_get_unserialized_achievement_metas( $meta_key = '', $original
  * @return array                 User achievement metas.
  */
 function gamipress_get_achievement_metas( $meta_key = '', $original_type = '' ) {
+
 	global $wpdb;
+
 	return $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT *
@@ -903,6 +942,7 @@ function gamipress_get_achievement_metas( $meta_key = '', $original_type = '' ) 
 		$meta_key,
 		$original_type
 	) );
+
 }
 
 /**
@@ -917,13 +957,17 @@ function gamipress_get_achievement_metas( $meta_key = '', $original_type = '' ) 
  * @return array $achievements
  */
 function gamipress_update_meta_achievement_types( $achievements = array(), $original_type = '', $new_type = '' ) {
+
 	if ( is_array( $achievements ) && ! empty( $achievements ) ) {
+
 		foreach ( $achievements as $key => $achievement ) {
 			if ( $achievement->post_type === $original_type ) {
 				$achievements[ $key ]->post_type = $new_type;
 			}
 		}
+
 	}
+
 	return $achievements;
 }
 
@@ -936,8 +980,11 @@ function gamipress_update_meta_achievement_types( $achievements = array(), $orig
  * @return string           Updated URI.
  */
 function gamipress_achievement_type_rename_redirect( $location = '' ) {
+
 	remove_filter( 'redirect_post_location', __FUNCTION__, 99 );
+
 	return add_query_arg( 'message', 99, $location );
+
 }
 
 /**
@@ -950,9 +997,12 @@ function gamipress_achievement_type_rename_redirect( $location = '' ) {
  * @return array $messages Compiled list of messages.
  */
 function gamipress_achievement_type_update_messages( $messages ) {
+
 	$messages['achievement-type'] = array_fill( 1, 10, __( 'Achievement Type saved successfully.', 'gamipress' ) );
 	$messages['achievement-type']['99'] = sprintf( __('Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>.', 'gamipress'), '<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . __( 'widgets', 'gamipress' ) . '</a>' );
+
 	return $messages;
+
 }
 add_filter( 'post_updated_messages', 'gamipress_achievement_type_update_messages' );
 
