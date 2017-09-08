@@ -145,6 +145,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.2 ###
+
+* Added automatic updates functionality.
+* Added descriptions to all settings.
+* Improvements on admin area forms styles.
+
 ### 1.1.1 ###
 
 * Fixed points/achievement type renaming functionality.

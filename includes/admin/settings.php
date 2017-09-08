@@ -99,6 +99,7 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
         'fields' => apply_filters( 'gamipress_general_settings_fields', array(
             'minimum_role' => array(
                 'name' => __( 'Minimum role to administer GamiPress', 'gamipress' ),
+                'desc' => __( 'Minimum role an user needs to access to GamiPress management areas.', 'gamipress' ),
                 'type' => 'select',
                 'options' => array(
                     'manage_options' => __( 'Administrator', 'gamipress' ),
@@ -108,10 +109,18 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
             ),
             'achievement_image_size' => array(
                 'name' => __( 'Achievement Image Size', 'gamipress' ),
+                'desc' => __( 'Maximum dimensions for the achievements featured image.', 'gamipress' ),
                 'type' => 'size',
             ),
+            'automatic_updates' => array(
+                'name' => __( 'Automatic Updates', 'gamipress' ),
+                'desc' => __( 'Check this option to automatically get the latest features, bugfixes and security updates as they are released.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
             'debug_mode' => array(
-                'name' => __( 'Enable Debug Mode', 'gamipress' ),
+                'name' => __( 'Debug Mode', 'gamipress' ),
+                'desc' => __( 'Check this option to enable the debug mode.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -139,11 +148,13 @@ function gamipress_settings_style_meta_boxes( $meta_boxes ) {
         'fields' => apply_filters( 'gamipress_style_settings_fields', array(
             'disable_css' => array(
                 'name' => __( 'Disable frontend CSS', 'gamipress' ),
+                'desc' => __( 'Check this option to stop enqueue frontend CSS resources.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
             'disable_js' => array(
                 'name' => __( 'Disable frontend Javascript', 'gamipress' ),
+                'desc' => __( 'Check this option to stop enqueue frontend Javascript resources.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -270,7 +281,7 @@ function gamipress_settings_licenses_meta_boxes( $meta_boxes ) {
                                 if( $slug === $plugin->info->slug ) {
                                     $field['thumbnail'] = $plugin->info->thumbnail;
 
-                                    // Thumbnail found so exist loop
+                                    // Thumbnail found so exit loop
                                     break;
                                 }
 
@@ -365,6 +376,9 @@ function gamipress_register_settings_page() {
                     }
 
                     $meta_box['id'] = $meta_box_id;
+
+                    $meta_box['display_cb'] = false;
+                    $meta_box['admin_menu_hook'] = false;
 
                     $meta_box['show_on'] = array(
                         'key'   => 'options-page',

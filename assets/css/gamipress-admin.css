@@ -471,6 +471,10 @@ li.requirement-row label {
 	margin-left: 22px;
 }
 
+#postbox-container-1 #side-sortables .gamipress-box-form .gamipress-switch .cmb-td {
+	min-height: 32px;
+}
+
 /* GamiPress forms on widgets area */
 .widget[id*="_gamipress_"] .widget-content .cmb-th {
     padding: 0;
@@ -482,61 +486,99 @@ li.requirement-row label {
 }
 
 /* GamiPress Settings */
-.gamipress_page_gamipress_settings .postbox h2.hndle,
-.gamipress_page_gamipress_settings .cmb-row.cmb-type-title {
+.gamipress_settings.cmb2-options-page {
+	max-width: 100%;
+}
+
+.gamipress_settings.cmb2-options-page .cmb2-metabox > .cmb-row {
+	border: none;
+	box-shadow: none;
+}
+
+.gamipress_settings.cmb2-options-page .cmb2-metabox > .cmb-row:not(:first-of-type) {
+	border-top: 1px solid #e9e9e9;
+}
+
+.gamipress_settings .postbox h2.hndle {
 	background: #fafafa;
 	color: #23282d;
 }
 
-.gamipress_page_gamipress_settings .cmb-row.cmb-type-title {
-	border-top: 1px solid #eee;
-	border-bottom: 1px solid #eee;
+.gamipress_settings.cmb2-options-page .cmb-row.cmb-type-title {
+	border-top: 1px solid #e9e9e9;
+	border-bottom: 1px solid #e9e9e9;
 	margin:	0 -12px;
-	padding: 0 12px;
 }
 
-.gamipress_page_gamipress_settings .cmb2-metabox .cmb-row:first-child.cmb-type-title {
+.gamipress_settings.cmb2-options-page .cmb2-wrap .cmb-type-title .cmb2-metabox-title {
+	font-size: 14px;
+	text-transform: none;
+}
+
+.gamipress_settings.cmb2-options-page .cmb2-metabox > .cmb-row:first-child.cmb-type-title {
 	border-top: 0;
 	margin-top: -12px;
 }
 
-.gamipress_page_gamipress_settings .cmb-row.cmb-type-title .cmb2-metabox-title {
+.gamipress_settings .cmb-row.cmb-type-title .cmb2-metabox-title {
 	margin-top: 0;
 	padding: 8px 0 0 0;
 }
 
-.gamipress_page_gamipress_settings .gamipress-switch input + label:before,
-.gamipress_page_gamipress_settings .gamipress-switch input + label:after {
+.gamipress_settings .gamipress-switch input + label:before,
+.gamipress_settings .gamipress-switch input + label:after {
 	top: 22px;
 }
 
-.gamipress_page_gamipress_settings .nav-tab .dashicons {
+.gamipress_settings .nav-tab .dashicons {
 	vertical-align: text-bottom;
 	margin-right: 2px;
 }
 
-.gamipress_page_gamipress_settings input[name="submit-cmb"] {
+.gamipress_settings input[name="submit-cmb"] {
 	float: left;
 	margin-right: 12px;
 }
 
+.gamipress_settings .gamipress-switch input + label {
+	display: block;
+	min-height: 32px;
+}
+
+.gamipress_settings .gamipress-switch input + label:before,
+.gamipress_settings .gamipress-switch input + label:after {
+	top: 4px;
+	left: 10px;
+}
+
+.gamipress_settings .gamipress-switch .cmb2-metabox-description {
+	display: inline-block;
+	margin-left: 50px;
+	margin-top: 7px;
+}
+
 @media screen and (max-width: 782px) {
-	.gamipress_page_gamipress_settings .cmb-th {
+	.gamipress_settings .cmb-th {
 		width: 100%;
 	}
 
-	.gamipress_page_gamipress_settings .cmb-td {
+	.gamipress_settings .cmb-td {
 		padding: 15px 0;
 	}
 
-	.gamipress_page_gamipress_settings .gamipress-switch input + label:before,
-	.gamipress_page_gamipress_settings .gamipress-switch input + label:after {
+	.gamipress_settings .gamipress-switch input + label:before,
+	.gamipress_settings .gamipress-switch input + label:after {
+		left: 1px;
+	}
+
+	.gamipress_settings .gamipress-switch input + label:before,
+	.gamipress_settings .gamipress-switch input + label:after {
 		top: 4px;
 	}
 }
 
 /* GamiPress Licensing Settings */
-.gamipress_page_gamipress_settings #opt-content-licenses .meta-box-sortables {
+.gamipress_settings #opt-content-licenses .meta-box-sortables {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -548,44 +590,49 @@ li.requirement-row label {
 	margin-right: -8px;
 }
 
-.gamipress_page_gamipress_settings #opt-content-licenses .postbox {
+.gamipress_settings #opt-content-licenses .postbox {
 	width: 100%;
 	margin: 0 8px 16px;
 }
 
-.gamipress_page_gamipress_settings #opt-content-licenses .gamipress-license-thumbnail {
+.gamipress_settings #opt-content-licenses .gamipress-license-thumbnail {
 	margin: -6px -12px 0;
 }
 
-.gamipress_page_gamipress_settings #opt-content-licenses .cmb-th,
-.gamipress_page_gamipress_settings #opt-content-licenses .cmb-td {
+.gamipress_settings #opt-content-licenses .cmb-row {
+	border: none;
+	padding-bottom: 0;
+}
+.gamipress_settings #opt-content-licenses .cmb-th,
+.gamipress_settings #opt-content-licenses .cmb-td {
 	width: 100%;
 	padding: 6px 0;
+	margin-left: 0;
 }
 
-.gamipress_page_gamipress_settings #opt-content-licenses .cmb-td input {
+.gamipress_settings #opt-content-licenses .cmb-td input {
 	width: 100%;
 }
 
-.gamipress_page_gamipress_settings #opt-content-licenses .license-expiration-notice,
-.gamipress_page_gamipress_settings #opt-content-licenses .renew-license-notice {
+.gamipress_settings #opt-content-licenses .license-expiration-notice,
+.gamipress_settings #opt-content-licenses .renew-license-notice {
 	display: inline;
 }
 
-.gamipress_page_gamipress_settings #opt-content-licenses .renew-license-notice:before {
+.gamipress_settings #opt-content-licenses .renew-license-notice:before {
 	content: ' '; /* Add a space between expiration and renew notices */
 }
 
 @media screen and (min-width: 1600px) {
 
-	.gamipress_page_gamipress_settings #opt-content-licenses .postbox {
+	.gamipress_settings #opt-content-licenses .postbox {
 		width: 25%;
 	}
 
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1600px) {
-	.gamipress_page_gamipress_settings #opt-content-licenses .postbox {
+	.gamipress_settings #opt-content-licenses .postbox {
 		width: 33.333333333%;
 	}
 }

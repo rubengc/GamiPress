@@ -50,6 +50,8 @@ function cmb2_render_size_field_type( $field, $value, $object_id, $object_type, 
         </li>
     </div>
     <?php
+
+    echo $field_type->_desc( true );
 }
 add_action( 'cmb2_render_size', 'cmb2_render_size_field_type', 10, 5 );
 
