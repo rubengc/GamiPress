@@ -41,6 +41,7 @@
 			field.css({'background':'#faa', 'color':'#a00', 'border-color':'#a55' });
 
 			// Output a custom warning
+			// TODO: Localization here
 			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + label + '\'s slug supports a maximum of 20 characters.</span>');
 		} else {
 			// Restore the input style

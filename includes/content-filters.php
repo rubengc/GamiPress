@@ -15,26 +15,14 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return null
  */
 function gamipress_do_single_filters() {
-
-	// check we're in the right place
-	if( ! gamipress_is_main_loop() ) {
+	// Check we're in the right place
+	if ( ! gamipress_is_main_loop() )
 		return;
-	}
-
-	// enqueue our stylesheet if not disabled
-	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
-		wp_enqueue_style( 'gamipress-css' );
-	}
-
-	// no worries.. we'll add back later
-	remove_filter( 'the_content', 'wpautop' );
 
 	// filter out the post title
 	// add_filter( 'the_title', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
-
 	// and filter out the post image
 	add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
-
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
 
@@ -48,11 +36,11 @@ add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
  */
 function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
 
-	// remove, but only on the main loop!
+	// Remove, but only on the main loop!
 	if ( gamipress_is_main_loop( $id ) )
 		return '';
 
-	// nothing to see here... move along
+	// Nothing to see here... move along
 	return $html;
 }
 
@@ -65,13 +53,9 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  */
 function gamipress_reformat_entries( $content ) {
 
-	// filter, but only on the main loop!
+	// Filter, but only on the main loop!
 	if ( ! gamipress_is_main_loop( get_the_ID() ) )
 		return $content;
-
-	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
-		wp_enqueue_style( 'gamipress-css' );
-	}
 
 	// now that we're where we want to be, tell the filters to stop removing
 	$GLOBALS['gamipress_reformat_content'] = true;
@@ -107,10 +91,10 @@ function gamipress_is_main_loop( $id = false ) {
 
 	$slugs = gamipress_get_achievement_types_slugs();
 	// only run our filters on the gamipress singular pages
-	if ( is_admin() || empty( $slugs ) || !is_singular( $slugs ) )
+	if ( is_admin() || empty( $slugs ) || ! is_singular( $slugs ) )
 		return false;
 	// w/o id, we're only checking template context
-	if ( !$id )
+	if ( ! $id )
 		return true;
 
 	// Checks several variables to be sure we're in the main loop (and won't effect things like post pagination titles)

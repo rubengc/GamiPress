@@ -17,7 +17,7 @@
             $('#requirements-list li').each(function( index, value ) {
 
                 // Write it's current position to our hidden input value
-                $(this).children('input[name="order"]').val( index );
+                $(this).find('input[name="order"]').val( index );
 
             });
 
@@ -163,12 +163,12 @@ function gamipress_add_requirement( post_id ) {
             jQuery( response ).appendTo( '#requirements-list' );
 
             // Dynamically add the menu order for the new points award to be one higher than the last in line
-            var new_requirement_menu_order = Number( jQuery( '#requirements-list li.requirement-row' ).eq( -2 ).children( 'input[name="order"]' ).val() ) + 1;
-            jQuery( '#requirements-list li.requirement-row:last' ).children( 'input[name="order"]' ).val( new_requirement_menu_order );
+            var new_requirement_menu_order = Number( jQuery( '#requirements-list li.requirement-row' ).eq( -2 ).find( 'input[name="order"]' ).val() ) + 1;
+            jQuery( '#requirements-list li.requirement-row:last' ).find( 'input[name="order"]' ).val( new_requirement_menu_order );
 
             // Trigger a change for the new trigger type <select> element
-            jQuery( '#requirements-list li.requirement-row:last' ).children( '.select-trigger-type' ).change();
-            jQuery( '#requirements-list li.requirement-row:last' ).children( '.limit-type' ).change();
+            jQuery( '#requirements-list li.requirement-row:last' ).find( '.select-trigger-type' ).change();
+            jQuery( '#requirements-list li.requirement-row:last' ).find( '.limit-type' ).change();
 
             // Hide the spinner
             jQuery( '.requirements-spinner' ).removeClass('is-active');

@@ -435,8 +435,9 @@ function gamipress_get_network_achievement_types_for_user( $user_id ) {
 
 		// Merge earned achievements to our achievement type array
 		$achievement_types = gamipress_get_user_earned_achievement_types( $user_id );
-		if ( is_array($achievement_types) ) {
-			$all_achievement_types = array_merge($achievement_types,$all_achievement_types);
+
+		if ( is_array( $achievement_types ) ) {
+			$all_achievement_types = array_merge( $achievement_types, $all_achievement_types );
 		}
 	}
 

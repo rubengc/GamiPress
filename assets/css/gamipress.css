@@ -114,34 +114,27 @@ ul.gamipress-achievement-earners-list li {
 }
 
 /* Single template */
-.achievement-wrap {
-	clear: both;
-	padding: 0 0 20px;
-	margin: 0 0 20px;
-	border-bottom: 1px dotted #aaa;
-	overflow: hidden;
-}
-.achievement-wrap {
-	padding: 20px 0;
-	margin: 20px 0;
-	border-top: 1px dotted #aaa;
-}
 .achievement-wrap .gamipress-achievement-image {
 	margin: 0 15px 15px 0;
 	opacity: .4;
 }
+
 .user-has-earned .achievement-wrap .gamipress-achievement-image {
 	opacity: 1;
 }
+
 .gamipress-achievement-points {
 	font-weight: bold;
 }
+
 .gamipress-required-achievements {
 	clear: both;
 }
+
 .gamipress-required-achievements .user-has-earned {
 	text-decoration: line-through;
 }
+
 .gamipress-required-achievements .user-has-earned:hover {
 	text-decoration: none;
 }

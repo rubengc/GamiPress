@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.1.2
+ * Version:         1.1.3
  * Author:          GamiPress
  * Author URI:      https://gamipress.com/
  * Text Domain:     gamipress
@@ -108,7 +108,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.1.2' );
+		define( 'GAMIPRESS_VER', '1.1.3' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -130,12 +130,19 @@ final class GamiPress {
      */
     private function libraries() {
 
+		// Global libraries
         require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
-		require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
-		require_once GAMIPRESS_DIR . 'libraries/cmb2-metatabs-options/cmb2_metatabs_options.php';
-		require_once GAMIPRESS_DIR . 'libraries/cmb2-field-edd-license/cmb2-field-edd-license.php';
-		require_once GAMIPRESS_DIR . 'libraries/advanced-select-field-type.php';
-		require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
+
+		// Admin libraries
+		if( is_admin() ) {
+
+			require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
+			require_once GAMIPRESS_DIR . 'libraries/cmb2-metatabs-options/cmb2_metatabs_options.php';
+			require_once GAMIPRESS_DIR . 'libraries/cmb2-field-edd-license/cmb2-field-edd-license.php';
+			require_once GAMIPRESS_DIR . 'libraries/advanced-select-field-type.php';
+			require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
+
+		}
 
     }
 

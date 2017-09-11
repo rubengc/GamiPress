@@ -8,9 +8,9 @@
 global $gamipress_template_args;
 
 // Check if user has earned this Achievement, and add an 'earned' class
-$class = gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) ) ? ' earned' : ''; ?>
+$class = gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) ) ? 'user-has-earned' : ''; ?>
 
-<div class="achievement-wrap<?php echo $class; ?>">
+<div class="single-achievement achievement-wrap <?php echo $class; ?>">
 
     <?php
     /**

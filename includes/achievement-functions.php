@@ -405,6 +405,10 @@ function gamipress_get_user_earned_achievement_types( $user_id = 0 ){
 
 	$achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id ) );
 
+	if( ! $achievements ) {
+		return array();
+	}
+
 	$achievement_types = wp_list_pluck( $achievements, 'post_type' );
 
 	return array_unique( $achievement_types );
