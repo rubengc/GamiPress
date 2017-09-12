@@ -97,17 +97,18 @@ function gamipress_get_installed_plugins_slugs() {
  */
 function gamipress_render_plugin_card( $plugin ) {
 
-    if( $plugin->info->status !== 'publish' ) {
-        return;
-    }
-
+    // Plugin title
     $name = $plugin->info->title;
+
+    // Plugin slug
     $slug = $plugin->wp_info ? $plugin->wp_info->slug : $plugin->info->slug;
 
+    // Available actions for this plugin
     $action_links = array();
 
+    $details_link = self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=' . $slug . '&amp;TB_iframe=true&amp;width=600&amp;height=550' );
+
     if( $plugin->wp_info ) {
-        $details_link = self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=' . $slug . '&amp;TB_iframe=true&amp;width=600&amp;height=550' );
 
         // Check plugin status
         if ( current_user_can( 'install_plugins' ) || current_user_can( 'update_plugins' ) ) {
@@ -157,14 +158,64 @@ function gamipress_render_plugin_card( $plugin ) {
                     break;
             }
         }
-
-        $action_links[] = '<a href="' . esc_url( $details_link ) . '" class="more-details thickbox open-plugin-details-modal" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '">' . __( 'More Details' ) . '</a>';
     } else {
-        $details_link = 'https://gamipress.com/add-ons/' . $plugin->info->slug;
 
-        $action_links[] = '<a href="' . $details_link . '" class="button button-primary" target="_blank">' . __( 'Get this Add-on', 'gamipress' ) . '</a>';
+        $plugin_file = $slug . '/' . $slug . '.php';
+
+        // If is installed
+        if ( is_dir( WP_PLUGIN_DIR . '/' . $slug ) ) {
+
+            // If is active
+            if ( is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
+
+                // Plugin installed and active, so field should be registered
+                $field = cmb2_get_field( $slug . '-license', str_replace( '-', '_', $slug ) . '_license', 'gamipress_settings', 'options-page' );
+
+                $license = cmb2_edd_license_data( $field->escaped_value() );
+                $license_status = ( $license !== false ) ? $license->license : false;
+
+                if( $license_status !== 'valid' ) {
+                    // "Activate License" action
+                    $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_settings&tab=opt-tab-licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
+                } else {
+                    // "Active and Registered" action
+                    $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active and Registered', 'gamipress' ) . '</button>';
+                }
+            } else if ( current_user_can( 'activate_plugins' ) ) {
+                // If not active and current user can activate plugins, then add the "Activate" action
+
+                $button_text  = __( 'Activate' );
+                $button_label = _x( 'Activate %s', 'plugin' );
+                $activate_url = add_query_arg( array(
+                    '_wpnonce'    => wp_create_nonce( 'activate-plugin_' . $plugin_file ),
+                    'action'      => 'activate',
+                    'plugin'      => $plugin_file,
+                ), network_admin_url( 'plugins.php' ) );
+
+                if ( is_network_admin() ) {
+                    $button_text  = __( 'Network Activate' );
+                    $button_label = _x( 'Network Activate %s', 'plugin' );
+                    $activate_url = add_query_arg( array( 'networkwide' => 1 ), $activate_url );
+                }
+
+                // "Activate" action
+                $action_links[] = sprintf(
+                    '<a href="%1$s" class="button activate-now" aria-label="%2$s">%3$s</a>',
+                    esc_url( $activate_url ),
+                    esc_attr( sprintf( $button_label, $name ) ),
+                    $button_text
+                );
+            }
+        } else {
+
+            // "Get this Add-on" action
+            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get this Add-on', 'gamipress' ) . '</a>';
+
+        }
     }
 
+    // "More Details" action
+    $action_links[] = '<a href="' . esc_url( $details_link ) . '" class="more-details thickbox open-plugin-details-modal" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '">' . __( 'More Details' ) . '</a>';
 
     ?>
     <div class="gamipress-plugin-card plugin-card plugin-card-<?php echo sanitize_html_class( $slug ); ?>">
@@ -204,7 +255,7 @@ function gamipress_render_plugin_card( $plugin ) {
 }
 
 /**
- * Function to contact with the GamiPress website API
+ * Function to contact with the GamiPress plugins API
  *
  * @since  1.1.0
  *
@@ -261,3 +312,157 @@ function gamipress_plugins_api() {
     return $res;
 
 }
+
+/**
+ * Function to contact with the GamiPress website API
+ *
+ * @since  1.1.4
+ *
+ * @param string  $action
+ * @param array   $data
+ *
+ * @return object|WP_Error Object with GamiPress website API response
+ */
+function gamipress_api_request( $action, $data ) {
+
+    // Slug is required to meet the plugin to work
+    if( ! isset( $data['slug'] ) ) {
+        return false;
+    }
+
+    $slug = $data['slug'];
+
+    $cache_key = "gamipress_api_request_{$action}_{$slug}";
+
+    // If a GamiPress api request has been cached already, then use cached response
+    if ( false !== ( $response = get_transient( $cache_key ) ) ) {
+        return $response;
+    }
+
+    $api_params = array(
+        'edd_action' => 'get_version',
+        'license'    => ! empty( $data['license'] ) ? $data['license'] : '',
+        'item_name'  => isset( $data['item_name'] ) ? $data['item_name'] : false,
+        'item_id'    => isset( $data['item_id'] ) ? $data['item_id'] : false,
+        'version'    => isset( $data['version'] ) ? $data['version'] : false,
+        'slug'       => $data['slug'],
+        'author'     => isset( $data['author'] ) ? $data['author'] : '',
+        'url'        => home_url(),
+        'beta'       => ! empty( $data['beta'] ),
+    );
+
+    $request = wp_remote_post( 'http://gamipress.com/edd-sl-api/', array( 'timeout' => 15, 'sslverify' => true, 'body' => $api_params ) );
+
+    if ( is_wp_error( $request ) ) {
+        // Return the error
+        return $request;
+    }
+
+    $request = json_decode( wp_remote_retrieve_body( $request ) );
+
+    // Unserialize sections
+    if ( $request && isset( $request->sections ) ) {
+        $request->sections = maybe_unserialize( $request->sections );
+    } else {
+        $request = false;
+    }
+
+    // Unserialize banners
+    if ( $request && isset( $request->banners ) ) {
+        $request->banners = maybe_unserialize( $request->banners );
+    }
+
+    // Turn each section into array
+    if( ! empty( $request->sections ) ) {
+        foreach( $request->sections as $key => $section ) {
+            $request->$key = (array) $section;
+        }
+    }
+
+    // Set a transient of 12 hours with GamiPress api response
+    set_transient( $cache_key, $request, 12 * HOUR_IN_SECONDS );
+
+    return $request;
+}
+
+/**
+ * Overrides the plugin information when plugin is not stored on WordPress.org just on GamiPress.com
+ *
+ * @since  1.1.4
+ *
+ * @param mixed   $data
+ * @param string  $action
+ * @param object  $args
+ *
+ * @return object $data
+ */
+function gamipress_override_plugin_information( $data, $action = '', $args = null ) {
+
+    if ( $action != 'plugin_information' ) {
+        return $data;
+    }
+
+    if ( ! isset( $args->slug ) ) {
+        return $data;
+    }
+
+    $plugins = gamipress_plugins_api();
+
+    $override_plugin = false;
+
+    foreach( $plugins as $plugin ) {
+        // Just override if plugin has not assigned to a WordPress.org plugin
+        if ( $args->slug === $plugin->info->slug && ! $plugin->wp_info ) {
+
+            $override_plugin = $plugin;
+
+            // Plugin to override found, so exit loop
+            break;
+
+        }
+    }
+
+    // if not plugin to override, return
+    if ( $override_plugin === false ) {
+        return $data;
+    }
+
+    $to_send = array(
+        'slug'   => $override_plugin->info->slug,
+        'is_ssl' => is_ssl(),
+        'fields' => array(
+            'banners' => array(),
+            'reviews' => false
+        )
+    );
+
+    $api_response = gamipress_api_request( 'plugin_information', $to_send );
+
+    if ( $api_response !== false) {
+        $data = $api_response;
+    }
+
+    // Convert sections into an associative array, since we're getting an object, but Core expects an array.
+    if ( isset( $data->sections ) && ! is_array( $data->sections ) ) {
+        $new_sections = array();
+        foreach ( $data->sections as $key => $value ) {
+            $new_sections[ $key ] = $value;
+        }
+
+        $data->sections = $new_sections;
+    }
+
+    // Convert banners into an associative array, since we're getting an object, but Core expects an array.
+    if ( isset( $data->banners ) && ! is_array( $data->banners ) ) {
+        $new_banners = array();
+        foreach ( $data->banners as $key => $value ) {
+            $new_banners[ $key ] = $value;
+        }
+
+        $data->banners = $new_banners;
+    }
+
+    return $data;
+
+}
+add_filter( 'plugins_api', 'gamipress_override_plugin_information', 10, 3 );

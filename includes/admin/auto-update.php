@@ -27,16 +27,29 @@ function gamipress_auto_update_plugin( $update, $item ) {
         return $update;
     }
 
-    // If not GamiPress, return
-    if( $item['slug'] !== 'gamipress' ) {
+    $automatic_updates = (bool) gamipress_get_option( 'automatic_updates', false );
+
+    // Return if not automatic updates enabled
+    if( $automatic_updates !== true ) {
         return $update;
     }
 
-    $automatic_updates = (bool) gamipress_get_option( 'automatic_updates', false );
+    $automatic_updates_plugins = gamipress_get_option( 'automatic_updates_plugins', false );
 
-    // Just return true if automatic updates was checked
-    if( $automatic_updates === true ) {
-        return true;
+    // if not is an array, initialize
+    if( ! is_array( $automatic_updates_plugins  ) ) {
+        $automatic_updates_plugins = array();
+    }
+
+    // Automatic updates plugins is an array of plugin_slug => plugin_title, so we need the keys
+    $automatic_updates_plugins = array_keys( $automatic_updates_plugins );
+
+    // Add gamipress to the plugins slugs
+    $automatic_updates_plugins[] = 'gamipress';
+
+    // Just return true if automatic updates was checked and plugin is on the automatic updates plugins array
+    if( in_array( $item['slug'], $automatic_updates_plugins ) ) {
+        return $update;
     }
 
     return $update;

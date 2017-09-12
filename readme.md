@@ -145,6 +145,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.4 ###
+
+* New hook to allow add-ons to be automatically updated if automatic updates are active.
+* Improvements on admin area styles.
+
 ### 1.1.3 ###
 
 * Improvements on frontend CSS.

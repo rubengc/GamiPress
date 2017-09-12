@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.1.2
+Stable tag: 1.1.4
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -142,6 +142,12 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+
+= 1.1.4 =
+
+* New hook to allow add-ons to be automatically updated if automatic updates are active.
+* Improvements on admin area styles.
 
 = 1.1.3 =
 

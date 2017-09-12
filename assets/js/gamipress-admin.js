@@ -51,4 +51,20 @@
 
 	$('.gamipress-form input#post_name').trigger( 'keyup' );
 
+	$('.gamipress_settings #automatic_updates').change( function() {
+		var target = $('.cmb2-id-automatic-updates-plugins');
+
+		if( target.length ) {
+			if( $(this).prop('checked') ) {
+				target.slideDown();
+			} else {
+				target.slideUp();
+			}
+		}
+	} );
+
+	if( ! $('.gamipress_settings #automatic_updates').prop('checked') ) {
+		$('.cmb2-id-automatic-updates-plugins').hide();
+	}
+
 })( jQuery );

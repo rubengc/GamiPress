@@ -94,6 +94,17 @@ function gamipress_get_settings_sections() {
  */
 function gamipress_settings_general_meta_boxes( $meta_boxes ) {
 
+    $automatic_updates_plugins = array();
+
+    /**
+     * Hook to register a plugin on GamiPress automatic updates feature
+     *
+     * @since  1.1.4
+     *
+     * @param array $automatic_updates_plugins Registered plugins for automatic updates
+     */
+    $automatic_updates_plugins = apply_filters( 'gamipress_automatic_updates_plugins', $automatic_updates_plugins );
+
     $meta_boxes['general-settings'] = array(
         'title' => __( 'General Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_general_settings_fields', array(
@@ -118,6 +129,13 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
+            'automatic_updates_plugins' => array(
+                'name' => __( 'Plugins', 'gamipress' ),
+                'desc' => __( 'Check GamiPress add-ons you want to automatically update.', 'gamipress' ),
+                'type' => 'multicheck',
+                'classes' => 'gamipress-switch',
+                'options' => $automatic_updates_plugins
+            ),
             'debug_mode' => array(
                 'name' => __( 'Debug Mode', 'gamipress' ),
                 'desc' => __( 'Check this option to enable the debug mode.', 'gamipress' ),
@@ -126,6 +144,11 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
             ),
         ) )
     );
+
+    // if not plugins for automatic updates, then remove field
+    if( empty( $automatic_updates_plugins ) ) {
+        unset( $meta_boxes['general-settings']['fields']['automatic_updates_plugins'] );
+    }
 
     return $meta_boxes;
 
@@ -271,12 +294,12 @@ function gamipress_settings_licenses_meta_boxes( $meta_boxes ) {
 
                         // Try to find the plugin thumbnail from plugins API
                         if ( ! is_wp_error( $plugins )
-                            && isset( $field['item_name'] )
+                            && isset( $field['file'] )
                             && ! isset( $field['thumbnail'] ) ) {
 
                             foreach ( $plugins as $plugin ) {
 
-                                $slug = str_replace( ' ', '-', strtolower( $field['item_name'] ) );
+                                $slug = basename( $field['file'], '.php' );
 
                                 if( $slug === $plugin->info->slug ) {
                                     $field['thumbnail'] = $plugin->info->thumbnail;
