@@ -258,6 +258,8 @@ function gamipress_tools_system_meta_boxes( $meta_boxes ) {
         ) )
     );
 
+    $locale = get_locale();
+
     // Get WordPress Theme info
     $theme_data   = wp_get_theme();
     $theme        = $theme_data->Name . ' (' . $theme_data->Version . ')';
@@ -266,6 +268,11 @@ function gamipress_tools_system_meta_boxes( $meta_boxes ) {
     if ( ! empty( $parent_theme ) ) {
         $parent_theme_data = wp_get_theme( $parent_theme );
         $parent_theme      = $parent_theme_data->Name . ' (' . $parent_theme_data->Version . ')';
+    }
+
+    // Retrieve current plugin information
+    if( ! function_exists( 'get_plugins' ) ) {
+        include ABSPATH . '/wp-admin/includes/plugin.php';
     }
 
     $plugins = get_plugins();
@@ -307,7 +314,7 @@ function gamipress_tools_system_meta_boxes( $meta_boxes ) {
             'wp_locale' => array(
                 'name' => __( 'Language', 'gamipress' ),
                 'type' => 'display',
-                'value' => ( ! empty( get_locale() ) ? get_locale() : 'en_US' ),
+                'value' => ( ! empty( $locale ) ? $locale : 'en_US' ),
             ),
             'wp_permalink' => array(
                 'name' => __( 'Permalink Structure', 'gamipress' ),
