@@ -168,19 +168,28 @@ function gamipress_render_plugin_card( $plugin ) {
             // If is active
             if ( is_plugin_active( $slug . '/' . $slug . '.php' ) ) {
 
-                // Plugin installed and active, so field should be registered
-                $field = cmb2_get_field( $slug . '-license', str_replace( '-', '_', $slug ) . '_license', 'gamipress_settings', 'options-page' );
+                // If has licensing enabled
+                if( $plugin->licensing->enabled ) {
 
-                $license = cmb2_edd_license_data( $field->escaped_value() );
-                $license_status = ( $license !== false ) ? $license->license : false;
+                    // Plugin installed and active, so field should be registered
+                    $field = cmb2_get_field( $slug . '-license', str_replace( '-', '_', $slug ) . '_license', 'gamipress_settings', 'options-page' );
 
-                if( $license_status !== 'valid' ) {
-                    // "Activate License" action
-                    $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_settings&tab=opt-tab-licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
+                    $license = cmb2_edd_license_data( $field->escaped_value() );
+                    $license_status = ( $license !== false ) ? $license->license : false;
+
+                    if( $license_status !== 'valid' ) {
+                        // "Activate License" action
+                        $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_settings&tab=opt-tab-licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
+                    } else {
+                        // "Active and License Registered" action
+                        $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active and License Registered', 'gamipress' ) . '</button>';
+                    }
+
                 } else {
-                    // "Active and Registered" action
-                    $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active and Registered', 'gamipress' ) . '</button>';
+                    // "Active" action
+                    $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active', 'gamipress' ) . '</button>';
                 }
+
             } else if ( current_user_can( 'activate_plugins' ) ) {
                 // If not active and current user can activate plugins, then add the "Activate" action
 
@@ -305,8 +314,8 @@ function gamipress_plugins_api() {
 
         $res = (array) $res->products;
 
-        // Set a transient of 12 hours with api plugins
-        set_transient( 'gamipress_plugins_api', $res, 12 * HOUR_IN_SECONDS );
+        // Set a transient of 24 hours with api plugins
+        set_transient( 'gamipress_plugins_api', $res, 24 * HOUR_IN_SECONDS );
     }
 
     return $res;
@@ -379,8 +388,8 @@ function gamipress_api_request( $action, $data ) {
         }
     }
 
-    // Set a transient of 12 hours with GamiPress api response
-    set_transient( $cache_key, $request, 12 * HOUR_IN_SECONDS );
+    // Set a transient of 24 hours with GamiPress api response
+    set_transient( $cache_key, $request, 24 * HOUR_IN_SECONDS );
 
     return $request;
 }

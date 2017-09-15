@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -143,6 +143,17 @@ GamiPress comes with the following widgets:
 
 == Changelog ==
 
+= 1.1.5 =
+
+* New Feature: GamiPress tools page.
+* Added the Clean Data tool.
+* Added the Reset Data tool.
+* Added the Server Info tool.
+* Added the WordPress Info tool.
+* Added the GamiPress Info tool.
+* Added the Download System Info tool.
+* Now, on delete an achievement or points type, the assigned steps/points awards will be removed too.
+* Improvements and bug fixes on admin area styles and javascript functions.
 
 = 1.1.4 =
 

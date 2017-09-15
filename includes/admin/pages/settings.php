@@ -1,6 +1,6 @@
 <?php
 /**
- * Admin Settings Pages
+ * Admin Settings Page
  *
  * @package     GamiPress\Admin\Settings
  * @since       1.0.0
@@ -39,6 +39,97 @@ function gamipress_get_option( $option_name, $default = false ) {
     return isset( GamiPress()->settings[ $option_name ] ) ? GamiPress()->settings[ $option_name ] : $default;
 
 }
+
+/**
+ * Register settings page.
+ *
+ * @since  1.0.0
+ *
+ * @return void
+ */
+function gamipress_register_settings_page() {
+
+    $tabs = array();
+    $boxes = array();
+
+    // Loop settings sections
+    foreach( gamipress_get_settings_sections() as $section_id => $section ) {
+
+        $meta_boxes = array();
+
+        /**
+         * Filter: gamipress_settings_{$section_id}_meta_boxes
+         *
+         * @param array $meta_boxes
+         *
+         * @return array
+         */
+        $meta_boxes = apply_filters( "gamipress_settings_{$section_id}_meta_boxes", $meta_boxes );
+
+        if( ! empty( $meta_boxes ) ) {
+
+            // Loop settings section meta boxes
+            foreach( $meta_boxes as $meta_box_id => $meta_box ) {
+
+                // Only add settings meta box if has fields
+                if( isset( $meta_box['fields'] ) && ! empty( $meta_box['fields'] ) ) {
+
+                    // Loop meta box fields
+                    foreach( $meta_box['fields'] as $field_id => $field ) {
+
+                        $field['id'] = $field_id;
+
+                        $meta_box['fields'][$field_id] = $field;
+
+                    }
+
+                    $meta_box['id'] = $meta_box_id;
+
+                    $meta_box['display_cb'] = false;
+                    $meta_box['admin_menu_hook'] = false;
+
+                    $meta_box['show_on'] = array(
+                        'key'   => 'options-page',
+                        'value' => array( 'gamipress_settings' ),
+                    );
+
+                    $box = new_cmb2_box( $meta_box );
+
+                    $box->object_type( 'options-page' );
+
+                    $boxes[] = $box;
+
+                }
+            }
+
+            $tabs[] = array(
+                'id'    => $section_id,
+                'title' => ( ( isset( $section['icon'] ) ) ? '<i class="dashicons ' . $section['icon'] . '"></i>' : '' ) . $section['title'],
+                'desc'  => '',
+                'boxes' => array_keys( $meta_boxes ),
+            );
+        }
+    }
+
+    // Create the options page
+    new Cmb2_Metatabs_Options( array(
+        'key'      => 'gamipress_settings',
+        'class'    => 'gamipress-page',
+        'title'    => __( 'Settings', 'gamipress' ),
+        'topmenu'  => 'gamipress',
+        'view_capability' => gamipress_get_manager_capability(),
+        'cols'     => 1,
+        'boxes'    => $boxes,
+        'tabs'     => $tabs,
+        'menuargs' => array(
+            'menu_title' => __( 'Settings', 'gamipress' ),
+        ),
+        'savetxt' => __( 'Save Settings', 'gamipress' ),
+        'resettxt' => __( 'Reset Settings', 'gamipress' ),
+    ) );
+
+}
+add_action( 'cmb2_admin_init', 'gamipress_register_settings_page', 11 );
 
 /**
  * GamiPress registered settings sections
@@ -354,96 +445,6 @@ function gamipress_settings_network_meta_boxes( $meta_boxes ) {
 
 }
 add_filter( 'gamipress_settings_network_meta_boxes', 'gamipress_settings_network_meta_boxes' );
-
-/**
- * Register settings page.
- *
- * @since  1.0.0
- *
- * @return void
- */
-function gamipress_register_settings_page() {
-
-    $tabs = array();
-    $boxes = array();
-
-    // Loop settings sections
-    foreach( gamipress_get_settings_sections() as $section_id => $section ) {
-
-        $meta_boxes = array();
-
-        /**
-         * Filter: gamipress_settings_{$section_id}_meta_boxes
-         *
-         * @param array $meta_boxes
-         *
-         * @return array
-         */
-        $meta_boxes = apply_filters( "gamipress_settings_{$section_id}_meta_boxes", $meta_boxes );
-
-        if( ! empty( $meta_boxes ) ) {
-
-            // Loop settings section meta boxes
-            foreach( $meta_boxes as $meta_box_id => $meta_box ) {
-
-                // Only add settings meta box if has fields
-                if( isset( $meta_box['fields'] ) && ! empty( $meta_box['fields'] ) ) {
-
-                    // Loop meta box fields
-                    foreach( $meta_box['fields'] as $field_id => $field ) {
-
-                        $field['id'] = $field_id;
-
-                        $meta_box['fields'][$field_id] = $field;
-
-                    }
-
-                    $meta_box['id'] = $meta_box_id;
-
-                    $meta_box['display_cb'] = false;
-                    $meta_box['admin_menu_hook'] = false;
-
-                    $meta_box['show_on'] = array(
-                        'key'   => 'options-page',
-                        'value' => array( 'gamipress_settings' ),
-                    );
-
-                    $box = new_cmb2_box( $meta_box );
-
-                    $box->object_type( 'options-page' );
-
-                    $boxes[] = $box;
-
-                }
-            }
-
-            $tabs[] = array(
-                'id'    => $section_id,
-                'title' => ( ( isset( $section['icon'] ) ) ? '<i class="dashicons ' . $section['icon'] . '"></i>' : '' ) . $section['title'],
-                'desc'  => '',
-                'boxes' => array_keys( $meta_boxes ),
-            );
-        }
-    }
-
-    // Create the options page
-    new Cmb2_Metatabs_Options( array(
-        'key'      => 'gamipress_settings',
-        'title'    => __( 'Settings', 'gamipress' ),
-        'topmenu'  => 'gamipress',
-        'view_capability' => gamipress_get_manager_capability(),
-        'cols'     => 1,
-        'boxes'    => $boxes,
-        'tabs'     => $tabs,
-        'menuargs' => array(
-            'menu_title' => __( 'Settings', 'gamipress' ),
-        ),
-        'savetxt' => __( 'Save Settings', 'gamipress' ),
-        'resettxt' => __( 'Reset Settings', 'gamipress' ),
-    ) );
-
-}
-add_action( 'cmb2_admin_init', 'gamipress_register_settings_page' );
 
 /**
  * Get capability required for GamiPress administration.

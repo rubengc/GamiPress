@@ -71,6 +71,7 @@ function gamipress_admin_register_scripts() {
     wp_register_script( 'gamipress-admin-widgets-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-widgets' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-log-extra-data-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-log-extra-data-ui' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-admin-tools-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-tools' . $suffix . '.js', array( 'jquery', 'jquery-ui-dialog' ), GAMIPRESS_VER, true );
 }
 add_action( 'admin_init', 'gamipress_admin_register_scripts' );
 
@@ -124,6 +125,15 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         ) );
 
         wp_enqueue_script( 'gamipress-admin-widgets-js' );
+    }
+
+    // Tools page
+    if( $hook === 'gamipress_page_gamipress_tools' ) {
+
+        wp_enqueue_script( 'gamipress-admin-tools-js' );
+
+        // Enqueue WordPress jQuery UI Dialog style
+        wp_enqueue_style ( 'wp-jquery-ui-dialog' );
     }
 }
 add_action( 'admin_enqueue_scripts', 'gamipress_admin_enqueue_scripts', 100 );

@@ -144,7 +144,7 @@ function gamipress_get_unassigned_requirements() {
 
     global $wpdb;
 
-    $points_awards = $wpdb->get_results( "
+    $requirements = $wpdb->get_results( "
         SELECT p.ID
         FROM {$wpdb->posts} AS p
         LEFT JOIN {$wpdb->p2p} AS p2p
@@ -153,9 +153,9 @@ function gamipress_get_unassigned_requirements() {
         AND p2p.p2p_from IS NULL
     ", ARRAY_A );
 
-    // If it has a points type, return it, otherwise return false
-    if ( ! empty( $points_awards ) )
-        return $points_awards;
+    // If it has results, return them, otherwise return false
+    if ( ! empty( $requirements ) )
+        return $requirements;
     else
         return false;
 

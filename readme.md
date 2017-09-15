@@ -145,6 +145,18 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.5 ###
+
+* New Feature: GamiPress tools page.
+* Added the Clean Data tool.
+* Added the Reset Data tool.
+* Added the Server Info tool.
+* Added the WordPress Info tool.
+* Added the GamiPress Info tool.
+* Added the Download System Info tool.
+* Now, on delete an achievement or points type, the assigned steps/points awards will be removed too.
+* Improvements and bug fixes on admin area styles and javascript functions.
+
 ### 1.1.4 ###
 
 * New hook to allow add-ons to be automatically updated if automatic updates are active.

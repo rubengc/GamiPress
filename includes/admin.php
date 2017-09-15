@@ -8,7 +8,6 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
-require_once GAMIPRESS_DIR . 'includes/admin/add-ons.php';
 require_once GAMIPRESS_DIR . 'includes/admin/contextual-help.php';
 require_once GAMIPRESS_DIR . 'includes/admin/debug.php';
 require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes.php';
@@ -16,8 +15,10 @@ require_once GAMIPRESS_DIR . 'includes/admin/plugins.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
-require_once GAMIPRESS_DIR . 'includes/admin/settings.php';
-require_once GAMIPRESS_DIR . 'includes/admin/support.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/support.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
 
 /**
  * Create GamiPress Settings menus
@@ -210,3 +211,72 @@ function gamipress_posts_custom_columns( $column_name, $post_id ) {
     }
 }
 add_action( 'manage_posts_custom_column', 'gamipress_posts_custom_columns', 10, 2 );
+
+/**
+ * On delete our post, remove relationships
+ *
+ * @since 1.1.5
+ *
+ * @param integer $post_id
+ */
+function gamipress_on_delete_post( $post_id ) {
+
+    $post_type = get_post_type( $post_id );
+
+    $is_achievement = gamipress_is_achievement( $post_id );
+
+    if( ! in_array( $post_type, array( 'points-type', 'achievement-type' ) ) || ! $is_achievement ) {
+        return;
+    }
+
+    if( $post_type === 'achievement-type' ) {
+        // Remove all achievements of this achievement type
+
+        global $wpdb;
+
+        $achievements = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM   $wpdb->posts AS p WHERE  p.post_type = %s", $post_type ) );
+
+        foreach( $achievements as $achievement ) {
+            // Remove the achievement
+            wp_delete_post( $achievement['ID'] );
+        }
+    } else if( $post_type === 'points-type' || $is_achievement ) {
+        // Remove steps/points awards assigned
+
+        if( $post_type === 'points-type' ) {
+            $requirement_type = 'points-award';
+        } else {
+            $requirement_type = 'step';
+        }
+
+        // Get assigned requirements
+        $assigned_requirements = gamipress_get_assigned_requirements( $post_id, $requirement_type );
+
+        if( $assigned_requirements ) {
+
+            foreach( $assigned_requirements as $requirement ) {
+                // Remove the requirement
+                wp_delete_post( $requirement->ID );
+            }
+
+        }
+    }
+
+}
+add_action( 'delete_post', 'gamipress_on_delete_post' );
+
+/**
+ * Processes all GamiPress actions sent via POST and GET by looking for the 'gamipress-action' request and running do_action() to call the function
+ *
+ * @since 1.1.5
+ */
+function gamipress_process_actions() {
+    if ( isset( $_POST['gamipress-action'] ) ) {
+        do_action( 'gamipress_action_post_' . $_POST['gamipress-action'], $_POST );
+    }
+
+    if ( isset( $_GET['gamipress-action'] ) ) {
+        do_action( 'gamipress_action_get_' . $_GET['gamipress-action'], $_GET );
+    }
+}
+add_action( 'admin_init', 'gamipress_process_actions' );

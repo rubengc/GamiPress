@@ -33,69 +33,35 @@
 
         // Grab our selected trigger type and achievement selector
         var trigger_type = $(this).val();
-        var achievement_selector = $(this).siblings('.select-achievement-type');
+        var achievement_type_selector = $(this).siblings('.select-achievement-type');
+        var achievement_post_selector = $(this).siblings('.select-achievement-post');
 
-        // If we're working with achievements, show the achievement selecter (otherwise, hide it)
-        if ( 'any-achievement' == trigger_type || 'all-achievements' == trigger_type || 'specific-achievement' == trigger_type ) {
-            achievement_selector.show();
+        // If we're working with achievements, show the achievement type selector (otherwise, hide it)
+        if (trigger_type === 'any-achievement' || trigger_type === 'all-achievements' || trigger_type === 'specific-achievement') {
+            achievement_type_selector.show();
+
+            // Trigger a change for our achievement type post selector to determine if it should show
+            achievement_type_selector.change();
         } else {
-            achievement_selector.hide();
+            // Hide achievement type and post selector
+            achievement_type_selector.hide();
+            achievement_post_selector.hide();
         }
 
-        // Trigger a change for our achievement type post selector to determine if it should show
-        achievement_selector.change();
+        var post_selector = $(this).siblings('.select-post');
 
-    });
+        // Lets to check if there is a specific activity trigger
+        if ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ) {
+            // Show select post
+            post_selector.show().data( 'post-type', gamipress_requirements_ui.specific_activity_triggers[trigger_type].join(',') );
 
-    // Trigger a change for our trigger type post selector to determine if it should show
-    $( '.select-trigger-type' ).change();
-
-    // Listen for a change to our achievement type selectors
-    $('#requirements-list').on( 'change', '.select-achievement-type', function() {
-
-        // Setup our necessary variables
-        var achievement_selector = $(this);
-        var achievement_type     = achievement_selector.val();
-        var requirement_id       = achievement_selector.parent('li').attr('data-requirement-id');
-        var requirement_type     = achievement_selector.siblings('input[name="requirement_type"]').val();
-        var excluded_posts       = [achievement_selector.siblings('input[name="post_id"]').val()];
-        var trigger_type         = achievement_selector.siblings('.select-trigger-type').val();
-
-        // If we've selected a *specific* achievement type, show our post selector
-        // and populate it w/ the corresponding achievement posts
-        if ( '' !== achievement_type && 'specific-achievement' == trigger_type ) {
-            achievement_selector.siblings('.select-post').hide();
-            achievement_selector.siblings('.select-post.select2-hidden-accessible').next().hide();
-
-            $.post(
-                ajaxurl,
-                {
-                    action: 'gamipress_requirement_achievement_post',
-                    requirement_id: requirement_id,
-                    requirement_type: requirement_type,
-                    achievement_type: achievement_type,
-                    excluded_posts: excluded_posts
-                },
-                function( response ) {
-                    achievement_selector.siblings('select.select-achievement-post').html( response );
-                    achievement_selector.siblings('select.select-achievement-post').show();
-                }
-            );
-
-        } else {
-            // Otherwise, keep our post selector hidden
-
-            achievement_selector.siblings('.select-achievement-post').hide();
-            achievement_selector.siblings('.select-post').hide();
-            achievement_selector.siblings('.select-post.select2-hidden-accessible').next().hide();
-
-            if ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ) {
-                achievement_selector.siblings('.select-post').show().data( 'post-type', gamipress_requirements_ui.specific_activity_triggers[trigger_type].join(',') );
-                achievement_selector.siblings('.select-post.select2-hidden-accessible')
+            // Check if post selector Select2 has been initialized
+            if( post_selector.hasClass('select2-hidden-accessible') ) {
+                post_selector
                     .val('').change()   // Reset value
-                    .next().show();     // Show
-
-                achievement_selector.siblings( '.select-post:not(.select2-hidden-accessible)' ).select2({
+                    .next().show();     // Show Select2 container
+            } else {
+                post_selector.select2({
                     ajax: {
                         url: ajaxurl,
                         dataType: 'json',
@@ -131,6 +97,50 @@
                     multiple: false
                 });
             }
+        } else {
+            // Hide select post
+            post_selector.hide();
+
+            if( post_selector.hasClass('select2-hidden-accessible') ) {
+                post_selector.next().hide(); // Hide select2 container
+            }
+        }
+
+    });
+
+    // Trigger a change for our trigger type post selector to determine if it should show
+    $( '.select-trigger-type' ).change();
+
+    // Listen for a change to our achievement type selectors
+    $('#requirements-list').on( 'change', '.select-achievement-type', function() {
+
+        // Setup our necessary variables
+        var achievement_selector = $(this);
+        var achievement_post     = $(this).siblings('.select-achievement-post');
+        var achievement_type     = achievement_selector.val();
+        var requirement_id       = achievement_selector.parent('li').attr('data-requirement-id');
+        var requirement_type     = achievement_selector.siblings('input[name="requirement_type"]').val();
+        var excluded_posts       = [achievement_selector.siblings('input[name="post_id"]').val()];
+        var trigger_type         = achievement_selector.siblings('.select-trigger-type').val();
+
+        // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
+        if ( '' !== achievement_type && 'specific-achievement' === trigger_type ) {
+            $.post(
+                ajaxurl,
+                {
+                    action: 'gamipress_requirement_achievement_post',
+                    requirement_id: requirement_id,
+                    requirement_type: requirement_type,
+                    achievement_type: achievement_type,
+                    excluded_posts: excluded_posts
+                },
+                function( response ) {
+                    achievement_post.html( response );
+                    achievement_post.show();
+                }
+            );
+        } else {
+            achievement_post.hide();
         }
     });
 

@@ -304,19 +304,6 @@ function gamipress_remove_meta_boxes() {
 add_action( 'admin_menu', 'gamipress_remove_meta_boxes' );
 
 /**
- * Render a text-only field type for our CMB integration.
- *
- * @since  1.0.0
- * @param  array $field The field data array
- * @param  string $meta The stored meta for this field (which will always be blank)
- * @return string       HTML markup for our field
- */
-function gamipress_cmb_render_text_only(  $field, $value, $object_id, $object_type, $field_type ) {
-	echo $field->args( 'description' );
-}
-add_action( 'cmb2_render_text_only', 'gamipress_cmb_render_text_only', 10, 5 );
-
-/**
  * Override the title/content field retrieval so CMB2 doesn't look in post-meta.
  */
 function gamipress_cmb2_override_post_title_display( $data, $post_id ) {

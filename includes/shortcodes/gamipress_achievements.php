@@ -158,7 +158,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	$gamipress_template_args = array();
 
 	// TODO: Backward compatibility for change on 1.0.5
-	// TODO: Remove on 1.1.0
+	// TODO: Remove on 1.2.0
 	if( isset( $atts['show_filter'] ) ) $atts['filter'] = $atts['show_filter'];
 	if( isset( $atts['show_search'] ) ) $atts['search'] = $atts['show_search'];
 
