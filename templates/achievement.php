@@ -3,7 +3,7 @@
  * Achievement template
  *
  * This template can be overridden by copying it to yourtheme/gamipress/achievement.php
- * To override a specific achievement type just copy it as yourtheme/gamipress/achievement-{achivement-type}.php
+ * To override a specific achievement type just copy it as yourtheme/gamipress/achievement-{achievement-type}.php
  */
 global $gamipress_template_args;
 
@@ -54,20 +54,20 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
          */
         do_action( 'gamipress_after_achievement_title', get_the_ID(), $gamipress_template_args ); ?>
 
+        <?php echo gamipress_achievement_points_markup( get_the_ID() ); ?>
+
+        <?php
+        /**
+         * After achievement points
+         *
+         * @param $achievement_id   integer The Achievement ID
+         * @param $template_args    array   Template received arguments
+         */
+        do_action( 'gamipress_after_achievement_points', get_the_ID(), $gamipress_template_args ); ?>
+
         <?php // Achievement Short Description
         if( $gamipress_template_args['excerpt'] === 'yes' ) :  ?>
             <div class="gamipress-achievement-excerpt">
-                <?php echo gamipress_achievement_points_markup( get_the_ID() ); ?>
-
-                <?php
-                /**
-                 * After achievement points
-                 *
-                 * @param $achievement_id   integer The Achievement ID
-                 * @param $template_args    array   Template received arguments
-                 */
-                do_action( 'gamipress_after_achievement_points', get_the_ID(), $gamipress_template_args ); ?>
-
                 <?php
                 $excerpt = has_excerpt() ? get_post_field( 'post_excerpt', get_the_ID() ) : get_post_field( 'post_content', get_the_ID() );
                 echo wpautop( apply_filters( 'get_the_excerpt', $excerpt ) );
@@ -134,4 +134,4 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_
      */
     do_action( 'gamipress_after_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
 
-</div><!-- .gamipress-achievements-list-item -->
+</div><!-- .gamipress-achievement -->

@@ -3,7 +3,7 @@
  * Single Achievement template
  *
  * This template can be overridden by copying it to yourtheme/gamipress/single-achievement.php
- * To override a specific achievement type just copy it as yourtheme/gamipress/single-achievement-{achivement-type}.php
+ * To override a specific achievement type just copy it as yourtheme/gamipress/single-achievement-{achievement-type}.php
  */
 global $gamipress_template_args;
 

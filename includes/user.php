@@ -163,7 +163,7 @@ function gamipress_save_user_profile_fields( $user_id = 0 ) {
     foreach( $points_types as $points_type => $data ) {
         // Update each user's points type total, but only if edited
         if ( isset( $_POST['user_' . $points_type . '_points'] ) && $_POST['user_' . $points_type . '_points'] != gamipress_get_users_points( $user_id, $points_type ) ) {
-            gamipress_update_users_points( $user_id, absint( $_POST['user_' . $points_type . '_points'] ), get_current_user_id(), $points_type );
+            gamipress_update_users_points( $user_id, absint( $_POST['user_' . $points_type . '_points'] ), get_current_user_id(), null, $points_type );
         }
     }
 }
@@ -178,31 +178,33 @@ add_action( 'edit_user_profile_update', 'gamipress_save_user_profile_fields' );
  * @return string               concatenated markup
  */
 function gamipress_profile_user_points( $user = null ) {
-    $points_types = gamipress_get_points_types();
 
-    echo '<h2>' . __( 'Points Balance', 'gamipress' ) . '</h2>';
+    $points_types = gamipress_get_points_types(); ?>
 
-    echo '<table class="form-table">';
+    <h2><?php _e( 'Points Balance', 'gamipress' ); ?></h2>
 
-    echo '<tr>';
-        echo '<th><label for="user_points">' . __( 'Earned Default Points', 'gamipress' ) . '</label></th>';
-        echo '<td>';
-            echo '<input type="text" name="user_points" id="user_points" value="' . gamipress_get_users_points( $user->ID ) . '" class="regular-text" /><br />';
-            echo '<span class="description">' . __( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ) . '</span>';
-        echo '</td>';
-    echo '</tr>';
+    <table class="form-table">
 
-    foreach( $points_types as $points_type => $data ) {
-        echo '<tr>';
-            echo '<th><label for="user_' . $points_type . '_points">' . sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ) . '</label></th>';
-            echo '<td>';
-                echo '<input type="text" name="user_' . $points_type . '_points" id="user_' . $points_type . '_points" value="' . gamipress_get_users_points( $user->ID, $points_type ) . '" class="regular-text" /><br />';
-                echo '<span class="description">' . sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ) . '</span>';
-            echo '</td>';
-        echo '</tr>';
-    }
+    <tr>
+        <th><label for="user_points"><?php _e( 'Earned Default Points', 'gamipress' ); ?></label></th>
+        <td>
+            <input type="text" name="user_points" id="user_points" value="<?php echo gamipress_get_users_points( $user->ID ); ?>" class="regular-text" /><br />
+            <span class="description"><?php _e( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ); ?></span>
+        </td>
+    </tr>
 
-    echo '</table>';
+    <?php foreach( $points_types as $points_type => $data ) : ?>
+        <tr>
+            <th><label for="user_<?php echo $points_type; ?>_points"><?php echo sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ); ?></label></th>
+            <td>
+                <input type="text" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo gamipress_get_users_points( $user->ID, $points_type ); ?>" class="regular-text" /><br />
+                <span class="description"><?php echo sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ); ?></span>
+            </td>
+        </tr>
+	<?php endforeach; ?>
+
+    </table>
+	<?php
 }
 
 /**
@@ -213,38 +215,66 @@ function gamipress_profile_user_points( $user = null ) {
  * @return string               concatenated markup
  */
 function gamipress_profile_user_achievements( $user = null ) {
-    $achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
+	$achievement_types = gamipress_get_achievement_types();
+    $achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) ); ?>
 
-    echo '<h2>' . __( 'Earned Achievements', 'gamipress' ) . '</h2>';
+    <h2><?php _e( 'Earned Achievements', 'gamipress' ); ?></h2>
 
-    // List all of a user's earned achievements
-    if ( $achievements ) {
-        echo '<table class="widefat gamipress-table">';
-        echo '<thead><tr>';
-        echo '<th>'. __( 'Image', 'gamipress' ) .'</th>';
-        echo '<th>'. __( 'Name', 'gamipress' ) .'</th>';
-        echo '<th>'. __( 'Action', 'gamipress' ) .'</th>';
-        echo '</tr></thead>';
+	<?php // List all of a user's earned achievements
+    if ( $achievements ) : ?>
+        <table class="wp-list-table widefat fixed striped gamipress-table">
+			<thead>
+				<tr>
+					<th width="60px"><?php _e( 'Image', 'gamipress' ); ?></th>
+					<th><?php _e( 'Name', 'gamipress' ); ?></th>
+					<th><?php _e( 'Date', 'gamipress' ); ?></th>
+					<th><?php _e( 'Action', 'gamipress' ); ?></th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ( $achievements as $achievement ) :
 
-        foreach ( $achievements as $achievement ) {
+					// Setup our revoke URL
+					$revoke_url = add_query_arg( array(
+						'action'         => 'revoke',
+						'user_id'        => absint( $user->ID ),
+						'achievement_id' => absint( $achievement->ID ),
+					) ); ?>
 
-            // Setup our revoke URL
-            $revoke_url = add_query_arg( array(
-                'action'         => 'revoke',
-                'user_id'        => absint( $user->ID ),
-                'achievement_id' => absint( $achievement->ID ),
-            ) );
+					<tr>
+						<td>
+							<?php echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ); ?>
+						</td>
+						<td>
+							<?php if( $achievement->post_type === 'step' || $achievement->post_type === 'points-award' ) : ?>
+								<strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+								<?php echo ( isset( $achievement_types[$achievement->post_type] ) ? '<br>' . $achievement_types[$achievement->post_type]['singular_name'] : '' ); ?>
 
-            echo '<tr>';
-            echo '<td>' . gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ) . '</td>';
-            echo '<td>' . ( ( $achievement->post_type === 'step' || $achievement->post_type === 'points-award' ) ? get_the_title( $achievement->ID ) : '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>' ) . '</td>';
-            echo '<td> <span class="delete"><a class="error" href="' . esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ) . '">' . __( 'Revoke Award', 'gamipress' ) . '</a></span></td>';
-            echo '</tr>';
-        }
-        echo '</table>';
-    } else {
-        echo '<p>' . __( 'This user has no earned any achievement', 'gamipress' ) . '</p>';
-    }
+								<?php // Output parent achievement
+								if( $parent_achievement = gamipress_get_parent_of_achievement( $achievement->ID ) ) : ?>
+									<?php echo ( isset( $achievement_types[$parent_achievement->post_type] ) ? ', ' . $achievement_types[$parent_achievement->post_type]['singular_name'] . ': ' : '' ); ?>
+									<?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
+								<?php elseif( $points_type = gamipress_get_points_award_points_type( $achievement->ID ) ) : ?>
+									<?php echo ', <a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
+								<?php endif; ?>
+							<?php else : ?>
+								<strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
+								<?php echo ( isset( $achievement_types[$achievement->post_type] ) ? '<br>' . $achievement_types[$achievement->post_type]['singular_name'] : '' ); ?>
+							<?php endif; ?>
+						</td>
+						<td>
+							<abbr title="<?php echo date( 'Y/m/d g:i:s a', $achievement->date_earned ); ?>"><?php echo date( 'Y/m/d', $achievement->date_earned ); ?></abbr>
+						</td>
+						<td>
+							<span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+			</tbody>
+        </table>
+	<?php else : ?>
+        <p><?php _e( 'This user has no earned any achievement', 'gamipress' ); ?></p>
+	<?php endif;
 }
 
 /**
@@ -256,6 +286,7 @@ function gamipress_profile_user_achievements( $user = null ) {
  * @return string               concatenated markup
  */
 function gamipress_profile_award_achievement( $user = null ) {
+	$achievement_types = gamipress_get_achievement_types();
 	$achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
     $achievement_ids = array_map( function( $achievement ) {
         return $achievement->ID;
@@ -273,11 +304,9 @@ function gamipress_profile_award_achievement( $user = null ) {
 			<td>
 				<select id="thechoices">
 				<option>Choose an achievement type</option>
-				<?php
-				foreach ( $achievement_types as $achievement_slug => $achievement_type ) {
+				<?php foreach ( $achievement_types as $achievement_slug => $achievement_type ) :
 					echo '<option value="'. $achievement_slug .'">' . ucwords( $achievement_type['singular_name'] ) .'</option>';
-				}
-				?>
+				endforeach; ?>
 				</select>
 			</td>
 		</tr>
@@ -285,13 +314,16 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 	<div id="boxes">
 		<?php foreach ( $achievement_types as $achievement_slug => $achievement_type ) : ?>
-			<table id="<?php echo esc_attr( $achievement_slug ); ?>" class="widefat gamipress-table">
-				<thead><tr>
-					<th><?php _e( 'Image', 'gamipress' ); ?></th>
-					<th><?php echo ucwords( $achievement_type['singular_name'] ); ?></th>
-					<th><?php _e( 'Action', 'gamipress' ); ?></th>
-					<th><?php _e( 'Awarded', 'gamipress' ); ?></th>
-				</tr></thead>
+			<table id="<?php echo esc_attr( $achievement_slug ); ?>" class="wp-list-table widefat fixed striped gamipress-table">
+
+				<thead>
+					<tr>
+						<th width="60px"><?php _e( 'Image', 'gamipress' ); ?></th>
+						<th><?php echo ucwords( $achievement_type['singular_name'] ); ?></th>
+						<th><?php _e( 'Actions', 'gamipress' ); ?></th>
+					</tr>
+				</thead>
+
 				<tbody>
 				<?php
 				// Load achievement type entries
@@ -305,6 +337,13 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 					<?php while ( $the_query->have_posts() ) : $the_query->the_post();
 
+						// if not parent object, skip
+						if( $achievement_slug === 'step' && ! $parent_achievement = gamipress_get_parent_of_achievement( get_the_ID() ) ) {
+							continue;
+						} else if( $achievement_slug === 'points-award' && ! $points_type = gamipress_get_points_award_points_type( get_the_ID() ) ) {
+							continue;
+						}
+
 						// Setup our award URL
 						$award_url = add_query_arg( array(
 							'action'         => 'award',
@@ -315,12 +354,22 @@ function gamipress_profile_award_achievement( $user = null ) {
 						<tr>
 							<td><?php the_post_thumbnail( array( 50, 50 ) ); ?></td>
 							<td>
-								<?php echo ( ( $achievement_slug === 'step' || $achievement_slug === 'points-award' ) ? get_the_title( get_the_ID() ) : '<a href="' . get_edit_post_link( get_the_ID() ) . '">' . get_the_title( get_the_ID() ) . '</a>' ); ?>
+								<?php if( $achievement_slug === 'step' || $achievement_slug === 'points-award' ) : ?>
+									<strong><?php echo get_the_title( get_the_ID() ); ?></strong>
+									<?php // Output parent achievement
+									if( $achievement_slug === 'step' && $parent_achievement ) : ?>
+										<?php echo ( isset( $achievement_types[$parent_achievement->post_type] ) ? '<br> ' . $achievement_types[$parent_achievement->post_type]['singular_name'] . ': ' : '' ); ?>
+										<?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
+									<?php elseif( $points_type ) : ?>
+										<br>
+										<?php echo '<a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
+									<?php endif; ?>
+								<?php else : ?>
+									<strong><?php echo '<a href="' . get_edit_post_link( get_the_ID() ) . '">' . get_the_title( get_the_ID() ) . '</a>'; ?></strong>
+								<?php endif; ?>
 							</td>
 							<td>
 								<a href="<?php echo esc_url( wp_nonce_url( $award_url, 'gamipress_award_achievement' ) ); ?>"><?php printf( __( 'Award %s', 'gamipress' ), ucwords( $achievement_type['singular_name'] ) ); ?></a>
-							</td>
-							<td>
 								<?php if ( in_array( get_the_ID(), (array) $achievement_ids ) ) :
 									// Setup our revoke URL
 									$revoke_url = add_query_arg( array(
@@ -329,7 +378,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 										'achievement_id' => absint( get_the_ID() ),
 									) );
 									?>
-									<span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
+									| <span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
 								<?php endif; ?>
 
 							</td>
@@ -343,12 +392,13 @@ function gamipress_profile_award_achievement( $user = null ) {
 				<?php endif; wp_reset_postdata(); ?>
 
 				</tbody>
+
 			</table><!-- #<?php echo esc_attr( $achievement_slug ); ?> -->
 		<?php endforeach; ?>
 	</div><!-- #boxes -->
 
 	<script type="text/javascript">
-		jQuery(document).ready(function($){
+		(function($){
 			<?php foreach ( $achievement_types as $achievement_slug => $achievement_type ) { ?>
 				$('#<?php echo $achievement_slug; ?>').hide();
 			<?php } ?>
@@ -358,7 +408,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 				else
 					$("#" + this.value).show().siblings().hide();
 			}).change();
-		});
+		})(jQuery);
 	</script>
 	<?php
 }

@@ -145,6 +145,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.6 ###
+
+* Full rework of the GamiPress user profile fields.
+* Fix: Sometimes updating manually user points balance does not works.
+* Improvements on admin area forms styles.
+
 ### 1.1.5 ###
 
 * New Feature: GamiPress tools page.

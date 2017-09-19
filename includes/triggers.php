@@ -49,10 +49,12 @@ function gamipress_get_activity_triggers() {
  * @return array Array of all specific activity triggers
  */
 function gamipress_get_specific_activity_triggers() {
+
 	return apply_filters( 'gamipress_specific_activity_triggers', array(
 		'gamipress_specific_new_comment' 	=> array( 'post', 'page' ),
 		'gamipress_specific_post_visit'  	=> array( 'post', 'page' ),
 	) );
+
 }
 
 /**

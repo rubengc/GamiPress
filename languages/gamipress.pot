@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-09-15 17:42+0200\n"
+"POT-Creation-Date: 2017-09-19 16:32+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -613,7 +613,7 @@ msgid "(WordPress could not establish a secure connection to gamipress.com. Plea
 msgstr ""
 
 #: includes/admin/pages/settings.php:118 includes/admin/pages/settings.php:125
-#: includes/admin/pages/tools.php:405 includes/admin/plugins.php:25
+#: includes/admin/pages/tools.php:412 includes/admin/plugins.php:25
 msgid "Settings"
 msgstr ""
 
@@ -736,7 +736,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:306 includes/triggers.php:170
+#: includes/admin/pages/settings.php:306 includes/triggers.php:172
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -878,13 +878,13 @@ msgstr ""
 msgid "Choose the stored data you want to reset."
 msgstr ""
 
-#: includes/admin/pages/tools.php:165 includes/admin/pages/tools.php:395
+#: includes/admin/pages/tools.php:165 includes/admin/pages/tools.php:402
 #: includes/post-types.php:88 includes/post-types.php:94
 #: includes/post-types.php:100
 msgid "Achievement Types"
 msgstr ""
 
-#: includes/admin/pages/tools.php:168 includes/admin/pages/tools.php:400
+#: includes/admin/pages/tools.php:168 includes/admin/pages/tools.php:407
 #: includes/post-types.php:22 includes/post-types.php:28
 #: includes/post-types.php:34 includes/shortcodes/gamipress_points_types.php:28
 msgid "Points Types"
@@ -918,7 +918,7 @@ msgstr ""
 msgid "PHP Configuration"
 msgstr ""
 
-#: includes/admin/pages/tools.php:229 includes/admin/pages/tools.php:328
+#: includes/admin/pages/tools.php:229 includes/admin/pages/tools.php:335
 msgid "Memory Limit"
 msgstr ""
 
@@ -942,103 +942,103 @@ msgstr ""
 msgid "Display Errors"
 msgstr ""
 
-#: includes/admin/pages/tools.php:284
+#: includes/admin/pages/tools.php:291
 msgid "WordPress Info"
 msgstr ""
 
-#: includes/admin/pages/tools.php:288
+#: includes/admin/pages/tools.php:295
 msgid "Site URL"
 msgstr ""
 
-#: includes/admin/pages/tools.php:293
+#: includes/admin/pages/tools.php:300
 msgid "Home URL"
 msgstr ""
 
-#: includes/admin/pages/tools.php:298
+#: includes/admin/pages/tools.php:305
 msgid "Multisite"
 msgstr ""
 
-#: includes/admin/pages/tools.php:303
+#: includes/admin/pages/tools.php:310
 msgid "Version"
 msgstr ""
 
-#: includes/admin/pages/tools.php:308
+#: includes/admin/pages/tools.php:315
 msgid "Language"
 msgstr ""
 
-#: includes/admin/pages/tools.php:313
+#: includes/admin/pages/tools.php:320
 msgid "Permalink Structure"
 msgstr ""
 
-#: includes/admin/pages/tools.php:318
+#: includes/admin/pages/tools.php:325
 msgid "Absolute Path"
 msgstr ""
 
-#: includes/admin/pages/tools.php:323
+#: includes/admin/pages/tools.php:330
 msgid "Debug"
 msgstr ""
 
-#: includes/admin/pages/tools.php:333
+#: includes/admin/pages/tools.php:340
 msgid "Table Prefix:"
 msgstr ""
 
-#: includes/admin/pages/tools.php:338
+#: includes/admin/pages/tools.php:345
 msgid "Active Theme"
 msgstr ""
 
-#: includes/admin/pages/tools.php:343
+#: includes/admin/pages/tools.php:350
 msgid "Parent Theme"
 msgstr ""
 
-#: includes/admin/pages/tools.php:348
+#: includes/admin/pages/tools.php:355
 msgid "Active Plugins"
 msgstr ""
 
-#: includes/admin/pages/tools.php:391
+#: includes/admin/pages/tools.php:398
 msgid "GamiPress Info"
 msgstr ""
 
-#: includes/admin/pages/tools.php:413
+#: includes/admin/pages/tools.php:420
 msgid "Download System Info"
 msgstr ""
 
-#: includes/admin/pages/tools.php:416
+#: includes/admin/pages/tools.php:423
 msgid "Download System Info File"
 msgstr ""
 
-#: includes/admin/pages/tools.php:449
+#: includes/admin/pages/tools.php:456
 msgid "This action will delete all of the entries you selected. It will be completely <strong>irrecoverable</strong>."
 msgstr ""
 
-#: includes/admin/pages/tools.php:451
+#: includes/admin/pages/tools.php:458
 msgid "Please, confirm the data that will be removed:"
 msgstr ""
 
-#: includes/admin/pages/tools.php:512 includes/admin/pages/tools.php:544
-#: includes/admin/pages/tools.php:572
+#: includes/admin/pages/tools.php:519 includes/admin/pages/tools.php:551
+#: includes/admin/pages/tools.php:579
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: includes/admin/pages/tools.php:524
+#: includes/admin/pages/tools.php:531
 #, php-format
 msgid "%s entry found."
 msgid_plural "%s entries found."
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/pages/tools.php:526
+#: includes/admin/pages/tools.php:533
 msgid "No data to clean."
 msgstr ""
 
-#: includes/admin/pages/tools.php:554
+#: includes/admin/pages/tools.php:561
 msgid "Cleanup process has been done successfully."
 msgstr ""
 
-#: includes/admin/pages/tools.php:567
+#: includes/admin/pages/tools.php:574
 msgid "No items selected."
 msgstr ""
 
-#: includes/admin/pages/tools.php:615
+#: includes/admin/pages/tools.php:622
 msgid "Data has been reset successfully."
 msgstr ""
 
@@ -1184,35 +1184,35 @@ msgstr ""
 msgid "No %s to display at this time."
 msgstr ""
 
-#: includes/content-filters.php:143
+#: includes/content-filters.php:145
 #, php-format
 msgid "%1$d %2$s Awards"
 msgstr ""
 
-#: includes/content-filters.php:145
+#: includes/content-filters.php:147
 #, php-format
 msgid "%1$d %2$s"
 msgstr ""
 
-#: includes/content-filters.php:275
+#: includes/content-filters.php:277
 #, php-format
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/content-filters.php:351
+#: includes/content-filters.php:353
 #, php-format
 msgid "%d Points"
 msgstr ""
 
-#: includes/content-filters.php:394
+#: includes/content-filters.php:396
 msgid "You have earned this achievement!"
 msgstr ""
 
-#: includes/content-filters.php:607
+#: includes/content-filters.php:609
 msgid "Next Post"
 msgstr ""
 
-#: includes/content-filters.php:610
+#: includes/content-filters.php:612
 msgid "Previous Post"
 msgstr ""
 
@@ -1489,7 +1489,7 @@ msgstr ""
 msgid "Use %s image"
 msgstr ""
 
-#: includes/scripts.php:106 includes/scripts.php:121 includes/scripts.php:135
+#: includes/scripts.php:106 includes/scripts.php:121
 #: includes/shortcodes/shortcodes-editor.php:42
 msgid "Select a Post"
 msgstr ""
@@ -1859,7 +1859,7 @@ msgstr ""
 msgid "Daily visit a specific post"
 msgstr ""
 
-#: includes/triggers.php:34 includes/triggers.php:119 includes/triggers.php:120
+#: includes/triggers.php:34 includes/triggers.php:121 includes/triggers.php:122
 msgid "GamiPress"
 msgstr ""
 
@@ -1875,90 +1875,94 @@ msgstr ""
 msgid "All Achievements of Type"
 msgstr ""
 
-#: includes/triggers.php:87
+#: includes/triggers.php:89
 #, php-format
 msgid "Comment on %s"
 msgstr ""
 
-#: includes/triggers.php:88
+#: includes/triggers.php:90
 #, php-format
 msgid "Visit %s"
 msgstr ""
 
-#: includes/triggers.php:119
+#: includes/triggers.php:121
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:120
+#: includes/triggers.php:122
 #, php-format
 msgid "Unlocked all %s"
 msgstr ""
 
-#: includes/user.php:183
+#: includes/user.php:184
 msgid "Points Balance"
 msgstr ""
 
-#: includes/user.php:188
+#: includes/user.php:189
 msgid "Earned Default Points"
 msgstr ""
 
-#: includes/user.php:191
+#: includes/user.php:192
 msgid "The user's points total. Entering a new total will automatically log the change and difference between totals."
 msgstr ""
 
-#: includes/user.php:197
+#: includes/user.php:198
 #, php-format
 msgid "Earned %s"
 msgstr ""
 
-#: includes/user.php:200
+#: includes/user.php:201
 #, php-format
 msgid "The user's %s total. Entering a new total will automatically log the change and difference between totals."
 msgstr ""
 
-#: includes/user.php:218
+#: includes/user.php:221
 msgid "Earned Achievements"
 msgstr ""
 
-#: includes/user.php:224 includes/user.php:290
+#: includes/user.php:228 includes/user.php:321
 msgid "Image"
 msgstr ""
 
-#: includes/user.php:225
+#: includes/user.php:229
 msgid "Name"
 msgstr ""
 
-#: includes/user.php:226 includes/user.php:292
+#: includes/user.php:230
+msgid "Date"
+msgstr ""
+
+#: includes/user.php:231
 msgid "Action"
 msgstr ""
 
-#: includes/user.php:241 includes/user.php:332
+#: includes/user.php:269 includes/user.php:381
 msgid "Revoke Award"
 msgstr ""
 
-#: includes/user.php:246
+#: includes/user.php:276
 msgid "This user has no earned any achievement"
 msgstr ""
 
-#: includes/user.php:268
+#: includes/user.php:299
 msgid "Award an Achievement"
 msgstr ""
 
-#: includes/user.php:272
+#: includes/user.php:303
 msgid "Select an Achievement Type to Award:"
 msgstr ""
 
-#: includes/user.php:293
-msgid "Awarded"
+#: includes/user.php:323
+msgid "Actions"
 msgstr ""
 
-#: includes/user.php:321
+#: includes/user.php:372
 #, php-format
 msgid "Award %s"
 msgstr ""
 
-#: includes/user.php:341
+#: includes/user.php:390
 #, php-format
 msgid "No %s found."
 msgstr ""

@@ -1,10 +1,10 @@
 <?php
-	/**
-	 * GamiPress Shortcode Class
-	 *
-	 * @package     GamiPress\Shortcodes\Shortcode
-	 * @since       1.0.0
-	 */
+/**
+ * GamiPress Shortcode Class
+ *
+ * @package     GamiPress\Shortcodes\Shortcode
+ * @since       1.0.0
+ */
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 

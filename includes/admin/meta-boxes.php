@@ -304,6 +304,19 @@ function gamipress_remove_meta_boxes() {
 add_action( 'admin_menu', 'gamipress_remove_meta_boxes' );
 
 /**
+ * Helper function to enable a checkbox when value was not stored
+ */
+function gamipress_cmb2_checkbox_enabled_by_default( $field_args, $field ) {
+
+	if( get_post_field( 'post_status', $field->object_id ) === 'auto-draft' ) {
+		return '1';
+	}
+
+	return '';
+
+}
+
+/**
  * Override the title/content field retrieval so CMB2 doesn't look in post-meta.
  */
 function gamipress_cmb2_override_post_title_display( $data, $post_id ) {

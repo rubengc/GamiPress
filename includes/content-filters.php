@@ -48,7 +48,9 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  * Filter achievement content to add our removed content back
  *
  * @since  1.0.0
+ *
  * @param  string $content The page content
+ *
  * @return string          The page content after reformat
  */
 function gamipress_reformat_entries( $content ) {
