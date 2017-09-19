@@ -174,15 +174,19 @@ function gamipress_render_plugin_card( $plugin ) {
                     // Plugin installed and active, so field should be registered
                     $field = cmb2_get_field( $slug . '-license', str_replace( '-', '_', $slug ) . '_license', 'gamipress_settings', 'options-page' );
 
-                    $license = cmb2_edd_license_data( $field->escaped_value() );
-                    $license_status = ( $license !== false ) ? $license->license : false;
+                    if( $field ) {
+                        $license_key = $field->escaped_value();
 
-                    if( $license_status !== 'valid' ) {
-                        // "Activate License" action
-                        $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_settings&tab=opt-tab-licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
-                    } else {
-                        // "Active and License Registered" action
-                        $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active and License Registered', 'gamipress' ) . '</button>';
+                        $license = cmb2_edd_license_data( $license_key );
+                        $license_status = ( $license !== false ) ? $license->license : false;
+
+                        if( $license_status !== 'valid' ) {
+                            // "Activate License" action
+                            $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_settings&tab=opt-tab-licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
+                        } else {
+                            // "Active and License Registered" action
+                            $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active and License Registered', 'gamipress' ) . '</button>';
+                        }
                     }
 
                 } else {
@@ -438,6 +442,7 @@ function gamipress_override_plugin_information( $data, $action = '', $args = nul
 
     $to_send = array(
         'slug'   => $override_plugin->info->slug,
+        'item_name'   => $override_plugin->info->title,
         'is_ssl' => is_ssl(),
         'fields' => array(
             'banners' => array(),
@@ -452,7 +457,7 @@ function gamipress_override_plugin_information( $data, $action = '', $args = nul
     }
 
     // Convert sections into an associative array, since we're getting an object, but Core expects an array.
-    if ( isset( $data->sections ) && ! is_array( $data->sections ) ) {
+    if ( isset( $data->sections ) && is_array( $data->sections ) ) {
         $new_sections = array();
         foreach ( $data->sections as $key => $value ) {
             $new_sections[ $key ] = $value;
