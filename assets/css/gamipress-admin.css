@@ -606,6 +606,14 @@ li.requirement-row label {
 	margin-left: 10px;
 }
 
+.gamipress-page .button .dashicons {
+	display: inline-block;
+	width: 18px;
+	height: 18px;
+	vertical-align: text-top;
+	margin: 0 2px 0 0;
+}
+
 @media screen and (max-width: 782px) {
 	.gamipress-page .cmb-th {
 		width: 100%;
@@ -675,14 +683,14 @@ li.requirement-row label {
 @media screen and (min-width: 1600px) {
 
 	.gamipress_settings #opt-content-licenses .postbox {
-		width: 25%;
+		width: 23%;
 	}
 
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1600px) {
 	.gamipress_settings #opt-content-licenses .postbox {
-		width: 33.333333333%;
+		width: 31%;
 	}
 }
 
@@ -814,6 +822,14 @@ li.requirement-row label {
 
 #download-system-info .cmb-row {
 	background: transparent;
+}
+
+.cmb2-id-import-settings-file .cmb-td {
+	padding-bottom: 0;
+}
+
+.cmb2-id-import-settings {
+	border-top: 0 !important;
 }
 
 /* GamiPress List Table */

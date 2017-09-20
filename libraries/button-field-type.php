@@ -32,10 +32,16 @@ function cmb2_render_button( $field, $value, $object_id, $object_type, $field_ty
         $attrs['type'] = 'submit';
     }
 
+    $icon_html = '';
+
+    if( isset( $field->args['icon'] ) && ! empty( $field->args['icon'] ) ) {
+        $icon_html = '<i class="dashicons ' . $field->args['icon'] . '"></i>';
+    }
+
     echo sprintf( $button_pattern,
         $field_type->_desc( true ),
         $field_type->concat_attrs( $attrs ),
-        ( isset( $field->args['label'] ) && ! empty( $field->args['label'] ) ? $field->args['label'] : $field->args( 'name' ) )
+        $icon_html . ( isset( $field->args['label'] ) && ! empty( $field->args['label'] ) ? $field->args['label'] : $field->args( 'name' ) )
     );
 }
 add_action( 'cmb2_render_button', 'cmb2_render_button', 10, 5 );

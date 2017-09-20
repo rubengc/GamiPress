@@ -145,6 +145,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.7 ###
+
+* Added Import/Export Settings tool.
+* Internal improvements on tools.
+
 ### 1.1.6 ###
 
 * Full rework of the GamiPress user profile fields.

@@ -173,4 +173,53 @@
         }
 
     });
+
+    // Import Settings Tool
+    $('#import_settings').click(function(e) {
+        e.preventDefault();
+
+        $('#import-settings-warning').remove();
+
+        if( $('#import_settings_file')[0].files[0] === undefined ) {
+            $(this).parent().prepend('<p id="import-settings-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose a configuration file to import.</p>');
+            return false;
+        }
+
+        var $this = $(this);
+        var form_data = new FormData();
+        form_data.append( 'action', 'gamipress_import_settings_tool' );
+        form_data.append( 'file', $('#import_settings_file')[0].files[0] );
+
+        $this.prop('disabled', true);
+
+        // Show the spinner
+        $this.parent().append('<span id="import-settings-response"><span class="spinner is-active" style="float: none;"></span></span>');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'post',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response) {
+
+                if( response.success === false ) {
+                    $('#import-settings-response').css({color:'#a00'});
+                }
+
+                $('#import-settings-response').html(response.data);
+
+                if( response.success === true ) {
+
+                    setTimeout(function() {
+                        $('#import-settings-response').remove();
+                    }, 2000);
+                }
+
+                $this.prop('disabled', false);
+
+            }
+        });
+    });
 })( jQuery );

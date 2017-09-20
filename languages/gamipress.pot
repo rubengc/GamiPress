@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-09-19 16:32+0200\n"
+"POT-Creation-Date: 2017-09-20 19:58+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -62,7 +62,7 @@ msgstr ""
 msgid "Achivements"
 msgstr ""
 
-#: includes/admin.php:36 includes/admin/pages/tools.php:166
+#: includes/admin.php:36 includes/admin/tools/reset-data.php:31
 msgid "Achievements"
 msgstr ""
 
@@ -186,8 +186,8 @@ msgstr ""
 msgid "After adding a new achievement type a new menu will appear in your admin area named <strong>Achievements</strong>. Inside the achievements menu will appear new sub menus with each achievement type registered to let you manage the achievements similar to WordPress default posts or pages."
 msgstr ""
 
-#: includes/admin/contextual-help.php:50 includes/admin/pages/tools.php:169
-#: includes/admin/requirements-ui.php:85 includes/post-types.php:54
+#: includes/admin/contextual-help.php:50 includes/admin/requirements-ui.php:85
+#: includes/admin/tools/reset-data.php:34 includes/post-types.php:54
 #: includes/post-types.php:60 includes/post-types.php:66
 msgid "Points Awards"
 msgstr ""
@@ -245,8 +245,8 @@ msgstr ""
 msgid "<strong>Hidden</strong> - Checking this option will hide the achievement on frontend."
 msgstr ""
 
-#: includes/admin/contextual-help.php:82 includes/admin/pages/tools.php:167
-#: includes/admin/requirements-ui.php:85 includes/post-types.php:124
+#: includes/admin/contextual-help.php:82 includes/admin/requirements-ui.php:85
+#: includes/admin/tools/reset-data.php:32 includes/post-types.php:124
 #: includes/post-types.php:130 includes/post-types.php:136
 msgid "Steps"
 msgstr ""
@@ -553,21 +553,21 @@ msgctxt "plugin"
 msgid "Active"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:135 includes/admin/pages/add-ons.php:196
+#: includes/admin/pages/add-ons.php:135 includes/admin/pages/add-ons.php:200
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:136 includes/admin/pages/add-ons.php:197
+#: includes/admin/pages/add-ons.php:136 includes/admin/pages/add-ons.php:201
 #, php-format
 msgctxt "plugin"
 msgid "Activate %s"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:144 includes/admin/pages/add-ons.php:205
+#: includes/admin/pages/add-ons.php:144 includes/admin/pages/add-ons.php:209
 msgid "Network Activate"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:145 includes/admin/pages/add-ons.php:206
+#: includes/admin/pages/add-ons.php:145 includes/admin/pages/add-ons.php:210
 #, php-format
 msgctxt "plugin"
 msgid "Network Activate %s"
@@ -578,42 +578,42 @@ msgctxt "plugin"
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:182
+#: includes/admin/pages/add-ons.php:185
 msgid "Activate License"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:185
+#: includes/admin/pages/add-ons.php:188
 msgid "Active and License Registered"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:190
+#: includes/admin/pages/add-ons.php:194
 msgid "Active"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:221
+#: includes/admin/pages/add-ons.php:225
 msgid "Get this Add-on"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:227
+#: includes/admin/pages/add-ons.php:231
 #, php-format
 msgid "More information about %s"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:227
+#: includes/admin/pages/add-ons.php:231
 msgid "More Details"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:295 includes/admin/pages/add-ons.php:307
+#: includes/admin/pages/add-ons.php:299 includes/admin/pages/add-ons.php:311
 #, php-format
 msgid "An unexpected error occurred. Something may be wrong with gamipress.com or this server&#8217;s configuration. If you continue to have problems, please try to <a href=\"%s\">contact us</a>."
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:297
+#: includes/admin/pages/add-ons.php:301
 msgid "(WordPress could not establish a secure connection to gamipress.com. Please contact your server administrator.)"
 msgstr ""
 
 #: includes/admin/pages/settings.php:118 includes/admin/pages/settings.php:125
-#: includes/admin/pages/tools.php:412 includes/admin/plugins.php:25
+#: includes/admin/plugins.php:25 includes/admin/tools/system-info.php:236
 msgid "Settings"
 msgstr ""
 
@@ -625,7 +625,7 @@ msgstr ""
 msgid "Reset Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:145 includes/admin/pages/tools.php:113
+#: includes/admin/pages/settings.php:145 includes/admin/pages/tools.php:119
 msgid "General"
 msgstr ""
 
@@ -634,7 +634,7 @@ msgid "Style"
 msgstr ""
 
 #: includes/admin/pages/settings.php:153 includes/admin/pages/settings.php:295
-#: includes/admin/pages/tools.php:170 includes/post-types.php:157
+#: includes/admin/tools/reset-data.php:35 includes/post-types.php:157
 #: includes/post-types.php:163 includes/post-types.php:169
 #: includes/shortcodes/gamipress_logs.php:18
 msgid "Logs"
@@ -842,204 +842,16 @@ msgstr ""
 msgid "With GamiPress activated, the following shortcodes can be placed on any page or post within WordPress to expose a variety of GamiPress functions."
 msgstr ""
 
-#: includes/admin/pages/tools.php:86 includes/admin/pages/tools.php:93
+#: includes/admin/pages/tools.php:92 includes/admin/pages/tools.php:99
 msgid "Tools"
 msgstr ""
 
-#: includes/admin/pages/tools.php:117
+#: includes/admin/pages/tools.php:123
+msgid "Import/Export"
+msgstr ""
+
+#: includes/admin/pages/tools.php:127
 msgid "System"
-msgstr ""
-
-#: includes/admin/pages/tools.php:138
-msgid "Clean Data"
-msgstr ""
-
-#: includes/admin/pages/tools.php:141
-msgid "Occasionally, as a consequence of the deletion of data, there may be entries that are not related to any other, like a step without an achievement."
-msgstr ""
-
-#: includes/admin/pages/tools.php:142
-msgid "This tool will search this data to completely remove it from your server."
-msgstr ""
-
-#: includes/admin/pages/tools.php:146
-msgid "Search data to clean"
-msgstr ""
-
-#: includes/admin/pages/tools.php:149
-msgid "Proceed with the cleanup"
-msgstr ""
-
-#: includes/admin/pages/tools.php:158 includes/admin/pages/tools.php:174
-msgid "Reset Data"
-msgstr ""
-
-#: includes/admin/pages/tools.php:161
-msgid "Choose the stored data you want to reset."
-msgstr ""
-
-#: includes/admin/pages/tools.php:165 includes/admin/pages/tools.php:402
-#: includes/post-types.php:88 includes/post-types.php:94
-#: includes/post-types.php:100
-msgid "Achievement Types"
-msgstr ""
-
-#: includes/admin/pages/tools.php:168 includes/admin/pages/tools.php:407
-#: includes/post-types.php:22 includes/post-types.php:28
-#: includes/post-types.php:34 includes/shortcodes/gamipress_points_types.php:28
-msgid "Points Types"
-msgstr ""
-
-#: includes/admin/pages/tools.php:175
-msgid "<strong>Important!</strong> Just use this tool on a test environment or if really you know what are you doing."
-msgstr ""
-
-#: includes/admin/pages/tools.php:201
-msgid "Server Info"
-msgstr ""
-
-#: includes/admin/pages/tools.php:205
-msgid "Hosting Provider"
-msgstr ""
-
-#: includes/admin/pages/tools.php:210
-msgid "PHP Version"
-msgstr ""
-
-#: includes/admin/pages/tools.php:215
-msgid "MySQL Version"
-msgstr ""
-
-#: includes/admin/pages/tools.php:220
-msgid "Webserver Info"
-msgstr ""
-
-#: includes/admin/pages/tools.php:225
-msgid "PHP Configuration"
-msgstr ""
-
-#: includes/admin/pages/tools.php:229 includes/admin/pages/tools.php:335
-msgid "Memory Limit"
-msgstr ""
-
-#: includes/admin/pages/tools.php:234
-msgid "Time Limit"
-msgstr ""
-
-#: includes/admin/pages/tools.php:239
-msgid "Upload Max Size"
-msgstr ""
-
-#: includes/admin/pages/tools.php:244
-msgid "Post Max Size"
-msgstr ""
-
-#: includes/admin/pages/tools.php:249
-msgid "Max Input Vars"
-msgstr ""
-
-#: includes/admin/pages/tools.php:254
-msgid "Display Errors"
-msgstr ""
-
-#: includes/admin/pages/tools.php:291
-msgid "WordPress Info"
-msgstr ""
-
-#: includes/admin/pages/tools.php:295
-msgid "Site URL"
-msgstr ""
-
-#: includes/admin/pages/tools.php:300
-msgid "Home URL"
-msgstr ""
-
-#: includes/admin/pages/tools.php:305
-msgid "Multisite"
-msgstr ""
-
-#: includes/admin/pages/tools.php:310
-msgid "Version"
-msgstr ""
-
-#: includes/admin/pages/tools.php:315
-msgid "Language"
-msgstr ""
-
-#: includes/admin/pages/tools.php:320
-msgid "Permalink Structure"
-msgstr ""
-
-#: includes/admin/pages/tools.php:325
-msgid "Absolute Path"
-msgstr ""
-
-#: includes/admin/pages/tools.php:330
-msgid "Debug"
-msgstr ""
-
-#: includes/admin/pages/tools.php:340
-msgid "Table Prefix:"
-msgstr ""
-
-#: includes/admin/pages/tools.php:345
-msgid "Active Theme"
-msgstr ""
-
-#: includes/admin/pages/tools.php:350
-msgid "Parent Theme"
-msgstr ""
-
-#: includes/admin/pages/tools.php:355
-msgid "Active Plugins"
-msgstr ""
-
-#: includes/admin/pages/tools.php:398
-msgid "GamiPress Info"
-msgstr ""
-
-#: includes/admin/pages/tools.php:420
-msgid "Download System Info"
-msgstr ""
-
-#: includes/admin/pages/tools.php:423
-msgid "Download System Info File"
-msgstr ""
-
-#: includes/admin/pages/tools.php:456
-msgid "This action will delete all of the entries you selected. It will be completely <strong>irrecoverable</strong>."
-msgstr ""
-
-#: includes/admin/pages/tools.php:458
-msgid "Please, confirm the data that will be removed:"
-msgstr ""
-
-#: includes/admin/pages/tools.php:519 includes/admin/pages/tools.php:551
-#: includes/admin/pages/tools.php:579
-msgid "You are not allowed to perform this action."
-msgstr ""
-
-#: includes/admin/pages/tools.php:531
-#, php-format
-msgid "%s entry found."
-msgid_plural "%s entries found."
-msgstr[0] ""
-msgstr[1] ""
-
-#: includes/admin/pages/tools.php:533
-msgid "No data to clean."
-msgstr ""
-
-#: includes/admin/pages/tools.php:561
-msgid "Cleanup process has been done successfully."
-msgstr ""
-
-#: includes/admin/pages/tools.php:574
-msgid "No items selected."
-msgstr ""
-
-#: includes/admin/pages/tools.php:622
-msgid "Data has been reset successfully."
 msgstr ""
 
 #: includes/admin/requirements-ui.php:21
@@ -1167,6 +979,235 @@ msgstr ""
 #: includes/admin/requirements.php:65
 #, php-format
 msgid "Missed %s"
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:23
+msgid "Clean Data"
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:26
+msgid "Occasionally, as a consequence of the deletion of data, there may be entries that are not related to any other, like a step without an achievement."
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:27
+msgid "This tool will search this data to completely remove it from your server."
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:31
+msgid "Search data to clean"
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:34
+msgid "Proceed with the cleanup"
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:56
+#: includes/admin/tools/clean-data.php:88
+#: includes/admin/tools/import-export-settings.php:95
+#: includes/admin/tools/reset-data.php:93
+msgid "You are not allowed to perform this action."
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:68
+#, php-format
+msgid "%s entry found."
+msgid_plural "%s entries found."
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/admin/tools/clean-data.php:70
+msgid "No data to clean."
+msgstr ""
+
+#: includes/admin/tools/clean-data.php:98
+msgid "Cleanup process has been done successfully."
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:23
+msgid "Import/Export Settings"
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:26
+msgid "Export Settings"
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:27
+msgid "Export the GamiPress settings for this site as a .json file. This allows you to easily import the configuration into another site."
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:39
+msgid "Import Settings"
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:84
+msgid "No settings to import."
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:90
+msgid "Can not retrieve the file to import, check server file permissions."
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:102
+msgid "Empty settings, so nothing to import."
+msgstr ""
+
+#: includes/admin/tools/import-export-settings.php:108
+msgid "Settings has been imported successfully."
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:23
+#: includes/admin/tools/reset-data.php:39
+msgid "Reset Data"
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:26
+msgid "Choose the stored data you want to reset."
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:30
+#: includes/admin/tools/system-info.php:226 includes/post-types.php:88
+#: includes/post-types.php:94 includes/post-types.php:100
+msgid "Achievement Types"
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:33
+#: includes/admin/tools/system-info.php:231 includes/post-types.php:22
+#: includes/post-types.php:28 includes/post-types.php:34
+#: includes/shortcodes/gamipress_points_types.php:28
+msgid "Points Types"
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:40
+msgid "<strong>Important!</strong> Just use this tool on a test environment or if really you know what are you doing."
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:67
+msgid "This action will delete all of the entries you selected. It will be completely <strong>irrecoverable</strong>."
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:69
+msgid "Please, confirm the data that will be removed:"
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:88
+msgid "No items selected."
+msgstr ""
+
+#: includes/admin/tools/reset-data.php:136
+msgid "Data has been reset successfully."
+msgstr ""
+
+#: includes/admin/tools/system-info.php:25
+msgid "Server Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:29
+msgid "Hosting Provider"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:34
+msgid "PHP Version"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:39
+msgid "MySQL Version"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:44
+msgid "Webserver Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:49
+msgid "PHP Configuration"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:53
+#: includes/admin/tools/system-info.php:159
+msgid "Memory Limit"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:58
+msgid "Time Limit"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:63
+msgid "Upload Max Size"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:68
+msgid "Post Max Size"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:73
+msgid "Max Input Vars"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:78
+msgid "Display Errors"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:115
+msgid "WordPress Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:119
+msgid "Site URL"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:124
+msgid "Home URL"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:129
+msgid "Multisite"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:134
+msgid "Version"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:139
+msgid "Language"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:144
+msgid "Permalink Structure"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:149
+msgid "Absolute Path"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:154
+msgid "Debug"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:164
+msgid "Table Prefix:"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:169
+msgid "Active Theme"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:174
+msgid "Parent Theme"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:179
+msgid "Active Plugins"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:222
+msgid "GamiPress Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:260
+msgid "Download System Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:263
+msgid "Download System Info File"
 msgstr ""
 
 #: includes/ajax-functions.php:159 templates/achievements.php:12
