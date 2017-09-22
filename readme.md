@@ -145,6 +145,14 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.1.8 ###
+
+* Added Recount Activity tool.
+* Added stronger duplicity checks.
+* Added more specific data in logs.
+* Fixed user profile tables when no achievements found.
+* Improvements on render achievement.
+
 ### 1.1.7 ###
 
 * Added Import/Export Settings tool.

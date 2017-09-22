@@ -190,6 +190,7 @@
         form_data.append( 'action', 'gamipress_import_settings_tool' );
         form_data.append( 'file', $('#import_settings_file')[0].files[0] );
 
+        // Disable the button
         $this.prop('disabled', true);
 
         // Show the spinner
@@ -220,6 +221,67 @@
                 $this.prop('disabled', false);
 
             }
+        });
+    });
+
+    // Recount Activity Tool
+    $("#recount_activity").click(function(e) {
+        e.preventDefault();
+
+        $('#recount-activity-warning').remove();
+
+        if( $('#activity_to_recount').val() === '' ) {
+            $(this).parent().prepend('<p id="recount-activity-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose an activity to recount.</p>');
+            return false;
+        }
+
+        var $this = $(this);
+        var activity = $('#activity_to_recount').val();
+
+        // Disable the button
+        $this.prop('disabled', true);
+
+        // Show the spinner
+        $this.parent().prepend('<p id="recount-activity-notice" class="cmb2-metabox-description">' + gamipress_admin_tools.recount_activity_notice + '</p>');
+        $this.parent().append('<span id="recount-activity-response"><span class="spinner is-active" style="float: none;"></span></span>');
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'gamipress_recount_activity_tool',
+                activity: activity
+            },
+            function( response ) {
+
+                $('#recount-activity-notice').remove();
+
+                if( response.success === false ) {
+                    $('#recount-activity-response').css({color:'#a00'});
+                }
+
+                $('#recount-activity-response').html(response.data);
+
+                if( response.success === true ) {
+
+                    setTimeout(function() {
+                        $('#recount-activity-response').remove();
+                    }, 2000);
+                }
+
+                // Enable the button
+                $this.prop('disabled', false);
+            }
+        ).fail(function() {
+
+            $('#recount-activity-response').html('The server has returned an internal error.');
+
+            setTimeout(function() {
+                $('#recount-activity-notice').remove();
+                $('#recount-activity-response').remove();
+            }, 5000);
+
+            // Enable the button
+            $this.prop('disabled', false);
         });
     });
 })( jQuery );

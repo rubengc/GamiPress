@@ -9,6 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 // GamiPress Tools
+require_once GAMIPRESS_DIR . 'includes/admin/tools/recount-activity.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/clean-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/reset-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-settings.php';

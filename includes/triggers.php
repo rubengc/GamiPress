@@ -208,6 +208,86 @@ function gamipress_trigger_event() {
 }
 
 /**
+ * Extended meta data for event trigger logging
+ *
+ * @since 1.1.8
+ *
+ * @param array 	$log_meta
+ * @param integer 	$user_id
+ * @param string 	$trigger
+ * @param integer 	$site_id
+ * @param array 	$args
+ *
+ * @return array
+ */
+function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $trigger, $site_id, $args ) {
+
+	switch ( $trigger ) {
+		case 'gamipress_publish_post':
+		case 'gamipress_publish_page':
+		case 'gamipress_specific_post_visit':
+			// Add the published/visited post ID
+			$log_meta['post_id'] = $args[0];
+			break;
+		case 'gamipress_new_comment':
+		case 'gamipress_specific_new_comment':
+			// Add the comment ID and post commented ID
+			$log_meta['comment_id'] = $args[0];
+			$log_meta['comment_post_id'] = $args[2];
+			break;
+		case 'gamipress_login':
+		case 'gamipress_site_visit':
+		case 'gamipress_unlock_' === substr( $trigger, 0, 15 ):
+		default :
+			// Nothing to store
+			break;
+	}
+
+	return $log_meta;
+}
+add_filter( 'gamipress_log_event_trigger_meta_data', 'gamipress_log_event_trigger_extended_meta_data', 10, 5 );
+
+/**
+ * Extra filter to check duplicated activity
+ *
+ * @since 1.1.8
+ *
+ * @param bool 		$return
+ * @param integer 	$user_id
+ * @param string 	$trigger
+ * @param integer 	$site_id
+ * @param array 	$args
+ *
+ * @return bool					True if user deserves trigger, else false
+ */
+function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_id, $args  ) {
+
+	$log_meta = array(
+		'type' => 'event_trigger',
+		'trigger_type' => $trigger,
+	);
+
+	switch ( $trigger ) {
+		case 'gamipress_publish_post':
+		case 'gamipress_publish_page':
+			// User can not publish same post more times, so check it
+			$log_meta['post_id'] = $args[0];
+			$return = (bool) ( gamipress_get_user_log_count( $user_id, $log_meta ) === 0 );
+			break;
+		case 'gamipress_new_comment':
+		case 'gamipress_specific_new_comment':
+			// User can not publish same comment more times, so check it
+			$log_meta['comment_id'] = $args[0];
+			$return = (bool) ( gamipress_get_user_log_count( $user_id, $log_meta ) === 0 );
+			break;
+	}
+
+	return apply_filters( 'gamipress_trigger_duplicity_check', $return, $user_id, $trigger, $site_id, $args );
+
+}
+add_filter( 'gamipress_user_deserves_trigger', 'gamipress_trigger_duplicity_check', 10, 5 );
+
+/**
  * Get user for a given trigger action.
  *
  * @since  1.0.0

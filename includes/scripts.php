@@ -130,6 +130,10 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     // Tools page
     if( $hook === 'gamipress_page_gamipress_tools' ) {
 
+        wp_localize_script( 'gamipress-admin-tools-js', 'gamipress_admin_tools', array(
+            'recount_activity_notice' => __( 'Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed.', 'gamipress' ),
+        ) );
+
         wp_enqueue_script( 'gamipress-admin-tools-js' );
 
         // Enqueue WordPress jQuery UI Dialog style

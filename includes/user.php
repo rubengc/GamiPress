@@ -387,7 +387,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 				<?php else : ?>
 					<tr>
-						<td><?php printf( __( 'No %s found.', 'gamipress' ), $achievement_type['plural_name'] ); ?></td>
+						<td colspan="3"><?php printf( __( 'No %s found.', 'gamipress' ), $achievement_type['plural_name'] ); ?></td>
 					</tr>
 				<?php endif; wp_reset_postdata(); ?>
 

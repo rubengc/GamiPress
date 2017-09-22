@@ -21,7 +21,6 @@ function gamipress_ajax_get_achievements() {
 	$type       = isset( $_REQUEST['type'] )       ? $_REQUEST['type']       : false;
 	$limit      = isset( $_REQUEST['limit'] )      ? $_REQUEST['limit']      : false;
 	$offset     = isset( $_REQUEST['offset'] )     ? $_REQUEST['offset']     : false;
-	$count      = isset( $_REQUEST['count'] )      ? $_REQUEST['count']      : false;
 	$filter     = isset( $_REQUEST['filter'] )     ? $_REQUEST['filter']     : false;
 	$search     = isset( $_REQUEST['search'] )     ? $_REQUEST['search']     : false;
 	$user_id    = isset( $_REQUEST['user_id'] )    ? $_REQUEST['user_id']    : false;
@@ -33,12 +32,17 @@ function gamipress_ajax_get_achievements() {
 	$meta_key   = isset( $_REQUEST['meta_key'] )   ? $_REQUEST['meta_key']   : '';
 	$meta_value = isset( $_REQUEST['meta_value'] ) ? $_REQUEST['meta_value'] : '';
 
+	// Get the current user if one wasn't specified
+	if( ! $user_id )
+		$user_id = get_current_user_id();
+
 	// Setup template vars
 	$template_args = array(
 		'thumbnail' => isset( $_REQUEST['thumbnail'] ) ? $_REQUEST['thumbnail'] : 'yes',
 		'excerpt'	=> isset( $_REQUEST['excerpt'] ) ? $_REQUEST['excerpt'] : 'yes',
 		'steps'	    => isset( $_REQUEST['steps'] ) ? $_REQUEST['steps'] : 'yes',
 		'earners'	=> isset( $_REQUEST['earners'] ) ? $_REQUEST['earners'] : 'no',
+		'user_id' 	=> $user_id,
 	);
 
 	// Convert $type to properly support multiple achievement types
@@ -59,10 +63,6 @@ function gamipress_ajax_get_achievements() {
 	} else {
 		$type = explode( ',', $type );
 	}
-
-	// Get the current user if one wasn't specified
-	if( ! $user_id )
-		$user_id = get_current_user_id();
 
 	// Build $include array
 	if ( ! is_array( $include ) ) {
@@ -143,8 +143,11 @@ function gamipress_ajax_get_achievements() {
 		$achievement_posts = new WP_Query( $args );
 		$query_count += $achievement_posts->found_posts;
 		while ( $achievement_posts->have_posts() ) : $achievement_posts->the_post();
+
 			$achievements .= gamipress_render_achievement( get_the_ID(), $template_args );
+
 			$achievement_count++;
+
 		endwhile;
 
 		// Sanity helper: if we're filtering for complete and we have no
@@ -160,11 +163,13 @@ function gamipress_ajax_get_achievements() {
 
 			// Setup our completion message
 			$achievements .= '<div class="gamipress-no-results">';
+
 			if ( 'completed' == $filter ) {
 				$achievements .= '<p>' . sprintf( __( 'No completed %s to display at this time.', 'gamipress' ), strtolower( $post_type_plural ) ) . '</p>';
-			}else{
+			} else {
 				$achievements .= '<p>' . sprintf( __( 'No %s to display at this time.', 'gamipress' ), strtolower( $post_type_plural ) ) . '</p>';
 			}
+
 			$achievements .= '</div><!-- .gamipress-no-results -->';
 		}
 

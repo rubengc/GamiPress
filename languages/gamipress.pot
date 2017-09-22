@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-09-20 19:58+0200\n"
+"POT-Creation-Date: 2017-09-22 17:42+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -625,7 +625,7 @@ msgstr ""
 msgid "Reset Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:145 includes/admin/pages/tools.php:119
+#: includes/admin/pages/settings.php:145 includes/admin/pages/tools.php:120
 msgid "General"
 msgstr ""
 
@@ -842,15 +842,15 @@ msgstr ""
 msgid "With GamiPress activated, the following shortcodes can be placed on any page or post within WordPress to expose a variety of GamiPress functions."
 msgstr ""
 
-#: includes/admin/pages/tools.php:92 includes/admin/pages/tools.php:99
+#: includes/admin/pages/tools.php:93 includes/admin/pages/tools.php:100
 msgid "Tools"
 msgstr ""
 
-#: includes/admin/pages/tools.php:123
+#: includes/admin/pages/tools.php:124
 msgid "Import/Export"
 msgstr ""
 
-#: includes/admin/pages/tools.php:127
+#: includes/admin/pages/tools.php:128
 msgid "System"
 msgstr ""
 
@@ -897,7 +897,7 @@ msgstr ""
 msgid "Choose an achievement type"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:181 includes/ajax-functions.php:338
+#: includes/admin/requirements-ui.php:181 includes/ajax-functions.php:343
 msgid "Choose an achievement"
 msgstr ""
 
@@ -1004,6 +1004,7 @@ msgstr ""
 #: includes/admin/tools/clean-data.php:56
 #: includes/admin/tools/clean-data.php:88
 #: includes/admin/tools/import-export-settings.php:95
+#: includes/admin/tools/recount-activity.php:73
 #: includes/admin/tools/reset-data.php:93
 msgid "You are not allowed to perform this action."
 msgstr ""
@@ -1053,6 +1054,47 @@ msgstr ""
 
 #: includes/admin/tools/import-export-settings.php:108
 msgid "Settings has been imported successfully."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:29
+msgid "Choose the activity to recount"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:31 includes/triggers.php:21
+msgid "WordPress"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:32
+msgid "Recount comments"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:33
+msgid "Recount content publishing"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:39
+#: includes/admin/tools/recount-activity.php:52
+msgid "Recount Activity"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:42
+msgid "This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and achievements will be awarded too."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:43
+msgid "<strong>Note:</strong> Some activity may not be possible to recount (like user log in or daily visits) because there are not registries stored in the database."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:47
+msgid "Choose the activity to recount."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:78
+msgid "You need to choose an activity to recount."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:83
+msgid "Activity recount process has been done successfully."
 msgstr ""
 
 #: includes/admin/tools/reset-data.php:23
@@ -1210,17 +1252,17 @@ msgstr ""
 msgid "Download System Info File"
 msgstr ""
 
-#: includes/ajax-functions.php:159 templates/achievements.php:12
+#: includes/ajax-functions.php:162 templates/achievements.php:12
 #: templates/achievements.php:15
 msgid "achievements"
 msgstr ""
 
-#: includes/ajax-functions.php:164
+#: includes/ajax-functions.php:168
 #, php-format
 msgid "No completed %s to display at this time."
 msgstr ""
 
-#: includes/ajax-functions.php:166
+#: includes/ajax-functions.php:170
 #, php-format
 msgid "No %s to display at this time."
 msgstr ""
@@ -1301,7 +1343,7 @@ msgstr ""
 msgid "Points user has earned until this log."
 msgstr ""
 
-#: includes/log-functions.php:207
+#: includes/log-functions.php:260
 msgid "points"
 msgstr ""
 
@@ -1545,6 +1587,10 @@ msgstr ""
 
 #: includes/scripts.php:124 includes/shortcodes/shortcodes-editor.php:45
 msgid "Default: All"
+msgstr ""
+
+#: includes/scripts.php:134
+msgid "Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed."
 msgstr ""
 
 #: includes/shortcodes.php:83
@@ -1864,10 +1910,6 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: includes/triggers.php:21
-msgid "WordPress"
-msgstr ""
-
 #: includes/triggers.php:22
 msgid "Log in to website"
 msgstr ""
@@ -2052,11 +2094,11 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: templates/achievement.php:92 templates/points-types.php:60
+#: templates/achievement.php:98 templates/points-types.php:60
 msgid "Show Details"
 msgstr ""
 
-#: templates/achievement.php:92 templates/points-types.php:60
+#: templates/achievement.php:98 templates/points-types.php:60
 msgid "Hide Details"
 msgstr ""
 

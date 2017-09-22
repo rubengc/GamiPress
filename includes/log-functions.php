@@ -75,6 +75,58 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
 }
 
 /**
+ * Return count of user logs with the specified meta data
+ *
+ * @since  1.1.8
+ *
+ * @param int       $user_id
+ * @param array     $log_meta
+ *
+ * @return bool
+ */
+function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
+
+    global $wpdb;
+
+    // Initialize query definitions
+    $joins = array();
+    $where = array();
+
+    // Initialize query args
+    $query_args = array( 'gamipress-log', $user_id );
+
+    foreach ( (array) $log_meta as $key => $meta ) {
+        $index = count( $joins );
+
+        // Setup query definitions
+        $joins[] = "LEFT JOIN $wpdb->postmeta AS pm{$index} ON ( p.ID = pm{$index}.post_id )";
+        $where[] = "pm{$index}.meta_key = %s AND pm{$index}.meta_value = %s";
+
+        // Setup query vars
+        $query_args[] = '_gamipress_' . sanitize_key( $key );
+        $query_args[] = $meta;
+    }
+
+    // Turn arrays into strings
+    $joins = implode( ' ', $joins );
+    $where = (  ! empty( $where ) ? '( '. implode( ' ) AND ( ', $where ) . ' ) ' : '' );
+
+    $user_triggers = $wpdb->get_var( $wpdb->prepare(
+        "
+        SELECT COUNT(*)
+        FROM   $wpdb->posts AS p
+        {$joins}
+        WHERE p.post_type = %s
+            AND p.post_author = %s
+            AND ( {$where} )
+        ",
+        $query_args
+    ) );
+
+    return absint( $user_triggers );
+}
+
+/**
  * Posts a log entry when a user unlocks any achievement post
  *
  * @since  1.0.0
@@ -125,6 +177,7 @@ function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = arr
  * @param  string  $log_pattern   The pattern
  * @param  array   $log_data      Log post data
  * @param  array   $log_meta      Log meta data
+ *
  * @return integer             	  The post ID of the newly created log entry
  */
 function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $log_meta = array()) {

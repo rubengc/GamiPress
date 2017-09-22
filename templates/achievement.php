@@ -7,8 +7,14 @@
  */
 global $gamipress_template_args;
 
+if( isset( $gamipress_template_args['user_id'] ) ) {
+    $user_id = $gamipress_template_args['user_id'];
+} else {
+    $user_id = get_current_user_id();
+}
+
 // Check if user has earned this achievement
-$earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_id(), 'achievement_id' => get_the_ID() ) ); ?>
+$earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => get_the_ID() ) ); ?>
 
 
 <div id="gamipress-achievement-<?php the_ID(); ?>" class="gamipress-achievement <?php echo ( $earned ? 'user-has-earned' : 'user-has-not-earned' ); ?>">
