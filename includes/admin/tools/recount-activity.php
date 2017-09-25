@@ -29,8 +29,8 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
             '' => __( 'Choose the activity to recount', 'gamipress' ),
             // WordPress
             __( 'WordPress', 'gamipress' ) => array(
+                'comments'              => __( 'Recount comments', 'gamipress' ),
                 'published_content'     => __( 'Recount content publishing', 'gamipress' ),
-                'published_content'      => __( 'Recount content publishing', 'gamipress' ),
             ),
         )
     );

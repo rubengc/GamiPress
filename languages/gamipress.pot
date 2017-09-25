@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-09-22 17:42+0200\n"
+"POT-Creation-Date: 2017-09-25 19:57+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -20,7 +20,7 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: libraries\n"
 
-#: gamipress.php:216 gamipress.php:244 gamipress.php:260 gamipress.php:276
+#: gamipress.php:217 gamipress.php:245 gamipress.php:261 gamipress.php:277
 #: includes/shortcodes/gamipress_achievements.php:105
 #: includes/shortcodes/gamipress_logs.php:51
 msgid "Order"
@@ -44,17 +44,17 @@ msgid "widgets"
 msgstr ""
 
 #: includes/achievement-functions.php:1036
-#: includes/admin/pages/settings.php:336
+#: includes/admin/pages/settings.php:357
 msgid "{admin} awarded {user} with the the {achievement} {achievement_type}"
 msgstr ""
 
 #: includes/achievement-functions.php:1041
-#: includes/admin/pages/settings.php:318
+#: includes/admin/pages/settings.php:339
 msgid "{user} completed the {achievement_type} {achievement}"
 msgstr ""
 
 #: includes/achievement-functions.php:1043
-#: includes/admin/pages/settings.php:324
+#: includes/admin/pages/settings.php:345
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
@@ -66,7 +66,7 @@ msgstr ""
 msgid "Achievements"
 msgstr ""
 
-#: includes/admin.php:43 includes/admin/pages/settings.php:157
+#: includes/admin.php:43 includes/admin/pages/settings.php:171
 #: includes/admin/plugins.php:56
 msgid "Add-ons"
 msgstr ""
@@ -314,7 +314,7 @@ msgid "Total points user has earned until this log."
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:140
-#: includes/admin/pages/settings.php:207
+#: includes/admin/pages/settings.php:221
 msgid "Administrator"
 msgstr ""
 
@@ -612,187 +612,199 @@ msgstr ""
 msgid "(WordPress could not establish a secure connection to gamipress.com. Please contact your server administrator.)"
 msgstr ""
 
-#: includes/admin/pages/settings.php:118 includes/admin/pages/settings.php:125
+#: includes/admin/pages/settings.php:132 includes/admin/pages/settings.php:139
 #: includes/admin/plugins.php:25 includes/admin/tools/system-info.php:236
 msgid "Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:127
+#: includes/admin/pages/settings.php:141
 msgid "Save Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:128
+#: includes/admin/pages/settings.php:142
 msgid "Reset Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:145 includes/admin/pages/tools.php:120
+#: includes/admin/pages/settings.php:159 includes/admin/pages/tools.php:120
 msgid "General"
 msgstr ""
 
-#: includes/admin/pages/settings.php:149
+#: includes/admin/pages/settings.php:163
 msgid "Style"
 msgstr ""
 
-#: includes/admin/pages/settings.php:153 includes/admin/pages/settings.php:295
+#: includes/admin/pages/settings.php:167 includes/admin/pages/settings.php:309
 #: includes/admin/tools/reset-data.php:35 includes/post-types.php:157
 #: includes/post-types.php:163 includes/post-types.php:169
 #: includes/shortcodes/gamipress_logs.php:18
 msgid "Logs"
 msgstr ""
 
-#: includes/admin/pages/settings.php:161
+#: includes/admin/pages/settings.php:175
 msgid "Licenses"
 msgstr ""
 
-#: includes/admin/pages/settings.php:168
+#: includes/admin/pages/settings.php:182
 msgid "Network"
 msgstr ""
 
-#: includes/admin/pages/settings.php:200
+#: includes/admin/pages/settings.php:214
 msgid "General Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:203
+#: includes/admin/pages/settings.php:217
 msgid "Minimum role to administer GamiPress"
 msgstr ""
 
-#: includes/admin/pages/settings.php:204
+#: includes/admin/pages/settings.php:218
 msgid "Minimum role an user needs to access to GamiPress management areas."
 msgstr ""
 
-#: includes/admin/pages/settings.php:208
+#: includes/admin/pages/settings.php:222
 msgid "Editor"
 msgstr ""
 
-#: includes/admin/pages/settings.php:209
+#: includes/admin/pages/settings.php:223
 msgid "Author"
 msgstr ""
 
-#: includes/admin/pages/settings.php:213
+#: includes/admin/pages/settings.php:227
 msgid "Achievement Image Size"
 msgstr ""
 
-#: includes/admin/pages/settings.php:214
+#: includes/admin/pages/settings.php:228
 msgid "Maximum dimensions for the achievements featured image."
 msgstr ""
 
-#: includes/admin/pages/settings.php:218
+#: includes/admin/pages/settings.php:232
 msgid "Automatic Updates"
 msgstr ""
 
-#: includes/admin/pages/settings.php:219
+#: includes/admin/pages/settings.php:233
 msgid "Check this option to automatically get the latest features, bugfixes and security updates as they are released."
 msgstr ""
 
-#: includes/admin/pages/settings.php:224
+#: includes/admin/pages/settings.php:238
 msgid "Plugins"
 msgstr ""
 
-#: includes/admin/pages/settings.php:225
+#: includes/admin/pages/settings.php:239
 msgid "Check GamiPress add-ons you want to automatically update."
 msgstr ""
 
-#: includes/admin/pages/settings.php:231
+#: includes/admin/pages/settings.php:245
 msgid "Debug Mode"
 msgstr ""
 
-#: includes/admin/pages/settings.php:232
+#: includes/admin/pages/settings.php:246
 msgid "Check this option to enable the debug mode."
 msgstr ""
 
-#: includes/admin/pages/settings.php:261
+#: includes/admin/pages/settings.php:275
 msgid "Style Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:264
+#: includes/admin/pages/settings.php:278
 msgid "Disable frontend CSS"
 msgstr ""
 
-#: includes/admin/pages/settings.php:265
+#: includes/admin/pages/settings.php:279
 msgid "Check this option to stop enqueue frontend CSS resources."
 msgstr ""
 
-#: includes/admin/pages/settings.php:270
+#: includes/admin/pages/settings.php:284
 msgid "Disable frontend Javascript"
 msgstr ""
 
-#: includes/admin/pages/settings.php:271
+#: includes/admin/pages/settings.php:285
 msgid "Check this option to stop enqueue frontend Javascript resources."
 msgstr ""
 
-#: includes/admin/pages/settings.php:298
+#: includes/admin/pages/settings.php:312
+msgid "Only log activities in use"
+msgstr ""
+
+#: includes/admin/pages/settings.php:313
+msgid "Check this option to just log triggered activities that has a points awards or steps looking for it."
+msgstr ""
+
+#: includes/admin/pages/settings.php:314
+msgid "GamiPress will stop storing unused activities logs like user daily visits."
+msgstr ""
+
+#: includes/admin/pages/settings.php:319
 msgid "Logs Patterns"
 msgstr ""
 
-#: includes/admin/pages/settings.php:299
+#: includes/admin/pages/settings.php:320
 msgid "From this settings you can modify the default pattern for upcoming log entries of each category."
 msgstr ""
 
-#: includes/admin/pages/settings.php:303
+#: includes/admin/pages/settings.php:324
 msgid "Activity trigger"
 msgstr ""
 
-#: includes/admin/pages/settings.php:304
+#: includes/admin/pages/settings.php:325
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:306 includes/triggers.php:172
+#: includes/admin/pages/settings.php:327 includes/triggers.php:182
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
-#: includes/admin/pages/settings.php:309
+#: includes/admin/pages/settings.php:330
 msgid "Points earned"
 msgstr ""
 
-#: includes/admin/pages/settings.php:310
+#: includes/admin/pages/settings.php:331
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:312 includes/points-functions.php:113
+#: includes/admin/pages/settings.php:333 includes/points-functions.php:113
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
-#: includes/admin/pages/settings.php:315
+#: includes/admin/pages/settings.php:336
 msgid "Points award/step complete"
 msgstr ""
 
-#: includes/admin/pages/settings.php:316
+#: includes/admin/pages/settings.php:337
 msgid "Used when user completes a points award or step. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:321
+#: includes/admin/pages/settings.php:342
 msgid "Achievement earned"
 msgstr ""
 
-#: includes/admin/pages/settings.php:322
+#: includes/admin/pages/settings.php:343
 msgid "Used when user earns an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:327
+#: includes/admin/pages/settings.php:348
 msgid "Points awarded"
 msgstr ""
 
-#: includes/admin/pages/settings.php:328
+#: includes/admin/pages/settings.php:349
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:330 includes/points-functions.php:109
+#: includes/admin/pages/settings.php:351 includes/points-functions.php:109
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
-#: includes/admin/pages/settings.php:333
+#: includes/admin/pages/settings.php:354
 msgid "Achievement awarded"
 msgstr ""
 
-#: includes/admin/pages/settings.php:334
+#: includes/admin/pages/settings.php:355
 msgid "Used when an admin awards an user with an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:434
+#: includes/admin/pages/settings.php:455
 msgid "Network Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:437
+#: includes/admin/pages/settings.php:458
 msgid "Show achievements earned across all sites on the network"
 msgstr ""
 
