@@ -236,14 +236,14 @@ function gamipress_render_plugin_card( $plugin ) {
         <div class="plugin-card-top">
 
             <div class="thumbnail column-thumbnail">
-                <a href="<?php echo esc_url( $details_link ); ?>" <?php if( $plugin->wp_info ) : ?>class="thickbox open-plugin-details-modal"<?php else : ?>target="_blank"<?php endif; ?>>
+                <a href="<?php echo esc_url( $details_link ); ?>" class="thickbox open-plugin-details-modal">
                     <img src="<?php echo esc_attr( $plugin->info->thumbnail ) ?>" class="plugin-thumbnail" alt="">
                 </a>
             </div>
 
             <div class="name column-name">
                 <h3>
-                    <a href="<?php echo esc_url( $details_link ); ?>" <?php if( $plugin->wp_info ) : ?>class="thickbox open-plugin-details-modal"<?php else : ?>target="_blank"<?php endif; ?>>
+                    <a href="<?php echo esc_url( $details_link ); ?>" class="thickbox open-plugin-details-modal">
                         <?php echo $name; ?>
                     </a>
                 </h3>

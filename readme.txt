@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -51,11 +51,6 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * Award points for commenting, logging in, visiting or completing any combination of tasks.
 * Display a congratulatory message, customizable per achievement, on each achievement page.
 
-= Log everything =
-
-* Flexible log system with support for public and private logs.
-* Display the latest logs anywhere on your site for all users or a specific one.
-
 = Widgets, Shortcodes and Shortcode Embedder =
 
 * Multiple options and parameters for each widget or shortcode for greater flexibility.
@@ -64,6 +59,14 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * Integrated shortcode documentation within the plugin menu.
 * Just activate GamiPress and place simple shortcodes on any page or post, and you've got a gamification system running on your WordPress site!
 
+= Powerful tools =
+
+* Built in tools to recount old activities, migrate plugin configuration or clean testing data.
+
+= Log everything =
+
+* Flexible log system with support for public and private logs.
+* Display the latest logs anywhere on your site for all users or a specific one.
 
 = Theme Agnostic =
 
@@ -89,6 +92,7 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 GamiPress is made available by [Tsunoa](https://tsunoa.com/ "Tsunoa"). Here are some ways to stay connected and to see what else we are up to:
 
 * [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress official website
+* [Add-ons](https://gamipress.com/add-ons "GamiPress Add-ons") - GamiPress official add-ons
 * [Documentation](https://gamipress.com/docs "GamiPress documentation") - GamiPress online documentation
 * [Contact](https://gamipress.com/contact-us "GamiPress contact") - GamiPress contact page
 * [GitHub](https://github.com/rubengc/gamipress "GamiPress on GitHub") - GamiPress GitHub repository
@@ -142,6 +146,12 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+= 1.1.9 =
+
+* Frontend CSS improvements: Moved to flex boxes instead of floating boxes.
+* Frontend CSS improvements: Style file size reduction thanks to the new CSS rules.
+* Added option to prevent log triggered activities without a points awards/steps looking them.
 
 = 1.1.8 =
 

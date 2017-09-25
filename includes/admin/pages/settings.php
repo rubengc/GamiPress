@@ -71,6 +71,20 @@ function gamipress_register_settings_page() {
             // Loop settings section meta boxes
             foreach( $meta_boxes as $meta_box_id => $meta_box ) {
 
+                // Check meta box tabs
+                if( isset( $meta_box['tabs'] ) && ! empty( $meta_box['tabs'] ) ) {
+
+                    // Loop meta box tabs
+                    foreach( $meta_box['tabs'] as $tab_id => $tab ) {
+
+                        $tab['id'] = $tab_id;
+
+                        $meta_box['tabs'][$tab_id] = $tab;
+
+                    }
+
+                }
+
                 // Only add settings meta box if has fields
                 if( isset( $meta_box['fields'] ) && ! empty( $meta_box['fields'] ) ) {
 
@@ -294,6 +308,13 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
     $meta_boxes['logs-patterns-settings'] = array(
         'title' => __( 'Logs', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_logs_patterns_settings_fields', array(
+            'only_log_events_with_listeners' => array(
+                'name' => __( 'Only log activities in use', 'gamipress' ),
+                'desc' => __( 'Check this option to just log triggered activities that has a points awards or steps looking for it.', 'gamipress' )
+                    . '<br>' . __( 'GamiPress will stop storing unused activities logs like user daily visits.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
             'log_patterns_title' => array(
                 'name' => __( 'Logs Patterns', 'gamipress' ),
                 'description' => __( 'From this settings you can modify the default pattern for upcoming log entries of each category.', 'gamipress' ),

@@ -149,34 +149,44 @@ function gamipress_trigger_event() {
 	$args = func_get_args();
 
 	// Grab our current trigger
-	$this_trigger = current_filter();
+	$trigger = current_filter();
+
+	// if only log events with listeners is enabled, the check if has listeners
+	if( (bool) gamipress_get_option( 'only_log_events_with_listeners', false ) ) {
+		// If not achievements listening it, then return
+		if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
+			return $args[0];
+		}
+	}
 
 	// Grab the user ID
-	$user_id = gamipress_trigger_get_user_id( $this_trigger, $args );
+	$user_id = gamipress_trigger_get_user_id( $trigger, $args );
 	$user_data = get_user_by( 'id', $user_id );
 
 	// Sanity check, if we don't have a user object, bail here
-	if ( ! is_object( $user_data ) )
+	if ( ! is_object( $user_data ) ) {
 		return $args[0];
+	}
 
 	// If the user doesn't satisfy the trigger requirements, bail here
-	if ( ! apply_filters( 'gamipress_user_deserves_trigger', true, $user_id, $this_trigger, $site_id, $args ) )
+	if ( ! apply_filters( 'gamipress_user_deserves_trigger', true, $user_id, $trigger, $site_id, $args ) ) {
 		return $args[0];
+	}
 
 	// Update hook count for this user
-	$new_count = gamipress_update_user_trigger_count( $user_id, $this_trigger, $site_id, $args );
+	$new_count = gamipress_update_user_trigger_count( $user_id, $trigger, $site_id, $args );
 
 	// Log meta data
 	$log_meta = array(
 		'type' => 'event_trigger',
 		'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
 		'count' => $new_count,
-		'trigger_type' => $this_trigger,
+		'trigger_type' => $trigger,
 	);
 
 	// If is specific trigger then try to get the attached id
-	if( in_array( $this_trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
-		$specific_id = gamipress_specific_trigger_get_id( $this_trigger, $args );
+	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+		$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
 
 		// If there is a specific id, then add it to the log meta data
 		if( $specific_id !== 0 ) {
@@ -185,22 +195,22 @@ function gamipress_trigger_event() {
 	}
 
 	// Available filter to insert custom meta data
-	$log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $this_trigger, $site_id, $args );
+	$log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $trigger, $site_id, $args );
 
 	// Mark the count in the log entry
 	gamipress_insert_log( $user_id, 'private', $log_meta );
 
-	// Now determine if any badges are earned based on this trigger event
+	// Now determine if any achievements are earned based on this trigger event
 	$triggered_achievements = $wpdb->get_results( $wpdb->prepare(
 		"SELECT post_id
 		FROM   $wpdb->postmeta
 		WHERE  meta_key = '_gamipress_trigger_type'
 		       AND meta_value = %s",
-		$this_trigger
+		$trigger
 	) );
 
 	foreach ( $triggered_achievements as $achievement ) {
-		gamipress_maybe_award_achievement_to_user( $achievement->post_id, $user_id, $this_trigger, $site_id, $args );
+		gamipress_maybe_award_achievement_to_user( $achievement->post_id, $user_id, $trigger, $site_id, $args );
 	}
 
 	return $args[ 0 ];
@@ -367,13 +377,15 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 		LEFT JOIN $wpdb->postmeta AS pm
 		ON ( p.ID = pm.post_id )
 		WHERE p.post_status = %s
+			AND p.post_type IN ( %s )
 			AND ( pm.meta_key = %s AND pm.meta_value = %s )
 		",
 		'publish',
+		"'" . implode( "','", gamipress_get_requirement_types_slugs() ) . "'",
 		'_gamipress_trigger_type', $trigger
 	) );
 
-	$has_listeners = ( absint($listeners_count) > 0 );
+	$has_listeners = ( absint( $listeners_count ) > 0 );
 
 	return apply_filters( 'gamipress_trigger_has_listeners', $has_listeners, $trigger, $site_id, $args );
 }
