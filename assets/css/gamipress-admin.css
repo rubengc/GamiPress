@@ -169,7 +169,7 @@ li.requirement-row.ui-sortable-placeholder {
 }
 
 li.requirement-row.ui-sortable-helper {
-	z-index: 100052 !important;
+	z-index: 2 !important;
 }
 
 li.requirement-row:last-child {
@@ -364,6 +364,10 @@ li.requirement-row label {
 /* GamiPress Select2 */
 .gamipress-select2 {
 	width: 100% !important;
+	z-index: 1;
+}
+
+body > .gamipress-select2 {
 	z-index: 100051;
 }
 
@@ -542,8 +546,13 @@ li.requirement-row label {
 
 .gamipress-page.cmb2-options-page .cmb-row.cmb-type-title {
 	border-top: 1px solid #e9e9e9;
-	border-bottom: 1px solid #e9e9e9;
+	border-bottom: 1px solid #e9e9e9 !important;
 	margin:	0 -12px;
+}
+
+.gamipress-page.cmb2-options-page .cmb-tabs-wrap .cmb2-wrap .cmb2-metabox > .cmb-row.cmb-type-title {
+	margin-top: -1px;
+	margin-left: -11px;
 }
 
 .gamipress-page.cmb2-options-page .cmb2-wrap .cmb-type-title .cmb2-metabox-title {

@@ -211,3 +211,26 @@ function gamipress_options_cb_users( $field ) {
 	return $options;
 
 }
+
+/**
+ * Remove multisite specific fields
+ *
+ * @since 1.2.0
+ *
+ * @param array $fields
+ *
+ * @return array
+ */
+function gamipress_shortcodes_remove_multisite_fields( $fields ) {
+
+	if( ! is_multisite() ) {
+		if( isset( $fields['wpms'] ) ) {
+			unset( $fields['wpms'] );
+		}
+	}
+
+	return $fields;
+}
+add_filter( 'gamipress_gamipress_achievements_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
+add_filter( 'gamipress_gamipress_points_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
+add_filter( 'gamipress_gamipress_points_types_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );

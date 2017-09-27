@@ -149,73 +149,10 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
-### 1.1.9 ###
+### 1.2.0 ###
 
-* Frontend CSS improvements: Moved to flex boxes instead of floating boxes.
-* Frontend CSS improvements: Style file size reduction thanks to the new CSS rules.
-* Added option to prevent log triggered activities without a points awards/steps looking them.
-
-### 1.1.8 ###
-
-* Added Recount Activity tool.
-* Added stronger duplicity checks.
-* Added more specific data in logs.
-* Fixed user profile tables when no achievements found.
-* Improvements on render achievement.
-
-### 1.1.7 ###
-
-* Added Import/Export Settings tool.
-* Internal improvements on tools.
-
-### 1.1.6 ###
-
-* Full rework of the GamiPress user profile fields.
-* Fix: Sometimes updating manually user points balance does not works.
-* Improvements on admin area forms styles.
-
-### 1.1.5 ###
-
-* New Feature: GamiPress tools page.
-* Added the Clean Data tool.
-* Added the Reset Data tool.
-* Added the Server Info tool.
-* Added the WordPress Info tool.
-* Added the GamiPress Info tool.
-* Added the Download System Info tool.
-* Now, on delete an achievement or points type, the assigned steps/points awards will be removed too.
-* Improvements and bug fixes on admin area styles and javascript functions.
-
-### 1.1.4 ###
-
-* New hook to allow add-ons to be automatically updated if automatic updates are active.
-* Improvements on admin area styles.
-
-### 1.1.3 ###
-
-* Improvements on frontend CSS.
-* Improvements on frontend content filters.
-* Improvements on admin area javascript.
-
-### 1.1.2 ###
-
-* Added automatic updates functionality.
-* Added descriptions to all settings.
-* Improvements on admin area forms styles.
-
-### 1.1.1 ###
-
-* Fixed points/achievement type renaming functionality.
-* Added Chinese translation by 张无忌 (Zhang Wuji).
-
-### 1.1.0 ###
-
-* Added a lot of hooks on all plugin templates.
-* Added contextual helps in all edit screens to help configure GamiPress.
-* Added the Add-ons page.
-* Improvements on daily visit listeners.
-* Improvements on logs count functions.
-* Improvements on logs forms.
-* Improvements on admin area forms on small screens.
-* Added install and upgrade functions.
+* Improvement: Just show multisite fields if install is multisite.
+* Improvements on admin area stylesheets.
+* Removed backward compatibility for [gamipress_achievement] parameters show_filter and show_search.
 * Reset public changelog (moved old changelog to changelog.txt file).
+* No more bugs found, so, time to release this version as stable release! :)

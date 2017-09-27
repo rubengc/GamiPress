@@ -50,7 +50,7 @@
     padding-right: 12px;
 }
 
-.cmb2-options-page .cmb-tabs-wrap .cmb2-wrap {
+.cmb2-options-page .cmb-tabs-wrap .cmb2-wrap .cmb2-metabox > .cmb-row:first-child {
     margin-top: 1px;
 }
 

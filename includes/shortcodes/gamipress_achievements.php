@@ -134,8 +134,8 @@ function gamipress_register_achievements_shortcode() {
 			'wpms' => array(
 				'name'        => __( 'Include Multisite Achievements', 'gamipress' ),
 				'description' => __( 'Show achievements from all network sites.', 'gamipress' ),
-				'type' 	=> 'checkbox',
-				'classes' => 'gamipress-switch',
+				'type' 		  => 'checkbox',
+				'classes' 	  => 'gamipress-switch',
 			),
 		),
 	) );
@@ -156,11 +156,6 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
-
-	// TODO: Backward compatibility for change on 1.0.5
-	// TODO: Remove on 1.2.0
-	if( isset( $atts['show_filter'] ) ) $atts['filter'] = $atts['show_filter'];
-	if( isset( $atts['show_search'] ) ) $atts['search'] = $atts['show_search'];
 
 	$atts = shortcode_atts( array(
 		// Achievements atts
