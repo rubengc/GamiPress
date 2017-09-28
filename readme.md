@@ -149,6 +149,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.1 ###
+
+* Fixed wrong requirement period limit check.
+* Improvements on query to determine if an activity trigger has a listener.
+* Fixed wrong bar check on licensing library.
+
 ### 1.2.0 ###
 
 * Improvement: Just show multisite fields if install is multisite.

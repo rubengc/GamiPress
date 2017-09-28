@@ -503,7 +503,7 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 			$activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id, $since ) );
 
 			// Force bail if user exceeds the limit over time
-			if( $activity_count >= $activity_count_limit ) {
+			if( $activity_count > $activity_count_limit ) {
 				return false;
 			}
 		}

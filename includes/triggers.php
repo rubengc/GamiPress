@@ -377,11 +377,10 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 		LEFT JOIN $wpdb->postmeta AS pm
 		ON ( p.ID = pm.post_id )
 		WHERE p.post_status = %s
-			AND p.post_type IN ( %s )
+			AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
 			AND ( pm.meta_key = %s AND pm.meta_value = %s )
 		",
 		'publish',
-		"'" . implode( "','", gamipress_get_requirement_types_slugs() ) . "'",
 		'_gamipress_trigger_type', $trigger
 	) );
 

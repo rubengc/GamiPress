@@ -144,6 +144,11 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
                             if( $cmb->is_options_page_mb() ) {
                                 $option_key = $cmb->object_id;
 
+                                // TODO: On delete actions, $option_key is an array of deleted items
+                                if( is_array( $option_key ) ) {
+                                    return;
+                                }
+
                                 if( ! $option_key && isset( $cmb->meta_box['show_on'] ) && isset( $cmb->meta_box['show_on']['value'] ) ) {
                                     if( is_array( $cmb->meta_box['show_on']['value'] ) ) {
                                         $option_key = $cmb->meta_box['show_on']['value'][0];
