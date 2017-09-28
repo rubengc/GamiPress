@@ -72,11 +72,11 @@
 
 		gamipress_ajax_achievement_list_reset( $(this).closest('.gamipress-achievements-list') );
 
-		//Disabled submit button
+		// Disabled submit button
 		$(this).prop('disabled', true);
 	});
 
-	//Enabled submit button
+	// Enabled submit button
     $body.on( 'focus', '#achievements_list_search', function (e) {
 		$(this).closest('.gamipress-achievements-list').find('#achievements_list_search_go').prop('disabled', false);
 	} );
@@ -102,8 +102,7 @@
 		if ( 'close' == link.data( 'action' ) ) {
 			link.parent().siblings( '.gamipress-extras-window' ).slideUp( 300 );
 			link.data( 'action', 'open' ).prop( 'class', 'show-hide-open' ).text( link.data('open-text') );
-		}
-		else {
+		} else {
 			link.parent().siblings( '.gamipress-extras-window' ).slideDown( 300 );
 			link.data( 'action', 'close' ).prop( 'class', 'show-hide-close' ).text( link.data('close-text') );
 		}

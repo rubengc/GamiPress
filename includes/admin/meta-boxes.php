@@ -261,6 +261,11 @@ function gamipress_meta_boxes() {
 				'type' => 'select',
 				'options' => $points_types_options
 			),
+			$prefix . 'maximum_earnings' => array(
+				'name' => __( 'Maximum Earnings', 'gamipress' ),
+				'desc' => '',
+				'type' => 'text_small',
+			),
 		),
 		array( 'priority' => 'high' )
 	);

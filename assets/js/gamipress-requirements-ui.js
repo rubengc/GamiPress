@@ -159,7 +159,7 @@
     $( '.limit-type' ).change();
 })(jQuery);
 
-// Add a points award
+// Add a requirement
 function gamipress_add_requirement( post_id ) {
     jQuery( '.requirements-spinner' ).addClass('is-active');
 
@@ -186,7 +186,7 @@ function gamipress_add_requirement( post_id ) {
     );
 }
 
-// Delete a points award
+// Delete a requirement
 function gamipress_delete_requirement( requirement_id ) {
     // Show the spinner
     //jQuery( '.requirements-spinner' ).addClass('is-active');
@@ -207,7 +207,7 @@ function gamipress_delete_requirement( requirement_id ) {
     );
 }
 
-// Update all points awards
+// Update all requirements
 function gamipress_update_requirements() {
 
     jQuery( '.requirements-spinner' ).addClass('is-active');
@@ -241,6 +241,7 @@ function gamipress_update_requirements() {
         if( requirement_details.requirement_type === 'points-award' ) {
             requirement_details.points = requirement.find( '.points' ).val();
             requirement_details.points_type = requirement.find( 'input[name="points_type"]' ).val();
+            requirement_details.maximum_earnings = requirement.find( '.maximum-earnings' ).val();
         }
 
         // Allow external functions to add their own data to the array

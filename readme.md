@@ -149,6 +149,13 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.2 ###
+
+* New feature: Now is possible to set a maximum earnings to each points awards (or unlimited).
+* Improvement: Turn quantity fields to number instead of text on requirements UI.
+* Improvements on frontend assets enqueue.
+* Improvements on admin area stylesheets.
+
 ### 1.2.1 ###
 
 * Fixed wrong requirement period limit check.

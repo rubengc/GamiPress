@@ -464,8 +464,15 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
         $return = false;
     }
 
-    // Prevent user from repeatedly earning the same points award
-    if ( $return && $points_type && gamipress_get_user_achievements( array(
+	$maximum_earnings = absint( get_post_meta( $points_award_id, '_gamipress_maximum_earnings', true ) );
+
+	// No maximum earnings set
+	if( $maximum_earnings === 0 ) {
+		return $return;
+	}
+
+    // Prevent user to exceed maximum earnings the same points award
+    if ( $return && $points_type && $maximum_earnings >= gamipress_get_user_achievements( array(
             'user_id'        => absint( $user_id ),
             'achievement_id' => absint( $points_award_id ),
             'since'          => absint( gamipress_achievement_last_user_activity( $points_type->ID, $user_id ) )

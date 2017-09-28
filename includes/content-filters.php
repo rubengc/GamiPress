@@ -155,12 +155,24 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 	// Concatenate our output
 	foreach ( $points_awards as $points_award ) {
 
-		// check if user has earned this Achievement, and add an 'earned' class
-		$earned_status = gamipress_get_user_achievements( array(
-			'user_id' => absint( $user_id ),
-			'achievement_id' => absint( $points_award->ID ),
-			'since' => absint( gamipress_achievement_last_user_activity( $points_award->ID, $user_id ) )
-		) ) ? 'user-has-earned' : 'user-has-not-earned';
+		// Check if user has earned this Achievement, and add an 'earned' class
+		$earned_status = 'user-has-not-earned';
+
+		$maximum_earnings = absint( get_post_meta( $points_award->ID, '_gamipress_maximum_earnings', true ) );
+
+		// An unlimited maximum of earnings means points awards could be earned always
+		if( $maximum_earnings > 0 ) {
+			$earned_times = gamipress_get_user_achievements( array(
+				'user_id' => absint( $user_id ),
+				'achievement_id' => absint( $points_award->ID ),
+				'since' => absint( gamipress_achievement_last_user_activity( $points_award->ID, $user_id ) )
+			) );
+
+			// User has earned it more times than maximum, so is earned
+			if( $earned_times >= $maximum_earnings ) {
+				$earned_status = 'user-has-earned';
+			}
+		}
 
 		$title = $points_award->post_title;
 

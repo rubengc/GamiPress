@@ -97,9 +97,7 @@ function gamipress_logs_shortcode( $atts = array () ) {
         'exclude'     => '',
     ), $atts, 'gamipress_logs' );
 
-    if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
-        wp_enqueue_style( 'gamipress-css' );
-    }
+    gamipress_enqueue_scripts();
 
     // GamiPress template args global
     $gamipress_template_args = $atts;

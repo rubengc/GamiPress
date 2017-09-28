@@ -66,8 +66,15 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
 
     // Specific points award data
     if( $requirement_type === 'points-award' ) {
-        $requirement['points']      = absint( get_post_meta( $requirement_id, '_gamipress_points', true ) );
-        $requirement['points_type'] = absint( get_post_meta( $requirement_id, '_gamipress_points_type', true ) );
+        $requirement['points']              = absint( get_post_meta( $requirement_id, '_gamipress_points', true ) );
+        $requirement['points_type']         = absint( get_post_meta( $requirement_id, '_gamipress_points_type', true ) );
+        $requirement['maximum_earnings']    = get_post_meta( $requirement_id, '_gamipress_maximum_earnings', true );
+
+        if( $requirement['maximum_earnings'] === "" ) {
+            $requirement['maximum_earnings'] = 1;
+        } else {
+            $requirement['maximum_earnings'] = absint( $requirement['maximum_earnings'] );
+        }
     }
 
     // If the requirement requires a specific achievement

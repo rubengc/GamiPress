@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-09-25 19:57+0200\n"
+"POT-Creation-Date: 2017-09-28 20:20+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -432,7 +432,7 @@ msgstr ""
 msgid "Displayed after achievement is earned."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:189
+#: includes/admin/meta-boxes.php:189 includes/admin/meta-boxes.php:265
 msgid "Maximum Earnings"
 msgstr ""
 
@@ -494,31 +494,31 @@ msgstr ""
 msgid "Achievement Post"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:271
+#: includes/admin/meta-boxes.php:276
 msgid "Log Data"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:275
+#: includes/admin/meta-boxes.php:280
 msgid "User"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:276
+#: includes/admin/meta-boxes.php:281
 msgid "User assigned to this log."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:281
+#: includes/admin/meta-boxes.php:286
 msgid "Type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:282
+#: includes/admin/meta-boxes.php:287
 msgid "The log type."
 msgstr ""
 
-#: includes/admin/meta-boxes.php:287
+#: includes/admin/meta-boxes.php:292
 msgid "Pattern"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:288
+#: includes/admin/meta-boxes.php:293
 msgid "The log output pattern. Available tags:"
 msgstr ""
 
@@ -921,64 +921,72 @@ msgstr ""
 msgid "limited to"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:215
+#: includes/admin/requirements-ui.php:216
 msgid "point(s)"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:221
+#: includes/admin/requirements-ui.php:222
 msgid "Earn"
 msgstr ""
 
+#: includes/admin/requirements-ui.php:228
+msgid "with a maximum number of times to earn it of"
+msgstr ""
+
 #: includes/admin/requirements-ui.php:230
+msgid "(0 for no maximum)"
+msgstr ""
+
+#: includes/admin/requirements-ui.php:237
 msgid "Label"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:451
+#: includes/admin/requirements-ui.php:460
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:454
+#: includes/admin/requirements-ui.php:463
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:489
-#: includes/admin/requirements-ui.php:495
-#: includes/admin/requirements-ui.php:517
+#: includes/admin/requirements-ui.php:499
+#: includes/admin/requirements-ui.php:505
+#: includes/admin/requirements-ui.php:527
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:489
+#: includes/admin/requirements-ui.php:499
 #, php-format
 msgid "%d %s for"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:495
+#: includes/admin/requirements-ui.php:505
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/requirements-ui.php:504
+#: includes/admin/requirements-ui.php:514
 msgid "day"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:507
+#: includes/admin/requirements-ui.php:517
 msgid "week"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:510
+#: includes/admin/requirements-ui.php:520
 msgid "month"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:513
+#: includes/admin/requirements-ui.php:523
 msgid "year"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:517
+#: includes/admin/requirements-ui.php:527
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
@@ -1289,25 +1297,25 @@ msgstr ""
 msgid "%1$d %2$s"
 msgstr ""
 
-#: includes/content-filters.php:277
+#: includes/content-filters.php:289
 #, php-format
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/content-filters.php:353
+#: includes/content-filters.php:365
 #, php-format
 msgid "%d Points"
 msgstr ""
 
-#: includes/content-filters.php:396
+#: includes/content-filters.php:408
 msgid "You have earned this achievement!"
 msgstr ""
 
-#: includes/content-filters.php:609
+#: includes/content-filters.php:621
 msgid "Next Post"
 msgstr ""
 
-#: includes/content-filters.php:612
+#: includes/content-filters.php:624
 msgid "Previous Post"
 msgstr ""
 

@@ -32,7 +32,7 @@ add_action( 'init', 'gamipress_register_scripts' );
  * @since       1.0.0
  * @return      void
  */
-function gamipress_enqueue_scripts( $hook ) {
+function gamipress_enqueue_scripts( $hook = null ) {
     // Stylesheets
     if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
         wp_enqueue_style( 'gamipress-css' );

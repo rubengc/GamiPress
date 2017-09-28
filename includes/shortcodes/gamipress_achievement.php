@@ -80,13 +80,7 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 	if ( empty($atts['id']) )
 	  return;
 
-	if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
-		wp_enqueue_style( 'gamipress-css' );
-	}
-
-	if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
-		wp_enqueue_script('gamipress-js');
-	}
+	gamipress_enqueue_scripts();
 
 	// get the post content and format the badge display
 	$achievement = get_post( $atts['id'] );

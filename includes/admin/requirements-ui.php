@@ -189,13 +189,13 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <?php do_action( 'gamipress_requirement_ui_html_after_achievement_post', $requirement_id, $post_id ); ?>
 
-        <input class="required-count" type="text" size="3" maxlength="3" value="<?php echo $count; ?>" placeholder="1">
+        <input class="required-count" type="number" min="1" value="<?php echo $count; ?>" placeholder="1">
         <span class="required-count-text"><?php _e( 'time(s)', 'gamipress' ); ?></span>
 
         <?php do_action( 'gamipress_requirement_ui_html_after_count', $requirement_id, $post_id ); ?>
 
         <span class="limit-text"><?php _e( 'limited to', 'gamipress' ); ?></span>
-        <input class="limit" type="text" size="3" maxlength="3" value="<?php echo $limit; ?>" placeholder="1">
+        <input class="limit" type="number" min="1" value="<?php echo $limit; ?>" placeholder="1">
         <select class="limit-type">
             <option value="unlimited" <?php selected( $limit_type, 'unlimited' ); ?>><?php _e( 'Unlimited', 'gamipress' ); ?></option>
             <option value="daily" <?php selected( $limit_type, 'daily' ); ?>><?php _e( 'Per Day', 'gamipress' ); ?></option>
@@ -210,6 +210,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
             $points                 = ! empty( $requirements['points'] ) ? $requirements['points'] : 1;
             $points_singular_name   = get_post_meta( $post_id, '_gamipress_singular_name', true );
             $points_type            = get_post_field( 'post_name', $post_id );
+            $maximum_earnings       = absint( $requirements['maximum_earnings'] );
 
             if( ! $points_singular_name ) {
                 $points_singular_name = __( 'point(s)', 'gamipress' );
@@ -217,10 +218,16 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
                 $points_singular_name = strtolower( $points_singular_name . '(s)' );
             }
             ?>
-            <div class="requirement-points">
-                <label for="requirement-<?php echo $requirement_id; ?>-points"><?php _e( 'Earn', 'gamipress' ); ?>:</label> <input type="text" name="requirement-points" id="requirement-<?php echo $requirement_id; ?>-points" class="points" value="<?php echo $points; ?>" />
-                <?php echo $points_singular_name; ?>
+            <div class="requirement-awards">
+                <label for="requirement-<?php echo $requirement_id; ?>-points"><?php _e( 'Earn', 'gamipress' ); ?>:</label>
+                <input type="number" name="requirement-points" id="requirement-<?php echo $requirement_id; ?>-points" class="points" value="<?php echo $points; ?>" />
+                <span class="points-text"><?php echo $points_singular_name; ?></span>
                 <input type="hidden" name="points_type" value="<?php echo $points_type; ?>">
+
+
+                <span class="maximum-earnings-text"><?php _e( 'with a maximum number of times to earn it of', 'gamipress' ); ?></span>
+                <input type="number" min="0" name="requirement-maximum-earnings" id="requirement-<?php echo $requirement_id; ?>-maximum-earnings" class="maximum-earnings" value="<?php echo $maximum_earnings; ?>" />
+                <span class="maximum-earnings-notice"><?php _e( '(0 for no maximum)', 'gamipress' ); ?></span>
             </div>
 
             <?php do_action( 'gamipress_requirement_ui_html_after_points', $requirement_id, $post_id ); ?>
@@ -392,9 +399,11 @@ function gamipress_update_requirements_ajax_handler() {
             if( $requirement_type === 'points-award' ) {
                 $points           = ( ! empty( $requirement['points'] ) ) ? absint( $requirement['points'] ) : 1;
                 $points_type      = ( ! empty( $requirement['points_type'] ) ) ? $requirement['points_type'] : '';
+                $maximum_earnings = ( ! $requirement['maximum_earnings'] !== "" ) ? absint( $requirement['maximum_earnings'] ) : 1;
 
                 update_post_meta( $requirement_id, '_gamipress_points', $points );
                 update_post_meta( $requirement_id, '_gamipress_points_type', $points_type );
+                update_post_meta( $requirement_id, '_gamipress_maximum_earnings', $maximum_earnings );
             }
 
             // Action to store custom requirement data
@@ -479,6 +488,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     if( $requirement_type === 'points-award' ) {
         $points           = ( ! empty( $requirement['points'] ) ) ? absint( $requirement['points'] ) : 1;
         $points_type      = ( ! empty( $requirement['points_type'] ) ) ? $requirement['points_type'] : '';
+        //$maximum_earnings = ( ! empty( $requirement['maximum_earnings'] ) ) ? absint( $requirement['maximum_earnings'] ) : 1;
 
         if ( $points > 0 ) {
             $points_types = gamipress_get_points_types();

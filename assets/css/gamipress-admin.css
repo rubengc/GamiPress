@@ -196,6 +196,12 @@ li.requirement-row .requirement-title {
 	padding-top:5px;
 }
 
+li.requirement-row .required-count,
+li.requirement-row .limit,
+li.requirement-row .maximum-earnings {
+	max-width: 60px;
+}
+
 li.requirement-row .title {
 	width: 400px;
 }
@@ -364,11 +370,13 @@ li.requirement-row label {
 /* GamiPress Select2 */
 .gamipress-select2 {
 	width: 100% !important;
-	z-index: 1;
+	z-index: 100051;
 }
 
-body > .gamipress-select2 {
+body > .gamipress-select2,
+.gamipress-widget-form .gamipress-select2 {
 	z-index: 100051;
+	max-width: 100%;
 }
 
 #requirements-list .gamipress-select2 {
