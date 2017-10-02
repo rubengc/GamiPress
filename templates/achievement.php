@@ -99,7 +99,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
                 </div>
 
                 <div id="gamipress-toggle-more-window-<?php the_ID(); ?>" class="gamipress-extras-window">
-                    <?php echo gamipress_get_required_achievements_for_achievement_list_markup( $steps, get_the_ID() ); ?>
+                    <?php echo gamipress_get_required_achievements_for_achievement_list_markup( $steps, get_the_ID(), $user_id, $gamipress_template_args ); ?>
                 </div><!-- .gamipress-extras-window -->
 
             </div><!-- .gamipress-achievement-attached -->

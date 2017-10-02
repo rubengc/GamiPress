@@ -471,13 +471,14 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 		return $return;
 	}
 
+	$earned_times = count( gamipress_get_user_achievements( array(
+		'user_id'        => absint( $user_id ),
+		'achievement_id' => absint( $points_award_id ),
+		'since'          => absint( gamipress_achievement_last_user_activity( $points_type->ID, $user_id ) )
+	) ) );
+
     // Prevent user to exceed maximum earnings the same points award
-    if ( $return && $points_type && $maximum_earnings >= gamipress_get_user_achievements( array(
-            'user_id'        => absint( $user_id ),
-            'achievement_id' => absint( $points_award_id ),
-            'since'          => absint( gamipress_achievement_last_user_activity( $points_type->ID, $user_id ) )
-        ) )
-    )
+    if ( $return && $points_type && $maximum_earnings >= $earned_times )
         $return = false;
 
     // Send back our eligibility
@@ -516,13 +517,13 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 		}
 
 		// Get the required number of checkins
-		$minimum_activity_count = absint( get_post_meta( $achievement_id, '_gamipress_count', true ) );
+		$required_activity_count = absint( get_post_meta( $achievement_id, '_gamipress_count', true ) );
 
 		// Grab the relevant activity count
 		$activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id ) );
 
 		// If we meet or exceed the required number of checkins, then deserve the achievement
-		if ( $activity_count >= $minimum_activity_count ) {
+		if ( $activity_count >= $required_activity_count ) {
 			$return = true;
 		} else {
 			$return = false;
@@ -586,12 +587,19 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 				break;
 		}
 
+		// Just continue if trigger is set
 		if( isset( $trigger ) ) {
+
 			if( $since !== 0 ) {
 				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since );
 			} else {
-				$activities = gamipress_get_user_trigger_count( $user_id, $trigger );
+				// If since is not defined, then get activity count since achievement publish date
+				$since = strtotime( get_post_field( 'post_date', $achievement_id ) );
+
+				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since );
+				//$activities = gamipress_get_user_trigger_count( $user_id, $trigger );
 			}
+
 		}
 
 	}

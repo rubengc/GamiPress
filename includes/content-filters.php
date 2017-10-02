@@ -110,11 +110,14 @@ function gamipress_is_main_loop( $id = false ) {
  * and an ordered list (<ol>) if steps require sequentiality.
  *
  * @since  1.0.0
+ *
  * @param  array   $points_awards   An points type's points awards
  * @param  integer $user_id         The given user's ID
+ * @param  array   $template_args   The given template args
+ *
  * @return string                   The markup for our list
  */
-function gamipress_get_points_awards_for_points_types_list_markup( $points_awards = array(), $user_id = 0 ) {
+function gamipress_get_points_awards_for_points_types_list_markup( $points_awards = array(), $user_id = 0, $template_args = array() ) {
 
 	// If we don't have any points awards, or our points awards aren't an array, return nothing
 	if ( ! $points_awards || ! is_array( $points_awards ) )
@@ -160,15 +163,15 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 
 		$maximum_earnings = absint( get_post_meta( $points_award->ID, '_gamipress_maximum_earnings', true ) );
 
-		// An unlimited maximum of earnings means points awards could be earned always
+		// An unlimited maximum of earnings means points awards could be earned anyway
 		if( $maximum_earnings > 0 ) {
-			$earned_times = gamipress_get_user_achievements( array(
+			$earned_times = count( gamipress_get_user_achievements( array(
 				'user_id' => absint( $user_id ),
 				'achievement_id' => absint( $points_award->ID ),
 				'since' => absint( gamipress_achievement_last_user_activity( $points_award->ID, $user_id ) )
-			) );
+			) ) );
 
-			// User has earned it more times than maximum, so is earned
+			// User has earned it more times than required times, so is earned
 			if( $earned_times >= $maximum_earnings ) {
 				$earned_status = 'user-has-earned';
 			}
@@ -181,7 +184,7 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 			$title = gamipress_build_requirement_title( $points_award->ID );
 		}
 
-		$output .= '<li class="'. apply_filters( 'gamipress_points_award_class', $earned_status, $points_award ) .'">'. apply_filters( 'gamipress_points_award_title_display', $title, $points_award ) . '</li>';
+		$output .= '<li class="'. apply_filters( 'gamipress_points_award_class', $earned_status, $points_award, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_points_award_title_display', $title, $points_award, $user_id, $template_args ) . '</li>';
 	}
 
 	$output .= '</ul><!-- .gamipress-points-awards -->';
@@ -253,12 +256,15 @@ function gamipress_get_required_achievements_for_achievement_list( $achievement_
  * and an ordered list (<ol>) if steps require sequentiality.
  *
  * @since  1.0.0
- * @param  array   $steps           An achievement's required steps
- * @param  integer $achievement_id  The given achievement's ID
- * @param  integer $user_id         The given user's ID
+ *
+ * @param  array   	$steps           An achievement's required steps
+ * @param  integer 	$achievement_id  The given achievement's ID
+ * @param  integer 	$user_id         The given user's ID
+ * @param  array	$template_args   The given template args
+ *
  * @return string                   The markup for our list
  */
-function gamipress_get_required_achievements_for_achievement_list_markup( $steps = array(), $achievement_id = 0, $user_id = 0 ) {
+function gamipress_get_required_achievements_for_achievement_list_markup( $steps = array(), $achievement_id = 0, $user_id = 0, $template_args = array() ) {
 
 	// If we don't have any steps, or our steps aren't an array, return nothing
 	if ( ! $steps || ! is_array( $steps ) )
@@ -306,7 +312,7 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 			$title = gamipress_build_requirement_title( $step->ID );
 		}
 
-		$output .= '<li class="'. apply_filters( 'gamipress_step_class', $earned_status, $step ) .'">'. apply_filters( 'gamipress_step_title_display', $title, $step ) . '</li>';
+		$output .= '<li class="'. apply_filters( 'gamipress_step_class', $earned_status, $step, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_step_title_display', $title, $step, $user_id, $template_args ) . '</li>';
 	}
 
 	$output .= '</'. $container .'><!-- .gamipress-required-achievements -->';

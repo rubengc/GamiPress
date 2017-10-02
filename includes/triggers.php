@@ -421,10 +421,14 @@ function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
  * Get the count for the number of times a user has triggered a particular trigger
  *
  * @since  1.0.0
+ *
+ * @deprecated TODO: Move gamipress_get_user_trigger_count_from_logs code to here and remove _gamipress_triggered_triggers user meta
+ *
  * @param  integer $user_id The given user's ID
  * @param  string  $trigger The given trigger we're checking
  * @param  integer $site_id The desired Site ID to check
  * @param  array $args      The triggered args
+ *
  * @return integer          The total number of times a user has triggered the trigger
  */
 function gamipress_get_user_trigger_count( $user_id, $trigger, $site_id = 0, $args = array() ) {
@@ -462,6 +466,7 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $site_id = 0, $ar
  * @return integer          The total number of times a user has triggered the trigger
  */
 function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since = 0, $site_id = 0, $args = array() ) {
+
 	global $wpdb;
 
 	// Set to current site id
@@ -542,6 +547,7 @@ function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since 
 
 	// If we have any triggers, return the current count for the given trigger
 	return absint( $user_triggers );
+
 }
 
 /**

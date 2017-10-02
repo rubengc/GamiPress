@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -81,11 +81,19 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * [WooCommerce integration](https://wordpress.org/plugins/gamipress-woocommerce-integration/)
 * [AffiliateWP integration](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress integration](https://wordpress.org/plugins/gamipress-buddypress-integration/)
-* [Contact Form 7 integration](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
+* [LearnDash integration](https://wordpress.org/plugins/gamipress-learndash-integration/)
 * [bbPress integration](https://wordpress.org/plugins/gamipress-bbpress-integration/)
 * [Ninja Forms integration](https://wordpress.org/plugins/gamipress-ninja-forms-integration/)
+* [Contact Form 7 integration](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
 * [LearnPress integration](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [Gravity Forms integration](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
+
+= Powerful add-ons to extend GamiPress =
+
+* [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/) - Add leaderboards to intensify the gamification of your site.
+* [Social Share](https://gamipress.com/add-ons/gamipress-social-share/) - Award your users for sharing your website content on social networks.
+* [Easy Digital Downloads Discounts](https://gamipress.com/add-ons/gamipress-edd-discounts/) - Award discounts for achievement completion on Easy Digital Downloads.
+* [WooCommerce Discounts](https://gamipress.com/add-ons/gamipress-wc-discounts/) - Award discounts for achievement completion on WooCommerce.
 
 = Helpful Links =
 
@@ -123,15 +131,21 @@ GamiPress is made available by [Tsunoa](https://tsunoa.com/ "Tsunoa"). Here are 
 
 == Frequently Asked Questions ==
 
+= Where can I find documentation about GamiPress? =
+
+Check the [Getting Started](https://gamipress.com/docs/getting-started/) docs where you can start getting familiarized with GamiPress.
+
+Also, we have the [tutorials](https://gamipress.com/docs/tutorials/) sections where you can find step-by-step guides to accomplish some common task to start working with GamiPress.
+
 = Which shortcodes come bundled with GamiPress? =
 
 GamiPress comes with the following shortcodes:
 
-* [gamipress_achievement] to display a desired achievement.
-* [gamipress_achievements] to display a list of achievements.
-* [gamipress_logs] to display a list of logs.
-* [gamipress_point_types] to display a list of points types with their points awards.
-* [gamipress_points] to display current or specific user points balance.
+* [[gamipress_achievement]](https://gamipress.com/docs/shortcodes/gamipress_achievement/) to display a desired achievement.
+* [[gamipress_achievements]](https://gamipress.com/docs/shortcodes/gamipress_achievements/) to display a list of achievements.
+* [[gamipress_logs]](https://gamipress.com/docs/shortcodes/gamipress_logs/) to display a list of logs.
+* [[gamipress_points_types]](https://gamipress.com/docs/shortcodes/gamipress_points_types/) to display a list of points types with their points awards.
+* [[gamipress_points]](https://gamipress.com/docs/shortcodes/gamipress_points/) to display current or specific user points balance.
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of available shortcodes, including descriptions of all parameters each shortcode supports.
 
@@ -146,6 +160,13 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+= 1.2.3 =
+
+* Improvements on achievement earned detection.
+* Improvements on activity count, now engine check logs from the step/points award creation date.
+* Fixed wrong parameter on points types template.
+* Added more parameters to template hooks.
 
 = 1.2.2 =
 

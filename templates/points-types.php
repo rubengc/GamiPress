@@ -8,6 +8,12 @@
 global $gamipress_template_args;
 
 $points_types = gamipress_get_points_types();
+
+if( isset( $gamipress_template_args['user_id'] ) ) {
+    $user_id = $gamipress_template_args['user_id'];
+} else {
+    $user_id = get_current_user_id();
+}
 ?>
 
 <div class="gamipress-points-types">
@@ -61,7 +67,7 @@ $points_types = gamipress_get_points_types();
                     </div>
 
                     <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
-                        <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $points_type ); ?>
+                        <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $gamipress_template_args ); ?>
                     </div><!-- .gamipress-extras-window -->
 
                 </div><!-- .gamipress-points-type-awards -->
