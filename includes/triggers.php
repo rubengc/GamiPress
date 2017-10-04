@@ -461,7 +461,7 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $site_id = 0, $ar
  * @param  string  $trigger The given trigger we're checking
  * @param  integer $since 	The since timestamp where retrieve the logs
  * @param  integer $site_id The desired Site ID to check
- * @param  array $args      The triggered args
+ * @param  array $args      The triggered args or requirement object
  *
  * @return integer          The total number of times a user has triggered the trigger
  */
@@ -479,16 +479,24 @@ function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since 
 		$now = date( 'Y-m-d' );
 		$since = date( 'Y-m-d', $since );
 
-		$post_date = "AND p.post_date BETWEEN '$since' AND '$now'";
+		$post_date = "BETWEEN '$since' AND '$now'";
 
 		if( $since === $now ) {
-			$post_date = "AND p.post_date >= '$now'";
+			$post_date = ">= '$now'";
 		}
 	}
 
 	// If is specific trigger then try to get the attached id
 	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
-		$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
+
+		$specific_id = 0;
+
+		// if isset this key it means $args is a requirement object
+		if( isset( $args['achievement_post'] ) ) {
+			$specific_id = absint( $args['achievement_post'] );
+		} else if( ! empty( $args ) ) {
+			$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
+		}
 
 		// If there is a specific id, then try to find the count
 		if( $specific_id !== 0 ) {
@@ -504,7 +512,7 @@ function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since 
 				ON ( p.ID = pm3.post_id )
 				WHERE p.post_type = %s
 					AND p.post_author = %s
-					{$post_date}
+					AND CAST( p.post_date AS DATE ) {$post_date}
 					AND (
 						( pm1.meta_key = %s AND pm1.meta_value = %s )
 						AND ( pm2.meta_key = %s AND pm2.meta_value = %s )
@@ -532,7 +540,7 @@ function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since 
 			ON ( p.ID = pm2.post_id )
 			WHERE p.post_type = %s
 				AND p.post_author = %s
-				{$post_date}
+				AND CAST( p.post_date AS DATE ) {$post_date}
 				AND (
 					( pm1.meta_key = %s AND pm1.meta_value = %s )
 					AND ( pm2.meta_key = %s AND pm2.meta_value = %s )

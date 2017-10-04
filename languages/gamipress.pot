@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-09-28 20:20+0200\n"
+"POT-Creation-Date: 2017-10-04 19:49+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +21,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: libraries\n"
 
 #: gamipress.php:217 gamipress.php:245 gamipress.php:261 gamipress.php:277
-#: includes/shortcodes/gamipress_achievements.php:105
+#: includes/shortcodes/gamipress_achievements.php:119
 #: includes/shortcodes/gamipress_logs.php:51
 msgid "Order"
 msgstr ""
@@ -293,7 +293,7 @@ msgid "Achievement user has earned."
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:115 includes/admin/meta-boxes.php:254
-#: templates/points.php:15
+#: templates/points.php:18
 msgid "Points"
 msgstr ""
 
@@ -461,7 +461,7 @@ msgid "Trigger Type"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:227
-#: includes/shortcodes/gamipress_achievements.php:84
+#: includes/shortcodes/gamipress_achievements.php:98
 #: includes/shortcodes/gamipress_logs.php:30
 msgid "Limit"
 msgstr ""
@@ -1272,8 +1272,8 @@ msgstr ""
 msgid "Download System Info File"
 msgstr ""
 
-#: includes/ajax-functions.php:162 templates/achievements.php:12
-#: templates/achievements.php:15
+#: includes/ajax-functions.php:162 templates/achievements.php:15
+#: templates/achievements.php:18
 msgid "achievements"
 msgstr ""
 
@@ -1287,35 +1287,35 @@ msgstr ""
 msgid "No %s to display at this time."
 msgstr ""
 
-#: includes/content-filters.php:145
+#: includes/content-filters.php:148
 #, php-format
 msgid "%1$d %2$s Awards"
 msgstr ""
 
-#: includes/content-filters.php:147
+#: includes/content-filters.php:150
 #, php-format
 msgid "%1$d %2$s"
 msgstr ""
 
-#: includes/content-filters.php:289
+#: includes/content-filters.php:295
 #, php-format
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/content-filters.php:365
+#: includes/content-filters.php:371
 #, php-format
 msgid "%d Points"
 msgstr ""
 
-#: includes/content-filters.php:408
+#: includes/content-filters.php:414
 msgid "You have earned this achievement!"
 msgstr ""
 
-#: includes/content-filters.php:621
+#: includes/content-filters.php:627
 msgid "Next Post"
 msgstr ""
 
-#: includes/content-filters.php:624
+#: includes/content-filters.php:630
 msgid "Previous Post"
 msgstr ""
 
@@ -1592,24 +1592,24 @@ msgstr ""
 msgid "Use %s image"
 msgstr ""
 
-#: includes/scripts.php:106 includes/scripts.php:121
+#: includes/scripts.php:113 includes/scripts.php:128
 #: includes/shortcodes/shortcodes-editor.php:42
 msgid "Select a Post"
 msgstr ""
 
-#: includes/scripts.php:122 includes/shortcodes/shortcodes-editor.php:43
+#: includes/scripts.php:129 includes/shortcodes/shortcodes-editor.php:43
 msgid "Select Post(s)"
 msgstr ""
 
-#: includes/scripts.php:123 includes/shortcodes/shortcodes-editor.php:44
+#: includes/scripts.php:130 includes/shortcodes/shortcodes-editor.php:44
 msgid "Select an User"
 msgstr ""
 
-#: includes/scripts.php:124 includes/shortcodes/shortcodes-editor.php:45
+#: includes/scripts.php:131 includes/shortcodes/shortcodes-editor.php:45
 msgid "Default: All"
 msgstr ""
 
-#: includes/scripts.php:134
+#: includes/scripts.php:141
 msgid "Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed."
 msgstr ""
 
@@ -1641,7 +1641,7 @@ msgid "Render a single achievement."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievement.php:23
-#: includes/shortcodes/gamipress_achievements.php:95
+#: includes/shortcodes/gamipress_achievements.php:109
 msgid "Achievement ID"
 msgstr ""
 
@@ -1722,112 +1722,144 @@ msgid "Display achievements steps."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:70
-msgid "Show Filter"
+msgid "Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:71
-msgid "Display filter controls."
+msgid "Columns to divide achievements."
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:74
+msgid "1 Column"
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:75
+msgid "2 Columns"
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:76
+msgid "3 Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:77
-msgid "Show Search"
+msgid "4 Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:78
-msgid "Display a search input."
+msgid "5 Columns"
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:79
+msgid "6 Columns"
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:84
+msgid "Show Filter"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:85
+msgid "Display filter controls."
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:91
+msgid "Show Search"
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:92
+msgid "Display a search input."
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:99
 msgid "Number of achievements to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:90
+#: includes/shortcodes/gamipress_achievements.php:104
 #: includes/shortcodes/gamipress_logs.php:36
 msgid "Order By"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:91
+#: includes/shortcodes/gamipress_achievements.php:105
 #: includes/shortcodes/gamipress_logs.php:37
 msgid "Parameter to use for sorting."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:94
+#: includes/shortcodes/gamipress_achievements.php:108
 #: includes/shortcodes/gamipress_logs.php:40
 msgid "Menu Order"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:96
+#: includes/shortcodes/gamipress_achievements.php:110
 msgid "Achievement Title"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:97
+#: includes/shortcodes/gamipress_achievements.php:111
 #: includes/shortcodes/gamipress_logs.php:43
 msgid "Published Date"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:98
+#: includes/shortcodes/gamipress_achievements.php:112
 #: includes/shortcodes/gamipress_logs.php:44
 msgid "Last Modified Date"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:99
+#: includes/shortcodes/gamipress_achievements.php:113
 #: includes/shortcodes/gamipress_logs.php:45
 msgid "Achievement Author"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:100
+#: includes/shortcodes/gamipress_achievements.php:114
 #: includes/shortcodes/gamipress_logs.php:46
 msgid "Random"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:106
+#: includes/shortcodes/gamipress_achievements.php:120
 #: includes/shortcodes/gamipress_logs.php:52
 msgid "Sort order."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:108
+#: includes/shortcodes/gamipress_achievements.php:122
 #: includes/shortcodes/gamipress_logs.php:54
 msgid "Ascending"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:108
+#: includes/shortcodes/gamipress_achievements.php:122
 #: includes/shortcodes/gamipress_logs.php:54
 msgid "Descending"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:112
+#: includes/shortcodes/gamipress_achievements.php:126
 #: includes/shortcodes/gamipress_logs.php:23
 #: includes/shortcodes/gamipress_points.php:42
 msgid "User ID"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:113
+#: includes/shortcodes/gamipress_achievements.php:127
 msgid "Show only achievements earned by a specific user."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:119
+#: includes/shortcodes/gamipress_achievements.php:133
 #: includes/shortcodes/gamipress_logs.php:58
 msgid "Include"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:120
+#: includes/shortcodes/gamipress_achievements.php:134
 msgid "Comma-separated list of specific achievement IDs to include."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:127
+#: includes/shortcodes/gamipress_achievements.php:141
 #: includes/shortcodes/gamipress_logs.php:66
 msgid "Exclude"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:128
+#: includes/shortcodes/gamipress_achievements.php:142
 msgid "Comma-separated list of specific achievement IDs to exclude."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:135
+#: includes/shortcodes/gamipress_achievements.php:149
 msgid "Include Multisite Achievements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:136
+#: includes/shortcodes/gamipress_achievements.php:150
 msgid "Show achievements from all network sites."
 msgstr ""
 
@@ -2024,48 +2056,48 @@ msgstr ""
 msgid "Earned Achievements"
 msgstr ""
 
-#: includes/user.php:228 includes/user.php:321
+#: includes/user.php:230 includes/user.php:330
 msgid "Image"
 msgstr ""
 
-#: includes/user.php:229
+#: includes/user.php:231
 msgid "Name"
 msgstr ""
 
-#: includes/user.php:230
+#: includes/user.php:232
 msgid "Date"
 msgstr ""
 
-#: includes/user.php:231
+#: includes/user.php:233
 msgid "Action"
 msgstr ""
 
-#: includes/user.php:269 includes/user.php:381
+#: includes/user.php:272 includes/user.php:390
 msgid "Revoke Award"
 msgstr ""
 
-#: includes/user.php:276
+#: includes/user.php:283
 msgid "This user has no earned any achievement"
 msgstr ""
 
-#: includes/user.php:299
+#: includes/user.php:306
 msgid "Award an Achievement"
 msgstr ""
 
-#: includes/user.php:303
+#: includes/user.php:311
 msgid "Select an Achievement Type to Award:"
 msgstr ""
 
-#: includes/user.php:323
+#: includes/user.php:332
 msgid "Actions"
 msgstr ""
 
-#: includes/user.php:372
+#: includes/user.php:381
 #, php-format
 msgid "Award %s"
 msgstr ""
 
-#: includes/user.php:390
+#: includes/user.php:399
 #, php-format
 msgid "No %s found."
 msgstr ""
@@ -2114,45 +2146,45 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: templates/achievement.php:98 templates/points-types.php:60
+#: templates/achievement.php:101 templates/points-types.php:69
 msgid "Show Details"
 msgstr ""
 
-#: templates/achievement.php:98 templates/points-types.php:60
+#: templates/achievement.php:101 templates/points-types.php:69
 msgid "Hide Details"
 msgstr ""
 
-#: templates/achievements.php:59
+#: templates/achievements.php:62
 msgid "Filter:"
 msgstr ""
 
-#: templates/achievements.php:61
+#: templates/achievements.php:64
 #, php-format
 msgid "All %s"
 msgstr ""
 
-#: templates/achievements.php:62
+#: templates/achievements.php:65
 #, php-format
 msgid "Completed %s"
 msgstr ""
 
-#: templates/achievements.php:63
+#: templates/achievements.php:66
 #, php-format
 msgid "Not Completed %s"
 msgstr ""
 
-#: templates/achievements.php:81
+#: templates/achievements.php:84
 msgid "Search:"
 msgstr ""
 
-#: templates/achievements.php:83
+#: templates/achievements.php:86
 msgid "Go"
 msgstr ""
 
-#: templates/achievements.php:106
+#: templates/achievements.php:109
 msgid "Load More"
 msgstr ""
 
-#: templates/points.php:14
+#: templates/points.php:17
 msgid "Point"
 msgstr ""

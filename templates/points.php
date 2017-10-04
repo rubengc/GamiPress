@@ -7,6 +7,9 @@
  */
 global $gamipress_template_args;
 
+// Shorthand
+$a = $gamipress_template_args;
+
 $points_types = gamipress_get_points_types();
 
 // Default points type
@@ -25,9 +28,9 @@ $points_types[''] = array(
      * @param $points_types     array Array of points types to be rendered
      * @param $template_args    array Template received arguments
      */
-    do_action( 'gamipress_before_render_points_list', $points_types, $gamipress_template_args ); ?>
+    do_action( 'gamipress_before_render_points_list', $points_types, $a ); ?>
 
-    <?php foreach( $gamipress_template_args['points'] as $points_type => $count ) : ?>
+    <?php foreach( $a['points'] as $points_type => $count ) : ?>
 
         <?php
         /**
@@ -38,7 +41,7 @@ $points_types[''] = array(
          * @param $points_types     array   Array of points types to be rendered
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_before_render_points', $points_type, $count, $points_types, $gamipress_template_args ); ?>
+        do_action( 'gamipress_before_render_points', $points_type, $count, $points_types, $a ); ?>
 
         <div class="gamipress-user-points-<?php echo $points_type; ?>">
 
@@ -56,7 +59,7 @@ $points_types[''] = array(
          * @param $points_types     array   Array of points types to be rendered
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_after_render_points', $points_type, $count, $points_types, $gamipress_template_args ); ?>
+        do_action( 'gamipress_after_render_points', $points_type, $count, $points_types, $a ); ?>
 
     <?php endforeach; ?>
 
@@ -67,6 +70,6 @@ $points_types[''] = array(
      * @param $points_types     array Array of points types rendered
      * @param $template_args    array Template received arguments
      */
-    do_action( 'gamipress_after_render_points_list', $points_types, $gamipress_template_args ); ?>
+    do_action( 'gamipress_after_render_points_list', $points_types, $a ); ?>
 
 </div>

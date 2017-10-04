@@ -7,11 +7,14 @@
  */
 global $gamipress_template_args;
 
+// Shorthand
+$a = $gamipress_template_args;
+
 // If we're dealing with multiple achievement types
-if ( 'all' === $gamipress_template_args['type'] ) {
+if ( 'all' === $a['type'] ) {
     $post_type_plural = __( 'achievements', 'gamipress' );
 } else {
-    $types = explode( ',', $gamipress_template_args['type'] );
+    $types = explode( ',', $a['type'] );
     $post_type_plural = ( 1 == count( $types ) && ! empty( $types[0] ) ) ? get_post_type_object( $types[0] )->labels->name : __( 'achievements', 'gamipress' );
 }
 ?>
@@ -24,7 +27,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
      *
      * @param $template_args array Template received arguments
      */
-    do_action( 'gamipress_before_render_achievements_list', $gamipress_template_args ); ?>
+    do_action( 'gamipress_before_render_achievements_list', $a ); ?>
 
     <div id="gamipress-achievements-filters-wrap">
 
@@ -34,20 +37,20 @@ if ( 'all' === $gamipress_template_args['type'] ) {
          *
          * @param $template_args array Template received arguments
          */
-        do_action( 'gamipress_before_render_achievements_list_filters', $gamipress_template_args ); ?>
+        do_action( 'gamipress_before_render_achievements_list_filters', $a ); ?>
 
         <?php // Hidden fields for AJAX request
-        foreach( $gamipress_template_args as $template_arg => $template_arg_value ) : ?>
-            <input type="hidden" name="<?php echo $template_arg; ?>" value="<?php echo $template_arg_value; ?>">
+        foreach( $a as $arg => $arg_value ) : ?>
+            <input type="hidden" name="<?php echo $arg; ?>" value="<?php echo $arg_value; ?>">
         <?php endforeach; ?>
 
         <?php // Filter
-        if ( $gamipress_template_args['filter'] === 'no' ) :
+        if ( $a['filter'] === 'no' ) :
             $filter_value = 'all';
 
-            if( $gamipress_template_args['user_id'] ) :
+            if( $a['user_id'] ) :
                 $filter_value = 'completed'; ?>
-                <input type="hidden" name="user_id" id="user_id" value="<?php echo $gamipress_template_args['user_id']; ?>">
+                <input type="hidden" name="user_id" id="user_id" value="<?php echo $a['user_id']; ?>">
             <?php endif; ?>
 
             <input type="hidden" name="achievements_list_filter" id="achievements_list_filter" value="<?php echo $filter_value; ?>">
@@ -72,7 +75,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
         <?php endif;
 
         // Search
-        if ( $gamipress_template_args['search'] === 'yes' ) :
+        if ( $a['search'] === 'yes' ) :
             $search = isset( $_POST['achievements_list_search'] ) ? $_POST['achievements_list_search'] : ''; ?>
 
             <div id="gamipress-achievements-search">
@@ -93,17 +96,17 @@ if ( 'all' === $gamipress_template_args['type'] ) {
          *
          * @param $template_args array Template received arguments
          */
-        do_action( 'gamipress_after_render_achievements_list_filters', $gamipress_template_args ); ?>
+        do_action( 'gamipress_after_render_achievements_list_filters', $a ); ?>
 
     </div><!-- #gamipress-achievements-filters-wrap -->
 
     <?php // Content Container ?>
-    <div id="gamipress-achievements-container" class="gamipress-achievements-container"></div>
+    <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo $a['columns']; ?>"></div>
 
     <?php // Hidden fields and Load More button ?>
     <input type="hidden" id="gamipress_achievements_offset" value="0">
     <input type="hidden" id="gamipress_achievements_count" value="0">
-    <input type="button" id="achievements_list_load_more" value="<?php echo esc_attr__( 'Load More', 'gamipress' ); ?>" style="display:none;">
+    <button type="button" id="achievements_list_load_more" class="gamipress-load-more-button" style="display:none;"><?php echo __( 'Load More', 'gamipress' ); ?></button>
     <div class="gamipress-spinner"></div>
 
     <?php
@@ -112,7 +115,7 @@ if ( 'all' === $gamipress_template_args['type'] ) {
      *
      * @param $template_args array Template received arguments
      */
-    do_action( 'gamipress_after_render_achievements_list', $gamipress_template_args ); ?>
+    do_action( 'gamipress_after_render_achievements_list', $a ); ?>
 
 </div>
 

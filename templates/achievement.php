@@ -7,8 +7,11 @@
  */
 global $gamipress_template_args;
 
-if( isset( $gamipress_template_args['user_id'] ) ) {
-    $user_id = $gamipress_template_args['user_id'];
+// Shorthand
+$a = $gamipress_template_args;
+
+if( isset( $a['user_id'] ) ) {
+    $user_id = $a['user_id'];
 } else {
     $user_id = get_current_user_id();
 }
@@ -26,10 +29,10 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
      * @param $achievement_id   integer The Achievement ID
      * @param $template_args    array   Template received arguments
      */
-    do_action( 'gamipress_before_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
+    do_action( 'gamipress_before_render_achievement', get_the_ID(), $a ); ?>
 
     <?php // Achievement Image
-    if( $gamipress_template_args['thumbnail'] === 'yes' ) : ?>
+    if( $a['thumbnail'] === 'yes' ) : ?>
         <div class="gamipress-achievement-image">
             <a href="<?php the_permalink(); ?>"><?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?></a>
         </div><!-- .gamipress-achievement-image -->
@@ -41,7 +44,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
          * @param $achievement_id   integer The Achievement ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_after_achievement_thumbnail', get_the_ID(), $gamipress_template_args ); ?>
+        do_action( 'gamipress_after_achievement_thumbnail', get_the_ID(), $a ); ?>
 
     <?php endif; ?>
 
@@ -58,7 +61,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
          * @param $achievement_id   integer The Achievement ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_after_achievement_title', get_the_ID(), $gamipress_template_args ); ?>
+        do_action( 'gamipress_after_achievement_title', get_the_ID(), $a ); ?>
 
         <?php echo gamipress_achievement_points_markup( get_the_ID() ); ?>
 
@@ -69,10 +72,10 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
          * @param $achievement_id   integer The Achievement ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_after_achievement_points', get_the_ID(), $gamipress_template_args ); ?>
+        do_action( 'gamipress_after_achievement_points', get_the_ID(), $a ); ?>
 
         <?php // Achievement Short Description
-        if( $gamipress_template_args['excerpt'] === 'yes' ) :  ?>
+        if( $a['excerpt'] === 'yes' ) :  ?>
             <div class="gamipress-achievement-excerpt">
                 <?php
                 $excerpt = has_excerpt() ? get_post_field( 'post_excerpt', get_the_ID() ) : get_post_field( 'post_content', get_the_ID() );
@@ -87,11 +90,11 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
              * @param $achievement_id   integer The Achievement ID
              * @param $template_args    array   Template received arguments
              */
-            do_action( 'gamipress_after_achievement_excerpt', get_the_ID(), $gamipress_template_args ); ?>
+            do_action( 'gamipress_after_achievement_excerpt', get_the_ID(), $a ); ?>
         <?php endif; ?>
 
         <?php // Achievement Steps
-        if ( $gamipress_template_args['steps'] === 'yes' && $steps = gamipress_get_required_achievements_for_achievement( get_the_ID() ) ) : ?>
+        if ( $a['steps'] === 'yes' && $steps = gamipress_get_required_achievements_for_achievement( get_the_ID() ) ) : ?>
             <div class="gamipress-achievement-attached">
 
                 <div id="show-more-<?php the_ID(); ?>" class="gamipress-open-close-switch">
@@ -99,7 +102,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
                 </div>
 
                 <div id="gamipress-toggle-more-window-<?php the_ID(); ?>" class="gamipress-extras-window">
-                    <?php echo gamipress_get_required_achievements_for_achievement_list_markup( $steps, get_the_ID(), $user_id, $gamipress_template_args ); ?>
+                    <?php echo gamipress_get_required_achievements_for_achievement_list_markup( $steps, get_the_ID(), $user_id, $a ); ?>
                 </div><!-- .gamipress-extras-window -->
 
             </div><!-- .gamipress-achievement-attached -->
@@ -111,12 +114,12 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
              * @param $achievement_id   integer The Achievement ID
              * @param $template_args    array   Template received arguments
              */
-            do_action( 'gamipress_after_achievement_steps', get_the_ID(), $gamipress_template_args ); ?>
+            do_action( 'gamipress_after_achievement_steps', get_the_ID(), $a ); ?>
 
         <?php endif; ?>
 
         <?php // Achievement Earners
-        if ( $gamipress_template_args['earners'] === 'yes' ) :
+        if ( $a['earners'] === 'yes' ) :
             echo gamipress_get_achievement_earners_list( get_the_ID() );
 
             /**
@@ -125,7 +128,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
              * @param $achievement_id   integer The Achievement ID
              * @param $template_args    array   Template received arguments
              */
-            do_action( 'gamipress_after_achievement_earners', get_the_ID(), $gamipress_template_args ); ?>
+            do_action( 'gamipress_after_achievement_earners', get_the_ID(), $a ); ?>
 
         <?php endif; ?>
 
@@ -138,6 +141,6 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
      * @param $achievement_id   integer The Achievement ID
      * @param $template_args    array   Template received arguments
      */
-    do_action( 'gamipress_after_render_achievement', get_the_ID(), $gamipress_template_args ); ?>
+    do_action( 'gamipress_after_render_achievement', get_the_ID(), $a ); ?>
 
 </div><!-- .gamipress-achievement -->

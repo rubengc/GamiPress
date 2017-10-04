@@ -12,11 +12,13 @@ if( !defined( 'ABSPATH' ) ) exit;
  * Check if user should earn an achievement, and award it if so.
  *
  * @since  1.0.0
+ *
  * @param  integer $achievement_id The given achievement ID to possibly award
  * @param  integer $user_id        The given user's ID
  * @param  string $this_trigger    The trigger
  * @param  integer $site_id        The triggered site id
  * @param  array $args             The triggered args
+ *
  * @return mixed                   False if user has no access, void otherwise
  */
 function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
@@ -46,11 +48,13 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
  * Check if user has completed an achievement
  *
  * @since  1.0.0
+ *
  * @param  integer $achievement_id The given achievement ID to verify
  * @param  integer $user_id        The given user's ID
  * @param  string  $this_trigger   The trigger
  * @param  integer $site_id        The triggered site id
  * @param  array   $args           The triggered args
+ *
  * @return bool                    True if user has completed achievement, false otherwise
  */
 function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $user_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
@@ -97,9 +101,11 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
  * Check if user meets the points requirement for a given achievement
  *
  * @since  1.0.0
+ *
  * @param  bool    $return         The current status of whether or not the user deserves this achievement
  * @param  integer $user_id        The given user's ID
  * @param  integer $achievement_id The given achievement's post ID
+ *
  * @return bool                    Our possibly updated earning status
  */
 function gamipress_user_meets_points_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
@@ -135,12 +141,14 @@ add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requiremen
  * Award an achievement to a user
  *
  * @since  1.0.0
+ *
  * @param  integer $achievement_id The given achievement ID to award
  * @param  integer $user_id        The given user's ID
  * @param  integer $admin_id       The given admin's ID
  * @param  string $this_trigger    The trigger
  * @param  integer $site_id        The triggered site id
  * @param  array $args             The triggered args
+ *
  * @return mixed                   False on not achievement, void otherwise
  */
 function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $admin_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
@@ -198,8 +206,10 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
  * Revoke an achievement from a user
  *
  * @since  1.0.0
+ *
  * @param  integer $achievement_id The given achievement's post ID
  * @param  integer $user_id        The given user's ID
+ *
  * @return void
  */
 function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id = 0 ) {
@@ -238,8 +248,10 @@ function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id =
  * Award additional achievements to user
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id        The given user's ID
  * @param  integer $achievement_id The given achievement's post ID
+ *
  * @return void
  */
 function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $achievement_id = 0 ) {
@@ -264,8 +276,10 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_additional_ach
  * Triggers hook gamipress_unlock_all_{$post_type}
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id        The given user's ID
  * @param  integer $achievement_id The given achievement's post ID
+ *
  * @return void
  */
 function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 ) {
@@ -314,12 +328,14 @@ function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 )
  * Check if user may access/earn achievement.
  *
  * @since  1.0.0
- * @param  integer $user_id        The given user's ID
- * @param  integer $achievement_id The given achievement's post ID
- * @param  string $this_trigger    The trigger
- * @param  integer $site_id        The triggered site id
- * @param  array $args        The triggered args
- * @return bool                    True if user has access, false otherwise
+ *
+ * @param  integer $user_id        	The given user's ID
+ * @param  integer $achievement_id 	The given achievement's post ID
+ * @param  string $this_trigger    	The trigger
+ * @param  integer $site_id        	The triggered site id
+ * @param  array $args        		The triggered args
+ *
+ * @return bool                    	True if user has access, false otherwise
  */
 function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
 
@@ -412,9 +428,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_spec
  * Checks if an user is allowed to work on a given step
  *
  * @since  1.0.0
+ *
  * @param  bool    $return   The default return value
  * @param  integer $user_id  The given user's ID
  * @param  integer $step_id  The given step's post ID
+ *
  * @return bool              True if user has access to step, false otherwise
  */
 function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step_id = 0 ) {
@@ -447,9 +465,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_step
  * Checks if an user is allowed to work on a given points award
  *
  * @since  1.0.0
+ *
  * @param  bool    $return   			The default return value
  * @param  integer $user_id  			The given user's ID
  * @param  integer $points_award_id  	The given points award's post ID
+ *
  * @return bool              			True if user has access to step, false otherwise
  */
 function gamipress_user_has_access_to_points_award( $return = false, $user_id = 0, $points_award_id = 0 ) {
@@ -490,9 +510,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_poin
  * Validate whether or not a user has completed all requirements for an achievement
  *
  * @since  1.0.0
+ *
  * @param  bool $return      		True if user deserves achievement, false otherwise
  * @param  integer $user_id  		The given user's ID
  * @param  integer $achievement_id  The achievement post ID
+ *
  * @return bool              		True if user deserves step, false otherwise
  */
 function gamipress_user_deserves_limit_requirements( $return = false, $user_id = 0, $achievement_id = 0 ) {
@@ -538,12 +560,18 @@ add_filter( 'user_deserves_achievement', 'gamipress_user_deserves_limit_requirem
  * Count a user's relevant actions for a given achievement
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id 		The given user's ID
  * @param  integer $achievement_id 	The given achievement's ID
  * @param  integer $since 			Timestamp since retrieve the count
+ *
  * @return integer          		The total activity count
  */
 function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id = 0, $since = 0 ) {
+
+	// Setup site id
+	$site_id = get_current_blog_id();
+
 	// Assume the user has no relevant activities
 	$activities = 0;
 
@@ -591,12 +619,12 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 		if( isset( $trigger ) ) {
 
 			if( $since !== 0 ) {
-				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since );
+				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since, $site_id, $requirements );
 			} else {
 				// If since is not defined, then get activity count since achievement publish date
 				$since = strtotime( get_post_field( 'post_date', $achievement_id ) );
 
-				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since );
+				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since, $site_id, $requirements );
 				//$activities = gamipress_get_user_trigger_count( $user_id, $trigger );
 			}
 
@@ -612,9 +640,11 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
  * Get the start date where an achievement is limiting
  *
  * @param int $achievement_id	The achievement ID
+ *
  * @return int 					Timestamp from the limit starts
  */
 function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
+
 	$limit_type = get_post_meta( $achievement_id, '_gamipress_limit_type', true );
 
 	if( ! $limit_type || $limit_type === 'unlimited' ) {
@@ -641,4 +671,5 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
 	}
 
     return $from;
+
 }

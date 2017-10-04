@@ -66,6 +66,20 @@ function gamipress_register_achievements_shortcode() {
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch',
 			),
+			'columns' => array(
+				'name'        => __( 'Columns', 'gamipress' ),
+				'description' => __( 'Columns to divide achievements.', 'gamipress' ),
+				'type' 	=> 'select',
+				'options' => array(
+					'1' => __( '1 Column', 'gamipress' ),
+					'2' => __( '2 Columns', 'gamipress' ),
+					'3' => __( '3 Columns', 'gamipress' ),
+					'4' => __( '4 Columns', 'gamipress' ),
+					'5' => __( '5 Columns', 'gamipress' ),
+					'6' => __( '6 Columns', 'gamipress' ),
+				),
+				'default' => '1'
+			),
 			'filter' => array(
 				'name'        => __( 'Show Filter', 'gamipress' ),
 				'description' => __( 'Display filter controls.', 'gamipress' ),
@@ -161,6 +175,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		// Achievements atts
 		'type'        	=> 'all',
 		'limit'       	=> '10',
+		'columns'       => '1',
 		'filter' 	  	=> 'yes',
 		'search' 	  	=> 'yes',
 		'user_id'     	=> '0',

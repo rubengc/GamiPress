@@ -222,7 +222,9 @@ function gamipress_profile_user_achievements( $user = null ) {
 
 	<?php // List all of a user's earned achievements
     if ( $achievements ) : ?>
+
         <table class="wp-list-table widefat fixed striped gamipress-table">
+
 			<thead>
 				<tr>
 					<th width="60px"><?php _e( 'Image', 'gamipress' ); ?></th>
@@ -231,6 +233,7 @@ function gamipress_profile_user_achievements( $user = null ) {
 					<th><?php _e( 'Action', 'gamipress' ); ?></th>
 				</tr>
 			</thead>
+
 			<tbody>
 				<?php foreach ( $achievements as $achievement ) :
 
@@ -269,9 +272,13 @@ function gamipress_profile_user_achievements( $user = null ) {
 							<span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
 						</td>
 					</tr>
+
 				<?php endforeach; ?>
+
 			</tbody>
+
         </table>
+
 	<?php else : ?>
         <p><?php _e( 'This user has no earned any achievement', 'gamipress' ); ?></p>
 	<?php endif;
@@ -299,6 +306,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 	<h2><?php _e( 'Award an Achievement', 'gamipress' ); ?></h2>
 
 	<table class="form-table">
+
 		<tr>
 			<th><label for="thechoices"><?php _e( 'Select an Achievement Type to Award:', 'gamipress' ); ?></label></th>
 			<td>
@@ -310,6 +318,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 				</select>
 			</td>
 		</tr>
+
 	</table>
 
 	<div id="boxes">

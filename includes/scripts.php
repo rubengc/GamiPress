@@ -15,6 +15,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return      void
  */
 function gamipress_register_scripts() {
+
     // Use minified libraries if SCRIPT_DEBUG is turned off
     $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
@@ -23,6 +24,7 @@ function gamipress_register_scripts() {
 
     // Scripts
     wp_register_script( 'gamipress-js', GAMIPRESS_URL . 'assets/js/gamipress' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
+
 }
 add_action( 'init', 'gamipress_register_scripts' );
 
@@ -33,6 +35,7 @@ add_action( 'init', 'gamipress_register_scripts' );
  * @return      void
  */
 function gamipress_enqueue_scripts( $hook = null ) {
+
     // Stylesheets
     if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
         wp_enqueue_style( 'gamipress-css' );
@@ -46,6 +49,7 @@ function gamipress_enqueue_scripts( $hook = null ) {
 
         wp_enqueue_script( 'gamipress-js' );
     }
+
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_enqueue_scripts', 100 );
 
@@ -56,6 +60,7 @@ add_action( 'wp_enqueue_scripts', 'gamipress_enqueue_scripts', 100 );
  * @return      void
  */
 function gamipress_admin_register_scripts() {
+
     // Use minified libraries if SCRIPT_DEBUG is turned off
     $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
 
@@ -72,6 +77,7 @@ function gamipress_admin_register_scripts() {
     wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-log-extra-data-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-log-extra-data-ui' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-admin-tools-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-tools' . $suffix . '.js', array( 'jquery', 'jquery-ui-dialog' ), GAMIPRESS_VER, true );
+
 }
 add_action( 'admin_init', 'gamipress_admin_register_scripts' );
 
@@ -82,6 +88,7 @@ add_action( 'admin_init', 'gamipress_admin_register_scripts' );
  * @return      void
  */
 function gamipress_admin_enqueue_scripts( $hook ) {
+
     global $post_type;
     //Stylesheets
     wp_enqueue_style( 'gamipress-admin-css' );
@@ -139,5 +146,6 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         // Enqueue WordPress jQuery UI Dialog style
         wp_enqueue_style ( 'wp-jquery-ui-dialog' );
     }
+
 }
 add_action( 'admin_enqueue_scripts', 'gamipress_admin_enqueue_scripts', 100 );

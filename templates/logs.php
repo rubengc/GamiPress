@@ -4,6 +4,9 @@
  */
 global $gamipress_template_args;
 
+// Shorthand
+$a = $gamipress_template_args;
+
 ?>
 
 <div class="gamipress-logs">
@@ -14,10 +17,10 @@ global $gamipress_template_args;
      *
      * @param $template_args array Template received arguments
      */
-    do_action( 'gamipress_before_render_logs_list', $gamipress_template_args ); ?>
+    do_action( 'gamipress_before_render_logs_list', $a ); ?>
 
-    <?php while( $gamipress_template_args['query']->have_posts() ) :
-        $gamipress_template_args['query']->the_post(); ?>
+    <?php while( $a['query']->have_posts() ) :
+        $a['query']->the_post(); ?>
 
         <?php
         /**
@@ -26,7 +29,7 @@ global $gamipress_template_args;
          * @param $log_id           integer The Log ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_before_render_log', get_the_ID(), $gamipress_template_args ); ?>
+        do_action( 'gamipress_before_render_log', get_the_ID(), $a ); ?>
 
         <div class="gamipress-log gamipress-log-<?php the_ID(); ?>"><?php the_title(); ?></div>
 
@@ -37,7 +40,7 @@ global $gamipress_template_args;
          * @param $log_id           integer The Log ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_after_render_log', get_the_ID(), $gamipress_template_args ); ?>
+        do_action( 'gamipress_after_render_log', get_the_ID(), $a ); ?>
 
     <?php endwhile;
     wp_reset_postdata();?>
@@ -48,6 +51,6 @@ global $gamipress_template_args;
      *
      * @param $template_args array Template received arguments
      */
-    do_action( 'gamipress_after_render_logs_list', $gamipress_template_args ); ?>
+    do_action( 'gamipress_after_render_logs_list', $a ); ?>
 
 </div>

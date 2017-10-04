@@ -163,6 +163,15 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.4 ###
+
+* Added the "columns" parameter to the [gamipress_achievements] shorcode.
+* Added the "columns" option to the GamiPress: Achievements widget.
+* Activity count query now compare dates inclusive.
+* Improvements on activity count query to determine specific activities and retrieve the attached object ID.
+* Improvements on frontend templates.
+* Improvements on admin stylesheets.
+
 ### 1.2.3 ###
 
 * Improvements on achievement earned detection.

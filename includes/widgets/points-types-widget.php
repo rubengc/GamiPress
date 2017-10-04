@@ -25,7 +25,7 @@ class GamiPress_Points_Types_Widget extends GamiPress_Widget {
     public function get_widget( $args, $instance ) {
         echo gamipress_do_shortcode( 'gamipress_points_types', array(
             'type'      => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
-            'wpms'      => ( $instance['wpms'] === 'on' ? 'yes' : 'no' ),
+            'wpms'      => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
         ) );
     }
 }

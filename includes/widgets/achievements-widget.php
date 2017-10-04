@@ -28,15 +28,16 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
             'thumbnail' => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
             'excerpt'   => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'steps'     => ( $instance['steps'] === 'on' ? 'yes' : 'no' ),
-            'filter' => ( $instance['filter'] === 'on' ? 'yes' : 'no' ),
-            'search' => ( $instance['search'] === 'on' ? 'yes' : 'no' ),
+            'columns'   => $instance['columns'],
+            'filter'    => ( $instance['filter'] === 'on' ? 'yes' : 'no' ),
+            'search'    => ( $instance['search'] === 'on' ? 'yes' : 'no' ),
             'limit'     => $instance['limit'],
             'orderby'   => $instance['orderby'],
             'order'     => $instance['order'],
             'user_id'   => $instance['user_id'],
             'include'   => is_array( $instance['include'] ) ? implode( ',', $instance['include'] ) : $instance['include'],
             'exclude'   => is_array( $instance['exclude'] ) ? implode( ',', $instance['exclude'] ) : $instance['exclude'],
-            'wpms'      => ( $instance['wpms'] === 'on' ? 'yes' : 'no' ),
+            'wpms'      => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
         ) );
     }
 
