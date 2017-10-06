@@ -163,6 +163,12 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.5 ###
+
+* Improvements on [gamipress_points] shortcode.
+* Improvements on [gamipress_achievements] shortcode load more ajax functionality.
+* Added RGBa ColorPicker as default library.
+
 ### 1.2.4 ###
 
 * Added the "columns" parameter to the [gamipress_achievements] shorcode.

@@ -65,7 +65,7 @@ add_action( 'init', 'gamipress_register_points_shortcode' );
  * @return string 	   HTML markup.
  */
 function gamipress_points_shortcode( $atts = array () ) {
-    global $gamipress_template_args, $user_ID, $blog_id;
+    global $gamipress_template_args;
 
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
@@ -90,15 +90,16 @@ function gamipress_points_shortcode( $atts = array () ) {
     }
 
     // Get the current user if one wasn't specified
-    if( ! $atts['user_id'] )
-        $atts['user_id'] = $user_ID;
+    if( empty( $atts['user_id'] ) )
+        $atts['user_id'] = get_current_user_id();
 
     // If we're polling all sites, grab an array of site IDs
-    if( $atts['wpms'] === 'yes' )
+    if( $atts['wpms'] === 'yes' ) {
         $sites = gamipress_get_network_site_ids();
     // Otherwise, use only the current site
-    else
-        $sites = array( $blog_id );
+    } else {
+        $sites = array( get_current_blog_id() );
+    }
 
     // GamiPress template args global
     $gamipress_template_args = $atts;
@@ -110,7 +111,7 @@ function gamipress_points_shortcode( $atts = array () ) {
     foreach( $sites as $site_blog_id ) {
 
         // If we're not polling the current site, switch to the site we're polling
-        if ( $blog_id != $site_blog_id ) {
+        if ( get_current_blog_id() != $site_blog_id ) {
             switch_to_blog( $site_blog_id );
         }
 
@@ -122,7 +123,7 @@ function gamipress_points_shortcode( $atts = array () ) {
             $gamipress_template_args['points'][$points_type] += gamipress_get_users_points( $atts['user_id'], $points_type );
         }
 
-        if ( $blog_id != $site_blog_id ) {
+        if ( get_current_blog_id() != $site_blog_id ) {
             // Come back to current blog
             restore_current_blog();
         }

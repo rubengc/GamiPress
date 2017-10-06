@@ -15,7 +15,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function gamipress_ajax_get_achievements() {
-	global $blog_id;
 
 	// Setup our AJAX query vars
 	$type       = isset( $_REQUEST['type'] )       ? $_REQUEST['type']       : false;
@@ -87,13 +86,13 @@ function gamipress_ajax_get_achievements() {
 		$sites = gamipress_get_network_site_ids();
 	// Otherwise, use only the current site
 	else
-		$sites = array( $blog_id );
+		$sites = array( get_current_blog_id() );
 
 	// Loop through each site (default is current site only)
 	foreach( $sites as $site_blog_id ) {
 
 		// If we're not polling the current site, switch to the site we're polling
-		if ( $blog_id != $site_blog_id ) {
+		if ( get_current_blog_id() != $site_blog_id ) {
 			switch_to_blog( $site_blog_id );
 		}
 
@@ -141,7 +140,7 @@ function gamipress_ajax_get_achievements() {
 
 		// Loop Achievements
 		$achievement_posts = new WP_Query( $args );
-		$query_count += $achievement_posts->found_posts;
+		$query_count = absint( $achievement_posts->found_posts );
 		while ( $achievement_posts->have_posts() ) : $achievement_posts->the_post();
 
 			$achievements .= gamipress_render_achievement( get_the_ID(), $template_args );
@@ -173,7 +172,7 @@ function gamipress_ajax_get_achievements() {
 			$achievements .= '</div><!-- .gamipress-no-results -->';
 		}
 
-		if ( $blog_id != $site_blog_id ) {
+		if ( get_current_blog_id() != $site_blog_id ) {
 			// Come back to current blog
 			restore_current_blog();
 		}

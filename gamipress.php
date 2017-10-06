@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.2.4
+ * Version:         1.2.5
  * Author:          GamiPress
  * Author URI:      https://gamipress.com/
  * Text Domain:     gamipress
@@ -108,7 +108,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.2.4' );
+		define( 'GAMIPRESS_VER', '1.2.5' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -138,8 +138,9 @@ final class GamiPress {
 
 			require_once GAMIPRESS_DIR . 'libraries/cmb2/init.php';
 			require_once GAMIPRESS_DIR . 'libraries/cmb2-metatabs-options/cmb2_metatabs_options.php';
-			require_once GAMIPRESS_DIR . 'libraries/cmb2-field-edd-license/cmb2-field-edd-license.php';
 			require_once GAMIPRESS_DIR . 'libraries/cmb2-tabs/cmb2-tabs.php';
+			require_once GAMIPRESS_DIR . 'libraries/cmb2-field-edd-license/cmb2-field-edd-license.php';
+			require_once GAMIPRESS_DIR . 'libraries/cmb2-rgba-colorpicker/jw-cmb2-rgba-colorpicker.php';
 			require_once GAMIPRESS_DIR . 'libraries/advanced-select-field-type.php';
 			require_once GAMIPRESS_DIR . 'libraries/size-field-type.php';
 			require_once GAMIPRESS_DIR . 'libraries/display-field-type.php';

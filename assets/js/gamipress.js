@@ -38,12 +38,17 @@
 					achievement_list.find( '#gamipress-achievements-container' ).append( response.data.message );
 					achievement_list.find( '#gamipress_achievements_offset' ).val( response.data.offset );
 					achievement_list.find( '#gamipress_achievements_count' ).val( response.data.achievement_count );
-					//hide/show load more button
-					if ( response.data.query_count <= response.data.achievement_count ) {
+
+					if ( response.data.query_count <= response.data.offset ) {
+
+						// hide load more button
 						achievement_list.find( '#achievements_list_load_more' ).hide();
-					}
-					else {
+
+					} else {
+
+						// show load more button
 						achievement_list.find( '#achievements_list_load_more' ).show();
+
 					}
 				}
 			}
