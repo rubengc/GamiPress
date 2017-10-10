@@ -610,14 +610,16 @@ function gamipress_get_next_previous_achievement_id($achievement_id , $rel ){
 /**
  * Generate the post link based on custom post object
  *
- * @param $link
+ * @param $post_id
+ * @param $rel
+ *
  * @return string
  */
 function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
 
 	global $post;
 
-	if(!empty($post_id))
+	if( ! empty($post_id) )
 		$post = get_post($post_id);
 
     //Title of the post
@@ -635,7 +637,7 @@ function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
 	$nav_prev = ($rel == 'prev') ? '<span class="meta-nav">←</span> ' : '';
 	$nav_next = ($rel == 'next') ? ' <span class="meta-nav">→</span>' : '';
 
-	//Build link
+	// Build link
 	$link = '<a href="' . get_permalink( $post ) . '" rel="'.$rel.'">' . $nav_prev . $title . $nav_next. '</a>';
 
 	return $link;
@@ -647,14 +649,19 @@ function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
  *
  * @param string $title The post title.
  * @param int    $id    The post ID.
+ *
  * @return string 		The formatted title
  */
-function gamipress_log_title_format( $title, $id ) {
+function gamipress_log_title_format( $title, $id = null ) {
 
-	if( get_post_type( $id ) === 'gamipress-log' ) {
-		$title = gamipress_get_parsed_log( $id );
+	if( $id === null ) {
+		$id = get_the_ID();
 	}
 
-	return $title;
+	if( get_post_type( $id ) !== 'gamipress-log' ) {
+		return $title;
+	}
+
+	return gamipress_get_parsed_log( $id );
 }
 add_filter( 'the_title', 'gamipress_log_title_format', 10, 2 );

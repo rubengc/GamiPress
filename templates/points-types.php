@@ -65,13 +65,21 @@ if( isset( $a['user_id'] ) ) {
 
                 <div class="gamipress-points-type-awards">
 
-                    <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
-                        <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
-                    </div>
+                    <?php if ( $a['toggle'] === 'yes' ) : ?>
 
-                    <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                        <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
+                            <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
+                        </div>
+
+                        <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                            <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $a ); ?>
+                        </div><!-- .gamipress-extras-window -->
+
+                    <?php else : ?>
+
                         <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $a ); ?>
-                    </div><!-- .gamipress-extras-window -->
+
+                    <?php endif; ?>
 
                 </div><!-- .gamipress-points-type-awards -->
 

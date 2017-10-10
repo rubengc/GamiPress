@@ -163,6 +163,16 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.6 ###
+
+* Added tabs on [gamipress_achievements] shortcode embedder form.
+* Added tabs on GamiPress: Achievements widget.
+* Improvements on [gamipress_achievements] shortcode.
+* Avoid warnings for older WordPress versions on log title generation.
+* Added stronger checks on log title generation.
+* Improvements on logs template.
+* Improvements on admin style forms.
+
 ### 1.2.5 ###
 
 * Improvements on [gamipress_points] shortcode.

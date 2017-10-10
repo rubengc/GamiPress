@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.2.5
+Stable tag: 1.2.6
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -160,6 +160,16 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+= 1.2.6 =
+
+* Added tabs on [gamipress_achievements] shortcode embedder form.
+* Added tabs on GamiPress: Achievements widget.
+* Improvements on [gamipress_achievements] shortcode.
+* Avoid warnings for older WordPress versions on log title generation.
+* Added stronger checks on log title generation.
+* Improvements on logs template.
+* Improvements on admin style forms.
 
 = 1.2.5 =
 

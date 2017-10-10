@@ -80,3 +80,8 @@
     border-right: none;
     border-bottom: 1px solid #eee;
 }
+
+/* Widget area */
+.widget-content .cmb-tabs-wrap {
+    margin: -1px -15px 0px -15px;
+}

@@ -161,6 +161,13 @@ class GamiPress_Widget extends WP_Widget {
     /**
      * @return array
      */
+    public function get_tabs() {
+        return array();
+    }
+
+    /**
+     * @return array
+     */
     public function get_fields() {
         return array();
     }
@@ -249,12 +256,27 @@ class GamiPress_Widget extends WP_Widget {
      */
     public function cmb2( $saving = false ) {
 
+        $tabs = $this->get_tabs();
+
+        foreach ( $tabs as $tab_id => $tab ) {
+            // Generate the id of the tab based on shortcode slug
+            $tab['id'] = $this->get_field_name( $tab_id );
+
+            foreach( $tab['fields'] as $tab_field_index => $tab_field ) {
+                // Update the id of the tab field based on shortcode slug
+                $tab['fields'][$tab_field_index] =$this->get_field_name( $tab_field );
+            }
+
+            $tabs[$tab_id] = $tab;
+        }
+
         // Create a new box in the class
         $cmb2 = new CMB2( array(
-            'id'      => $this->option_name .'_box', // Option name is taken from the WP_Widget class.
-            'classes' => 'gamipress-form gamipress-widget-form',
-            'hookup'  => false,
-            'show_on' => array(
+            'id'        => $this->option_name .'_box', // Option name is taken from the WP_Widget class.
+            'classes'   => 'gamipress-form gamipress-widget-form',
+            'tabs'      => $tabs,
+            'hookup'    => false,
+            'show_on'   => array(
                 'key'   => 'options-page',
                 'value' => array( $this->option_name )
             ),

@@ -18,6 +18,16 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
         );
     }
 
+    public function get_tabs() {
+
+        $tabs = GamiPress()->shortcodes['gamipress_achievements']->tabs;
+
+        $tabs['general']['fields'][] = 'title';
+
+        return $tabs;
+
+    }
+
     public function get_fields() {
         return GamiPress()->shortcodes['gamipress_achievements']->fields;
     }

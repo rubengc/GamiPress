@@ -310,15 +310,22 @@ add_filter( 'wp_insert_post_data' , 'gamipress_maybe_apply_log_pattern' , 99, 2 
  * @return string          Parsed log pattern.
  */
 function gamipress_get_parsed_log( $log_id = null ) {
-    global $post;
 
     $prefix = '_gamipress_';
 
     if( $log_id === null ) {
-        $log_id = $post->ID;
+        $log_id = get_the_ID();
     }
 
     $log_data = get_post( $log_id, ARRAY_A );
+
+    if( ! $log_data ) {
+        return '';
+    }
+
+    if( $log_data['post_type'] !== 'gamipress-log' ) {
+        return '';
+    }
 
     $log_meta = array(
         'pattern' => get_post_meta( $log_id, $prefix . 'pattern', true ),
@@ -328,6 +335,7 @@ function gamipress_get_parsed_log( $log_id = null ) {
     $log_meta = apply_filters( 'gamipress_get_log_meta_data', $log_meta, $log_id );
 
     return gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
+
 }
 
 /**

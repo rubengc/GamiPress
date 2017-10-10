@@ -27,6 +27,7 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
         'thumbnail' => 'yes',
         'excerpt'	=> 'yes',
         'steps'	    => 'yes',
+        'toggle'	=> 'yes',
         'earners'	=> 'no',
     ) );
 

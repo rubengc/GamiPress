@@ -14,7 +14,8 @@ class GamiPress_Shortcode {
 	public $description     = '';
 	public $slug            = '';
 	public $output_callback = '';
-	public $fields      = array();
+	public $tabs 			= array();
+	public $fields      	= array();
 
 	public function __construct( $slug, $args = array() ) {
 		$this->slug = $slug;
@@ -46,22 +47,37 @@ class GamiPress_Shortcode {
 	 * Creates a new instance of CMB2 and adds the fields
 	 *
 	 * @since  1.0.0
-	 * @return CMB2
+	 *
+	 * @return CMB2 $cmb2
 	 */
 	public function cmb2( $saving = false ) {
 
+		foreach ( $this->tabs as $tab_id => $tab ) {
+			// Generate the id of the tab based on shortcode slug
+			$tab['id'] = $this->slug . '_' . $tab_id;
+
+			foreach( $tab['fields'] as $tab_field_index => $tab_field ) {
+				// Update the id of the tab field based on shortcode slug
+				$tab['fields'][$tab_field_index] = $this->slug . '_' . $tab_field;
+			}
+
+			$this->tabs[$tab_id] = $tab;
+		}
+
 		// Create a new box to render the form
 		$cmb2 = new CMB2( array(
-			'id'      => $this->slug .'_box', // Option name is taken from the WP_Widget class.
-			'classes' => 'gamipress-form gamipress-shortcode-form',
-			'hookup'  => false,
-			'show_on' => array(
+			'id'      	=> $this->slug .'_box', // Option name is taken from the WP_Widget class.
+			'classes' 	=> 'gamipress-form gamipress-shortcode-form',
+			'tabs'    	=> $this->tabs,
+			'hookup'  	=> false,
+			'show_on' 	=> array(
 				'key'   => 'options-page', // Tells CMB2 to handle this as an option
 				'value' => array( $this->slug )
 			),
 		), $this->slug );
 
 		foreach ( $this->fields as $field_id => $field ) {
+			// Generate the id of the field based on shortcode slug
 			$field['id'] = $this->slug . '_' . $field_id;
 
 			$cmb2->add_field( $field );
@@ -76,6 +92,7 @@ class GamiPress_Shortcode {
 			'name'            => '',
 			'description'     => '',
 			'output_callback' => '',
+			'tabs' 			  => array(),
 			'fields'      	  => array(),
 		);
 
@@ -85,13 +102,19 @@ class GamiPress_Shortcode {
 		$this->description     = $args['description'];
 		$this->output_callback = $args['output_callback'];
 
+		// Filter to register custom shortcode tabs
+		$this->tabs 		   = apply_filters( "gamipress_{$this->slug}_shortcode_tabs", $args['tabs'] );
+
 		// Filter to register custom shortcode fields
 		$this->fields      	   = apply_filters( "gamipress_{$this->slug}_shortcode_fields", $args['fields'] );
 	}
 
 	public function register_shortcode( $shortcodes = array() ) {
+
 		$shortcodes[ $this->slug ] = $this;
+
 		return $shortcodes;
+
 	}
 
 }

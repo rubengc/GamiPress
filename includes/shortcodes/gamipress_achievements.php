@@ -26,11 +26,45 @@ function gamipress_register_achievements_shortcode() {
 		$achievement_types[$slug] = $data['plural_name'];
 	}
 
+	$achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
+
+	unset( $achievement_fields['id'] );
+
 	gamipress_register_shortcode( 'gamipress_achievements', array(
 		'name'            => __( 'Achievement List', 'gamipress' ),
 		'description'     => __( 'Output a list of achievements.', 'gamipress' ),
 		'output_callback' => 'gamipress_achievements_shortcode',
-		'fields'      => array(
+		'tabs' => array(
+			'general' => array(
+				'icon' => 'dashicons-admin-generic',
+				'title' => __( 'General', 'gamipress' ),
+				'fields' => array(
+					'type',
+					'columns',
+					'filter',
+					'search',
+				),
+			),
+			'achievement' => array(
+				'icon' => 'dashicons-awards',
+				'title' => __( 'Achievement', 'gamipress' ),
+				'fields' => array_keys( $achievement_fields ),
+			),
+			'query' => array(
+				'icon' => 'dashicons-search',
+				'title' => __( 'Query', 'gamipress' ),
+				'fields' => array(
+					'limit',
+					'orderby',
+					'order',
+					'user_id',
+					'include',
+					'exclude',
+					'wpms',
+				),
+			),
+		),
+		'fields'      => array_merge( array(
 			'type' => array(
 				'name'        => __( 'Achievement Type(s)', 'gamipress' ),
 				'description' => __( 'Single, or comma-separated list of, achievement type(s) to display.', 'gamipress' ),
@@ -38,33 +72,6 @@ function gamipress_register_achievements_shortcode() {
 				'multiple'    => true,
 				'options'     => $achievement_types,
 				'default'     => 'all',
-			),
-			'thumbnail' => array(
-				'name'        => __( 'Show Thumbnails', 'gamipress' ),
-				'description' => __( 'Display achievements featured images.', 'gamipress' ),
-				'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
-				'default' => 'yes'
-			),
-			'excerpt' => array(
-				'name'        => __( 'Show Excerpts', 'gamipress' ),
-				'description' => __( 'Display achievements short descriptions.', 'gamipress' ),
-				'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
-				'default' => 'yes'
-			),
-			'steps' => array(
-				'name'        => __( 'Show Steps', 'gamipress' ),
-				'description' => __( 'Display achievements steps.', 'gamipress' ),
-				'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
-				'default' => 'yes'
-			),
-			'earners' => array(
-				'name'        => __( 'Show Earners', 'gamipress' ),
-				'description' => __( 'Display a list of users that has earned the achievement.', 'gamipress' ),
-				'type' 	=> 'checkbox',
-				'classes' => 'gamipress-switch',
 			),
 			'columns' => array(
 				'name'        => __( 'Columns', 'gamipress' ),
@@ -151,7 +158,7 @@ function gamipress_register_achievements_shortcode() {
 				'type' 		  => 'checkbox',
 				'classes' 	  => 'gamipress-switch',
 			),
-		),
+		), $achievement_fields ),
 	) );
 
 }

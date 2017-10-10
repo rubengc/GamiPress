@@ -31,7 +31,7 @@ $a = $gamipress_template_args;
          */
         do_action( 'gamipress_before_render_log', get_the_ID(), $a ); ?>
 
-        <div class="gamipress-log gamipress-log-<?php the_ID(); ?>"><?php the_title(); ?></div>
+        <div id="gamipress-log-<?php the_ID(); ?>" class="gamipress-log"><?php the_title(); ?></div>
 
         <?php
         /**

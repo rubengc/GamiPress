@@ -97,13 +97,21 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
         if ( $a['steps'] === 'yes' && $steps = gamipress_get_required_achievements_for_achievement( get_the_ID() ) ) : ?>
             <div class="gamipress-achievement-attached">
 
-                <div id="show-more-<?php the_ID(); ?>" class="gamipress-open-close-switch">
-                    <a class="show-hide-open" data-achievement-id="<?php the_ID(); ?>" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
-                </div>
+                <?php if ( $a['toggle'] === 'yes' ) : ?>
 
-                <div id="gamipress-toggle-more-window-<?php the_ID(); ?>" class="gamipress-extras-window">
+                    <div id="show-more-<?php the_ID(); ?>" class="gamipress-open-close-switch">
+                        <a class="show-hide-open" data-achievement-id="<?php the_ID(); ?>" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
+                    </div>
+
+                    <div id="gamipress-toggle-more-window-<?php the_ID(); ?>" class="gamipress-extras-window">
+                        <?php echo gamipress_get_required_achievements_for_achievement_list_markup( $steps, get_the_ID(), $user_id, $a ); ?>
+                    </div><!-- .gamipress-extras-window -->
+
+                <?php else : ?>
+
                     <?php echo gamipress_get_required_achievements_for_achievement_list_markup( $steps, get_the_ID(), $user_id, $a ); ?>
-                </div><!-- .gamipress-extras-window -->
+
+                <?php endif; ?>
 
             </div><!-- .gamipress-achievement-attached -->
 

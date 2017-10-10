@@ -32,14 +32,21 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 	}
 
 	$args = wp_parse_args( $args, array(
+		'tabs'      	=> array(),
 		'context'      	=> 'normal',
 		'priority'     	=> 'default',
 	) );
+
+	// Parse tabs
+	foreach( $args['tabs'] as $tab_id => $tab ) {
+		$args['tabs'][$tab_id]['id'] = $tab_id;
+	}
 
 	new_cmb2_box( array(
 		'id'           	=> $id,
 		'title'        	=> $title,
 		'object_types' 	=> ! is_array( $object_types) ? array( $object_types ) : $object_types,
+		'tabs'      	=> $args['tabs'],
 		'context'      	=> $args['context'],
 		'priority'     	=> $args['priority'],
 		'classes'		=> 'gamipress-form gamipress-box-form',

@@ -47,6 +47,13 @@ function gamipress_register_achievement_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+			'toggle' => array(
+				'name'        => __( 'Show Steps Toggle', 'gamipress' ),
+				'description' => __( 'Display the achievement steps toggle.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+				'default' => 'yes'
+			),
 			'earners' => array(
 				'name'        => __( 'Show Earners', 'gamipress' ),
 				'description' => __( 'Display a list of users that has earned the achievement.', 'gamipress' ),
@@ -70,10 +77,11 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 	// get the post id
 	$atts = shortcode_atts( array(
 	  'id' => get_the_ID(),
-	  'thumbnail' => 'yes',
-	  'excerpt'	  => 'yes',
-	  'steps'	  => 'yes',
-	  'earners'	  => 'no',
+	  'thumbnail' 		=> 'yes',
+	  'excerpt'	  		=> 'yes',
+	  'steps'	  		=> 'yes',
+	  'toggle' 			=> 'yes',
+	  'earners'	  		=> 'no',
 	), $atts, 'gamipress_achievement' );
 
 	// return if post id not specified

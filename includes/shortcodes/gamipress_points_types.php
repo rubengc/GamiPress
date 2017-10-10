@@ -37,6 +37,13 @@ function gamipress_register_points_types_shortcode() {
                 'options'     => $points_types,
                 'default'     => 'all',
             ),
+            'toggle' => array(
+                'name'        => __( 'Show Points Awards Toggle', 'gamipress' ),
+                'description' => __( 'Display the points type points awards toggle.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
             'wpms' => array(
                 'name'        => __( 'Include Multisite Points Types', 'gamipress' ),
                 'description' => __( 'Show points types from all network sites.', 'gamipress' ),
@@ -65,6 +72,7 @@ function gamipress_points_types_shortcode( $atts = array () ) {
     $atts = shortcode_atts( array(
         // Points atts
         'type'        => 'all',
+        'toggle'      => 'yes',
         'wpms'        => 'no',
     ), $atts, 'gamipress_points' );
 
