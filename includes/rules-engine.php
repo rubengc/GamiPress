@@ -35,7 +35,7 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
 
 	// If the user does not have access to this achievement, bail here
 	if ( ! gamipress_user_has_access_to_achievement( $user_id, $achievement_id, $this_trigger, $site_id, $args ) ) {
-		return false;
+		return;
     }
 
 	// If the user has completed the achievement, award it
@@ -111,7 +111,7 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 function gamipress_user_meets_points_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
 
 	// First, see if the achievement requires a minimum amount of points
-	if ( 'points' == get_post_meta( $achievement_id, '_gamipress_earned_by', true ) ) {
+	if ( 'points' === get_post_meta( $achievement_id, '_gamipress_earned_by', true ) ) {
 
 		// Grab our user's points and see if they at least as many as required
 		$points_required        = absint( get_post_meta( $achievement_id, '_gamipress_points_required', true ) );
@@ -124,8 +124,8 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 		else
 			$return = false;
 
-		// If the user just earned the badge, though, don't let them earn it again
-		// This prevents an infinite loop if the badge has no maximum earnings limit
+		// If the user just earned the achievement, though, don't let them earn it again
+		// This prevents an infinite loop if the achievement has no maximum earnings limit
 		$minimum_time = time() - 2;
 		if ( $last_activity >= $minimum_time ) {
 		    $return = false;
@@ -480,6 +480,7 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 
     // Prevent user from earning points awards with no points type
 	$points_type = gamipress_get_points_award_points_type( $points_award_id );
+
     if ( ! $points_type ) {
         $return = false;
     }
@@ -498,7 +499,7 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 	) ) );
 
     // Prevent user to exceed maximum earnings the same points award
-    if ( $return && $points_type && $maximum_earnings >= $earned_times )
+    if ( $return && $points_type && $earned_times >= $maximum_earnings )
         $return = false;
 
     // Send back our eligibility

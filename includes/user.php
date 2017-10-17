@@ -25,6 +25,7 @@ function gamipress_get_user_achievements( $args = array() ) {
 		'achievement_type' => false, // A specific achievement type
 		'since'            => 0,     // A specific timestamp to use in place of $limit_in_days
 	);
+
 	$args = wp_parse_args( $args, $defaults );
 
 	// Use current user's ID if none specified
@@ -216,7 +217,9 @@ function gamipress_profile_user_points( $user = null ) {
  */
 function gamipress_profile_user_achievements( $user = null ) {
 	$achievement_types = gamipress_get_achievement_types();
-    $achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) ); ?>
+    $achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
+	$achievements = array_reverse( $achievements );
+	?>
 
     <h2><?php _e( 'Earned Achievements', 'gamipress' ); ?></h2>
 
@@ -295,6 +298,7 @@ function gamipress_profile_user_achievements( $user = null ) {
 function gamipress_profile_award_achievement( $user = null ) {
 	$achievement_types = gamipress_get_achievement_types();
 	$achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
+
     $achievement_ids = array_map( function( $achievement ) {
         return $achievement->ID;
     }, $achievements );

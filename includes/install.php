@@ -23,42 +23,4 @@ function gamipress_install() {
 
     // Register GamiPress post types and flush rewrite rules
     gamipress_flush_rewrite_rules();
-
-    gamipress_process_upgrades();
-
-}
-
-function gamipress_process_upgrades() {
-
-    // Get stored version
-    $stored_version = get_option( 'gamipress_version', '1.0.0' );
-
-    do_action( 'gamipress_before_process_upgrades', $stored_version );
-
-    if ( version_compare( $stored_version, '1.1.0', '<' ) ) {
-        gamipress_110_upgrades();
-    }
-
-    do_action( 'gamipress_after_process_upgrades', $stored_version );
-
-    // Updated stored version
-    update_option( 'gamipress_version', GAMIPRESS_VER );
-
-}
-
-function gamipress_110_upgrades() {
-    global $wpdb;
-
-    // Update wp_login trigger to gamipress_login
-    $wpdb->update(
-        $wpdb->postmeta,
-        array(
-            'meta_value' => 'gamipress_login'
-        ),
-        array(
-            'meta_key' => '_gamipress_trigger_type',
-            'meta_value' => 'wp_login',
-        )
-    );
-
 }

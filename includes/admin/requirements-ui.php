@@ -69,7 +69,7 @@ function gamipress_requirements_ui_meta_box( $post = null ) {
 
     echo '<p>' .
         ( ( $requirement_type === 'points-award' ) ?
-        __( 'Define the automatic ways an user could retrieve an amount of  this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
+        __( 'Define the automatic ways an user could retrieve an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
         : __( 'Define the required "steps" for this achievement to be considered complete. Use the "Label" field to optionally customize the titles of each step.', 'gamipress' ) )
         . '</p>';
 
@@ -208,9 +208,16 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <?php if( $requirement_type === 'points-award' ) :
             $points                 = ! empty( $requirements['points'] ) ? $requirements['points'] : 1;
-            $points_singular_name   = get_post_meta( $post_id, '_gamipress_singular_name', true );
-            $points_type            = get_post_field( 'post_name', $post_id );
+            $points_singular_name   = get_post_field( 'post_title', $post_id );
+            $post_name              = get_post_field( 'post_name', $post_id );
+            $points_type            = $requirements['points_type'];
             $maximum_earnings       = absint( $requirements['maximum_earnings'] );
+
+            // Ensure points type is properly set, if not force update it
+            if( $points_type !== $post_name ) {
+                update_post_meta( $requirement_id, '_gamipress_points_type', $post_name );
+                $points_type = $post_name;
+            }
 
             if( ! $points_singular_name ) {
                 $points_singular_name = __( 'point(s)', 'gamipress' );

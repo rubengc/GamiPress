@@ -19,6 +19,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/support.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
 /**
  * Create GamiPress Settings menus

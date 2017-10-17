@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2017-10-10 16:35+0200\n"
+"POT-Creation-Date: 2017-10-17 15:56+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,7 +39,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/achievement-functions.php:1006 includes/points-functions.php:388
+#: includes/achievement-functions.php:1006 includes/points-functions.php:424
 msgid "widgets"
 msgstr ""
 
@@ -58,85 +58,85 @@ msgstr ""
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
-#: includes/admin.php:36
+#: includes/admin.php:37
 msgid "Achivements"
 msgstr ""
 
-#: includes/admin.php:36 includes/admin/tools/reset-data.php:31
+#: includes/admin.php:37 includes/admin/tools/reset-data.php:31
 msgid "Achievements"
 msgstr ""
 
-#: includes/admin.php:43 includes/admin/pages/settings.php:171
+#: includes/admin.php:44 includes/admin/pages/settings.php:171
 #: includes/admin/plugins.php:56
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin.php:44 includes/admin/pages/support.php:39
+#: includes/admin.php:45 includes/admin/pages/support.php:39
 msgid "Help / Support"
 msgstr ""
 
-#: includes/admin.php:69
+#: includes/admin.php:70
 #, php-format
 msgid "%d Achievement Type"
 msgid_plural "%d Achievement Types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin.php:77
+#: includes/admin.php:78
 #, php-format
 msgid "%d "
 msgid_plural "%d "
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin.php:85
+#: includes/admin.php:86
 #, php-format
 msgid "%d Points Type"
 msgid_plural "%d Points Types"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin.php:98
+#: includes/admin.php:99
 msgid "Latest Logs"
 msgstr ""
 
-#: includes/admin.php:125
+#: includes/admin.php:126
 msgid "Today"
 msgstr ""
 
-#: includes/admin.php:127
+#: includes/admin.php:128
 msgid "Yesterday"
 msgstr ""
 
-#: includes/admin.php:130
+#: includes/admin.php:131
 msgid "M jS Y"
 msgstr ""
 
-#: includes/admin.php:133
+#: includes/admin.php:134
 msgid "M jS"
 msgstr ""
 
-#: includes/admin.php:144
+#: includes/admin.php:145
 #, php-format
 msgctxt "dashboard"
 msgid "%1$s, %2$s"
 msgstr ""
 
-#: includes/admin.php:152
+#: includes/admin.php:153
 msgid "Nothing to show :)"
 msgstr ""
 
-#: includes/admin.php:173 includes/admin/meta-boxes.php:91
+#: includes/admin.php:174 includes/admin/meta-boxes.php:91
 #: includes/admin/meta-boxes.php:119
 msgid "Singular Name"
 msgstr ""
 
-#: includes/admin.php:184 includes/admin/meta-boxes.php:96
+#: includes/admin.php:185 includes/admin/meta-boxes.php:96
 #: includes/admin/meta-boxes.php:124
 msgid "Plural Name"
 msgstr ""
 
-#: includes/admin.php:185 includes/admin/meta-boxes.php:101
+#: includes/admin.php:186 includes/admin/meta-boxes.php:101
 #: includes/admin/meta-boxes.php:129
 msgid "Slug"
 msgstr ""
@@ -153,7 +153,7 @@ msgstr ""
 #: includes/admin/contextual-help.php:34
 #: includes/admin/log-extra-data-ui.php:121 includes/admin/meta-boxes.php:152
 #: includes/admin/meta-boxes.php:266 includes/admin/requirements.php:35
-#: includes/admin/requirements.php:54 includes/post-types.php:23
+#: includes/admin/requirements.php:55 includes/post-types.php:23
 msgid "Points Type"
 msgstr ""
 
@@ -284,7 +284,7 @@ msgid "Attached post to this log."
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:94 includes/admin/requirements.php:35
-#: includes/admin/requirements.php:54
+#: includes/admin/requirements.php:58
 #: includes/shortcodes/gamipress_achievements.php:50
 msgid "Achievement"
 msgstr ""
@@ -761,7 +761,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:333 includes/points-functions.php:113
+#: includes/admin/pages/settings.php:333 includes/points-functions.php:116
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -789,7 +789,7 @@ msgstr ""
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/pages/settings.php:351 includes/points-functions.php:109
+#: includes/admin/pages/settings.php:351 includes/points-functions.php:112
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -876,7 +876,7 @@ msgid "Required Steps"
 msgstr ""
 
 #: includes/admin/requirements-ui.php:72
-msgid "Define the automatic ways an user could retrieve an amount of  this points type. Use the \"Label\" field to optionally customize the titles of each one."
+msgid "Define the automatic ways an user could retrieve an amount of this points type. Use the \"Label\" field to optionally customize the titles of each one."
 msgstr ""
 
 #: includes/admin/requirements-ui.php:73
@@ -922,79 +922,74 @@ msgstr ""
 msgid "limited to"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:216
+#: includes/admin/requirements-ui.php:223
 msgid "point(s)"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:222
+#: includes/admin/requirements-ui.php:229
 msgid "Earn"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:228
+#: includes/admin/requirements-ui.php:235
 msgid "with a maximum number of times to earn it of"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:230
+#: includes/admin/requirements-ui.php:237
 msgid "(0 for no maximum)"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:237
+#: includes/admin/requirements-ui.php:244
 msgid "Label"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:460
+#: includes/admin/requirements-ui.php:467
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:463
+#: includes/admin/requirements-ui.php:470
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:499
-#: includes/admin/requirements-ui.php:505
-#: includes/admin/requirements-ui.php:527
+#: includes/admin/requirements-ui.php:506
+#: includes/admin/requirements-ui.php:512
+#: includes/admin/requirements-ui.php:534
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:499
+#: includes/admin/requirements-ui.php:506
 #, php-format
 msgid "%d %s for"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:505
+#: includes/admin/requirements-ui.php:512
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/requirements-ui.php:514
+#: includes/admin/requirements-ui.php:521
 msgid "day"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:517
+#: includes/admin/requirements-ui.php:524
 msgid "week"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:520
+#: includes/admin/requirements-ui.php:527
 msgid "month"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:523
+#: includes/admin/requirements-ui.php:530
 msgid "year"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:527
+#: includes/admin/requirements-ui.php:534
 #, php-format
 msgid "(limited to %d per %s)"
-msgstr ""
-
-#: includes/admin/requirements.php:62
-#, php-format
-msgid "%s was removed"
 msgstr ""
 
 #: includes/admin/requirements.php:65
@@ -1368,11 +1363,11 @@ msgstr ""
 msgid "points"
 msgstr ""
 
-#: includes/points-functions.php:387
+#: includes/points-functions.php:423
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/points-functions.php:388
+#: includes/points-functions.php:424
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
@@ -2029,74 +2024,74 @@ msgstr ""
 msgid "Unlocked all %s"
 msgstr ""
 
-#: includes/user.php:184
+#: includes/user.php:185
 msgid "Points Balance"
 msgstr ""
 
-#: includes/user.php:189
+#: includes/user.php:190
 msgid "Earned Default Points"
 msgstr ""
 
-#: includes/user.php:192
+#: includes/user.php:193
 msgid "The user's points total. Entering a new total will automatically log the change and difference between totals."
 msgstr ""
 
-#: includes/user.php:198
+#: includes/user.php:199
 #, php-format
 msgid "Earned %s"
 msgstr ""
 
-#: includes/user.php:201
+#: includes/user.php:202
 #, php-format
 msgid "The user's %s total. Entering a new total will automatically log the change and difference between totals."
 msgstr ""
 
-#: includes/user.php:221
+#: includes/user.php:224
 msgid "Earned Achievements"
 msgstr ""
 
-#: includes/user.php:230 includes/user.php:330
+#: includes/user.php:233 includes/user.php:334
 msgid "Image"
 msgstr ""
 
-#: includes/user.php:231
+#: includes/user.php:234
 msgid "Name"
 msgstr ""
 
-#: includes/user.php:232
+#: includes/user.php:235
 msgid "Date"
 msgstr ""
 
-#: includes/user.php:233
+#: includes/user.php:236
 msgid "Action"
 msgstr ""
 
-#: includes/user.php:272 includes/user.php:390
+#: includes/user.php:275 includes/user.php:394
 msgid "Revoke Award"
 msgstr ""
 
-#: includes/user.php:283
+#: includes/user.php:286
 msgid "This user has no earned any achievement"
 msgstr ""
 
-#: includes/user.php:306
+#: includes/user.php:310
 msgid "Award an Achievement"
 msgstr ""
 
-#: includes/user.php:311
+#: includes/user.php:315
 msgid "Select an Achievement Type to Award:"
 msgstr ""
 
-#: includes/user.php:332
+#: includes/user.php:336
 msgid "Actions"
 msgstr ""
 
-#: includes/user.php:381
+#: includes/user.php:385
 #, php-format
 msgid "Award %s"
 msgstr ""
 
-#: includes/user.php:399
+#: includes/user.php:403
 #, php-format
 msgid "No %s found."
 msgstr ""

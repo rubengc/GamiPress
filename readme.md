@@ -163,6 +163,14 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.7 ###
+
+* Fixed wrong points awards maximum earnings check.
+* Fixed wrong missed points/achievement type on debug mode.
+* Fixed some typos.
+* Improvements on points awards/step save functions.
+* Improvements on upgrade functions.
+
 ### 1.2.6 ###
 
 * Added tabs on [gamipress_achievements] shortcode embedder form.

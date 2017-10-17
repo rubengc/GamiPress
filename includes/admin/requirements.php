@@ -51,16 +51,16 @@ function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
         return;
     }
 
-    $connected_label = ( ( get_post_type( $post_id ) === 'points-award' ) ? __( 'Points Type', 'gamipress' ) : __( 'Achievement', 'gamipress' ) );
-    $connected_id = gamipress_get_requirement_connected_id( $post_id );
+    if( ( get_post_type( $post_id ) === 'points-award' ) ) {
+        $connected_label = __( 'Points Type', 'gamipress' );
+        $connected_object =  gamipress_get_points_award_points_type( $post_id );
+    } else {
+        $connected_label = __( 'Achievement', 'gamipress' );
+        $connected_object = gamipress_get_parent_of_achievement( $post_id );
+    }
 
-    if( $connected_id ) :
-        $post_object = get_post( $connected_id );
-        if( $post_object ) : ?>
-            <a href="<?php echo get_edit_post_link( $post_object->ID ); ?>"><?php echo $post_object->post_title; ?></a>
-        <?php else : ?>
-            <span data-connected-id="<?php echo $connected_id; ?>" style="color: #a00;"><?php printf( __( '%s was removed', 'gamipress' ), $connected_label ); ?></span>
-        <?php endif; ?>
+    if( $connected_object ) : ?>
+        <a href="<?php echo get_edit_post_link( $connected_object->ID ); ?>"><?php echo $connected_object->post_title; ?></a>
     <?php else : ?>
         <span style="color: #a00;"><?php printf( __( 'Missed %s', 'gamipress' ), $connected_label ); ?></span>
     <?php endif;

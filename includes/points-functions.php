@@ -49,6 +49,9 @@ function gamipress_update_users_points( $user_id = 0, $new_points = 0, $admin_id
 	if ( ! $user_id )
 		$user_id = get_current_user_id();
 
+	if( is_object( $points_type ) )
+		$points_type = $points_type->post_name;
+
 	// Grab the user's current points
 	$current_points = gamipress_get_users_points( $user_id, $points_type );
 
@@ -254,6 +257,11 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
  */
 function gamipress_maybe_update_points_type( $data = array(), $post_args = array() ) {
 
+	// Bail if not is a points type
+	if( $post_args['post_type'] !== 'points-type') {
+		return $data;
+	}
+
 	// If user set an empty slug, then generate it
 	if( empty( $post_args['post_name'] ) ) {
 		$post_args['post_name'] = wp_unique_post_slug(
@@ -325,6 +333,7 @@ function gamipress_update_points_types( $original_type = '', $new_type = '' ) {
 		return $new_type;
 	}
 
+	gamipress_update_points_awards_points_type( $original_type, $new_type );
 	gamipress_update_user_meta_points_types( $original_type, $new_type );
 	gamipress_flush_rewrite_rules();
 
@@ -348,10 +357,37 @@ function gamipress_update_user_meta_points_types( $original_type = '', $new_type
 		"
 		UPDATE $wpdb->usermeta
 		SET meta_key = %s
-		WHERE  meta_key = %s
+		WHERE meta_key = %s
 		",
 		"_gamipress_{$new_type}_points",
 		"_gamipress_{$original_type}_points"
+	) );
+
+}
+
+/**
+ * Replace all posts metas with old points type with the new one.
+ *
+ * @since  1.2.7
+ *
+ * @param  string 	$original_type Original points type.
+ * @param  string 	$new_type      New points type.
+ * @return integer                 Post metas updated count.
+ */
+function gamipress_update_points_awards_points_type( $original_type = '', $new_type = '' ) {
+
+	global $wpdb;
+
+	return $wpdb->get_results( $wpdb->prepare(
+		"
+		UPDATE $wpdb->postmeta
+		SET meta_value = %s
+		WHERE meta_key = %s
+		AND meta_value = %s
+		",
+		$new_type,
+		"_gamipress_points_type",
+		"$original_type"
 	) );
 
 }
