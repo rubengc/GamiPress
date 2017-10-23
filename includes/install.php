@@ -21,6 +21,9 @@ function gamipress_install() {
         update_option( 'gamipress_settings', $gamipress_settings );
     }
 
+    // Register GamiPress custom DB tables
+    gamipress_register_custom_tables();
+
     // Register GamiPress post types and flush rewrite rules
     gamipress_flush_rewrite_rules();
 }

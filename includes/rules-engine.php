@@ -205,41 +205,48 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 /**
  * Revoke an achievement from a user
  *
- * @since  1.0.0
+ * @since  	1.0.0
+ * @updated 1.2.8 Added $earning_id
+ *
+ * @see gamipress_revoke_achievement_from_user_old()
  *
  * @param  integer $achievement_id The given achievement's post ID
  * @param  integer $user_id        The given user's ID
+ * @param  integer $earning_id     The user's earning ID
  *
  * @return void
  */
-function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id = 0 ) {
+function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id = 0, $earning_id = 0 ) {
+
+	// If not properly upgrade to required version fallback to compatibility function
+	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+		gamipress_revoke_achievement_from_user_old( $achievement_id, $user_id );
+		return;
+	}
 
 	// Use the current user's ID if none specified
 	if ( ! $user_id )
 		$user_id = wp_get_current_user()->ID;
 
-	// Grab the user's earned achievements
-	$earned_achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id ) );
+	// Setup CT object
+	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
-	// Loop through each achievement and drop the achievement we're revoking
-	foreach ( $earned_achievements as $key => $achievement ) {
-		if ( $achievement->ID == $achievement_id ) {
+	if( $earning_id === 0 ) {
+		$query = new CT_Query( array(
+			'user_id' => $user_id,
+			'post_id' => $achievement_id,
+			'items_per_page' => 1
+		) );
 
-			// Drop the achievement from our earnings
-			unset( $earned_achievements[$key] );
+		$results = $query->get_results();
 
-			// Re-key our array
-			$earned_achievements = array_values( $earned_achievements );
-
-			// Update user's earned achievements
-			gamipress_update_user_achievements( array( 'user_id' => $user_id, 'all_achievements' => $earned_achievements ) );
-
-			// Available hook for taking further action when an achievement is revoked
-			do_action( 'gamipress_revoke_achievement', $user_id, $achievement_id );
-
-			// Stop after dropping one, because we don't want to delete ALL instances
-			break;
+		if( count( $results ) > 0 ) {
+			$earning_id = $results[0]->user_earning_id;
 		}
+	}
+
+	if( $earning_id ) {
+		$ct_table->db->delete( $earning_id );
 	}
 
 }
@@ -620,13 +627,12 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 		if( isset( $trigger ) ) {
 
 			if( $since !== 0 ) {
-				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since, $site_id, $requirements );
+				$activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirements );
 			} else {
 				// If since is not defined, then get activity count since achievement publish date
 				$since = strtotime( get_post_field( 'post_date', $achievement_id ) );
 
-				$activities = gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since, $site_id, $requirements );
-				//$activities = gamipress_get_user_trigger_count( $user_id, $trigger );
+				$activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirements );
 			}
 
 		}

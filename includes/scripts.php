@@ -99,7 +99,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     if(
         $post_type === 'points-type'
         || in_array( $post_type, gamipress_get_achievement_types_slugs() )
-        || $post_type === 'gamipress-log'
+        || $post_type === 'gamipress-log'   // TODO: Since 1.2.8 gamipress-log CPT not supported, remove on 1.3.0
         || $hook === 'widgets.php'
     ) {
         wp_enqueue_script( 'gamipress-select2-js' );
@@ -118,6 +118,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     }
 
     // Logs scripts
+    // TODO: Since 1.2.8 gamipress-log CPT not supported, remove on 1.3.0
     if ( $post_type === 'gamipress-log' ) {
         wp_enqueue_script( 'gamipress-log-extra-data-ui-js' );
     }

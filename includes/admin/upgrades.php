@@ -8,6 +8,15 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.1.0.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.2.7.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.2.8.php';
+
+/**
+ * GamiPress upgrades
+ *
+ * @since 1.1.0
+ */
 function gamipress_process_upgrades() {
 
     // Get stored version
@@ -17,63 +26,101 @@ function gamipress_process_upgrades() {
         return;
     }
 
+    /**
+     * Before process upgrades action
+     */
     do_action( 'gamipress_before_process_upgrades', $stored_version );
 
-    if ( version_compare( $stored_version, '1.1.0', '<' ) ) {
-        gamipress_110_upgrades();
-    }
+    /**
+     * Version upgrade filter
+     */
+    $stored_version = apply_filters( 'gamipress_process_upgrades', $stored_version );
 
-    if ( version_compare( $stored_version, '1.2.7', '<' ) ) {
-        gamipress_127_upgrades();
-    }
-
+    /**
+     * After process upgrades action
+     */
     do_action( 'gamipress_after_process_upgrades', $stored_version );
 
     // Updated stored version
-    update_option( 'gamipress_version', GAMIPRESS_VER );
+    update_option( 'gamipress_version', $stored_version );
 
 }
 add_action( 'admin_init', 'gamipress_process_upgrades' );
 
-function gamipress_110_upgrades() {
+/**
+ * Helper function to check if GamiPress has been upgraded successfully
+ *
+ * @since 1.2.8
+ */
+function is_gamipress_upgraded_to( $desired_version = '1.0.0' ) {
 
-    global $wpdb;
+    // Get stored version
+    $stored_version = get_option( 'gamipress_version', '1.0.0' );
 
-    // Update wp_login trigger to gamipress_login
-    $wpdb->update(
-        $wpdb->postmeta,
-        array(
-            'meta_value' => 'gamipress_login'
-        ),
-        array(
-            'meta_key' => '_gamipress_trigger_type',
-            'meta_value' => 'wp_login',
-        )
-    );
+    return (bool) version_compare( $stored_version, $desired_version, '>=' );
 
 }
 
-function gamipress_127_upgrades() {
+/**
+ * Get's the array of completed upgrade actions
+ *
+ * @since  1.2.8
+ *
+ * @return array The array of completed upgrades
+ */
+function gamipress_get_completed_upgrades() {
 
-    global $wpdb;
+    $completed_upgrades = get_option( 'gamipress_completed_upgrades' );
 
-    // A bug of wrong points awards on newly created points types was discover and fixed, so old points awards need to be updated
-    $points_awards = $wpdb->get_results( $wpdb->prepare(
-        "SELECT p.post_id
-		FROM   $wpdb->postmeta AS p
-		WHERE  p.meta_key = %s
-		       AND p.meta_value = %s",
-        "_gamipress_points_type",
-        ""
-    ) );
-
-    foreach( $points_awards as $points_award ) {
-
-        $points_type_id = gamipress_get_requirement_connected_id( $points_award->post_id );
-
-        if( $points_type_id ) {
-            update_post_meta( $points_award->post_id, '_gamipress_points_type', get_post_field( 'post_name', $points_type_id ) );
-        }
+    if ( false === $completed_upgrades ) {
+        $completed_upgrades = array();
     }
 
+    return $completed_upgrades;
+
+}
+
+/**
+ * Check if the upgrade routine has been run for a specific action
+ *
+ * @since  1.2.8
+ *
+ * @param  string $upgrade_action The upgrade action to check completion for
+ *
+ * @return bool                   If the action has been added to the completed actions array
+ */
+function is_gamipress_upgrade_completed( $upgrade_action = '' ) {
+
+    if ( empty( $upgrade_action ) ) {
+        return false;
+    }
+
+    $completed_upgrades = gamipress_get_completed_upgrades();
+
+    return in_array( $upgrade_action, $completed_upgrades );
+
+}
+
+/**
+ * Adds an upgrade action to the completed upgrades array
+ *
+ * @since  1.2.8
+ *
+ * @param  string $upgrade_action The action to add to the completed upgrades array
+ *
+ * @return bool                   If the function was successfully added
+ */
+function gamipress_set_upgrade_complete( $upgrade_action = '' ) {
+
+    if ( empty( $upgrade_action ) ) {
+        return false;
+    }
+
+    $completed_upgrades   = gamipress_get_completed_upgrades();
+    $completed_upgrades[] = $upgrade_action;
+
+    // Remove any blanks, and only show uniques
+    $completed_upgrades = array_unique( array_values( $completed_upgrades ) );
+
+    return update_option( 'gamipress_completed_upgrades', $completed_upgrades );
 }

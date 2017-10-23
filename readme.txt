@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
 Requires at least: 4.0
 Tested up to: 4.8
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -161,13 +161,29 @@ GamiPress comes with the following widgets:
 
 == Changelog ==
 
+= 1.2.8 =
+
+* Performance update: Logs moved to a custom database table.
+* Performance update: User earnings moved to a custom database table.
+* Updated [gamipress_logs] orderby with the new options (with backward compatibility).
+* Improvements on log pattern parser.
+* Fixed priority issue with wpautop and gamipress_reformat_entries.
+* Fixed an issue with add-ons license checks.
+* Improvements on [gamipress_points] and [gamipress_points_types] type detection.
+* Improvements on activity count functions.
+* Fixed wrong user check on [gamipress_points].
+* Fixed wrong license add-on check.
+* User earnings ajax pagination on edit user screen.
+* Completely rewrite all functions related to logs and user earnings to keep backward compatibility.
+* Added logs-old.php template for [gamipress_logs] when database has not been upgraded yet.
+* Updated tools to support new database changes.
+* Completely reworked plugin upgrades to work with large upgrades.
+
 = 1.2.7 =
 
+* Performance update: User earnings moved to a custom database table.
 * Fixed wrong points awards maximum earnings check.
 * Fixed wrong missed points/achievement type on debug mode.
-* Fixed some typos.
-* Improvements on points awards/step save functions.
-* Improvements on upgrade functions.
 
 = 1.2.6 =
 

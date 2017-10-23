@@ -22,7 +22,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
 /**
- * Create GamiPress Settings menus
+ * Create GamiPress menus
  */
 function gamipress_admin_menu() {
 
@@ -40,12 +40,23 @@ function gamipress_admin_menu() {
     // GamiPress menu
     add_menu_page( 'GamiPress', 'GamiPress', $minimum_role, 'gamipress', 'gamipress_settings', 'dashicons-gamipress', 55 );
 
+}
+add_action( 'admin_menu', 'gamipress_admin_menu' );
+
+/**
+ * Create GamiPress Settings menus
+ */
+function gamipress_admin_submenu() {
+
+    // Set minimum role setting for menus
+    $minimum_role = gamipress_get_manager_capability();
+
     // GamiPress sub menus
     add_submenu_page( 'gamipress', __( 'Add-ons', 'gamipress' ), __( 'Add-ons', 'gamipress' ), $minimum_role, 'gamipress_add_ons', 'gamipress_add_ons_page' );
     add_submenu_page( 'gamipress', __( 'Help / Support', 'gamipress' ), __( 'Help / Support', 'gamipress' ), $minimum_role, 'gamipress_help_support', 'gamipress_help_support_page' );
 
 }
-add_action( 'admin_menu', 'gamipress_admin_menu' );
+add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
 
 /**
  * Register GamiPress dashboard widget.
@@ -99,17 +110,26 @@ function gamipress_dashboard_widget() {
     <h3><?php _e( 'Latest Logs', 'gamipress' ); ?></h3>
 
     <?php
-    $posts = new WP_Query( array(
-        'post_type'      => 'gamipress-log',
-        'post_status'    => 'any',
+
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+        gamipress_dashboard_widget_logs_old();
+        return;
+    }
+
+    // Setup table
+    ct_setup_table( 'gamipress_logs' );
+
+    $query = new CT_Query( array(
         'orderby'        => 'date',
         'order'          => 'DESC',
-        'posts_per_page' => 5,
+        'items_per_page' => 5,
         'no_found_rows'  => true,
         'cache_results'  => false,
     ) );
 
-    if ( $posts->have_posts() ) {
+    $logs = $query->get_results();
+
+    if ( count( $logs ) > 0 ) {
 
         echo '<div id="gamipress-latest-logs" class="gamipress-latest-logs">';
 
@@ -118,10 +138,10 @@ function gamipress_dashboard_widget() {
         $today    = date( 'Y-m-d', current_time( 'timestamp' ) );
         $yesterday = date( 'Y-m-d', strtotime( '-1 day', current_time( 'timestamp' ) ) );
 
-        while ( $posts->have_posts() ) {
-            $posts->the_post();
+        foreach ( $logs as $log ) {
 
-            $time = get_the_time( 'U' );
+            $time = strtotime( $log->date );
+
             if ( date( 'Y-m-d', $time ) == $today ) {
                 $relative = __( 'Today', 'gamipress' );
             } elseif ( date( 'Y-m-d', $time ) == $yesterday ) {
@@ -134,15 +154,13 @@ function gamipress_dashboard_widget() {
                 $relative = date_i18n( __( 'M jS' ), $time );
             }
 
-            // Use the post edit link for those who can edit, the permalink otherwise.
-            $edit_post_link = current_user_can( 'edit_post', get_the_ID() ) ? get_edit_post_link() : get_permalink();
+            $edit_post_link = ct_get_edit_link( 'gamipress_logs', $log->log_id );
 
-            $draft_or_post_title = _draft_or_post_title();
             printf(
                 '<li><a href="%1$s">%2$s</a> <span>%3$s</span></li>',
                 $edit_post_link,
-                $draft_or_post_title,
-                sprintf( _x( '%1$s, %2$s', 'dashboard' ), $relative, get_the_time() )
+                apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id ),
+                sprintf( _x( '%1$s, %2$s', 'dashboard' ), $relative, mysql2date( get_option('time_format'), $time ) )
             );
         }
 

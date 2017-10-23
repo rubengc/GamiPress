@@ -83,14 +83,14 @@ function gamipress_points_shortcode( $atts = array () ) {
     $is_single_type = false;
     $types = explode( ',', $atts['type'] );
 
-    if ( ( 'all' !== $atts['type'] && '' !== $atts['type'] ) && count( $types ) === 1 ) {
-        $is_single_type = true;
-    } else if( 'all' === $atts['type'] ) {
+    if( $atts['type'] === 'all') {
         $types = gamipress_get_points_types_slugs();
+    } else if ( count( $types ) === 1 ) {
+        $is_single_type = true;
     }
 
     // Get the current user if one wasn't specified
-    if( empty( $atts['user_id'] ) )
+    if( absint( $atts['user_id'] ) === 0 )
         $atts['user_id'] = get_current_user_id();
 
     // If we're polling all sites, grab an array of site IDs

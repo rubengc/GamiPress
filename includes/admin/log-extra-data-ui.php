@@ -15,21 +15,70 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function gamipress_add_log_extra_data_ui_meta_box() {
-    add_meta_box( 'gamipress_log_extra_data_ui', __( 'Extra Data', 'gamipress' ), 'gamipress_log_extra_data_ui_meta_box', 'gamipress-log', 'advanced', 'default' );
+    add_meta_box( 'gamipress_log_data_ui', __( 'Log Data', 'gamipress' ), 'gamipress_log_data_ui_meta_box', 'gamipress_logs', 'side', 'default' );
+    add_meta_box( 'gamipress_log_extra_data_ui', __( 'Extra Data', 'gamipress' ), 'gamipress_log_extra_data_ui_meta_box', 'gamipress_logs', 'normal', 'default' );
 }
 add_action( 'add_meta_boxes', 'gamipress_add_log_extra_data_ui_meta_box' );
 
 /**
- * Renders the HTML for meta box, refreshes whenever a new step is added
+ * Renders the log data meta box
+ *
+ * @since  1.2.8
+ *
+ * @param  stdClass $object The current object
+ */
+function gamipress_log_data_ui_meta_box( $object  = null ) {
+    ?>
+    <div id="log-data-ui">
+        <?php gamipress_log_data_ui_html( $object, $object->type ); ?>
+    </div>
+    <?php
+}
+
+/**
+ * Renders the log data meta box HTML
+ *
+ * @since  1.2.8
+ *
+ * @param  stdClass $object     The current object
+ * @param  string   $type       Type to render form
+ */
+function gamipress_log_data_ui_html( $object, $type ) {
+    $log_types = gamipress_get_log_types();
+
+    ?>
+    <div id="minor-publishing">
+
+        <div id="misc-publishing-actions">
+
+            <div class="misc-pub-section misc-pub-post-status">
+                <?php echo __( 'Type:', 'gamipress' ); ?> <span id="post-status-display"><?php echo isset( $log_types[$object->type] ) ? $log_types[$object->type] : $object->type ; ?></span>
+            </div>
+
+            <div class="misc-pub-section misc-pub-visibility" id="visibility">
+                <?php echo __( 'Visibility:', 'gamipress' ); ?> <span id="post-visibility-display"><?php echo $object->access === 'public' ? __( 'Public', 'gamipress' ) : __( 'Private', 'gamipress' ); ?></span>
+            </div>
+
+            <div class="misc-pub-section curtime misc-pub-curtime">
+	            <span id="timestamp"><?php echo __( 'Date:', 'gamipress' ); ?> <b><abbr title="<?php echo date( 'Y/m/d g:i:s a', strtotime( $object->date ) ); ?>"><?php echo date( 'Y/m/d', strtotime( $object->date ) ); ?></abbr></b></span>
+            </div>
+
+        </div>
+        <div class="clear"></div>
+    </div>
+    <?php
+}
+
+/**
+ * Renders the log extra data
  *
  * @since  1.0.0
- * @param  WP_Post $post The current post object
- * @return void
+ * @param  stdClass $object The current object
  */
-function gamipress_log_extra_data_ui_meta_box( $post  = null ) {
+function gamipress_log_extra_data_ui_meta_box( $object  = null ) {
     ?>
     <div id="log-extra-data-ui">
-        <?php gamipress_log_extra_data_ui_html( $post->ID ); ?>
+        <?php gamipress_log_extra_data_ui_html( $object, $object->log_id, $object->type ); ?>
     </div>
     <?php
 }
@@ -38,18 +87,15 @@ function gamipress_log_extra_data_ui_meta_box( $post  = null ) {
  * Renders the HTML for meta box based on the log type given
  *
  * @since  1.0.0
- * @param  WP_Post $post The current post object
- * @param  string $type Type to render form
- * @return void
+ *
+ * @param  stdClass $object     The current object
+ * @param  integer  $object_id  The current object ID
+ * @param  string   $type       Type to render form
  */
-function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
+function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
     // Start with an underscore to hide fields from custom fields list
     $prefix = '_gamipress_';
     $fields = array();
-
-    if( $type === null ) {
-        $type = get_post_meta( $post_id, $prefix .'type', true );
-    }
 
     if( $type === 'event_trigger' ) {
 
@@ -69,12 +115,12 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
             ),
         );
 
-        $trigger = get_post_meta( $post_id, $prefix . 'trigger_type', true );
+        $trigger = ct_get_object_meta( $object_id, $prefix . 'trigger_type', true );
 
         // If is a specific activity trigger, then add the achievement_post field
         if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
 
-            $achievement_post_id = get_post_meta( $post_id, $prefix . 'achievement_post', true );
+            $achievement_post_id = ct_get_object_meta( $object_id, $prefix . 'achievement_post', true );
 
             $fields[] = array(
                 'name' 	=> __( 'Assigned Post', 'gamipress' ),
@@ -87,7 +133,7 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
             );
         }
     } else if( $type === 'achievement_earn' || $type === 'achievement_award' ) {
-        $achievement_id = get_post_meta( $post_id, $prefix . 'achievement_id', true );
+        $achievement_id = ct_get_object_meta( $object_id, $prefix . 'achievement_id', true );
 
         $fields = array(
             array(
@@ -133,7 +179,7 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
         );
 
         if( $type === 'points_award' ) {
-            $admin_id = get_post_meta( $post_id, $prefix . 'admin_id', true );
+            $admin_id = ct_get_object_meta( $object_id, $prefix . 'admin_id', true );
             $admin = get_userdata( $admin_id );
 
             $fields[] = array(
@@ -148,24 +194,66 @@ function gamipress_log_extra_data_ui_html( $post_id, $type = null ) {
         }
     }
 
-    $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $post_id, $type );
+    $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $object_id, $type );
 
     if( ! empty( $fields ) ) {
+
+        // TODO: Temporal render
+        ?>
+
+        <div class="cmb2-wrap form-table gamipress-form gamipress-box-form">
+            <div id="cmb2-metabox-log_extra_data_ui_box" class="cmb2-metabox cmb-field-list">
+
+        <?php foreach( $fields as $field ) :
+
+            $value = ct_get_object_meta( $object_id, $field['id'], true );
+
+            if( isset( $field['options'] ) ) {
+
+                $option_value = gamipress_array_search_key( $value, $field['options'] );
+
+                if( $option_value ) {
+                    $value = $option_value;
+                }
+
+            }
+            ?>
+
+            <div class="cmb-row cmb-type-<?php echo $field['type']; ?> cmb2-id-<?php str_replace( '_', '-', $field['id'] ); ?>" data-fieldtype="<?php echo $field['type']; ?>">
+                <div class="cmb-th">
+                    <label for="<?php echo $field['id']; ?>"><?php echo $field['name']; ?></label>
+                </div>
+                <div class="cmb-td">
+                    <?php echo $value; ?>
+                    <?php if ( isset( $field['desc'] ) ) : ?>
+                        <p class="cmb2-metabox-description"><?php echo $field['desc']; ?></p>
+                    <?php endif; ?>
+
+                </div>
+            </div>
+
+        <?php endforeach; ?>
+
+            </div>
+        </div>
+
+        <?php
+        // TODO: Add again CMB2 rendering when it gets supported by CT
         // Create a new box to render the form
-        $cmb2 = new CMB2( array(
+        /*$cmb2 = new CMB2( array(
             'id'      => 'log_extra_data_ui_box',
             'classes' => 'gamipress-form gamipress-box-form',
             'hookup'  => false,
             'show_on' => array(
-                'key'   => 'gamipress-log',
-                'value' => $post_id
+                'key'   => 'gamipress_logs',
+                'value' => $object_id
             ),
             'fields' => $fields
         ) );
 
-        $cmb2->object_id( $post_id );
+        $cmb2->object_id( $object_id );
 
-        $cmb2->show_form();
+        $cmb2->show_form();*/
     } else {
         _e( 'No extra data registered', 'gamipress' );
     }
@@ -182,3 +270,17 @@ function gamipress_get_log_extra_data_ui_ajax_handler() {
     die;
 }
 add_action( 'wp_ajax_get_log_extra_data_ui', 'gamipress_get_log_extra_data_ui_ajax_handler' );
+
+function gamipress_array_search_key( $needle_key, $array ) {
+    foreach($array as $key => $value) {
+
+        if($key == $needle_key)
+            return $value;
+
+        if( is_array( $value ) ) {
+            if( ( $result = gamipress_array_search_key( $needle_key, $value ) ) !== false )
+                return $result;
+        }
+    }
+    return false;
+}

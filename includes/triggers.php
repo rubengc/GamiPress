@@ -178,7 +178,6 @@ function gamipress_trigger_event() {
 
 	// Log meta data
 	$log_meta = array(
-		'type' => 'event_trigger',
 		'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
 		'count' => $new_count,
 		'trigger_type' => $trigger,
@@ -198,7 +197,7 @@ function gamipress_trigger_event() {
 	$log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $trigger, $site_id, $args );
 
 	// Mark the count in the log entry
-	gamipress_insert_log( $user_id, 'private', $log_meta );
+	gamipress_insert_log( 'event_trigger', $user_id, 'private', $log_meta );
 
 	// Now determine if any achievements are earned based on this trigger event
 	$triggered_achievements = $wpdb->get_results( $wpdb->prepare(
@@ -418,41 +417,6 @@ function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
 }
 
 /**
- * Get the count for the number of times a user has triggered a particular trigger
- *
- * @since  1.0.0
- *
- * @deprecated TODO: Move gamipress_get_user_trigger_count_from_logs code to here and remove _gamipress_triggered_triggers user meta
- *
- * @param  integer $user_id The given user's ID
- * @param  string  $trigger The given trigger we're checking
- * @param  integer $site_id The desired Site ID to check
- * @param  array $args      The triggered args
- *
- * @return integer          The total number of times a user has triggered the trigger
- */
-function gamipress_get_user_trigger_count( $user_id, $trigger, $site_id = 0, $args = array() ) {
-
-	// Set to current site id
-	if ( ! $site_id )
-		$site_id = get_current_blog_id();
-
-	// Grab the user's logged triggers
-	$user_triggers = gamipress_get_user_triggers( $user_id, $site_id );
-
-	$trigger = apply_filters( 'gamipress_get_user_trigger_name', $trigger, $user_id, $site_id, $args );
-
-	// If we have any triggers, return the current count for the given trigger
-	if ( ! empty( $user_triggers ) && isset( $user_triggers[$trigger] ) )
-		return absint( $user_triggers[$trigger] );
-
-	// Otherwise, they've never hit the trigger
-	else
-		return 0;
-
-}
-
-/**
  * Get the count for the number of times is logged a user has triggered a particular trigger
  *
  * @since  1.0.0
@@ -465,24 +429,31 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $site_id = 0, $ar
  *
  * @return integer          The total number of times a user has triggered the trigger
  */
-function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since = 0, $site_id = 0, $args = array() ) {
+function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site_id = 0, $args = array() ) {
+
+	// If not properly upgrade to required version fallback to compatibility function
+	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+		return gamipress_get_user_trigger_count_old(  $user_id, $trigger, $since, $site_id, $args );
+	}
 
 	global $wpdb;
+
+	$ct_table = ct_setup_table( 'gamipress_logs' );
 
 	// Set to current site id
 	if ( ! $site_id )
 		$site_id = get_current_blog_id();
 
-	$post_date = '';
+	$date = '';
 
 	if( $since !== 0 ) {
 		$now = date( 'Y-m-d' );
 		$since = date( 'Y-m-d', $since );
 
-		$post_date = "BETWEEN '$since' AND '$now'";
+		$date = "BETWEEN '$since' AND '$now'";
 
 		if( $since === $now ) {
-			$post_date = ">= '$now'";
+			$date = ">= '$now'";
 		}
 	}
 
@@ -503,25 +474,21 @@ function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since 
 			$user_triggers = $wpdb->get_var( $wpdb->prepare(
 				"
 				SELECT COUNT(*)
-				FROM   $wpdb->posts AS p
-				LEFT JOIN $wpdb->postmeta AS pm1
-				ON ( p.ID = pm1.post_id )
-				LEFT JOIN $wpdb->postmeta AS pm2
-				ON ( p.ID = pm2.post_id )
-				LEFT JOIN $wpdb->postmeta AS pm3
-				ON ( p.ID = pm3.post_id )
-				WHERE p.post_type = %s
-					AND p.post_author = %s
-					AND CAST( p.post_date AS DATE ) {$post_date}
+				FROM   {$ct_table->db->table_name} AS l
+				LEFT JOIN {$ct_table->meta->db->table_name} AS lm1
+				ON ( l.log_id = lm1.log_id )
+				LEFT JOIN {$ct_table->meta->db->table_name} AS lm2
+				ON ( l.log_id = lm2.log_id )
+				WHERE l.user_id = %d
+					AND CAST( l.date AS DATE ) {$date}
+					AND l.type = %s
 					AND (
-						( pm1.meta_key = %s AND pm1.meta_value = %s )
-						AND ( pm2.meta_key = %s AND pm2.meta_value = %s )
-						AND ( pm3.meta_key = %s AND pm3.meta_value = %s )
+						( lm1.meta_key = %s AND lm1.meta_value = %s )
+						AND ( lm2.meta_key = %s AND lm2.meta_value = %s )
 					)
 				",
-				'gamipress-log',
-				$user_id,
-				'_gamipress_type', 'event_trigger',
+				absint( $user_id ),
+				'event_trigger',
 				'_gamipress_trigger_type', $trigger,
 				'_gamipress_achievement_post', $specific_id
 			) );
@@ -533,22 +500,18 @@ function gamipress_get_user_trigger_count_from_logs( $user_id, $trigger, $since 
 		$user_triggers = $wpdb->get_var( $wpdb->prepare(
 			"
 			SELECT COUNT(*)
-			FROM   $wpdb->posts AS p
-			LEFT JOIN $wpdb->postmeta AS pm1
-			ON ( p.ID = pm1.post_id )
-			LEFT JOIN $wpdb->postmeta AS pm2
-			ON ( p.ID = pm2.post_id )
-			WHERE p.post_type = %s
-				AND p.post_author = %s
-				AND CAST( p.post_date AS DATE ) {$post_date}
+			FROM   {$ct_table->db->table_name} AS l
+			LEFT JOIN {$ct_table->meta->db->table_name} AS lm
+			ON ( l.log_id = lm.log_id )
+			WHERE l.user_id = %d
+				AND CAST( l.date AS DATE ) {$date}
+				AND l.type = %s
 				AND (
-					( pm1.meta_key = %s AND pm1.meta_value = %s )
-					AND ( pm2.meta_key = %s AND pm2.meta_value = %s )
+					lm.meta_key = %s AND lm.meta_value = %s
 				)
 			",
-			'gamipress-log',
-			$user_id,
-			'_gamipress_type', 'event_trigger',
+			absint( $user_id ),
+			'event_trigger',
 			'_gamipress_trigger_type', $trigger
 		) );
 	}

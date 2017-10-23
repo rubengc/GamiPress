@@ -80,7 +80,7 @@ function gamipress_reformat_entries( $content ) {
 
 	return $new_content;
 }
-add_filter( 'the_content', 'gamipress_reformat_entries', 9 );
+add_filter( 'the_content', 'gamipress_reformat_entries' );
 
 /**
  * Helper function tests that we're in the main loop
@@ -645,23 +645,23 @@ function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
 }
 
 /**
- * Filters the post title.
+ * Filters the log title.
  *
- * @param string $title The post title.
- * @param int    $id    The post ID.
+ * @param string $title The log title.
+ * @param int    $id    The log ID.
  *
  * @return string 		The formatted title
  */
 function gamipress_log_title_format( $title, $id = null ) {
 
 	if( $id === null ) {
-		$id = get_the_ID();
-	}
-
-	if( get_post_type( $id ) !== 'gamipress-log' ) {
 		return $title;
 	}
 
-	return gamipress_get_parsed_log( $id );
+	if( empty( $title ) ) {
+		$title = gamipress_get_parsed_log( $id );
+	}
+
+	return $title;
 }
-add_filter( 'the_title', 'gamipress_log_title_format', 10, 2 );
+add_filter( 'gamipress_render_log_title', 'gamipress_log_title_format', 10, 2 );

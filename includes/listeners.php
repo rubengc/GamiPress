@@ -114,7 +114,7 @@ function gamipress_site_visit_listener() {
     $now = current_time( 'timestamp' );
 
     // Website daily visit
-    $count = gamipress_get_user_trigger_count_from_logs( $user_id, 'gamipress_site_visit', $now );
+    $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_site_visit', $now );
 
     // Trigger daily visit action if not triggered today
     if( $count === 0 ) {
@@ -126,7 +126,7 @@ function gamipress_site_visit_listener() {
 
     if( $post ) {
 
-        $count = gamipress_get_user_trigger_count_from_logs( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
+        $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
 
         // Trigger specific daily visit action if not triggered today
         if( $count === 0 ) {

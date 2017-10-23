@@ -12,10 +12,17 @@ if( !defined( 'ABSPATH' ) ) exit;
  * Get a user's gamipress achievements
  *
  * @since  1.0.0
+ *
  * @param  array $args An array of all our relevant arguments
+ *
  * @return array       An array of all the achievement objects that matched our parameters, or empty if none
  */
 function gamipress_get_user_achievements( $args = array() ) {
+
+	// If not properly upgrade to required version fallback to compatibility function
+	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+		return gamipress_get_user_achievements_old( $args );
+	}
 
 	// Setup our default args
 	$defaults = array(
@@ -32,44 +39,51 @@ function gamipress_get_user_achievements( $args = array() ) {
 	if ( ! $args['user_id'] )
 		$args['user_id'] = get_current_user_id();
 
-	// Grab the user's current achievements
-	$achievements = ( $earned_items = get_user_meta( absint( $args['user_id'] ), '_gamipress_achievements', true ) ) ? (array) $earned_items : array();
+	// Setup CT object
+	ct_setup_table( 'gamipress_user_earnings' );
 
-	// If we want all sites (or no specific site), return the full array
-	if ( empty( $achievements ) || empty( $args['site_id']) || 'all' == $args['site_id'] )
-		return $achievements;
+	// Setup query args
+	$query_args = array(
+		'user_id' => $args['user_id'],
+		'nopaging' => true
+	);
 
-	// Otherwise, we only want the specific site's achievements
-	$achievements = $achievements[$args['site_id']];
-
-	if ( is_array( $achievements ) && ! empty( $achievements ) ) {
-		foreach ( $achievements as $key => $achievement ) {
-
-			// Drop any achievements earned before our since timestamp
-			if ( absint($args['since']) > $achievement->date_earned )
-				unset($achievements[$key]);
-
-			// Drop any achievements that don't match our achievement ID
-			if ( ! empty( $args['achievement_id'] ) && absint( $args['achievement_id'] ) != $achievement->ID )
-				unset($achievements[$key]);
-
-			// Drop any achievements that don't match our achievement type
-			if ( ! empty( $args['achievement_type'] ) && ( $args['achievement_type'] != $achievement->post_type && ( !is_array( $args['achievement_type'] ) || !in_array( $achievement->post_type, $args['achievement_type'] ) ) ) )
-				unset($achievements[$key]);
-
-			if( isset( $args['display'] ) && $args['display'] ) {
-				// Unset hidden achievements on display context
-				$hidden = gamipress_get_hidden_achievement_by_id( $achievement->ID );
-
-				if( ! empty( $hidden ) ) {
-					unset( $achievements[$key] );
-				}
-			}
-		}
+	if( $args['achievement_id'] !== false ) {
+		$query_args['post_id'] = $args['achievement_id'];
 	}
 
-	// Return our $achievements array_values (so our array keys start back at 0), or an empty array
-	return ( is_array( $achievements ) ? array_values( $achievements ) : array());
+	if( $args['achievement_type'] !== false ) {
+		$query_args['post_type'] = $args['achievement_type'];
+	}
+
+	if( $args['since'] !== 0 ) {
+		$query_args['since'] = $args['since'];
+	}
+
+	$ct_query = new CT_Query( $query_args );
+
+	$achievements = $ct_query->get_results();
+
+	foreach ( $achievements as $key => $achievement ) {
+
+		// Update object for backward compatibility for usages previously to 1.2.7
+		$achievement->ID = $achievement->post_id;
+		$achievement->date_earned = strtotime( $achievement->date );
+
+		$achievements[$key] = $achievement;
+
+		if( isset( $args['display'] ) && $args['display'] ) {
+			// Unset hidden achievements on display context
+			$hidden = gamipress_get_hidden_achievement_by_id( $achievement->post_id );
+
+			if( ! empty( $hidden ) ) {
+				unset( $achievements[$key] );
+			}
+		}
+
+	}
+
+	return $achievements;
 
 }
 
@@ -79,39 +93,51 @@ function gamipress_get_user_achievements( $args = array() ) {
  * We can either replace the achievement's array, or append new achievements to it.
  *
  * @since  1.0.0
+ *
  * @param  array        $args An array containing all our relevant arguments
+ *
  * @return integer|bool       The updated umeta ID on success, false on failure
  */
 function gamipress_update_user_achievements( $args = array() ) {
+
+	// If not properly upgrade to required version fallback to compatibility function
+	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+		return gamipress_update_user_achievements_old( $args );
+	}
 
 	// Setup our default args
 	$defaults = array(
 		'user_id'          => 0,     // The given user's ID
 		'site_id'          => get_current_blog_id(), // The given site's ID
-		'all_achievements' => false, // An array of ALL achievements earned by the user
+		//'all_achievements' => false, // An array of ALL achievements earned by the user // TODO: Not supported since 1.2.8
 		'new_achievements' => false, // An array of NEW achievements earned by the user
 	);
 	$args = wp_parse_args( $args, $defaults );
 
 	// Use current user's ID if none specified
 	if ( ! $args['user_id'] )
-		$args['user_id'] = wp_get_current_user()->ID;
+		$args['user_id'] = get_current_user_id();
 
-	// Grab our user's achievements
-	$achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $args['user_id'] ), 'site_id' => 'all' ) );
+	// Setup CT object
+	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
-	// If we don't already have an array stored for this site, create a fresh one
-	if ( !isset( $achievements[$args['site_id']] ) )
-		$achievements[$args['site_id']] = array();
+	// Lets to append the new achievements array
+	if ( is_array( $args['new_achievements'] ) && ! empty( $args['new_achievements'] ) ) {
 
-	// Determine if we should be replacing or appending to our achievements array
-	if ( is_array( $args['all_achievements'] ) )
-		$achievements[$args['site_id']] = $args['all_achievements'];
-	elseif ( is_array( $args['new_achievements'] ) && ! empty( $args['new_achievements'] ) )
-		$achievements[$args['site_id']] = array_merge( $achievements[$args['site_id']], $args['new_achievements'] );
+		foreach( $args['new_achievements'] as $new_achievement ) {
+			$ct_table->db->insert( array(
+				'user_id' => absint( $args['user_id'] ),
+				'post_id' => $new_achievement->ID,
+				'post_type' => $new_achievement->post_type,
+				'points' => absint( $new_achievement->points ),
+				'points_type' => $new_achievement->points_type,
+				'date' => date( 'Y-m-d H:i:s', $new_achievement->date_earned )
+			) );
+		}
 
-	// Finally, update our user meta
-	return update_user_meta( absint( $args['user_id'] ), '_gamipress_achievements', $achievements);
+	}
+
+	return true;
 
 }
 
@@ -150,6 +176,7 @@ add_action( 'edit_user_profile', 'gamipress_user_profile_data' );
  * @return mixed			  false if current user can not edit users, void if can
  */
 function gamipress_save_user_profile_fields( $user_id = 0 ) {
+
 	if ( ! current_user_can( 'edit_user', $user_id ) ) {
 		return false;
 	}
@@ -167,6 +194,7 @@ function gamipress_save_user_profile_fields( $user_id = 0 ) {
             gamipress_update_users_points( $user_id, absint( $_POST['user_' . $points_type . '_points'] ), get_current_user_id(), null, $points_type );
         }
     }
+
 }
 add_action( 'personal_options_update', 'gamipress_save_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'gamipress_save_user_profile_fields' );
@@ -216,75 +244,19 @@ function gamipress_profile_user_points( $user = null ) {
  * @return string               concatenated markup
  */
 function gamipress_profile_user_achievements( $user = null ) {
-	$achievement_types = gamipress_get_achievement_types();
-    $achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
-	$achievements = array_reverse( $achievements );
 	?>
 
     <h2><?php _e( 'Earned Achievements', 'gamipress' ); ?></h2>
 
-	<?php // List all of a user's earned achievements
-    if ( $achievements ) : ?>
-
-        <table class="wp-list-table widefat fixed striped gamipress-table">
-
-			<thead>
-				<tr>
-					<th width="60px"><?php _e( 'Image', 'gamipress' ); ?></th>
-					<th><?php _e( 'Name', 'gamipress' ); ?></th>
-					<th><?php _e( 'Date', 'gamipress' ); ?></th>
-					<th><?php _e( 'Action', 'gamipress' ); ?></th>
-				</tr>
-			</thead>
-
-			<tbody>
-				<?php foreach ( $achievements as $achievement ) :
-
-					// Setup our revoke URL
-					$revoke_url = add_query_arg( array(
-						'action'         => 'revoke',
-						'user_id'        => absint( $user->ID ),
-						'achievement_id' => absint( $achievement->ID ),
-					) ); ?>
-
-					<tr>
-						<td>
-							<?php echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) ); ?>
-						</td>
-						<td>
-							<?php if( $achievement->post_type === 'step' || $achievement->post_type === 'points-award' ) : ?>
-								<strong><?php echo get_the_title( $achievement->ID ); ?></strong>
-								<?php echo ( isset( $achievement_types[$achievement->post_type] ) ? '<br>' . $achievement_types[$achievement->post_type]['singular_name'] : '' ); ?>
-
-								<?php // Output parent achievement
-								if( $parent_achievement = gamipress_get_parent_of_achievement( $achievement->ID ) ) : ?>
-									<?php echo ( isset( $achievement_types[$parent_achievement->post_type] ) ? ', ' . $achievement_types[$parent_achievement->post_type]['singular_name'] . ': ' : '' ); ?>
-									<?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
-								<?php elseif( $points_type = gamipress_get_points_award_points_type( $achievement->ID ) ) : ?>
-									<?php echo ', <a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
-								<?php endif; ?>
-							<?php else : ?>
-								<strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
-								<?php echo ( isset( $achievement_types[$achievement->post_type] ) ? '<br>' . $achievement_types[$achievement->post_type]['singular_name'] : '' ); ?>
-							<?php endif; ?>
-						</td>
-						<td>
-							<abbr title="<?php echo date( 'Y/m/d g:i:s a', $achievement->date_earned ); ?>"><?php echo date( 'Y/m/d', $achievement->date_earned ); ?></abbr>
-						</td>
-						<td>
-							<span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
-						</td>
-					</tr>
-
-				<?php endforeach; ?>
-
-			</tbody>
-
-        </table>
-
-	<?php else : ?>
-        <p><?php _e( 'This user has no earned any achievement', 'gamipress' ); ?></p>
-	<?php endif;
+	<?php ct_render_ajax_list_table( 'gamipress_user_earnings',
+		array(
+			'user_id' => absint( $user->ID )
+		),
+		array(
+			'views' => false,
+			'search_box' => false
+		)
+	);
 }
 
 /**
@@ -457,8 +429,10 @@ function gamipress_process_user_data() {
 			// Verify our nonce
 			check_admin_referer( 'gamipress_revoke_achievement' );
 
+			$earning_id = isset( $_GET['user_earning_id'] ) ? absint( $_GET['user_earning_id'] ) : 0 ;
+
 			// Revoke the achievement
-			gamipress_revoke_achievement_from_user( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ) );
+			gamipress_revoke_achievement_from_user( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ), $earning_id );
 
 			// Redirect back to the user editor
 			wp_redirect( add_query_arg( 'user_id', absint( $_GET['user_id'] ), admin_url( 'user-edit.php' ) ) );

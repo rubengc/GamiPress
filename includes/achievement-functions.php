@@ -630,21 +630,33 @@ function gamipress_get_achievement_post_thumbnail( $post_id = 0, $image_size = '
  */
 function gamipress_get_achievement_earners( $achievement_id = 0 ) {
 
-	// Grab our earners
-	$earners = new WP_User_Query( array(
-		'meta_key'     => '_gamipress_achievements',
-		'meta_value'   => $achievement_id,
-		'meta_compare' => 'LIKE'
-	) );
+	global $wpdb;
+
+	// If not properly upgrade to required version fallback to compatibility function
+	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+		return gamipress_get_achievement_earners_old( $achievement_id );
+	}
+
+	// Setup CT object
+	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
+
+	$earners = $wpdb->get_col( "
+		SELECT u.user_id
+		FROM {$ct_table->db->table_name} AS u
+		WHERE u.post_id = {$achievement_id}
+		GROUP BY u.user_id
+	" );
 
 	$earned_users = array();
-	foreach( $earners->results as $earner ) {
-		if ( gamipress_has_user_earned_achievement( $achievement_id, $earner->ID ) ) {
-			$earned_users[] = $earner;
+
+	foreach( $earners as $earner_id ) {
+		if ( gamipress_has_user_earned_achievement( $achievement_id, $earner_id ) ) {
+			$earned_users[] = new WP_User( $earner_id );
 		}
 	}
-	// Send back our query results
+
 	return $earned_users;
+
 }
 
 /**
@@ -866,16 +878,23 @@ function gamipress_update_p2p_achievement_types( $original_type = '', $new_type 
  */
 function gamipress_update_earned_meta_achievement_types( $original_type = '', $new_type = '' ) {
 
-	$metas = gamipress_get_unserialized_achievement_metas( '_gamipress_achievements', $original_type );
-
-	if ( ! empty( $metas ) ) {
-		foreach ( $metas as $meta ) {
-			foreach ( $meta->meta_value as $site_id => $achievements ) {
-				$meta->meta_value[ $site_id ] = gamipress_update_meta_achievement_types( $achievements, $original_type, $new_type );
-			}
-			update_user_meta( $meta->user_id, $meta->meta_key, $meta->meta_value );
-		}
+	// If not properly upgrade to required version fallback to compatibility function
+	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+		gamipress_update_earned_meta_achievement_types_old( $original_type, $new_type );
+		return;
 	}
+
+	// Setup CT object
+	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
+
+	$ct_table->db->update(
+		array(
+			'post_type' => $new_type
+		),
+		array(
+			'post_type' => $original_type
+		)
+	);
 
 }
 
@@ -908,6 +927,7 @@ function gamipress_update_active_meta_achievement_types( $original_type = '', $n
  *
  * @param  string $meta_key      Meta key.
  * @param  string $original_type Achievement type.
+ *
  * @return array                 User achievement metas.
  */
 function gamipress_get_unserialized_achievement_metas( $meta_key = '', $original_type = '' ) {
@@ -1031,22 +1051,22 @@ function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin
 
 	// Alter our log pattern if this was an admin action
 	if ( $admin_id ) {
+		$type = 'achievement_award';
 		$access = 'private';
 
 		$log_meta['pattern'] =  gamipress_get_option( 'achievement_awarded_log_pattern', __( '{admin} awarded {user} with the the {achievement} {achievement_type}', 'gamipress' ) );
-		$log_meta['type'] = 'achievement_award';
 		$log_meta['admin_id'] = $admin_id;
 	} else {
+		$type = 'achievement_earn';
+
         if( $post_type === 'step' || $post_type === 'points-award' ) {
             $log_meta['pattern'] = gamipress_get_option( 'requirement_complete_log_pattern', __( '{user} completed the {achievement_type} {achievement}', 'gamipress' ) );
         } else {
             $log_meta['pattern'] = gamipress_get_option( 'achievement_earned_log_pattern', __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' ) );
         }
-
-		$log_meta['type'] = 'achievement_earn';
 	}
 
 	// Create the log entry
-    gamipress_insert_log( $user_id, $access, $log_meta );
+    gamipress_insert_log( $type, $user_id, $access, $log_meta );
 
 }

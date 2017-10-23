@@ -121,9 +121,20 @@ function gamipress_ajax_reset_data_tool() {
                 ) );
                 break;
             case 'logs':
-                $wpdb->delete( $wpdb->posts, array(
-                    'post_type' => 'gamipress-log'
-                ) );
+
+                if( is_gamipress_upgraded_to( '1.2.8' ) ) {
+                    $ct_table = ct_setup_table( 'gamipress_logs' );
+
+                    // Reset from gamipress_logs table
+                    $wpdb->delete( $ct_table->db->table_name, array(
+                        '1' => 1
+                    ) );
+                } else {
+                    // Reset from old gamipress-log CPT
+                    $wpdb->delete( $wpdb->posts, array(
+                        'post_type' => 'gamipress-log'
+                    ) );
+                }
                 break;
             default:
                 do_action( 'gamipress_reset_data_tool_reset', $item );

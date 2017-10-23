@@ -67,4 +67,105 @@
 		$('.cmb2-id-automatic-updates-plugins').hide();
 	}
 
+	// Auto initialize upgrade if user reload the page during an upgrade
+	if( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').length ) {
+		gamipress_start_upgrade( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').data('running-upgrade') );
+	}
+
 })( jQuery );
+
+var gamipress_current_upgrade_info;
+var gamipress_current_upgrade_progress;
+
+// Start upgrade
+function gamipress_start_upgrade( version ) {
+
+	var $ = $ || jQuery;
+	version = version.replace('.', '').replace('.', '').replace('.', '');
+
+	$('#gamipress-upgrade-notice').html('<p>Upgrading GamiPress database...</p><div class="gamipress-upgrade-progress"><div class="gamipress-upgrade-progress-bar" style="width: 0%;"></div></div>');
+
+	$.ajax({
+		url: ajaxurl,
+		data: {
+			action: 'gamipress_' + version + '_upgrade_info'
+		},
+		success: function( response ) {
+
+			// Upgrade done!
+			if( response.data.upgraded !== undefined && response.data.upgraded ) {
+				$('#gamipress-upgrade-notice').html('<p>Upgrade has been already completed.</p><div class="gamipress-upgrade-progress"><div class="gamipress-upgrade-progress-bar" style="width: 100%;"></div></div>');
+				return;
+			}
+
+			// Update progress vars
+			gamipress_current_upgrade_info = response.data.total;
+			gamipress_current_upgrade_progress = 0;
+
+			gamipress_run_upgrade( version );
+
+		},
+		error: function( response ) {
+			gamipress_stop_upgrade( version );
+			$('#gamipress-upgrade-notice').html('<p class="error">Upgrading process failed.</p>');
+		}
+	});
+
+}
+
+// Run upgrade
+function gamipress_run_upgrade( version ) {
+
+	var $ = $ || jQuery;
+	version = version.replace('.', '').replace('.', '').replace('.', '');
+
+	$.ajax({
+		url: ajaxurl,
+		data: {
+			action: 'gamipress_process_' + version + '_upgrade',
+			current: gamipress_current_upgrade_progress,
+		},
+		success: function( response ) {
+
+			// Upgrade done!
+			if( response.data.upgraded !== undefined && response.data.upgraded ) {
+				$('#gamipress-upgrade-notice').html('<p>Upgrading process finished successfully.</p><div class="gamipress-upgrade-progress"><div class="gamipress-upgrade-progress-bar" style="width: 100%;"></div></div>');
+				return;
+			}
+
+			gamipress_current_upgrade_progress = response.data.current;
+
+			// Upgraded successfully
+			if( gamipress_current_upgrade_progress >= gamipress_current_upgrade_info ) {
+				$('#gamipress-upgrade-notice').html('<p>Upgrading process finished successfully.</p><div class="gamipress-upgrade-progress"><div class="gamipress-upgrade-progress-bar" style="width: 100%;"></div></div>');
+				return;
+			}
+
+			// Update progress bar width
+			$('#gamipress-upgrade-notice .gamipress-upgrade-progress .gamipress-upgrade-progress-bar').attr('style', 'width: ' + ( ( gamipress_current_upgrade_progress / gamipress_current_upgrade_info ) * 100 ) + '%')
+
+			gamipress_run_upgrade( version );
+
+		},
+		error: function( response ) {
+			gamipress_stop_upgrade( version );
+			$('#gamipress-upgrade-notice').html('<p class="error">Upgrading process failed.</p>');
+		}
+	});
+
+}
+
+// Stop upgrade
+function gamipress_stop_upgrade( version ) {
+
+	var $ = $ || jQuery;
+	version = version.replace('.', '').replace('.', '').replace('.', '');
+
+	$.ajax({
+		url: ajaxurl,
+		data: {
+			action: 'gamipress_stop_process_' + version + '_upgrade'
+		}
+	});
+
+}

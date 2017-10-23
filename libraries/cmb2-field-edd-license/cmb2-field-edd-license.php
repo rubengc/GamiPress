@@ -63,8 +63,10 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
          * Enqueue scripts and styles
          */
         public function setup_admin_scripts() {
+            // Script is registered instead of enqueued because it is enqueued on demand
             wp_register_script( 'cmb-edd-license-js', plugins_url( 'assets/js/edd-license.js', __FILE__ ), array( 'jquery' ), self::VERSION, true );
 
+            // CSS needs to be enqueued
             wp_enqueue_style( 'cmb-edd-license-css', plugins_url( 'assets/css/edd-license.css', __FILE__ ), array(), self::VERSION );
         }
 
@@ -182,6 +184,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
          * @param CMB2_Field        $field    This field object
          */
         public function save_field( $field_id, $updated, $action, $field ) {
+
             if( $field->args( 'type' ) !== 'edd_license' ) {
                 return;
             }
@@ -200,6 +203,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
                 $this->api_request( $args['server'], $args['license'], $args, 'activate_license' );
             }
+
         }
 
         /**
@@ -231,7 +235,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
             );
 
             // Set the item ID or name. ID has the highest priority
-            if ( isset( $args['item_id'] ) ) {
+            if ( isset( $args['item_id'] ) && ! empty( $args['item_id'] ) ) {
                 $api_params['item_id'] = urlencode( $args['item_id'] );
             } elseif ( isset( $args['item_name'] ) ) {
                 $api_params['item_name'] = urlencode( $args['item_name'] );

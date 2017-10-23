@@ -1,6 +1,8 @@
 <?php
 /**
  * Logs template
+ *
+ * This template can be overridden by copying it to yourtheme/gamipress/logs.php
  */
 global $gamipress_template_args;
 
@@ -19,8 +21,7 @@ $a = $gamipress_template_args;
      */
     do_action( 'gamipress_before_render_logs_list', $a ); ?>
 
-    <?php while( $a['query']->have_posts() ) :
-        $a['query']->the_post(); ?>
+    <?php foreach( $a['query']->get_results() as $log ) : ?>
 
         <?php
         /**
@@ -29,9 +30,9 @@ $a = $gamipress_template_args;
          * @param $log_id           integer The Log ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_before_render_log', get_the_ID(), $a ); ?>
+        do_action( 'gamipress_before_render_log', $log->log_id, $a ); ?>
 
-        <div id="gamipress-log-<?php the_ID(); ?>" class="gamipress-log"><?php the_title(); ?></div>
+        <div id="gamipress-log-<?php echo $log->log_id; ?>" class="gamipress-log"><?php echo apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id ); ?></div>
 
         <?php
         /**
@@ -40,10 +41,9 @@ $a = $gamipress_template_args;
          * @param $log_id           integer The Log ID
          * @param $template_args    array   Template received arguments
          */
-        do_action( 'gamipress_after_render_log', get_the_ID(), $a ); ?>
+        do_action( 'gamipress_after_render_log', $log->log_id, $a ); ?>
 
-    <?php endwhile;
-    wp_reset_postdata();?>
+    <?php endforeach; ?>
 
     <?php
     /**

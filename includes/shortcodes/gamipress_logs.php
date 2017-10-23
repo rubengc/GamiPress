@@ -37,15 +37,13 @@ function gamipress_register_logs_shortcode() {
                 'description' => __( 'Parameter to use for sorting.', 'gamipress' ),
                 'type'        => 'select',
                 'options'      => array(
-                    'menu_order' => __( 'Menu Order', 'gamipress' ),
-                    'ID'         => __( 'Log ID', 'gamipress' ),
+                    'date'       => __( 'Date', 'gamipress' ),
+                    'log_id'     => __( 'Log ID', 'gamipress' ),
                     'title'      => __( 'Log Title', 'gamipress' ),
-                    'date'       => __( 'Published Date', 'gamipress' ),
-                    'modified'   => __( 'Last Modified Date', 'gamipress' ),
-                    'author'     => __( 'Achievement Author', 'gamipress' ),
+                    'user_id'    => __( 'Log Author', 'gamipress' ),
                     'rand'       => __( 'Random', 'gamipress' ),
                 ),
-                'default'     => 'menu_order',
+                'default_cb'     => 'gamipress_logs_order_by_default_cb',
             ),
             'order' => array(
                 'name'        => __( 'Order', 'gamipress' ),
@@ -84,18 +82,41 @@ add_action( 'init', 'gamipress_register_logs_shortcode' );
  * @return string 	   HTML markup.
  */
 function gamipress_logs_shortcode( $atts = array () ) {
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+        return gamipress_logs_shortcode_old( $atts );
+    }
+
     global $gamipress_template_args;
 
     $gamipress_template_args = array();
 
+    // Setup table
+    ct_setup_table( 'gamipress_logs' );
+
     $atts = shortcode_atts( array(
         'user_id'     => '0',
         'limit'       => '10',
-        'orderby'     => 'menu_order',
+        'orderby'     => 'date',
         'order'       => 'ASC',
         'include'     => '',
         'exclude'     => '',
     ), $atts, 'gamipress_logs' );
+
+    // Turn old orderby values into new ones
+    switch( $atts['orderby'] ) {
+        case 'ID':
+            $atts['orderby'] = 'log_id';
+            break;
+        case 'menu_order':
+        case 'modified':
+            $atts['orderby'] = 'date';
+            break;
+        case 'author':
+            $atts['orderby'] = 'user_id';
+            break;
+    }
 
     gamipress_enqueue_scripts();
 
@@ -104,16 +125,15 @@ function gamipress_logs_shortcode( $atts = array () ) {
 
     // Query Achievements
     $args = array(
-        'post_type'      =>	'gamipress-log',
         'orderby'        =>	$atts['orderby'],
         'order'          =>	$atts['order'],
-        'posts_per_page' =>	$atts['limit'],
-        'post_status'    => 'publish',
+        'items_per_page' =>	$atts['limit'],
+        'access'         => 'public',
     );
 
     // User
-    if( $atts['user_id'] !== '0' ) {
-        $args['author'] = $atts['user_id'];
+    if( absint( $atts['user_id'] ) !== 0 ) {
+        $args['user_id'] = $atts['user_id'];
     }
 
     // Build $include array
@@ -128,15 +148,15 @@ function gamipress_logs_shortcode( $atts = array () ) {
 
     // Include certain achievements
     if ( isset( $include ) && ! empty( $include ) ) {
-        $args[ 'post__in' ] = $include;
+        $args[ 'log__in' ] = $include;
     }
 
     // Exclude certain achievements
     if ( isset( $exclude ) && ! empty( $exclude ) ) {
-        $args[ 'post__not_in' ] = $exclude;
+        $args[ 'log__not_in' ] = $exclude;
     }
 
-    $gamipress_template_args['query'] = new WP_Query( $args );
+    $gamipress_template_args['query'] = new CT_Query( $args );
 
     ob_start();
         gamipress_get_template_part( 'logs' );
@@ -144,4 +164,9 @@ function gamipress_logs_shortcode( $atts = array () ) {
 
     return $output;
 
+}
+
+// CMB2 detects 'default' => 'date' as invalid callback because php has the date() function
+function gamipress_logs_order_by_default_cb() {
+    return 'date';
 }

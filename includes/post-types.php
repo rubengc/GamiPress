@@ -151,37 +151,6 @@ function gamipress_register_post_types() {
 	gamipress_register_achievement_type( 0, 'Step', 'Steps' );
 	gamipress_register_requirement_type( 'Step', 'Steps' );
 
-	// Register Log
-	register_post_type( 'gamipress-log', array(
-		'labels'             => array(
-			'name'               => __( 'Logs', 'gamipress' ),
-			'singular_name'      => __( 'Log', 'gamipress' ),
-			'add_new'            => __( 'Add New', 'gamipress' ),
-			'add_new_item'       => __( 'Add New Log Entry', 'gamipress' ),
-			'edit_item'          => __( 'Edit Log Entry', 'gamipress' ),
-			'new_item'           => __( 'New Log Entry', 'gamipress' ),
-			'all_items'          => __( 'Logs', 'gamipress' ),
-			'view_item'          => __( 'View Logs', 'gamipress' ),
-			'search_items'       => __( 'Search Logs', 'gamipress' ),
-			'not_found'          => __( 'No Log Entries found', 'gamipress' ),
-			'not_found_in_trash' => __( 'No Log Entries found in Trash', 'gamipress' ),
-			'parent_item_colon'  => '',
-			'menu_name'          => __( 'Logs', 'gamipress' )
-		),
-		'public'             => false,
-		'publicly_queryable' => false,
-		'show_ui'            => current_user_can( gamipress_get_manager_capability() ),
-		'show_in_menu'       => 'gamipress',
-		'show_in_nav_menus'  => false,
-		'query_var'          => true,
-		'rewrite'            => array( 'slug' => 'gamipress-log' ),
-		'capability_type'    => 'post',
-		'has_archive'        => false,
-		'hierarchical'       => false,
-		'menu_position'      => null,
-		'supports'           => array( '' )
-	) );
-
 }
 add_action( 'init', 'gamipress_register_post_types' );
 

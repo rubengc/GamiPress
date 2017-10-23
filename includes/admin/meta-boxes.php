@@ -277,33 +277,6 @@ function gamipress_meta_boxes() {
 		array( 'priority' => 'high' )
 	);
 
-	// Log
-	gamipress_add_meta_box(
-		'log-data',
-		__( 'Log Data', 'gamipress' ),
-		'gamipress-log',
-		array(
-			'post_author' => array(
-				'name' 	=> __( 'User', 'gamipress' ),
-				'desc' 	=> __( 'User assigned to this log.', 'gamipress' ),
-				'type' 	=> 'select',
-				'options_cb' => 'gamipress_log_post_author_options'
-			),
-			$prefix . 'type' => array(
-				'name' 	=> __( 'Type', 'gamipress' ),
-				'desc' 	=> __( 'The log type.', 'gamipress' ),
-				'type' 	=> 'select',
-				'options' 	=> gamipress_get_log_types(),
-			),
-			$prefix . 'pattern' => array(
-				'name' 	=> __( 'Pattern', 'gamipress' ),
-				'desc' 	=> __( 'The log output pattern. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html(),
-				'type' 	=> 'text',
-			),
-		),
-		array( 'priority' => 'high' )
-	);
-
 }
 add_action( 'cmb2_admin_init', 'gamipress_meta_boxes' );
 
@@ -354,26 +327,3 @@ add_filter( 'cmb2_override_post_name_meta_value', 'gamipress_cmb2_override_post_
  */
 add_filter( 'cmb2_override_post_title_meta_save', '__return_true' );
 add_filter( 'cmb2_override_post_name_meta_save', '__return_true' );
-
-function gamipress_log_post_author_options( $field ) {
-    global $post;
-
-    $post_author =  get_post_field( 'post_author', $post->ID );
-    $user = get_userdata( $post_author );
-
-    return array( $post_author => $user->display_name . ' (' . $user->user_login . ')' );
-}
-
-
-// WordPress will handle the saving for us, so don't save post author to meta.
-add_filter( 'cmb2_override_post_author_meta_save', '__return_true' );
-
-// Show log title in edit log screen
-function gamipress_admin_log_title_preview( $post ) {
-	if( $post->post_type === 'gamipress-log' ) : ?>
-	<div class="gamipress-log-title-preview">
-		<h1><?php echo get_the_title( $post->ID ); ?></h1>
-	</div>
-	<?php endif;
-}
-add_action( 'edit_form_after_title', 'gamipress_admin_log_title_preview' );

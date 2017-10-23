@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.2.7
+ * Version:         1.2.8
  * Author:          GamiPress
  * Author URI:      https://gamipress.com/
  * Text Domain:     gamipress
@@ -88,6 +88,7 @@ final class GamiPress {
 			self::$instance = new GamiPress();
 			self::$instance->constants();
 			self::$instance->libraries();
+			self::$instance->compatibility();
 			self::$instance->includes();
 			self::$instance->hooks();
 			self::$instance->load_textdomain();
@@ -108,7 +109,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.2.7' );
+		define( 'GAMIPRESS_VER', '1.2.8' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -132,6 +133,7 @@ final class GamiPress {
 
 		// Global libraries
         require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
+		require_once GAMIPRESS_DIR . 'libraries/ct/ct.php';
 
 		// Admin libraries
 		if( is_admin() ) {
@@ -147,9 +149,24 @@ final class GamiPress {
 			require_once GAMIPRESS_DIR . 'libraries/button-field-type.php';
 			require_once GAMIPRESS_DIR . 'libraries/html-field-type.php';
 
+			require_once GAMIPRESS_DIR . 'libraries/ct-ajax-list-table/ct-ajax-list-table.php';
+
 		}
 
     }
+
+	/**
+	 * Include compatibility files
+	 *
+	 * @access      private
+	 * @since       1.2.8
+	 * @return      void
+	 */
+	private function compatibility() {
+
+		require_once GAMIPRESS_DIR . 'includes/compatibility/1.2.8.php';
+
+	}
 
 	/**
 	 * Include plugin files
@@ -161,6 +178,7 @@ final class GamiPress {
 	private function includes() {
 
 		require_once GAMIPRESS_DIR . 'includes/admin.php';
+		require_once GAMIPRESS_DIR . 'includes/custom-tables.php';
 		require_once GAMIPRESS_DIR . 'includes/post-types.php';
 		require_once GAMIPRESS_DIR . 'includes/achievement-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/activity-functions.php';

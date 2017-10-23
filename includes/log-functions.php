@@ -88,23 +88,43 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
 
     global $wpdb;
 
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+        return gamipress_get_user_log_count_old( $user_id, $log_meta );
+    }
+
+    // Setup table
+    $ct_table = ct_setup_table( 'gamipress_logs' );
+
     // Initialize query definitions
     $joins = array();
     $where = array();
 
     // Initialize query args
-    $query_args = array( 'gamipress-log', $user_id );
+    $query_args = array( absint( $user_id ) );
 
     foreach ( (array) $log_meta as $key => $meta ) {
-        $index = count( $joins );
 
-        // Setup query definitions
-        $joins[] = "LEFT JOIN $wpdb->postmeta AS pm{$index} ON ( p.ID = pm{$index}.post_id )";
-        $where[] = "pm{$index}.meta_key = %s AND pm{$index}.meta_value = %s";
+        if( $key === 'type' ) {
 
-        // Setup query vars
-        $query_args[] = '_gamipress_' . sanitize_key( $key );
-        $query_args[] = $meta;
+            // Since 1.2.8 _gamipress_type meta was moved to gamipress_logs DB table
+            $where[] = "p.type = %s";
+            $query_args[] = $meta;
+
+        } else {
+
+            $index = count( $joins );
+
+            // Setup query definitions
+            $joins[] = "LEFT JOIN {$ct_table->meta->db->table_name} AS pm{$index} ON ( p.log_id = pm{$index}.log_id )";
+            $where[] = "pm{$index}.meta_key = %s AND pm{$index}.meta_value = %s";
+
+            // Setup query vars
+            $query_args[] = '_gamipress_' . sanitize_key( $key );
+            $query_args[] = $meta;
+
+        }
+
     }
 
     // Turn arrays into strings
@@ -112,14 +132,11 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
     $where = (  ! empty( $where ) ? '( '. implode( ' ) AND ( ', $where ) . ' ) ' : '' );
 
     $user_triggers = $wpdb->get_var( $wpdb->prepare(
-        "
-        SELECT COUNT(*)
-        FROM   $wpdb->posts AS p
-        {$joins}
-        WHERE p.post_type = %s
-            AND p.post_author = %s
-            AND ( {$where} )
-        ",
+        "SELECT COUNT(*)
+         FROM   {$ct_table->db->table_name} AS p
+         {$joins}
+         WHERE p.user_id = %s
+          AND ( {$where} )",
         $query_args
     ) );
 
@@ -130,36 +147,53 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
  * Posts a log entry when a user unlocks any achievement post
  *
  * @since  1.0.0
+ * @updated  1.2.8 Added $type
  *
+ * @param  string   $type  	    The log type
  * @param  int      $user_id  	The user ID
  * @param  string   $access     Access to this log ( public|private )
  * @param  array    $log_meta   Log meta data
  *
  * @return integer             	The post ID of the newly created log entry
  */
-function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = array() ) {
+function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $log_meta = array() ) {
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+
+        $log_meta['type'] = $type;
+
+        return gamipress_insert_log_old( $user_id, $access, $log_meta );
+    }
+
+    // Setup table
+    ct_setup_table( 'gamipress_logs' );
 
     // Post data
     $log_data = array(
-        'post_type' 	=> 'gamipress-log',
-        'post_status'	=> ( ( $access === 'public' ) ? 'publish' : 'private' ),
-        'post_author'	=> $user_id === 0 ? get_current_user_id() : $user_id,
-        'post_parent'	=> 0,
-        'post_title'	=> '',
-        'post_content'	=> ''
+        'title'	        => '',
+        'description'	=> '',
+        'type' 	        => $type,
+        'access'	    => $access,
+        'user_id'	    => $user_id === 0 ? get_current_user_id() : absint( $user_id ),
+        'date'	        => date( 'Y-m-d H:i:s' ),
     );
 
     // Auto-generated post title
-    $log_data['post_title'] = gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
+    $log_data['title'] = gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
 
     // Store log entry
-    $log_id = wp_insert_post( $log_data );
+    $log_id = ct_insert_object( $log_data );
 
     // Store log meta data
     if ( $log_id && ! empty( $log_meta ) ) {
+
         foreach ( (array) $log_meta as $key => $meta ) {
-            update_post_meta( $log_id, '_gamipress_' . sanitize_key( $key ), $meta );
+
+            ct_update_object_meta( $log_id, '_gamipress_' . sanitize_key( $key ), $meta );
+
         }
+
     }
 
     // Hook to add custom data
@@ -181,13 +215,28 @@ function gamipress_insert_log( $user_id = 0, $access = 'public', $log_meta = arr
  * @return integer             	  The post ID of the newly created log entry
  */
 function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $log_meta = array()) {
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+
+        if( isset( $log_data['user_id'] ) ) {
+            $log_data['post_author'] = $log_data['user_id'];
+        }
+
+        if( isset( $log_data['type'] ) ) {
+            $log_meta['type'] = $log_data['type'];
+        }
+
+        return gamipress_parse_log_pattern_old( $log_pattern, $log_data, $log_meta );
+    }
+
     global $gamipress_pattern_replacements;
 
-    $post_author = get_userdata( $log_data['post_author'] );
+    $user = get_userdata( $log_data['user_id'] );
 
     // Setup user pattern replacements
-    $gamipress_pattern_replacements['{user_id}'] = $post_author->ID;
-    $gamipress_pattern_replacements['{user}'] = ( is_admin() ? $post_author->display_name . ' (' . $post_author->user_login . ')' : $post_author->display_name );
+    $gamipress_pattern_replacements['{user_id}'] = $user->ID;
+    $gamipress_pattern_replacements['{user}'] = $user->display_name;
 
     // TODO: Add more user tags
 
@@ -202,6 +251,7 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
     do_action( 'gamipress_before_parse_log_pattern', $log_data, $log_meta );
 
     return str_replace( array_keys( $gamipress_pattern_replacements ), $gamipress_pattern_replacements, $log_pattern );
+
 }
 
 /**
@@ -215,6 +265,21 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
  * @param   array   $log_meta     Log meta data
  */
 function gamipress_parse_achievement_log_pattern( $log_data, $log_meta ) {
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+
+        if( isset( $log_data['user_id'] ) ) {
+            $log_data['post_author'] = $log_data['user_id'];
+        }
+
+        if( isset( $log_data['type'] ) ) {
+            $log_meta['type'] = $log_data['type'];
+        }
+
+        gamipress_parse_achievement_log_pattern_old( $log_data, $log_meta );
+        return;
+    }
 
     // If log has assigned an achievement, then add achievement pattern replacements
     if( isset( $log_meta['achievement_id'] ) ) {
@@ -231,6 +296,13 @@ function gamipress_parse_achievement_log_pattern( $log_data, $log_meta ) {
 
         // {achievement_type} tag
         $gamipress_pattern_replacements['{achievement_type}'] = $achievement_type;
+
+        if( $log_data['type'] === 'achievement_award' ) {
+            $admin = get_userdata( $log_meta['admin_id'] );
+
+            // {admin_username} tag
+            $gamipress_pattern_replacements['{admin}'] = $admin->display_name;
+        }
     }
 
 }
@@ -248,8 +320,23 @@ add_action( 'gamipress_before_parse_log_pattern', 'gamipress_parse_achievement_l
  */
 function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
 
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+
+        if( isset( $log_data['user_id'] ) ) {
+            $log_data['post_author'] = $log_data['user_id'];
+        }
+
+        if( isset( $log_data['type'] ) ) {
+            $log_meta['type'] = $log_data['type'];
+        }
+
+        gamipress_parse_points_log_pattern_old( $log_data, $log_meta );
+        return;
+    }
+
     // If log is a points based entry, then add points pattern replacements
-    if( $log_meta['type'] === 'points_award' || $log_meta['type'] === 'points_earn' ) {
+    if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_earn' ) {
         global $gamipress_pattern_replacements;
 
         $points_type = $log_meta['points_type'];
@@ -267,11 +354,11 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
         // {points_type} tag
         $gamipress_pattern_replacements['{points_type}'] = $points_label;
 
-        if( $log_meta['type'] === 'points_award' ) {
+        if( $log_data['type'] === 'points_award' ) {
             $admin = get_userdata( $log_meta['admin_id'] );
 
             // {admin_username} tag
-            $gamipress_pattern_replacements['{admin}'] = ( is_admin() ? $admin->display_name . ' (' . $admin->user_login . ')' : $admin->display_name );
+            $gamipress_pattern_replacements['{admin}'] = $admin->display_name;
         }
     }
 
@@ -283,22 +370,24 @@ add_action( 'gamipress_before_parse_log_pattern', 'gamipress_parse_points_log_pa
  *
  * @since  1.0.0
  *
- * @param  array $data      Post data.
- * @param  array $post_args Post args.
+ * @param  array $object_data           An array with new object data.
+ * @param  array $original_object_data  An array with the original object data.
  * @return array            Updated post data.
  */
-function gamipress_maybe_apply_log_pattern( $data = array(), $post_args = array() ) {
+function gamipress_maybe_apply_log_pattern( $object_data = array(), $original_object_data = array() ) {
+
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-        return $data;
+        return $object_data;
     }
 
-    if ( $post_args['ID'] !== 0 && $post_args['post_type'] === 'gamipress-log' ) {
-        $data['post_title'] = gamipress_get_parsed_log( $post_args['ID'] );
+    if ( $original_object_data['log_id'] !== 0 ) {
+        $object_data['title'] = gamipress_get_parsed_log( $original_object_data['log_id'] );
     }
 
-    return $data;
+    return $object_data;
+
 }
-add_filter( 'wp_insert_post_data' , 'gamipress_maybe_apply_log_pattern' , 99, 2 );
+add_filter( 'ct_insert_object_data' , 'gamipress_maybe_apply_log_pattern' , 99, 2 );
 
 
 /**
@@ -307,78 +396,80 @@ add_filter( 'wp_insert_post_data' , 'gamipress_maybe_apply_log_pattern' , 99, 2 
  * @since  1.0.0
  *
  * @param  integer $log_id The log's ID.
+ *
  * @return string          Parsed log pattern.
  */
 function gamipress_get_parsed_log( $log_id = null ) {
 
-    $prefix = '_gamipress_';
-
     if( $log_id === null ) {
-        $log_id = get_the_ID();
+        return '';
     }
 
-    $log_data = get_post( $log_id, ARRAY_A );
+    $prefix = '_gamipress_';
+
+    // Setup table
+    ct_setup_table( 'gamipress_logs' );
+
+    $log_data = ct_get_object( $log_id, ARRAY_A );
 
     if( ! $log_data ) {
         return '';
     }
 
-    if( $log_data['post_type'] !== 'gamipress-log' ) {
-        return '';
-    }
-
     $log_meta = array(
-        'pattern' => get_post_meta( $log_id, $prefix . 'pattern', true ),
-        'type' => get_post_meta( $log_id, $prefix . 'type', true )
+        'pattern' => ct_get_object_meta( $log_id, $prefix . 'pattern', true ),
     );
 
-    $log_meta = apply_filters( 'gamipress_get_log_meta_data', $log_meta, $log_id );
+    $log_meta = apply_filters( 'gamipress_get_log_meta_data', $log_meta, $log_id, $log_data );
 
     return gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
 
 }
 
 /**
- * Get log meta data defaults from a log's post ID
+ * Get log meta data defaults from a log's object ID
  *
  * @param $log_meta
  * @param $log_id
+ * @param $log_data
  *
  * @return mixed
  */
-function gamipress_get_log_meta_data_defaults( $log_meta, $log_id ) {
+function gamipress_get_log_meta_data_defaults( $log_meta, $log_id, $log_data ) {
+
     $prefix = '_gamipress_';
 
     $meta_keys = array();
 
-    if( $log_meta['type'] === 'event_trigger' ) {
+    if( $log_data['type'] === 'event_trigger' ) {
         // Event trigger meta data
         $meta_keys[] = 'trigger_type';
         $meta_keys[] = 'count';
-    } else if( $log_meta['type'] === 'achievement_earn' ||  $log_meta['type'] === 'achievement_award' ) {
+    } else if( $log_data['type'] === 'achievement_earn' || $log_data['type'] === 'achievement_award' ) {
         // Achievement earn meta data
         $meta_keys[] = 'achievement_id';
 
-        if( $log_meta['type'] === 'achievement_award' ) {
+        if( $log_data['type'] === 'achievement_award' ) {
             // Specific achievement award meta data
             $meta_keys[] = 'admin_id';
         }
-    } else if( $log_meta['type'] === 'points_award' || $log_meta['type'] === 'points_earn' ) {
+    } else if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_earn' ) {
         // Points earn/award meta data
         $meta_keys[] = 'points';
         $meta_keys[] = 'points_type';
         $meta_keys[] = 'total_points';
 
-        if( $log_meta['type'] === 'points_award' ) {
+        if( $log_data['type'] === 'points_award' ) {
             // Specific points award meta data
             $meta_keys[] = 'admin_id';
         }
     }
 
     foreach( $meta_keys as $meta_key ) {
-        $log_meta[$meta_key] =  get_post_meta( $log_id, $prefix . $meta_key, true );
+        $log_meta[$meta_key] =  ct_get_object_meta( $log_id, $prefix . $meta_key, true );
     }
 
     return $log_meta;
+
 }
-add_filter( 'gamipress_get_log_meta_data', 'gamipress_get_log_meta_data_defaults', 10, 2 );
+add_filter( 'gamipress_get_log_meta_data', 'gamipress_get_log_meta_data_defaults', 10, 3 );

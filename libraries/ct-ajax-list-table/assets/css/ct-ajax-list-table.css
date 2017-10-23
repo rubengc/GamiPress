@@ -1,0 +1,19 @@
+.ct-ajax-list-table .wp-list-table {
+    position: relative;
+}
+
+.ct-ajax-list-table-loader {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    background-color: rgba(255,255,255,0.5) !important;
+}
+
+.ct-ajax-list-table-loader .spinner {
+    float: none;
+    position: absolute;
+    top: 50%;
+}
