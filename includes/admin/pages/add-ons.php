@@ -281,7 +281,7 @@ function gamipress_plugins_api() {
         return $res;
     }
 
-    $url = $http_url = 'http://gamipress.com/edd-api/products/';
+    $url = $http_url = 'http://gamipress.com/edd-api/products/?number=999';
 
     if ( $ssl = wp_http_supports( array( 'ssl' ) ) ) {
         $url = set_url_scheme( $url, 'https' );

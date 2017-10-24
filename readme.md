@@ -163,6 +163,15 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.2.9 ###
+
+* New activity trigger added when an user post gets visited to award content authors.
+* Fixed activation error for missing includes.
+* Fixed wrong form tag on user profile.
+* Fixed undefined index log id warning.
+* Added extra checks to upgrades to meet if it should be applied or not on new installs.
+* Improved add-ons api request.
+
 ### 1.2.8 ###
 
 * Performance update: Logs moved to a custom database table.

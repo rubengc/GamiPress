@@ -22,9 +22,19 @@ function gamipress_128_upgrades( $stored_version ) {
         return $stored_version;
     }
 
-    // Not upgrade until finish migrations
-    if( is_gamipress_upgrade_completed( 'migrate_user_earnings' ) && is_gamipress_upgrade_completed( 'migrate_logs' ) ) {
+    // Check if there is something to migrate
+    $upgrade_size = gamipress_128_upgrade_size();
+
+    if( $upgrade_size === 0 ) {
+
+        // There is nothing to update, so upgrade
         $stored_version = '1.2.8';
+
+    } else if( is_gamipress_upgrade_completed( 'migrate_user_earnings' ) && is_gamipress_upgrade_completed( 'migrate_logs' ) ) {
+
+        // Migrations are finished, so upgrade
+        $stored_version = '1.2.8';
+
     }
 
     return $stored_version;
@@ -89,12 +99,12 @@ function gamipress_128_upgrades_notices() {
 }
 add_action( 'admin_notices', 'gamipress_128_upgrades_notices' );
 
-function gamipress_ajax_128_upgrade_info() {
-
-    // Already upgraded
-    if ( is_gamipress_upgraded_to( '1.2.8' ) ) {
-        wp_send_json_success( array( 'upgraded' => true ) );
-    }
+/**
+ * Return the number of entries to upgrade
+ *
+ * @return int
+ */
+function gamipress_128_upgrade_size() {
 
     global $wpdb;
 
@@ -133,6 +143,22 @@ function gamipress_ajax_128_upgrade_info() {
         $upgrade_size += absint( $logs_count );
 
     }
+
+    return $upgrade_size;
+
+}
+
+/**
+ * Ajax function to meet the upgrade size
+ */
+function gamipress_ajax_128_upgrade_info() {
+
+    // Already upgraded
+    if ( is_gamipress_upgraded_to( '1.2.8' ) ) {
+        wp_send_json_success( array( 'upgraded' => true ) );
+    }
+
+    $upgrade_size = gamipress_128_upgrade_size();
 
     wp_send_json_success( array( 'total' => $upgrade_size ) );
 }

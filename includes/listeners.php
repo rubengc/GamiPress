@@ -21,7 +21,9 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return void
  */
 function gamipress_login_listener( $user_login, $user ) {
+
     do_action( 'gamipress_login', $user->ID, $user );
+
 }
 add_action( 'wp_login', 'gamipress_login_listener', 10, 2 );
 
@@ -39,6 +41,7 @@ add_action( 'wp_login', 'gamipress_login_listener', 10, 2 );
  * @return void
  */
 function gamipress_transition_post_status_listener( $new_status, $old_status, $post ) {
+
     // Statuses to check the old status
     $old_statuses = apply_filters( 'gamipress_publish_listener_old_status', array( 'new', 'auto-draft', 'draft', 'private', 'pending', 'future' ), $post->ID );
 
@@ -47,9 +50,11 @@ function gamipress_transition_post_status_listener( $new_status, $old_status, $p
 
     // Check if post status transition come to publish
     if ( in_array( $old_status, $old_statuses ) && in_array( $new_status, $new_statuses ) ) {
+
         // Trigger content publishing actions
         do_action( "gamipress_publish_{$post->post_type}", $post->ID, $post->post_author, $post );
     }
+
 }
 add_action( 'transition_post_status', 'gamipress_transition_post_status_listener', 10, 3 );
 
@@ -66,6 +71,7 @@ add_action( 'transition_post_status', 'gamipress_transition_post_status_listener
  * @return void
  */
 function gamipress_approved_comment_listener( $comment_ID, $comment ) {
+
     // Enforce array for both hooks (wp_insert_comment uses object, comment_{status}_comment uses array)
     if ( is_object( $comment ) ) {
         $comment = get_object_vars( $comment );
@@ -94,6 +100,7 @@ add_action( 'wp_insert_comment', 'gamipress_approved_comment_listener', 10, 2 );
  * @return void
  */
 function gamipress_site_visit_listener() {
+
     // Bail if is an ajax request
     if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
         return;
@@ -121,17 +128,59 @@ function gamipress_site_visit_listener() {
         do_action( 'gamipress_site_visit', $user_id );
     }
 
-    // Post daily visit
     global $post;
 
     if( $post ) {
 
+        // Post daily visit
         $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
 
         // Trigger specific daily visit action if not triggered today
         if( $count === 0 ) {
             do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
         }
+
     }
 }
 add_action( 'wp_head', 'gamipress_site_visit_listener' );
+
+/**
+ * Listener for user post visits
+ *
+ * Triggers: gamipress_user_post_visit, gamipress_user_specific_post_visit
+ *
+ * @since  1.2.9
+ *
+ * @return void
+ */
+function gamipress_user_post_visit_listener() {
+
+    // Bail if is an ajax request
+    if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
+        return;
+    }
+
+    // Bail if is admin area
+    if( is_admin() ) {
+        return;
+    }
+
+    // Current User ID
+    $user_id = get_current_user_id();
+
+    global $post;
+
+    if( $post ) {
+
+        $post_author = absint( $post->post_author );
+
+        // Trigger user post visit action to the author if visitor not is the author
+        if( $post_author && $post_author !== $user_id ) {
+            do_action( 'gamipress_user_post_visit', $post->ID, $post_author, $user_id, $post );
+            do_action( 'gamipress_user_specific_post_visit', $post->ID, $post_author, $user_id, $post );
+        }
+
+    }
+
+}
+add_action( 'wp_head', 'gamipress_user_post_visit_listener' );

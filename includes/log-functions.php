@@ -380,7 +380,7 @@ function gamipress_maybe_apply_log_pattern( $object_data = array(), $original_ob
         return $object_data;
     }
 
-    if ( $original_object_data['log_id'] !== 0 ) {
+    if ( isset( $original_object_data['log_id'] ) && $original_object_data['log_id'] !== 0 ) {
         $object_data['title'] = gamipress_get_parsed_log( $original_object_data['log_id'] );
     }
 

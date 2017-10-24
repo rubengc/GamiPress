@@ -53,7 +53,7 @@ function ct_render_ajax_list_table( $object, $query_args = array(), $view_args =
             }
             ?>
 
-            <form id="ct-list-filter" method="get">
+            <?php // <form id="ct-list-filter" method="get"> ?>
 
                 <?php
                 if( $view_args['search_box'] ) {
@@ -61,9 +61,35 @@ function ct_render_ajax_list_table( $object, $query_args = array(), $view_args =
                 }
                 ?>
 
-                <?php $ct_list_table->display(); ?>
+                <?php // display_tablenav() renders a hidden nonce field, something that causes errors on edit screen forms ?>
+                <?php //$ct_list_table->display(); ?>
 
-            </form>
+                <table class="wp-list-table <?php echo implode( ' ', $ct_list_table->get_table_classes() ); ?>">
+                    <thead>
+                    <tr>
+                        <?php $ct_list_table->print_column_headers(); ?>
+                    </tr>
+                    </thead>
+
+                    <?php $singular = $ct_list_table->_args['singular']; ?>
+                    <tbody id="the-list"<?php
+                    if ( $singular ) {
+                        echo " data-wp-lists='list:$singular'";
+                    } ?>>
+                    <?php $ct_list_table->display_rows_or_placeholder(); ?>
+                    </tbody>
+
+                    <tfoot>
+                    <tr>
+                        <?php $ct_list_table->print_column_headers( false ); ?>
+                    </tr>
+                    </tfoot>
+
+                </table>
+
+
+
+            <?php // </form> ?>
 
             <div id="ajax-response"></div>
             <br class="clear" />
