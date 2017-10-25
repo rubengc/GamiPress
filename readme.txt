@@ -1,6 +1,6 @@
 ﻿=== GamiPress ===
 Contributors: gamipress, tsunoa, rubengc, eneribs
-Tags: gamipress, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax
+Tags: gamipress, gamification, gamify, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax, leaderboard, leaderboards, notification, notifications, progress
 Requires at least: 4.0
 Tested up to: 4.9
 Stable tag: 1.2.9
@@ -90,6 +90,9 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 = Powerful add-ons to extend GamiPress =
 
+* [Notifications](https://gamipress.com/add-ons/gamipress-notifications/) - Instantly notify of achievements, steps and/or points awards completion to your users.
+* [Progress Maps](https://gamipress.com/add-ons/gamipress-progress-maps/) - Add interactive achievements progress maps to your site.
+* [Progress](https://gamipress.com/add-ons/gamipress-progress/) - Attractively show to your users their progress of completion of any achievement.
 * [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/) - Add leaderboards to intensify the gamification of your site.
 * [Social Share](https://gamipress.com/add-ons/gamipress-social-share/) - Award your users for sharing your website content on social networks.
 * [Easy Digital Downloads Discounts](https://gamipress.com/add-ons/gamipress-edd-discounts/) - Award discounts for achievement completion on Easy Digital Downloads.
