@@ -166,90 +166,15 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
-### 1.2.9 ###
+### 1.3.0 ###
 
-* New activity trigger added when an user post gets visited to award content authors.
-* Fixed activation error for missing includes.
-* Fixed wrong form tag on user profile.
-* Fixed undefined index log id warning.
-* Added extra checks to upgrades to meet if it should be applied or not on new installs.
-* Improved add-ons api request.
-
-### 1.2.8 ###
-
-* Performance update: Logs moved to a custom database table.
-* Performance update: User earnings moved to a custom database table.
-* Updated [gamipress_logs] orderby with the new options (with backward compatibility).
-* Improvements on log pattern parser.
-* Fixed priority issue with wpautop and gamipress_reformat_entries.
-* Fixed an issue with add-ons license checks.
-* Improvements on [gamipress_points] and [gamipress_points_types] type detection.
-* Improvements on activity count functions.
-* Fixed wrong user check on [gamipress_points].
-* Fixed wrong license add-on check.
-* User earnings ajax pagination on edit user screen.
-* Completely rewrite all functions related to logs and user earnings to keep backward compatibility.
-* Added logs-old.php template for [gamipress_logs] when database has not been upgraded yet.
-* Updated tools to support new database changes.
-* Completely reworked plugin upgrades to work with large upgrades.
-
-### 1.2.7 ###
-
-* Fixed wrong points awards maximum earnings check.
-* Fixed wrong missed points/achievement type on debug mode.
-* Fixed some typos.
-* Improvements on points awards/step save functions.
-* Improvements on upgrade functions.
-
-### 1.2.6 ###
-
-* Added tabs on [gamipress_achievements] shortcode embedder form.
-* Added tabs on GamiPress: Achievements widget.
-* Improvements on [gamipress_achievements] shortcode.
-* Avoid warnings for older WordPress versions on log title generation.
-* Added stronger checks on log title generation.
-* Improvements on logs template.
-* Improvements on admin style forms.
-
-### 1.2.5 ###
-
-* Improvements on [gamipress_points] shortcode.
-* Improvements on [gamipress_achievements] shortcode load more ajax functionality.
-* Added RGBa ColorPicker as default library.
-
-### 1.2.4 ###
-
-* Added the "columns" parameter to the [gamipress_achievements] shorcode.
-* Added the "columns" option to the GamiPress: Achievements widget.
-* Activity count query now compare dates inclusive.
-* Improvements on activity count query to determine specific activities and retrieve the attached object ID.
-* Improvements on frontend templates.
-* Improvements on admin stylesheets.
-
-### 1.2.3 ###
-
-* Improvements on achievement earned detection.
-* Improvements on activity count, now engine check logs from the step/points award creation date.
-* Fixed wrong parameter on points types template.
-* Added more parameters to template hooks.
-
-### 1.2.2 ###
-
-* New feature: Now is possible to set a maximum earnings to each points awards (or unlimited).
-* Improvement: Turn quantity fields to number instead of text on requirements UI.
-* Improvements on frontend assets enqueue.
-* Improvements on admin area stylesheets.
-
-### 1.2.1 ###
-
-* Fixed wrong requirement period limit check.
-* Improvements on query to determine if an activity trigger has a listener.
-* Fixed wrong bar check on licensing library.
-
-### 1.2.0 ###
-
-* Improvement: Just show multisite fields if install is multisite.
-* Improvements on admin area stylesheets.
-* Removed backward compatibility for [gamipress_achievement] parameters show_filter and show_search.
+* New feature: Emails.
+* Added email on achievement earned.
+* Added email on step completed.
+* Added email on points award completed.
+* Added the parameter current_user to [gamipress_achievements], [gamipress_points] and [gamipress_logs] shortcodes.
+* Added the field "Current User" to GamiPress: Achievements, GamiPress: Points and GamiPress: Logs widgets.
+* Improvements on points awards/steps achievement unlock labels.
+* Improvements on admin area styles.
 * Reset public changelog (moved old changelog to changelog.txt file).
-* No more bugs found, so, time to release this version as stable release! :)
+* Set GamiPress 1.3.0 as new stable release! :)

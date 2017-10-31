@@ -28,10 +28,24 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 	$fields = apply_filters( "gamipress_{$hook_id}_fields", $fields );
 
 	foreach( $fields as $field_id => $field ) {
+
 		$fields[$field_id]['id'] = $field_id;
+
+		// Support for group fields
+		if( isset( $field['fields'] ) && is_array( $field['fields'] ) ) {
+
+			foreach( $field['fields'] as $group_field_id => $group_field ) {
+
+				$fields[$field_id]['fields'][$group_field_id]['id'] = $group_field_id;
+
+			}
+
+		}
+
 	}
 
 	$args = wp_parse_args( $args, array(
+		'vertical_tabs' => false,
 		'tabs'      	=> array(),
 		'context'      	=> 'normal',
 		'priority'     	=> 'default',
@@ -47,6 +61,7 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 		'title'        	=> $title,
 		'object_types' 	=> ! is_array( $object_types) ? array( $object_types ) : $object_types,
 		'tabs'      	=> $args['tabs'],
+		'vertical_tabs' => $args['vertical_tabs'],
 		'context'      	=> $args['context'],
 		'priority'     	=> $args['priority'],
 		'classes'		=> 'gamipress-form gamipress-box-form',

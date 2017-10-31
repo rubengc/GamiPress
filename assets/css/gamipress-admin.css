@@ -120,6 +120,28 @@
 	padding: 1em 0;
 }
 
+.gamipress-box-form .cmb-repeatable-group .cmb-th h2 {
+	font-weight: 600;
+}
+
+.gamipress-box-form .cmb-row.cmb-repeat .cmb2-metabox-description {
+	font-weight: normal;
+	color: #aaaaaa;
+	padding-left: 12px;
+}
+
+.gamipress-box-form  .cmb-repeatable-group .postbox {
+	border-radius: 0;
+}
+
+.gamipress-box-form  .cmb-repeatable-group .cmb-group-title {
+	background-color: #fafafa;
+}
+
+.gamipress-box-form  .cmb-repeatable-group .postbox:not(.closed) .cmb-group-title {
+	border-bottom: 1px solid #e9e9e9;
+}
+
 @media only screen and (min-width: 850px) {
 
 	#postbox-container-1 #side-sortables .gamipress-box-form .cmb-th label {

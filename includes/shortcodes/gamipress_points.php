@@ -38,6 +38,12 @@ function gamipress_register_points_shortcode() {
                 'options'     => $points_types,
                 'default'     => 'all',
             ),
+            'current_user' => array(
+                'name'        => __( 'Current User', 'gamipress' ),
+                'description' => __( 'Show only points earned by the current logged in user.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+            ),
             'user_id' => array(
                 'name'        => __( 'User ID', 'gamipress' ),
                 'description' => __( 'Show only points earned by a specific user. Leave blank to show points of logged in user.', 'gamipress' ),
@@ -72,9 +78,10 @@ function gamipress_points_shortcode( $atts = array () ) {
 
     $atts = shortcode_atts( array(
         // Points atts
-        'type'        => 'all',
-        'user_id'     => '0',
-        'wpms'        => 'no',
+        'type'          => 'all',
+        'current_user'  => 'no',
+        'user_id'       => '0',
+        'wpms'          => 'no',
     ), $atts, 'gamipress_points' );
 
     gamipress_enqueue_scripts();
@@ -87,6 +94,11 @@ function gamipress_points_shortcode( $atts = array () ) {
         $types = gamipress_get_points_types_slugs();
     } else if ( count( $types ) === 1 ) {
         $is_single_type = true;
+    }
+
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' ) {
+        $atts['user_id'] = get_current_user_id();
     }
 
     // Get the current user if one wasn't specified

@@ -19,6 +19,12 @@ function gamipress_register_logs_shortcode() {
         'description'     => __( 'Output a list of logs.', 'gamipress' ),
         'output_callback' => 'gamipress_logs_shortcode',
         'fields'      => array(
+            'current_user' => array(
+                'name'        => __( 'Current User', 'gamipress' ),
+                'description' => __( 'Show only logs of the current logged in user.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+            ),
             'user_id' => array(
                 'name'        => __( 'User ID', 'gamipress' ),
                 'description' => __( 'Show only logs by a specific user. Leave blank to show logs of all users.', 'gamipress' ),
@@ -96,12 +102,13 @@ function gamipress_logs_shortcode( $atts = array () ) {
     ct_setup_table( 'gamipress_logs' );
 
     $atts = shortcode_atts( array(
-        'user_id'     => '0',
-        'limit'       => '10',
-        'orderby'     => 'date',
-        'order'       => 'ASC',
-        'include'     => '',
-        'exclude'     => '',
+        'current_user'  => 'no',
+        'user_id'       => '0',
+        'limit'         => '10',
+        'orderby'       => 'date',
+        'order'         => 'ASC',
+        'include'       => '',
+        'exclude'       => '',
     ), $atts, 'gamipress_logs' );
 
     // Turn old orderby values into new ones
@@ -130,6 +137,11 @@ function gamipress_logs_shortcode( $atts = array () ) {
         'items_per_page' =>	$atts['limit'],
         'access'         => 'public',
     );
+
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' ) {
+        $atts['user_id'] = get_current_user_id();
+    }
 
     // User
     if( absint( $atts['user_id'] ) !== 0 ) {

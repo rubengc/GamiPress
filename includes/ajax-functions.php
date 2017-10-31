@@ -22,6 +22,7 @@ function gamipress_ajax_get_achievements() {
 	$offset     = isset( $_REQUEST['offset'] )     ? $_REQUEST['offset']     : false;
 	$filter     = isset( $_REQUEST['filter'] )     ? $_REQUEST['filter']     : false;
 	$search     = isset( $_REQUEST['search'] )     ? $_REQUEST['search']     : false;
+	$current_user    = isset( $_REQUEST['current_user'] )    ? $_REQUEST['current_user']    : false;
 	$user_id    = isset( $_REQUEST['user_id'] )    ? $_REQUEST['user_id']    : false;
 	$orderby    = isset( $_REQUEST['orderby'] )    ? $_REQUEST['orderby']    : false;
 	$order      = isset( $_REQUEST['order'] )      ? $_REQUEST['order']      : false;
@@ -31,9 +32,15 @@ function gamipress_ajax_get_achievements() {
 	$meta_key   = isset( $_REQUEST['meta_key'] )   ? $_REQUEST['meta_key']   : '';
 	$meta_value = isset( $_REQUEST['meta_value'] ) ? $_REQUEST['meta_value'] : '';
 
-	// Get the current user if one wasn't specified
-	if( ! $user_id )
+	// Force to set current user as user ID
+	if( $current_user ) {
 		$user_id = get_current_user_id();
+	}
+
+	// Get the current user if one wasn't specified
+	if( ! $user_id ) {
+		$user_id = get_current_user_id();
+	}
 
 	// Setup template vars
 	$template_args = array(
@@ -41,7 +48,7 @@ function gamipress_ajax_get_achievements() {
 		'excerpt'	=> isset( $_REQUEST['excerpt'] ) ? $_REQUEST['excerpt'] : 'yes',
 		'steps'	    => isset( $_REQUEST['steps'] ) ? $_REQUEST['steps'] : 'yes',
 		'earners'	=> isset( $_REQUEST['earners'] ) ? $_REQUEST['earners'] : 'no',
-		'user_id' 	=> $user_id,
+		'user_id' 	=> $user_id, // User ID on achievement is used to meet to which user apply earned checks
 	);
 
 	// Convert $type to properly support multiple achievement types
@@ -305,29 +312,44 @@ add_action( 'wp_ajax_gamipress_get_achievements_options', 'gamipress_ajax_get_ac
  *
  * @since   1.0.0
  * @updated 1.0.5
+ * @updated 1.3.0
  */
 function gamipress_achievement_post_ajax_handler() {
 
+	$selected = '';
+
     // Grab our achievement type from the AJAX request
-    $requirement_type = $_REQUEST['requirement_type'];
+    $requirement_type = isset( $_REQUEST['requirement_type'] ) ? $_REQUEST['requirement_type'] : false;
 
-    if( ! in_array( $requirement_type, gamipress_get_requirement_types_slugs() ) ) {
-        die();
+    if( $requirement_type ) {
+		if( ! in_array( $requirement_type, gamipress_get_requirement_types_slugs() ) ) {
+			die();
+		}
+
+		if( $requirement_type === 'step' ) {
+			$requirements = gamipress_get_step_requirements( $_REQUEST['step_id'] );
+		} else {
+			$requirements = gamipress_get_points_award_requirements( $_REQUEST['points_award_id'] );
+		}
+
+		$selected = isset( $requirements['achievement_post'] ) ? $requirements['achievement_post'] : '';
     }
 
-    $achievement_type = $_REQUEST['achievement_type'];
-    $exclude_posts = (array) $_REQUEST['excluded_posts'];
-
-    if( $requirement_type === 'step' ) {
-        $requirements = gamipress_get_step_requirements( $_REQUEST['step_id'] );
-    } else {
-        $requirements = gamipress_get_points_award_requirements( $_REQUEST['points_award_id'] );
-    }
+	$achievement_type = $_REQUEST['achievement_type'];
+	$exclude_posts = isset( $_REQUEST['excluded_posts'] ) ? (array) $_REQUEST['excluded_posts'] : array();
 
     // If we don't have an achievement type, bail now
     if ( empty( $achievement_type ) ) {
         die();
     }
+
+	$achievement_types = gamipress_get_achievement_types();
+
+	if( ! isset( $achievement_types[$achievement_type] ) ) {
+		return;
+	}
+
+	$singular_name = ! empty( $achievement_types[$achievement_type]['singular_name'] ) ? $achievement_types[$achievement_type]['singular_name'] : __( 'Achievement', 'gamipress' );
 
     // Grab all our posts for this achievement type
     $achievements = get_posts( array(
@@ -339,9 +361,9 @@ function gamipress_achievement_post_ajax_handler() {
     ));
 
     // Setup our output
-    $output = '<option value="">' . __( 'Choose an achievement', 'gamipress') . '</option>';
+    $output = '<option value="">' . sprintf( __( 'Choose the %s', 'gamipress' ), $singular_name ) . '</option>';
     foreach ( $achievements as $achievement ) {
-        $output .= '<option value="' . $achievement->ID . '" ' . selected( $requirements['achievement_post'], $achievement->ID, false ) . '>' . $achievement->post_title . '</option>';
+        $output .= '<option value="' . $achievement->ID . '" ' . selected( $selected, $achievement->ID, false ) . '>' . $achievement->post_title . '</option>';
     }
 
     // Send back our results and die like a man

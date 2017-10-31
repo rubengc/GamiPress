@@ -64,10 +64,6 @@ if ( 'all' === $a['type'] ) {
                     <option value="all"><?php echo sprintf( __( 'All %s', 'gamipress' ), $post_type_plural ); ?></option>
                     <option value="completed"><?php echo sprintf( __( 'Completed %s', 'gamipress' ), $post_type_plural ); ?></option>
                     <option value="not-completed"><?php echo sprintf( __( 'Not Completed %s', 'gamipress' ), $post_type_plural ); ?></option>
-                    <?php
-                    // TODO: if points is true "Achievements by Points" option
-                    // TODO: if dev adds a custom taxonomy to this post type then load all of the terms to filter by or add a new filter by this taxonomy
-                    ?>
                 </select>
 
             </div>
@@ -103,10 +99,14 @@ if ( 'all' === $a['type'] ) {
     <?php // Content Container ?>
     <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo $a['columns']; ?>"></div>
 
-    <?php // Hidden fields and Load More button ?>
+    <?php // Hidden fields ?>
     <input type="hidden" id="gamipress_achievements_offset" value="0">
     <input type="hidden" id="gamipress_achievements_count" value="0">
+
+    <?php // Load More button ?>
     <button type="button" id="achievements_list_load_more" class="gamipress-load-more-button" style="display:none;"><?php echo __( 'Load More', 'gamipress' ); ?></button>
+
+    <?php // Loading spinner ?>
     <div class="gamipress-spinner"></div>
 
     <?php

@@ -57,6 +57,7 @@ function gamipress_register_achievements_shortcode() {
 					'limit',
 					'orderby',
 					'order',
+					'current_user',
 					'user_id',
 					'include',
 					'exclude',
@@ -129,6 +130,12 @@ function gamipress_register_achievements_shortcode() {
 				'options'      => array( 'ASC' => __( 'Ascending', 'gamipress' ), 'DESC' => __( 'Descending', 'gamipress' ) ),
 				'default'     => 'ASC',
 			),
+			'current_user' => array(
+				'name'        => __( 'Current User', 'gamipress' ),
+				'description' => __( 'Show only achievements earned by the current logged in user.', 'gamipress' ),
+				'type' 		  => 'checkbox',
+				'classes' 	  => 'gamipress-switch',
+			),
 			'user_id' => array(
 				'name'        => __( 'User ID', 'gamipress' ),
 				'description' => __( 'Show only achievements earned by a specific user.', 'gamipress' ),
@@ -185,6 +192,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'columns'       => '1',
 		'filter' 	  	=> 'yes',
 		'search' 	  	=> 'yes',
+		'current_user'  => 'no',
 		'user_id'     	=> '0',
 		'wpms'        	=> 'no',
 		'orderby'     	=> 'menu_order',
@@ -209,6 +217,11 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 
 	if ( 'all' !== $atts['type'] && count( $types ) === 1 ) {
 		$is_single_type = true;
+	}
+
+	// Force to set current user as user ID
+	if( $atts['current_user'] === 'yes' ) {
+		$atts['user_id'] = get_current_user_id();
 	}
 
 	// GamiPress template args global

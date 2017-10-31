@@ -8,7 +8,7 @@
  * Plugin URI: https://github.com/rubengc/cmb2-tabs
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-tabs
  * Description: Tabs for CMB2 boxes.
- * Version: 1.0.1
+ * Version: 1.0.2
  * Author: Ruben Garcia
  * Author URI: http://rubengc.com/
  * License: GPLv2+
@@ -27,7 +27,7 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
         /**
          * Current version number
          */
-        const VERSION = '1.0.1';
+        const VERSION = '1.0.2';
 
         /**
          * Initialize the plugin by hooking into CMB2

@@ -51,23 +51,108 @@
 
 	$('.gamipress-form input#post_name').trigger( 'keyup' );
 
-	$('.gamipress_settings #automatic_updates').change( function() {
-		var target = $('.cmb2-id-automatic-updates-plugins');
+	// GamiPress Settings
+	if( $('.gamipress_settings').length ) {
 
-		if( target.length ) {
+		// Send test email click
+		$('#achievement-earned-email-send, #step-completed-email-send, #points-award-completed-email-send').click(function(e) {
+			e.preventDefault();
+
+			var $this = $(this);
+
+			$this.prop( 'disabled', true );
+
+			$this.parent().append('<span class="spinner is-active" style="float:none;"></span>');
+
+			$.ajax({
+				url: $this.attr('href'),
+				method: 'get',
+				success: function( response ) {
+					$this.prop( 'disabled', false );
+					$this.parent().find('.spinner').remove();
+					$this.parent().append('<span class="send-response" ' + ( ! response.success ? 'style="color: #a00;' : '' ) + '">' + response.data + '</span>');
+
+					setTimeout(function() {
+						$this.parent().find('.send-response').remove();
+					}, 3000);
+				},
+				error: function( response ) {
+					$this.prop( 'disabled', false );
+					$this.parent().find('.spinner').remove();
+					$this.parent().append('<span class="send-response" style="color: #a00;">' + response.data + '</span>');
+
+					setTimeout(function() {
+						$this.parent().find('.send-response').remove();
+					}, 3000);
+				}
+
+			});
+		});
+
+		// Disable achievement earned email
+		$('#disable_achievement_earned_email').change( function() {
+			var target = $('.cmb2-id-achievement-earned-email-subject, .cmb2-id-achievement-earned-email-content');
+
 			if( $(this).prop('checked') ) {
-				target.slideDown();
-			} else {
 				target.slideUp();
+			} else {
+				target.slideDown();
 			}
-		}
-	} );
+		} );
 
-	if( ! $('.gamipress_settings #automatic_updates').prop('checked') ) {
-		$('.cmb2-id-automatic-updates-plugins').hide();
+		if( $('#disable_achievement_earned_email').prop('checked') ) {
+			$('.cmb2-id-achievement-earned-email-subject, .cmb2-id-achievement-earned-email-content').hide();
+		}
+
+		// Disable step completed email
+		$('#disable_step_completed_email').change( function() {
+			var target = $('.cmb2-id-step-completed-email-subject, .cmb2-id-step-completed-email-content');
+
+			if( $(this).prop('checked') ) {
+				target.slideUp();
+			} else {
+				target.slideDown();
+			}
+		} );
+
+		if( $('#disable_step_completed_email').prop('checked') ) {
+			$('.cmb2-id-step-completed-email-subject, .cmb2-id-step-completed-email-content').hide();
+		}
+
+		// Disable points awards completed email
+		$('#disable_points_award_completed_email').change( function() {
+			var target = $('.cmb2-id-points-award-completed-email-subject, .cmb2-id-points-award-completed-email-content');
+
+			if( $(this).prop('checked') ) {
+				target.slideUp();
+			} else {
+				target.slideDown();
+			}
+		} );
+
+		if( $('#disable_points_award_completed_email').prop('checked') ) {
+			$('.cmb2-id-points-award-completed-email-subject, .cmb2-id-points-award-completed-email-content').hide();
+		}
+
+		// Automatic updates
+		$('#automatic_updates').change( function() {
+			var target = $('.cmb2-id-automatic-updates-plugins');
+
+			if( target.length ) {
+				if( $(this).prop('checked') ) {
+					target.slideDown();
+				} else {
+					target.slideUp();
+				}
+			}
+		} );
+
+		if( ! $('#automatic_updates').prop('checked') ) {
+			$('.cmb2-id-automatic-updates-plugins').hide();
+		}
 	}
 
-	// Auto initialize upgrade if user reload the page during an upgrade
+	// Auto initialize upgrade if user reloads the page during an upgrade
 	if( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').length ) {
 		gamipress_start_upgrade( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').data('running-upgrade') );
 	}

@@ -27,6 +27,7 @@ class GamiPress_Logs_Widget extends GamiPress_Widget {
             'order'     => $instance['order'],
             'limit'     => $instance['limit'],
             'orderby'   => $instance['orderby'],
+            'current_user'   => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
             'user_id'   => $instance['user_id'],
             'include'   => is_array( $instance['include'] ) ? implode( ',', $instance['include'] ) : $instance['include'],
             'exclude'   => is_array( $instance['exclude'] ) ? implode( ',', $instance['exclude'] ) : $instance['exclude'],

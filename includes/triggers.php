@@ -34,9 +34,9 @@ function gamipress_get_activity_triggers() {
 			),
 			// GamiPress
 			__( 'GamiPress', 'gamipress' ) => array(
-				'specific-achievement' 					=> __( 'Specific Achievement of Type', 'gamipress' ),
-				'any-achievement'      					=> __( 'Any Achievement of Type', 'gamipress' ),
-				'all-achievements'     					=> __( 'All Achievements of Type', 'gamipress' ),
+				'specific-achievement' 					=> __( 'Unlock a specific achievement of type', 'gamipress' ),
+				'any-achievement'      					=> __( 'Unlock any achievement of type', 'gamipress' ),
+				'all-achievements'     					=> __( 'Unlock all Achievements of type', 'gamipress' ),
 			),
 		)
 	);

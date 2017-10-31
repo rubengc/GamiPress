@@ -16,6 +16,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return array The registered logs types
  */
 function gamipress_get_log_types() {
+
     return apply_filters( 'gamipress_logs_types', array(
         'event_trigger' => __( 'Event Trigger', 'gamipress' ),
         'achievement_earn' => __( 'Achievement Earn', 'gamipress' ),
@@ -23,6 +24,7 @@ function gamipress_get_log_types() {
         'points_earn' => __( 'Points Earn', 'gamipress' ),
         'points_award' => __( 'Points Award', 'gamipress' ),
     ) );
+
 }
 
 /**
@@ -56,6 +58,7 @@ function gamipress_get_log_pattern_tags() {
  * @return string Log pattern tags html markup
  */
 function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
+
     $output = '<ul class="gamipress-log-pattern-tags-list">';
 
     foreach( gamipress_get_log_pattern_tags() as $tag => $description ) {
@@ -72,6 +75,7 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
     $output .= '</ul>';
 
     return $output;
+
 }
 
 /**

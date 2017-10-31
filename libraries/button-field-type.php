@@ -72,7 +72,24 @@ function cmb2_render_multi_buttons( $field, $value, $object_id, $object_type, $f
             'id'      => $button_id,
         ) );
 
-        echo sprintf( '<button type="button" %s>%s</button>',
+        $button_pattern = '<button type="button" %s>%s</button>';
+
+        if( isset( $button['type'] ) && $button['type'] === 'link' ) {
+
+            $href = 'javascript:void(0);';
+
+            if( isset( $button['link'] ) ) {
+                $href = $button['link'];
+            }
+
+            if( isset( $button['target'] ) ) {
+                $attrs['target'] = $button['target'];
+            }
+
+            $button_pattern = '<a href="' . $href . '" %s>%s</a>';
+        }
+
+        echo sprintf( $button_pattern,
             $field_type->concat_attrs( $attrs ),
             ( isset( $button['label'] ) && ! empty( $button['label'] ) ? $button['label'] : '' )
         );

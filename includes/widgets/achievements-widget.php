@@ -44,6 +44,7 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
             'limit'     => $instance['limit'],
             'orderby'   => $instance['orderby'],
             'order'     => $instance['order'],
+            'current_user'   => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
             'user_id'   => $instance['user_id'],
             'include'   => is_array( $instance['include'] ) ? implode( ',', $instance['include'] ) : $instance['include'],
             'exclude'   => is_array( $instance['exclude'] ) ? implode( ',', $instance['exclude'] ) : $instance['exclude'],

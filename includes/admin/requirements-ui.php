@@ -133,7 +133,9 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
     ?>
 
     <li class="requirement-row requirement-<?php echo $requirement_id; ?>" data-requirement-id="<?php echo $requirement_id; ?>">
+
         <div class="requirement-handle"></div>
+
         <a class="delete-requirement" href="javascript: gamipress_delete_requirement( <?php echo $requirement_id; ?> );">
             <span class="dashicons dashicons-no-alt"></span>
         </a>

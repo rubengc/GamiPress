@@ -93,6 +93,17 @@ function gamipress_register_settings_page() {
 
                         $field['id'] = $field_id;
 
+                        // Support for group fields
+                        if( isset( $field['fields'] ) && is_array( $field['fields'] ) ) {
+
+                            foreach( $field['fields'] as $group_field_id => $group_field ) {
+
+                                $field['fields'][$group_field_id]['id'] = $group_field_id;
+
+                            }
+
+                        }
+
                         $meta_box['fields'][$field_id] = $field;
 
                     }
@@ -162,6 +173,10 @@ function gamipress_get_settings_sections() {
         'style' => array(
             'title' => __( 'Style', 'gamipress' ),
             'icon' => 'dashicons-admin-appearance',
+        ),
+        'email' => array(
+            'title' => __( 'Emails', 'gamipress' ),
+            'icon' => 'dashicons-email-alt',
         ),
         'logs' => array(
             'title' => __( 'Logs', 'gamipress' ),
@@ -293,6 +308,199 @@ function gamipress_settings_style_meta_boxes( $meta_boxes ) {
 
 }
 add_filter( 'gamipress_settings_style_meta_boxes', 'gamipress_settings_style_meta_boxes' );
+
+/**
+ * Email Settings meta boxes
+ *
+ * @since  1.3.0
+ *
+ * @param array $meta_boxes
+ *
+ * @return array
+ */
+function gamipress_settings_email_meta_boxes( $meta_boxes ) {
+
+    $meta_boxes['email-settings'] = array(
+        'title' => __( 'Emails Settings', 'gamipress' ),
+        'fields' => apply_filters( 'gamipress_email_settings_fields', array(
+            'email_template' => array(
+                'name' => __( 'Template', 'gamipress' ),
+                'desc' => __( 'The email template to be used.', 'gamipress' ),
+                'type' => 'select',
+                'options' => gamipress_get_email_templates(),
+            ),
+            'email_logo' => array(
+                'name' => __( 'Email Logo', 'gamipress' ),
+                'desc' => __( 'Upload, choose or paste the URL of the logo to be displayed at the top of the emails (not displayed in plain text template).', 'gamipress' ),
+                'type' => 'file',
+            ),
+            'email_from_name' => array(
+                'name' => __( 'From Name', 'gamipress' ),
+                'desc' => __( 'Name to display as sender.', 'gamipress' ),
+                'type' => 'text',
+                'default' => get_bloginfo( 'name' ),
+            ),
+            'email_from_address' => array(
+                'name' => __( 'From Address', 'gamipress' ),
+                'desc' => __( 'This email address will be used as the "from" and "reply-to" address.', 'gamipress' ),
+                'type' => 'text',
+                'default' => get_bloginfo( 'admin_email' ),
+            ),
+            'email_footer_text' => array(
+                'name' => __( 'Footer Text', 'gamipress' ),
+                'desc' => __( 'Text to be shown at email footer.', 'gamipress' ),
+                'type' => 'textarea',
+                'default' => sprintf( __( '%s - Powered by GamiPress', 'gamipress' ), '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>' ),
+            ),
+        ) )
+    );
+
+    $meta_boxes['achievement-earned-email-settings'] = array(
+        'title' => __( 'Achievement Earned Email Settings', 'gamipress' ),
+        'fields' => apply_filters( 'gamipress_achievement_earned_email_settings_fields', array(
+            'achievement_earned_email_actions' => array(
+                'type' => 'multi_buttons',
+                'buttons' => array(
+                    'achievement-earned-email-preview' => array(
+                        'label' => __( 'Preview Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=preview_achievement_earned_email' ),
+                        'target' => '_blank',
+                    ),
+                    'achievement-earned-email-send' => array(
+                        'label' => __( 'Send Test Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=send_test_achievement_earned_email' ),
+                        'target' => '_blank',
+                    )
+                ),
+            ),
+            'disable_achievement_earned_email' => array(
+                'name' => __( 'Disable achievement earned email sending', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users for the new achievements earned.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'achievement_earned_email_subject' => array(
+                'name' => __( 'Subject', 'gamipress' ),
+                'desc' => __( 'Enter the subject line for the achievement earned email.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( '[{site_title}] {user_first}, you unlocked the {achievement_type} {achievement_title}', 'gamipress' ),
+            ),
+            'achievement_earned_email_content' => array(
+                'name' => __( 'Content', 'gamipress' ),
+                'desc' => __( 'Available tags:', 'gamipress' )
+                        . gamipress_get_email_pattern_tags_html( 'achievement_earned' ),
+                'type' => 'wysiwyg',
+                'default' =>
+                    '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+                    . '{achievement_image}' . "\n"
+                    . __( 'You unlocked the {achievement_type} {achievement_title} by completing the next steps:', 'gamipress' ) . "\n"
+                    . '{achievement_steps}' . "\n\n"
+                    . __( 'Best regards', 'gamipress' ),
+            ),
+        ) )
+    );
+
+    $meta_boxes['step-completed-email-settings'] = array(
+        'title' => __( 'Step Completed Email Settings', 'gamipress' ),
+        'fields' => apply_filters( 'gamipress_step_completed_email_settings_fields', array(
+            'step_completed_email_actions' => array(
+                'type' => 'multi_buttons',
+                'buttons' => array(
+                    'step-completed-email-preview' => array(
+                        'label' => __( 'Preview Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=preview_step_completed_email' ),
+                        'target' => '_blank',
+                    ),
+                    'step-completed-email-send' => array(
+                        'label' => __( 'Send Test Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=send_test_step_completed_email' ),
+                        'target' => '_blank',
+                    )
+                ),
+            ),
+            'disable_step_completed_email' => array(
+                'name' => __( 'Disable step completed email sending', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users for the new steps completed.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'step_completed_email_subject' => array(
+                'name' => __( 'Subject', 'gamipress' ),
+                'desc' => __( 'Enter the subject line for the step completed email.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( '[{site_title}] {user_first}, you complete a step of the {achievement_type} {achievement_title}', 'gamipress' ),
+            ),
+            'step_completed_email_content' => array(
+                'name' => __( 'Content', 'gamipress' ),
+                'desc' => __( 'Available tags:', 'gamipress' )
+                    . gamipress_get_email_pattern_tags_html( 'step_completed' ),
+                'type' => 'wysiwyg',
+                'default' =>
+                    '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+                    . '{achievement_image}' . "\n"
+                    . __( 'You completed the step "{label}" of the {achievement_type} {achievement_title}!', 'gamipress' ) . "\n\n"
+                    . __( 'You need to complete the next steps to completely unlock this {achievement_type}:', 'gamipress' ) . "\n"
+                    . '{achievement_steps}' . "\n\n"
+                    . __( 'Best regards', 'gamipress' ),
+            ),
+        ) )
+    );
+
+    $meta_boxes['points-award-completed-email-settings'] = array(
+        'title' => __( 'Points Award Completed Email Settings', 'gamipress' ),
+        'fields' => apply_filters( 'gamipress_points_award_completed_email_settings_fields', array(
+            'points_award_completed_email_actions' => array(
+                'type' => 'multi_buttons',
+                'buttons' => array(
+                    'points-award-completed-email-preview' => array(
+                        'label' => __( 'Preview Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=preview_points_award_completed_email' ),
+                        'target' => '_blank',
+                    ),
+                    'points-award-completed-email-send' => array(
+                        'label' => __( 'Send Test Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=send_test_points_award_completed_email' ),
+                        'target' => '_blank',
+                    )
+                ),
+            ),
+            'disable_points_award_completed_email' => array(
+                'name' => __( 'Disable points award completed email sending', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users for the new points award completed.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'points_award_completed_email_subject' => array(
+                'name' => __( 'Subject', 'gamipress' ),
+                'desc' => __( 'Enter the subject line for the points award completed email.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( '[{site_title}] {user_first}, you got {points} {points_type}', 'gamipress' ),
+            ),
+            'points_award_completed_email_content' => array(
+                'name' => __( 'Content', 'gamipress' ),
+                'desc' => __( 'Available tags:', 'gamipress' )
+                    . gamipress_get_email_pattern_tags_html( 'points_award_completed' ),
+                'type' => 'wysiwyg',
+                'default' =>
+                    '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+                    . __( 'You got {points} {points_type} for completing "{label}".', 'gamipress' ) . "\n"
+                    . __( 'Your new {points_type} balance is:', 'gamipress' ) . "\n"
+                    . '{points_balance}' . "\n\n"
+                    . __( 'Best regards', 'gamipress' ),
+            ),
+        ) )
+    );
+
+    return $meta_boxes;
+
+}
+add_filter( 'gamipress_settings_email_meta_boxes', 'gamipress_settings_email_meta_boxes' );
 
 /**
  * Logs Settings meta boxes

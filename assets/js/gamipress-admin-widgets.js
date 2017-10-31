@@ -83,11 +83,30 @@
     $( 'select[id^="widget-gamipress_achievements"][id$="[type]"]:not(.select2-hidden-accessible), select[id^="widget-gamipress_points_types"][id$="[type]"]:not(.select2-hidden-accessible), select[id^="widget-gamipress_points"][id$="[type]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_achievement_types );
     $( 'select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
 
+    $( 'input[id^="widget-gamipress"][id$="[current_user]"]').change(function() {
+        var target = $(this).closest('.cmb-row').next(); // User ID field
+
+        if( $(this).prop('checked') ) {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    });
+
     // Initialize on widgets area
     $(document).on('widget-updated widget-added', function(e, widget) {
         widget.find( 'select[id^="widget-gamipress"][id$="[id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_post_defaults );
         widget.find( 'select[id^="widget-gamipress"][id$="[include]"]:not(.select2-hidden-accessible), select[id^="widget-gamipress"][id$="[exclude]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_post_multiples );
         widget.find( 'select[id^="widget-gamipress_achievements"][id$="[type]"]:not(.select2-hidden-accessible), select[id^="widget-gamipress_points_types"][id$="[type]"]:not(.select2-hidden-accessible), select[id^="widget-gamipress_points"][id$="[type]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_achievement_types );
         widget.find( 'select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
+
+        var current_user = widget.find( 'input[id^="widget-gamipress"][id$="[current_user]"]');
+        var target = current_user.closest('.cmb-row').next(); // User ID field
+
+        if( current_user.prop('checked') ) {
+            target.hide().addClass('cmb2-tab-ignore');
+        } else {
+            target.show().removeClass('cmb2-tab-ignore');
+        }
     });
 })(jQuery);

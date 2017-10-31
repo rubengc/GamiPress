@@ -165,6 +165,16 @@
         multiple: false
     });
 
+    $( '#gamipress_achievements_current_user, #gamipress_points_current_user, #gamipress_logs_current_user').change(function() {
+        var target = $(this).closest('.cmb-row').next(); // User ID field
+
+        if( $(this).prop('checked') ) {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    });
+
     // Setup ThickBox when "Add GamiPress Shortcode" link is clicked
     $('body').on( 'click', '#insert_gamipress_shortcodes', function(e) {
         e.preventDefault();
