@@ -166,6 +166,10 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.0.1 ###
+
+* Fixed issue with email tags parser.
+
 ### 1.3.0 ###
 
 * New feature: Emails.

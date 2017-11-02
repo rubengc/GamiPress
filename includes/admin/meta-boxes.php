@@ -53,7 +53,9 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 
 	// Parse tabs
 	foreach( $args['tabs'] as $tab_id => $tab ) {
+
 		$args['tabs'][$tab_id]['id'] = $tab_id;
+
 	}
 
 	new_cmb2_box( array(

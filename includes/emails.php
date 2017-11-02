@@ -414,6 +414,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
         '{user_first}'          =>  $user->first_name,
         '{user_last}'           =>  $user->last_name,
         '{site_title}'          =>  get_bloginfo( 'name' ),
+        '{site_link}'           =>  '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>',
     );
 
     $img_placeholder_style = "
@@ -717,7 +718,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
         $gamipress_email_template_args = array(
             'user_id' => $user_id,
-            'achievement_id' => $achievement_id,
+            'step_id' => $achievement_id,
             'type' => 'step_completed',
         );
 
@@ -735,7 +736,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
         $gamipress_email_template_args = array(
             'user_id' => $user_id,
-            'achievement_id' => $achievement_id,
+            'points_award_id' => $achievement_id,
             'type' => 'points_award_completed',
         );
 

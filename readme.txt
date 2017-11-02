@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, points, achievement, achievements, badge, badges, award, awards, reward, rewards, credit, credits, engagement, ajax, leaderboard, leaderboards, notification, notifications, progress
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.3.0
+Stable tag: 1.3.0.1
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -163,6 +163,10 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 
 == Changelog ==
+
+= 1.3.0.1 =
+
+* Fixed issue with email tags parser.
 
 = 1.3.0 =
 

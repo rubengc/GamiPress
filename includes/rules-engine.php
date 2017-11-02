@@ -309,7 +309,7 @@ function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 )
 			// Assume the user hasn't earned this achievement
 			$found_achievement = false;
 
-			// Loop through each eacrned achivement and see if we've earned it
+			// Loop through each earned achievement and see if we've earned it
 			foreach ( $earned_achievements as $earned_achievement ) {
 				if ( $earned_achievement->ID == $achievement->ID ) {
 					$found_achievement = true;
