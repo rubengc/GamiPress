@@ -23,6 +23,8 @@ function gamipress_get_log_types() {
         'achievement_award' => __( 'Achievement Award', 'gamipress' ),
         'points_earn' => __( 'Points Earn', 'gamipress' ),
         'points_award' => __( 'Points Award', 'gamipress' ),
+        'rank_earn' => __( 'Rank Earn', 'gamipress' ),
+        'rank_award' => __( 'Rank Award', 'gamipress' ),
     ) );
 
 }
@@ -45,6 +47,8 @@ function gamipress_get_log_pattern_tags() {
         '{points}'              =>  __(  'Points user has earned.', 'gamipress' ),
         '{points_type}'         =>  __(  'Type of the points earned.', 'gamipress' ),
         '{total_points}'        =>  __(  'Points user has earned until this log.', 'gamipress' ),
+        '{rank}'                =>  __(  'Rank user has ranked.', 'gamipress' ),
+        '{rank_type}'           =>  __(  'Rank type user has ranked.', 'gamipress' ),
     ) );
 }
 
@@ -368,6 +372,39 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
 
 }
 add_action( 'gamipress_before_parse_log_pattern', 'gamipress_parse_points_log_pattern', 10, 2 );
+
+/**
+ * Log pattern replacements for rank earn/award
+ *
+ * @since  1.3.1
+ *
+ * @uses    global  $gamipress_pattern_replacements
+ *
+ * @param   array   $log_data     Log post data
+ * @param   array   $log_meta     Log meta data
+ */
+function gamipress_parse_rank_log_pattern( $log_data, $log_meta ) {
+
+    // If log is a points based entry, then add points pattern replacements
+    if( $log_data['type'] === 'rank_award' || $log_data['type'] === 'rank_earn' ) {
+        global $gamipress_pattern_replacements;
+
+        $rank = get_post( $log_meta['rank_id'] );
+
+        // {rank} and {tank_type} tags
+        $gamipress_pattern_replacements['{rank}'] = $rank ? $rank->post_title : '';
+        $gamipress_pattern_replacements['{rank_type}'] = $rank ? gamipress_get_rank_type_singular( $rank->post_type ) : '';
+
+        if( $log_data['type'] === 'rank_award' ) {
+            $admin = get_userdata( $log_meta['admin_id'] );
+
+            // {admin_username} tag
+            $gamipress_pattern_replacements['{admin}'] = $admin->display_name;
+        }
+    }
+
+}
+add_action( 'gamipress_before_parse_log_pattern', 'gamipress_parse_rank_log_pattern', 10, 2 );
 
 /**
  * Update the post title of a log entry.

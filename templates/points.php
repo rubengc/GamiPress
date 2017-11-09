@@ -19,7 +19,7 @@ $points_types[''] = array(
 );
 ?>
 
-<div class="gamipress-user-points">
+<div class="gamipress-user-points gamipress-columns-<?php echo $a['columns']; ?>">
 
     <?php
     /**
@@ -43,7 +43,7 @@ $points_types[''] = array(
          */
         do_action( 'gamipress_before_render_points', $points_type, $count, $points_types, $a ); ?>
 
-        <div class="gamipress-user-points-<?php echo $points_type; ?>">
+        <div class="gamipress-points gamipress-user-points-<?php echo $points_type; ?>">
 
             <span class="gamipress-user-points-count"><?php echo $count; ?></span>
             <span class="gamipress-user-points-label"><?php echo $points_types[$points_type]['plural_name']; ?></span>

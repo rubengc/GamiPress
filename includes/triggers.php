@@ -15,6 +15,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return array Array of all activity triggers
  */
 function gamipress_get_activity_triggers() {
+
 	GamiPress()->activity_triggers = apply_filters( 'gamipress_activity_triggers',
 		array(
 			// WordPress
@@ -34,14 +35,17 @@ function gamipress_get_activity_triggers() {
 			),
 			// GamiPress
 			__( 'GamiPress', 'gamipress' ) => array(
-				'specific-achievement' 					=> __( 'Unlock a specific achievement of type', 'gamipress' ),
+				'specific-achievement' 					=> __( 'Unlock a specific achievement', 'gamipress' ),
 				'any-achievement'      					=> __( 'Unlock any achievement of type', 'gamipress' ),
 				'all-achievements'     					=> __( 'Unlock all Achievements of type', 'gamipress' ),
+				'earn-points' 							=> __( 'Earn an amount of points', 'gamipress' ),
+				'earn-rank' 							=> __( 'Reach a rank', 'gamipress' ),
 			),
 		)
 	);
 
 	return GamiPress()->activity_triggers;
+
 }
 
 /**
@@ -64,19 +68,26 @@ function gamipress_get_specific_activity_triggers() {
  * Helper function for returning an activity trigger label
  *
  * @since  1.0.0
+ *
  * @param string $activity_trigger
+ *
  * @return string
  */
 function gamipress_get_activity_trigger_label( $activity_trigger ) {
+
 	$activity_triggers = gamipress_get_activity_triggers();
 
 	foreach( $activity_triggers as $group => $group_triggers ) {
+
 		if( isset( $group_triggers[$activity_trigger] ) ) {
+
 			return $group_triggers[$activity_trigger];
 		}
+
 	}
 
 	return '';
+
 }
 
 /**
@@ -499,13 +510,13 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 				"
 				SELECT COUNT(*)
 				FROM   {$ct_table->db->table_name} AS l
-				LEFT JOIN {$ct_table->meta->db->table_name} AS lm1
+				INNER JOIN {$ct_table->meta->db->table_name} AS lm1
 				ON ( l.log_id = lm1.log_id )
-				LEFT JOIN {$ct_table->meta->db->table_name} AS lm2
+				INNER JOIN {$ct_table->meta->db->table_name} AS lm2
 				ON ( l.log_id = lm2.log_id )
 				WHERE l.user_id = %d
-					AND CAST( l.date AS DATE ) {$date}
 					AND l.type = %s
+					AND CAST( l.date AS DATE ) {$date}
 					AND (
 						( lm1.meta_key = %s AND lm1.meta_value = %s )
 						AND ( lm2.meta_key = %s AND lm2.meta_value = %s )
@@ -525,11 +536,11 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 			"
 			SELECT COUNT(*)
 			FROM   {$ct_table->db->table_name} AS l
-			LEFT JOIN {$ct_table->meta->db->table_name} AS lm
+			INNER JOIN {$ct_table->meta->db->table_name} AS lm
 			ON ( l.log_id = lm.log_id )
 			WHERE l.user_id = %d
-				AND CAST( l.date AS DATE ) {$date}
 				AND l.type = %s
+				AND CAST( l.date AS DATE ) {$date}
 				AND (
 					lm.meta_key = %s AND lm.meta_value = %s
 				)

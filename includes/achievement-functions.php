@@ -11,7 +11,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Check if post is a registered GamiPress achievement.
  *
- * @since  1.3.0
+ * @since  1.0.0
  *
  * @param  object|int $post Post object or ID.
  * @return bool             True if post is an achievement, otherwise false.
@@ -31,6 +31,37 @@ function gamipress_is_achievement( $post = null ) {
 }
 
 /**
+ * Get GamiPress Achievement Types
+ *
+ * Returns a multidimensional array of slug, single name and plural name for all achievement types.
+ *
+ * @since  1.0.0
+ * @return array An array of our registered achievement types
+ */
+function gamipress_get_achievement_types() {
+	return GamiPress()->achievement_types;
+}
+
+/**
+ * Get GamiPress Achievement Type Slugs
+ *
+ * @since  1.0.0
+ * @return array An array of all our registered achievement type slugs (empty array if none)
+ */
+function gamipress_get_achievement_types_slugs() {
+	// Assume we have no registered achievement types
+	$achievement_type_slugs = array();
+
+	// If we do have any achievement types, loop through each and add their slug to our array
+	foreach ( GamiPress()->achievement_types as $slug => $data ) {
+		$achievement_type_slugs[] = $slug;
+	}
+
+	// Finally, return our data
+	return $achievement_type_slugs;
+}
+
+/**
  * Get an array of achievements
  *
  * @since  1.0.0
@@ -43,8 +74,9 @@ function gamipress_get_achievements( $args = array() ) {
 	$defaults = array(
 		'post_type'                => gamipress_get_achievement_types_slugs(),
 		'suppress_filters'         => false,
-		'achievement_relationsihp' => 'any',
+		'achievement_relationship' => 'any',
 	);
+
 	$args = wp_parse_args( $args, $defaults );
 
 	// Hook join functions for joining to P2P table to retrieve the parent of an achievement
@@ -150,37 +182,6 @@ function gamipress_get_achievements_parents_where( $where = '', $query_object = 
 }
 
 /**
- * Get GamiPress Achievement Types
- *
- * Returns a multidimensional array of slug, single name and plural name for all achievement types.
- *
- * @since  1.0.0
- * @return array An array of our registered achievement types
- */
-function gamipress_get_achievement_types() {
-	return GamiPress()->achievement_types;
-}
-
-/**
- * Get GamiPress Achievement Type Slugs
- *
- * @since  1.0.0
- * @return array An array of all our registered achievement type slugs (empty array if none)
- */
-function gamipress_get_achievement_types_slugs() {
-	// Assume we have no registered achievement types
-	$achievement_type_slugs = array();
-
-	// If we do have any achievement types, loop through each and add their slug to our array
-	foreach ( GamiPress()->achievement_types as $slug => $data ) {
-		$achievement_type_slugs[] = $slug;
-	}
-
-	// Finally, return our data
-	return $achievement_type_slugs;
-}
-
-/**
  * Get an achievement's parent posts
  *
  * @since  1.0.0
@@ -258,12 +259,12 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
 
 	$max_earnings = get_post_meta( $achievement_id, '_gamipress_maximum_earnings', true);
 
-	//Infinite maximum earnings check
-    if($max_earnings === '-1' || empty( $max_earnings ) ) {
+	// Infinite maximum earnings check
+    if( $max_earnings === '-1' || empty( $max_earnings ) ) {
 		return false;
 	}
 
-	// If the badge has an earning limit, and we've earned it before...
+	// If the achievement has an earning limit, and we've earned it before...
 	if ( $max_earnings && $user_has_achievement = gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $achievement_id ) ) ) ) {
 		// If we've earned it as many (or more) times than allowed,
 		// then we have exceeded maximum earnings, thus true
@@ -295,7 +296,7 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
 	$achievement_object                 = new stdClass;
 	$achievement_object->ID             = $achievement_id;
 	$achievement_object->post_type      = $achievement->post_type;
-	$achievement_object->points         = get_post_meta( $achievement_id, '_gamipress_points', true );
+	$achievement_object->points         = absint( get_post_meta( $achievement_id, '_gamipress_points', true ) );
 	$achievement_object->points_type    = get_post_meta( $achievement_id, '_gamipress_points_type', true );
 
 	// Store the current timestamp differently based on context
@@ -442,7 +443,7 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 		$achievement_id
 	) );
 
-	// Grab posts triggered by unlocing any/all of the given achievement's type
+	// Grab posts triggered by unlocking any/all of the given achievement's type
 	$type_achievements = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT *
@@ -505,32 +506,41 @@ function gamipress_get_required_achievements_for_achievement( $achievement_id = 
 /**
  * Returns achievements that may be earned when the given achievement is earned.
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.3.1 added steps with required points
+ *
  * @return array An array of achievements that are dependent on the given achievement
  */
 function gamipress_get_points_based_achievements() {
+
 	global $wpdb;
 
 	$achievements = get_transient( 'gamipress_points_based_achievements' );
 
 	if ( empty( $achievements ) ) {
-		// Grab posts that can be earned by unlocking the given achievement
-		$achievements = $wpdb->get_results(
-			"
-			SELECT *
-			FROM   $wpdb->posts as posts,
-			       $wpdb->postmeta as meta
-			WHERE  posts.ID = meta.post_id
-			       AND meta.meta_key = '_gamipress_earned_by'
-			       AND meta.meta_value = 'points'
-			"
-		);
 
-		// Store these posts to a transient for 7 days
-		set_transient( 'gamipress_points_based_achievements', $achievements, 60*60*24*7 );
+		// Grab posts that can be earned by unlocking the given achievement
+		$achievements = $wpdb->get_results( $wpdb->prepare(
+			"SELECT *
+			FROM   $wpdb->posts as posts
+			INNER JOIN {$wpdb->postmeta} AS m1
+			ON ( posts.ID = m1.post_id )
+			INNER JOIN $wpdb->postmeta AS m2
+			ON ( posts.ID = m2.post_id )
+			WHERE (
+					( m1.meta_key = %s AND m1.meta_value = %s )
+					AND ( m2.meta_key = %s AND m2.meta_value = %s )
+				)",
+			'_gamipress_trigger_type', 'earn-points',	// Requirements based on earn points
+			'_gamipress_earned_by', 'points'			// Achievements earned by points
+		) );
+
+		// Store these posts to a transient for 1 days
+		set_transient( 'gamipress_points_based_achievements', $achievements, 60*60*24 );
 	}
 
 	return (array) maybe_unserialize( $achievements );
+
 }
 
 /**
@@ -560,20 +570,87 @@ add_action( 'save_post', 'gamipress_bust_points_based_achievements_cache' );
 add_action( 'trash_post', 'gamipress_bust_points_based_achievements_cache' );
 
 /**
+ * Returns achievements that may be earned when the given achievement is earned.
+ *
+ * @since   1.3.1
+ *
+ * @return array An array of achievements that are dependent on the given achievement
+ */
+function gamipress_get_rank_based_achievements() {
+
+	global $wpdb;
+
+	$achievements = get_transient( 'gamipress_rank_based_achievements' );
+
+	if ( empty( $achievements ) ) {
+
+		// Grab posts that can be earned by unlocking the given achievement
+		$achievements = $wpdb->get_results( $wpdb->prepare(
+			"SELECT *
+			FROM   $wpdb->posts as posts
+			INNER JOIN {$wpdb->postmeta} AS m1
+			ON ( posts.ID = m1.post_id )
+			INNER JOIN $wpdb->postmeta AS m2
+			ON ( posts.ID = m2.post_id )
+			WHERE (
+					( m1.meta_key = %s AND m1.meta_value = %s )
+					AND ( m2.meta_key = %s AND m2.meta_value = %s )
+				)",
+			'_gamipress_trigger_type', 'earn-rank',	// Requirements based on earn rank
+			'_gamipress_earned_by', 'rank'			// Achievements earned by rank
+		) );
+
+		// Store these posts to a transient for 1 days
+		set_transient( 'gamipress_rank_based_achievements', $achievements, 60*60*24 );
+	}
+
+	return (array) maybe_unserialize( $achievements );
+
+}
+
+/**
+ * Destroy the rank-based achievements transient if we edit a rank-based achievement
+ *
+ * @since 1.3.1
+ *
+ * @param integer $post_id The given post's ID
+ */
+function gamipress_bust_rank_based_achievements_cache( $post_id ) {
+
+	$post = get_post($post_id);
+
+	// If the post is one of our achievement types,
+	// and the achievement is awarded by a rank
+	if (
+		gamipress_is_achievement( $post )
+		&& (
+			'rank' == get_post_meta( $post_id, '_gamipress_earned_by', true )
+			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'rank' == $_POST['_gamipress_earned_by'] )
+		)
+	) {
+		delete_transient( 'gamipress_rank_based_achievements' );
+	}
+
+}
+add_action( 'save_post', 'gamipress_bust_rank_based_achievements_cache' );
+add_action( 'trash_post', 'gamipress_bust_rank_based_achievements_cache' );
+
+/**
  * Helper function to retrieve an achievement post thumbnail
  *
- * Falls back first to parent achievement type's thumbnail,
- * and finally to a default GamiPress icon from Credly.
+ * Falls back to achievement type's thumbnail.
  *
  * @since  1.0.0
+ *
  * @param  integer $post_id    The achievement's post ID
  * @param  string  $image_size The name of a registered custom image size
  * @param  string  $class      A custom class to use for the image tag
+ *
  * @return string              Our formatted image tag
  */
 function gamipress_get_achievement_post_thumbnail( $post_id = 0, $image_size = 'gamipress-achievement', $class = 'gamipress-achievement-thumbnail' ) {
 
-	// Get our badge thumbnail
+	// Get our achievement thumbnail
 	$image = get_the_post_thumbnail( $post_id, $image_size, array( 'class' => $class ) );
 
 	// If we don't have an image...
@@ -583,7 +660,7 @@ function gamipress_get_achievement_post_thumbnail( $post_id = 0, $image_size = '
 		$achievement = get_page_by_path( get_post_type(), OBJECT, 'achievement-type' );
 		$image = is_object( $achievement ) ? get_the_post_thumbnail( $achievement->ID, $image_size, array( 'class' => $class ) ) : false;
 
-		// If we still have no image, use one from Credly
+		// If we still have no image
 		if ( ! $image ) {
 
 			// If we already have an array for image size
@@ -676,39 +753,22 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0 ) {
 	if ( ! empty( $earners ) )  {
 		// Loop through each user and build our output
 		$output .= '<h4>' . apply_filters( 'gamipress_earners_heading', __( 'People who have earned this:', 'gamipress' ) ) . '</h4>';
+
 		$output .= '<ul class="gamipress-achievement-earners-list achievement-' . $achievement_id . '-earners-list">';
+
 		foreach ( $earners as $user ) {
+
 			$user_content = '<li><a href="' . get_author_posts_url( $user->ID ) . '">' . get_avatar( $user->ID ) . '</a></li>';
+
 			$output .= apply_filters( 'gamipress_get_achievement_earners_list_user', $user_content, $user->ID );
+
 		}
+
 		$output .= '</ul>';
 	}
 
 	// Return our concatenated output
 	return apply_filters( 'gamipress_get_achievement_earners_list', $output, $achievement_id, $earners );
-}
-
-/**
- * Create array of blog ids in the network if multisite setting is on
- *
- * @since  1.0.0
- * @return array Array of blog_ids
- */
-function gamipress_get_network_site_ids() {
-
-	global $wpdb;
-
-    if( is_multisite() && (bool) gamipress_get_option( 'ms_show_all_achievements', false ) ) {
-        $blog_ids = $wpdb->get_results( "SELECT blog_id FROM " . $wpdb->base_prefix . "blogs" );
-		foreach ($blog_ids as $key => $value ) {
-            $sites[] = $value->blog_id;
-        }
-    } else {
-    	$sites[] = get_current_blog_id();
-    }
-
-    return $sites;
-
 }
 
 /**

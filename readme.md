@@ -17,20 +17,25 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * Completing one or all achievements of a specified type.
 * Points thresholds.
 * Admin awarded achievements.
+* Reaching a specific rank.
 
 ### Unlimited number of Points Types ###
 
-* Create as many types of points as you like.
-* Name your custom types whatever you wish (Credits, Gems, Coins, etc).
+* Create as many types of points as you like (Credits, Gems, Coins, etc).
 * Easily define how automatically your users will earn points using the 'Points Awards' tool.
 * Management of each user points wallet.
 
 ### Unlimited number of Achievements Types ###
 
-* Create as many types of achievement as you like.
-* Name your custom types whatever you wish (Quests, Badges, etc).
+* Create as many types of achievement as you like (Quests, Badges, etc).
 * Easily define how they relate to one another using the 'Required Steps' tool.
 * Set default images for each achievement type or select unique images for every achievement item.
+
+### Unlimited number of Rank Types ###
+
+* Create as many types of rank as you like (Level, Grade, etc).
+* Easily define how they relate to one another using the 'Rank Requirements' tool.
+* Set default images for each rank type or select unique images for every rank item.
 
 ### Drag and drop controls ###
 
@@ -51,6 +56,12 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 * Shortcode to integrate specific available achievements into any post or page of your site.
 * Integrated shortcode documentation within the plugin menu.
 * Just activate GamiPress and place simple shortcodes on any page or post, and you've got a gamification system running on your WordPress site!
+
+### Email notifications ###
+
+* Notify to your users about their progression through emails.
+* Easily define the template to be used for each email type.
+* Enable or disable any email type as you like.
 
 ### Powerful tools ###
 
@@ -131,8 +142,11 @@ GamiPress is made available by [Tsunoa](https://tsunoa.com/ "Tsunoa"). Here are 
 **Builtin widgets**
 ![Builtin widgets](https://ps.w.org/gamipress/assets/screenshot-4.png "Builtin widgets")
 
+**Configurable email templates**
+![Configurable email templates](https://ps.w.org/gamipress/assets/screenshot-5.png "Configurable email templates")
+
 **Logs edit screen**
-![Logs edit screen](https://ps.w.org/gamipress/assets/screenshot-5.png "Logs edit screen")
+![Logs edit screen](https://ps.w.org/gamipress/assets/screenshot-6.png "Logs edit screen")
 
 ## Frequently Asked Questions ##
 
@@ -151,6 +165,8 @@ GamiPress comes with the following shortcodes:
 * [[gamipress_logs]](https://gamipress.com/docs/shortcodes/gamipress_logs/) to display a list of logs.
 * [[gamipress_points_types]](https://gamipress.com/docs/shortcodes/gamipress_points_types/) to display a list of points types with their points awards.
 * [[gamipress_points]](https://gamipress.com/docs/shortcodes/gamipress_points/) to display current or specific user points balance.
+* [[gamipress_rank]](https://gamipress.com/docs/shortcodes/gamipress_rank/) to display a desired rank.
+* [[gamipress_ranks]](https://gamipress.com/docs/shortcodes/gamipress_ranks/) to display a list of ranks.
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of available shortcodes, including descriptions of all parameters each shortcode supports.
 
@@ -163,8 +179,35 @@ GamiPress comes with the following widgets:
 * Logs: to display a list of logs.
 * Points Types: to display a list of points types with their points awards.
 * User Points: to display current or specific user points balance.
+* Rank: to display a desired rank.
+* Ranks: to display a list of ranks.
 
 ## Changelog ##
+
+### 1.3.1 ###
+
+* New Feature "Rank Types": Added the ability to define unlimited user rank types, for example: rank, level, grade, etc.
+* Added user ranks section on user profile.
+* Added rank image size setting.
+* Added rank earned/awarded logs patterns on settings.
+* Added rank reached and rank requirement completion emails.
+* New Feature: Allow achievements to be earned by reach a rank of specific type.
+* New activity trigger: Reach a specific rank of a specific type.
+* Added [gamipress_rank] and [gamipress_ranks] shortcodes.
+* Added GamiPress: Rank and GamiPress: Ranks widgets.
+* New activity trigger: Earn an amount of points.
+* Added the new parameter columns on [gamipress_points] and [gamipress_points_types].
+* Added the new field Columns on GamiPress: User points balance and GamiPress: Points Types widgets.
+* Added rank types, ranks and rank requirements options on reset data tool.
+* Added contextual help on rank type and rank edit screen.
+* Fixed issue with selected points types on achievements.
+* Fixed issue with plugins that outputs user profile fields at frontend (like bbPress).
+* Fixed wrong hook parameters on points types template.
+* Improvements on admin area styles.
+* Improvements on achievements completion detection.
+* Improvements on emails templates settings.
+* Performance improvements on logs SQL queries.
+* Performance improvements on rules engine checks.
 
 ### 1.3.0.1 ###
 

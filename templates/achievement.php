@@ -131,7 +131,7 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
             echo gamipress_get_achievement_earners_list( get_the_ID() );
 
             /**
-             * After achievement steps
+             * After achievement earners
              *
              * @param $achievement_id   integer The Achievement ID
              * @param $template_args    array   Template received arguments

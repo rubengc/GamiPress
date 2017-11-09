@@ -79,6 +79,15 @@ if ( ! class_exists( 'CT' ) ) :
          */
         private function includes() {
 
+            // WP_List_Table dependencies
+            if( ! function_exists( 'convert_to_screen' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/template.php';
+            }
+
+            if( ! function_exists( 'get_column_headers' ) ) {
+                require_once ABSPATH . 'wp-admin/includes/screen.php';
+            }
+
             // Includes required WP_List_Table class
             if( ! class_exists( 'WP_List_Table' ) ) {
                 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';

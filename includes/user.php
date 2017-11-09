@@ -31,6 +31,7 @@ function gamipress_get_user_achievements( $args = array() ) {
 		'achievement_id'   => false, // A specific achievement's post ID
 		'achievement_type' => false, // A specific achievement type
 		'since'            => 0,     // A specific timestamp to use in place of $limit_in_days
+		'limit'            => -1,    // Limit of achievements to return
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -45,7 +46,8 @@ function gamipress_get_user_achievements( $args = array() ) {
 	// Setup query args
 	$query_args = array(
 		'user_id' => $args['user_id'],
-		'nopaging' => true
+		'nopaging' => true,
+		'items_per_page' => $args['limit']
 	);
 
 	if( $args['achievement_id'] !== false ) {
@@ -149,19 +151,28 @@ function gamipress_update_user_achievements( $args = array() ) {
  * @return void
  */
 function gamipress_user_profile_data( $user = null ) {
-	// Verify user meets minimum role to view earned badges
-	if ( current_user_can( gamipress_get_manager_capability() ) ) {
+	// Verify user meets minimum role to view earned achievements
+	if ( current_user_can( gamipress_get_manager_capability() ) ) : ?>
+
+		<hr>
+
+		<h2><i class="dashicons dashicons-gamipress"></i> <?php _e( 'GamiPress', 'gamipress' ); ?></h2>
+
+		<?php // Output markup to user rank
+		gamipress_profile_user_rank( $user );
 
         // Output markup to list user points
 		gamipress_profile_user_points( $user );
 
-        // Output markup to list user achivements
+        // Output markup to list user achievements
 		gamipress_profile_user_achievements( $user );
 
 		// Output markup for awarding achievement for user
-		gamipress_profile_award_achievement( $user );
+		gamipress_profile_award_achievement( $user ); ?>
 
-	}
+		<hr>
+
+	<?php endif;
 
 }
 add_action( 'show_user_profile', 'gamipress_user_profile_data' );
@@ -181,17 +192,31 @@ function gamipress_save_user_profile_fields( $user_id = 0 ) {
 		return false;
 	}
 
+	// Update user's rank, but only if edited
+	if ( isset( $_POST['user_rank'] ) && absint( $_POST['user_rank'] ) !== gamipress_get_user_rank_id( $user_id ) ) {
+		gamipress_update_user_rank( $user_id, absint( $_POST['user_rank'] ), get_current_user_id() );
+	}
+
+	$rank_types = gamipress_get_rank_types();
+
+	foreach( $rank_types as $rank_type => $data ) {
+		// Update each user's rank type, but only if edited
+		if ( isset( $_POST['user_' . $rank_type . '_rank'] ) && absint( $_POST['user_' . $rank_type . '_rank'] ) !== gamipress_get_user_rank_id( $user_id, $rank_type ) ) {
+			gamipress_update_user_rank( $user_id, absint( $_POST['user_' . $rank_type . '_rank'] ), get_current_user_id() );
+		}
+	}
+
 	// Update our user's points total, but only if edited
-	if ( isset( $_POST['user_points'] ) && $_POST['user_points'] != gamipress_get_users_points( $user_id ) ) {
-		gamipress_update_users_points( $user_id, absint( $_POST['user_points'] ), get_current_user_id() );
+	if ( isset( $_POST['user_points'] ) && $_POST['user_points'] !== gamipress_get_user_points( $user_id ) ) {
+		gamipress_update_user_points( $user_id, absint( $_POST['user_points'] ), get_current_user_id() );
 	}
 
     $points_types = gamipress_get_points_types();
 
     foreach( $points_types as $points_type => $data ) {
         // Update each user's points type total, but only if edited
-        if ( isset( $_POST['user_' . $points_type . '_points'] ) && $_POST['user_' . $points_type . '_points'] != gamipress_get_users_points( $user_id, $points_type ) ) {
-            gamipress_update_users_points( $user_id, absint( $_POST['user_' . $points_type . '_points'] ), get_current_user_id(), null, $points_type );
+        if ( isset( $_POST['user_' . $points_type . '_points'] ) && $_POST['user_' . $points_type . '_points'] !== gamipress_get_user_points( $user_id, $points_type ) ) {
+            gamipress_update_user_points( $user_id, absint( $_POST['user_' . $points_type . '_points'] ), get_current_user_id(), null, $points_type );
         }
     }
 
@@ -200,10 +225,82 @@ add_action( 'personal_options_update', 'gamipress_save_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'gamipress_save_user_profile_fields' );
 
 /**
+ * Generate markup to show user rank
+ *
+ * @since  1.0.0
+ *
+ * @param  object $user         The current user's $user object
+ *
+ * @return string               concatenated markup
+ */
+function gamipress_profile_user_rank( $user = null ) {
+
+	$rank_types = gamipress_get_rank_types(); ?>
+
+	<h2><?php _e( 'Ranks', 'gamipress' ); ?></h2>
+
+	<table class="form-table">
+
+		<?php if( empty( $rank_types ) ) : ?>
+			<tr>
+				<th><label for="user_rank"><?php _e( 'User Ranks', 'gamipress' ); ?></label></th>
+				<td>
+					<span class="description">
+						<?php echo sprintf( __( 'No rank types configured, visit %s to configure some rank types.', 'gamipress' ), '<a href="' . admin_url( 'edit.php?post_type=rank-type' ) . '">' . __( 'this page', 'gamipress' ) . '</a>' ); ?>
+					</span>
+				</td>
+			</tr>
+		<?php else : ?>
+
+			<?php foreach( $rank_types as $rank_type => $data ) :
+
+				// Get all published ranks of this type
+				$ranks = gamipress_get_ranks( array( 'post_type' => $rank_type ) );
+
+				$user_rank_id = gamipress_get_user_rank_id( $user->ID, $rank_type ); ?>
+
+				<tr>
+					<th><label for="user_<?php echo $rank_type; ?>_rank"><?php echo sprintf( __( 'User %s', 'gamipress' ), $data['singular_name'] ); ?></label></th>
+					<td>
+
+						<?php if( empty( $ranks ) ) : ?>
+
+							<span class="description">
+								<?php echo sprintf( __( 'No %1$s configured, visit %2$s to configure some %1$s.', 'gamipress' ),
+									strtolower( $data['plural_name'] ),
+									'<a href="' . admin_url( 'edit.php?post_type=' . $rank_type ) . '">' . __( 'this page', 'gamipress' ) . '</a>'
+								); ?>
+							</span>
+
+						<?php else : ?>
+
+							<select name="user_<?php echo $rank_type; ?>_rank" id="user_<?php echo $rank_type; ?>_rank" style="min-width: 15em;">
+								<?php foreach( $ranks as $rank ) : ?>
+									<option value="<?php echo $rank->ID; ?>" <?php selected( $user_rank_id, $rank->ID ); ?>><?php echo $rank->post_title; ?></option>
+								<?php endforeach; ?>
+							</select>
+							<span class="description"><?php echo sprintf( __( "The user's %s rank. %s listed are ordered by priority.", 'gamipress' ), strtolower( $data['singular_name'] ), $data['plural_name'] ); ?></span>
+
+						<?php endif; ?>
+
+					</td>
+				</tr>
+
+			<?php endforeach; ?>
+
+		<?php endif; ?>
+
+	</table>
+	<?php
+}
+
+/**
  * Generate markup to list user earned points
  *
  * @since  1.0.0
+ *
  * @param  object $user         The current user's $user object
+ *
  * @return string               concatenated markup
  */
 function gamipress_profile_user_points( $user = null ) {
@@ -214,23 +311,40 @@ function gamipress_profile_user_points( $user = null ) {
 
     <table class="form-table">
 
-    <tr>
-        <th><label for="user_points"><?php _e( 'Earned Default Points', 'gamipress' ); ?></label></th>
-        <td>
-            <input type="text" name="user_points" id="user_points" value="<?php echo gamipress_get_users_points( $user->ID ); ?>" class="regular-text" /><br />
-            <span class="description"><?php _e( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ); ?></span>
-        </td>
-    </tr>
+		<?php if( empty( $points_types ) ) : ?>
 
-    <?php foreach( $points_types as $points_type => $data ) : ?>
-        <tr>
-            <th><label for="user_<?php echo $points_type; ?>_points"><?php echo sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ); ?></label></th>
-            <td>
-                <input type="text" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo gamipress_get_users_points( $user->ID, $points_type ); ?>" class="regular-text" /><br />
-                <span class="description"><?php echo sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ); ?></span>
-            </td>
-        </tr>
-	<?php endforeach; ?>
+			<tr>
+				<th><label for="user_points"><?php _e( 'User Points', 'gamipress' ); ?></label></th>
+				<td>
+					<span class="description">
+						<?php echo sprintf( __( 'No points types configured, visit %s to configure some points types.', 'gamipress' ), '<a href="' . admin_url( 'edit.php?post_type=points-type' ) . '">' . __( 'this page', 'gamipress' ) . '</a>' ); ?>
+					</span>
+				</td>
+			</tr>
+
+		<?php else : ?>
+
+			<tr>
+				<th><label for="user_points"><?php _e( 'Earned Default Points', 'gamipress' ); ?></label></th>
+				<td>
+					<input type="text" name="user_points" id="user_points" value="<?php echo gamipress_get_user_points( $user->ID ); ?>" class="regular-text" /><br />
+					<span class="description"><?php _e( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ); ?></span>
+				</td>
+			</tr>
+
+			<?php foreach( $points_types as $points_type => $data ) : ?>
+
+				<tr>
+					<th><label for="user_<?php echo $points_type; ?>_points"><?php echo sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ); ?></label></th>
+					<td>
+						<input type="text" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo gamipress_get_user_points( $user->ID, $points_type ); ?>" class="regular-text" /><br />
+						<span class="description"><?php echo sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ); ?></span>
+					</td>
+				</tr>
+
+			<?php endforeach; ?>
+
+		<?php endif; ?>
 
     </table>
 	<?php
@@ -240,7 +354,9 @@ function gamipress_profile_user_points( $user = null ) {
  * Generate markup to list user earned achievements
  *
  * @since  1.0.0
+ *
  * @param  object $user         The current user's $user object
+ *
  * @return string               concatenated markup
  */
 function gamipress_profile_user_achievements( $user = null ) {
@@ -263,20 +379,24 @@ function gamipress_profile_user_achievements( $user = null ) {
  * Generate markup for awarding an achievement to a user
  *
  * @since  1.0.0
+ *
  * @param  object $user         The current user's $user object
- * @param  array  $achievements array of user-earned achievement IDs
+ *
  * @return string               concatenated markup
  */
 function gamipress_profile_award_achievement( $user = null ) {
-	$achievement_types = gamipress_get_achievement_types();
+
 	$achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
 
     $achievement_ids = array_map( function( $achievement ) {
         return $achievement->ID;
     }, $achievements );
 
-	// Grab our achivement types
+	// Grab our achievement types
 	$achievement_types = gamipress_get_achievement_types();
+	$requirement_types = gamipress_get_requirement_types();
+
+	$achievement_types = array_merge( $achievement_types, $requirement_types )
 	?>
 
 	<h2><?php _e( 'Award an Achievement', 'gamipress' ); ?></h2>
@@ -402,11 +522,10 @@ function gamipress_profile_award_achievement( $user = null ) {
  * Process the adding/revoking of achievements on the user profile page
  *
  * @since  1.0.0
- * @return void
  */
 function gamipress_process_user_data() {
 
-	//verify uesr meets minimum role to view earned badges
+	// verify user meets minimum role to view earned achievements
 	if ( current_user_can( gamipress_get_manager_capability() ) ) {
 
 		// Process awarding achievement to user

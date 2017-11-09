@@ -90,7 +90,7 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 
 	gamipress_enqueue_scripts();
 
-	// get the post content and format the badge display
+	// Get the post content and format the achievement display
 	$achievement = get_post( $atts['id'] );
 	$output = '';
 

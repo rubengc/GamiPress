@@ -12,17 +12,19 @@ if( !defined( 'ABSPATH' ) ) exit;
  * Add filters to remove stuff from our singular pages and add back in how we want it
  *
  * @since 1.0.0
- * @return null
  */
 function gamipress_do_single_filters() {
-	// Check we're in the right place
-	if ( ! gamipress_is_main_loop() )
-		return;
 
-	// filter out the post title
-	// add_filter( 'the_title', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
-	// and filter out the post image
-	add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
+	// Check we're in the right place
+	if ( gamipress_is_single_achievement() || gamipress_is_single_rank() ) {
+
+		// Filter out the post title
+		// add_filter( 'the_title', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
+
+		// and filter out the post image
+		add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
+
+	}
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
 
@@ -30,14 +32,16 @@ add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
  * Filter out the post title/post image and add back (later) how we want it
  *
  * @since 1.0.0
+ *
  * @param  string  $html The page content prior to filtering
  * @param  integer $id   The page id
+ *
  * @return string        The page content after being filtered
  */
 function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
 
 	// Remove, but only on the main loop!
-	if ( gamipress_is_main_loop( $id ) )
+	if ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) )
 		return '';
 
 	// Nothing to see here... move along
@@ -55,44 +59,71 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  */
 function gamipress_reformat_entries( $content ) {
 
-	// Filter, but only on the main loop!
-	if ( ! gamipress_is_main_loop( get_the_ID() ) )
-		return $content;
+	if ( gamipress_is_single_achievement( get_the_ID() ) ) {
 
-	// now that we're where we want to be, tell the filters to stop removing
-	$GLOBALS['gamipress_reformat_content'] = true;
+		// Filter content, but only is a single achievement!
+		return gamipress_apply_single_template( $content, 'single-achievement' );
 
-    global $gamipress_template_args;
+	} else if ( gamipress_is_single_rank( get_the_ID() ) ) {
 
-    // Initialize GamiPress template args global
-    $gamipress_template_args = array();
+		// Filter content, but only is a single rank!
+		return gamipress_apply_single_template( $content, 'single-rank' );
+	}
 
-    $gamipress_template_args['original_content'] = $content;
-
-    ob_start();
-
-    gamipress_get_template_part( 'single-achievement', get_post_type( get_the_ID() ) );
-
-    $new_content = ob_get_clean();
-
-	// Ok, we're done reformating
-	$GLOBALS['gamipress_reformat_content'] = false;
-
-	return $new_content;
+	return $content;
 }
 add_filter( 'the_content', 'gamipress_reformat_entries' );
 
 /**
+ * Apply the given single template
+ *
+ * @since  1.3.1
+ *
+ * @param string $content
+ * @param string $single_template
+ *
+ * @return string
+ */
+function gamipress_apply_single_template( $content, $single_template = '' ) {
+
+	global $gamipress_template_args;
+
+	// Now that we're where we want to be, tell the filters to stop removing
+	$GLOBALS['gamipress_reformat_content'] = true;
+
+	// Initialize GamiPress template args global
+	$gamipress_template_args = array();
+
+	$gamipress_template_args['original_content'] = $content;
+
+	ob_start();
+
+	// Try to load single-{template}-{post_type}.php, if not exists load single-{template}.php
+	gamipress_get_template_part( $single_template, get_post_type( get_the_ID() ) );
+
+	$new_content = ob_get_clean();
+
+	// Ok, we're done reformatting
+	$GLOBALS['gamipress_reformat_content'] = false;
+
+	return $new_content;
+
+}
+
+/**
  * Helper function tests that we're in the main loop
  *
- * @since  1.0.0
+ * @since  1.3.1
+ *
  * @param  bool|integer $id The page id
+ *
  * @return boolean     A boolean determining if the function is in the main loop
  */
-function gamipress_is_main_loop( $id = false ) {
+function gamipress_is_single_achievement( $id = false ) {
 
 	$slugs = gamipress_get_achievement_types_slugs();
-	// only run our filters on the gamipress singular pages
+
+	// only run our filters on the achievement singular page
 	if ( is_admin() || empty( $slugs ) || ! is_singular( $slugs ) )
 		return false;
 	// w/o id, we're only checking template context
@@ -101,6 +132,7 @@ function gamipress_is_main_loop( $id = false ) {
 
 	// Checks several variables to be sure we're in the main loop (and won't effect things like post pagination titles)
 	return ( ( $GLOBALS['post']->ID == $id ) && in_the_loop() && empty( $GLOBALS['gamipress_reformat_content'] ) );
+
 }
 
 /**
@@ -222,11 +254,12 @@ function gamipress_points_award_link_title_to_achievement( $title = '', $points_
 add_filter( 'gamipress_points_award_title_display', 'gamipress_points_award_link_title_to_achievement', 10, 2 );
 
 /**
- * Gets achivement's required steps and returns HTML markup for these steps
+ * Gets achievement's required steps and returns HTML markup for these steps
  *
  * @since  1.0.0
  * @param  integer $achievement_id The given achievement's post ID
  * @param  integer $user_id        A given user's ID
+ *
  * @return string                  The markup for our list
  */
 function gamipress_get_required_achievements_for_achievement_list( $achievement_id = 0, $user_id = 0 ) {
@@ -328,7 +361,7 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
  * @since  1.0.0
  * @param  string $title Our step title
  * @param  object $step  Our step's post object
- * @return string        Our potentially udated title
+ * @return string        Our potentially updated title
  */
 function gamipress_step_link_title_to_achievement( $title = '', $step = null ) {
 
@@ -383,17 +416,18 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
  * Adds "earned"/"not earned" post_class based on viewer's status
  *
  * @param  array $classes Post classes
+ *
  * @return array          Updated post classes
  */
 function gamipress_add_earned_class_single( $classes = array() ) {
-	global $user_ID;
 
 	if( is_singular( gamipress_get_achievement_types_slugs() ) ) {
 		// check if current user has earned the achievement they're viewing
-		$classes[] = gamipress_get_user_achievements( array( 'user_id' => $user_ID, 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
+		$classes[] = gamipress_get_user_achievements( array( 'user_id' => get_current_user_id(), 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
 	}
 
 	return $classes;
+
 }
 add_filter( 'post_class', 'gamipress_add_earned_class_single' );
 
@@ -404,6 +438,7 @@ add_filter( 'post_class', 'gamipress_add_earned_class_single' );
  *
  * @param  integer $achievement_id Achievement ID.
  * @param  integer $user_id        User ID.
+ *
  * @return string                  HTML Markup.
  */
 function gamipress_render_earned_achievement_text( $achievement_id = 0, $user_id = 0 ) {
@@ -411,7 +446,9 @@ function gamipress_render_earned_achievement_text( $achievement_id = 0, $user_id
 	$earned_message = '';
 
 	if ( gamipress_has_user_earned_achievement( $achievement_id, $user_id ) ) {
+
 		$earned_message .= '<div class="gamipress-achievement-earned"><p>' . __( 'You have earned this achievement!', 'gamipress' ) . '</p></div>';
+
 		if ( $congrats_text = get_post_meta( $achievement_id, '_gamipress_congratulations_text', true ) ) {
 			$earned_message .= '<div class="gamipress-achievement-congratulations">' . wpautop( $congrats_text ) . '</div>';
 		}
@@ -427,19 +464,23 @@ function gamipress_render_earned_achievement_text( $achievement_id = 0, $user_id
  *
  * @param  integer $achievement_id Achievement ID.
  * @param  integer $user_id        User ID.
+ *
  * @return bool                    True if user has earned the achievement, otherwise false.
  */
 function gamipress_has_user_earned_achievement( $achievement_id = 0, $user_id = 0 ) {
+
 	$earned_achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $achievement_id ) ) );
 	$earned_achievement = ! empty( $earned_achievements );
 
 	return apply_filters( 'gamipress_has_user_earned_achievement', $earned_achievement, $achievement_id, $user_id );
+
 }
 
-/*
+/**
  * Get current page post id
  *
- * @param null
+ * @since  1.0.0
+ *
  * @return integer
  */
 function gamipress_get_current_page_post_id() {
@@ -463,18 +504,21 @@ function gamipress_get_current_page_post_id() {
 /**
  * Hide the hidden achievement post link from next post link
  *
+ * @since  1.0.0
+ *
  * @param $link
+ *
  * @return string
  */
 function gamipress_hide_next_hidden_achievement_link($link) {
 
 	if($link) {
 
-		//Get current achievement id
+		// Get current achievement id
 		$achievement_id = gamipress_get_current_page_post_id();
 
-		//Get post link , without hidden achievement
-		$link = gamipress_get_post_link_without_hidden_achievement($achievement_id, 'next');
+		// Get post link , without hidden achievement
+		$link = gamipress_get_post_link_without_hidden_achievement( $achievement_id, 'next' );
 
 	}
 
@@ -486,7 +530,10 @@ add_filter('next_post_link', 'gamipress_hide_next_hidden_achievement_link');
 /**
  * Hide the hidden achievement post link from previous post link
  *
+ * @since  1.0.0
+ *
  * @param $link
+ *
  * @return string
  */
 function gamipress_hide_previous_hidden_achievement_link($link) {
@@ -540,12 +587,11 @@ function gamipress_get_post_link_without_hidden_achievement($achievement_id, $re
 /**
  * Get next or previous post id , without hidden achievement id
  *
- * @param $current_achievement_id
- * @param $flag
+ * @param $achievement_id
+ * @param $rel
  * @return integer
  */
-function gamipress_get_next_previous_achievement_id($achievement_id , $rel ){
-
+function gamipress_get_next_previous_achievement_id( $achievement_id , $rel ){
 
 	$nested_post_id = null;
 
@@ -586,7 +632,7 @@ function gamipress_get_next_previous_achievement_id($achievement_id , $rel ){
 		}
 
 		if($check){
-			//Checks achievement in hidden badges
+			// Checks achievement in hidden achievements
 			if (in_array($achievement->ID, $hidden)) {
 				continue;
 			} else {
@@ -595,14 +641,14 @@ function gamipress_get_next_previous_achievement_id($achievement_id , $rel ){
 		}
 
 		if($access) {
-			//Get next or previous achievement without hidden badges
+			// Get next or previous achievement without hidden achievements
 			if (!in_array($achievement->ID, $hidden) && !$nested_post_id) {
 				$nested_post_id = $achievement->ID;
 			}
 		}
 	}
 
-	//rerurn next or previous achievement without hidden badge id
+	// return next or previous achievement without hidden achievement id
 	return $nested_post_id;
 
 }
@@ -665,3 +711,205 @@ function gamipress_log_title_format( $title, $id = null ) {
 	return $title;
 }
 add_filter( 'gamipress_render_log_title', 'gamipress_log_title_format', 10, 2 );
+
+/**
+ * Gets rank's required steps and returns HTML markup for these steps
+ *
+ * @since  1.0.0
+ * @param  integer $rank_id 		The given rank's post ID
+ * @param  integer $user_id        	A given user's ID
+ *
+ * @return string                  	The markup for our list
+ */
+function gamipress_get_rank_requirements_list( $rank_id = 0, $user_id = 0 ) {
+
+	// Grab the current post ID if no rank_id was specified
+	if ( ! $rank_id ) {
+		global $post;
+		$rank_id = $post->ID;
+	}
+
+	// Grab the current user's ID if none was specifed
+	if ( ! $user_id )
+		$user_id = wp_get_current_user()->ID;
+
+	// Grab our rank's required requirements
+	$requirements = gamipress_get_rank_requirements( $rank_id );
+
+	// Return our markup output
+	return gamipress_get_rank_requirements_list_markup( $requirements, $user_id );
+
+}
+
+/**
+ * Generate HTML markup for an achievement's required steps
+ *
+ * This will generate an unorderd list (<ul>) if steps are non-sequential
+ * and an ordered list (<ol>) if steps require sequentiality.
+ *
+ * @since  1.3.1
+ *
+ * @param  array   	$requirements    An rank's required requirements
+ * @param  integer 	$rank_id  The given rank's ID
+ * @param  integer 	$user_id         The given user's ID
+ * @param  array	$template_args   The given template args
+ *
+ * @return string                   The markup for our list
+ */
+function gamipress_get_rank_requirements_list_markup( $requirements = array(), $rank_id = 0, $user_id = 0, $template_args = array() ) {
+
+	// If we don't have any steps, or our steps aren't an array, return nothing
+	if ( ! $requirements || ! is_array( $requirements ) )
+		return null;
+
+	// Grab the current post ID if no achievement_id was specified
+	if ( ! $rank_id ) {
+		global $post;
+		$rank_id = $post->ID;
+	}
+
+	$count = count( $requirements );
+
+	// If we have no steps, return nothing
+	if ( ! $count )
+		return null;
+
+	// Grab the current user's ID if none was specifed
+	if ( ! $user_id )
+		$user_id = get_current_user_id();
+
+	// Setup our variables
+	$output = '';
+	$container = gamipress_is_achievement_sequential() ? 'ol' : 'ul';
+
+	$post_type_object = get_post_type_object( 'rank-requirement' );
+
+	$output .= '<h4>' . apply_filters( 'gamipress_rank_requirements_heading', $count . ' ' . _n( 'Requirement', 'Requirements', $count, 'gamipress' ), $requirements ) . '</h4>';
+	$output .= '<' . $container .' class="gamipress-required-requirements">';
+
+	// Concatenate our output
+	foreach ( $requirements as $requirement ) {
+
+		// check if user has earned this Achievement, and add an 'earned' class
+		$earned_status = gamipress_get_user_achievements( array(
+			'user_id' => absint( $user_id ),
+			'achievement_id' => absint( $requirement->ID ),
+			'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
+		) ) ? 'user-has-earned' : 'user-has-not-earned';
+
+		$title = $requirement->post_title;
+
+		// If step doesn't have a title, then try to build one
+		if( empty( $title ) ) {
+			$title = gamipress_build_requirement_title( $requirement->ID );
+		}
+
+		$output .= '<li class="'. apply_filters( 'gamipress_rank_requirement_class', $earned_status, $requirement, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_rank_requirement_title_display', $title, $requirement, $user_id, $template_args ) . '</li>';
+	}
+
+	$output .= '</'. $container .'><!-- .gamipress-requirements -->';
+
+	// Return our output
+	return $output;
+
+}
+
+/**
+ * Filter our step titles to link to achievements and achievement type archives
+ *
+ * @since  1.3.1
+ *
+ * @param  string $title Our rank requirement title
+ * @param  object $rank_requirement  Our rank requirement's post object
+ *
+ * @return string        Our potentially updated title
+ */
+function gamipress_rank_requirement_link_title_to_achievement( $title = '', $rank_requirement = null ) {
+
+	// Grab our rank requirement requirements
+	$requirements = gamipress_get_rank_requirement_requirements( $rank_requirement->ID );
+
+	// Setup a URL to link to a specific achievement or an achievement type
+	if ( ! empty( $requirements['achievement_post'] ) )
+		$url = get_permalink( $requirements['achievement_post'] );
+	// elseif ( ! empty( $requirements['achievement_type'] ) )
+	//  $url = get_post_type_archive_link( $requirements['achievement_type'] );
+
+	// If we have a URL, update the title to link to it
+	if ( isset( $url ) && ! empty( $url ) )
+		$title = '<a href="' . esc_url( $url ) . '">' . $title . '</a>';
+
+	return $title;
+}
+add_filter( 'gamipress_rank_requirement_title_display', 'gamipress_rank_requirement_link_title_to_achievement', 10, 2 );
+
+/**
+ * Helper function tests that we're in the main loop
+ *
+ * @since  1.3.1
+ *
+ * @param  bool|integer $id The page id
+ *
+ * @return boolean     A boolean determining if the function is in the main loop
+ */
+function gamipress_is_single_rank( $id = false ) {
+
+	$slugs = gamipress_get_rank_types_slugs();
+
+	// only run our filters on the rank singular page
+	if ( is_admin() || empty( $slugs ) || ! is_singular( $slugs ) )
+		return false;
+	// w/o id, we're only checking template context
+	if ( ! $id )
+		return true;
+
+	// Checks several variables to be sure we're in the main loop (and won't effect things like post pagination titles)
+	return ( ( $GLOBALS['post']->ID == $id ) && in_the_loop() && empty( $GLOBALS['gamipress_reformat_content'] ) );
+
+}
+
+/**
+ * Returns a message if user has earned the rank.
+ *
+ * @since  1.3.1
+ *
+ * @param  integer $rank_id 		Rank ID.
+ * @param  integer $user_id        	User ID.
+ *
+ * @return string                  	HTML Markup.
+ */
+function gamipress_render_earned_rank_text( $rank_id = 0, $user_id = 0 ) {
+
+	$earned_message = '';
+
+	if ( gamipress_has_user_earned_rank( $rank_id, $user_id ) ) {
+
+		$earned_message .= '<div class="gamipress-rank-earned"><p>' . __( 'You have reached this rank!', 'gamipress' ) . '</p></div>';
+
+		if ( $congrats_text = get_post_meta( $rank_id, '_gamipress_congratulations_text', true ) ) {
+			$earned_message .= '<div class="gamipress-rank-congratulations">' . wpautop( $congrats_text ) . '</div>';
+		}
+	}
+
+	return apply_filters( 'gamipress_earned_rank_message', $earned_message, $rank_id, $user_id );
+
+}
+
+/**
+ * Check if user has earned a given achievement.
+ *
+ * @since  1.3.1
+ *
+ * @param  integer $rank_id 		Rank ID.
+ * @param  integer $user_id        	User ID.
+ *
+ * @return bool                    	True if user has earned the rank, otherwise false.
+ */
+function gamipress_has_user_earned_rank( $rank_id = 0, $user_id = 0 ) {
+
+	$earned_achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $rank_id ) ) );
+	$earned_achievement = ! empty( $earned_achievements );
+
+	return apply_filters( 'gamipress_has_user_earned_rank', $earned_achievement, $rank_id, $user_id );
+
+}

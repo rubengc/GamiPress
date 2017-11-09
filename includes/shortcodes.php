@@ -18,6 +18,8 @@ require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievements.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_logs.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points_types.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_rank.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_ranks.php';
 
 /**
  * Register a new GamiPress Shortcode
@@ -170,48 +172,6 @@ function gamipress_shortcode_help_attributes( $key, $value ) {
 
 }
 
-// Options callback for select2 fields assigned to posts
-function gamipress_options_cb_posts( $field ) {
-
-	$value = $field->escaped_value;
-	$options = array();
-
-	if( ! empty( $value ) ) {
-		if( ! is_array( $value ) ) {
-			$value = array( $value );
-		}
-
-		foreach( $value as $post_id ) {
-			$options[$post_id] = get_post_field( 'post_title', $post_id );
-		}
-	}
-
-	return $options;
-
-}
-
-// Options callback for select2 fields assigned to users
-function gamipress_options_cb_users( $field ) {
-
-	$value = $field->escaped_value;
-	$options = array();
-
-	if( ! empty( $value ) ) {
-		if( ! is_array( $value ) ) {
-			$value = array( $value );
-		}
-
-		foreach( $value as $user_id ) {
-			$user_data = get_userdata($user_id);
-
-			$options[$user_id] = $user_data->user_login;
-		}
-	}
-
-	return $options;
-
-}
-
 /**
  * Remove multisite specific fields
  *
@@ -234,3 +194,4 @@ function gamipress_shortcodes_remove_multisite_fields( $fields ) {
 add_filter( 'gamipress_gamipress_achievements_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
 add_filter( 'gamipress_gamipress_points_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
 add_filter( 'gamipress_gamipress_points_types_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
+add_filter( 'gamipress_gamipress_ranks_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );

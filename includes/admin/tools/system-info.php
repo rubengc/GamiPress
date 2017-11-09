@@ -187,8 +187,6 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $achievement_types_output = '';
 
     foreach ( $achievement_types as $achievement_type_slug => $achievement_type ) {
-        if ( in_array( $achievement_type_slug, gamipress_get_requirement_types_slugs() ) )
-            continue;
 
         $achievement_types_output .= $achievement_type['singular_name'] . ' - ' . $achievement_type['plural_name'] . ' - ' . $achievement_type_slug . ' (#' . $achievement_type['ID'] . ')' . '<br>';
     }

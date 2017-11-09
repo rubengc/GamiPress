@@ -12,6 +12,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/contextual-help.php';
 require_once GAMIPRESS_DIR . 'includes/admin/debug.php';
 require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes.php';
 require_once GAMIPRESS_DIR . 'includes/admin/plugins.php';
+require_once GAMIPRESS_DIR . 'includes/admin/ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
@@ -34,7 +35,15 @@ function gamipress_admin_menu() {
 
     // Achievements menu
     if( ! empty( $achievement_types ) ) {
-        add_menu_page( __( 'Achivements', 'gamipress' ), __( 'Achievements', 'gamipress' ), $minimum_role, 'gamipress_achievements', 'gamipress_achievements', 'dashicons-awards', 54 );
+        add_menu_page( __( 'Achivements', 'gamipress' ), __( 'Achievements', 'gamipress' ), $minimum_role, 'gamipress_achievements', 'gamipress_achievements', 'dashicons-awards', 53 );
+    }
+
+    // Rank types
+    $rank_types = gamipress_get_rank_types();
+
+    // Achievements menu
+    if( ! empty( $rank_types ) ) {
+        add_menu_page( __( 'Ranks', 'gamipress' ), __( 'Ranks', 'gamipress' ), $minimum_role, 'gamipress_ranks', 'gamipress_ranks', 'dashicons-rank', 54 );
     }
 
     // GamiPress menu
@@ -72,17 +81,22 @@ add_action( 'wp_dashboard_setup', 'gamipress_dashboard_widgets' );
  */
 function gamipress_dashboard_widget() {
     $achievement_types = gamipress_get_achievement_types();
+
     $points_types = gamipress_get_points_types();
+
+    $rank_types = gamipress_get_rank_types();
     ?>
-    <div id="gamipress-registered-posts" class="gamipress-registered-posts">
+
+    <h3>
+        <a href="<?php echo admin_url( 'edit.php?post_type=achievement-type' ); ?>" id="achievement-types">
+            <i class="dashicons dashicons-awards"></i>
+            <?php printf( _n( '%d Achievement Type', '%d Achievement Types', count( $achievement_types ) ), count( $achievement_types ) ); ?>
+        </a>
+    </h3>
+
+    <div id="gamipress-registered-achievements" class="gamipress-registered-achievements">
         <ul>
-            <li>
-                <a href="<?php echo admin_url( 'edit.php?post_type=achievement-type' ); ?>" id="achievement-types">
-                    <?php printf( _n( '%d Achievement Type', '%d Achievement Types', count( $achievement_types ) - 2 ), count( $achievement_types ) - 2 ); ?>
-                </a>
-            </li>
             <?php foreach( $achievement_types as $achievement_type_slug => $achievement_type) : ?>
-                <?php if( $achievement_type_slug === 'step' || $achievement_type_slug === 'points-award' ) { continue; } ?>
                 <?php $achievement_type_count = wp_count_posts( $achievement_type_slug ); ?>
                 <li>
                     <a href="<?php echo admin_url( 'edit.php?post_type=' . $achievement_type_slug ); ?>">
@@ -91,16 +105,41 @@ function gamipress_dashboard_widget() {
                 </li>
             <?php endforeach; ?>
         </ul>
+    </div>
+
+    <h3>
+        <a href="<?php echo admin_url( 'edit.php?post_type=points-type' ); ?>" id="points-types">
+            <i class="dashicons dashicons-star-filled"></i>
+            <?php printf( _n( '%d Points Type', '%d Points Types', count( $points_types ) ), count( $points_types ) ); ?>
+        </a>
+    </h3>
+
+    <div id="gamipress-registered-points" class="gamipress-registered-points">
         <ul>
-            <li>
-                <a href="<?php echo admin_url( 'edit.php?post_type=points-type' ); ?>" id="points-types">
-                    <?php printf( _n( '%d Points Type', '%d Points Types', count( $points_types ) ), count( $points_types ) ); ?>
-                </a>
-            </li>
             <?php foreach( $points_types as $points_type_slug => $points_type) : ?>
                 <li>
                     <a href="<?php echo get_edit_post_link( $points_type['ID'] ); ?>">
                         <?php echo $points_type['plural_name']; ?>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </div>
+
+    <h3>
+        <a href="<?php echo admin_url( 'edit.php?post_type=rank-type' ); ?>" id="achievement-types">
+            <i class="dashicons dashicons-rank"></i>
+            <?php printf( _n( '%d Rank Type', '%d Rank Types', count( $rank_types ) ), count( $rank_types ) ); ?>
+        </a>
+    </h3>
+
+    <div id="gamipress-registered-ranks" class="gamipress-registered-ranks">
+        <ul>
+            <?php foreach( $rank_types as $rank_type_slug => $rank_type) : ?>
+                <?php $rank_type_count = wp_count_posts( $rank_type_slug ); ?>
+                <li>
+                    <a href="<?php echo admin_url( 'edit.php?post_type=' . $rank_type_slug ); ?>">
+                        <?php printf( _n( '%d ' . $rank_type['singular_name'], '%d ' . $rank_type['plural_name'], $rank_type_count->publish ), $rank_type_count->publish ); ?>
                     </a>
                 </li>
             <?php endforeach; ?>
@@ -185,7 +224,7 @@ function gamipress_dashboard_widget() {
  * @return mixed
  */
 function gamipress_posts_columns( $posts_columns, $post_type ) {
-    if( ! in_array( $post_type, array( 'points-type', 'achievement-type' ) ) ) {
+    if( ! in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) ) ) {
         return $posts_columns;
     }
 
@@ -216,7 +255,7 @@ add_filter( 'manage_posts_columns', 'gamipress_posts_columns', 10, 2 );
  * @param $post_id
  */
 function gamipress_posts_custom_columns( $column_name, $post_id ) {
-    if( ! in_array( get_post_type( $post_id ), array( 'points-type', 'achievement-type' ) ) ) {
+    if( ! in_array( get_post_type( $post_id ), array( 'points-type', 'achievement-type', 'rank-type' ) ) ) {
         return;
     }
 
@@ -244,28 +283,36 @@ function gamipress_on_delete_post( $post_id ) {
 
     $is_achievement = gamipress_is_achievement( $post_id );
 
-    if( ! in_array( $post_type, array( 'points-type', 'achievement-type' ) ) || ! $is_achievement ) {
+    $is_rank = gamipress_is_rank( $post_id );
+
+    if( ! in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) ) || ! $is_achievement || ! $is_rank ) {
         return;
     }
 
-    if( $post_type === 'achievement-type' ) {
-        // Remove all achievements of this achievement type
+    if( $post_type === 'achievement-type' || $post_type === 'rank-type' ) {
+        // Remove all achievements of this achievement type or if is a rank type, remove all ranks of this rank type
 
         global $wpdb;
 
-        $achievements = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM   $wpdb->posts AS p WHERE  p.post_type = %s", $post_type ) );
+        $dependents = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM   $wpdb->posts AS p WHERE  p.post_type = %s", $post_type ) );
 
-        foreach( $achievements as $achievement ) {
+        foreach( $dependents as $dependent ) {
             // Remove the achievement
-            wp_delete_post( $achievement['ID'] );
+            wp_delete_post( $dependent['ID'] );
         }
-    } else if( $post_type === 'points-type' || $is_achievement ) {
-        // Remove steps/points awards assigned
+    } else if( $post_type === 'points-type' || $is_achievement || $is_rank ) {
+        // Remove steps/points awards/rank requirements assigned
 
         if( $post_type === 'points-type' ) {
             $requirement_type = 'points-award';
-        } else {
+        } else if( $is_rank ) {
+            $requirement_type = 'rank-requirement';
+        } else if ( $is_achievement ) {
             $requirement_type = 'step';
+        }
+
+        if( ! isset( $requirement_type ) ) {
+            return;
         }
 
         // Get assigned requirements
@@ -299,3 +346,14 @@ function gamipress_process_actions() {
     }
 }
 add_action( 'admin_init', 'gamipress_process_actions' );
+
+function gamipress_admin_enter_title_here( $placeholder, $post ) {
+
+    if( gamipress_is_rank( $post->post_type ) ) {
+        return __( 'Rank name', 'gamipress' );
+    }
+
+    return $placeholder;
+
+}
+add_filter( 'enter_title_here', 'gamipress_admin_enter_title_here', 10, 2 );

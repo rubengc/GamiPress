@@ -19,7 +19,9 @@
 	float: right;
 }
 
-#gamipress-achievements-container:not([class*="gamipress-columns"]), #achievements_list_load_more, #gamipress-achievements-filters-wrap {
+#gamipress-achievements-container:not([class*="gamipress-columns"]),
+#achievements_list_load_more,
+#gamipress-achievements-filters-wrap {
 	display: block;
 	margin: 0 auto;
 	clear: both;
@@ -59,36 +61,56 @@
 
 @media screen and (min-width: 768px) {
 
-	#gamipress-achievements-container[class*="gamipress-columns"] .gamipress-achievement {
+	#gamipress-achievements-container[class*="gamipress-columns"] > .gamipress-achievement,
+	.gamipress-user-points[class*="gamipress-columns"] > .gamipress-points,
+	.gamipress-points-types[class*="gamipress-columns"] > .gamipress-points-type,
+	.gamipress-ranks-list[class*="gamipress-columns"] > .gamipress-rank {
 		padding: 1em 1em;
 		overflow: hidden;
 		border-bottom: none;
 	}
 
-	.gamipress-columns-2 .gamipress-achievement {
+	.gamipress-columns-2 > .gamipress-achievement,
+	.gamipress-columns-2 > .gamipress-points,
+	.gamipress-columns-2 > .gamipress-points-type,
+	.gamipress-columns-2 > .gamipress-rank {
 		width: 50%;
 	}
 
-	.gamipress-columns-3 .gamipress-achievement {
+	.gamipress-columns-3 > .gamipress-achievement,
+	.gamipress-columns-3 > .gamipress-points,
+	.gamipress-columns-3 > .gamipress-points-type,
+	.gamipress-columns-3 > .gamipress-rank {
 		width: 33%;
 	}
 
-	.gamipress-columns-4 .gamipress-achievement{
+	.gamipress-columns-4 > .gamipress-achievement,
+	.gamipress-columns-4 > .gamipress-points,
+	.gamipress-columns-4 > .gamipress-points-type,
+	.gamipress-columns-4 > .gamipress-rank {
 		width: 25%;
 	}
 
-	.gamipress-columns-5 .gamipress-achievement{
+	.gamipress-columns-5 > .gamipress-achievement,
+	.gamipress-columns-5 > .gamipress-points,
+	.gamipress-columns-5 > .gamipress-points-type,
+	.gamipress-columns-5 > .gamipress-rank {
 		width: 20%;
 	}
 
-	.gamipress-columns-6 .gamipress-achievement {
+	.gamipress-columns-6 > .gamipress-achievement,
+	.gamipress-columns-6 > .gamipress-points,
+	.gamipress-columns-6 > .gamipress-points-type,
+	.gamipress-columns-6 > .gamipress-rank {
 		width: 16.6%;
 	}
 
 }
 
-/* Achievement */
-.gamipress-achievement {
+/* Achievement and Rank */
+.gamipress-achievement,
+.gamipress-rank,
+.gamipress-rank-type {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -99,27 +121,31 @@
 	width: 100%;
 }
 
-.gamipress-achievement .gamipress-achievement-image {
+.gamipress-achievement .gamipress-achievement-image,
+.gamipress-rank .gamipress-rank-image {
 	width: 20%;
 	padding-right: 4%;
 	opacity: .4;
 }
 
-.gamipress-achievement .gamipress-achievement-image img {
+.gamipress-achievement.user-has-earned .gamipress-achievement-image,
+.gamipress-rank.user-has-earned .gamipress-rank-image {
+	opacity: 1;
+}
+
+.gamipress-achievement .gamipress-achievement-image img,
+.gamipress-rank .gamipress-rank-image img {
 	width: 100%;
 	height: auto;
 }
 
-.gamipress-achievement .gamipress-achievement-description {
+.gamipress-achievement .gamipress-achievement-description,
+.gamipress-rank .gamipress-rank-description {
 	width: 80%;
 }
 
 .gamipress-achievement-points {
 	font-weight: bold;
-}
-
-.gamipress-achievement.user-has-earned .gamipress-achievement-image {
-	opacity: 1;
 }
 
 #gamipress-achievements-container .gamipress-achievement-title {
@@ -143,17 +169,24 @@
 	display: none;
 }
 
-.gamipress-required-achievements .user-has-earned, .gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-extras-window li,
+.gamipress-required-achievements .user-has-earned,
+.gamipress-required-requirements .user-has-earned,
+.gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-extras-window li,
+.gamipress-rank.user-has-earned .gamipress-extras-window li,
 .gamipress-points-awards .user-has-earned {
 	text-decoration: line-through;
 }
 
-.gamipress-required-achievements .user-has-earned:hover, .gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-extras-window li:hover,
+.gamipress-required-achievements .user-has-earned:hover,
+.gamipress-required-requirements .user-has-earned:hover,
+.gamipress-achievements-list .gamipress-achievement.user-has-earned .gamipress-extras-window li:hover,
+.gamipress-rank.user-has-earned .gamipress-extras-window li:hover,
 .gamipress-points-awards .user-has-earned:hover {
 	text-decoration: none;
 }
 
-.show-hide-open:after, .show-hide-close:after {
+.show-hide-open:after,
+.show-hide-close:after {
 	content: '';
 	display: block;
 	overflow: hidden;
@@ -169,32 +202,38 @@
 	background-position: 0 -21px;
 }
 
-ul.gamipress-achievement-earners-list {
+ul.gamipress-achievement-earners-list,
+ul.gamipress-rank-earners-list {
 	list-style:none;
 	margin:0;
 	padding:0;
 }
-ul.gamipress-achievement-earners-list li {
+
+ul.gamipress-achievement-earners-list li,
+ul.gamipress-rank-earners-list li {
 	position: relative;
 	float: left;
 	margin:5px;
 	padding:0;
 }
 
-.gamipress-achievement-congratulations {
-	background: #F0F0F0;
+.gamipress-achievement-congratulations,
+.gamipress-rank-congratulations {
+	background: #f0f0f0;
 	padding: 10px;
 	margin:1em auto 2em;
 	border-radius: 5px;
 }
 
 /* Single template */
-.achievement-wrap .gamipress-achievement-image {
+.achievement-wrap .gamipress-achievement-image,
+.rank-wrap .gamipress-rank-image {
 	margin: 0 15px 15px 0;
 	opacity: .4;
 }
 
-.user-has-earned .achievement-wrap .gamipress-achievement-image {
+.user-has-earned .achievement-wrap .gamipress-achievement-image,
+.user-has-earned .rank-wrap .gamipress-rank-image {
 	opacity: 1;
 }
 
@@ -202,10 +241,12 @@ ul.gamipress-achievement-earners-list li {
 	font-weight: bold;
 }
 
-.gamipress-required-achievements .user-has-earned {
+.gamipress-required-achievements .user-has-earned,
+.gamipress-required-requirements .user-has-earned {
 	text-decoration: line-through;
 }
 
-.gamipress-required-achievements .user-has-earned:hover {
+.gamipress-required-achievements .user-has-earned:hover,
+.gamipress-required-requirements .user-has-earned:hover {
 	text-decoration: none;
 }

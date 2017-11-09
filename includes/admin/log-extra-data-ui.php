@@ -9,14 +9,16 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Add Points Awards metabox to the Badge post editor
+ * Add log data and extra data meta box
  *
  * @since  1.0.0
  * @return void
  */
 function gamipress_add_log_extra_data_ui_meta_box() {
+
     add_meta_box( 'gamipress_log_data_ui', __( 'Log Data', 'gamipress' ), 'gamipress_log_data_ui_meta_box', 'gamipress_logs', 'side', 'default' );
     add_meta_box( 'gamipress_log_extra_data_ui', __( 'Extra Data', 'gamipress' ), 'gamipress_log_extra_data_ui_meta_box', 'gamipress_logs', 'normal', 'default' );
+
 }
 add_action( 'add_meta_boxes', 'gamipress_add_log_extra_data_ui_meta_box' );
 
@@ -177,21 +179,35 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 'type' 	=> 'text_small',
             ),
         );
+    } else if( $type === 'rank_earn' || $type === 'rank_award' ) {
+        $rank_id = ct_get_object_meta( $object_id, $prefix . 'rank_id', true );
 
-        if( $type === 'points_award' ) {
-            $admin_id = ct_get_object_meta( $object_id, $prefix . 'admin_id', true );
-            $admin = get_userdata( $admin_id );
-
-            $fields[] = array(
-                'name' 	=> __( 'Administrator', 'gamipress' ),
-                'desc' 	=> __( 'User has made the award.', 'gamipress' ),
-                'id'   	=> $prefix . 'admin_id',
+        $fields = array(
+            array(
+                'name' 	=> __( 'Rank', 'gamipress' ),
+                'desc' 	=> __( 'Rank user has earned.', 'gamipress' ),
+                'id'   	=> $prefix . 'rank_id',
                 'type' 	=> 'select',
                 'options' 	=> array(
-                    $admin_id => $admin->user_login,
+                    $rank_id => get_post_field( 'post_title', $rank_id ),
                 ),
-            );
-        }
+            ),
+        );
+    }
+
+    if( $type === 'achievement_award' || $type === 'points_award' || $type === 'rank_award' ) {
+        $admin_id = ct_get_object_meta( $object_id, $prefix . 'admin_id', true );
+        $admin = get_userdata( $admin_id );
+
+        $fields[] = array(
+            'name' 	=> __( 'Administrator', 'gamipress' ),
+            'desc' 	=> __( 'User has made the award.', 'gamipress' ),
+            'id'   	=> $prefix . 'admin_id',
+            'type' 	=> 'select',
+            'options' 	=> array(
+                $admin_id => $admin->user_login,
+            ),
+        );
     }
 
     $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $object_id, $type );

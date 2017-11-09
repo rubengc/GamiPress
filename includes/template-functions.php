@@ -63,6 +63,60 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
 }
 
 /**
+ * Render a rank
+ *
+ * @since  1.0.0
+ * @param  integer  $rank           The Rank's ID
+ * @param  array    $template_args  Template args
+ * @return string                   The Achievement's output
+ */
+function gamipress_render_rank( $rank = 0, $template_args = array() ) {
+    global $post;
+    global $gamipress_template_args;
+
+    // Initialize GamiPress template args global
+    $gamipress_template_args = array();
+
+    $gamipress_template_args = wp_parse_args( $template_args, array(
+        'thumbnail'     => 'yes',
+        'excerpt'	    => 'yes',
+        'requirements'	=> 'yes',
+        'toggle'	    => 'yes',
+        'earners'	    => 'no',
+    ) );
+
+    // If we were given an ID, get the post
+    if ( is_numeric( $rank ) ) {
+        $post = get_post( $rank );
+    } else {
+        $post = $rank;
+    }
+
+    setup_postdata( $post );
+
+    // Enqueue assets
+    if( ! (bool) gamipress_get_option( 'disable_css', false ) ) {
+        wp_enqueue_style( 'gamipress-css' );
+    }
+
+    if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
+        wp_enqueue_script( 'gamipress-js' );
+    }
+
+    // Try to load rank-{type}.php, if not exists then load rank.php
+    ob_start();
+    gamipress_get_template_part( 'rank', $post->post_type );
+    $output = ob_get_clean();
+
+    $output = apply_filters( 'gamipress_render_rank', $output, $post->ID, $post );
+
+    wp_reset_postdata();
+
+    // Return our filterable markup
+    return $output;
+}
+
+/**
  * Retrieves a template part
  *
  * @since 1.0.0

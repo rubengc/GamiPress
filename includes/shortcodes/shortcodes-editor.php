@@ -43,6 +43,7 @@ class GamiPress_Shortcodes_Editor {
 				'id_multiple_placeholder' => __( 'Select Post(s)', 'gamipress' ),
 				'user_placeholder'        => __( 'Select an User', 'gamipress' ),
 				'post_type_placeholder'   => __( 'Default: All', 'gamipress' ),
+				'rank_placeholder'        => __( 'Select a Rank', 'gamipress' ),
 			) );
 
 		}

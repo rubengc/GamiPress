@@ -243,6 +243,11 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
                 'desc' => __( 'Maximum dimensions for the achievements featured image.', 'gamipress' ),
                 'type' => 'size',
             ),
+            'rank_image_size' => array(
+                'name' => __( 'Rank Image Size', 'gamipress' ),
+                'desc' => __( 'Maximum dimensions for ranks featured image.', 'gamipress' ),
+                'type' => 'size',
+            ),
             'automatic_updates' => array(
                 'name' => __( 'Automatic Updates', 'gamipress' ),
                 'desc' => __( 'Check this option to automatically get the latest features, bugfixes and security updates as they are released.', 'gamipress' ),
@@ -338,7 +343,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 'name' => __( 'From Name', 'gamipress' ),
                 'desc' => __( 'Name to display as sender.', 'gamipress' ),
                 'type' => 'text',
-                'default' => get_bloginfo( 'name' ),
+                'default_cb' => 'gamipress_site_name_default_cb',
             ),
             'email_from_address' => array(
                 'name' => __( 'From Address', 'gamipress' ),
@@ -355,9 +360,12 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
         ) )
     );
 
-    $meta_boxes['achievement-earned-email-settings'] = array(
-        'title' => __( 'Achievement Earned Email Settings', 'gamipress' ),
-        'fields' => apply_filters( 'gamipress_achievement_earned_email_settings_fields', array(
+    $meta_boxes['email-templates'] = array(
+        'title' => __( 'Emails Templates', 'gamipress' ),
+        'fields' => apply_filters( 'gamipress_email_templates_fields', array(
+
+            // Achievement Earned
+
             'achievement_earned_email_actions' => array(
                 'type' => 'multi_buttons',
                 'buttons' => array(
@@ -390,7 +398,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             'achievement_earned_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
                 'desc' => __( 'Available tags:', 'gamipress' )
-                        . gamipress_get_email_pattern_tags_html( 'achievement_earned' ),
+                    . gamipress_get_email_pattern_tags_html( 'achievement_earned' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
@@ -399,12 +407,9 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                     . '{achievement_steps}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
             ),
-        ) )
-    );
 
-    $meta_boxes['step-completed-email-settings'] = array(
-        'title' => __( 'Step Completed Email Settings', 'gamipress' ),
-        'fields' => apply_filters( 'gamipress_step_completed_email_settings_fields', array(
+            // Step Completed
+
             'step_completed_email_actions' => array(
                 'type' => 'multi_buttons',
                 'buttons' => array(
@@ -447,12 +452,9 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                     . '{achievement_steps}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
             ),
-        ) )
-    );
 
-    $meta_boxes['points-award-completed-email-settings'] = array(
-        'title' => __( 'Points Award Completed Email Settings', 'gamipress' ),
-        'fields' => apply_filters( 'gamipress_points_award_completed_email_settings_fields', array(
+            // Points Award Completed
+
             'points_award_completed_email_actions' => array(
                 'type' => 'multi_buttons',
                 'buttons' => array(
@@ -493,6 +495,149 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                     . __( 'Your new {points_type} balance is:', 'gamipress' ) . "\n"
                     . '{points_balance}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
+            ),
+
+            // Rank Reached
+
+            'rank_earned_email_actions' => array(
+                'type' => 'multi_buttons',
+                'buttons' => array(
+                    'rank-earned-email-preview' => array(
+                        'label' => __( 'Preview Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=preview_rank_earned_email' ),
+                        'target' => '_blank',
+                    ),
+                    'rank-earned-email-send' => array(
+                        'label' => __( 'Send Test Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=send_test_rank_earned_email' ),
+                        'target' => '_blank',
+                    )
+                ),
+            ),
+            'disable_rank_earned_email' => array(
+                'name' => __( 'Disable rank earned email sending', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users for the new ranks reached.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'rank_earned_email_subject' => array(
+                'name' => __( 'Subject', 'gamipress' ),
+                'desc' => __( 'Enter the subject line for the rank earned email.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( '[{site_title}] {user_first}, you reached the {rank_type} {rank_title}', 'gamipress' ),
+            ),
+            'rank_earned_email_content' => array(
+                'name' => __( 'Content', 'gamipress' ),
+                'desc' => __( 'Available tags:', 'gamipress' )
+                    . gamipress_get_email_pattern_tags_html( 'rank_earned' ),
+                'type' => 'wysiwyg',
+                'default' =>
+                    '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+                    . '{rank_image}' . "\n"
+                    . __( 'You reached the {rank_type} {rank_title} by completing the next requirements:', 'gamipress' ) . "\n"
+                    . '{rank_requirements}' . "\n\n"
+                    . __( 'Best regards', 'gamipress' ),
+            ),
+
+            // Rank Requirement Completed
+
+            'rank_requirement_completed_email_actions' => array(
+                'type' => 'multi_buttons',
+                'buttons' => array(
+                    'rank-requirement-completed-email-preview' => array(
+                        'label' => __( 'Preview Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=preview_rank_requirement_completed_email' ),
+                        'target' => '_blank',
+                    ),
+                    'rank-requirement-completed-email-send' => array(
+                        'label' => __( 'Send Test Email', 'gamipress' ),
+                        'type' => 'link',
+                        'link' => admin_url( 'admin.php?gamipress-action=send_test_rank_requirement_completed_email' ),
+                        'target' => '_blank',
+                    )
+                ),
+            ),
+            'disable_rank_requirement_completed_email' => array(
+                'name' => __( 'Disable rank requirement completed email sending', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users for the new rank requirements completed.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'rank_requirement_completed_email_subject' => array(
+                'name' => __( 'Subject', 'gamipress' ),
+                'desc' => __( 'Enter the subject line for the rank requirement completed email.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( '[{site_title}] {user_first}, you complete a requirement of the {rank_type} {rank_title}', 'gamipress' ),
+            ),
+            'rank_requirement_completed_email_content' => array(
+                'name' => __( 'Content', 'gamipress' ),
+                'desc' => __( 'Available tags:', 'gamipress' )
+                    . gamipress_get_email_pattern_tags_html( 'rank_requirement_completed' ),
+                'type' => 'wysiwyg',
+                'default' =>
+                    '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+                    . '{rank_image}' . "\n"
+                    . __( 'You completed the requirement "{label}" of the {rank_type} {rank_title}!', 'gamipress' ) . "\n\n"
+                    . __( 'You need to complete the next requirements to completely reach this {rank_type}:', 'gamipress' ) . "\n"
+                    . '{rank_requirements}' . "\n\n"
+                    . __( 'Best regards', 'gamipress' ),
+            ),
+
+        ) ),
+        'vertical_tabs' => true,
+        'tabs' => apply_filters( 'gamipress_email_templates_tabs', array(
+            'achievement_earned' => array(
+                'title' => __( 'Achievements', 'gamipress' ),
+                'icon' => 'dashicons-awards',
+                'fields' => array(
+                    'achievement_earned_email_actions',
+                    'disable_achievement_earned_email',
+                    'achievement_earned_email_subject',
+                    'achievement_earned_email_content'
+                )
+            ),
+            'step_completed' => array(
+                'title' => __( 'Steps', 'gamipress' ),
+                'icon' => 'dashicons-editor-ol',
+                'fields' => array(
+                    'step_completed_email_actions',
+                    'disable_step_completed_email',
+                    'step_completed_email_subject',
+                    'step_completed_email_content'
+                )
+            ),
+            'points_award_completed' => array(
+                'title' => __( 'Points Awards', 'gamipress' ),
+                'icon' => 'dashicons-editor-ol',
+                'fields' => array(
+                    'points_award_completed_email_actions',
+                    'disable_points_award_completed_email',
+                    'points_award_completed_email_subject',
+                    'points_award_completed_email_content'
+                )
+            ),
+            'rank_earned' => array(
+                'title' => __( 'Ranks', 'gamipress' ),
+                'icon' => 'dashicons-rank',
+                'fields' => array(
+                    'rank_earned_email_actions',
+                    'disable_rank_earned_email',
+                    'rank_earned_email_subject',
+                    'rank_earned_email_content'
+                )
+            ),
+            'rank_requirement_completed' => array(
+                'title' => __( 'Rank Requirements', 'gamipress' ),
+                'icon' => 'dashicons-editor-ol',
+                'fields' => array(
+                    'rank_requirement_completed_email_actions',
+                    'disable_rank_requirement_completed_email',
+                    'rank_requirement_completed_email_subject',
+                    'rank_requirement_completed_email_content'
+                )
             ),
         ) )
     );
@@ -552,6 +697,12 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
                 'type' => 'text',
                 'default' => __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' ),
             ),
+            'rank_earned_log_pattern' => array(
+                'name' => __( 'Rank earned', 'gamipress' ),
+                'description' => __( 'Used when user ranks to a new rank. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{rank}', '{rank_type}' ) ),
+                'type' => 'text',
+                'default' => __( '{user} ranked to {rank_type} {rank}', 'gamipress' ),
+            ),
             'points_awarded_log_pattern' => array(
                 'name' => __( 'Points awarded', 'gamipress' ),
                 'description' => __( 'Used when an admin awards an user with points. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{points}', '{points_type}', '{total_points}' ) ),
@@ -563,6 +714,12 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
                 'description' => __( 'Used when an admin awards an user with an achievement. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{achievement}', '{achievement_type}' ) ),
                 'type' => 'text',
                 'default' => __( '{admin} awarded {user} with the the {achievement} {achievement_type}', 'gamipress' ),
+            ),
+            'rank_awarded_log_pattern' => array(
+                'name' => __( 'Rank awarded', 'gamipress' ),
+                'description' => __( 'Used when an admin ranks an user to a new rank. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{rank}', '{rank_type}' ) ),
+                'type' => 'text',
+                'default' => __( '{admin} ranked {user} to {rank_type} {rank}', 'gamipress' ),
             ),
         ) )
     );
@@ -699,9 +856,11 @@ function gamipress_get_manager_capability() {
 function gamipress_license_field_before( $field_args, $field ) {
 
     if( isset( $field_args['thumbnail'] ) && ! empty( $field_args['thumbnail'] ) ) : ?>
+
     <div class="gamipress-license-thumbnail">
         <img src="<?php echo $field_args['thumbnail']; ?>" alt="<?php echo $field_args['item_name']; ?>">
     </div>
+
     <?php endif;
 
 }

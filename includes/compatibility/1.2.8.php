@@ -914,7 +914,7 @@ function gamipress_get_user_trigger_count_old( $user_id, $trigger, $since = 0, $
 }
 
 /**
- * Add Points Awards metabox to the Badge post editor
+ * Add log extra data meta box
  *
  * @since  1.0.0
  * @return void

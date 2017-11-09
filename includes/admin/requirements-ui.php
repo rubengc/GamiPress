@@ -22,13 +22,14 @@ function gamipress_add_requirements_ui_meta_box() {
 
     // Steps
     foreach ( gamipress_get_achievement_types_slugs() as $achievement_type ) {
-        // Skip requirements and steps
-        if( $achievement_type === 'step' || $achievement_type === 'points-award' ) {
-            continue;
-        }
-
         add_meta_box( 'gamipress-requirements-ui', __( 'Required Steps', 'gamipress' ), 'gamipress_requirements_ui_meta_box', $achievement_type, 'advanced', 'default' );
     }
+
+    // Rank Requirements
+    foreach ( gamipress_get_rank_types_slugs() as $rank_type ) {
+        add_meta_box( 'gamipress-requirements-ui', __( 'Rank Requirements', 'gamipress' ), 'gamipress_requirements_ui_meta_box', $rank_type, 'advanced', 'default' );
+    }
+
 }
 add_action( 'add_meta_boxes', 'gamipress_add_requirements_ui_meta_box' );
 
@@ -44,13 +45,11 @@ add_action( 'add_meta_boxes', 'gamipress_add_requirements_ui_meta_box' );
 function gamipress_requirements_ui_meta_box( $post = null ) {
 
     // Define the requirement type to use
-    $requirement_type = '';
+    $requirement_type = gamipress_requirements_ui_get_requirement_type( $post );
 
-    if( $post->post_type === 'points-type' ) {
-        $requirement_type = 'points-award';
-    } else if( gamipress_is_achievement( $post ) ) {
-        $requirement_type = 'step';
-    }
+    // Setup the requirement object based on the requirement type
+    $requirement_types = gamipress_get_requirement_types();
+    $requirement_type_object = $requirement_types[$requirement_type];
 
     // Get assigned requirements
     $assigned_requirements = gamipress_get_assigned_requirements( $post->ID, $requirement_type );
@@ -67,11 +66,27 @@ function gamipress_requirements_ui_meta_box( $post = null ) {
     // Sort the requirements by their order
     uasort( $assigned_requirements, 'gamipress_compare_requirements_order' );
 
-    echo '<p>' .
-        ( ( $requirement_type === 'points-award' ) ?
-        __( 'Define the automatic ways an user could retrieve an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
-        : __( 'Define the required "steps" for this achievement to be considered complete. Use the "Label" field to optionally customize the titles of each step.', 'gamipress' ) )
-        . '</p>';
+    switch( $requirement_type ) {
+        case 'points-award':
+            echo '<p>' .
+                __( 'Define the automatic ways an user could retrieve an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
+            . '</p>';
+            break;
+        case 'step':
+            echo '<p>' .
+                __( 'Define the required "steps" for this achievement to be considered complete. Use the "Label" field to optionally customize the titles of each step.', 'gamipress' )
+            . '</p>';
+            break;
+        case 'rank-requirement':
+            echo '<p>' .
+                __( 'Define the required requirements for this rank to be considered that user is ranked on it. Use the "Label" field to optionally customize the titles of each requirement.', 'gamipress' )
+                . '<br>'
+                . __( '<strong>Important!</strong> User will not earn this requirements until be ranked on the previous rank.', 'gamipress' )
+            . '</p>';
+            break;
+    }
+
+    do_action( 'gamipress_before_requirements_list', $requirement_type, $requirement_type_object, $assigned_requirements );
 
     // Concatenate our requirements output
     echo '<ul id="requirements-list">';
@@ -81,12 +96,22 @@ function gamipress_requirements_ui_meta_box( $post = null ) {
     echo '</ul>';
 
     // Render our buttons ?>
-    <input style="margin-right: 1em" class="button" type="button" onclick="gamipress_add_requirement(<?php echo $post->ID; ?>);" value="<?php printf( __( 'Add New %s', 'gamipress' ), ( $requirement_type === 'points-award' ? __( 'Points Award', 'gamipress' ) : __( 'Step', 'gamipress' ) ) ); ?>">
-    <input class="button-primary" type="button" onclick="gamipress_update_requirements();" value="<?php printf( __( 'Save All %s', 'gamipress' ), ( $requirement_type === 'points-award' ? __( 'Points Awards', 'gamipress' ) : __( 'Steps', 'gamipress' ) ) ); ?>">
+    <input style="margin-right: 1em" class="button" type="button" onclick="gamipress_add_requirement(<?php echo $post->ID; ?>);" value="<?php printf( __( 'Add New %s', 'gamipress' ), $requirement_type_object['singular_name'] ); ?>">
+    <input class="button-primary" type="button" onclick="gamipress_update_requirements();" value="<?php printf( __( 'Save All %s', 'gamipress' ), $requirement_type_object['plural_name'] ); ?>">
     <span class="spinner requirements-spinner"></span>
     <?php
 }
 
+/**
+ * Return post assigned requirements
+ *
+ * @since 1.0.0
+ *
+ * @param null $post_id
+ * @param $requirement_type
+ *
+ * @return array|bool
+ */
 function gamipress_get_assigned_requirements( $post_id = null, $requirement_type ) {
     global $post;
 
@@ -97,14 +122,14 @@ function gamipress_get_assigned_requirements( $post_id = null, $requirement_type
     if( $requirement_type === 'points-award' ) {
         // Grab points type's requirements
         return gamipress_get_points_type_points_awards( $post_id );
-    } else if( $requirement_type === 'step' ) {
-        // Grab achievement type's steps
+    } else {
+        // Grab post's requirements (valid for achievement's steps and rank's requirements)
         return get_posts( array(
-            'post_type'           => 'step',
+            'post_type'           => $requirement_type,
             'posts_per_page'      => -1,
             'suppress_filters'    => false,
             'connected_direction' => 'to',
-            'connected_type'      => 'step-to-' . get_post_type( $post_id ),
+            'connected_type'      => $requirement_type . '-to-' . get_post_type( $post_id ),
             'connected_items'     => $post_id,
         ));
     }
@@ -165,16 +190,44 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <?php do_action( 'gamipress_requirement_ui_html_after_trigger_type', $requirement_id, $post_id ); ?>
 
+        <input type="number" name="requirement-points-required" id="requirement-<?php echo $requirement_id; ?>-points-required" class="points-required" value="<?php echo ( $requirements['points_required'] === 0 ? 1 : $requirements['points_required'] ); ?>" />
+
+        <?php do_action( 'gamipress_requirement_ui_html_after_points_required', $requirement_id, $post_id ); ?>
+
+        <select class="select-points-type-required select-points-type-required-<?php echo $requirement_id; ?>">
+            <option value=""><?php _e( 'Default points', 'gamipress'); ?></option>
+            <?php foreach ( gamipress_get_points_types() as $slug => $data ) :
+
+                echo '<option value="' . $slug . '" ' . selected( $requirements['points_type_required'], $slug, false ) . '>' . $data['plural_name'] . '</option>';
+
+            endforeach; ?>
+        </select>
+
+        <?php do_action( 'gamipress_requirement_ui_html_after_points_type_required', $requirement_id, $post_id ); ?>
+
+        <select class="select-rank-type-required select-rank-type-required-<?php echo $requirement_id; ?>">
+            <?php foreach ( gamipress_get_rank_types() as $slug => $data ) :
+
+                echo '<option value="' . $slug . '" ' . selected( $requirements['rank_type_required'], $slug, false ) . '>' . $data['singular_name'] . '</option>';
+
+            endforeach; ?>
+        </select>
+
+        <?php do_action( 'gamipress_requirement_ui_html_after_rank_type_required', $requirement_id, $post_id ); ?>
+
+        <select class="select-rank-required select-rank-required-<?php echo $requirement_id; ?>">
+            <option value=""><?php _e( 'Choose a rank', 'gamipress'); ?></option>
+        </select>
+
+        <?php do_action( 'gamipress_requirement_ui_html_after_rank_required', $requirement_id, $post_id ); ?>
+
         <select class="select-achievement-type select-achievement-type-<?php echo $requirement_id; ?>">
             <option value=""><?php _e( 'Choose an achievement type', 'gamipress'); ?></option>
-            <?php
-            foreach ( gamipress_get_achievement_types() as $slug => $data ) {
-                if ( $slug === 'step' || $slug === 'points-award' ){
-                    continue;
-                }
+            <?php foreach ( gamipress_get_achievement_types() as $slug => $data ) :
+
                 echo '<option value="' . $slug . '" ' . selected( $requirements['achievement_type'], $slug, false ) . '>' . $data['plural_name'] . '</option>';
-            }
-            ?>
+
+            endforeach; ?>
         </select>
 
         <?php do_action( 'gamipress_requirement_ui_html_after_achievement_type', $requirement_id, $post_id ); ?>
@@ -251,10 +304,36 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 }
 
 /**
- * Get all the requirements of a given requirement
+ * Define the requirement type to use
+ *
+ * @since 1.3.1
+ *
+ * @param WP_Post $post
+ *
+ * @return string
+ */
+function gamipress_requirements_ui_get_requirement_type( $post ) {
+
+    $requirement_type = '';
+
+    if( $post->post_type === 'points-type' ) {
+        $requirement_type = 'points-award';
+    } else if( gamipress_is_achievement( $post ) ) {
+        $requirement_type = 'step';
+    } else if( gamipress_is_rank( $post ) ) {
+        $requirement_type = 'rank-requirement';
+    }
+
+    return apply_filters( 'gamipress_requirements_ui_get_requirement_type', $requirement_type, $post );
+}
+
+/**
+ * Get all the requirements of a given points award
  *
  * @since  1.0.0
+ *
  * @param  integer $point_award_id The given requirement's post ID
+ *
  * @return array|bool       An array of all the requirement requirements if it has any, false if not
  */
 function gamipress_get_points_award_requirements( $point_award_id = 0 ) {
@@ -265,10 +344,12 @@ function gamipress_get_points_award_requirements( $point_award_id = 0 ) {
 }
 
 /**
- * Get all the requirements of a given requirement
+ * Get all the requirements of a given step
  *
  * @since  1.0.0
+ *
  * @param  integer $step_id The given requirement's post ID
+ *
  * @return array|bool       An array of all the requirement requirements if it has any, false if not
  */
 function gamipress_get_step_requirements( $step_id = 0 ) {
@@ -279,22 +360,31 @@ function gamipress_get_step_requirements( $step_id = 0 ) {
 }
 
 /**
+ * Get all the requirements of a given rank requirement
+ *
+ * @since  1.3.1
+ *
+ * @param  integer $rank_requirement_id The given requirement's post ID
+ *
+ * @return array|bool       An array of all the requirement requirements if it has any, false if not
+ */
+function gamipress_get_rank_requirement_requirements( $rank_requirement_id = 0 ) {
+
+    $requirements = gamipress_get_requirement_object( $rank_requirement_id );
+
+    return apply_filters( 'gamipress_get_rank_requirement_requirements', $requirements, $rank_requirement_id );
+}
+
+/**
  * AJAX Handler for adding a new requirement
  *
  * @since 1.0.0
- * @return void
  */
 function gamipress_add_requirement_ajax_handler() {
 
-    $post_type = get_post_type( $_POST['post_id'] );
+    $post = get_post( $_POST['post_id'] );
 
-    $requirement_type = '';
-
-    if( $post_type === 'points-type' ) {
-        $requirement_type = 'points-award';
-    } else if( gamipress_is_achievement( $_POST['post_id'] ) ) {
-        $requirement_type = 'step';
-    }
+    $requirement_type = gamipress_requirements_ui_get_requirement_type( $post );
 
     // Create a new requirement post and grab it's ID
     $requirement_id = wp_insert_post( array(
@@ -302,15 +392,15 @@ function gamipress_add_requirement_ajax_handler() {
         'post_status' => 'publish'
     ) );
 
-    // Output the edit requirement html to insert into the requirements metabox
-    gamipress_requirement_ui_html( $requirement_id, $_POST['post_id'] );
+    // Output the edit requirement html to insert into the requirements meta box
+    gamipress_requirement_ui_html( $requirement_id, $post->ID );
 
-    // Create the P2P connection from the requirement to the badge
+    // Create the P2P connection from the requirement to the achievement
     $p2p_id = p2p_create_connection(
-        $requirement_type . '-to-' . $post_type,
+        $requirement_type . '-to-' . $post->post_type,
         array(
             'from' => $requirement_id,
-            'to'   => $_POST['post_id'],
+            'to'   => $post->ID,
             'meta' => array(
                 'date' => current_time( 'mysql' )
             )
@@ -329,7 +419,6 @@ add_action( 'wp_ajax_gamipress_add_requirement', 'gamipress_add_requirement_ajax
  * AJAX Handler for deleting a requirement
  *
  * @since 1.0.0
- * @return void
  */
 function gamipress_delete_requirement_ajax_handler() {
     wp_delete_post( $_POST['requirement_id'] );
@@ -341,8 +430,6 @@ add_action( 'wp_ajax_gamipress_delete_requirement', 'gamipress_delete_requiremen
  * AJAX Handler for saving all requirements
  *
  * @since 1.0.5
- *
- * @return void
  */
 function gamipress_update_requirements_ajax_handler() {
 
@@ -360,13 +447,17 @@ function gamipress_update_requirements_ajax_handler() {
         foreach ( $_POST['requirements'] as $key => $requirement ) {
 
             // Grab all of the relevant values of that requirement
-            $requirement_id   = $requirement['requirement_id'];
-            $requirement_type = get_post_type( $requirement_id );
-            $required_count   = ( ! empty( $requirement['required_count'] ) ) ? absint( $requirement['required_count'] ) : 1;
-            $limit            = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
-            $limit_type       = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
-            $trigger_type     = $requirement['trigger_type'];
-            $achievement_type = $requirement['achievement_type'];
+            $requirement_id         = $requirement['requirement_id'];
+            $requirement_type       = get_post_type( $requirement_id );
+            $required_count         = ( ! empty( $requirement['required_count'] ) ) ? absint( $requirement['required_count'] ) : 1;
+            $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
+            $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
+            $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
+            $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
+            $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
+            $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
+            $trigger_type           = $requirement['trigger_type'];
+            $achievement_type       = $requirement['achievement_type'];
 
             // Clear all relation data
             $wpdb->query( $wpdb->prepare( "DELETE FROM $wpdb->p2p WHERE p2p_to=%d", $requirement_id ) );
@@ -398,6 +489,10 @@ function gamipress_update_requirements_ajax_handler() {
             p2p_update_meta( gamipress_get_requirement_connection_id( $requirement_id ), 'order', $key );
 
             // Update our relevant meta
+            update_post_meta( $requirement_id, '_gamipress_points_required', $points_required );
+            update_post_meta( $requirement_id, '_gamipress_points_type_required', $points_type_required );
+            update_post_meta( $requirement_id, '_gamipress_rank_type_required', $rank_type_required );
+            update_post_meta( $requirement_id, '_gamipress_rank_required', $rank_required );
             update_post_meta( $requirement_id, '_gamipress_count', $required_count );
             update_post_meta( $requirement_id, '_gamipress_limit', $limit );
             update_post_meta( $requirement_id, '_gamipress_limit_type', $limit_type );
@@ -454,16 +549,37 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         $requirement = gamipress_get_requirement_object( $requirement_id );
     }
 
-    $requirement_type = get_post_type( $requirement_id );
-    $required_count   = ( ! empty( $requirement['required_count'] ) ) ? absint( $requirement['required_count'] ) : 1;
-    $limit            = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
-    $limit_type       = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
-    $trigger_type     = $requirement['trigger_type'];
-    $achievement_type = $requirement['achievement_type'];
+    $requirement_type       = get_post_type( $requirement_id );
+    $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
+    $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
+    $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
+    $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
+    $required_count         = ( ! empty( $requirement['required_count'] ) ) ? absint( $requirement['required_count'] ) : 1;
+    $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
+    $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
+    $trigger_type           = $requirement['trigger_type'];
+    $achievement_type       = $requirement['achievement_type'];
 
     // Flip between our requirement types and make an appropriate connection
     switch ( $trigger_type ) {
+        case 'earn-points':
+            $points_types = gamipress_get_points_types();
 
+            $points_types[''] = array(
+                'singular_name' => __( 'Point', 'gamipress' ),
+                'plural_name' => __( 'Points', 'gamipress' ),
+            );
+
+            $singular = strtolower( $points_types[$points_type_required]['singular_name'] );
+            $plural = strtolower( $points_types[$points_type_required]['plural_name'] );
+
+            $title = sprintf( __( 'Earn %d %s', 'gamipress' ), $points_required, _n( $singular, $plural, $points_required ) );
+            break;
+        case 'earn-rank':
+            $rank = get_post( $rank_required );
+
+            $title = sprintf( __( 'Reach %s %s', 'gamipress' ), ( $rank ? gamipress_get_rank_type_singular( $rank->post_type ) : '' ), ( $rank ? $rank->post_title : '' ) );
+            break;
         // Connect the requirement to ANY of the given achievement type
         case 'any-achievement':
             $title = sprintf( __( 'Unlock any %s', 'gamipress' ), $achievement_type );
@@ -558,7 +674,7 @@ function gamipress_get_requirement_menu_order( $requirement_id = 0 ) {
 
     $menu_order = $wpdb->get_var( $wpdb->prepare( "SELECT meta_value FROM $wpdb->p2pmeta WHERE p2p_id=%d AND meta_key='order'", $p2p_id ) );
 
-    if ( ! $menu_order || $menu_order == 'NaN' ) {
+    if ( ! $menu_order || $menu_order === 'NaN' ) {
         $menu_order = '0';
     }
 

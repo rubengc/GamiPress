@@ -21,6 +21,12 @@ function cmb2_render_html( $field, $value, $object_id, $object_type, $field_type
         'id'      => $field_type->_id(),
     ) );
 
+    if( isset( $field->args['content_cb'] ) && ! empty( $field->args['content_cb'] ) ) {
+        ob_start();
+        call_user_func_array( $field->args['content_cb'], array( $field, $object_id, $object_type ) );
+        $field->args['content'] = ob_get_clean();
+    }
+
     echo sprintf( '<div %s>%s</div>',
         $field_type->concat_attrs( $attrs ),
         ( isset( $field->args['content'] ) && ! empty( $field->args['content'] ) ? $field->args['content'] : '' )

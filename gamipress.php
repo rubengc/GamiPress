@@ -3,7 +3,7 @@
  * Plugin Name:     GamiPress
  * Plugin URI:      https://gamipress.com
  * Description:     The most flexible and powerful gamification system for WordPress.
- * Version:         1.3.0.1
+ * Version:         1.3.1
  * Author:          GamiPress
  * Author URI:      https://gamipress.com/
  * Text Domain:     gamipress
@@ -55,6 +55,12 @@ final class GamiPress {
 	 * @since       1.0.0
 	 */
 	public $achievement_types = array();
+
+	/**
+	 * @var         array $achievement_types GamiPress registered rank types
+	 * @since       1.3.1
+	 */
+	public $rank_types = array();
 
 	/**
 	 * @var         array $requirement_types GamiPress registered requirement types
@@ -109,7 +115,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.3.0.1' );
+		define( 'GAMIPRESS_VER', '1.3.1' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -134,6 +140,7 @@ final class GamiPress {
 		// Global libraries
         require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
 		require_once GAMIPRESS_DIR . 'libraries/ct/ct.php';
+		require_once GAMIPRESS_DIR . 'libraries/ct-ajax-list-table/ct-ajax-list-table.php';
 
 		// Admin libraries
 		if( is_admin() ) {
@@ -149,8 +156,6 @@ final class GamiPress {
 			require_once GAMIPRESS_DIR . 'libraries/button-field-type.php';
 			require_once GAMIPRESS_DIR . 'libraries/html-field-type.php';
 
-			require_once GAMIPRESS_DIR . 'libraries/ct-ajax-list-table/ct-ajax-list-table.php';
-
 		}
 
     }
@@ -165,6 +170,7 @@ final class GamiPress {
 	private function compatibility() {
 
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.2.8.php';
+		require_once GAMIPRESS_DIR . 'includes/compatibility/1.3.1.php';
 
 	}
 
@@ -188,6 +194,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/listeners.php';
 		require_once GAMIPRESS_DIR . 'includes/log-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/points-functions.php';
+		require_once GAMIPRESS_DIR . 'includes/rank-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/requirement-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/scripts.php';
 		require_once GAMIPRESS_DIR . 'includes/shortcodes.php';
@@ -216,6 +223,7 @@ final class GamiPress {
 		// Hook in all our important pieces
 		add_action( 'init', array( $this, 'register_points_relationships' ) );
 		add_action( 'init', array( $this, 'register_achievement_relationships' ) );
+		add_action( 'init', array( $this, 'register_rank_relationships' ) );
 		add_action( 'init', array( $this, 'register_image_sizes' ) );
 
 	}
@@ -250,11 +258,13 @@ final class GamiPress {
 
 		// Grab all our registered achievement types and loop through them
 		$achievement_types = gamipress_get_achievement_types_slugs();
+
 		if ( is_array( $achievement_types ) && ! empty( $achievement_types ) ) {
+
 			foreach ( $achievement_types as $achievement_type ) {
 
 				// Connect steps to each achievement type
-				// Used to get an achievement's required steps (e.g. This badge requires these 3 steps)
+				// Used to get an achievement's required steps (e.g. This achievement requires these 3 steps)
 				p2p_register_connection_type( array(
 					'name'      => 'step-to-' . $achievement_type,
 					'from'      => 'step',
@@ -307,13 +317,84 @@ final class GamiPress {
 	}
 
 	/**
+	 * Register ranks Post2Post relationships
+	 */
+	function register_rank_relationships() {
+
+		// Grab all our registered rank types and loop through them
+		$rank_types = gamipress_get_rank_types_slugs();
+
+		if ( is_array( $rank_types ) && ! empty( $rank_types ) ) {
+
+			foreach ( $rank_types as $rank_type ) {
+
+				// Connect steps to each rank type
+				// Used to get an rank's required steps (e.g. This rank requires these 3 steps)
+				p2p_register_connection_type( array(
+					'name'      => 'rank-requirement-to-' . $rank_type,
+					'from'      => 'rank-requirement',
+					'to'        => $rank_type,
+					'admin_box' => false,
+					'fields'    => array(
+						'order'   => array(
+							'title'   => __( 'Order', 'gamipress' ),
+							'type'    => 'text',
+							'default' => 0,
+						),
+					),
+				) );
+
+				// Connect each rank type to a step
+				// Used to get a requirement's required rank (e.g. this requirement requires earning Level 1)
+				p2p_register_connection_type( array(
+					'name'      => $rank_type . '-to-rank-requirement',
+					'from'      => $rank_type,
+					'to'        => 'step',
+					'admin_box' => false,
+					'fields'    => array(
+						'order'   => array(
+							'title'   => __( 'Order', 'gamipress' ),
+							'type'    => 'text',
+							'default' => 0,
+						),
+					),
+				) );
+
+				// Connect each rank type to a points award
+				// Used to get a points award's required rank (e.g. this points award requires earning Level 1)
+				p2p_register_connection_type( array(
+					'name'      => $rank_type . '-to-points-award',
+					'from'      => $rank_type,
+					'to'        => 'points-award',
+					'admin_box' => false,
+					'fields'    => array(
+						'order'   => array(
+							'title'   => __( 'Order', 'gamipress' ),
+							'type'    => 'text',
+							'default' => 0,
+						),
+					),
+				) );
+
+			}
+		}
+
+	}
+
+	/**
 	 * Register custom WordPress image size(s)
 	 */
 	function register_image_sizes() {
 
+		// Register achievement image size
 		$achievement_image_size = gamipress_get_option( 'achievement_image_size', array( 'width' => 100, 'height' => 100 ) );
 
 		add_image_size( 'gamipress-achievement', absint( $achievement_image_size['width'] ), absint( $achievement_image_size['height'] ) );
+
+		// Register rank image size
+		$rank_image_size = gamipress_get_option( 'rank_image_size', array( 'width' => 100, 'height' => 100 ) );
+
+		add_image_size( 'gamipress-rank', absint( $rank_image_size['width'] ), absint( $rank_image_size['height'] ) );
 
 	}
 

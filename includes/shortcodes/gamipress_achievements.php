@@ -19,11 +19,9 @@ function gamipress_register_achievements_shortcode() {
 	$achievement_types = array( 'all' => __( 'All', 'gamipress' ) );
 
 	foreach ( gamipress_get_achievement_types() as $slug => $data ) {
-		if( $slug === 'step' || $slug === 'points-award' ) {
-			continue;
-		}
 
 		$achievement_types[$slug] = $data['plural_name'];
+
 	}
 
 	$achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
@@ -68,7 +66,7 @@ function gamipress_register_achievements_shortcode() {
 		'fields'      => array_merge( array(
 			'type' => array(
 				'name'        => __( 'Achievement Type(s)', 'gamipress' ),
-				'description' => __( 'Single, or comma-separated list of, achievement type(s) to display.', 'gamipress' ),
+				'description' => __( 'Single or comma-separated list of achievement type(s) to display.', 'gamipress' ),
 				'type'        => 'advanced_select',
 				'multiple'    => true,
 				'options'     => $achievement_types,
@@ -199,13 +197,12 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'order'       	=> 'ASC',
 		'include'     	=> '',
 		'exclude'     	=> '',
-		'meta_key'    	=> '',
-		'meta_value'  	=> '',
 
 		// Single achievement atts
 		'thumbnail' 	=> 'yes',
 		'excerpt'	  	=> 'yes',
 		'steps'	  		=> 'yes',
+		'toggle' 		=> 'yes',
 		'earners'	  	=> 'no',
 	), $atts, 'gamipress_achievements' );
 

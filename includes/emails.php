@@ -107,6 +107,49 @@ function gamipress_get_points_award_completed_email_pattern_tags() {
 }
 
 /**
+ * Get an array of email pattern tags used on rank earned email
+ *
+ * @since  1.3.1
+
+ * @return array The registered rank earned email pattern tags
+ */
+function gamipress_get_rank_earned_email_pattern_tags() {
+
+    $email_pattern_tags = gamipress_get_email_pattern_tags();
+
+    return apply_filters( 'gamipress_rank_earned_email_pattern_tags', array_merge( $email_pattern_tags, array(
+        '{rank_title}'          =>  __(  'Rank title.', 'gamipress' ),
+        '{rank_excerpt}'        =>  __(  'Rank excerpt.', 'gamipress' ),
+        '{rank_image}'          =>  __(  'Rank featured image.', 'gamipress' ),
+        '{rank_requirements}'   =>  __(  'Rank requirements.', 'gamipress' ),
+        '{rank_type}'           =>  __(  'Type of the rank.', 'gamipress' ),
+    ) ) );
+
+}
+
+/**
+ * Get an array of email pattern tags used on rank requirement completed email
+ *
+ * @since  1.3.1
+
+ * @return array The registered rank requirement completed email pattern tags
+ */
+function gamipress_get_rank_requirement_completed_email_pattern_tags() {
+
+    $email_pattern_tags = gamipress_get_email_pattern_tags();
+
+    return apply_filters( 'gamipress_step_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
+        '{label}'               =>  __(  'Requirement label.', 'gamipress' ),
+        '{rank_title}'          =>  __(  'Requirement rank title.', 'gamipress' ),
+        '{rank_excerpt}'        =>  __(  'Requirement rank excerpt.', 'gamipress' ),
+        '{rank_image}'          =>  __(  'Requirement rank featured image.', 'gamipress' ),
+        '{rank_requirements}'   =>  __(  'Requirement rank requirements.', 'gamipress' ),
+        '{rank_type}'           =>  __(  'Type of the rank.', 'gamipress' ),
+    ) ) );
+
+}
+
+/**
  * Get a string with the desired email pattern tags html markup
  *
  * @since  1.3.0
@@ -123,6 +166,10 @@ function gamipress_get_email_pattern_tags_html( $email = '' ) {
         $email_pattern_tags = gamipress_get_step_completed_email_pattern_tags();
     } else if( $email === 'points_award_completed' ) {
         $email_pattern_tags = gamipress_get_points_award_completed_email_pattern_tags();
+    } else if( $email === 'rank_earned' ) {
+        $email_pattern_tags = gamipress_get_rank_earned_email_pattern_tags();
+    } else if( $email === 'rank_requirement_completed' ) {
+        $email_pattern_tags = gamipress_get_rank_requirement_completed_email_pattern_tags();
     } else {
         $email_pattern_tags = gamipress_get_email_pattern_tags();
     }
@@ -375,12 +422,77 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 $points = absint( get_post_meta( $points_award->ID, '_gamipress_points', true ) );
                 $singular = $points_type->post_title;
                 $plural = get_post_meta( $points_type->ID, '_gamipress_plural_name', true );
-                $points_balance = gamipress_get_users_points( $user->ID, $points_type->post_name );
+                $points_balance = gamipress_get_user_points( $user->ID, $points_type->post_name );
 
                 $replacements['{points}'] = $points;
                 $replacements['{points_balance}'] = $points_balance;
                 $replacements['{points_type}'] = _n( $singular, $plural, $points );
 
+            }
+        }
+
+    } else if( $gamipress_email_template_args['type'] === 'rank_earned' && isset( $gamipress_email_template_args['rank_id'] ) ) {
+
+        // Get the rank post object
+        $rank = get_post( $gamipress_email_template_args['rank_id'] );
+
+        if( $rank ) {
+
+            $rank_requirements_html = '';
+
+            $requirements = gamipress_get_rank_requirements( $rank->ID );
+
+            if( count( $requirements ) ) {
+
+                $list_tag = gamipress_is_achievement_sequential( $rank->ID ) ? 'ol' : 'ul';
+
+                $rank_requirements_html .= "<{$list_tag}>";
+
+                foreach( $requirements as $requirement ) {
+                    // check if user has earned this requirement, and add an 'earned' class
+                    $earned = count( gamipress_get_user_achievements( array(
+                            'user_id' => absint( $user->ID ),
+                            'achievement_id' => absint( $requirement->ID ),
+                            'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user->ID ) )
+                        ) ) ) > 0;
+
+                    $title = $requirement->post_title;
+
+                    $rank_requirements_html .= '<li style="' . ( $earned ? 'text-decoration: line-through;' : '' ) . '">' . $title . '</li>';
+                }
+
+                $rank_requirements_html .= "</{$list_tag}>";
+            }
+
+            $replacements['{rank_title}'] = $rank->post_title;
+            $replacements['{rank_excerpt}'] = $rank->post_excerpt;
+            $replacements['{rank_image}'] = gamipress_get_rank_post_thumbnail( $rank->ID );
+            $replacements['{rank_requirements}'] = $rank_requirements_html;
+            $replacements['{rank_type}'] = gamipress_get_rank_type_singular( $rank->post_type );
+
+        }
+
+    } else if( $gamipress_email_template_args['type'] === 'rank_requirement_completed' && isset( $gamipress_email_template_args['rank_requirement_id'] ) ) {
+
+        // Get the rank requirement post object
+        $requirement = get_post( $gamipress_email_template_args['rank_requirement_id'] );
+
+        if( $requirement ) {
+            $replacements['{label}'] = $requirement->post_title;
+
+            // Get the requirement rank to parse their tags
+            $rank = gamipress_get_rank_requirement_rank( $requirement->ID );
+
+            if( $rank ) {
+                $gamipress_email_template_args['rank_id'] = $rank->ID;
+
+                // Set a temporal type to parse rank tags
+                $gamipress_email_template_args['type'] = 'rank_earned';
+
+                $content = gamipress_parse_email_tags( $content, $to, $subject, $message, $attachments );
+
+                // Restore the original type
+                $gamipress_email_template_args['type'] = 'rank_requirement_completed';
             }
         }
 
@@ -456,6 +568,29 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
         $replacements['{points}'] = 100;
         $replacements['{points_balance}'] = 1000;
         $replacements['{points_type}'] = __( 'Sample Points Type', 'gamipress' );
+
+    } else if( $gamipress_email_template_args['type'] === 'rank_earned' ) {
+
+        $replacements['{rank_title}'] = __( 'Sample Rank', 'gamipress' );
+        $replacements['{rank_excerpt}'] = __( 'Sample Rank Excerpt', 'gamipress' );
+        $replacements['{rank_image}'] = '<div style="' . $img_placeholder_style . '">100x100</div>';
+        $replacements['{rank_requirements}'] = '<ul>'
+            . '<li>' . __(  'Not completed rank requirement.', 'gamipress' ) . '</li>'
+            . '<li style="text-decoration: line-through;">' . __(  'Completed rank requirement.', 'gamipress' ) . '</li>'
+            . '</ul>';
+        $replacements['{rank_type}'] = __( 'Sample Rank Type', 'gamipress' );
+
+    } else if( $gamipress_email_template_args['type'] === 'rank_requirement_completed' ) {
+
+        $replacements['{label}'] = __( 'Sample Rank Requirement Label', 'gamipress' );
+
+        // Set a temporal type to parse rank tags
+        $gamipress_email_template_args['type'] = 'rank_earned';
+
+        $content = gamipress_parse_preview_email_tags( $content, $to, $subject, $message, $attachments );
+
+        // Restore the original type
+        $gamipress_email_template_args['type'] = 'rank_requirement_completed';
 
     }
 
@@ -571,6 +706,60 @@ function gamipress_preview_points_award_completed_email() {
 add_action( 'gamipress_action_get_preview_points_award_completed_email', 'gamipress_preview_points_award_completed_email' );
 
 /**
+ * Preview rank earned email action
+ *
+ * @since 1.3.1
+ */
+function gamipress_preview_rank_earned_email() {
+
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    global $gamipress_email_template_args;
+
+    $gamipress_email_template_args = array(
+        'type' => 'rank_earned'
+    );
+
+    $subject = gamipress_get_option( 'rank_earned_email_subject' );
+    $message = gamipress_get_option( 'rank_earned_email_content' );
+
+    gamipress_preview_email( $subject, $message );
+
+    exit;
+
+}
+add_action( 'gamipress_action_get_preview_rank_earned_email', 'gamipress_preview_rank_earned_email' );
+
+/**
+ * Preview rank requirement completed email action
+ *
+ * @since 1.3.1
+ */
+function gamipress_preview_rank_requirement_completed_email() {
+
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    global $gamipress_email_template_args;
+
+    $gamipress_email_template_args = array(
+        'type' => 'rank_requirement_completed'
+    );
+
+    $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
+    $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+
+    gamipress_preview_email( $subject, $message );
+
+    exit;
+
+}
+add_action( 'gamipress_action_get_preview_rank_requirement_completed_email', 'gamipress_preview_rank_requirement_completed_email' );
+
+/**
  * Send the desired email to the site admin
  *
  * @since 1.3.0
@@ -678,16 +867,69 @@ function gamipress_send_test_points_award_completed_email() {
 }
 add_action( 'gamipress_action_get_send_test_points_award_completed_email', 'gamipress_send_test_points_award_completed_email' );
 
+/**
+ * Send a test rank earned email
+ *
+ * @since 1.3.1
+ */
+function gamipress_send_test_rank_earned_email() {
+
+    global $gamipress_email_template_args;
+
+    $gamipress_email_template_args = array(
+        'type' => 'rank_earned',
+    );
+
+    $subject = gamipress_get_option( 'rank_earned_email_subject' );
+    $message = gamipress_get_option( 'rank_earned_email_content' );
+
+    gamipress_send_test_email( $subject, $message );
+
+    exit;
+
+}
+add_action( 'gamipress_action_get_send_test_rank_earned_email', 'gamipress_send_test_rank_earned_email' );
+
+/**
+ * Send a test rank requirement completed email
+ *
+ * @since 1.3.1
+ */
+function gamipress_send_test_rank_requirement_completed_email() {
+
+    global $gamipress_email_template_args;
+
+    $gamipress_email_template_args = array(
+        'type' => 'rank_requirement_completed',
+    );
+
+    $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
+    $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+
+    gamipress_send_test_email( $subject, $message );
+
+    exit;
+
+}
+add_action( 'gamipress_action_get_send_test_rank_requirement_completed_email', 'gamipress_send_test_rank_requirement_completed_email' );
+
+/**
+ * Function that check for each awarded achievement if it should be emailed to the user
+ *
+ * @since 1.3.0
+ *
+ * @param $user_id
+ * @param $achievement_id
+ * @param $trigger
+ * @param $site_id
+ * @param $args
+ */
 function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger, $site_id, $args ) {
 
     global $gamipress_email_template_args;
 
-    // Get our requirements types
-    $requirement_types = gamipress_get_requirement_types_slugs();
-
     // Setup out achievement types
     $achievement_types = gamipress_get_achievement_types_slugs();
-    $achievement_types = array_diff( $achievement_types, $requirement_types );
 
     // Get the achievement type
     $achievement_type = get_post_type( $achievement_id );
@@ -746,8 +988,59 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
         gamipress_send_email( $user->user_email, $subject, $message );
 
+    } else if( $achievement_type === 'rank-requirement' ) {
+
+        if( (bool) gamipress_get_option( 'disable_rank_requirement_completed_email', false ) ) {
+            return;
+        }
+
+        $gamipress_email_template_args = array(
+            'user_id' => $user_id,
+            'rank_requirement_id' => $achievement_id,
+            'type' => 'rank_requirement_completed',
+        );
+
+        $user = get_userdata( $user_id );
+        $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
+        $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+
+        gamipress_send_email( $user->user_email, $subject, $message );
+
     }
 
 
 }
 add_action( 'gamipress_award_achievement', 'gamipress_maybe_send_email_to_user', 10, 5 );
+
+/**
+ * Function that check for each awarded rank if it should be emailed to the user
+ *
+ * @since 1.3.1
+ *
+ * @param $user_id
+ * @param $new_rank
+ * @param $old_rank
+ * @param $admin_id
+ * @param $achievement_id
+ */
+function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank, $old_rank, $admin_id = 0, $achievement_id = null ) {
+
+    global $gamipress_email_template_args;
+
+    if( (bool) gamipress_get_option( 'disable_rank_earned_email', false ) ) {
+        return;
+    }
+
+    $gamipress_email_template_args = array(
+        'user_id' => $user_id,
+        'rank_id' => $new_rank->ID,
+        'type' => 'rank_earned',
+    );
+
+    $user = get_userdata( $user_id );
+    $subject = gamipress_get_option( 'rank_earned_email_subject' );
+    $message = gamipress_get_option( 'rank_earned_email_content' );
+
+    gamipress_send_email( $user->user_email, $subject, $message );
+}
+add_action( 'gamipress_update_user_rank', 'gamipress_maybe_send_email_to_user_for_rank_earned', 10, 5 );

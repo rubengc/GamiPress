@@ -14,6 +14,8 @@ require_once GAMIPRESS_DIR .'includes/widgets/achievements-widget.php';
 require_once GAMIPRESS_DIR .'includes/widgets/logs-widget.php';
 require_once GAMIPRESS_DIR .'includes/widgets/points-widget.php';
 require_once GAMIPRESS_DIR .'includes/widgets/points-types-widget.php';
+require_once GAMIPRESS_DIR .'includes/widgets/rank-widget.php';
+require_once GAMIPRESS_DIR .'includes/widgets/ranks-widget.php';
 
 // Register GamiPress widgets
 function gamipress_register_widgets() {
@@ -23,6 +25,8 @@ function gamipress_register_widgets() {
 	register_widget( 'gamipress_logs_widget' );
 	register_widget( 'gamipress_points_widget' );
 	register_widget( 'gamipress_points_types_widget' );
+	register_widget( 'gamipress_rank_widget' );
+	register_widget( 'gamipress_ranks_widget' );
 
 }
 add_action( 'widgets_init', 'gamipress_register_widgets' );

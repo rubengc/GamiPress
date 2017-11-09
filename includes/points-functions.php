@@ -15,13 +15,13 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @param  int   $user_id      The given user's ID
  * @return integer  $user_points  The user's current points
  */
-function gamipress_get_users_points( $user_id = 0, $points_type = '' ) {
+function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
 		$user_id = wp_get_current_user()->ID;
 
-    // Default points badge
+    // Default points
     $user_meta = '_gamipress_points';
 
     if( ! empty( $points_type ) ) {
@@ -36,14 +36,16 @@ function gamipress_get_users_points( $user_id = 0, $points_type = '' ) {
  * Posts a log entry when a user earns points
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id        The given user's ID
  * @param  integer $new_points     The new points the user is being awarded
  * @param  integer $admin_id       If being awarded by an admin, the admin's user ID
  * @param  integer $achievement_id The achievement that generated the points, if applicable
  * @param  string  $points_type    The points type
+ *
  * @return integer                 The user's updated points total
  */
-function gamipress_update_users_points( $user_id = 0, $new_points = 0, $admin_id = 0, $achievement_id = null, $points_type = '' ) {
+function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id = 0, $achievement_id = null, $points_type = '' ) {
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
@@ -53,14 +55,14 @@ function gamipress_update_users_points( $user_id = 0, $new_points = 0, $admin_id
 		$points_type = $points_type->post_name;
 
 	// Grab the user's current points
-	$current_points = gamipress_get_users_points( $user_id, $points_type );
+	$current_points = gamipress_get_user_points( $user_id, $points_type );
 
 	// If we're getting an admin ID, $new_points is actually the final total, so subtract the current points
 	if ( $admin_id ) {
 		$new_points = $new_points - $current_points;
 	}
 
-    // Default points badge
+    // Default points
     $user_meta = '_gamipress_points';
 
     if( ! empty( $points_type ) ) {
@@ -72,9 +74,9 @@ function gamipress_update_users_points( $user_id = 0, $new_points = 0, $admin_id
 	update_user_meta( $user_id, $user_meta, $total_points );
 
 	// Available action for triggering other processes
-	do_action( 'gamipress_update_users_points', $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type );
+	do_action( 'gamipress_update_user_points', $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type );
 
-	// Maybe award some points-based badges
+	// Maybe award some points-based achievements
 	foreach ( gamipress_get_points_based_achievements() as $achievement ) {
 		gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id );
 	}
@@ -94,7 +96,7 @@ function gamipress_update_users_points( $user_id = 0, $new_points = 0, $admin_id
  * @param integer $achievement_id The associated achievement ID
  * @param string  $points_type    The points type
  */
-function gamipress_log_users_points( $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type = '' ) {
+function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type = '' ) {
 
     $log_meta = array(
         'achievement_id' => $achievement_id,
@@ -121,26 +123,7 @@ function gamipress_log_users_points( $user_id, $new_points, $total_points, $admi
 	gamipress_insert_log( $type, $user_id, $access, $log_meta );
 
 }
-add_action( 'gamipress_update_users_points', 'gamipress_log_users_points', 10, 5 );
-
-/**
- * Award new points to a user based on logged activites and earned badges
- *
- * @since  1.0.0
- *
- * @param  integer $user_id        The given user's ID
- * @param  integer $achievement_id The given achievement's post ID
- * @return integer                 The user's updated points total
- */
-function gamipress_award_user_points( $user_id = 0, $achievement_id = 0 ) {
-	// Grab our points from the provided post
-	$points = absint( get_post_meta( $achievement_id, '_gamipress_points', true ) );
-    $points_type = get_post_meta( $achievement_id, '_gamipress_points_type', true );
-
-	if ( ! empty( $points ) )
-		return gamipress_update_users_points( $user_id, $points, false, $achievement_id, $points_type );
-}
-add_action( 'gamipress_award_achievement', 'gamipress_award_user_points', 999, 2 );
+add_action( 'gamipress_update_user_points', 'gamipress_log_user_points', 10, 5 );
 
 /**
  * Get GamiPress Points Types

@@ -15,7 +15,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  *
  * @param  integer $achievement_id  The given achievements post ID
  * @param  integer $user_id  		The given user's ID
- * @return integer           		The UNIX timestamp for the last reported badge activity
+ * @return integer           		The UNIX timestamp for the last reported achievement activity
  */
 function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id = 0 ) {
 
@@ -27,8 +27,10 @@ function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id
 		$since = $achievement->date_started - 1;
 
 	// Otherwise, attempt to grab the achievement date from earned achievement meta
-	} elseif ( $achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id ) ) ) {
-		$achievement = array_pop( $achievements );
+	} elseif ( $achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id, 'limit' => 1 ) ) ) {
+
+		$achievement = $achievements[0];
+
 		if ( is_object( $achievement ) )
 			$since = $achievement->date_earned + 1;
 	}
@@ -138,12 +140,13 @@ function gamipress_user_add_active_achievement( $user_id = 0, $achievement_id = 
  * @param  integer $user_id        User ID
  * @param  integer $achievement_id Achievement post ID
  * @param  object  $achievement    Achievement object to insert into user meta
+ *
  * @return object                  The final updated achievement object
  */
 function gamipress_user_update_active_achievement( $user_id = 0, $achievement_id = 0, $achievement = null ) {
 
 	// If achievement is a step, bail here
-	if ( 'step' == get_post_type( $achievement_id ) )
+	if ( 'step' === get_post_type( $achievement_id ) )
 		return false;
 
 	// If we weren't passed an object, get the latest version from meta
@@ -201,7 +204,7 @@ function gamipress_user_delete_active_achievement( $user_id = 0, $achievement_id
 function gamipress_user_update_active_achievement_on_earnings( $user_id, $achievement_id ) {
 
 	// If achievement is a step, update its parent activity
-	if ( 'step' == get_post_type( $achievement_id ) ) {
+	if ( 'step' === get_post_type( $achievement_id ) ) {
 		$parent_achievement = gamipress_get_parent_of_achievement( $achievement_id );
 		if ( $parent_achievement ) {
 			gamipress_user_update_active_achievement( $user_id, $parent_achievement->ID );

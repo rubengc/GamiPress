@@ -10,6 +10,7 @@
 	font-style: normal;
 }
 
+.dashicons-rank, .dashicons-rank:before,
 .dashicons-gamipress, .dashicons-gamipress:before,
 #dashboard-widgets #gamipress h2:before,
 .widget[id*="_gamipress_"] .widget-title h3:before {
@@ -27,8 +28,13 @@
 	content: "\e900";
 }
 
-.dashicons-gamipress:before {
-	content: "\e900";
+.dashicons-rank, .dashicons-rank:before {
+	content: "\e901";
+}
+
+.profile-php h2 .dashicons-gamipress {
+	color: #0098d7;
+	vertical-align: bottom;
 }
 
 .wp-media-buttons-icon.dashicons-gamipress,
@@ -50,40 +56,45 @@
 	color: #0098d7;
 }
 
+/* Utils */
+.gamipress-no-pad {
+	padding: 0 !important;
+}
+
 /* Dashboard widgets */
+#dashboard-widgets #gamipress .inside {
+	margin-top: 0;
+}
+
 #dashboard-widgets #gamipress h3 {
 	border-bottom: 1px solid #eee;
 	border-top: 1px solid #eee;
 	clear: both;
 	margin: 0 -12px;
 	padding: 6px 12px;
+	background-color: #fafafa;
 }
 
-#dashboard-widgets #gamipress .gamipress-registered-posts ul li a:before {
+#dashboard-widgets #gamipress h3 .dashicons {
 	color: #82878c;
-	font: normal 20px/1 dashicons;
-	speak: none;
-	display: inline-block;
-	padding: 0;
-	position: relative;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
-	text-decoration: none !important;
-	vertical-align: top;
+	vertical-align: bottom;
+}
 
-	width: 20px;
+#dashboard-widgets #gamipress h3:first-child {
+	border-top: 0;
+}
+
+#dashboard-widgets #gamipress .gamipress-registered-achievements ul:after,
+#dashboard-widgets #gamipress .gamipress-registered-points ul:after,
+#dashboard-widgets #gamipress .gamipress-registered-ranks ul:after {
 	content: "";
+	display: block;
+	clear: both;
 }
 
-#dashboard-widgets #gamipress .gamipress-registered-posts ul li a#points-types:before {
-	content: "\f155";
-}
-
-#dashboard-widgets #gamipress .gamipress-registered-posts ul li a#achievement-types:before {
-	content: "\f313";
-}
-
-#dashboard-widgets #gamipress .gamipress-registered-posts ul {
+#dashboard-widgets #gamipress .gamipress-registered-achievements li,
+#dashboard-widgets #gamipress .gamipress-registered-points li,
+#dashboard-widgets #gamipress .gamipress-registered-ranks li {
 	float: left;
 	width: 50%;
 	margin-top: 0;
@@ -99,7 +110,7 @@
 	border-bottom: 1px solid #eee;
 }
 
-#dashboard-widgets #gamipress .gamipress-latest-logs ul li:nth-child(2n+1) {
+#dashboard-widgets #gamipress .gamipress-latest-logs ul li:nth-child(2n) {
 	background-color: #fafafa;
 }
 
@@ -218,6 +229,10 @@ li.requirement-row .requirement-title {
 	padding-top:5px;
 }
 
+li.requirement-row .points-required {
+	width: 100px;
+}
+
 li.requirement-row .required-count,
 li.requirement-row .limit,
 li.requirement-row .maximum-earnings {
@@ -310,12 +325,13 @@ li.requirement-row label {
 	font-weight: bold;
 	padding: 8px 10px;
 }
-.gamipress-table a.error {
+.gamipress-table a.error,
+.gamipress_user_earnings a.error {
 	color: #a00;
 }
 
 .wp-list-table.gamipress_user_earnings .column-image {
-	width: 30px;
+	width: 60px;
 }
 
 .wp-list-table.gamipress_user_earnings .column-action {
@@ -483,6 +499,12 @@ body > .gamipress-select2,
 	font-style: normal !important;
 }
 
+.gamipress-select2 .select2-results__group {
+	background-color: #fafafa;
+	border-top: 1px solid #e9e9e9;
+	border-bottom: 1px solid #e9e9e9;
+}
+
 @media screen and (max-width: 782px) {
 	.gamipress-select2 .select2-selection,
 	.gamipress-select2 .select2-search--dropdown .select2-search__field,
@@ -545,7 +567,7 @@ body > .gamipress-select2,
 	transition: margin 0.4s;
 }
 .gamipress-switch input:checked + label:before {
-	background-color: #8ce196;
+	background-color: #0098d7;
 }
 
 .gamipress-switch input:checked + label:after {
@@ -885,11 +907,13 @@ body > .gamipress-select2,
 }
 
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(2),
-.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(5) {
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(5),
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(7) {
 	margin-left: 20px;
 }
 
-.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(3) {
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(3),
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(8) {
 	margin-left: 40px;
 }
 

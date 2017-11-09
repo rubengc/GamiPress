@@ -99,6 +99,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     if(
         $post_type === 'points-type'
         || in_array( $post_type, gamipress_get_achievement_types_slugs() )
+        || in_array( $post_type, gamipress_get_rank_types_slugs() )
         || $post_type === 'gamipress-log'   // TODO: Since 1.2.8 gamipress-log CPT not supported, remove on 1.3.0
         || $hook === 'widgets.php'
     ) {
@@ -107,7 +108,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     }
 
     // Requirements ui script
-    if ( $post_type === 'points-type' || in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
+    if ( $post_type === 'points-type' || in_array( $post_type, gamipress_get_achievement_types_slugs() ) || in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
         // Localize requirements ui script
         wp_localize_script( 'gamipress-requirements-ui-js', 'gamipress_requirements_ui', array(
             'post_placeholder' => __( 'Select a Post', 'gamipress' ),
@@ -130,6 +131,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
             'id_multiple_placeholder' => __( 'Select Post(s)', 'gamipress' ),
             'user_placeholder'        => __( 'Select an User', 'gamipress' ),
             'post_type_placeholder'   => __( 'Default: All', 'gamipress' ),
+            'rank_placeholder'        => __( 'Select a Rank', 'gamipress' ),
         ) );
 
         wp_enqueue_script( 'gamipress-admin-widgets-js' );

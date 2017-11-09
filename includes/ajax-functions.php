@@ -29,8 +29,6 @@ function gamipress_ajax_get_achievements() {
 	$wpms       = isset( $_REQUEST['wpms'] )       ? $_REQUEST['wpms']       : false;
 	$include    = isset( $_REQUEST['include'] )    ? $_REQUEST['include']    : array();
 	$exclude    = isset( $_REQUEST['exclude'] )    ? $_REQUEST['exclude']    : array();
-	$meta_key   = isset( $_REQUEST['meta_key'] )   ? $_REQUEST['meta_key']   : '';
-	$meta_value = isset( $_REQUEST['meta_value'] ) ? $_REQUEST['meta_value'] : '';
 
 	// Force to set current user as user ID
 	if( $current_user ) {
@@ -48,24 +46,13 @@ function gamipress_ajax_get_achievements() {
 		'excerpt'	=> isset( $_REQUEST['excerpt'] ) ? $_REQUEST['excerpt'] : 'yes',
 		'steps'	    => isset( $_REQUEST['steps'] ) ? $_REQUEST['steps'] : 'yes',
 		'earners'	=> isset( $_REQUEST['earners'] ) ? $_REQUEST['earners'] : 'no',
+		'toggle'	=> isset( $_REQUEST['toggle'] ) ? $_REQUEST['toggle'] : 'yes',
 		'user_id' 	=> $user_id, // User ID on achievement is used to meet to which user apply earned checks
 	);
 
 	// Convert $type to properly support multiple achievement types
 	if ( 'all' == $type ) {
 		$type = gamipress_get_achievement_types_slugs();
-
-		// Drop points awards from our list of "all" achievements
-		$points_award_key = array_search( 'points-award', $type );
-		if ( $points_award_key ) {
-			unset( $type[$points_award_key] );
-		}
-
-		// Drop steps from our list of "all" achievements
-		$step_key = array_search( 'step', $type );
-		if ( $step_key ) {
-			unset( $type[$step_key] );
-		}
 	} else {
 		$type = explode( ',', $type );
 	}
@@ -85,7 +72,7 @@ function gamipress_ajax_get_achievements() {
     $achievement_count = 0;
     $query_count = 0;
 
-    // Grab our hidden badges (used to filter the query)
+    // Grab our hidden achievements (used to filter the query)
 	$hidden = gamipress_get_hidden_achievement_ids( $type );
 
 	// If we're polling all sites, grab an array of site IDs
@@ -122,11 +109,6 @@ function gamipress_ajax_get_achievements() {
 			$args[ 'post__in' ] = $earned_ids;
 		}elseif( $filter == 'not-completed' ) {
 			$args[ 'post__not_in' ] = array_merge( $hidden, $earned_ids );
-		}
-
-		if ( '' !== $meta_key && '' !== $meta_value ) {
-			$args[ 'meta_key' ] = $meta_key;
-			$args[ 'meta_value' ] = $meta_value;
 		}
 
 		// Include certain achievements
@@ -282,7 +264,7 @@ function gamipress_ajax_get_achievements_options() {
 	$search = isset( $_REQUEST['q'] ) ? like_escape( $_REQUEST['q'] ) : '';
 	$achievement_types = isset( $_REQUEST['post_type'] ) && 'all' !== $_REQUEST['post_type']
 		? array( esc_sql( $_REQUEST['post_type'] ) )
-		: array_diff( gamipress_get_achievement_types_slugs(), array( 'step', 'points-award' ) );
+		: gamipress_get_achievement_types_slugs();
 	$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $achievement_types ) );
 
 	$results = $wpdb->get_results( $wpdb->prepare(
@@ -318,19 +300,10 @@ function gamipress_achievement_post_ajax_handler() {
 
 	$selected = '';
 
-    // Grab our achievement type from the AJAX request
-    $requirement_type = isset( $_REQUEST['requirement_type'] ) ? $_REQUEST['requirement_type'] : false;
+    // If requirement_id requested, then retrieve the selected option from this requirement
+    if( isset( $_REQUEST['requirement_id'] ) && ! empty( $_REQUEST['requirement_id'] ) ) {
 
-    if( $requirement_type ) {
-		if( ! in_array( $requirement_type, gamipress_get_requirement_types_slugs() ) ) {
-			die();
-		}
-
-		if( $requirement_type === 'step' ) {
-			$requirements = gamipress_get_step_requirements( $_REQUEST['step_id'] );
-		} else {
-			$requirements = gamipress_get_points_award_requirements( $_REQUEST['points_award_id'] );
-		}
+		$requirements = gamipress_get_requirement_object( $_REQUEST['requirement_id'] );
 
 		$selected = isset( $requirements['achievement_post'] ) ? $requirements['achievement_post'] : '';
     }
@@ -372,3 +345,91 @@ function gamipress_achievement_post_ajax_handler() {
 
 }
 add_action( 'wp_ajax_gamipress_requirement_achievement_post', 'gamipress_achievement_post_ajax_handler' );
+
+/**
+ * AJAX Helper for selecting ranks in achievement earned by
+ *
+ * @since 1.3.1
+ */
+function gamipress_ajax_get_ranks_options_html() {
+	global $wpdb;
+
+	// Post type conditional
+	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] :  gamipress_get_rank_types_slugs() );
+
+	if ( is_array( $post_type ) ) {
+		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
+		$singular_name = __( 'Rank', 'gamipress' );
+	} else {
+		$singular_name = gamipress_get_rank_type_singular( $post_type );
+		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
+	}
+
+	$selected = '';
+
+	// If requirement_id requested, then retrieve the selected option from this requirement
+	if( isset( $_REQUEST['requirement_id'] ) && ! empty( $_REQUEST['requirement_id'] ) ) {
+
+		$requirements = gamipress_get_requirement_object( $_REQUEST['requirement_id'] );
+
+		$selected = isset( $requirements['rank_required'] ) ? $requirements['rank_required'] : '';
+	} else if( isset( $_REQUEST['selected'] ) && ! empty( $_REQUEST['selected'] ) ) {
+		$selected = $_REQUEST['selected'];
+	}
+
+	$ranks = $wpdb->get_results( $wpdb->prepare(
+		"SELECT p.ID, p.post_title
+		FROM {$wpdb->posts} AS p
+		WHERE p.post_status = %s
+			{$post_type}
+		ORDER BY menu_order DESC",
+		'publish'
+	) );
+
+	// Setup our output
+	$output = '<option value="">' . sprintf( __( 'Choose the %s', 'gamipress' ), $singular_name ) . '</option>';
+	foreach ( $ranks as $rank ) {
+		$output .= '<option value="' . $rank->ID . '" ' . selected( $selected, $rank->ID, false ) . '>' . $rank->post_title . '</option>';
+	}
+
+	// Send back our results and die like a man
+	echo $output;
+	die();
+}
+add_action( 'wp_ajax_gamipress_get_ranks_options_html', 'gamipress_ajax_get_ranks_options_html' );
+
+/**
+ * AJAX Helper for selecting ranks in Shortcode Embedder
+ *
+ * @since 1.3.1
+ */
+function gamipress_ajax_get_ranks_options() {
+	global $wpdb;
+
+	// Pull back the search string
+	$search = isset( $_REQUEST['q'] ) ? like_escape( $_REQUEST['q'] ) : '';
+
+	// Post type conditional
+	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : gamipress_get_rank_types_slugs() );
+
+	if ( is_array( $post_type ) ) {
+		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
+	} else {
+		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
+	}
+
+	$ranks = $wpdb->get_results( $wpdb->prepare(
+		"SELECT p.ID, p.post_title
+		FROM {$wpdb->posts} AS p
+		WHERE p.post_status = %s
+			{$post_type}
+		 AND p.post_title LIKE %s
+		ORDER BY menu_order DESC",
+		'publish',
+		"%%{$search}%%"
+	) );
+
+	// Return our results
+	wp_send_json_success( $ranks );
+}
+add_action( 'wp_ajax_gamipress_get_ranks_options', 'gamipress_ajax_get_ranks_options' );

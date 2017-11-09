@@ -92,6 +92,15 @@ function gamipress_meta_boxes() {
 	// Grab our achievement types as an array
 	$achievement_types = gamipress_get_achievement_types_slugs();
 
+	// Grab our rank types as an array
+	$rank_types = gamipress_get_rank_types_slugs();
+
+	$rank_types_options = array();
+
+	foreach( gamipress_get_rank_types() as $slug => $data ) {
+		$rank_types_options[$slug] = $data['singular_name'];
+	}
+
 	// Grab our requirement types as an array
 	$requirement_types = gamipress_get_requirement_types_slugs();
 
@@ -158,7 +167,7 @@ function gamipress_meta_boxes() {
 	gamipress_add_meta_box(
 		'achievement-data',
 		__( 'Achievement Data', 'gamipress' ),
-		array_diff( $achievement_types, array( 'step', 'points-award' ) ),
+		$achievement_types,
 		array(
 			$prefix . 'points' => array(
 				'name' => __( 'Points Awarded', 'gamipress' ),
@@ -178,6 +187,7 @@ function gamipress_meta_boxes() {
 				'options' => apply_filters( 'gamipress_achievement_earned_by', array(
 					'triggers' 			=> __( 'Completing Steps', 'gamipress' ),
 					'points' 			=> __( 'Minimum Number of Points', 'gamipress' ),
+					'rank' 				=> __( 'Reach a Rank', 'gamipress' ),
 					'admin' 			=> __( 'Admin-awarded Only', 'gamipress' ),
 				) )
 			),
@@ -191,6 +201,18 @@ function gamipress_meta_boxes() {
 				'desc' => __( 'Points type of points required for earning this achievement (optional).', 'gamipress' ),
 				'type' => 'select',
 				'options' => $points_types_options
+			),
+			$prefix . 'rank_type_required' => array(
+				'name' => __( 'Rank Type Required', 'gamipress' ),
+				'desc' => __( 'Rank Type of the required rank for earning this achievement.', 'gamipress' ),
+				'type' => 'select',
+				'options' => $rank_types_options
+			),
+			$prefix . 'rank_required' => array(
+				'name' => __( 'Rank Required', 'gamipress' ),
+				'desc' => __( 'Rank required for earning this achievement.', 'gamipress' ),
+				'type' => 'select',
+				'options_cb' => 'gamipress_options_cb_posts'
 			),
 			$prefix . 'sequential' => array(
 				'name' => __( 'Sequential Steps', 'gamipress' ),
@@ -227,6 +249,92 @@ function gamipress_meta_boxes() {
 		array(
 			'context'  => 'advanced',
 			'priority' => 'high',
+		)
+	);
+
+	// Rank Type
+	gamipress_add_meta_box(
+		'rank-type-data',
+		__( 'Rank Type Data', 'gamipress' ),
+		'rank-type',
+		array(
+			'post_title' => array(
+				'name' 	=> __( 'Singular Name', 'gamipress' ),
+				'desc' 	=> __( 'The singular name for this rank type.', 'gamipress' ),
+				'type' 	=> 'text_medium',
+			),
+			$prefix . 'plural_name' => array(
+				'name' 	=> __( 'Plural Name', 'gamipress' ),
+				'desc' 	=> __( 'The plural name for this rank type.', 'gamipress' ),
+				'type' 	=> 'text_medium',
+			),
+			'post_name' => array(
+				'name' 	=> __( 'Slug', 'gamipress' ),
+				'desc' 	=> '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this rank type from any other (leave blank to automatically generate one).', 'gamipress' ),
+				'type' 	=> 'text_medium',
+				'attributes' => array(
+					'maxlength' => 20
+				)
+			),
+		),
+		array( 'priority' => 'high', )
+	);
+
+	// Rank Data
+	gamipress_add_meta_box(
+		'rank-data',
+		__( 'Rank Data', 'gamipress' ),
+		$rank_types,
+		array(
+			$prefix . 'sequential' => array(
+				'name' => __( 'Sequential Requirements', 'gamipress' ),
+				'desc' => __( 'Yes, requirements must be completed in order.', 'gamipress' ),
+				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
+			$prefix . 'show_earners' => array(
+				'name' => __( 'Show Earners', 'gamipress' ),
+				'desc' => __( 'Yes, display a list of users who have reached this rank.', 'gamipress' ),
+				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
+			$prefix . 'congratulations_text' => array(
+				'name' => __( 'Congratulations Text', 'gamipress' ),
+				'desc' => __( 'Displayed after rank is reached.', 'gamipress' ),
+				'type' => 'textarea',
+			),
+		),
+		array(
+			'context'  => 'advanced',
+			'priority' => 'high',
+		)
+	);
+
+	// Rank Details
+	gamipress_add_meta_box(
+		'rank-details',
+		__( 'Rank Details', 'gamipress' ),
+		$rank_types,
+		array(
+			'menu_order' => array(
+				'name' 	=> __( 'Priority', 'gamipress' ),
+				'desc' 	=> __( 'The rank priority defines the order an user can achieve ranks. User will need to get lower priority ranks before get this one.', 'gamipress' ),
+				'type' 	=> 'text_medium',
+			),
+			$prefix . 'next_rank' => array(
+				'content_cb' 	=> 'gamipress_next_rank_content_cb',
+				'type' 	=> 'html',
+				'classes' => 'gamipress-no-pad'
+			),
+			$prefix . 'prev_rank' => array(
+				'content_cb' 	=> 'gamipress_prev_rank_content_cb',
+				'type' 	=> 'html',
+				'classes' => 'gamipress-no-pad'
+			),
+		),
+		array(
+			'context' => 'side',
+			'priority' => 'default',
 		)
 	);
 
@@ -305,6 +413,48 @@ function gamipress_remove_meta_boxes() {
 }
 add_action( 'admin_menu', 'gamipress_remove_meta_boxes' );
 
+// Options callback for select2 fields assigned to posts
+function gamipress_options_cb_posts( $field ) {
+
+	$value = $field->escaped_value;
+	$options = array();
+
+	if( ! empty( $value ) ) {
+		if( ! is_array( $value ) ) {
+			$value = array( $value );
+		}
+
+		foreach( $value as $post_id ) {
+			$options[$post_id] = get_post_field( 'post_title', $post_id );
+		}
+	}
+
+	return $options;
+
+}
+
+// Options callback for select2 fields assigned to users
+function gamipress_options_cb_users( $field ) {
+
+	$value = $field->escaped_value;
+	$options = array();
+
+	if( ! empty( $value ) ) {
+		if( ! is_array( $value ) ) {
+			$value = array( $value );
+		}
+
+		foreach( $value as $user_id ) {
+			$user_data = get_userdata($user_id);
+
+			$options[$user_id] = $user_data->user_login;
+		}
+	}
+
+	return $options;
+
+}
+
 /**
  * Helper function to enable a checkbox when value was not stored
  */
@@ -315,6 +465,15 @@ function gamipress_cmb2_checkbox_enabled_by_default( $field_args, $field ) {
 	}
 
 	return '';
+
+}
+
+/**
+ * Helper function to avoid errors with default param
+ */
+function gamipress_site_name_default_cb( $field_args, $field ) {
+
+	return get_bloginfo( 'name' );
 
 }
 
@@ -339,8 +498,37 @@ function gamipress_cmb2_override_post_name_display( $data, $post_id ) {
 }
 add_filter( 'cmb2_override_post_name_meta_value', 'gamipress_cmb2_override_post_name_display', 10, 2 );
 
+function gamipress_cmb2_override_menu_order_display( $data, $post_id ) {
+
+	global $wpdb;
+
+	if( get_post_field( 'post_status', $post_id ) === 'auto-draft' ) {
+
+		$rank_type = get_post_type( $post_id );
+
+		// Get higher menu order
+		$last = $wpdb->get_var( $wpdb->prepare(
+			"SELECT p.menu_order
+			FROM {$wpdb->posts} AS p
+			WHERE p.post_type = %s
+			 AND p.post_status = %s
+			ORDER BY menu_order DESC
+			LIMIT 1",
+			$rank_type,
+			'publish'
+		) );
+
+		return absint( $last ) + 1;
+	}
+
+	return absint( get_post_field( 'menu_order', $post_id ) );
+
+}
+add_filter( 'cmb2_override_menu_order_meta_value', 'gamipress_cmb2_override_menu_order_display', 10, 2 );
+
 /*
  * WP will handle the saving for us, so don't save title/content to meta.
  */
 add_filter( 'cmb2_override_post_title_meta_save', '__return_true' );
 add_filter( 'cmb2_override_post_name_meta_save', '__return_true' );
+add_filter( 'cmb2_override_menu_order_meta_save', '__return_true' );

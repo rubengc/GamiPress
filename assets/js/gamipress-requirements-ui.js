@@ -27,17 +27,50 @@
     // Listen for our change to our trigger type selectors
     $('#requirements-list').on( 'change', '.select-trigger-type', function() {
 
+        // Initialize select 2 on select trigger type
         if( ! $(this).hasClass('select2-hidden-accessible') ) {
             $(this).select2({ theme: 'default gamipress-select2' });
         }
 
         // Grab our selected trigger type and achievement selector
         var trigger_type = $(this).val();
+
+        // Required points
+        var points_selector_required = $(this).siblings('.points-required');
+        var points_type_selector_required = $(this).siblings('.select-points-type-required');
+
+        if ( trigger_type === 'earn-points' ) {
+            // Show required points fields
+            points_selector_required.show();
+            points_type_selector_required.show();
+        } else {
+            // Hide required points fields
+            points_selector_required.hide();
+            points_type_selector_required.hide();
+        }
+
+        // Required rank
+        var rank_type_selector_required = $(this).siblings('.select-rank-type-required');
+        var rank_selector_required = $(this).siblings('.select-rank-required');
+
+        if ( trigger_type === 'earn-rank' ) {
+            // Show required rank fields
+            rank_type_selector_required.show();
+            //rank_selector_required.show();
+
+            rank_type_selector_required.change();
+        } else {
+            // Hide required rank fields
+            rank_type_selector_required.hide();
+            rank_selector_required.hide();
+        }
+
+        // Achievement type
         var achievement_type_selector = $(this).siblings('.select-achievement-type');
         var achievement_post_selector = $(this).siblings('.select-achievement-post');
 
         // If we're working with achievements, show the achievement type selector (otherwise, hide it)
-        if (trigger_type === 'any-achievement' || trigger_type === 'all-achievements' || trigger_type === 'specific-achievement') {
+        if ( trigger_type === 'any-achievement' || trigger_type === 'all-achievements' || trigger_type === 'specific-achievement') {
             achievement_type_selector.show();
 
             // Trigger a change for our achievement type post selector to determine if it should show
@@ -115,13 +148,13 @@
     $('#requirements-list').on( 'change', '.select-achievement-type', function() {
 
         // Setup our necessary variables
-        var achievement_selector = $(this);
-        var achievement_post     = $(this).siblings('.select-achievement-post');
-        var achievement_type     = achievement_selector.val();
-        var requirement_id       = achievement_selector.parent('li').attr('data-requirement-id');
-        var requirement_type     = achievement_selector.siblings('input[name="requirement_type"]').val();
-        var excluded_posts       = [achievement_selector.siblings('input[name="post_id"]').val()];
-        var trigger_type         = achievement_selector.siblings('.select-trigger-type').val();
+        var $this                = $(this);
+        var achievement_post     = $this.siblings('.select-achievement-post');
+        var achievement_type     = $this.val();
+        var requirement_id       = $this.parent('li').attr('data-requirement-id');
+        var requirement_type     = $this.siblings('input[name="requirement_type"]').val();
+        var excluded_posts       = [$this.siblings('input[name="post_id"]').val()];
+        var trigger_type         = $this.siblings('.select-trigger-type').val();
 
         // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
         if ( '' !== achievement_type && 'specific-achievement' === trigger_type ) {
@@ -141,6 +174,42 @@
             );
         } else {
             achievement_post.hide();
+        }
+    });
+
+    // Listen for a change to our rank type selectors
+    $('#requirements-list').on( 'change', '.select-rank-type-required', function() {
+
+        // Setup our necessary variables
+        var $this                = $(this);
+        var rank_selector        = $this.siblings('.select-rank-required');
+        var rank_type            = $this.val();
+        var requirement_id       = $this.parent('li').attr('data-requirement-id');
+        var trigger_type         = $this.siblings('.select-trigger-type').val();
+
+        // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
+        if ( '' !== rank_type && 'earn-rank' === trigger_type ) {
+
+            rank_selector.hide();
+            $('<span class="spinner is-active" style="float: none;"></span>').insertAfter( $this );
+
+            $.post(
+                ajaxurl,
+                {
+                    action: 'gamipress_get_ranks_options_html',
+                    requirement_id: requirement_id,
+                    post_type: rank_type
+                },
+                function( response ) {
+
+                    $this.next('.spinner').remove();
+
+                    rank_selector.html( response );
+                    rank_selector.show();
+                }
+            );
+        } else {
+            rank_selector.hide();
         }
     });
 
@@ -188,8 +257,7 @@ function gamipress_add_requirement( post_id ) {
 
 // Delete a requirement
 function gamipress_delete_requirement( requirement_id ) {
-    // Show the spinner
-    //jQuery( '.requirements-spinner' ).addClass('is-active');
+
     jQuery( '.requirement-' + requirement_id ).hide();
 
     jQuery.post(
@@ -200,9 +268,6 @@ function gamipress_delete_requirement( requirement_id ) {
         },
         function( response ) {
             jQuery( '.requirement-' + requirement_id ).remove();
-
-            // Hide the spinner
-            //jQuery( '.requirements-spinner' ).removeClass('is-active');
         }
     );
 }
@@ -226,16 +291,20 @@ function gamipress_update_requirements() {
 
         // Setup our points award object
         var requirement_details = {
-            requirement_id   : requirement.find( 'input[name="requirement_id"]').val(),
-            requirement_type : requirement.find( 'input[name="requirement_type"]').val(),
-            order            : requirement.find( 'input[name="order"]' ).val(),
-            required_count   : requirement.find( '.required-count' ).val(),
-            limit            : requirement.find( '.limit' ).val(),
-            limit_type       : requirement.find( '.limit-type' ).val(),
-            trigger_type     : trigger_type,
-            achievement_type : requirement.find( '.select-achievement-type' ).val(),
-            achievement_post : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post' ).val() : requirement.find( 'select.select-achievement-post' ).val() ),
-            title            : requirement.find( '.requirement-title .title' ).val()
+            requirement_id          : requirement.find( 'input[name="requirement_id"]').val(),
+            requirement_type        : requirement.find( 'input[name="requirement_type"]').val(),
+            order                   : requirement.find( 'input[name="order"]' ).val(),
+            points_required         : requirement.find( '.points-required' ).val(),
+            points_type_required    : requirement.find( '.select-points-type-required' ).val(),
+            rank_type_required      : requirement.find( '.select-rank-type-required' ).val(),
+            rank_required           : requirement.find( '.select-rank-required' ).val(),
+            required_count          : requirement.find( '.required-count' ).val(),
+            limit                   : requirement.find( '.limit' ).val(),
+            limit_type              : requirement.find( '.limit-type' ).val(),
+            trigger_type            : trigger_type,
+            achievement_type        : requirement.find( '.select-achievement-type' ).val(),
+            achievement_post        : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post' ).val() : requirement.find( 'select.select-achievement-post' ).val() ),
+            title                   : requirement.find( '.requirement-title .title' ).val()
         };
 
         if( requirement_details.requirement_type === 'points-award' ) {

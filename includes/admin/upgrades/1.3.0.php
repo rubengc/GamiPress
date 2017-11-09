@@ -24,6 +24,7 @@ function gamipress_130_upgrades( $stored_version ) {
     // Setup new default GamiPress options
     $gamipress_settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();
 
+    // Initialize achievement earned emails settings
     if ( ! isset( $gamipress_settings['achievement_earned_email_content'] ) ) {
 
         $gamipress_settings['achievement_earned_email_subject'] = __( '[{site_title}] {user_first}, you unlocked the {achievement_type} {achievement_title}', 'gamipress' );
@@ -35,6 +36,7 @@ function gamipress_130_upgrades( $stored_version ) {
 
     }
 
+    // Initialize step completed emails settings
     if ( ! isset( $gamipress_settings['step_completed_email_content'] ) ) {
 
         $gamipress_settings['step_completed_email_subject'] = __( '[{site_title}] {user_first}, you complete a step of the {achievement_type} {achievement_title}', 'gamipress' );
@@ -47,6 +49,7 @@ function gamipress_130_upgrades( $stored_version ) {
 
     }
 
+    // Initialize points award completed emails settings
     if ( ! isset( $gamipress_settings['points_award_completed_email_content'] ) ) {
 
         $gamipress_settings['points_award_completed_email_subject'] = __( '[{site_title}] {user_first}, you got {points} {points_type}', 'gamipress' );

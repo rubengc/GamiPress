@@ -32,7 +32,14 @@ function gamipress_requirements_posts_columns( $posts_columns, $post_type ) {
 
     // Place our column in our desired position
     $chunks                     = array_chunk( $posts_columns, $pos, true );
-    $chunks[0]['connected_to']  = ( ( $post_type === 'points-award' ) ? __( 'Points Type', 'gamipress' ) : __( 'Achievement', 'gamipress' ) );
+
+    if( ( $post_type === 'points-award' ) ) {
+        $chunks[0]['connected_to']  = __( 'Points Type', 'gamipress' );
+    } else if( $post_type === 'step' ) {
+        $chunks[0]['connected_to']  = __( 'Achievement', 'gamipress' );
+    } else if( $post_type === 'rank-requirement' ) {
+        $chunks[0]['connected_to']  = __( 'Rank', 'gamipress' );
+    }
 
     return call_user_func_array( 'array_merge', $chunks );
 }
@@ -51,12 +58,17 @@ function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
         return;
     }
 
-    if( ( get_post_type( $post_id ) === 'points-award' ) ) {
+    $post_type = get_post_type( $post_id );
+
+    if( ( $post_type === 'points-award' ) ) {
         $connected_label = __( 'Points Type', 'gamipress' );
         $connected_object =  gamipress_get_points_award_points_type( $post_id );
-    } else {
+    } else if( $post_type === 'step' ) {
         $connected_label = __( 'Achievement', 'gamipress' );
         $connected_object = gamipress_get_parent_of_achievement( $post_id );
+    } else if( $post_type === 'rank-requirement' ) {
+        $connected_label = __( 'Rank', 'gamipress' );
+        $connected_object = gamipress_get_rank_requirement_rank( $post_id );
     }
 
     if( $connected_object ) : ?>

@@ -32,6 +32,9 @@ function gamipress_reset_data_tool_meta_boxes( $meta_boxes ) {
                     'steps' => __( 'Steps', 'gamipress' ),
                     'points_types' => __( 'Points Types', 'gamipress' ),
                     'points_awards' => __( 'Points Awards', 'gamipress' ),
+                    'rank_types' => __( 'Rank Types', 'gamipress' ),
+                    'ranks' => __( 'Ranks', 'gamipress' ),
+                    'rank_requirements' => __( 'Rank Requirements', 'gamipress' ),
                     'logs' => __( 'Logs', 'gamipress' ),
                 ),
             ),
@@ -99,26 +102,60 @@ function gamipress_ajax_reset_data_tool() {
 
         switch( $item ) {
             case 'achievement_types':
+
                 $wpdb->delete( $wpdb->posts, array(
                     'post_type' => 'achievement-type'
                 ) );
+
                 break;
             case 'achievements':
+
+                $wpdb->delete( $wpdb->posts, array(
+                    'post_type' => gamipress_get_achievement_types_slugs()
+                ) );
+
                 break;
             case 'steps':
+
                 $wpdb->delete( $wpdb->posts, array(
                     'post_type' => 'step'
                 ) );
+
                 break;
             case 'points_types':
+
                 $wpdb->delete( $wpdb->posts, array(
                     'post_type' => 'points-type'
                 ) );
+
                 break;
             case 'points_awards':
+
                 $wpdb->delete( $wpdb->posts, array(
                     'post_type' => 'points-award'
                 ) );
+
+                break;
+            case 'rank_types':
+
+                $wpdb->delete( $wpdb->posts, array(
+                    'post_type' => 'rank-type'
+                ) );
+
+                break;
+            case 'ranks':
+
+                $wpdb->delete( $wpdb->posts, array(
+                    'post_type' => gamipress_get_rank_types_slugs()
+                ) );
+
+                break;
+            case 'rank_requirements':
+
+                $wpdb->delete( $wpdb->posts, array(
+                    'post_type' => 'rank-requirement'
+                ) );
+
                 break;
             case 'logs':
 
@@ -129,11 +166,14 @@ function gamipress_ajax_reset_data_tool() {
                     $wpdb->delete( $ct_table->db->table_name, array(
                         '1' => 1
                     ) );
+
                 } else {
+
                     // Reset from old gamipress-log CPT
                     $wpdb->delete( $wpdb->posts, array(
                         'post_type' => 'gamipress-log'
                     ) );
+
                 }
                 break;
             default:

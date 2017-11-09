@@ -31,11 +31,25 @@ function gamipress_register_points_types_shortcode() {
         'fields'      => array(
             'type' => array(
                 'name'        => __( 'Points Type(s)', 'gamipress' ),
-                'description' => __( 'Single, or comma-separated list of, points type(s) to display.', 'gamipress' ),
+                'description' => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
                 'type'        => 'advanced_select',
                 'multiple'    => true,
                 'options'     => $points_types,
                 'default'     => 'all',
+            ),
+            'columns' => array(
+                'name'        => __( 'Columns', 'gamipress' ),
+                'description' => __( 'Columns to divide each points type.', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
             ),
             'toggle' => array(
                 'name'        => __( 'Show Points Awards Toggle', 'gamipress' ),
@@ -72,6 +86,7 @@ function gamipress_points_types_shortcode( $atts = array () ) {
     $atts = shortcode_atts( array(
         // Points atts
         'type'        => 'all',
+        'columns'       => '1',
         'toggle'      => 'yes',
         'wpms'        => 'no',
     ), $atts, 'gamipress_points' );

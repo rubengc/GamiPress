@@ -28,6 +28,8 @@ class GamiPress_Achievement_Widget extends GamiPress_Widget {
             'thumbnail' => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
             'excerpt'   => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'steps'     => ( $instance['steps'] === 'on' ? 'yes' : 'no' ),
+            'toggle'    => ( $instance['toggle'] === 'on' ? 'yes' : 'no' ),
+            'earners'   => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
         ) );
     }
 
