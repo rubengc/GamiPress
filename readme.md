@@ -179,6 +179,10 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.2.1 ###
+
+* Fixed wrong key check on rules engine.
+
 ### 1.3.2 ###
 
 * Added gamipress_get_shortcode_attributes trigger on shortcode embedder to allow third party extensions customize the shortcode attributes.

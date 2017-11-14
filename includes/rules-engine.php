@@ -439,7 +439,7 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 	$trigger_type = get_post_meta( $achievement_id, '_gamipress_trigger_type', true );
 
 	// Earn points and reach a rank are excluded from this check
-	if( $trigger_type === 'earn-point' || $trigger_type === 'earn-rank' ) {
+	if( $trigger_type === 'earn-points' || $trigger_type === 'earn-rank' ) {
 		return $return;
 	}
 
