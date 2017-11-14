@@ -379,6 +379,28 @@ li.requirement-row label {
 	box-sizing: border-box;
 }
 
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap,
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap .cmb-row {
+	width: 100% !important;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap .cmb-group-name {
+	font-size: 14px;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap .cmb-group-description .cmb2-metabox-description {
+	font-weight: 400;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap .cmbhandle {
+	right: -5px;
+	top: -5px;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap .cmb-group-title {
+	margin: -5px;
+}
+
 .gamipress-shortcode-thickbox .cmb2-wrap .cmb-row.cmb-type-title {
 	width: 100%;
 	border-bottom: 1px solid #eee;

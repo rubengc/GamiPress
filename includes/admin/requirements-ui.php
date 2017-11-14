@@ -626,8 +626,10 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         }
     }
 
-    // Add "%d time(s)" to title
-    $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( _n( '%d time', '%d times', $required_count ), $required_count ) );
+    if( $trigger_type !== 'earn-points' && $trigger_type !== 'earn-rank' ) {
+        // Add "%d time(s)" to title
+        $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( _n( '%d time', '%d times', $required_count ), $required_count ) );
+    }
 
     // Add "(limited to %d per %s)" to title if is limited
     if( $limit_type !== 'unlimited' ) {

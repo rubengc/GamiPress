@@ -94,13 +94,8 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 ### Powerful add-ons to extend GamiPress ###
 
-* [Notifications](https://gamipress.com/add-ons/gamipress-notifications/) - Instantly notify of achievements, steps and/or points awards completion to your users.
-* [Progress Maps](https://gamipress.com/add-ons/gamipress-progress-maps/) - Add interactive achievements progress maps to your site.
-* [Progress](https://gamipress.com/add-ons/gamipress-progress/) - Attractively show to your users their progress of completion of any achievement.
-* [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/) - Add leaderboards to intensify the gamification of your site.
-* [Social Share](https://gamipress.com/add-ons/gamipress-social-share/) - Award your users for sharing your website content on social networks.
-* [Easy Digital Downloads Discounts](https://gamipress.com/add-ons/gamipress-edd-discounts/) - Award discounts for achievement completion on Easy Digital Downloads.
-* [WooCommerce Discounts](https://gamipress.com/add-ons/gamipress-wc-discounts/) - Award discounts for achievement completion on WooCommerce.
+Check our [official add-ons page](https://gamipress.com/add-ons "GamiPress Add-ons") to get free and premium add-ons to extend GamiPress to the next level.
+Also, you can visit our [WordPress.org profile page](https://profiles.wordpress.org/gamipress#content-plugins "GamiPress on WordPress.org") where you can find all our free add-ons.
 
 ### Helpful Links ###
 
@@ -183,6 +178,17 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 ## Changelog ##
+
+### 1.3.2 ###
+
+* Added gamipress_get_shortcode_attributes trigger on shortcode embedder to allow third party extensions customize the shortcode attributes.
+* Fixed issue where ranks are not correctly awarded.
+* Fixed issue with earn points and reach rank activity triggers.
+* Fixed emails send when step/rank requirement is the unique or the last one, because user will receive another email about the achievement/rank unlock.
+* Fixed typo on emails default texts.
+* Removed limit fields on ranks and points earn activity triggers to avoid confusions (always is limited to 1).
+* Improvements on shortcodes embedder styles.
+* Improvements on requirements UI functionality.
 
 ### 1.3.1 ###
 

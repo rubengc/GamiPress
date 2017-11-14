@@ -52,7 +52,7 @@ class GamiPress_Shortcode {
 	 */
 	public function cmb2( $saving = false ) {
 
-		foreach ( $this->tabs as $tab_id => $tab ) {
+		foreach( $this->tabs as $tab_id => $tab ) {
 			// Generate the id of the tab based on shortcode slug
 			$tab['id'] = $this->slug . '_' . $tab_id;
 
@@ -76,9 +76,20 @@ class GamiPress_Shortcode {
 			),
 		), $this->slug );
 
-		foreach ( $this->fields as $field_id => $field ) {
-			// Generate the id of the field based on shortcode slug
+		foreach( $this->fields as $field_id => $field ) {
+
+			// Set the id of the field based on shortcode slug
 			$field['id'] = $this->slug . '_' . $field_id;
+
+			// Loop through group fields
+			if( $field['type'] === 'group' && ! empty( $field['fields'] ) ) {
+
+				foreach( $field['fields'] as $group_field_id => $group_field ) {
+					// Set the id of the group field based on shortcode slug
+					$field['fields'][$group_field_id]['id'] =  $this->slug . '_' . $group_field_id;
+				}
+
+			}
 
 			$cmb2->add_field( $field );
 		}

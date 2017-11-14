@@ -30,7 +30,7 @@ function gamipress_131_upgrades( $stored_version ) {
         $gamipress_settings['rank_earned_email_subject'] = __( '[{site_title}] {user_first}, you reached the {rank_type} {rank_title}', 'gamipress' );
         $gamipress_settings['rank_earned_email_content'] = '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
             . '{rank_image}' . "\n"
-            . __( 'You reached the {rank_type} {rank_title} by completing the next requirements:', 'gamipress' ) . "\n"
+            . __( 'You reached the {rank_type} {rank_title} by completing the following requirements:', 'gamipress' ) . "\n"
             . '{rank_requirements}' . "\n\n"
             . __( 'Best regards', 'gamipress' );
 
@@ -43,7 +43,7 @@ function gamipress_131_upgrades( $stored_version ) {
         $gamipress_settings['rank_requirement_completed_email_content'] = '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
             . '{rank_image}' . "\n"
             . __( 'You completed the requirement "{label}" of the {rank_type} {rank_title}!', 'gamipress' ) . "\n\n"
-            . __( 'You need to complete the next requirements to completely reach this {rank_type}:', 'gamipress' ) . "\n"
+            . __( 'You need to complete the following requirements to completely reach this {rank_type}:', 'gamipress' ) . "\n"
             . '{rank_requirements}' . "\n\n"
             . __( 'Best regards', 'gamipress' );
 

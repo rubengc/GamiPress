@@ -30,7 +30,7 @@ function gamipress_130_upgrades( $stored_version ) {
         $gamipress_settings['achievement_earned_email_subject'] = __( '[{site_title}] {user_first}, you unlocked the {achievement_type} {achievement_title}', 'gamipress' );
         $gamipress_settings['achievement_earned_email_content'] = '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
             . '{achievement_image}' . "\n"
-            . __( 'You unlocked the {achievement_type} {achievement_title} by completing the next steps:', 'gamipress' ) . "\n"
+            . __( 'You unlocked the {achievement_type} {achievement_title} by completing the following steps:', 'gamipress' ) . "\n"
             . '{achievement_steps}' . "\n\n"
             . __( 'Best regards', 'gamipress' );
 
@@ -43,7 +43,7 @@ function gamipress_130_upgrades( $stored_version ) {
         $gamipress_settings['step_completed_email_content'] = '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
             . '{achievement_image}' . "\n"
             . __( 'You completed the step "{label}" of the {achievement_type} {achievement_title}!', 'gamipress' ) . "\n\n"
-            . __( 'You need to complete the next steps to completely unlock this {achievement_type}:', 'gamipress' ) . "\n"
+            . __( 'You need to complete the following steps to completely unlock this {achievement_type}:', 'gamipress' ) . "\n"
             . '{achievement_steps}' . "\n\n"
             . __( 'Best regards', 'gamipress' );
 

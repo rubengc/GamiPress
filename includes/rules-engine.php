@@ -436,6 +436,13 @@ add_filter( 'user_deserves_achievement', 'gamipress_user_meets_rank_requirement'
  */
 function gamipress_user_deserves_limit_requirements( $return = false, $user_id = 0, $achievement_id = 0 ) {
 
+	$trigger_type = get_post_meta( $achievement_id, '_gamipress_trigger_type', true );
+
+	// Earn points and reach a rank are excluded from this check
+	if( $trigger_type === 'earn-point' || $trigger_type === 'earn-rank' ) {
+		return $return;
+	}
+
 	// Only override the $return data if we're working on a requirement
 	if ( in_array( get_post_type( $achievement_id ), gamipress_get_requirement_types_slugs() ) ) {
 

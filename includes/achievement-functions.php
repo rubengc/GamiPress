@@ -508,6 +508,7 @@ function gamipress_get_required_achievements_for_achievement( $achievement_id = 
  *
  * @since   1.0.0
  * @updated 1.3.1 added steps with required points
+ * @updated 1.3.2 improved query
  *
  * @return array An array of achievements that are dependent on the given achievement
  */
@@ -529,7 +530,7 @@ function gamipress_get_points_based_achievements() {
 			ON ( posts.ID = m2.post_id )
 			WHERE (
 					( m1.meta_key = %s AND m1.meta_value = %s )
-					AND ( m2.meta_key = %s AND m2.meta_value = %s )
+					OR ( m2.meta_key = %s AND m2.meta_value = %s )
 				)",
 			'_gamipress_trigger_type', 'earn-points',	// Requirements based on earn points
 			'_gamipress_earned_by', 'points'			// Achievements earned by points
@@ -540,7 +541,6 @@ function gamipress_get_points_based_achievements() {
 	}
 
 	return (array) maybe_unserialize( $achievements );
-
 }
 
 /**
@@ -551,10 +551,8 @@ function gamipress_get_points_based_achievements() {
  */
 function gamipress_bust_points_based_achievements_cache( $post_id ) {
 
-	$post = get_post($post_id);
+	$post = get_post( $post_id );
 
-	// If the post is one of our achievement types,
-	// and the achievement is awarded by minimum points
 	if (
 		gamipress_is_achievement( $post )
 		&& (
@@ -562,7 +560,18 @@ function gamipress_bust_points_based_achievements_cache( $post_id ) {
 			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'points' == $_POST['_gamipress_earned_by'] )
 		)
 	) {
+
+		// If the post is one of our achievement types and the achievement is awarded by minimum points, delete the transient
 		delete_transient( 'gamipress_points_based_achievements' );
+
+	} else if(
+		in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
+		&& 'earn-points' == get_post_meta( $post_id, '_gamipress_trigger_type', true )
+	) {
+
+		// If the post is one of our requirement types and the trigger type is a points based one, delete the transient
+		delete_transient( 'gamipress_points_based_achievements' );
+
 	}
 
 }
@@ -573,6 +582,7 @@ add_action( 'trash_post', 'gamipress_bust_points_based_achievements_cache' );
  * Returns achievements that may be earned when the given achievement is earned.
  *
  * @since   1.3.1
+ * @updated 1.3.2 improved query
  *
  * @return array An array of achievements that are dependent on the given achievement
  */
@@ -594,7 +604,7 @@ function gamipress_get_rank_based_achievements() {
 			ON ( posts.ID = m2.post_id )
 			WHERE (
 					( m1.meta_key = %s AND m1.meta_value = %s )
-					AND ( m2.meta_key = %s AND m2.meta_value = %s )
+					OR ( m2.meta_key = %s AND m2.meta_value = %s )
 				)",
 			'_gamipress_trigger_type', 'earn-rank',	// Requirements based on earn rank
 			'_gamipress_earned_by', 'rank'			// Achievements earned by rank
@@ -611,6 +621,8 @@ function gamipress_get_rank_based_achievements() {
 /**
  * Destroy the rank-based achievements transient if we edit a rank-based achievement
  *
+ * @deprecated Removed the transient usage since 1.3.2
+ *
  * @since 1.3.1
  *
  * @param integer $post_id The given post's ID
@@ -619,8 +631,6 @@ function gamipress_bust_rank_based_achievements_cache( $post_id ) {
 
 	$post = get_post($post_id);
 
-	// If the post is one of our achievement types,
-	// and the achievement is awarded by a rank
 	if (
 		gamipress_is_achievement( $post )
 		&& (
@@ -628,7 +638,18 @@ function gamipress_bust_rank_based_achievements_cache( $post_id ) {
 			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'rank' == $_POST['_gamipress_earned_by'] )
 		)
 	) {
+
+		// If the post is one of our achievement types, and the achievement is awarded by a rank, delete the transient
 		delete_transient( 'gamipress_rank_based_achievements' );
+
+	} else if(
+		in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
+		&& 'earn-points' == get_post_meta( $post_id, '_gamipress_trigger_type', true )
+	) {
+
+		// If the post is one of our requirement types and the trigger type is a points based one, delete the transient
+		delete_transient( 'gamipress_rank_based_achievements' );
+
 	}
 
 }

@@ -958,17 +958,50 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
             return;
         }
 
-        $gamipress_email_template_args = array(
-            'user_id' => $user_id,
-            'step_id' => $achievement_id,
-            'type' => 'step_completed',
-        );
+        $achievement = gamipress_get_parent_of_achievement( $achievement_id );
 
-        $user = get_userdata( $user_id );
-        $subject = gamipress_get_option( 'step_completed_email_subject' );
-        $message = gamipress_get_option( 'step_completed_email_content' );
+        // Check if step was assigned to an achievement
+        if( $achievement ) {
 
-        gamipress_send_email( $user->user_email, $subject, $message );
+            $all_steps_earned = true;
+            $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
+
+            // Just loop if achievement has more than 1 step
+            if( count( $steps ) > 1 ) {
+
+                foreach( $steps as $step ) {
+                    // check if user has earned this step
+                    $earned = count( gamipress_get_user_achievements( array(
+                            'user_id' => absint( $user_id ),
+                            'achievement_id' => absint( $step->ID ),
+                            'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
+                        ) ) ) > 0;
+
+                    if( ! $earned ) {
+                        // Not all steps has been earned, so continue
+                        $all_steps_earned = false;
+                        break;
+                    }
+                }
+            }
+
+            // Just send the email if user has not earned all steps, because user will receive another email that he has earned the achievement
+            if( ! $all_steps_earned ) {
+
+                $gamipress_email_template_args = array(
+                    'user_id' => $user_id,
+                    'step_id' => $achievement_id,
+                    'type' => 'step_completed',
+                );
+
+                $user = get_userdata( $user_id );
+                $subject = gamipress_get_option( 'step_completed_email_subject' );
+                $message = gamipress_get_option( 'step_completed_email_content' );
+
+                gamipress_send_email( $user->user_email, $subject, $message );
+
+            }
+        }
 
     } else if( $achievement_type === 'points-award' ) {
 
@@ -994,17 +1027,50 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
             return;
         }
 
-        $gamipress_email_template_args = array(
-            'user_id' => $user_id,
-            'rank_requirement_id' => $achievement_id,
-            'type' => 'rank_requirement_completed',
-        );
+        $rank = gamipress_get_rank_requirement_rank( $achievement_id );
 
-        $user = get_userdata( $user_id );
-        $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
-        $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+        // Check if requirement was assigned to a rank
+        if( $rank ) {
 
-        gamipress_send_email( $user->user_email, $subject, $message );
+            $all_requirements_earned = true;
+            $requirements = gamipress_get_rank_requirements( $rank->ID );
+
+            // Just loop if rank has more than 1 requirement
+            if( count( $requirements ) > 1 ) {
+
+                foreach( $requirements as $requirement ) {
+                    // Check if user has earned this requirement
+                    $earned = count( gamipress_get_user_achievements( array(
+                            'user_id' => absint( $user_id ),
+                            'achievement_id' => absint( $requirement->ID ),
+                            'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
+                        ) ) ) > 0;
+
+                    if( ! $earned ) {
+                        // Not all requirements has been earned, so continue
+                        $all_steps_earned = false;
+                        break;
+                    }
+                }
+            }
+
+            // Just send the email if user has not earned all rank requirements, because user will receive another email that he has earned the rank
+            if( ! $all_requirements_earned ) {
+
+                $gamipress_email_template_args = array(
+                    'user_id' => $user_id,
+                    'rank_requirement_id' => $achievement_id,
+                    'type' => 'rank_requirement_completed',
+                );
+
+                $user = get_userdata( $user_id );
+                $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
+                $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+
+                gamipress_send_email( $user->user_email, $subject, $message );
+
+            }
+        }
 
     }
 

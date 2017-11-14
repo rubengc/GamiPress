@@ -35,6 +35,29 @@
         // Grab our selected trigger type and achievement selector
         var trigger_type = $(this).val();
 
+        // Common selectors for points and rank trigger types
+        var count = $(this).siblings('.required-count');
+        var count_text = $(this).siblings('.required-count-text');
+        var limit_text = $(this).siblings('.limit-text');
+        var limit = $(this).siblings('.limit');
+        var limit_type = $(this).siblings('.limit-type');
+
+        if ( trigger_type === 'earn-points' || trigger_type === 'earn-rank' ) {
+            // Hide limit fields
+            count.hide();
+            count_text.hide();
+            limit_text.hide();
+            limit.hide();
+            limit_type.hide();
+        } else {
+            // Show limit fields
+            count.show();
+            count_text.show();
+            limit_text.show();
+            if( limit_type.val() !== 'unlimited' ) { limit.show(); }
+            limit_type.show();
+        }
+
         // Required points
         var points_selector_required = $(this).siblings('.points-required');
         var points_type_selector_required = $(this).siblings('.select-points-type-required');

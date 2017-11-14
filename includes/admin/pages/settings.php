@@ -403,7 +403,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
                     . '{achievement_image}' . "\n"
-                    . __( 'You unlocked the {achievement_type} {achievement_title} by completing the next steps:', 'gamipress' ) . "\n"
+                    . __( 'You unlocked the {achievement_type} {achievement_title} by completing the following steps:', 'gamipress' ) . "\n"
                     . '{achievement_steps}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
             ),
@@ -448,7 +448,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
                     . '{achievement_image}' . "\n"
                     . __( 'You completed the step "{label}" of the {achievement_type} {achievement_title}!', 'gamipress' ) . "\n\n"
-                    . __( 'You need to complete the next steps to completely unlock this {achievement_type}:', 'gamipress' ) . "\n"
+                    . __( 'You need to complete the following steps to completely unlock this {achievement_type}:', 'gamipress' ) . "\n"
                     . '{achievement_steps}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
             ),
@@ -536,7 +536,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
                     . '{rank_image}' . "\n"
-                    . __( 'You reached the {rank_type} {rank_title} by completing the next requirements:', 'gamipress' ) . "\n"
+                    . __( 'You reached the {rank_type} {rank_title} by completing the following requirements:', 'gamipress' ) . "\n"
                     . '{rank_requirements}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
             ),
@@ -581,7 +581,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
                     . '{rank_image}' . "\n"
                     . __( 'You completed the requirement "{label}" of the {rank_type} {rank_title}!', 'gamipress' ) . "\n\n"
-                    . __( 'You need to complete the next requirements to completely reach this {rank_type}:', 'gamipress' ) . "\n"
+                    . __( 'You need to complete the following requirements to completely reach this {rank_type}:', 'gamipress' ) . "\n"
                     . '{rank_requirements}' . "\n\n"
                     . __( 'Best regards', 'gamipress' ),
             ),

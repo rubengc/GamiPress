@@ -14,7 +14,7 @@
     }
 
     function gamipress_get_attributes( shortcode ) {
-        var attrs = [];
+        var attrs = {};
         var inputs = gamipress_get_shortcode_inputs( shortcode );
 
         $.each( inputs, function( index, el ) {
@@ -27,10 +27,16 @@
             }
 
             if (value !== '' && value !== undefined && value !== null ) {
+
                 // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
-                attrs.push( el.name.replace( shortcode + '_', '').replace('[]', '') + '="' + value + '"' );
+                var key = el.name.replace( shortcode + '_', '').replace('[]', '');
+
+                attrs[key] = value;
             }
         });
+
+        // Allow external functions to add their own data to the array of attrs
+        $('#' + shortcode + '_wrapper').trigger( 'gamipress_get_shortcode_attributes', [ attrs, inputs ] );
 
         return attrs;
     }
@@ -44,13 +50,11 @@
         var output = '[';
         output += shortcode;
 
-        if ( attributes ) {
-            for( var i = 0; i < attributes.length; i++ ) {
-                output += ' ' + attributes[i];
-            }
+        $.each( attributes, function( key, value ) {
+            output += ' ' + key + '="' + value + '"';
+        });
 
-            $.trim( output );
-        }
+        $.trim( output );
         output += ']';
 
         return output;
