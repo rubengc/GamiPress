@@ -312,6 +312,14 @@ class GamiPress_Widget extends WP_Widget {
      * @return mixed      Field value.
      */
     public function default_cb( $field_args, $field ) {
+
+        if( $field->args( 'type' ) === 'checkbox' ) {
+            return isset( $this->_instance[ $field->args( 'id_key' ) ] )
+                && $this->_instance[ $field->args( 'id_key' ) ] === 'on'
+                ? 'on'
+                : '';
+        }
+
         return isset( $this->_instance[ $field->args( 'id_key' ) ] )
             ? $this->_instance[ $field->args( 'id_key' ) ]
             : null;

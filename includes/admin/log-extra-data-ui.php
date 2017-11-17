@@ -16,7 +16,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_add_log_extra_data_ui_meta_box() {
 
-    add_meta_box( 'gamipress_log_data_ui', __( 'Log Data', 'gamipress' ), 'gamipress_log_data_ui_meta_box', 'gamipress_logs', 'side', 'default' );
+    add_meta_box( 'gamipress_log_details_ui', __( 'Log Details', 'gamipress' ), 'gamipress_log_data_ui_meta_box', 'gamipress_logs', 'side', 'default' );
     add_meta_box( 'gamipress_log_extra_data_ui', __( 'Extra Data', 'gamipress' ), 'gamipress_log_extra_data_ui_meta_box', 'gamipress_logs', 'normal', 'default' );
 
 }
@@ -49,24 +49,39 @@ function gamipress_log_data_ui_html( $object, $type ) {
     $log_types = gamipress_get_log_types();
 
     ?>
-    <div id="minor-publishing">
+    <div class="submitbox" id="submitpost" style="margin: -6px -12px -12px;">
 
-        <div id="misc-publishing-actions">
+        <div id="minor-publishing">
 
-            <div class="misc-pub-section misc-pub-post-status">
-                <?php echo __( 'Type:', 'gamipress' ); ?> <span id="post-status-display"><?php echo isset( $log_types[$object->type] ) ? $log_types[$object->type] : $object->type ; ?></span>
-            </div>
+            <div id="misc-publishing-actions">
 
-            <div class="misc-pub-section misc-pub-visibility" id="visibility">
-                <?php echo __( 'Visibility:', 'gamipress' ); ?> <span id="post-visibility-display"><?php echo $object->access === 'public' ? __( 'Public', 'gamipress' ) : __( 'Private', 'gamipress' ); ?></span>
-            </div>
+                <div class="misc-pub-section misc-pub-post-status">
+                    <?php echo __( 'Type:', 'gamipress' ); ?> <span id="post-status-display"><?php echo isset( $log_types[$object->type] ) ? $log_types[$object->type] : $object->type ; ?></span>
+                </div>
 
-            <div class="misc-pub-section curtime misc-pub-curtime">
-	            <span id="timestamp"><?php echo __( 'Date:', 'gamipress' ); ?> <b><abbr title="<?php echo date( 'Y/m/d g:i:s a', strtotime( $object->date ) ); ?>"><?php echo date( 'Y/m/d', strtotime( $object->date ) ); ?></abbr></b></span>
+                <div class="misc-pub-section misc-pub-visibility" id="visibility">
+                    <?php echo __( 'Visibility:', 'gamipress' ); ?> <span id="post-visibility-display"><?php echo $object->access === 'public' ? __( 'Public', 'gamipress' ) : __( 'Private', 'gamipress' ); ?></span>
+                </div>
+
+                <div class="misc-pub-section curtime misc-pub-curtime">
+                    <span id="timestamp"><?php echo __( 'Date:', 'gamipress' ); ?> <b><abbr title="<?php echo date( 'Y/m/d g:i:s a', strtotime( $object->date ) ); ?>"><?php echo date( 'Y/m/d', strtotime( $object->date ) ); ?></abbr></b></span>
+                </div>
+
             </div>
 
         </div>
-        <div class="clear"></div>
+
+        <div id="major-publishing-actions">
+
+            <div id="publishing-action">
+                <span class="spinner"></span>
+                <?php submit_button( __( 'Save Changes' ), 'primary large', 'ct-save', false ); ?>
+            </div>
+
+            <div class="clear"></div>
+
+        </div>
+
     </div>
     <?php
 }
@@ -214,49 +229,8 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
 
     if( ! empty( $fields ) ) {
 
-        // TODO: Temporal render
-        ?>
-
-        <div class="cmb2-wrap form-table gamipress-form gamipress-box-form">
-            <div id="cmb2-metabox-log_extra_data_ui_box" class="cmb2-metabox cmb-field-list">
-
-        <?php foreach( $fields as $field ) :
-
-            $value = ct_get_object_meta( $object_id, $field['id'], true );
-
-            if( isset( $field['options'] ) ) {
-
-                $option_value = gamipress_array_search_key( $value, $field['options'] );
-
-                if( $option_value ) {
-                    $value = $option_value;
-                }
-
-            }
-            ?>
-
-            <div class="cmb-row cmb-type-<?php echo $field['type']; ?> cmb2-id-<?php str_replace( '_', '-', $field['id'] ); ?>" data-fieldtype="<?php echo $field['type']; ?>">
-                <div class="cmb-th">
-                    <label for="<?php echo $field['id']; ?>"><?php echo $field['name']; ?></label>
-                </div>
-                <div class="cmb-td">
-                    <?php echo $value; ?>
-                    <?php if ( isset( $field['desc'] ) ) : ?>
-                        <p class="cmb2-metabox-description"><?php echo $field['desc']; ?></p>
-                    <?php endif; ?>
-
-                </div>
-            </div>
-
-        <?php endforeach; ?>
-
-            </div>
-        </div>
-
-        <?php
-        // TODO: Add again CMB2 rendering when it gets supported by CT
         // Create a new box to render the form
-        /*$cmb2 = new CMB2( array(
+        $cmb2 = new CMB2( array(
             'id'      => 'log_extra_data_ui_box',
             'classes' => 'gamipress-form gamipress-box-form',
             'hookup'  => false,
@@ -269,9 +243,12 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
 
         $cmb2->object_id( $object_id );
 
-        $cmb2->show_form();*/
+        $cmb2->show_form();
+
     } else {
+
         _e( 'No extra data registered', 'gamipress' );
+
     }
 }
 
@@ -282,7 +259,12 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
  * @return void
  */
 function gamipress_get_log_extra_data_ui_ajax_handler() {
-    gamipress_log_extra_data_ui_html( $_REQUEST['post_id'], $_REQUEST['type'] );
+
+    ct_setup_table( 'gamipress_logs' );
+
+    $ct_object = ct_get_object( $_REQUEST['object_id'] );
+
+    gamipress_log_extra_data_ui_html( $ct_object, $ct_object->log_id, $_REQUEST['type'] );
     die;
 }
 add_action( 'wp_ajax_get_log_extra_data_ui', 'gamipress_get_log_extra_data_ui_ajax_handler' );

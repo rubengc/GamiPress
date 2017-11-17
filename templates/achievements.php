@@ -104,7 +104,11 @@ if ( 'all' === $a['type'] ) {
     <input type="hidden" id="gamipress_achievements_count" value="0">
 
     <?php // Load More button ?>
-    <button type="button" id="achievements_list_load_more" class="gamipress-load-more-button" style="display:none;"><?php echo __( 'Load More', 'gamipress' ); ?></button>
+    <?php if ( $a['load_more'] === 'yes' ) : ?>
+
+        <button type="button" id="achievements_list_load_more" class="gamipress-load-more-button" style="display:none;"><?php echo __( 'Load More', 'gamipress' ); ?></button>
+
+    <?php endif; ?>
 
     <?php // Loading spinner ?>
     <div class="gamipress-spinner"></div>

@@ -100,6 +100,13 @@ function gamipress_register_achievements_shortcode() {
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+			'load_more' => array(
+				'name'        => __( 'Show the "Load More" button', 'gamipress' ),
+				'description' => __( 'Display a load more button.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+				'default' => 'yes'
+			),
 			'limit' => array(
 				'name'        => __( 'Limit', 'gamipress' ),
 				'description' => __( 'Number of achievements to display.', 'gamipress' ),
@@ -190,6 +197,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'columns'       => '1',
 		'filter' 	  	=> 'yes',
 		'search' 	  	=> 'yes',
+		'load_more' 	=> 'yes',
 		'current_user'  => 'no',
 		'user_id'     	=> '0',
 		'wpms'        	=> 'no',

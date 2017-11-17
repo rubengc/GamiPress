@@ -26,7 +26,7 @@ List view with support similar to WP tables:
 - [x] Search
 - [ ] Sortable Columns
 - [ ] Bulk actions
-- [ ] List views
+- [ ] List view views
 - [ ] Trash functionality
 
 Edit View similar to WP edit screen:
@@ -37,3 +37,6 @@ Edit View similar to WP edit screen:
 - [x] Allow user to toggle view columns
 - [x] Allow define edit view columns (to force to 1 column)
 
+Other features
+
+- [x] CMB2 support

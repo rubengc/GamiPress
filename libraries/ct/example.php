@@ -148,3 +148,47 @@ function yourprefix_demo_meta_box_callback( $object ) {
 
     <?php
 }
+
+/* ----------------------------------
+ * CMB2 EXAMPLE
+   ---------------------------------- */
+
+function yourprefix_cmb2_meta_boxes() {
+
+    $cmb = new_cmb2_box( array(
+        'id'           	=> 'cmb-demo-meta-box-id',
+        'title'        	=> __( 'CMB2 Demo Meta Box', 'textdomain' ),
+        'object_types' 	=> array( 'demo_logs' ),
+    ) );
+
+    $cmb->add_field( array(
+        'id'         => 'title',
+        'name'       => esc_html__( 'Title', 'cmb2' ),
+        'desc'       => esc_html__( 'field description (optional)', 'cmb2' ),
+        'type'       => 'text',
+    ) );
+
+    $cmb->add_field( array(
+        'id'         => 'status',
+        'name'       => esc_html__( 'Status', 'cmb2' ),
+        'desc'       => esc_html__( 'field description (optional)', 'cmb2' ),
+        'type'       => 'text',
+    ) );
+
+    // This fields just work if you defined meta as supports on ct_register_table()
+    $cmb->add_field( array(
+        'id'         => 'yourprefix_meta_field',
+        'name'       => esc_html__( 'Meta field', 'cmb2' ),
+        'desc'       => esc_html__( 'field description (optional)', 'cmb2' ),
+        'type'       => 'text',
+    ) );
+
+    $cmb->add_field( array(
+        'id'         => 'yourprefix_meta_field_2',
+        'name'       => esc_html__( 'Meta field 2', 'cmb2' ),
+        'desc'       => esc_html__( 'field description (optional)', 'cmb2' ),
+        'type'       => 'text',
+    ) );
+
+}
+add_action( 'cmb2_admin_init', 'yourprefix_cmb2_meta_boxes' );

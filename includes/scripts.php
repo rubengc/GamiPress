@@ -96,6 +96,8 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     //Scripts
     wp_enqueue_script( 'gamipress-admin-js' );
 
+    wp_enqueue_script( 'gamipress-log-extra-data-ui-js' );
+
     if(
         $post_type === 'points-type'
         || in_array( $post_type, gamipress_get_achievement_types_slugs() )

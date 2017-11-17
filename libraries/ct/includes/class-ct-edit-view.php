@@ -260,11 +260,36 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
 
             global $ct_table;
 
+            /**
+             * Fires inside the submit meta box.
+             *
+             * @since 1.0.0
+             *
+             * @param object        $object         Object.
+             * @param CT_Table      $ct_table       CT Table object.
+             * @param bool          $editing        True if edit screen, false if is adding a new one.
+             * @param CT_Edit_View  $view           Edit view object.
+             */
+            do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box", $object, $ct_table, $this->editing, $this );
+
             $submit_label = __( 'Add' );
 
             if( $this->editing ) {
                 $submit_label = __( 'Update' );
             }
+
+            /**
+             * Filter to override the submit button label.
+             *
+             * @since 1.0.0
+             *
+             * @param string        $submit_label   The submit label.
+             * @param object        $object         Object.
+             * @param CT_Table      $ct_table       CT Table object.
+             * @param bool          $editing        True if edit screen, false if is adding a new one.
+             * @param CT_Edit_View  $view           Edit view object.
+             */
+            $submit_label = apply_filters( "ct_{$ct_table->name}_edit_screen_submit_label", $submit_label, $object, $ct_table, $this->editing, $this )
 
             ?>
 

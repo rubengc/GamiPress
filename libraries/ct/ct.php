@@ -35,6 +35,7 @@ if ( ! class_exists( 'CT' ) ) :
                 self::$instance = new CT();
                 self::$instance->constants();
                 self::$instance->includes();
+                self::$instance->compatibility();
                 self::$instance->hooks();
                 self::$instance->load_textdomain();
 
@@ -104,6 +105,19 @@ if ( ! class_exists( 'CT' ) ) :
             require_once CT_DIR . 'includes/class-ct-edit-view.php';
 
             require_once CT_DIR . 'includes/functions.php';
+
+        }
+
+        /**
+         * Include CT compatibility files
+         *
+         * @access      private
+         * @since       1.0.0
+         * @return      void
+         */
+        private function compatibility() {
+
+            require_once CT_DIR . 'compatibility/cmb2.php';
 
         }
 

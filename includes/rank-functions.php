@@ -1066,7 +1066,7 @@ function gamipress_rank_type_rename_redirect( $location = '' ) {
 function gamipress_rank_type_update_messages( $messages ) {
 
     $messages['rank-type'] = array_fill( 1, 10, __( 'Rank Type saved successfully.', 'gamipress' ) );
-    $messages['rank-type']['99'] = sprintf( __('Achievement Type renamed successfully. <p>All ranks of this type, and all active and earned user ranks, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old rank type slug must be updated <strong>manually</strong>.', 'gamipress'), '<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . __( 'widgets', 'gamipress' ) . '</a>' );
+    $messages['rank-type']['99'] = sprintf( __('Rank Type renamed successfully. <p>All ranks of this type, and all active and earned user ranks, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old rank type slug must be updated <strong>manually</strong>.', 'gamipress'), '<a href="' . esc_url( admin_url( 'widgets.php' ) ) . '">' . __( 'widgets', 'gamipress' ) . '</a>' );
 
     return $messages;
 

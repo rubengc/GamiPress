@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.0
 Tested up to: 4.9
-Stable tag: 1.3.2.1
+Stable tag: 1.3.3
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -174,6 +174,16 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 == Changelog ==
+
+= 1.3.3 =
+
+* Added the parameter load_more to the [gamipress_achievements] shortcode to disable pagination.
+* Added the field "Show the Load More button" to the GamiPress: Achievements widget to disable pagination.
+* Added automatic check of flush permalinks to avoid issues with not found pages.
+* Recovered the logs edit ability.
+* Fixed bug where widgets are not showing correctly the stored value of checkboxes.
+* Fixed typo on rank notice.
+* Improvements on tabs workflow.
 
 = 1.3.2.1 =
 

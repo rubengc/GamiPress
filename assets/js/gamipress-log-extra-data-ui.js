@@ -1,6 +1,6 @@
 (function($) {
     function gamipress_update_log_tags_list() {
-        var type = $('#_gamipress_type').val();
+        var type = $('#log-data .cmb2-id-type select').val();
 
         // Show/hide tags based on type
         var tags_to_show = [];
@@ -30,17 +30,19 @@
 
     gamipress_update_log_tags_list();
 
-    $('#_gamipress_type').change(function() {
+    $('#log-data .cmb2-id-type select').change(function() {
         var type = $(this).val();
 
         gamipress_update_log_tags_list();
+
+        $( '#log-extra-data-ui').html('<span class="spinner is-active" style="float: none;"></span>');
 
         // Ajax request to get log extra data form
         jQuery.post(
             ajaxurl,
             {
                 action: 'get_log_extra_data_ui',
-                post_id: $('input#post_ID').val(),
+                log_id: $('input#object_id').val(),
                 type: type
             },
             function( response ) {

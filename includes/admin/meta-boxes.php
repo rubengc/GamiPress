@@ -402,6 +402,33 @@ function gamipress_meta_boxes() {
 		array( 'priority' => 'high' )
 	);
 
+	// Log
+	gamipress_add_meta_box(
+		'log-data',
+		__( 'Log Data', 'gamipress' ),
+		'gamipress_logs',
+		array(
+			'user_id' => array(
+				'name' 	=> __( 'User', 'gamipress' ),
+				'desc' 	=> __( 'User assigned to this log.', 'gamipress' ),
+				'type' 	=> 'select',
+				'options_cb' => 'gamipress_options_cb_users'
+			),
+			'type' => array(
+				'name' 	=> __( 'Type', 'gamipress' ),
+				'desc' 	=> __( 'The log type.', 'gamipress' ),
+				'type' 	=> 'select',
+				'options' 	=> gamipress_get_log_types(),
+			),
+			$prefix . 'pattern' => array(
+				'name' 	=> __( 'Pattern', 'gamipress' ),
+				'desc' 	=> __( 'The log output pattern. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html(),
+				'type' 	=> 'text',
+			),
+		),
+		array( 'priority' => 'high' )
+	);
+
 }
 add_action( 'cmb2_admin_init', 'gamipress_meta_boxes' );
 

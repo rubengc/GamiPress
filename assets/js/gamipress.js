@@ -22,8 +22,6 @@
 				order : achievement_list.find('input[type="hidden"][name="order"]').val(),
 				include : achievement_list.find('input[type="hidden"][name="include"]').val(),
 				exclude : achievement_list.find('input[type="hidden"][name="exclude"]').val(),
-				meta_key : achievement_list.find('input[type="hidden"][name="meta_key"]').val(),
-				meta_value : achievement_list.find('input[type="hidden"][name="meta_value"]').val()
 			},
 			dataType : 'json',
 			success : function( response ) {
@@ -32,21 +30,28 @@
 				if ( response.data.message === null ) {
 					//alert("That's all folks!");
 				} else {
+
 					achievement_list.find( '#gamipress-achievements-container' ).append( response.data.message );
 					achievement_list.find( '#gamipress_achievements_offset' ).val( response.data.offset );
 					achievement_list.find( '#gamipress_achievements_count' ).val( response.data.achievement_count );
 
-					if ( response.data.query_count <= response.data.offset ) {
+					// Just continue if load more has been enables
+					if( achievement_list.find( '#achievements_list_load_more').length ) {
 
-						// hide load more button
-						achievement_list.find( '#achievements_list_load_more' ).hide();
+						if ( response.data.query_count <= response.data.offset ) {
 
-					} else {
+							// hide load more button
+							achievement_list.find( '#achievements_list_load_more' ).hide();
 
-						// show load more button
-						achievement_list.find( '#achievements_list_load_more' ).show();
+						} else {
+
+							// show load more button
+							achievement_list.find( '#achievements_list_load_more' ).show();
+
+						}
 
 					}
+
 				}
 			}
 		} );

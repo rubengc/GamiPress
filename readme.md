@@ -179,6 +179,16 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.3 ###
+
+* Added the parameter load_more to the [gamipress_achievements] shortcode to disable pagination.
+* Added the field "Show the Load More button" to the GamiPress: Achievements widget to disable pagination.
+* Added automatic check of flush permalinks to avoid issues with not found pages.
+* Recovered the logs edit ability.
+* Fixed bug where widgets are not showing correctly the stored value of checkboxes.
+* Fixed typo on rank notice.
+* Improvements on tabs workflow.
+
 ### 1.3.2.1 ###
 
 * Fixed wrong key check on rules engine.

@@ -913,3 +913,58 @@ function gamipress_has_user_earned_rank( $rank_id = 0, $user_id = 0 ) {
 	return apply_filters( 'gamipress_has_user_earned_rank', $earned_achievement, $rank_id, $user_id );
 
 }
+
+/**
+ * Auto flush permalinks wth a soft flush when a 404 error is detected on an GamiPress page
+ *
+ * Taken from Easy Digital Downloads
+ *
+ * @since 1.3.3
+ * @return string
+ */
+function gamipress_refresh_permalinks_on_bad_404() {
+
+	global $wp;
+
+	if( ! is_404() ) {
+		return;
+	}
+
+	if( isset( $_GET['gamipress-flush'] ) ) {
+		return;
+	}
+
+	if( false === get_transient( 'gamipress_refresh_404_permalinks' ) ) {
+
+		$gamipress_slugs = array();
+
+		$gamipress_slugs = array_merge( $gamipress_slugs, gamipress_get_achievement_types() );
+		$gamipress_slugs = array_merge( $gamipress_slugs, gamipress_get_points_types() );
+		$gamipress_slugs = array_merge( $gamipress_slugs, gamipress_get_rank_types() );
+
+		$parts = explode( '/', $wp->request );
+
+		$is_a_gamipress_page = false;
+
+		foreach( $parts as $part ) {
+
+			if( isset( $gamipress_slugs[$part] ) ) {
+				$is_a_gamipress_page = true;
+				break;
+			}
+
+		}
+
+		if( ! $is_a_gamipress_page ) {
+			return;
+		}
+
+		flush_rewrite_rules( false );
+
+		set_transient( 'gamipress_refresh_404_permalinks', 1, HOUR_IN_SECONDS * 12 );
+
+		wp_redirect( home_url( add_query_arg( array( 'gamipress-flush' => 1 ), $wp->request ) ) ); exit;
+
+	}
+}
+add_action( 'template_redirect', 'gamipress_refresh_permalinks_on_bad_404' );

@@ -8,8 +8,8 @@
 
                 $($(this).find('.cmb-tab').first().data('fields')).addClass('cmb-tab-active-item');
                 
-                // Support for groups
-                $($(this).find('.cmb-tab').first().data('fields')).find('.cmb-repeatable-group .cmb-row').addClass('cmb-tab-active-item');
+                // Support for groups and repeatable fields
+                $($(this).find('.cmb-tab').first().data('fields')).find('.cmb-repeat .cmb-row, .cmb-repeatable-group .cmb-row').addClass('cmb-tab-active-item');
             }
         });
     }
@@ -28,7 +28,9 @@
 
                 form.find(tab.data('fields')).fadeIn('fast', function() {
                     $(this).addClass('cmb-tab-active-item');
-                    $(this).find('.cmb-repeatable-group .cmb-row').addClass('cmb-tab-active-item');
+
+                    // Support for groups and repeatable fields
+                    $(this).find('.cmb-repeat-table .cmb-row, .cmb-repeatable-group .cmb-row').addClass('cmb-tab-active-item');
                 });
             });
 
@@ -41,6 +43,11 @@
     // Adding a new group element needs to get the active class also
     $('body').on('click', '.cmb-add-group-row', function() {
         $(this).closest('.cmb-repeatable-group').find('.cmb-row').addClass('cmb-tab-active-item');
+    });
+
+    // Adding a new repeatable element needs to get the active class also
+    $('body').on('click', '.cmb-add-row-button', function() {
+        $(this).closest('.cmb-repeat').find('.cmb-row').addClass('cmb-tab-active-item');
     });
     
 })(jQuery);
