@@ -522,7 +522,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
         /**
          * Fires once an existing post has been updated.
          *
-         * @since 1.2.0
+         * @since 1.0.0
          *
          * @param int     $post_ID Post ID.
          * @param WP_Post $post    Post object.
@@ -534,7 +534,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
         /**
          * Fires once an existing post has been updated.
          *
-         * @since 3.0.0
+         * @since 1.0.0
          *
          * @param int     $object_id      Object ID.
          * @param WP_Post $object_after   Object following the update.
@@ -548,7 +548,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
      *
      * The dynamic portion of the hook name, `{$ct_table->name}`, refers to the object type.
      *
-     * @since 3.7.0
+     * @since 1.0.0
      *
      * @param int     $object_id    Object ID.
      * @param WP_Post $object       Object object.
@@ -559,7 +559,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
     /**
      * Fires once a post has been saved.
      *
-     * @since 1.5.0
+     * @since 1.0.0
      *
      * @param int     $object_id    Object ID.
      * @param WP_Post $object       Object.
@@ -701,7 +701,7 @@ function ct_add_object_meta( $object_id, $meta_key, $meta_value, $unique = false
  * value, will keep from removing duplicate metadata with the same key. It also
  * allows removing all metadata matching key, if needed.
  *
- * @since 1.5.0
+ * @since 1.0.0
  *
  * @param int    $object_id    Post ID.
  * @param string $meta_key   Metadata name.
@@ -739,7 +739,7 @@ function ct_delete_object_meta( $object_id, $meta_key, $meta_value = '' ) {
      * object type (comment, post, or user). Returning a non-null value
      * will effectively short-circuit the function.
      *
-     * @since 3.1.0
+     * @since 1.0.0
      *
      * @param null|bool $delete     Whether to allow metadata deletion of the given type.
      * @param int       $object_id  Object ID.
@@ -783,7 +783,7 @@ function ct_delete_object_meta( $object_id, $meta_key, $meta_value = '' ) {
      * The dynamic portion of the hook, `$meta_type`, refers to the meta
      * object type (comment, post, or user).
      *
-     * @since 3.1.0
+     * @since 1.0.0
      *
      * @param array  $meta_ids   An array of metadata entry IDs to delete.
      * @param int    $object_id  Object ID.
@@ -813,7 +813,7 @@ function ct_delete_object_meta( $object_id, $meta_key, $meta_value = '' ) {
      * The dynamic portion of the hook name, `$meta_type`, refers to the meta
      * object type (comment, post, or user).
      *
-     * @since 2.9.0
+     * @since 1.0.0
      *
      * @param array  $meta_ids   An array of deleted metadata entry IDs.
      * @param int    $object_id  Object ID.
@@ -828,7 +828,7 @@ function ct_delete_object_meta( $object_id, $meta_key, $meta_value = '' ) {
 /**
  * Retrieve post meta field for a post.
  *
- * @since 1.5.0
+ * @since 1.0.0
  *
  * @param int    $object_id Post ID.
  * @param string $meta_key     Optional. The meta key to retrieve. By default, returns
@@ -1038,7 +1038,7 @@ function ct_update_object_meta( $object_id, $meta_key, $meta_value, $prev_value 
 /**
  * Update the metadata cache for the specified objects.
  *
- * @since 2.9.0
+ * @since 1.0.0
  *
  * @global wpdb $wpdb WordPress database abstraction object.
  *
@@ -1146,7 +1146,7 @@ function ct_has_meta( $object_id ) {
 /**
  * Prints the form in the Custom Fields meta box.
  *
- * @since 1.2.0
+ * @since 1.0.0
  *
  * @global wpdb $wpdb WordPress database abstraction object.
  *
@@ -1177,7 +1177,7 @@ function ct_meta_form( $object = null ) {
          * Filters the number of custom fields to retrieve for the drop-down
          * in the Custom Fields meta box.
          *
-         * @since 2.1.0
+         * @since 1.0.0
          *
          * @param int $limit Number of custom fields to retrieve. Default 30.
          */

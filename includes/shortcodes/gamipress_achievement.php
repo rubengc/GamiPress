@@ -84,7 +84,7 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 	  'earners'	  		=> 'no',
 	), $atts, 'gamipress_achievement' );
 
-	// return if post id not specified
+	// Return if achievement id not specified
 	if ( empty($atts['id']) )
 	  return;
 

@@ -179,6 +179,16 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.4 ###
+
+* Fixed [gamipress_achievements] load more visibility.
+* Updated plugin headers to support WordPress provided translations (translate.wordpress.org).
+* Improvements on admin area styles.
+* Improvements on shortcode embedder fields parser.
+* Improvements on assets enqueueing.
+* Improvements on emails tags functions.
+* Added hooks on emails functions to allow access to external functions.
+
 ### 1.3.3 ###
 
 * Added the parameter load_more to the [gamipress_achievements] shortcode to disable pagination.

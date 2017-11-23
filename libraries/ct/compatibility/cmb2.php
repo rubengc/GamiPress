@@ -8,6 +8,10 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Check if should override on add meta boxes action
+ *
+ * @since 1.0.0
+ *
  * @param $ct_table_name
  * @param $object
  */
@@ -35,7 +39,49 @@ function ct_cmb2_add_meta_boxes( $ct_table_name, $object ) {
 add_action( 'add_meta_boxes', 'ct_cmb2_add_meta_boxes', 10, 2 );
 
 /**
- * Override the CMB2
+ * On save an object, let it know to CMB2
+ *
+ * @since 1.0.0
+ *
+ * @param $object_id
+ * @param $object
+ */
+function ct_cmb2_save_object( $object_id, $object ) {
+
+    global $ct_registered_tables, $ct_table, $ct_cmb2_override;
+
+    // Return if CMB2 not exists
+    if( ! class_exists( 'CMB2' ) ) {
+        return;
+    }
+
+    // Return if user is not allowed
+    if ( ! current_user_can( 'edit_item', $object_id ) ) {
+        return;
+    }
+
+    // Setup a custom global to meet that we need to override it
+    $ct_cmb2_override = true;
+
+    // Loop all registered boxes
+    foreach( CMB2_Boxes::get_all() as $cmb ) {
+
+        // Skip meta boxes that do not support this CT_Table
+        if( ! in_array( $ct_table->name, $cmb->meta_box['object_types'] ) ) {
+            continue;
+        }
+
+        // Take a trip to reading railroad – if you pass go collect $200
+        $cmb->save_fields( $object_id, 'post', $_POST );
+    }
+
+}
+add_action( 'ct_save_object', 'ct_cmb2_save_object', 10, 2 );
+
+/**
+ * Override the CMB2 field value
+ *
+ * @since 1.0.0
  *
  * @param $value
  * @param $object_id
@@ -68,13 +114,17 @@ function ct_cmb2_override_meta_value( $value, $object_id, $args, $field ) {
 add_filter( 'cmb2_override_meta_value', 'ct_cmb2_override_meta_value', 10, 4 );
 
 /**
+ * Override the CMB2 field value save
+ *
+ * @since 1.0.0
+ *
  * @param $check
  * @param $object_id
  * @param $args
  * @param $field
  * @return bool|false|int
  */
-function ct_cmb2_override_meta_save( $check, $object_id, $args, $field ) {
+function ct_cmb2_override_meta_save( $check, $args, $field_args, $field ) {
 
     global $ct_registered_tables, $ct_table, $ct_cmb2_override;
 
@@ -82,7 +132,7 @@ function ct_cmb2_override_meta_save( $check, $object_id, $args, $field ) {
         return $check;
     }
 
-    $object = (array) ct_get_object( $object_id );
+    $object = (array) ct_get_object( $args['id'] );
 
     // If not is a main field and CT_Table supports meta data, then try to save the given value to the meta table
     // Note: Main fields are automatically stored by the save method on the CT_Edit_View edit screen
@@ -90,16 +140,16 @@ function ct_cmb2_override_meta_save( $check, $object_id, $args, $field ) {
 
         // Add metadata if not single
         if ( ! $args['single'] ) {
-            return add_metadata( $object_id, $args['field_id'], $args['value'], false );
+            return add_metadata( $args['id'], $args['field_id'], $args['value'], false );
         }
 
         // Delete meta if we have an empty array
         if ( is_array( $args['value'] ) && empty( $args['value'] ) ) {
-            return ct_delete_object_meta( $object_id, $args['field_id'], $field->value );
+            return ct_delete_object_meta( $args['id'], $args['field_id'], $field->value );
         }
 
         // Update metadata
-        return ct_update_object_meta( $object_id, $args['field_id'], $args['value'] );
+        return ct_update_object_meta( $args['id'], $args['field_id'], $args['value'] );
     }
 
     return $check;

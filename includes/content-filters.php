@@ -190,7 +190,7 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 	// Concatenate our output
 	foreach ( $points_awards as $points_award ) {
 
-		// Check if user has earned this Achievement, and add an 'earned' class
+		// Check if user has earned this points award, and add an 'earned' class
 		$earned_status = 'user-has-not-earned';
 
 		$maximum_earnings = absint( get_post_meta( $points_award->ID, '_gamipress_maximum_earnings', true ) );
@@ -331,7 +331,7 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	// Concatenate our output
 	foreach ( $steps as $step ) {
 
-		// check if user has earned this Achievement, and add an 'earned' class
+		// Check if user has earned this step, and add an 'earned' class
 		$earned_status = gamipress_get_user_achievements( array(
 			'user_id' => absint( $user_id ),
 			'achievement_id' => absint( $step->ID ),

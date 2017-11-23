@@ -1,9 +1,9 @@
 ﻿=== GamiPress ===
 Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
-Requires at least: 4.0
+Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -174,6 +174,16 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 == Changelog ==
+
+= 1.3.4 =
+
+* Fixed [gamipress_achievements] load more visibility.
+* Updated plugin headers to support WordPress provided translations (translate.wordpress.org).
+* Improvements on admin area styles.
+* Improvements on shortcode embedder fields parser.
+* Improvements on assets enqueueing.
+* Improvements on emails tags functions.
+* Added hooks on emails functions to allow access to external functions.
 
 = 1.3.3 =
 

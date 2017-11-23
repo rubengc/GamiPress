@@ -41,6 +41,7 @@ function gamipress_register_achievements_shortcode() {
 					'columns',
 					'filter',
 					'search',
+					'load_more',
 				),
 			),
 			'achievement' => array(

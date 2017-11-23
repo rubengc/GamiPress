@@ -25,6 +25,7 @@ class GamiPress_Shortcodes_Editor {
 	 * @since  1.0.0
 	 */
 	public function admin_scripts( $hook ) {
+
 		global $post_type;
 
 		// Just enqueue on add/edit views and on post types that supports editor feature
@@ -47,6 +48,7 @@ class GamiPress_Shortcodes_Editor {
 			) );
 
 		}
+
     }
 
 	/**

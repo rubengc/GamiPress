@@ -16,7 +16,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_add_log_extra_data_ui_meta_box() {
 
-    add_meta_box( 'gamipress_log_details_ui', __( 'Log Details', 'gamipress' ), 'gamipress_log_data_ui_meta_box', 'gamipress_logs', 'side', 'default' );
+    add_meta_box( 'gamipress_log_details_ui', __( 'Log Details', 'gamipress' ), 'gamipress_log_details_ui_meta_box', 'gamipress_logs', 'side', 'default' );
     add_meta_box( 'gamipress_log_extra_data_ui', __( 'Extra Data', 'gamipress' ), 'gamipress_log_extra_data_ui_meta_box', 'gamipress_logs', 'normal', 'default' );
 
 }
@@ -29,10 +29,10 @@ add_action( 'add_meta_boxes', 'gamipress_add_log_extra_data_ui_meta_box' );
  *
  * @param  stdClass $object The current object
  */
-function gamipress_log_data_ui_meta_box( $object  = null ) {
+function gamipress_log_details_ui_meta_box( $object  = null ) {
     ?>
     <div id="log-data-ui">
-        <?php gamipress_log_data_ui_html( $object, $object->type ); ?>
+        <?php gamipress_log_details_ui_html( $object, $object->type ); ?>
     </div>
     <?php
 }
@@ -45,7 +45,7 @@ function gamipress_log_data_ui_meta_box( $object  = null ) {
  * @param  stdClass $object     The current object
  * @param  string   $type       Type to render form
  */
-function gamipress_log_data_ui_html( $object, $type ) {
+function gamipress_log_details_ui_html( $object, $type ) {
     $log_types = gamipress_get_log_types();
 
     ?>

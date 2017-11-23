@@ -370,13 +370,31 @@ li.requirement-row label {
 	width: 100%;
 }
 
-.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row {
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row:not(.cmb-repeat-row) {
 	width: 50%;
 	padding: 5px;
 
 	-moz-box-sizing: border-box;
 	-webkit-box-sizing: border-box;
 	box-sizing: border-box;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row {
+	width: 100%;
+	padding: 5px 40px 5px 40px;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row input,
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row select {
+	width: 100%;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-row.cmb-repeat-row .cmb-td.cmb-remove-row {
+	width: auto;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-repeat-table + .cmb-add-row {
+	padding: 0;
 }
 
 .gamipress-shortcode-thickbox .cmb2-wrap .cmb-repeat-group-wrap,
@@ -598,6 +616,12 @@ body > .gamipress-select2,
 
 #postbox-container-1 #side-sortables .gamipress-box-form .gamipress-switch .cmb-td {
 	min-height: 32px;
+}
+
+#postbox-container-1 #side-sortables .gamipress-box-form .gamipress-switch .cmb2-metabox-description {
+	content: "";
+	display: inline-block;
+	height: 45px;
 }
 
 .gamipress-switch .cmb2-list li {

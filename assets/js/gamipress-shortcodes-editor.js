@@ -18,20 +18,55 @@
         var inputs = gamipress_get_shortcode_inputs( shortcode );
 
         $.each( inputs, function( index, el ) {
-            // Select2 values are only accessible through jQuery val()
-            var value = $(el).val();
+            var key, value;
 
-            // Turn checked status into yes or no
-            if( $(el).attr('type') === 'checkbox' ) {
-                value = $(el).prop('checked') ? 'yes' : 'no';
-            }
+            // Turn array of repeatable field into a comma separated values
+            if( $(el).closest('.cmb-row').hasClass('cmb-repeat-row') ) {
+                // Repeatable
 
-            if (value !== '' && value !== undefined && value !== null ) {
+                var field_name = el.name.split('[')[0];
+                key = el.name.replace( shortcode + '_', '').replace('[]', '');
 
-                // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
-                var key = el.name.replace( shortcode + '_', '').replace('[]', '');
+                key = key.split('[')[0];
 
-                attrs[key] = value;
+                // Just continue if element has not set
+                if( attrs[key] === undefined ) {
+
+                   // Look at all fields
+                    var fields = $(el).closest('.cmb-tbody').find('[name^="' + field_name + '"]');
+                    var values = [];
+
+                    // Loop all fields and make a comma separated attr value
+                    for( var i=0; i < fields.length; i++ ) {
+
+                        var field = $(fields[i]);
+
+                        if( field.val().length ) {
+                            values.push( field.val() );
+                        }
+                    }
+
+                    attrs[key] = values.join(',');
+
+                }
+            } else {
+                // Single
+
+                // Select2 values are only accessible through jQuery val()
+                value = $(el).val();
+
+                // Turn checked status into yes or no
+                if( $(el).attr('type') === 'checkbox' ) {
+                    value = $(el).prop('checked') ? 'yes' : 'no';
+                }
+
+                if (value !== '' && value !== undefined && value !== null ) {
+
+                    // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
+                    key = el.name.replace( shortcode + '_', '').replace('[]', '');
+
+                    attrs[key] = value;
+                }
             }
         });
 

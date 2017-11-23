@@ -11,8 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Get an array of registered email templates
  *
- * @since  1.3.0
-
+ * @since 1.3.0
+ *
  * @return array The registered email pattern tags
  */
 function gamipress_get_email_templates() {
@@ -27,18 +27,18 @@ function gamipress_get_email_templates() {
 /**
  * Get an array of email pattern tags
  *
- * @since  1.3.0
-
+ * @since 1.3.0
+ *
  * @return array The registered email pattern tags
  */
 function gamipress_get_email_pattern_tags() {
 
     return apply_filters( 'gamipress_email_pattern_tags', array(
+        '{site_title}'          =>  __( 'Site name.', 'gamipress' ),
+        '{site_link}'           =>  __( 'Link to the site with site name as text.', 'gamipress' ),
         '{user}'                =>  __( 'User display name.', 'gamipress' ),
         '{user_first}'          =>  __( 'User first name.', 'gamipress' ),
         '{user_last}'           =>  __( 'User last name.', 'gamipress' ),
-        '{site_title}'          =>  __( 'Site name.', 'gamipress' ),
-        '{site_link}'           =>  __( 'Link to the site with site name as text.', 'gamipress' ),
     ) );
 
 }
@@ -46,8 +46,8 @@ function gamipress_get_email_pattern_tags() {
 /**
  * Get an array of email pattern tags used on achievement earned email
  *
- * @since  1.3.0
-
+ * @since 1.3.0
+ *
  * @return array The registered achievement earned email pattern tags
  */
 function gamipress_get_achievement_earned_email_pattern_tags() {
@@ -67,8 +67,8 @@ function gamipress_get_achievement_earned_email_pattern_tags() {
 /**
  * Get an array of email pattern tags used on step completed email
  *
- * @since  1.3.0
-
+ * @since 1.3.0
+ *
  * @return array The registered step completed email pattern tags
  */
 function gamipress_get_step_completed_email_pattern_tags() {
@@ -89,8 +89,8 @@ function gamipress_get_step_completed_email_pattern_tags() {
 /**
  * Get an array of email pattern tags used on points award completed email
  *
- * @since  1.3.0
-
+ * @since 1.3.0
+ *
  * @return array The registered points award completed email pattern tags
  */
 function gamipress_get_points_award_completed_email_pattern_tags() {
@@ -109,8 +109,8 @@ function gamipress_get_points_award_completed_email_pattern_tags() {
 /**
  * Get an array of email pattern tags used on rank earned email
  *
- * @since  1.3.1
-
+ * @since 1.3.1
+ *
  * @return array The registered rank earned email pattern tags
  */
 function gamipress_get_rank_earned_email_pattern_tags() {
@@ -130,8 +130,8 @@ function gamipress_get_rank_earned_email_pattern_tags() {
 /**
  * Get an array of email pattern tags used on rank requirement completed email
  *
- * @since  1.3.1
-
+ * @since 1.3.1
+ *
  * @return array The registered rank requirement completed email pattern tags
  */
 function gamipress_get_rank_requirement_completed_email_pattern_tags() {
@@ -152,7 +152,7 @@ function gamipress_get_rank_requirement_completed_email_pattern_tags() {
 /**
  * Get a string with the desired email pattern tags html markup
  *
- * @since  1.3.0
+ * @since 1.3.0
  *
  * @param string $email
  *
@@ -327,15 +327,28 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
     global $gamipress_email_template_args;
 
+    // Setup site replacements
+    $replacements = array(
+        '{site_title}'  => get_bloginfo( 'name' ),
+        '{site_link}'   =>  '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>',
+    );
+
+    // Setup user replacements
     $user = get_userdata( $gamipress_email_template_args['user_id'] );
 
-    $replacements = array(
-        '{user}'                =>  $user->display_name,
-        '{user_first}'          =>  $user->first_name,
-        '{user_last}'           =>  $user->last_name,
-        '{site_title}'          =>  get_bloginfo( 'name' ),
-        '{site_link}'           =>  '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>',
-    );
+    if( $user ) {
+
+        $replacements['{user}']         =  $user->display_name;
+        $replacements['{user_first}']   =  $user->first_name;
+        $replacements['{user_last}']    =  $user->last_name;
+
+    } else {
+
+        $replacements['{user}']         =  '';
+        $replacements['{user_first}']   =  '';
+        $replacements['{user_last}']    =  '';
+
+    }
 
     if( $gamipress_email_template_args['type'] === 'achievement_earned' && isset( $gamipress_email_template_args['achievement_id'] ) ) {
 
@@ -498,6 +511,17 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
     }
 
+    /**
+     * Parse email tags
+     *
+     * @since 1.3.4
+     *
+     * @param array     $replacements
+     * @param WP_User   $user
+     * @param array     $template_args
+     */
+    $replacements = apply_filters( 'gamipress_parse_email_tags', $replacements, $user, $gamipress_email_template_args );
+
     return str_replace( array_keys( $replacements ), $replacements, $content );
 
 }
@@ -593,6 +617,17 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
         $gamipress_email_template_args['type'] = 'rank_requirement_completed';
 
     }
+
+    /**
+     * Parse email tags for preview email
+     *
+     * @since 1.3.4
+     *
+     * @param array     $replacements
+     * @param WP_User   $user
+     * @param array     $template_args
+     */
+    $replacements = apply_filters( 'gamipress_parse_preview_email_tags', $replacements, $user, $gamipress_email_template_args );
 
     return str_replace( array_keys( $replacements ), $replacements, $content );
 

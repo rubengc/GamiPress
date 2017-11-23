@@ -73,9 +73,10 @@ function gamipress_admin_register_scripts() {
 
     // Scripts
     wp_register_script( 'gamipress-admin-js', GAMIPRESS_URL . 'assets/js/gamipress-admin' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-admin-widgets-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-widgets' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-admin-widgets-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-widgets' . $suffix . '.js', array( 'jquery', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-log-extra-data-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-log-extra-data-ui' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-admin-settings-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-settings' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-admin-tools-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-tools' . $suffix . '.js', array( 'jquery', 'jquery-ui-dialog' ), GAMIPRESS_VER, true );
 
 }
@@ -96,14 +97,13 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     //Scripts
     wp_enqueue_script( 'gamipress-admin-js' );
 
-    wp_enqueue_script( 'gamipress-log-extra-data-ui-js' );
-
     if(
         $post_type === 'points-type'
         || in_array( $post_type, gamipress_get_achievement_types_slugs() )
         || in_array( $post_type, gamipress_get_rank_types_slugs() )
         || $post_type === 'gamipress-log'   // TODO: Since 1.2.8 gamipress-log CPT not supported, remove on 1.3.0
         || $hook === 'widgets.php'
+        || $hook === 'gamipress_page_gamipress_settings'
     ) {
         wp_enqueue_script( 'gamipress-select2-js' );
         wp_enqueue_style( 'gamipress-select2-css' );
@@ -121,8 +121,11 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     }
 
     // Logs scripts
-    // TODO: Since 1.2.8 gamipress-log CPT not supported, remove on 1.3.0
-    if ( $post_type === 'gamipress-log' ) {
+    if (
+        $hook === 'gamipress_page_gamipress_logs'
+        || $hook === 'admin_page_edit_gamipress_logs'
+        || $post_type === 'gamipress-log' // TODO: Since 1.2.8 gamipress-log CPT not supported, remove on 1.3.0
+    ) {
         wp_enqueue_script( 'gamipress-log-extra-data-ui-js' );
     }
 
@@ -137,6 +140,11 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         ) );
 
         wp_enqueue_script( 'gamipress-admin-widgets-js' );
+    }
+
+    // Settings page
+    if( $hook === 'gamipress_page_gamipress_settings' ) {
+        wp_enqueue_script( 'gamipress-admin-settings-js' );
     }
 
     // Tools page
