@@ -103,7 +103,7 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 * [Restrict Content](https://gamipress.com/add-ons/gamipress-restrict-content/) - Limit access to any post or page based on GamiPress interactions.
 * [Notifications](https://gamipress.com/add-ons/gamipress-notifications/) - Instantly notify of achievements, steps, points awards and/or ranks completion to your users.
-* [Progress Maps](https://gamipress.com/add-ons/gamipress-progress-maps/) - Add interactive achievements progress maps to your site.
+* [Progress Map](https://gamipress.com/add-ons/gamipress-progress-map/) - Add interactive achievements progress maps to your site.
 * [Progress](https://gamipress.com/add-ons/gamipress-progress/) - Attractively show to your users their progress of completion of any achievement.
 * [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/) - Add leaderboards to intensify the gamification of your site.
 * [Social Share](https://gamipress.com/add-ons/gamipress-social-share/) - Award your users for sharing your website content on social networks.
