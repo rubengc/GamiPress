@@ -94,8 +94,14 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 ### Powerful add-ons to extend GamiPress ###
 
-Check our [official add-ons page](https://gamipress.com/add-ons "GamiPress Add-ons") to get free and premium add-ons to extend GamiPress to the next level.
-Also, you can visit our [WordPress.org profile page](https://profiles.wordpress.org/gamipress#content-plugins "GamiPress on WordPress.org") where you can find all our free add-ons.
+* [Restrict Content](https://gamipress.com/add-ons/gamipress-restrict-content/) - Limit access to any post or page based on GamiPress interactions.
+* [Notifications](https://gamipress.com/add-ons/gamipress-notifications/) - Instantly notify of achievements, steps, points awards and/or ranks completion to your users.
+* [Progress Maps](https://gamipress.com/add-ons/gamipress-progress-maps/) - Add interactive achievements progress maps to your site.
+* [Progress](https://gamipress.com/add-ons/gamipress-progress/) - Attractively show to your users their progress of completion of any achievement.
+* [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/) - Add leaderboards to intensify the gamification of your site.
+* [Social Share](https://gamipress.com/add-ons/gamipress-social-share/) - Award your users for sharing your website content on social networks.
+* [Easy Digital Downloads Discounts](https://gamipress.com/add-ons/gamipress-edd-discounts/) - Award discounts for achievement completion on Easy Digital Downloads.
+* [WooCommerce Discounts](https://gamipress.com/add-ons/gamipress-wc-discounts/) - Award discounts for achievement completion on WooCommerce.
 
 ### Helpful Links ###
 
@@ -178,6 +184,16 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 ## Changelog ##
+
+### 1.3.5 ###
+
+* Fixed listener form add new comment when comments needs approval.
+* Improvements on user profile earnings table.
+* Added hook to register activity triggers excluded form activity limits (like earn points or ranks).
+* Added database table check to avoid any warning.
+* Added more parameters to ajax functions.
+* Improve messages queries on custom tables (logs and user earnings).
+* Improvements on admin area styles.
 
 ### 1.3.4 ###
 

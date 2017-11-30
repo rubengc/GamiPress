@@ -87,6 +87,7 @@ function gamipress_approved_comment_listener( $comment_ID, $comment ) {
     do_action( 'gamipress_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $comment[ 'comment_post_ID' ], $comment );
 
 }
+add_action( 'comment_approved_', 'gamipress_approved_comment_listener', 10, 2 );
 add_action( 'comment_approved_comment', 'gamipress_approved_comment_listener', 10, 2 );
 add_action( 'wp_insert_comment', 'gamipress_approved_comment_listener', 10, 2 );
 

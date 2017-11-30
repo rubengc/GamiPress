@@ -213,6 +213,9 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
                     $value
                 );
 
+                // Small screens toggle
+                $value .= '<button type="button" class="toggle-row"><span class="screen-reader-text">' . __( 'Show more details' ) . '</span></button>';
+
             }
 
             return $value;

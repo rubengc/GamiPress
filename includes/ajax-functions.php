@@ -295,6 +295,7 @@ add_action( 'wp_ajax_gamipress_get_achievements_options', 'gamipress_ajax_get_ac
  * @since   1.0.0
  * @updated 1.0.5
  * @updated 1.3.0
+ * @updated 1.3.5 Make function accessible through gamipress_get_achievements_options_html action
  */
 function gamipress_achievement_post_ajax_handler() {
 
@@ -306,7 +307,9 @@ function gamipress_achievement_post_ajax_handler() {
 		$requirements = gamipress_get_requirement_object( $_REQUEST['requirement_id'] );
 
 		$selected = isset( $requirements['achievement_post'] ) ? $requirements['achievement_post'] : '';
-    }
+    } else if( isset( $_REQUEST['selected'] ) && ! empty( $_REQUEST['selected'] ) ) {
+		$selected = $_REQUEST['selected'];
+	}
 
 	$achievement_type = $_REQUEST['achievement_type'];
 	$exclude_posts = isset( $_REQUEST['excluded_posts'] ) ? (array) $_REQUEST['excluded_posts'] : array();
@@ -345,6 +348,7 @@ function gamipress_achievement_post_ajax_handler() {
 
 }
 add_action( 'wp_ajax_gamipress_requirement_achievement_post', 'gamipress_achievement_post_ajax_handler' );
+add_action( 'wp_ajax_gamipress_get_achievements_options_html', 'gamipress_achievement_post_ajax_handler' );
 
 /**
  * AJAX Helper for selecting ranks in achievement earned by

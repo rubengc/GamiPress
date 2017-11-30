@@ -71,13 +71,22 @@
 	});
 
 	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {
-		var label = $('#post_type').val() === 'achievement-type' ? 'Achievement Type' : 'Points type';
 		var field = $(this);
 		var slug = $(this).val();
 		var preview = $(this).next('.cmb2-metabox-description').find('.gamipress-post-name');
 
 		if( preview.length ) {
 			preview.text(slug);
+		}
+
+		var label = '';
+
+		if(  $('#post_type').val() === 'achievement-type' ) {
+			label = 'Achievement Type';
+		} else if(  $('#post_type').val() === 'rank-type' ) {
+			label = 'Rank Type';
+		} else {
+			label = 'Points Type';
 		}
 
 		// Delete any existing version of this warning

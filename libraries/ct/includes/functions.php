@@ -40,7 +40,11 @@ function ct_register_table( $name, $args ) {
  */
 function ct_setup_table( $object ) {
 
-    global $ct_registered_tables, $ct_table;
+    global $ct_registered_tables, $ct_previous_table, $ct_table;
+
+    if( is_object( $ct_table ) ) {
+        $ct_previous_table = $ct_table;
+    }
 
     if( is_object( $object ) ) {
         $ct_table = $object;
@@ -49,6 +53,23 @@ function ct_setup_table( $object ) {
     }
 
     return $ct_table;
+}
+
+/**
+ * Setup the global table
+ *
+ * @return CT_Table $ct_table
+ */
+function ct_reset_setup_table() {
+
+    global $ct_registered_tables, $ct_previous_table, $ct_table;
+
+    if( is_object( $ct_previous_table ) ) {
+        $ct_table = $ct_previous_table;
+    }
+
+    return $ct_table;
+
 }
 
 /**

@@ -94,7 +94,6 @@ add_filter( 'ct_query_where', 'gamipress_user_earnings_query_where', 10, 2 );
  */
 function gamipress_manage_user_earnings_columns( $columns = array() ) {
 
-    $columns['image']   = __( 'Image', 'gamipress' );
     $columns['name']    = __( 'Name', 'gamipress' );
     $columns['date']    = __( 'Date', 'gamipress' );
     $columns['action']  = __( 'Action', 'gamipress' );
@@ -125,12 +124,9 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
     $user_id = $achievement->user_id;
 
     switch( $column_name ) {
-        case 'image':
-
-            echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 50, 50 ) );
-
-            break;
         case 'name':
+
+            echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 32, 32 ) );
 
             if( in_array( $achievement->post_type, gamipress_get_requirement_types_slugs() ) ) : ?>
 
@@ -173,8 +169,11 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                 <strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
                 <?php echo ( isset( $rank_types[$achievement->post_type] ) ? '<br>' . $rank_types[$achievement->post_type]['singular_name'] : '' ); ?>
 
-            <?php endif;
+            <?php endif; ?>
 
+            <button type="button" class="toggle-row"><span class="screen-reader-text"><?php __( 'Show more details', 'gamipress' ); ?></span></button>
+
+            <?php
             break;
         case 'date':
             ?>

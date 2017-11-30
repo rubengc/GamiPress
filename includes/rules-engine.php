@@ -438,8 +438,13 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 
 	$trigger_type = get_post_meta( $achievement_id, '_gamipress_trigger_type', true );
 
-	// Earn points and reach a rank are excluded from this check
-	if( $trigger_type === 'earn-points' || $trigger_type === 'earn-rank' ) {
+	$activity_triggers_excluded = array( 'earn-points', 'earn-rank' );
+
+	// Allow filter activity triggers excluded from limit requirements
+	$activity_triggers_excluded = apply_filters( 'gamipress_activity_triggers_excluded_from_activity_limit', $activity_triggers_excluded, $trigger_type, $user_id, $achievement_id );
+
+	// Check if activity trigger is excluded from this check
+	if( in_array( $trigger_type, $activity_triggers_excluded ) ) {
 		return $return;
 	}
 

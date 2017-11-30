@@ -330,8 +330,9 @@ li.requirement-row label {
 	color: #a00;
 }
 
-.wp-list-table.gamipress_user_earnings .column-image {
-	width: 60px;
+.wp-list-table.gamipress_user_earnings .column-name img {
+	float: left;
+	margin-right: 10px;
 }
 
 .wp-list-table.gamipress_user_earnings .column-action {
@@ -504,6 +505,11 @@ body > .gamipress-select2,
 	max-width: 100%;
 }
 
+.user-edit-php .gamipress-select2,
+.profile-php .gamipress-select2 {
+	width: 25em !important;
+}
+
 #requirements-list .gamipress-select2 {
 	max-width: 300px;
 }
@@ -543,6 +549,18 @@ body > .gamipress-select2,
 	background-color: #fafafa;
 	border-top: 1px solid #e9e9e9;
 	border-bottom: 1px solid #e9e9e9;
+}
+
+.gamipress_settings .gamipress-select2 {
+	vertical-align: baseline;
+}
+
+.gamipress_settings .gamipress-select2.select2-container .select2-selection--single {
+	height: 31px;
+}
+
+.gamipress_settings .gamipress-select2.select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 28px;
 }
 
 @media screen and (max-width: 782px) {

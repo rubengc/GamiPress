@@ -126,3 +126,24 @@ function gamipress_set_upgrade_complete( $upgrade_action = '' ) {
 
     return update_option( 'gamipress_completed_upgrades', $completed_upgrades );
 }
+
+/**
+ * Utility function to check if a database table exists
+ *
+ * @since  1.3.5
+ *
+ * @param  string $table_name The desired table name
+ *
+ * @return bool                   If the function was successfully added
+ */
+function gamipress_database_table_exists( $table_name ) {
+
+    global $wpdb;
+
+    $table_exist = $wpdb->get_var( $wpdb->prepare(
+        "SHOW TABLES LIKE %s",
+        $wpdb->esc_like( $table_name )
+    ) );
+
+    return ! empty( $table_exist );
+}

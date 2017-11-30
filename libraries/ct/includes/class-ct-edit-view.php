@@ -101,7 +101,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
             );
 
             /**
-             * Filters the table updated messages.
+             * Filters the table updated messages (string keys allowed!).
              *
              * @since 1.0.0
              *
@@ -111,8 +111,6 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
 
             // Setup screen message
             if ( isset($_GET['message']) ) {
-
-                $_GET['message'] = absint( $_GET['message'] );
 
                 if ( isset($messages[$_GET['message']]) )
                     $this->message = sprintf( $messages[$_GET['message']], $ct_table->labels->singular_name );

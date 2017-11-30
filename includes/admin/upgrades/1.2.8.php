@@ -22,6 +22,11 @@ function gamipress_128_upgrades( $stored_version ) {
         return $stored_version;
     }
 
+    // Prevent run upgrade until database tables are created
+    if( ! gamipress_database_table_exists( 'gamipress_logs' ) || ! gamipress_database_table_exists( 'gamipress_user_earnings' ) ) {
+        return $stored_version;
+    }
+
     // Check if there is something to migrate
     $upgrade_size = gamipress_128_upgrade_size();
 
@@ -54,6 +59,11 @@ function gamipress_128_upgrades_notices() {
 
     // Already upgraded!
     if( is_gamipress_upgraded_to( '1.2.8' ) ) {
+        return;
+    }
+
+    // Prevent run upgrade until database tables are created
+    if( ! gamipress_database_table_exists( 'gamipress_logs' ) || ! gamipress_database_table_exists( 'gamipress_user_earnings' ) ) {
         return;
     }
 
