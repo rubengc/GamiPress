@@ -14,7 +14,7 @@ function yourprefix_init() {
 
     require_once __DIR__ . '/ct.php';
 
-    ct_register_table( 'demo_logs', array(
+    $ct_table = ct_register_table( 'demo_logs', array(
         'singular' => 'Log',
         'plural' => 'Logs',
         'show_ui' => true,
@@ -57,6 +57,11 @@ function yourprefix_init() {
             'meta',         // This support automatically generates a new DB table with {table_name}_meta with a similar structure like WP post meta
         )
     ) );
+
+    // Let's to add some demo data
+    //$ct_table->db->insert( array( 'title' => 'Log 1' ) );
+    //$ct_table->db->insert( array( 'title' => 'Log 2' ) );
+    //$ct_table->db->insert( array( 'title' => 'Log 3' ) );
 
 }
 add_action( 'ct_init', 'yourprefix_init' );

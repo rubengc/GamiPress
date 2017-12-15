@@ -26,6 +26,13 @@ function gamipress_register_achievement_shortcode() {
 				'default'     => '',
 				'options_cb'  => 'gamipress_options_cb_posts'
 			),
+			'title' => array(
+				'name'        => __( 'Show Title', 'gamipress' ),
+				'description' => __( 'Display the achievement title.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+				'default' => 'yes'
+			),
 			'thumbnail' => array(
 				'name'        => __( 'Show Thumbnail', 'gamipress' ),
 				'description' => __( 'Display the achievement featured image.', 'gamipress' ),
@@ -77,6 +84,7 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 	// get the post id
 	$atts = shortcode_atts( array(
 	  'id' => get_the_ID(),
+	  'title' 			=> 'yes',
 	  'thumbnail' 		=> 'yes',
 	  'excerpt'	  		=> 'yes',
 	  'steps'	  		=> 'yes',

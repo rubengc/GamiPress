@@ -130,7 +130,7 @@ if ( ! class_exists( 'CT' ) ) :
          */
         private function hooks() {
 
-            add_action( 'init', array( $this, 'init' ) );
+            add_action( 'init', array( $this, 'init' ), 1 );
 
         }
 

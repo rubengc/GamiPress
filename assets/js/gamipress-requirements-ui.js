@@ -109,7 +109,11 @@
         // Lets to check if there is a specific activity trigger
         if ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ) {
             // Show select post
-            post_selector.show().data( 'post-type', gamipress_requirements_ui.specific_activity_triggers[trigger_type].join(',') );
+            post_selector
+                .show()
+                .data( 'trigger-type', trigger_type )
+                .data( 'post-type', gamipress_requirements_ui.specific_activity_triggers[trigger_type].join(',') )
+            ;
 
             // Check if post selector Select2 has been initialized
             if( post_selector.hasClass('select2-hidden-accessible') ) {
@@ -127,7 +131,8 @@
                             return {
                                 q: params.term,
                                 action: 'gamipress_get_posts',
-                                post_type: $(this).data('post-type').split(',')
+                                post_type: $(this).data('post-type').split(','),
+                                trigger_type: $(this).data('trigger-type'),
                             };
                         },
                         processResults: function( results, page ) {

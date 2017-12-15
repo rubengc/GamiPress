@@ -236,13 +236,39 @@ function gamipress_ajax_get_posts() {
 		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
 	}
 
+	// Check for extra conditionals
+	$where = '';
+
+	if( isset( $_REQUEST['trigger_type'] ) ) {
+
+		$query_args = array();
+		$trigger_type = $_REQUEST['trigger_type'];
+
+		$query_args = gamipress_get_specific_activity_triggers_query_args( $query_args, $trigger_type );
+
+		if( isset( $query_args ) ) {
+
+			if( is_array( $query_args ) ) {
+				// If is an array of conditionals, then build the new conditionals
+				foreach( $query_args as $field => $value ) {
+					$where .= " AND p.{$field} = '$value'";
+				}
+			} else {
+				$where = $query_args;
+			}
+
+		}
+	}
+
 	$results = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT p.ID, p.post_title
 		FROM   $wpdb->posts AS p
-		WHERE  p.post_title LIKE %s
-		       {$post_type}
-		       AND p.post_status = 'publish'
+		WHERE  1=1
+			   {$post_type}
+		       {$where}
+			   AND p.post_title LIKE %s
+		       AND p.post_status IN( 'publish', 'inherit' )
 		",
 		"%%{$search}%%"
 	) );

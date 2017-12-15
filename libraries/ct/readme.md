@@ -28,6 +28,7 @@ List view with support similar to WP tables:
 - [ ] Bulk actions
 - [ ] List view views
 - [ ] Trash functionality
+- [x] Delete Permanently action
 
 Edit View similar to WP edit screen:
 
@@ -36,6 +37,7 @@ Edit View similar to WP edit screen:
 - [x] Show hide Meta boxes
 - [x] Allow user to toggle view columns
 - [x] Allow define edit view columns (to force to 1 column)
+- [x] Delete Permanently action
 
 Other features
 

@@ -13,6 +13,7 @@ defined( 'ABSPATH' ) || exit;
  * @return CT_Table
  */
 function ct_register_table( $name, $args ) {
+
     global $ct_registered_tables;
 
     if ( ! is_array( $ct_registered_tables ) ) {
@@ -30,6 +31,7 @@ function ct_register_table( $name, $args ) {
     $ct_registered_tables[$name] = $ct_table;
 
     return $ct_table;
+
 }
 
 /**
@@ -53,6 +55,7 @@ function ct_setup_table( $object ) {
     }
 
     return $ct_table;
+
 }
 
 /**
@@ -112,6 +115,7 @@ function ct_get_table_labels( $ct_table ) {
     }
 
     return (object) $default_labels;
+
 }
 
 /**
@@ -432,6 +436,10 @@ function ct_insert_object( $object_data, $wp_error = false ) {
 
     global $wpdb, $ct_table;
 
+    if( ! is_a( $ct_table, 'CT_Table' ) ) {
+        return new WP_Error( 'invalid_ct_table', __( 'Invalid CT Table object.' ) );
+    }
+
     /**
      * Setup the default object for the add new view.
      *
@@ -490,8 +498,8 @@ function ct_insert_object( $object_data, $wp_error = false ) {
          *
          * @since 2.5.0
          *
-         * @param int   $post_ID Post ID.
-         * @param array $data    Array of unslashed post data.
+         * @param int   $object_id  Object ID.
+         * @param array $data       Array of unslashed object data.
          */
         do_action( 'pre_object_update', $object_id, $object_data );
 
@@ -550,7 +558,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
          */
         do_action( 'ct_edit_object', $object_id, $object );
 
-        $object_after = get_post( $object_id );
+        $object_after = ct_get_object( $object_id );
 
         /**
          * Fires once an existing post has been updated.
@@ -600,6 +608,123 @@ function ct_insert_object( $object_data, $wp_error = false ) {
     do_action( 'ct_insert_object', $object_id, $object, $update );
 
     return $object_id;
+}
+
+/**
+ * Trash or delete an object.
+ *
+ * When the post and page is permanently deleted, everything that is tied to
+ * it is deleted also. This includes comments, post meta fields, and terms
+ * associated with the post.
+ *
+ * The post or page is moved to trash instead of permanently deleted unless
+ * trash is disabled, item is already in the trash, or $force_delete is true.
+ *
+ * @since 1.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ * @see wp_delete_attachment()
+ * @see wp_trash_post()
+ *
+ * @param int  $object_id    Optional. Object ID. Default 0.
+ * @param bool $force_delete Optional. Whether to bypass trash and force deletion.
+ *                           Default false.
+ * @return WP_Post|false|null Post data on success, false or null on failure.
+ */
+function ct_delete_object( $object_id = 0, $force_delete = false ) {
+
+    global $wpdb, $ct_table;
+
+    if( ! is_a( $ct_table, 'CT_Table' ) ) {
+        return new WP_Error( 'invalid_ct_table', __( 'Invalid CT Table object.' ) );
+    }
+
+    $ct_object = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$ct_table->db->table_name} WHERE {$ct_table->db->primary_key} = %d", $object_id ) );
+
+    if ( ! $ct_object ) {
+        return $ct_object;
+    }
+
+    $ct_object = ct_get_object( $ct_object );
+
+    //if ( ! $force_delete && ( 'post' === $post->post_type || 'page' === $post->post_type ) && 'trash' !== get_post_status( $postid ) && EMPTY_TRASH_DAYS ) {
+        //return ct_trash_object( $object_id );
+    //}
+
+    /**
+     * Filters whether a post deletion should take place.
+     *
+     * @since 1.0.0
+     *
+     * @param bool    $delete       Whether to go forward with deletion.
+     * @param WP_Post $post         Post object.
+     * @param bool    $force_delete Whether to bypass the trash.
+     */
+    $check = apply_filters( 'pre_delete_object', null, $ct_object, $force_delete );
+    if ( null !== $check ) {
+        return $check;
+    }
+
+    /**
+     * Fires before a post is deleted, at the start of ct_delete_object().
+     *
+     * @since 1.0.0
+     *
+     * @see ct_delete_object()
+     *
+     * @param int $object_id Object ID.
+     */
+    do_action( 'before_delete_object', $object_id );
+
+    if( $ct_table->meta ) {
+        ct_delete_object_meta( $object_id, '_wp_trash_meta_status' );
+        ct_delete_object_meta( $object_id, '_wp_trash_meta_time' );
+
+        $object_meta_ids = $wpdb->get_col( $wpdb->prepare( "SELECT {$ct_table->meta->db->primary_key} FROM {$ct_table->meta->db->table_name} WHERE {$ct_table->db->primary_key} = %d ", $object_id ));
+
+        foreach ( $object_meta_ids as $mid ) {
+            ct_delete_metadata_by_mid( 'post', $mid );
+        }
+    }
+
+    /**
+     * Fires immediately before a post is deleted from the database.
+     *
+     * @since 1.0.0
+     *
+     * @param int $object_id Object ID.
+     */
+    do_action( 'delete_object', $object_id );
+
+    $result = $ct_table->db->delete( $object_id );
+
+    if ( ! $result ) {
+        return false;
+    }
+
+    /**
+     * Fires immediately after a post is deleted from the database.
+     *
+     * @since 1.0.0
+     *
+     * @param int $object_id Object ID.
+     */
+    do_action( 'deleted_object', $object_id );
+
+    ct_clean_object_cache( $ct_object );
+
+    /**
+     * Fires after a post is deleted, at the conclusion of ct_delete_object().
+     *
+     * @since 1.0.0
+     *
+     * @see ct_delete_object()
+     *
+     * @param int $object_id Object ID.
+     */
+    do_action( 'after_delete_object', $object_id );
+
+    return $ct_object;
 }
 
 //
@@ -941,6 +1066,10 @@ function ct_update_object_meta( $object_id, $meta_key, $meta_value, $prev_value 
 
     global $wpdb, $ct_table;
 
+    if( ! is_a( $ct_table, 'CT_Table' ) ) {
+        return false;
+    }
+
     // Bail if CT_Table not supports meta data
     if( ! $ct_table->meta ) {
         return false;
@@ -1067,7 +1196,7 @@ function ct_update_object_meta( $object_id, $meta_key, $meta_value, $prev_value 
  * @param int|array $object_ids Array or comma delimited list of object IDs to update cache for
  * @return array|false Metadata cache for the specified objects, or false on failure.
  */
-function ct_update_meta_cache($meta_type, $object_ids) {
+function ct_update_meta_cache( $meta_type, $object_ids) {
 
     global $wpdb, $ct_table;
 
@@ -1084,8 +1213,6 @@ function ct_update_meta_cache($meta_type, $object_ids) {
     $primary_key = $ct_table->db->primary_key;
     $meta_primary_key = $ct_table->meta->db->primary_key;
     $meta_table_name = $ct_table->meta->db->table_name;
-
-    $column = sanitize_key($meta_type . '_id');
 
     if ( !is_array($object_ids) ) {
         $object_ids = preg_replace('|[^0-9,]|', '', $object_ids);
@@ -1137,6 +1264,111 @@ function ct_update_meta_cache($meta_type, $object_ids) {
     }
 
     return $cache;
+}
+
+/**
+ * Get meta data by meta ID
+ *
+ * @since 3.3.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $meta_type Type of object metadata is for (e.g., comment, post, term, or user).
+ * @param int    $meta_id   ID for a specific meta row
+ * @return object|false Meta object or false.
+ */
+function ct_get_metadata_by_mid( $meta_type, $meta_id ) {
+
+    global $wpdb, $ct_table;
+
+    if ( ! $meta_type || ! is_numeric( $meta_id ) || floor( $meta_id ) != $meta_id ) {
+        return false;
+    }
+
+    $meta_id = intval( $meta_id );
+
+    if ( $meta_id <= 0 ) {
+        return false;
+    }
+
+    // Bail if CT_Table not supports meta data
+    if( ! $ct_table->meta ) {
+        return false;
+    }
+
+    // Setup vars
+    $meta_primary_key = $ct_table->meta->db->primary_key;
+    $meta_table_name = $ct_table->meta->db->table_name;
+
+    $meta = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM $meta_table_name WHERE $meta_primary_key = %d", $meta_id ) );
+
+    if ( empty( $meta ) )
+        return false;
+
+    if ( isset( $meta->meta_value ) )
+        $meta->meta_value = maybe_unserialize( $meta->meta_value );
+
+    return $meta;
+
+}
+
+/**
+ * Delete meta data by meta ID
+ *
+ * @since 1.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $meta_type Type of object metadata is for (e.g., comment, post, term, or user).
+ * @param int    $meta_id   ID for a specific meta row
+ * @return bool True on successful delete, false on failure.
+ */
+function ct_delete_metadata_by_mid( $meta_type, $meta_id ) {
+
+    global $wpdb, $ct_table;
+
+    // Make sure everything is valid.
+    if ( ! $meta_type || ! is_numeric( $meta_id ) || floor( $meta_id ) != $meta_id ) {
+        return false;
+    }
+
+    $meta_id = intval( $meta_id );
+
+    if ( $meta_id <= 0 ) {
+        return false;
+    }
+
+    // Bail if CT_Table not supports meta data
+    if( ! $ct_table->meta ) {
+        return false;
+    }
+
+    // Setup vars
+    $meta_primary_key = $ct_table->meta->db->primary_key;
+    $meta_table_name = $ct_table->meta->db->table_name;
+
+    // Fetch the meta and go on if it's found.
+    if ( $meta = ct_get_metadata_by_mid( $meta_type, $meta_id ) ) {
+        $object_id = $meta->{$meta_primary_key};
+
+        /** This action is documented in wp-includes/meta.php */
+        do_action( "delete_{$meta_type}_meta", (array) $meta_id, $object_id, $meta->meta_key, $meta->meta_value );
+
+        // Run the query, will return true if deleted, false otherwise
+        $result = (bool) $wpdb->delete( $meta_table_name, array( $meta_primary_key => $meta_id ) );
+
+        // Clear the caches.
+        wp_cache_delete($object_id, $meta_type . '_meta');
+
+        /** This action is documented in wp-includes/meta.php */
+        do_action( "deleted_{$meta_type}_meta", (array) $meta_id, $object_id, $meta->meta_key, $meta->meta_value );
+
+        return $result;
+
+    }
+
+    // Meta id was not found.
+    return false;
 }
 
 /**
@@ -1279,10 +1511,12 @@ function ct_meta_form( $object = null ) {
 function ct_get_list_link( $name ) {
     global $ct_registered_tables;
 
+    // Check if table exists
     if( ! isset( $ct_registered_tables[$name] ) ) {
         return '';
     }
 
+    // Check if table has list view
     if( ! isset( $ct_registered_tables[$name]->views->list ) ) {
         return '';
     }
@@ -1301,15 +1535,59 @@ function ct_get_list_link( $name ) {
 function ct_get_edit_link( $name, $object_id = 0 ) {
     global $ct_registered_tables;
 
+    // Check if table exists
     if( ! isset( $ct_registered_tables[$name] ) || $object_id === 0 ) {
         return '';
     }
 
+    // Check if table has edit view
     if( ! isset( $ct_registered_tables[$name]->views->edit ) ) {
+        return '';
+    }
+
+    // Check if user has edit permissions
+    if( ! current_user_can( $ct_registered_tables[$name]->cap->edit_item, $object_id ) ) {
         return '';
     }
 
     $primary_key = $ct_registered_tables[$name]->db->primary_key;
 
+    // Edit link + object ID
     return add_query_arg( array( $primary_key => $object_id ), $ct_registered_tables[$name]->views->edit->get_link() );
+}
+
+/**
+ * Helper function to get the delete link of an given object type name and object id
+ *
+ * @param string $name
+ * @param int $object_id
+ *
+ * @return string
+ */
+function ct_get_delete_link( $name, $object_id = 0 ) {
+    global $ct_registered_tables;
+
+    // Check if table exists
+    if( ! isset( $ct_registered_tables[$name] ) || $object_id === 0 ) {
+        return '';
+    }
+
+    // Check if table has list view
+    if( ! isset( $ct_registered_tables[$name]->views->list ) ) {
+        return '';
+    }
+
+    // Check if user has delete permissions
+    if( ! current_user_can( $ct_registered_tables[$name]->cap->delete_item, $object_id ) ) {
+        return '';
+    }
+
+    $primary_key = $ct_registered_tables[$name]->db->primary_key;
+
+    // List link + object ID + action delete
+    $url = $ct_registered_tables[$name]->views->list->get_link();
+    $url = add_query_arg( array( $primary_key => $object_id ), $url );
+    $url = add_query_arg( array( 'ct-action' => 'delete' ), $url );
+
+    return $url;
 }

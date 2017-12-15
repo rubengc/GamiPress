@@ -173,6 +173,7 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		'exclude'     	=> '',
 
 		// Single rank atts
+		'title' 		=> 'yes',
 		'thumbnail' 	=> 'yes',
 		'excerpt'	  	=> 'yes',
 		'requirements'	=> 'yes',

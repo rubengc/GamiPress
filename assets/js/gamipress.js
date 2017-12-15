@@ -7,24 +7,24 @@
 		achievement_list.find( '.gamipress-spinner' ).show();
 
 		$.ajax( {
-			url : gamipress.ajaxurl,
-			data : {
-				action : 'gamipress_get_achievements',
-				type : achievement_list.find('input[type="hidden"][name="type"]').val(),
-				limit : achievement_list.find('input[type="hidden"][name="limit"]').val(),
-				user_id : achievement_list.find('input[type="hidden"][name="user_id"]').val(),
-				wpms : achievement_list.find('input[type="hidden"][name="wpms"]').val(),
-				offset : achievement_list.find( '#gamipress_achievements_offset' ).val(),
-				count : achievement_list.find( '#gamipress_achievements_count' ).val(),
-				filter : ( ( achievement_list.find( '#achievements_list_filter').length ) ? achievement_list.find('#achievements_list_filter').val() : '' ),
-				search : achievement_list.find('#achievements_list_search').val(),
-				orderby : achievement_list.find('input[type="hidden"][name="orderby"]').val(),
-				order : achievement_list.find('input[type="hidden"][name="order"]').val(),
-				include : achievement_list.find('input[type="hidden"][name="include"]').val(),
-				exclude : achievement_list.find('input[type="hidden"][name="exclude"]').val(),
+			url: gamipress.ajaxurl,
+			data: {
+				action: 'gamipress_get_achievements',
+				type: achievement_list.find('input[type="hidden"][name="type"]').val(),
+				limit: achievement_list.find('input[type="hidden"][name="limit"]').val(),
+				user_id: achievement_list.find('input[type="hidden"][name="user_id"]').val(),
+				wpms: achievement_list.find('input[type="hidden"][name="wpms"]').val(),
+				offset: achievement_list.find( '#gamipress_achievements_offset' ).val(),
+				count: achievement_list.find( '#gamipress_achievements_count' ).val(),
+				filter: ( ( achievement_list.find( '#achievements_list_filter').length ) ? achievement_list.find('#achievements_list_filter').val() : '' ),
+				search: achievement_list.find('#achievements_list_search').val(),
+				orderby: achievement_list.find('input[type="hidden"][name="orderby"]').val(),
+				order: achievement_list.find('input[type="hidden"][name="order"]').val(),
+				include: achievement_list.find('input[type="hidden"][name="include"]').val(),
+				exclude: achievement_list.find('input[type="hidden"][name="exclude"]').val(),
 			},
-			dataType : 'json',
-			success : function( response ) {
+			dataType: 'json',
+			success: function( response ) {
 				achievement_list.find( '.gamipress-spinner' ).hide();
 
 				if ( response.data.message === null ) {
@@ -40,12 +40,12 @@
 
 						if ( response.data.query_count <= response.data.offset ) {
 
-							// hide load more button
+							// Hide load more button
 							achievement_list.find( '#achievements_list_load_more' ).hide();
 
 						} else {
 
-							// show load more button
+							// Show load more button
 							achievement_list.find( '#achievements_list_load_more' ).show();
 
 						}
@@ -106,7 +106,7 @@
 
 		var link = $( this );
 
-		if ( 'close' == link.data( 'action' ) ) {
+		if ( 'close' === link.data( 'action' ) ) {
 			link.parent().siblings( '.gamipress-extras-window' ).slideUp( 300 );
 			link.data( 'action', 'open' ).prop( 'class', 'show-hide-open' ).text( link.data('open-text') );
 		} else {
@@ -114,5 +114,6 @@
 			link.data( 'action', 'close' ).prop( 'class', 'show-hide-close' ).text( link.data('close-text') );
 		}
 	} );
+
 
 } )( jQuery );

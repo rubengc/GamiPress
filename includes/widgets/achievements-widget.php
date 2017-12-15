@@ -46,6 +46,7 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
             'include'       => is_array( $instance['include'] ) ? implode( ',', $instance['include'] ) : $instance['include'],
             'exclude'       => is_array( $instance['exclude'] ) ? implode( ',', $instance['exclude'] ) : $instance['exclude'],
             'wpms'          => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
+            'title'         => ( $instance['title'] === 'on' ? 'yes' : 'no' ),
             'thumbnail'     => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
             'excerpt'       => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'steps'         => ( $instance['steps'] === 'on' ? 'yes' : 'no' ),

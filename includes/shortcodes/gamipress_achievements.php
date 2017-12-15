@@ -208,6 +208,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'exclude'     	=> '',
 
 		// Single achievement atts
+		'title' 		=> 'yes',
 		'thumbnail' 	=> 'yes',
 		'excerpt'	  	=> 'yes',
 		'steps'	  		=> 'yes',

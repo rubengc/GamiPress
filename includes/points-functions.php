@@ -9,11 +9,12 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Return a user's points
+ * Return an user's points
  *
- * @since  1.0.0
- * @param  int   $user_id      The given user's ID
- * @return integer  $user_points  The user's current points
+ * @since 1.0.0
+ *
+ * @param  integer $user_id      The given user's ID
+ * @return integer $user_points  The user's current points
  */
 function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
 
@@ -33,24 +34,109 @@ function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
 }
 
 /**
- * Posts a log entry when a user earns points
+ * Award points to an user
  *
- * @since  1.0.0
+ * @since 1.3.6
  *
- * @param  integer $user_id        The given user's ID
- * @param  integer $new_points     The new points the user is being awarded
- * @param  integer $admin_id       If being awarded by an admin, the admin's user ID
- * @param  integer $achievement_id The achievement that generated the points, if applicable
- * @param  string  $points_type    The points type
+ * @param integer 			$user_id 		The given user's ID
+ * @param integer 			$points 		The points the user is being awarded
+ * @param string|WP_Post 	$points_type 	The points type
+ * @param array 			$args			Array of extra arguments
  *
  * @return integer                 The user's updated points total
  */
-function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id = 0, $achievement_id = null, $points_type = '' ) {
+function gamipress_award_points_to_user( $user_id = 0, $points = 0, $points_type = '', $args = array() ) {
+
+	// If points are negative, turn them to positive
+	if( $points < 0 ) {
+		$points *= -1;
+	}
+
+	// Initialize args
+	$args = wp_parse_args( $args, array(
+		'admin_id' => 0,
+		'achievement_id' => null,
+		'reason' => '',
+	) );
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
 		$user_id = get_current_user_id();
 
+	// If the points type is a WP_Post, then get the slug
+	if( is_object( $points_type ) )
+		$points_type = $points_type->post_name;
+
+	// Available action for triggering other processes
+	do_action( 'gamipress_award_points_to_user', $user_id, $points, $points_type, $args );
+
+	return gamipress_update_user_points( $user_id, $points, $args['admin_id'], $args['achievement_id'], $points_type, $args['reason'] );
+
+}
+
+/**
+ * Deduct points to an user
+ *
+ * @since 1.3.6
+ *
+ * @param integer 			$user_id 		The given user's ID
+ * @param integer 			$points 		The points the user is being awarded
+ * @param string|WP_Post 	$points_type 	The points type
+ * @param array 			$args			Array of extra arguments
+ *
+ * @return integer                 The user's updated points total
+ */
+function gamipress_deduct_points_to_user( $user_id = 0, $points = 0, $points_type = '', $args = array() ) {
+
+	// If points are positive, turn them to negative
+	if( $points > 0 ) {
+		$points *= -1;
+	}
+
+	// Initialize args
+	$args = wp_parse_args( $args, array(
+		'admin_id' => 0,
+		'achievement_id' => null,
+		'reason' => '',
+	) );
+
+	// Use current user's ID if none specified
+	if ( ! $user_id )
+		$user_id = get_current_user_id();
+
+	// If the points type is a WP_Post, then get the slug
+	if( is_object( $points_type ) )
+		$points_type = $points_type->post_name;
+
+	// Available action for triggering other processes
+	do_action( 'gamipress_deduct_points_to_user', $user_id, $points, $points_type, $args );
+
+	return gamipress_update_user_points( $user_id, $points, $args['admin_id'], $args['achievement_id'], $points_type, $args['reason'] );
+
+}
+
+/**
+ * Posts a log entry when a user earns points
+ *
+ * @since  1.0.0
+ * @updated 1.3.6 Added $reason parameter
+ *
+ * @param  integer 			$user_id        	The given user's ID
+ * @param  integer 			$new_points     	The new points the user is being awarded/deducted
+ * @param  integer 			$admin_id       	If being awarded by an admin, the admin's user ID
+ * @param  integer 			$achievement_id 	The achievement that generated the points movement, if applicable
+ * @param  string|WP_Post  	$points_type    	The points type
+ * @param  string  			$reason    			Custom reason to override default log pattern
+ *
+ * @return integer                 				The user's updated points total
+ */
+function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id = 0, $achievement_id = null, $points_type = '', $reason = '' ) {
+
+	// Use current user's ID if none specified
+	if ( ! $user_id )
+		$user_id = get_current_user_id();
+
+	// If the points type is a WP_Post, then get the slug
 	if( is_object( $points_type ) )
 		$points_type = $points_type->post_name;
 
@@ -74,7 +160,7 @@ function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id 
 	update_user_meta( $user_id, $user_meta, $total_points );
 
 	// Available action for triggering other processes
-	do_action( 'gamipress_update_user_points', $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type );
+	do_action( 'gamipress_update_user_points', $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type, $reason );
 
 	// Maybe award some points-based achievements
 	foreach ( gamipress_get_points_based_achievements() as $achievement ) {
@@ -87,16 +173,18 @@ function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id 
 /**
  * Log a user's updated points
  *
- * @since 1.0.0
+ * @since 	1.0.0
+ * @updated 1.3.6 Support for deduct/revoke points
  *
  * @param integer $user_id        The user ID
- * @param integer $new_points     Points added to the user's total
+ * @param integer $new_points     Points added/deducted to the user's total
  * @param integer $total_points   The user's updated total points
  * @param integer $admin_id       An admin ID (if admin-awarded)
  * @param integer $achievement_id The associated achievement ID
  * @param string  $points_type    The points type
+ * @param string  $reason         Custom reason to override default log pattern
  */
-function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type = '' ) {
+function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type = '', $reason = '' ) {
 
     $log_meta = array(
         'achievement_id' => $achievement_id,
@@ -109,21 +197,43 @@ function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin
 
 	// Alter our log pattern if this was an admin action
 	if ( $admin_id ) {
-		$type = 'points_award';
-		$access = 'private';
 
-		$log_meta['pattern'] = gamipress_get_option( 'points_awarded_log_pattern', __( '{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
-        $log_meta['admin_id'] = $admin_id;
+		$access = 'private';
+		$log_meta['admin_id'] = $admin_id;
+
+		if( $new_points > 0 ) {
+			// Points awarded
+			$type = 'points_award';
+			$log_meta['pattern'] = gamipress_get_option( 'points_awarded_log_pattern', __( '{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
+		} else {
+			// Points revoked
+			$type = 'points_revoke';
+			$log_meta['pattern'] = gamipress_get_option( 'points_revoked_log_pattern', __( '{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
+		}
+
     } else {
-		$type = 'points_earn';
-		$log_meta['pattern'] = gamipress_get_option( 'points_earned_log_pattern', __( '{user} earned {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
+
+		if( $new_points > 0 ) {
+			// Points earned
+			$type = 'points_earn';
+			$log_meta['pattern'] = gamipress_get_option( 'points_earned_log_pattern', __( '{user} earned {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
+		} else {
+			// Points deducted
+			$type = 'points_deduct';
+			$log_meta['pattern'] = gamipress_get_option( 'points_deducted_log_pattern', __( '{user} deducted {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) );
+		}
+
     }
+
+	if( ! empty( $reason ) ) {
+		$log_meta['pattern'] = $reason;
+	}
 
 	// Create the log entry
 	gamipress_insert_log( $type, $user_id, $access, $log_meta );
 
 }
-add_action( 'gamipress_update_user_points', 'gamipress_log_user_points', 10, 5 );
+add_action( 'gamipress_update_user_points', 'gamipress_log_user_points', 10, 6 );
 
 /**
  * Get GamiPress Points Types

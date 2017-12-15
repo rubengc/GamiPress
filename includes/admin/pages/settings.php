@@ -685,6 +685,12 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
                 'type' => 'text',
                 'default' => __( '{user} earned {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ),
             ),
+            'points_deducted_log_pattern' => array(
+                'name' => __( 'Points deducted', 'gamipress' ),
+                'description' => __( 'Used when user gets a deduction of points. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{points}', '{points_type}', '{total_points}' ) ),
+                'type' => 'text',
+                'default' => __( '{user} deducted {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ),
+            ),
             'requirement_complete_log_pattern' => array(
                 'name' => __( 'Points award/step complete', 'gamipress' ),
                 'description' => __( 'Used when user completes a points award or step. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{achievement}', '{achievement_type}' ) ),
@@ -708,6 +714,12 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
                 'description' => __( 'Used when an admin awards an user with points. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{points}', '{points_type}', '{total_points}' ) ),
                 'type' => 'text',
                 'default' => __( '{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ),
+            ),
+            'points_revoked_log_pattern' => array(
+                'name' => __( 'Points revoked', 'gamipress' ),
+                'description' => __( 'Used when an admin revokes points of an user. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{admin}', '{user}', '{points}', '{points_type}', '{total_points}' ) ),
+                'type' => 'text',
+                'default' => __( '{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ),
             ),
             'achievement_awarded_log_pattern' => array(
                 'name' => __( 'Achievement awarded', 'gamipress' ),

@@ -49,6 +49,7 @@ function gamipress_get_achievement_types() {
  * @return array An array of all our registered achievement type slugs (empty array if none)
  */
 function gamipress_get_achievement_types_slugs() {
+
 	// Assume we have no registered achievement types
 	$achievement_type_slugs = array();
 
@@ -59,6 +60,7 @@ function gamipress_get_achievement_types_slugs() {
 
 	// Finally, return our data
 	return $achievement_type_slugs;
+
 }
 
 /**

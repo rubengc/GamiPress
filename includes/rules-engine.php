@@ -254,7 +254,11 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 
 	$next_user_rank_id = gamipress_get_next_user_rank_id( $user_id, $requirement_rank->post_type );
 
-	if ( $requirement_rank->ID !== $next_user_rank_id ) {
+	if( $return && $next_user_rank_id === 0 ) {
+		$return = false;
+	}
+
+	if ( $return && $requirement_rank->ID !== $next_user_rank_id ) {
 		$return = false;
 	}
 
@@ -797,6 +801,12 @@ function gamipress_maybe_award_rank( $user_id = 0, $achievement_id = 0 ) {
 	$rank = gamipress_get_rank_requirement_rank( $achievement_id );
 
 	if( ! $rank )
+		return;
+
+	$old_rank = gamipress_get_user_rank( $user_id );
+
+	// Return if current rank is this one
+	if( $old_rank->ID === $rank->ID )
 		return;
 
 	// Get all requirements of this rank

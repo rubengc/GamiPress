@@ -26,6 +26,13 @@ function gamipress_register_rank_shortcode() {
 				'default'     => '',
 				'options_cb'  => 'gamipress_options_cb_posts'
 			),
+			'title' => array(
+				'name'        => __( 'Show Title', 'gamipress' ),
+				'description' => __( 'Display the rank title.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+				'default' => 'yes'
+			),
 			'thumbnail' => array(
 				'name'        => __( 'Show Thumbnail', 'gamipress' ),
 				'description' => __( 'Display the rank featured image.', 'gamipress' ),
@@ -79,6 +86,7 @@ function gamipress_rank_shortcode( $atts = array() ) {
 
 	  	'id' => get_the_ID(),
 	  	'user_id' 		=> '0',
+	  	'title' 		=> 'yes',
 	  	'thumbnail' 	=> 'yes',
 	  	'excerpt'	  	=> 'yes',
 	  	'requirements'	=> 'yes',

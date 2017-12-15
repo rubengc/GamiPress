@@ -52,6 +52,7 @@ function gamipress_get_activity_triggers() {
  * GamiPress specific activity triggers
  *
  * @since  1.0.0
+ *
  * @return array Array of all specific activity triggers
  */
 function gamipress_get_specific_activity_triggers() {
@@ -61,6 +62,22 @@ function gamipress_get_specific_activity_triggers() {
 		'gamipress_specific_post_visit'  		=> array( 'post', 'page' ),
 		'gamipress_user_specific_post_visit'  	=> array( 'post', 'page' ),
 	) );
+
+}
+
+/**
+ * GamiPress specific activity triggers query args (used on requirements UI)
+ *
+ * @since  1.3.6
+ *
+ * @param array|string 	$query_args
+ * @param string 		$activity_trigger
+ *
+ * @return array
+ */
+function gamipress_get_specific_activity_triggers_query_args( $query_args, $activity_trigger ) {
+
+	return apply_filters( 'gamipress_specific_activity_triggers_query_args', $query_args, $activity_trigger );
 
 }
 

@@ -241,22 +241,26 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
             global $ct_table;
 
             $primary_key = $ct_table->db->primary_key;
-            $can_edit_item = current_user_can( $ct_table->cap->edit_item, $item->$primary_key );
             $actions = array();
 
-            // TODO: add custom map_meta_cap()
-            //$current_user = wp_get_current_user();
-
-            //$current_user->has_cap( $ct_table->cap->edit_item, $item->$primary_key );
-
-            //map_meta_cap();
-
-            if ( $ct_table->views->edit && $can_edit_item ) {
+            if ( $ct_table->views->edit && current_user_can( $ct_table->cap->edit_item, $item->$primary_key ) ) {
                 $actions['edit'] = sprintf(
                     '<a href="%s" aria-label="%s">%s</a>',
                     ct_get_edit_link( $ct_table->name, $item->$primary_key ),
                     esc_attr( __( 'Edit' ) ),
                     __( 'Edit' )
+                );
+            }
+
+            if ( current_user_can( $ct_table->cap->delete_item, $item->$primary_key ) ) {
+                $actions['delete'] = sprintf(
+                    '<a href="%s" class="submitdelete" onclick="%s" aria-label="%s">%s</a>',
+                    ct_get_delete_link( $ct_table->name, $item->$primary_key ),
+                    "return confirm('" .
+                        esc_attr( __( "Are you sure you want to delete this item?\\n\\nClick \\'Cancel\\' to go back, \\'OK\\' to confirm the delete." ) ) .
+                    "');",
+                    esc_attr( __( 'Delete permanently' ) ),
+                    __( 'Delete Permanently' )
                 );
             }
 

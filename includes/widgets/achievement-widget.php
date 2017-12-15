@@ -25,6 +25,7 @@ class GamiPress_Achievement_Widget extends GamiPress_Widget {
     public function get_widget( $args, $instance ) {
         echo gamipress_do_shortcode( 'gamipress_achievement', array(
             'id'        => $instance['id'],
+            'title'     => ( $instance['title'] === 'on' ? 'yes' : 'no' ),
             'thumbnail' => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
             'excerpt'   => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'steps'     => ( $instance['steps'] === 'on' ? 'yes' : 'no' ),

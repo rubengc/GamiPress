@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.5
+Stable tag: 1.3.6
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -101,6 +101,8 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 = Powerful add-ons to extend GamiPress =
 
+* [Easy Digital Downloads Points Gateway](https://gamipress.com/add-ons/gamipress-edd-points-gateway/) - Use GamiPress points types as a payment gateway for Easy Digital Downloads.
+* [WooCommerce Points Gateway](https://gamipress.com/add-ons/gamipress-wc-points-gateway/) - Use GamiPress points types as a payment gateway for WooCommerce.
 * [Restrict Content](https://gamipress.com/add-ons/gamipress-restrict-content/) - Limit access to any post or page based on GamiPress interactions.
 * [Notifications](https://gamipress.com/add-ons/gamipress-notifications/) - Instantly notify of achievements, steps, points awards and/or ranks completion to your users.
 * [Progress Map](https://gamipress.com/add-ons/gamipress-progress-map/) - Add interactive achievements progress maps to your site.
@@ -112,14 +114,11 @@ GamiPress is extremely powerful and infinitely extensible. Check out some of the
 
 = Helpful Links =
 
-GamiPress is made available by [Tsunoa](https://tsunoa.com/ "Tsunoa"). Here are some ways to stay connected and to see what else we are up to:
-
 * [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress official website
 * [Add-ons](https://gamipress.com/add-ons "GamiPress Add-ons") - GamiPress official add-ons
 * [Documentation](https://gamipress.com/docs "GamiPress documentation") - GamiPress online documentation
 * [Contact](https://gamipress.com/contact-us "GamiPress contact") - GamiPress contact page
 * [GitHub](https://github.com/rubengc/gamipress "GamiPress on GitHub") - GamiPress GitHub repository
-* [Tsunoa.com](https://tsunoa.com/ "Tsunoa") - Tsunoa official website
 
 == Installation ==
 
@@ -180,6 +179,20 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 == Changelog ==
+
+= 1.3.6 =
+
+* Added the parameter title to [gamipress_achievement] and [gamipress_achievements] shortcodes to hide the achievement title.
+* Added the field "Show Title" to GamiPress: Achievement and GamiPress: Achievements widgets to hide the achievement title.
+* Added the parameter title to [gamipress_rank] and [gamipress_ranks] shortcodes to hide the rank title.
+* Added the field "Show Title" to GamiPress: Rank and GamiPress: Ranks widgets to hide the rank title.
+* Added logs patterns for points deducted/revoked.
+* Added ajax pagination to user earnings table on user profile screen.
+* Fixed issue on actions when saving logs.
+* Fixed limit of ranks listed at edit user profile screen.
+* Fixed default ranks (lowest priority) are not look as earned at frontend.
+* Added extra check to prevent award multiple times the same rank.
+* Added the delete permanently action to logs.
 
 = 1.3.5 =
 

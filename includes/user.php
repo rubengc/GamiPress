@@ -92,13 +92,11 @@ function gamipress_get_user_achievements( $args = array() ) {
 /**
  * Updates the user's earned achievements
  *
- * We can either replace the achievement's array, or append new achievements to it.
- *
  * @since  1.0.0
  *
- * @param  array        $args An array containing all our relevant arguments
+ * @param  array $args 	An array containing all our relevant arguments
  *
- * @return integer|bool       The updated umeta ID on success, false on failure
+ * @return bool 		The updated umeta ID on success, false on failure
  */
 function gamipress_update_user_achievements( $args = array() ) {
 
@@ -114,6 +112,7 @@ function gamipress_update_user_achievements( $args = array() ) {
 		//'all_achievements' => false, // An array of ALL achievements earned by the user // TODO: Not supported since 1.2.8
 		'new_achievements' => false, // An array of NEW achievements earned by the user
 	);
+
 	$args = wp_parse_args( $args, $defaults );
 
 	// Use current user's ID if none specified
@@ -255,7 +254,10 @@ function gamipress_profile_user_rank( $user = null ) {
 			<?php foreach( $rank_types as $rank_type => $data ) :
 
 				// Get all published ranks of this type
-				$ranks = gamipress_get_ranks( array( 'post_type' => $rank_type ) );
+				$ranks = gamipress_get_ranks( array(
+					'post_type' => $rank_type,
+					'posts_per_page' => -1
+				) );
 
 				$user_rank_id = gamipress_get_user_rank_id( $user->ID, $rank_type ); ?>
 
@@ -434,7 +436,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 				// Load achievement type entries
 				$the_query = new WP_Query( array(
 					'post_type'      => $achievement_slug,
-					'posts_per_page' => '999',
+					'posts_per_page' => -1,
 					'post_status'    => 'publish'
 				) );
 

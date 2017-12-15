@@ -46,7 +46,13 @@ function gamipress_log_details_ui_meta_box( $object  = null ) {
  * @param  string   $type       Type to render form
  */
 function gamipress_log_details_ui_html( $object, $type ) {
+
+    global $ct_table;
+
+    // Setup vars
     $log_types = gamipress_get_log_types();
+    $primary_key = $ct_table->db->primary_key;
+    $object_id = $object->$primary_key;
 
     ?>
     <div class="submitbox" id="submitpost" style="margin: -6px -12px -12px;">
@@ -72,6 +78,20 @@ function gamipress_log_details_ui_html( $object, $type ) {
         </div>
 
         <div id="major-publishing-actions">
+
+            <div id="delete-action">
+                <?php
+                    printf(
+                        '<a href="%s" class="submitdelete deletion" onclick="%s" aria-label="%s">%s</a>',
+                        ct_get_delete_link( $ct_table->name, $object_id ),
+                        "return confirm('" .
+                        esc_attr( __( "Are you sure you want to delete this item?\\n\\nClick \\'Cancel\\' to go back, \\'OK\\' to confirm the delete." ) ) .
+                        "');",
+                        esc_attr( __( 'Delete permanently' ) ),
+                        __( 'Delete Permanently' )
+                    );
+                ?>
+            </div>
 
             <div id="publishing-action">
                 <span class="spinner"></span>
@@ -163,7 +183,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 ),
             ),
         );
-    } else if( $type === 'points_award' || $type === 'points_earn' ) {
+    } else if( $type === 'points_award' || $type === 'points_earn' || $type === 'points_revoke' || $type === 'points_deduct' ) {
         // Grab our points types as an array
         $points_types_options = array(
             '' => 'Default'
@@ -176,13 +196,13 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
         $fields = array(
             array(
                 'name' 	=> __( 'Points', 'gamipress' ),
-                'desc' 	=> __( 'Points user has earned.', 'gamipress' ),
+                'desc' 	=> ( $type === 'points_award' || $type === 'points_earn' ? __( 'Points user has earned.', 'gamipress' ) : __( 'Points deducted to user.', 'gamipress' ) ),
                 'id'   	=> $prefix . 'points',
                 'type' 	=> 'text_small',
             ),
             array(
                 'name' 	=> __( 'Points Type', 'gamipress' ),
-                'desc' 	=> __( 'Points type user has earned.', 'gamipress' ),
+                'desc' 	=> ( $type === 'points_award' || $type === 'points_earn' ? __( 'Points type user has earned.', 'gamipress' ) : __( 'Points type deducted to user.', 'gamipress' ) ),
                 'id'   	=> $prefix . 'points_type',
                 'type' 	=> 'select',
                 'options' => $points_types_options
@@ -210,13 +230,13 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
         );
     }
 
-    if( $type === 'achievement_award' || $type === 'points_award' || $type === 'rank_award' ) {
+    if( $type === 'achievement_award' || $type === 'points_award' || $type === 'points_revoke' || $type === 'rank_award' ) {
         $admin_id = ct_get_object_meta( $object_id, $prefix . 'admin_id', true );
         $admin = get_userdata( $admin_id );
 
         $fields[] = array(
             'name' 	=> __( 'Administrator', 'gamipress' ),
-            'desc' 	=> __( 'User has made the award.', 'gamipress' ),
+            'desc' 	=> ( $type === 'points_revoke' ? __( 'User has made the revoke.', 'gamipress' ) : __( 'User has made the award.', 'gamipress' ) ),
             'id'   	=> $prefix . 'admin_id',
             'type' 	=> 'select',
             'options' 	=> array(

@@ -505,6 +505,10 @@ body > .gamipress-select2,
 	max-width: 100%;
 }
 
+.postbox .gamipress-select2 {
+	z-index: 1;
+}
+
 .user-edit-php .gamipress-select2,
 .profile-php .gamipress-select2 {
 	width: 25em !important;

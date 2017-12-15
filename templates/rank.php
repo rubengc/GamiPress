@@ -16,8 +16,12 @@ if( isset( $a['user_id'] ) ) {
     $user_id = get_current_user_id();
 }
 
-// Check if user has earned this rank
-$earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => get_the_ID() ) );
+// Check if user has earned this rank, rank is earned by default if is the lowest priority of this type
+if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
+    $earned = true;
+} else {
+    $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => get_the_ID() ) );
+}
 
 // Check if this rank is the current one of the user
 $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
@@ -55,17 +59,19 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
     <?php // Rank Content ?>
     <div class="gamipress-rank-description">
 
-        <?php // Rank Title ?>
-        <h2 class="gamipress-rank-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+        <?php // Rank Title
+        if( $a['title'] === 'yes' ) :  ?>
+            <h2 class="gamipress-rank-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
 
-        <?php
-        /**
-         * After rank title
-         *
-         * @param $rank_id          integer The Rank ID
-         * @param $template_args    array   Template received arguments
-         */
-        do_action( 'gamipress_after_rank_title', get_the_ID(), $a ); ?>
+            <?php
+            /**
+             * After rank title
+             *
+             * @param $rank_id          integer The Rank ID
+             * @param $template_args    array   Template received arguments
+             */
+            do_action( 'gamipress_after_rank_title', get_the_ID(), $a ); ?>
+        <?php endif; ?>
 
         <?php // Rank Short Description
         if( $a['excerpt'] === 'yes' ) :  ?>
@@ -84,6 +90,7 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
              * @param $template_args    array   Template received arguments
              */
             do_action( 'gamipress_after_rank_excerpt', get_the_ID(), $a ); ?>
+
         <?php endif; ?>
 
         <?php // Rank Requirements

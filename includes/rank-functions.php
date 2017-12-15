@@ -156,45 +156,62 @@ function gamipress_get_ranks( $args = array() ) {
  * Modify the WP_Query Join filter for rank children
  *
  * @since  1.3.1
+ *
  * @param  string $join         The query "join" string
  * @param  object $query_object The complete query object
+ *
  * @return string 				The updated "join" string
  */
 function gamipress_get_ranks_children_join( $join = '', $query_object = null ) {
+
     global $wpdb;
+
     $join .= " LEFT JOIN $wpdb->p2p AS p2p ON p2p.p2p_from = $wpdb->posts.ID";
+
     if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] != 'any' )
         $join .= " LEFT JOIN $wpdb->p2pmeta AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
+
     $join .= " LEFT JOIN $wpdb->p2pmeta AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
+
     return $join;
+
 }
 
 /**
  * Modify the WP_Query Where filter for rank children
  *
  * @since  1.3.1
+ *
  * @param  string $where        The query "where" string
  * @param  object $query_object The complete query object
+ *
  * @return string 				The updated query "where" string
  */
 function gamipress_get_ranks_children_where( $where = '', $query_object ) {
+
     global $wpdb;
+
     if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'required' )
         $where .= " AND p2pm1.meta_key ='Required'";
 
     if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'optional' )
         $where .= " AND p2pm1.meta_key ='Optional'";
+
     // ^^ TODO, add required and optional. right now just returns all ranks.
     $where .= " AND p2pm2.meta_key ='order'";
     $where .= $wpdb->prepare( ' AND p2p.p2p_to = %d', $query_object->query_vars['children_of'] );
+
     return $where;
+
 }
 
 /**
  * Modify the WP_Query OrderBy filter for rank children
  *
  * @since  1.3.1
+ *
  * @param  string $orderby The query "orderby" string
+ *
  * @return string 		   The updated "orderby" string
  */
 function gamipress_get_ranks_children_orderby( $orderby = '' ) {
@@ -205,13 +222,19 @@ function gamipress_get_ranks_children_orderby( $orderby = '' ) {
  * Modify the WP_Query Join filter for rank parents
  *
  * @since  1.3.1
+ *
  * @param  string $join The query "join" string
+ *
  * @return string 	    The updated "join" string
  */
 function gamipress_get_ranks_parents_join( $join = '' ) {
+
     global $wpdb;
+
     $join .= " LEFT JOIN $wpdb->p2p AS p2p ON p2p.p2p_to = $wpdb->posts.ID";
+
     return $join;
+
 }
 
 /**
@@ -220,12 +243,17 @@ function gamipress_get_ranks_parents_join( $join = '' ) {
  * @since  1.3.1
  * @param  string $where The query "where" string
  * @param  object $query_object The complete query object
+ *
  * @return string        appended sql where statement
  */
 function gamipress_get_ranks_parents_where( $where = '', $query_object = null ) {
+
     global $wpdb;
+
     $where .= $wpdb->prepare( ' AND p2p.p2p_from = %d', $query_object->query_vars['parent_of'] );
+
     return $where;
+
 }
 
 /**
@@ -233,8 +261,8 @@ function gamipress_get_ranks_parents_where( $where = '', $query_object = null ) 
  *
  * @since 1.3.1
  *
- * @param integer $user_id
- * @param string $rank_type
+ * @param integer   $user_id    The given user's ID
+ * @param string    $rank_type  The rank type
  *
  * @return integer
  */
@@ -279,8 +307,8 @@ function gamipress_get_user_rank_id( $user_id = null, $rank_type = '' ) {
  *
  * @since 1.3.1
  *
- * @param integer $user_id
- * @param string  $rank_type
+ * @param integer   $user_id    The given user's ID
+ * @param string    $rank_type  The rank type
  *
  * @return bool|WP_Post
  */
@@ -309,8 +337,8 @@ function gamipress_get_user_rank( $user_id = null, $rank_type = '' ) {
  *
  * @since 1.3.1
  *
- * @param integer $user_id
- * @param string $rank_type
+ * @param integer   $user_id    The given user's ID
+ * @param string    $rank_type  The rank type
  *
  * @return integer
  */
@@ -335,8 +363,8 @@ function gamipress_get_next_user_rank_id( $user_id = null, $rank_type = '' ) {
  *
  * @since 1.3.1
  *
- * @param integer $user_id
- * @param string $rank_type
+ * @param integer   $user_id    The given user's ID
+ * @param string    $rank_type  The rank type
  *
  * @return bool|WP_Post
  */
@@ -365,7 +393,7 @@ function gamipress_get_next_user_rank( $user_id = null, $rank_type = '' ) {
  *
  * @since 1.3.1
  *
- * @param integer $rank_id
+ * @param integer $rank_id The given rank's ID
  *
  * @return integer
  */
@@ -407,7 +435,7 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
  *
  * @since 1.3.1
  *
- * @param integer $rank_id
+ * @param integer $rank_id The given rank's ID
  *
  * @return bool|WP_Post
  */
@@ -440,7 +468,7 @@ function gamipress_get_next_rank( $rank_id = null ) {
  *
  * @since 1.3.1
  *
- * @param integer $rank_id
+ * @param integer $rank_id The given rank's ID
  *
  * @return integer
  */
@@ -481,7 +509,7 @@ function gamipress_get_prev_rank_id( $rank_id = null ) {
  *
  * @since 1.3.1
  *
- * @param integer $rank_id
+ * @param integer $rank_id The given rank's ID
  *
  * @return bool|WP_Post
  */
@@ -506,6 +534,28 @@ function gamipress_get_prev_rank( $rank_id = null ) {
     }
 
     return false;
+
+}
+
+/**
+ * Helper function to check if a rank is the lowest priority rank (aka the default rank to anyone)
+ *
+ * @since 1.3.6
+ *
+ * @param integer $rank_id The given rank's ID
+ *
+ * @return bool
+ */
+function gamipress_is_lowest_priority_rank( $rank_id = null ) {
+
+    if( $rank_id === null ) {
+        $rank_id = get_the_ID();
+    }
+
+    $prev_rank_id = gamipress_get_prev_rank_id( $rank_id );
+
+    // Return true if previous rank is 0 or the same that given one
+    return (bool) ( $rank_id === $prev_rank_id || $prev_rank_id === 0 );
 
 }
 

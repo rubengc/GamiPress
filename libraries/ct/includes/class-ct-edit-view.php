@@ -287,11 +287,29 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
              * @param bool          $editing        True if edit screen, false if is adding a new one.
              * @param CT_Edit_View  $view           Edit view object.
              */
-            $submit_label = apply_filters( "ct_{$ct_table->name}_edit_screen_submit_label", $submit_label, $object, $ct_table, $this->editing, $this )
+            $submit_label = apply_filters( "ct_{$ct_table->name}_edit_screen_submit_label", $submit_label, $object, $ct_table, $this->editing, $this );
+
+            $primary_key = $ct_table->db->primary_key;
+            $object_id = $object->$primary_key;
 
             ?>
 
             <div style="padding: 10px;">
+
+                <?php
+                if ( current_user_can( $ct_table->cap->delete_item, $object_id ) ) {
+
+                    printf(
+                        '<a href="%s" class="submitdelete deletion" onclick="%s" aria-label="%s">%s</a>',
+                        ct_get_delete_link( $ct_table->name, $object_id ),
+                        "return confirm('" .
+                        esc_attr( __( "Are you sure you want to delete this item?\\n\\nClick \\'Cancel\\' to go back, \\'OK\\' to confirm the delete." ) ) .
+                        "');",
+                        esc_attr( __( 'Delete permanently' ) ),
+                        __( 'Delete Permanently' )
+                    );
+
+                } ?>
 
                 <?php submit_button( $submit_label, 'primary large', 'ct-save', false ); ?>
 

@@ -25,6 +25,7 @@ class GamiPress_Rank_Widget extends GamiPress_Widget {
     public function get_widget( $args, $instance ) {
         echo gamipress_do_shortcode( 'gamipress_rank', array(
             'id'            => $instance['id'],
+            'title'         => ( $instance['title'] === 'on' ? 'yes' : 'no' ),
             'thumbnail'     => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
             'excerpt'       => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'requirements'  => ( $instance['requirements'] === 'on' ? 'yes' : 'no' ),

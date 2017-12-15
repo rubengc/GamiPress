@@ -22,7 +22,9 @@ function gamipress_get_log_types() {
         'achievement_earn' => __( 'Achievement Earn', 'gamipress' ),
         'achievement_award' => __( 'Achievement Award', 'gamipress' ),
         'points_earn' => __( 'Points Earn', 'gamipress' ),
+        'points_deduct' => __( 'Points Deduct', 'gamipress' ),
         'points_award' => __( 'Points Award', 'gamipress' ),
+        'points_revoke' => __( 'Points Revoke', 'gamipress' ),
         'rank_earn' => __( 'Rank Earn', 'gamipress' ),
         'rank_award' => __( 'Rank Award', 'gamipress' ),
     ) );
@@ -148,6 +150,8 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
         $query_args
     ) );
 
+    ct_reset_setup_table();
+
     return absint( $user_triggers );
 }
 
@@ -206,6 +210,8 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $lo
 
     // Hook to add custom data
     do_action( 'gamipress_insert_log', $log_id, $log_data, $log_meta, $user_id );
+
+    ct_reset_setup_table();
 
     return $log_id;
 
@@ -417,6 +423,13 @@ add_action( 'gamipress_before_parse_log_pattern', 'gamipress_parse_rank_log_patt
  */
 function gamipress_maybe_apply_log_pattern( $object_data = array(), $original_object_data = array() ) {
 
+    global $ct_table;
+
+    // If not is our logs, return
+    if( $ct_table->name !== 'gamipress_logs' ) {
+        return $object_data;
+    }
+
     if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
         return $object_data;
     }
@@ -462,6 +475,8 @@ function gamipress_get_parsed_log( $log_id = null ) {
     );
 
     $log_meta = apply_filters( 'gamipress_get_log_meta_data', $log_meta, $log_id, $log_data );
+
+    ct_reset_setup_table();
 
     return gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
 

@@ -93,6 +93,10 @@ function ct_cmb2_override_meta_value( $value, $object_id, $args, $field ) {
 
     global $ct_registered_tables, $ct_table, $ct_cmb2_override;
 
+    if( ! is_a( $ct_table, 'CT_Table' ) ) {
+        return $value;
+    }
+
     if( $ct_cmb2_override !== true ) {
         return $value;
     }
