@@ -10,7 +10,15 @@ Easily define the achievements, organize requirements, and choose from a range o
 
 GamiPress is extremely powerful and infinitely extensible. Check out some of the built in features:
 
-### Many ways to define how to award the different points and achievements ###
+### 3 powerful ways to award your users ###
+
+GamiPress combines three of the most powerful award systems you could add to your site:
+
+* **Points** to automatically award your users for interacting with your site.
+* **Achievements** to award users for completing all the requirements, sequentially or otherwise.
+* **Ranks** to let your users climb through the ranks by completing all the rank requirements.
+
+### Many ways to define how to award the different points, achievements and ranks ###
 
 * Site activity (triggers based on publishing posts and pages, commenting, daily visits or logging in to your site).
 * Completing specific other achievements, once or a specified number of times.
