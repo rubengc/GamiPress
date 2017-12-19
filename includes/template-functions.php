@@ -24,6 +24,7 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
     $gamipress_template_args = array();
 
     $gamipress_template_args = wp_parse_args( $template_args, array(
+        'title'     => 'yes',
         'thumbnail' => 'yes',
         'excerpt'	=> 'yes',
         'steps'	    => 'yes',
@@ -78,6 +79,7 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
     $gamipress_template_args = array();
 
     $gamipress_template_args = wp_parse_args( $template_args, array(
+        'title'         => 'yes',
         'thumbnail'     => 'yes',
         'excerpt'	    => 'yes',
         'requirements'	=> 'yes',

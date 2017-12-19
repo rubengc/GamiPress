@@ -16,6 +16,7 @@ function gamipress_install() {
     if ( empty( $gamipress_settings ) ) {
 
         $gamipress_settings['minimum_role'] = 'manage_options';
+        $gamipress_settings['points_image_size'] = array( 'width' => 50, 'height' => 50 );
         $gamipress_settings['achievement_image_size'] = array( 'width' => 100, 'height' => 100 );
         $gamipress_settings['rank_image_size'] = array( 'width' => 100, 'height' => 100 );
 

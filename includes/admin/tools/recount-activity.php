@@ -39,7 +39,7 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
         'title' => __( 'Recount Activity', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_recount_activity_tool_fields', array(
             'recount_activity_desc' => array(
-                'content' => __( 'This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and achievements will be awarded too.', 'gamipress' )
+                'content' => __( 'This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and deducts and achievements will be awarded or deducted too.', 'gamipress' )
                     . '<br>' . __( '<strong>Note:</strong> Some activity may not be possible to recount (like user log in or daily visits) because there are not registries stored in the database.', 'gamipress' ),
                 'type' => 'html',
             ),
@@ -76,6 +76,12 @@ function gamipress_ajax_recount_activity_tool() {
     // Check parameters received
     if( ! isset( $_POST['activity'] ) || empty( $_POST['activity'] ) ) {
         wp_send_json_error( __( 'You need to choose an activity to recount.', 'gamipress' ) );
+    }
+
+    ignore_user_abort( true );
+
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
+        set_time_limit( 0 );
     }
 
     $response = array(
@@ -140,6 +146,9 @@ function gamipress_activity_recount_comments( $response ) {
             // Trigger comment actions
             do_action( 'gamipress_specific_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
             do_action( 'gamipress_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
+
+            // GamiPress has a 2 seconds delay to prevent unlimited earnings
+            sleep( 2 );
         }
     }
 
@@ -179,6 +188,9 @@ function gamipress_activity_recount_published_content( $response ) {
         foreach( $posts as $post ) {
             // Trigger content publishing action for each post
             do_action( "gamipress_publish_{$post->post_type}", $post->ID, $post->post_author, $post );
+
+            // GamiPress has a 2 seconds delay to prevent unlimited earnings
+            sleep( 2 );
         }
     }
 

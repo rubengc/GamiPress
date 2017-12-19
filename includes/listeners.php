@@ -30,7 +30,7 @@ add_action( 'wp_login', 'gamipress_login_listener', 10, 2 );
 /**
  * Listener for content publishing
  *
- * Triggers: gamipress_new_{$post_type}
+ * Triggers: gamipress_publish_{$post_type}
  *
  * @since  1.0.0
  *
@@ -57,6 +57,28 @@ function gamipress_transition_post_status_listener( $new_status, $old_status, $p
 
 }
 add_action( 'transition_post_status', 'gamipress_transition_post_status_listener', 10, 3 );
+
+/**
+ * Listener for content deletion
+ *
+ * Triggers: gamipress_delete_{$post_type}
+ *
+ * @since  1.3.7
+ *
+ * @param  integer  $post_id The deleted post ID
+ *
+ * @return void
+ */
+function gamipress_delete_post_listener( $post_id ) {
+
+    $post = get_post( $post_id );
+
+    // Trigger content deletion actions
+    do_action( "gamipress_delete_{$post->post_type}", $post->ID, $post->post_author, $post );
+
+}
+add_action( 'trashed_post', 'gamipress_delete_post_listener' );
+add_action( 'before_delete_post', 'gamipress_delete_post_listener' );
 
 /**
  * Listener for comment publishing
@@ -185,3 +207,26 @@ function gamipress_user_post_visit_listener() {
 
 }
 add_action( 'wp_head', 'gamipress_user_post_visit_listener' );
+
+/**
+ * Listener for expend points
+ *
+ * Triggers: gamipress_expend_points
+ *
+ * @since  1.3.7
+ *
+ * @param integer $post_id 	        The item unlocked ID (achievement or rank)
+ * @param integer $user_id 			The user ID
+ * @param integer $points 			The amount of points expended
+ * @param string  $points_type 		The points type of the amount of points expended
+ *
+ * @return void
+ */
+function gamipress_expend_points_listener( $post_id, $user_id, $points, $points_type ) {
+
+    // Trigger user expend points action
+    do_action( 'gamipress_expend_points', $post_id, $user_id, $points, $points_type );
+
+}
+add_action( 'gamipress_achievement_unlocked_with_points', 'gamipress_expend_points_listener', 10, 4 );
+add_action( 'gamipress_rank_unlocked_with_points', 'gamipress_expend_points_listener', 10, 4 );

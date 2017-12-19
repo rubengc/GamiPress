@@ -45,8 +45,54 @@ $points_types[''] = array(
 
         <div class="gamipress-points gamipress-user-points-<?php echo $points_type; ?>">
 
+            <?php // User Points Image
+            if( $a['thumbnail'] === 'yes' ) : ?>
+                <span class="gamipress-user-points-image gamipress-user-points-<?php echo $points_type; ?>-image">
+                    <?php echo gamipress_get_points_type_thumbnail( $points_type ); ?>
+                </span><!-- .gamipress-points-image -->
+
+                <?php
+                /**
+                 * After user points thumbnail
+                 *
+                 * @param $points_type      string  Points type slug
+                 * @param $count            integer Amount of this points type
+                 * @param $points_types     array   Array of points types to be rendered
+                 * @param $template_args    array   Template received arguments
+                 */
+                do_action( 'gamipress_after_user_points_thumbnail', $points_type, $count, $points_types, $a ); ?>
+
+            <?php endif; ?>
+
             <span class="gamipress-user-points-count"><?php echo $count; ?></span>
-            <span class="gamipress-user-points-label"><?php echo $points_types[$points_type]['plural_name']; ?></span>
+
+            <?php
+            /**
+             * After user points count
+             *
+             * @param $points_type      string  Points type slug
+             * @param $count            integer Amount of this points type
+             * @param $points_types     array   Array of points types to be rendered
+             * @param $template_args    array   Template received arguments
+             */
+            do_action( 'gamipress_after_user_points_count', $points_type, $count, $points_types, $a ); ?>
+
+            <?php // User Points Label
+            if( $a['label'] === 'yes' ) : ?>
+                <span class="gamipress-user-points-label"><?php echo $points_types[$points_type]['plural_name']; ?></span>
+
+                <?php
+                /**
+                 * After user points label
+                 *
+                 * @param $points_type      string  Points type slug
+                 * @param $count            integer Amount of this points type
+                 * @param $points_types     array   Array of points types to be rendered
+                 * @param $template_args    array   Template received arguments
+                 */
+                do_action( 'gamipress_after_user_points_label', $points_type, $count, $points_types, $a ); ?>
+
+            <?php endif; ?>
 
         </div>
 

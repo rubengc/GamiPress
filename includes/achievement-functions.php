@@ -253,8 +253,10 @@ function gamipress_is_achievement_sequential( $achievement_id = 0 ) {
  * Check if user has already earned an achievement the maximum number of times
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id        The given user's ID
  * @param  integer $achievement_id The given achievement's post ID
+ *
  * @return bool                    True if we've exceed the max possible earnings, false if we're still eligable
  */
 function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achievement_id = 0 ) {
@@ -356,13 +358,15 @@ function gamipress_get_hidden_achievement_by_id( $achievement_id ) {
 
 	//Get hidden achievement posts.
 	$hidden_achievements = $wpdb->get_results( $wpdb->prepare(
-		"SELECT * FROM {$wpdb->posts} AS p
-                                 JOIN {$wpdb->postmeta} AS pm
-                                 ON p.ID = pm.post_id
-                                 WHERE p.ID = %d
-                                 AND pm.meta_key = '_gamipress_hidden'
-                                 AND pm.meta_value = 'hidden'
-                                 ",
+		"
+		 SELECT *
+		 FROM {$wpdb->posts} AS p
+		 JOIN {$wpdb->postmeta} AS pm
+		 ON p.ID = pm.post_id
+		 WHERE p.ID = %d
+		 AND pm.meta_key = '_gamipress_hidden'
+		 AND pm.meta_value = 'hidden'
+         ",
 		$achievement_id));
 
 	// Return our results
@@ -646,10 +650,10 @@ function gamipress_bust_rank_based_achievements_cache( $post_id ) {
 
 	} else if(
 		in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
-		&& 'earn-points' == get_post_meta( $post_id, '_gamipress_trigger_type', true )
+		&& 'earn-rank' == get_post_meta( $post_id, '_gamipress_trigger_type', true )
 	) {
 
-		// If the post is one of our requirement types and the trigger type is a points based one, delete the transient
+		// If the post is one of our requirement types and the trigger type is a rank based one, delete the transient
 		delete_transient( 'gamipress_rank_based_achievements' );
 
 	}
@@ -943,6 +947,7 @@ function gamipress_update_p2p_achievement_types( $original_type = '', $new_type 
 		"step-to-{$original_type}" => "step-to-{$new_type}",
 		"{$original_type}-to-step" => "{$new_type}-to-step",
 		"{$original_type}-to-points-award" => "{$new_type}-to-points-award",
+		"{$original_type}-to-points-deduct" => "{$new_type}-to-points-deduct",
 	);
 
 	foreach ( $p2p_relationships as $old => $new ) {
@@ -1142,7 +1147,7 @@ function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin
 	} else {
 		$type = 'achievement_earn';
 
-        if( $post_type === 'step' || $post_type === 'points-award' ) {
+        if( $post_type === 'step' || $post_type === 'points-award' || $post_type === 'points-deduct' ) {
             $log_meta['pattern'] = gamipress_get_option( 'requirement_complete_log_pattern', __( '{user} completed the {achievement_type} {achievement}', 'gamipress' ) );
         } else {
             $log_meta['pattern'] = gamipress_get_option( 'achievement_earned_log_pattern', __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' ) );

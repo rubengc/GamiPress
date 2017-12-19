@@ -12,6 +12,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * Ajax Helper for returning achievements
  *
  * @since 1.0.0
+ *
  * @return void
  */
 function gamipress_ajax_get_achievements() {
@@ -42,6 +43,7 @@ function gamipress_ajax_get_achievements() {
 
 	// Setup template vars
 	$template_args = array(
+		'title' 	=> isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : 'yes',
 		'thumbnail' => isset( $_REQUEST['thumbnail'] ) ? $_REQUEST['thumbnail'] : 'yes',
 		'excerpt'	=> isset( $_REQUEST['excerpt'] ) ? $_REQUEST['excerpt'] : 'yes',
 		'steps'	    => isset( $_REQUEST['steps'] ) ? $_REQUEST['steps'] : 'yes',
@@ -463,3 +465,215 @@ function gamipress_ajax_get_ranks_options() {
 	wp_send_json_success( $ranks );
 }
 add_action( 'wp_ajax_gamipress_get_ranks_options', 'gamipress_ajax_get_ranks_options' );
+
+/**
+ * Ajax function to check and unlock an achievement by expend an amount of points
+ *
+ * @since 1.3.7
+ *
+ * @return void
+ */
+function gamipress_ajax_unlock_achievement_with_points() {
+
+	$achievement_id = isset( $_POST['achievement_id'] ) ? $_POST['achievement_id'] : 0;
+
+	$achievement = get_post( $achievement_id );
+
+	// Return if achievement not exists
+	if( ! $achievement ) {
+		wp_send_json_error( __( 'Achievement not found.', 'gamipress' ) );
+	}
+
+	$achievement_types = gamipress_get_achievement_types();
+
+	if( ! isset( $achievement_types[$achievement->post_type] ) ) {
+		wp_send_json_error( __( 'Invalid achievement.', 'gamipress' ) );
+	}
+
+	$achievement_type = $achievement_types[$achievement->post_type];
+
+	$user_id = get_current_user_id();
+
+	// Guest not supported yet (basically because they has not points)
+	if( $user_id === 0 ) {
+		wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+	}
+
+	// Return if this option not was enabled
+	if( ! (bool) get_post_meta( $achievement_id, '_gamipress_unlock_with_points', true ) ) {
+		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $achievement_type['singular_name'] ) );
+	}
+
+	$points = absint( get_post_meta( $achievement_id, '_gamipress_points_to_unlock', true ) );
+
+	// Return if no points configured
+	if( $points === 0 ) {
+		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $achievement_type['singular_name'] ) );
+	}
+
+	$earned = gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id );
+
+	// Return if user has completely earned this achievement
+	if( $earned ) {
+		wp_send_json_error( sprintf( __( 'You already unlocked this %s.', 'gamipress' ), $achievement_type['singular_name'] ) );
+	}
+
+	// Setup points type
+	$points_types = gamipress_get_points_types();
+	$points_type = get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock', true );
+
+	// Default points label
+	$points_label = __( 'Points', 'gamipress' );
+
+	if( isset( $points_types[$points_type] ) ) {
+		// Points type label
+		$points_label = $points_types[$points_type]['plural_name'];
+	}
+
+	// Setup user points
+	$user_points = gamipress_get_user_points( $user_id, $points_type );
+
+	if( $user_points < $points ) {
+		wp_send_json_error( sprintf( __( 'Insufficient %s.', 'gamipress' ), $points_label ) );
+	}
+
+	// Deduct points to user
+	gamipress_deduct_points_to_user( $user_id, $points, $points_type, array(
+		'log_type' => 'points_expend',
+		'reason' => gamipress_get_option( 'points_expended_log_pattern', __( '{user} expended {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) )
+	) );
+
+	// Award the achievement to the user
+	gamipress_award_achievement_to_user( $achievement_id, $user_id );
+
+	$congratulations = get_post_meta( $achievement_id, '_gamipress_congratulations_text', true );
+
+	if( empty( $congratulations ) ) {
+		$congratulations = sprintf( __( 'Congratulations! You unlocked the %s %s.', 'gamipress' ), $achievement_type['singular_name'], $achievement->post_title );
+	}
+
+	// Filter to change congratulations message
+	$congratulations = apply_filters( 'gamipress_achievement_unlocked_with_points_congratulations', $congratulations, $achievement_id, $user_id, $points, $points_type );
+
+	/**
+	 * Achievement unlocked with points action
+	 *
+	 * @since 1.3.7
+	 *
+	 * @param integer $achievement_id 	The achievement unlocked ID
+	 * @param integer $user_id 			The user ID
+	 * @param integer $points 			The amount of points expended
+	 * @param string  $points_type 		The points type of the amount of points expended
+	 */
+	do_action( 'gamipress_achievement_unlocked_with_points', $achievement_id, $user_id, $points, $points_type );
+
+	wp_send_json_success( $congratulations );
+
+}
+add_action( 'wp_ajax_gamipress_unlock_achievement_with_points', 'gamipress_ajax_unlock_achievement_with_points' );
+
+/**
+ * Ajax function to check and unlock a rank by expend an amount of points
+ *
+ * @since 1.3.7
+ *
+ * @return void
+ */
+function gamipress_ajax_unlock_rank_with_points() {
+
+	$rank_id = isset( $_POST['rank_id'] ) ? $_POST['rank_id'] : 0;
+
+	$rank = get_post( $rank_id );
+
+	// Return if rank not exists
+	if( ! $rank ) {
+		wp_send_json_error( __( 'Rank not found.', 'gamipress' ) );
+	}
+
+	$rank_types = gamipress_get_rank_types();
+
+	if( ! isset( $rank_types[$rank->post_type] ) ) {
+		wp_send_json_error( __( 'Invalid rank.', 'gamipress' ) );
+	}
+
+	$rank_type = $rank_types[$rank->post_type];
+
+	$user_id = get_current_user_id();
+
+	// Guest not supported yet (basically because they has not points)
+	if( $user_id === 0 ) {
+		wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+	}
+
+	// Return if this option not was enabled
+	if( ! (bool) get_post_meta( $rank_id, '_gamipress_unlock_with_points', true ) ) {
+		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $rank_type['singular_name'] ) );
+	}
+
+	$points = absint( get_post_meta( $rank_id, '_gamipress_points_to_unlock', true ) );
+
+	// Return if no points configured
+	if( $points === 0 ) {
+		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $rank_type['singular_name'] ) );
+	}
+
+	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
+
+	// Return if user is in a higher rank
+	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) ) {
+		wp_send_json_error( sprintf( __( 'You are already in a higher %s.', 'gamipress' ), $rank_type['singular_name'] ) );
+	}
+
+	// Setup points type
+	$points_types = gamipress_get_points_types();
+	$points_type = get_post_meta( $rank_id, '_gamipress_points_type_to_unlock', true );
+
+	// Default points label
+	$points_label = __( 'Points', 'gamipress' );
+
+	if( isset( $points_types[$points_type] ) ) {
+		// Points type label
+		$points_label = $points_types[$points_type]['plural_name'];
+	}
+
+	// Setup user points
+	$user_points = gamipress_get_user_points( $user_id, $points_type );
+
+	if( $user_points < $points ) {
+		wp_send_json_error( sprintf( __( 'Insufficient %s.', 'gamipress' ), $points_label ) );
+	}
+
+	// Deduct points to user
+	gamipress_deduct_points_to_user( $user_id, $points, $points_type, array(
+		'log_type' => 'points_expend',
+		'reason' => gamipress_get_option( 'points_expended_log_pattern', __( '{user} expended {points} {points_type} for a new total of {total_points} {points_type}', 'gamipress' ) )
+	) );
+
+	// Award the rank to the user
+	gamipress_update_user_rank( $user_id, $rank_id );
+
+	$congratulations = get_post_meta( $rank_id, '_gamipress_congratulations_text', true );
+
+	if( empty( $congratulations ) ) {
+		$congratulations = sprintf( __( 'Congratulations! You reached to the %s %s.', 'gamipress' ), $rank_type['singular_name'], $rank->post_title );
+	}
+
+	// Filter to change congratulations message
+	$congratulations = apply_filters( 'gamipress_rank_unlocked_with_points_congratulations', $congratulations, $rank_id, $user_id, $points, $points_type );
+
+	/**
+	 * Achievement unlocked with points action
+	 *
+	 * @since 1.3.7
+	 *
+	 * @param integer $rank_id 			The rank unlocked ID
+	 * @param integer $user_id 			The user ID
+	 * @param integer $points 			The amount of points expended
+	 * @param string  $points_type 		The points type of the amount of points expended
+	 */
+	do_action( 'gamipress_rank_unlocked_with_points', $rank_id, $user_id, $points, $points_type );
+
+	wp_send_json_success( $congratulations );
+
+}
+add_action( 'wp_ajax_gamipress_unlock_rank_with_points', 'gamipress_ajax_unlock_rank_with_points' );

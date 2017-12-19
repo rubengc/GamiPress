@@ -33,7 +33,7 @@ function gamipress_requirements_posts_columns( $posts_columns, $post_type ) {
     // Place our column in our desired position
     $chunks                     = array_chunk( $posts_columns, $pos, true );
 
-    if( ( $post_type === 'points-award' ) ) {
+    if( ( $post_type === 'points-award' || $post_type === 'points-deduct' ) ) {
         $chunks[0]['connected_to']  = __( 'Points Type', 'gamipress' );
     } else if( $post_type === 'step' ) {
         $chunks[0]['connected_to']  = __( 'Achievement', 'gamipress' );
@@ -63,6 +63,9 @@ function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
     if( ( $post_type === 'points-award' ) ) {
         $connected_label = __( 'Points Type', 'gamipress' );
         $connected_object =  gamipress_get_points_award_points_type( $post_id );
+    } else if( ( $post_type === 'points-deduct' ) ) {
+        $connected_label = __( 'Points Type', 'gamipress' );
+        $connected_object =  gamipress_get_points_deduct_points_type( $post_id );
     } else if( $post_type === 'step' ) {
         $connected_label = __( 'Achievement', 'gamipress' );
         $connected_object = gamipress_get_parent_of_achievement( $post_id );

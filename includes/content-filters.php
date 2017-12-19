@@ -138,9 +138,6 @@ function gamipress_is_single_achievement( $id = false ) {
 /**
  * Generate HTML markup for an points type's points awards
  *
- * This will generate an unorderd list (<ul>) if steps are non-sequential
- * and an ordered list (<ol>) if steps require sequentiality.
- *
  * @since  1.0.0
  *
  * @param  array   $points_awards   An points type's points awards
@@ -179,7 +176,7 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 
 		$points_awards_heading = sprintf( __( '%1$d %2$s Awards', 'gamipress' ), $count, $plural_name ); // 2 Credits Awards
 	} else {
-		$points_awards_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Points Awards
+		$points_awards_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Awards
 	}
 
 
@@ -227,9 +224,98 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 }
 
 /**
+ * Generate HTML markup for an points type's points deducts
+ *
+ * @since  1.3.7
+ *
+ * @param  array   $points_deducts  An points type's points deducts
+ * @param  integer $user_id         The given user's ID
+ * @param  array   $template_args   The given template args
+ *
+ * @return string                   The markup for our list
+ */
+function gamipress_get_points_deducts_for_points_types_list_markup( $points_deducts = array(), $user_id = 0, $template_args = array() ) {
+
+	// If we don't have any points deducts, or our points deducts aren't an array, return nothing
+	if ( ! $points_deducts || ! is_array( $points_deducts ) )
+		return null;
+
+	$count = count( $points_deducts );
+
+	// If we have no points deducts, return nothing
+	if ( ! $count )
+		return null;
+
+	// Grab the current user's ID if none was specifed
+	if ( ! $user_id )
+		$user_id = get_current_user_id();
+
+	// Setup our variables
+	$output = '';
+	$post_type_object = get_post_type_object( 'points-deduct' );
+	$points_type = gamipress_get_points_deduct_points_type( $points_deducts[0]->ID );
+
+	if( $points_type ) {
+		$plural_name = get_post_meta( '_gamipress_plural_name', $points_type->ID, true );
+
+		if( ! $plural_name ) {
+			$plural_name = $points_type->post_title;
+		}
+
+		$points_deducts_heading = sprintf( __( '%1$d %2$s Deducts', 'gamipress' ), $count, $plural_name ); // 2 Credits Deducts
+	} else {
+		$points_deducts_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Deducts
+	}
+
+
+
+	$output .= '<h4>' . apply_filters( 'gamipress_points_deducts_heading', $points_deducts_heading, $points_deducts ) . '</h4>';
+	$output .= '<ul class="gamipress-points-deducts">';
+
+	// Concatenate our output
+	foreach ( $points_deducts as $points_deduct ) {
+
+		// Check if user has earned this points deduct, and add an 'earned' class
+		$earned_status = 'user-has-not-earned';
+
+		$maximum_earnings = absint( get_post_meta( $points_deduct->ID, '_gamipress_maximum_earnings', true ) );
+
+		// An unlimited maximum of earnings means points deducts could be earned anyway
+		if( $maximum_earnings > 0 ) {
+			$earned_times = count( gamipress_get_user_achievements( array(
+				'user_id' => absint( $user_id ),
+				'achievement_id' => absint( $points_deduct->ID ),
+				'since' => absint( gamipress_achievement_last_user_activity( $points_deduct->ID, $user_id ) )
+			) ) );
+
+			// User has earned it more times than required times, so is earned
+			if( $earned_times >= $maximum_earnings ) {
+				$earned_status = 'user-has-earned';
+			}
+		}
+
+		$title = $points_deduct->post_title;
+
+		// If points deduct doesn't have a title, then try to build one
+		if( empty( $title ) ) {
+			$title = gamipress_build_requirement_title( $points_deduct->ID );
+		}
+
+		$output .= '<li class="'. apply_filters( 'gamipress_points_deduct_class', $earned_status, $points_deduct, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_points_deduct_title_display', $title, $points_deduct, $user_id, $template_args ) . '</li>';
+	}
+
+	$output .= '</ul><!-- .gamipress-points-deducts -->';
+
+	// Return our output
+	return $output;
+
+}
+
+/**
  * Filter our points awards titles to link to achievements and achievement type archives
  *
  * @since  1.0.0
+ *
  * @param  string $title 			Our points award title
  * @param  object $points_award  	Our points award's post object
  * @return string        			Our potentially updated title
@@ -252,6 +338,34 @@ function gamipress_points_award_link_title_to_achievement( $title = '', $points_
 	return $title;
 }
 add_filter( 'gamipress_points_award_title_display', 'gamipress_points_award_link_title_to_achievement', 10, 2 );
+
+/**
+ * Filter our points deducts titles to link to achievements and achievement type archives
+ *
+ * @since  1.3.7
+ *
+ * @param  string $title 			Our points deduct title
+ * @param  object $points_deduct  	Our points deduct's post object
+ * @return string        			Our potentially updated title
+ */
+function gamipress_points_deduct_link_title_to_achievement( $title = '', $points_deduct = null ) {
+
+	// Grab our points deduct requirements
+	$points_deduct_requirements = gamipress_get_points_deduct_requirements( $points_deduct->ID );
+
+	// Setup a URL to link to a specific achievement or an achievement type
+	if ( ! empty( $points_deduct_requirements['achievement_post'] ) )
+		$url = get_permalink( $points_deduct_requirements['achievement_post'] );
+	// elseif ( ! empty( $points_deduct_requirements['achievement_type'] ) )
+	//  $url = get_post_type_archive_link( $points_deduct_requirements['achievement_type'] );
+
+	// If we have a URL, update the title to link to it
+	if ( isset( $url ) && ! empty( $url ) )
+		$title = '<a href="' . esc_url( $url ) . '">' . $title . '</a>';
+
+	return $title;
+}
+add_filter( 'gamipress_points_deduct_title_display', 'gamipress_points_deduct_link_title_to_achievement', 10, 2 );
 
 /**
  * Gets achievement's required steps and returns HTML markup for these steps
@@ -359,8 +473,10 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
  * Filter our step titles to link to achievements and achievement type archives
  *
  * @since  1.0.0
+ *
  * @param  string $title Our step title
  * @param  object $step  Our step's post object
+ *
  * @return string        Our potentially updated title
  */
 function gamipress_step_link_title_to_achievement( $title = '', $step = null ) {
@@ -386,7 +502,9 @@ add_filter( 'gamipress_step_title_display', 'gamipress_step_link_title_to_achiev
  * Generate markup for an achievement's points output
  *
  * @since  1.0.0
- * @param  integer $achievement_id The given achievment's ID
+ *
+ * @param  integer $achievement_id The given achievement's ID
+ *
  * @return string                  The HTML markup for our points
  */
 function gamipress_achievement_points_markup( $achievement_id = 0 ) {
@@ -395,6 +513,13 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 	if ( ! $achievement_id ) {
 		global $post;
 		$achievement_id = $post->ID;
+	}
+
+	$points = absint( get_post_meta( $achievement_id, '_gamipress_points', true ) );
+
+	// Return if no points configured
+	if( $points === 0 ) {
+		return '';
 	}
 
     $points_types = gamipress_get_points_types();
@@ -409,7 +534,166 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
     }
 
 	// Return our markup
-	return ( $points = get_post_meta( $achievement_id, '_gamipress_points', true ) ) ? '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . sprintf( $points_label, $points ) . '</div>' : '';
+	return '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . sprintf( $points_label, $points ) . '</div>';
+}
+
+/**
+ * Generate markup for an achievement's unlock with points output
+ *
+ * @since  1.3.7
+ *
+ * @param  integer 	$achievement_id The given achievement's ID
+ * @param  array 	$template_args 	Achievement template args
+ *
+ * @return string                  The HTML markup for our points
+ */
+function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $template_args = array() ) {
+
+	// Grab the current post ID if no achievement_id was specified
+	if ( ! $achievement_id ) {
+		global $post;
+		$achievement_id = $post->ID;
+	}
+
+	$user_id = get_current_user_id();
+
+	// Guest not supported yet (basically because they has not points)
+	if( $user_id === 0 ) {
+		return '';
+	}
+
+	if( ! isset( $template_args['user_id'] ) ) {
+		$template_args['user_id'] = get_current_user_id();
+	}
+
+	// Return if user is displaying achievements of another user
+	if( $user_id !== absint( $template_args['user_id'] ) ) {
+		return '';
+	}
+
+	// Return if this option not was enabled
+	if( ! (bool) get_post_meta( $achievement_id, '_gamipress_unlock_with_points', true ) ) {
+		return '';
+	}
+
+	$points = absint( get_post_meta( $achievement_id, '_gamipress_points_to_unlock', true ) );
+
+	// Return if no points configured
+	if( $points === 0 ) {
+		return '';
+	}
+
+	$earned = gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id );
+
+	// Return if user has completely earned this achievement
+	if( $earned ) {
+		return '';
+	}
+
+	// Setup vars
+	$points_types = gamipress_get_points_types();
+	$points_type = get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock', true );
+
+	// Default points label
+	$points_label = __( 'Points', 'gamipress' );
+
+	if( isset( $points_types[$points_type] ) ) {
+		// Points type label
+		$points_label = $points_types[$points_type]['plural_name'];
+	}
+
+	ob_start(); ?>
+		<div class="gamipress-achievement-unlock-with-points">
+			<div class="gamipress-spinner" style="display: none;"></div>
+			<button type="button" class="gamipress-achievement-unlock-with-points-button" data-id="<?php echo $achievement_id; ?>"><?php echo sprintf( __( 'Unlock using %d %s', 'gamipress' ), $points, $points_label ); ?></button>
+		</div>
+	<?php $output = ob_get_clean();
+
+	// Return our markup
+	return apply_filters( 'gamipress_achievement_unlock_with_points_markup', $output, $achievement_id, $user_id, $template_args );
+}
+
+/**
+ * Generate markup for an rank's unlock with points output
+ *
+ * @since  1.3.7
+ *
+ * @param  integer 	$rank_id 		The given rank's ID
+ * @param  array 	$template_args 	Rank template args
+ *
+ * @return string                  The HTML markup for our points
+ */
+function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args = array() ) {
+
+	// Grab the current post ID if no rank_id was specified
+	if ( ! $rank_id ) {
+		global $post;
+		$rank_id = $post->ID;
+	}
+
+	$rank_types = gamipress_get_rank_types();
+	$rank_type = get_post_type( $rank_id );
+
+	if( ! isset( $rank_types[$rank_type] ) ) {
+		return '';
+	}
+
+	$user_id = get_current_user_id();
+
+	// Guest not supported yet (basically because they has not points)
+	if( $user_id === 0 ) {
+		return '';
+	}
+
+	if( ! isset( $template_args['user_id'] ) ) {
+		$template_args['user_id'] = get_current_user_id();
+	}
+
+	// Return if user is displaying ranks of another user
+	if( $user_id !== absint( $template_args['user_id'] ) ) {
+		return '';
+	}
+
+	// Return if this option not was enabled
+	if( ! (bool) get_post_meta( $rank_id, '_gamipress_unlock_with_points', true ) ) {
+		return '';
+	}
+
+	$points = absint( get_post_meta( $rank_id, '_gamipress_points_to_unlock', true ) );
+
+	// Return if no points configured
+	if( $points === 0 ) {
+		return '';
+	}
+
+	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
+
+	// Return if user is in a higher rank
+	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) ) {
+		return '';
+	}
+
+	// Setup vars
+	$points_types = gamipress_get_points_types();
+	$points_type = get_post_meta( $rank_id, '_gamipress_points_type_to_unlock', true );
+
+	// Default points label
+	$points_label = __( 'Points', 'gamipress' );
+
+	if( isset( $points_types[$points_type] ) ) {
+		// Points type label
+		$points_label = $points_types[$points_type]['plural_name'];
+	}
+
+	ob_start(); ?>
+	<div class="gamipress-rank-unlock-with-points">
+		<div class="gamipress-spinner" style="display: none;"></div>
+		<button type="button" class="gamipress-rank-unlock-with-points-button" data-id="<?php echo $rank_id; ?>"><?php echo sprintf( __( 'Unlock using %d %s', 'gamipress' ), $points, $points_label ); ?></button>
+	</div>
+	<?php $output = ob_get_clean();
+
+	// Return our markup
+	return apply_filters( 'gamipress_rank_unlock_with_points_markup', $output, $rank_id, $user_id, $template_args );
 }
 
 /**
@@ -422,8 +706,17 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 function gamipress_add_earned_class_single( $classes = array() ) {
 
 	if( is_singular( gamipress_get_achievement_types_slugs() ) ) {
-		// check if current user has earned the achievement they're viewing
+		// Single Achievement
+
+		// Check if current user has earned the achievement they're viewing
 		$classes[] = gamipress_get_user_achievements( array( 'user_id' => get_current_user_id(), 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
+
+	} else if( is_singular( gamipress_get_rank_types_slugs() ) ) {
+		// Single Rank
+
+		// Check if current user has earned the rank they're viewing
+		$classes[] = gamipress_get_user_achievements( array( 'user_id' => get_current_user_id(), 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
+
 	}
 
 	return $classes;

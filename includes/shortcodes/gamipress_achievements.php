@@ -229,6 +229,8 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	// Force to set current user as user ID
 	if( $atts['current_user'] === 'yes' ) {
 		$atts['user_id'] = get_current_user_id();
+	} else if( absint( $atts['user_id'] ) === 0 ) {
+		$atts['user_id'] = get_current_user_id();
 	}
 
 	// GamiPress template args global

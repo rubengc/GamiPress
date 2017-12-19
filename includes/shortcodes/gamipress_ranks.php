@@ -209,6 +209,8 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		$is_user_ranks = true;
 	} else if( absint( $atts['user_id'] ) !== 0 ) {
 		$is_user_ranks = true;
+	} else if( absint( $atts['user_id'] ) === 0 ) {
+		$atts['user_id'] = get_current_user_id();
 	}
 
 	// GamiPress template args global
@@ -218,6 +220,7 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 
 	// Setup template vars
 	$template_args = array(
+		'title' 		=> $atts['title'],
 		'thumbnail' 	=> $atts['thumbnail'],
 		'excerpt'	  	=> $atts['excerpt'],
 		'requirements'	=> $atts['requirements'],

@@ -24,10 +24,12 @@ class GamiPress_Points_Widget extends GamiPress_Widget {
 
     public function get_widget( $args, $instance ) {
         echo gamipress_do_shortcode( 'gamipress_points', array(
-            'type'      => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
-            'current_user'   => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
-            'user_id'   => $instance['user_id'],
-            'wpms'      => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
+            'type'          => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
+            'thumbnail'     => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
+            'label'         => ( $instance['label'] === 'on' ? 'yes' : 'no' ),
+            'current_user'  => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
+            'user_id'       => $instance['user_id'],
+            'wpms'          => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
         ) );
     }
 }

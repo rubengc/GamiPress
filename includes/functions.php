@@ -71,3 +71,17 @@ function gamipress_get_network_site_ids() {
     return $sites;
 
 }
+
+/**
+ * Utility to check whether function is disabled.
+ *
+ * @since 1.3.7
+ *
+ * @param string $function  Name of the function.
+ * @return bool             Whether or not function is disabled.
+ */
+function gamipress_is_function_disabled( $function ) {
+    $disabled = explode( ',',  ini_get( 'disable_functions' ) );
+
+    return in_array( $function, $disabled );
+}

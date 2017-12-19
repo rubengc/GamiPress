@@ -300,12 +300,36 @@ function gamipress_on_delete_post( $post_id ) {
             // Remove the achievement
             wp_delete_post( $dependent['ID'] );
         }
-    } else if( $post_type === 'points-type' || $is_achievement || $is_rank ) {
-        // Remove steps/points awards/rank requirements assigned
+    } else if( $post_type === 'points-type' ) {
 
-        if( $post_type === 'points-type' ) {
-            $requirement_type = 'points-award';
-        } else if( $is_rank ) {
+        // Get assigned points awards
+        $points_awards = gamipress_get_assigned_requirements( $post_id, 'points-award' );
+
+        if( $points_awards ) {
+
+            foreach( $points_awards as $points_award ) {
+                // Remove the points award
+                wp_delete_post( $points_award->ID );
+            }
+
+        }
+
+        // Get assigned points deducts
+        $points_deducts = gamipress_get_assigned_requirements( $post_id, 'points-deduct' );
+
+        if( $points_deducts ) {
+
+            foreach( $points_deducts as $points_deduct ) {
+                // Remove the points deduct
+                wp_delete_post( $points_deduct->ID );
+            }
+
+        }
+
+    } else if( $is_achievement || $is_rank ) {
+        // Remove steps/rank requirements assigned
+
+        if( $is_rank ) {
             $requirement_type = 'rank-requirement';
         } else if ( $is_achievement ) {
             $requirement_type = 'step';

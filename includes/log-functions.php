@@ -23,6 +23,7 @@ function gamipress_get_log_types() {
         'achievement_award' => __( 'Achievement Award', 'gamipress' ),
         'points_earn' => __( 'Points Earn', 'gamipress' ),
         'points_deduct' => __( 'Points Deduct', 'gamipress' ),
+        'points_expend' => __( 'Points Expend', 'gamipress' ),
         'points_award' => __( 'Points Award', 'gamipress' ),
         'points_revoke' => __( 'Points Revoke', 'gamipress' ),
         'rank_earn' => __( 'Rank Earn', 'gamipress' ),
@@ -34,11 +35,14 @@ function gamipress_get_log_types() {
 /**
  * Get an array of log pattern tags
  *
- * @since  1.0.2
-
+ * @since   1.0.2
+ * @updated 1.3.7 Added the content parameter
+ *
+ * @param string $context
+ *
  * @return array The registered log pattern tags
  */
-function gamipress_get_log_pattern_tags() {
+function gamipress_get_log_pattern_tags( $context = 'default' ) {
     return apply_filters( 'gamipress_log_pattern_tags', array(
         '{user}'                =>  __(  'User assigned.', 'gamipress' ),
         '{admin}'               =>  __(  'Admin that awards.', 'gamipress' ),
@@ -51,8 +55,36 @@ function gamipress_get_log_pattern_tags() {
         '{total_points}'        =>  __(  'Points user has earned until this log.', 'gamipress' ),
         '{rank}'                =>  __(  'Rank user has ranked.', 'gamipress' ),
         '{rank_type}'           =>  __(  'Rank type user has ranked.', 'gamipress' ),
-    ) );
+    ), $context );
 }
+
+/**
+ * Get an array of log pattern tags based on custom context
+ *
+ * @since   1.3.7
+ *
+ * @param array     $tags       The registered log pattern tags
+ * @param string    $context    The context
+
+ * @return array                Custom log pattern tags by context
+ */
+function gamipress_get_log_pattern_tags_by_context( $tags, $context = 'default' ) {
+
+    switch( $context ) {
+        case 'deduct':
+            $tags['{points}'] = __(  'Points user has lost.', 'gamipress' );
+            $tags['{points_type}'] =  __(  'Type of the points lost.', 'gamipress' );
+            break;
+        case 'expend':
+            $tags['{points}'] = __(  'Points user has expended.', 'gamipress' );
+            $tags['{points_type}'] =  __(  'Type of the points expended.', 'gamipress' );
+            break;
+    }
+
+    return $tags;
+
+}
+add_filter( 'gamipress_log_pattern_tags', 'gamipress_get_log_pattern_tags_by_context', 10, 2 );
 
 /**
  * Get a string with the desired log pattern tags html markup
@@ -60,14 +92,15 @@ function gamipress_get_log_pattern_tags() {
  * @since  1.0.2
  *
  * @param array $specific_tags
+ * @param string $context
  *
  * @return string Log pattern tags html markup
  */
-function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
+function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context = 'default' ) {
 
     $output = '<ul class="gamipress-log-pattern-tags-list">';
 
-    foreach( gamipress_get_log_pattern_tags() as $tag => $description ) {
+    foreach( gamipress_get_log_pattern_tags( $context ) as $tag => $description ) {
 
         if( ! empty( $specific_tags ) && ! in_array( $tag, $specific_tags ) ) {
             continue;
@@ -85,9 +118,80 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array() ) {
 }
 
 /**
+ * Return user logs with the specified meta data
+ *
+ * @since  1.3.7
+ *
+ * @param int       $user_id
+ * @param array     $log_meta
+ *
+ * @return array
+ */
+function gamipress_get_user_logs( $user_id = 0, $log_meta = array() ) {
+
+    global $wpdb;
+
+    // Setup table
+    $ct_table = ct_setup_table( 'gamipress_logs' );
+
+    // Initialize query definitions
+    $joins = array();
+    $where = array();
+
+    // Initialize query args
+    $query_args = array( absint( $user_id ) );
+
+    foreach ( (array) $log_meta as $key => $meta ) {
+
+        if( $key === 'type' ) {
+
+            if( is_array( $meta ) ) {
+                $meta = "'" . implode( "', '", $meta ) . "'";
+                $where[] = "p.type IN ({$meta})";
+            } else {
+                $where[] = "p.type = %s";
+                $query_args[] = $meta;
+            }
+
+        } else {
+
+            $index = count( $joins );
+
+            // Setup query definitions
+            $joins[] = "LEFT JOIN {$ct_table->meta->db->table_name} AS pm{$index} ON ( p.log_id = pm{$index}.log_id )";
+            $where[] = "pm{$index}.meta_key = %s AND pm{$index}.meta_value = %s";
+
+            // Setup query vars
+            $query_args[] = '_gamipress_' . sanitize_key( $key );
+            $query_args[] = $meta;
+
+        }
+
+    }
+
+    // Turn arrays into strings
+    $joins = implode( ' ', $joins );
+    $where = (  ! empty( $where ) ? '( '. implode( ' ) AND ( ', $where ) . ' ) ' : '' );
+
+    $user_logs = $wpdb->get_results( $wpdb->prepare(
+        "SELECT p.*
+         FROM   {$ct_table->db->table_name} AS p
+         {$joins}
+         WHERE p.user_id = %s
+          AND ( {$where} )",
+        $query_args
+    ) );
+
+    ct_reset_setup_table();
+
+    return $user_logs;
+}
+
+/**
  * Return count of user logs with the specified meta data
  *
- * @since  1.1.8
+ * @since   1.1.8
+ * @updated 1.3.7 Added support for multiples types
  *
  * @param int       $user_id
  * @param array     $log_meta
@@ -118,8 +222,13 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
         if( $key === 'type' ) {
 
             // Since 1.2.8 _gamipress_type meta was moved to gamipress_logs DB table
-            $where[] = "p.type = %s";
-            $query_args[] = $meta;
+            if( is_array( $meta ) ) {
+                $meta = "'" . implode( "', '", $meta ) . "'";
+                $where[] = "p.type IN ({$meta})";
+            } else {
+                $where[] = "p.type = %s";
+                $query_args[] = $meta;
+            }
 
         } else {
 
@@ -350,7 +459,7 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
     }
 
     // If log is a points based entry, then add points pattern replacements
-    if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_earn' ) {
+    if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_revoke' || $log_data['type'] === 'points_earn' || $log_data['type'] === 'points_deduct' ) {
         global $gamipress_pattern_replacements;
 
         $points_type = $log_meta['points_type'];
@@ -368,7 +477,7 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
         // {points_type} tag
         $gamipress_pattern_replacements['{points_type}'] = $points_label;
 
-        if( $log_data['type'] === 'points_award' ) {
+        if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_revoke' ) {
             $admin = get_userdata( $log_meta['admin_id'] );
 
             // {admin_username} tag
@@ -509,13 +618,13 @@ function gamipress_get_log_meta_data_defaults( $log_meta, $log_id, $log_data ) {
             // Specific achievement award meta data
             $meta_keys[] = 'admin_id';
         }
-    } else if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_earn' ) {
-        // Points earn/award meta data
+    } else if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_revoke' || $log_data['type'] === 'points_earn' || $log_data['type'] === 'points_deduct' ) {
+        // Points earn/deduct/award/revoke meta data
         $meta_keys[] = 'points';
         $meta_keys[] = 'points_type';
         $meta_keys[] = 'total_points';
 
-        if( $log_data['type'] === 'points_award' ) {
+        if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_revoke' ) {
             // Specific points award meta data
             $meta_keys[] = 'admin_id';
         }

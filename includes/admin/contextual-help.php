@@ -60,7 +60,15 @@ function gamipress_edit_screen_contextual_help() {
                 'title'	    => __( 'Points Awards', 'gamipress' ),
                 'content'	=>
                     '<p>' . __( 'Points awards are automatic ways an user could retrieve an amount of a points type.', 'gamipress' ) . '</p>' .
-                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Steps</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-steps/' ) ) . '</p>'
+                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Deducts</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-deducts/' ) ) . '</p>'
+            ) );
+
+            $screen->add_help_tab( array(
+                'id'	    => 'gamipress-points-awards',
+                'title'	    => __( 'Points Deducts', 'gamipress' ),
+                'content'	=>
+                    '<p>' . __( 'Points deduct are automatic ways an user could lose an amount of a points type.', 'gamipress' ) . '</p>' .
+                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Deducts</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-deducts/' ) ) . '</p>'
             ) );
 
         }
@@ -94,7 +102,7 @@ function gamipress_edit_screen_contextual_help() {
             'title'	    => __( 'Steps', 'gamipress' ),
             'content'	=>
                 '<p>' . __( 'Steps are the conditionals of an achievement to be considered complete. They are present just on achievements that are configured to be earned by completing steps.', 'gamipress' ) . '</p>' .
-                '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Steps</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-steps/' ) ) . '</p>'
+                '<p>' . sprintf( __( 'For more information, see <a href="%s">Steps</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/steps/' ) ) . '</p>'
         ) );
     }
 

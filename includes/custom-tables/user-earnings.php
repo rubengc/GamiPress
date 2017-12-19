@@ -126,17 +126,20 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
     switch( $column_name ) {
         case 'name':
 
-            echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 32, 32 ) );
-
             if( in_array( $achievement->post_type, gamipress_get_requirement_types_slugs() ) ) : ?>
-
-                <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
-                <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
 
                 <?php if( $achievement->post_type === 'step' && $parent_achievement = gamipress_get_parent_of_achievement( $achievement->ID ) ) : ?>
 
                     <?php // Step ?>
 
+                    <?php // Achievement thumbnail ?>
+                    <?php echo gamipress_get_achievement_post_thumbnail( $parent_achievement->ID, array( 32, 32 ) ); ?>
+
+                    <?php // Step title ?>
+                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+
+                    <?php // Step relationship details ?>
+                    <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
                     <?php echo ( isset( $achievement_types[$parent_achievement->post_type] ) ? ', ' . $achievement_types[$parent_achievement->post_type]['singular_name'] . ': ' : '' ); ?>
                     <?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
 
@@ -144,12 +147,42 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
 
                     <?php // Points award ?>
 
+                    <?php // Points type thumbnail ?>
+                    <?php echo gamipress_get_points_type_thumbnail( $points_type->ID, array( 32, 32 ) ); ?>
+
+                    <?php // Points award title ?>
+                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+
+                    <?php // Points award relationship details ?>
+                    <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
+                    <?php echo ', <a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
+
+                <?php elseif( $achievement->post_type === 'points-deduct' && $points_type = gamipress_get_points_deduct_points_type( $achievement->ID ) ) : ?>
+
+                    <?php // Points deduct ?>
+
+                    <?php // Points type thumbnail ?>
+                    <?php echo gamipress_get_points_type_thumbnail( $points_type->ID, array( 32, 32 ) ); ?>
+
+                    <?php // Points deduct title ?>
+                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+
+                    <?php // Points deduct relationship details ?>
+                    <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
                     <?php echo ', <a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
 
                 <?php elseif( $achievement->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $achievement->ID ) ) : ?>
 
                     <?php // Rank Requirement ?>
 
+                    <?php // Rank thumbnail ?>
+                    <?php echo gamipress_get_rank_post_thumbnail( $rank->ID, array( 32, 32 ) ); ?>
+
+                    <?php // Rank requirement title ?>
+                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+
+                    <?php // Rank relationship details ?>
+                    <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
                     <?php echo ( isset( $rank_types[$rank->post_type] ) ? ', ' . $rank_types[$rank->post_type]['singular_name'] . ': ' : '' ); ?>
                     <?php echo '<a href="' . get_edit_post_link( $rank->ID ) . '">' . get_the_title( $rank->ID ) . '</a>'; ?>
 
@@ -159,6 +192,10 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
 
                 <?php // Achievement ?>
 
+                <?php // Achievement thumbnail ?>
+                <?php echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 32, 32 ) ); ?>
+
+                <?php // Achievement title ?>
                 <strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
                 <?php echo ( isset( $achievement_types[$achievement->post_type] ) ? '<br>' . $achievement_types[$achievement->post_type]['singular_name'] : '' ); ?>
 
@@ -166,6 +203,10 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
 
                 <?php // Rank ?>
 
+                <?php // Rank thumbnail ?>
+                <?php echo gamipress_get_rank_post_thumbnail( $achievement->ID, array( 32, 32 ) ); ?>
+
+                <?php // Rank title ?>
                 <strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
                 <?php echo ( isset( $rank_types[$achievement->post_type] ) ? '<br>' . $rank_types[$achievement->post_type]['singular_name'] : '' ); ?>
 

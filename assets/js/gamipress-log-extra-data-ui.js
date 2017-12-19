@@ -12,13 +12,19 @@
             case 'achievement_award':
                 tags_to_show = ['user', 'achievement', 'achievement-type'];
                 break;
+            case 'rank_earn':
+            case 'rank_award':
+                tags_to_show = ['user', 'rank', 'rank-type'];
+                break;
             case 'points_earn':
+            case 'points_deduct':
             case 'points_award':
+            case 'points_revoke':
                 tags_to_show = ['user', 'points', 'points-type', 'total-points'];
                 break;
         }
 
-        if( type === 'achievement_award' || type === 'points_award' ) {
+        if( type === 'achievement_award' || type === 'rank_award' || type === 'points_award' || type === 'points_revoke' ) {
             tags_to_show.push('admin');
         }
 

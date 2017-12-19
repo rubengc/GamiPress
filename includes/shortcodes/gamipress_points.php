@@ -52,6 +52,20 @@ function gamipress_register_points_shortcode() {
                 ),
                 'default' => '1'
             ),
+            'thumbnail' => array(
+                'name'        => __( 'Show Thumbnail', 'gamipress' ),
+                'description' => __( 'Display the points type featured image.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
+            'label' => array(
+                'name'        => __( 'Show Points Type Label', 'gamipress' ),
+                'description' => __( 'Display the points type label (singular or plural name, based on the amount of points).', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
             'current_user' => array(
                 'name'        => __( 'Current User', 'gamipress' ),
                 'description' => __( 'Show only points earned by the current logged in user.', 'gamipress' ),
@@ -77,7 +91,7 @@ function gamipress_register_points_shortcode() {
 add_action( 'init', 'gamipress_register_points_shortcode' );
 
 /**
- * Achievement List Shortcode.
+ * Points Shortcode.
  *
  * @since  1.0.0
  *
@@ -94,6 +108,8 @@ function gamipress_points_shortcode( $atts = array () ) {
         // Points atts
         'type'          => 'all',
         'columns'       => '1',
+        'thumbnail'     => 'yes',
+        'label'         => 'yes',
         'current_user'  => 'no',
         'user_id'       => '0',
         'wpms'          => 'no',

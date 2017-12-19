@@ -449,6 +449,8 @@ function gamipress_profile_award_achievement( $user = null ) {
 							continue;
 						} else if( $achievement_slug === 'points-award' && ! $points_type = gamipress_get_points_award_points_type( get_the_ID() ) ) {
 							continue;
+						} else if( $achievement_slug === 'points-deduct' && ! $points_type = gamipress_get_points_deduct_points_type( get_the_ID() ) ) {
+							continue;
 						}
 
 						// Setup our award URL
@@ -461,7 +463,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 						<tr>
 							<td><?php the_post_thumbnail( array( 50, 50 ) ); ?></td>
 							<td>
-								<?php if( $achievement_slug === 'step' || $achievement_slug === 'points-award' ) : ?>
+								<?php if( $achievement_slug === 'step' || $achievement_slug === 'points-award' || $achievement_slug === 'points-deduct' ) : ?>
 									<strong><?php echo get_the_title( get_the_ID() ); ?></strong>
 									<?php // Output parent achievement
 									if( $achievement_slug === 'step' && $parent_achievement ) : ?>

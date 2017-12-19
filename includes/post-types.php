@@ -32,6 +32,10 @@ function gamipress_register_post_types() {
 			'not_found_in_trash' 	=> __( 'No points types found in Trash', 'gamipress' ),
 			'parent_item_colon'  	=> '',
 			'menu_name'          	=> __( 'Points Types', 'gamipress' ),
+			'featured_image'     	=> __( 'Points Type Image', 'gamipress' ),
+			'set_featured_image'    => __( 'Set points type image', 'gamipress' ),
+			'remove_featured_image' => __( 'Remove points type image', 'gamipress' ),
+			'use_featured_image'    => __( 'Use points type image', 'gamipress' ),
 		),
 		'public'             => false,
 		'publicly_queryable' => false,
@@ -43,7 +47,7 @@ function gamipress_register_post_types() {
 		'has_archive'        => false,
 		'hierarchical'       => false,
 		'menu_position'      => null,
-		'supports'           => array( 'title', 'page-attributes' ),
+		'supports'           => array( 'title', 'thumbnail', 'page-attributes' ),
 	) );
 
     // Register Points Award
@@ -80,6 +84,41 @@ function gamipress_register_post_types() {
     ) );
 
 	gamipress_register_requirement_type( 'Points Award', 'Points Awards' );
+
+	// Register Points Deduct
+	$public_points_deducts = apply_filters( 'gamipress_public_points_deducts', false );
+
+	register_post_type( 'points-deduct', array(
+		'labels'             => array(
+			'name'               => __( 'Points Deducts', 'gamipress' ),
+			'singular_name'      => __( 'Points Deduct', 'gamipress' ),
+			'add_new'            => __( 'Add New', 'gamipress' ),
+			'add_new_item'       => __( 'Add New Points Deduct', 'gamipress' ),
+			'edit_item'          => __( 'Edit Points Deduct', 'gamipress' ),
+			'new_item'           => __( 'New Points Deduct', 'gamipress' ),
+			'all_items'          => __( 'Points Deducts', 'gamipress' ),
+			'view_item'          => __( 'View Points Deduct', 'gamipress' ),
+			'search_items'       => __( 'Search Points Deducts', 'gamipress' ),
+			'not_found'          => __( 'No points deducts found', 'gamipress' ),
+			'not_found_in_trash' => __( 'No points deducts found in Trash', 'gamipress' ),
+			'parent_item_colon'  => '',
+			'menu_name'          => __( 'Points Deducts', 'gamipress' )
+		),
+		'public'             => $public_points_deducts,
+		'publicly_queryable' => $public_points_deducts,
+		'show_ui'            => current_user_can( gamipress_get_manager_capability() ),
+		'show_in_menu'       => ( ( $public_points_deducts || gamipress_is_debug_mode() ) ? 'gamipress' : false ),
+		'query_var'          => false,
+		'rewrite'            => false,
+		'capability_type'    => 'post',
+		'has_archive'        => $public_points_deducts,
+		'hierarchical'       => false,
+		'menu_position'      => null,
+		'supports'           => array( 'title' ),
+
+	) );
+
+	gamipress_register_requirement_type( 'Points Deduct', 'Points Deducts' );
 
 	// Register Achievement Type
 	register_post_type( 'achievement-type', array(

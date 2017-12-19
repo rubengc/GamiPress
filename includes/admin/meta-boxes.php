@@ -82,7 +82,7 @@ function gamipress_meta_boxes() {
 
     // Grab our points types as an array
     $points_types_options = array(
-        '' => 'Default'
+        '' => __( 'Default Points', 'gamipress' )
     );
 
     foreach( gamipress_get_points_types() as $slug => $data ) {
@@ -104,8 +104,8 @@ function gamipress_meta_boxes() {
 	// Grab our requirement types as an array
 	$requirement_types = gamipress_get_requirement_types_slugs();
 
-	// Check if points awards are public
-	$public_points_awards = apply_filters( 'gamipress_public_points_awards', false );
+	// Check if points types are public
+	$public_points_type = apply_filters( 'gamipress_public_points_type', false );
 
 	// Points Type
 	gamipress_add_meta_box(
@@ -125,7 +125,7 @@ function gamipress_meta_boxes() {
 			),
 			'post_name' => array(
 				'name' 	=> __( 'Slug', 'gamipress' ),
-				'desc' 	=>  (( $public_points_awards ) ? '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' : '' ) . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this points type from any other (leave blank to automatically generate one).', 'gamipress' ),
+				'desc' 	=>  (( $public_points_type ) ? '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' : '' ) . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this points type from any other (leave blank to automatically generate one).', 'gamipress' ),
 				'type' 	=> 'text_medium',
 				'attributes' => array(
 					'maxlength' => 20
@@ -173,6 +173,7 @@ function gamipress_meta_boxes() {
 				'name' => __( 'Points Awarded', 'gamipress' ),
 				'desc' => __( 'Points awarded for earning this achievement (optional). Leave empty if no points are awarded.', 'gamipress' ),
 				'type' => 'text_small',
+				'default' => '0',
 			),
 			$prefix . 'points_type' => array(
 				'name' => __( 'Points Type', 'gamipress' ),
@@ -195,6 +196,7 @@ function gamipress_meta_boxes() {
 				'name' => __( 'Minimum Points Required', 'gamipress' ),
 				'desc' => __( 'Fewest number of points required for earning this achievement.', 'gamipress' ),
 				'type' => 'text_small',
+				'default' => '0',
 			),
 			$prefix . 'points_type_required' => array(
 				'name' => __( 'Points Type Required', 'gamipress' ),
@@ -216,13 +218,13 @@ function gamipress_meta_boxes() {
 			),
 			$prefix . 'sequential' => array(
 				'name' => __( 'Sequential Steps', 'gamipress' ),
-				'desc' => __( 'Yes, steps must be completed in order.', 'gamipress' ),
+				'desc' => __( 'Check this option to force users to complete steps in order.', 'gamipress' ),
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
 			$prefix . 'show_earners' => array(
 				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => __( 'Yes, display a list of users who have earned this achievement.', 'gamipress' ),
+				'desc' => __( 'Check this option to display a list of users who have earned this achievement.', 'gamipress' ),
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
@@ -244,6 +246,24 @@ function gamipress_meta_boxes() {
 					'show' 		=> __( 'Show to User', 'gamipress' ),
 					'hidden' 	=> __( 'Hidden to User', 'gamipress' ),
 				),
+			),
+			$prefix . 'unlock_with_points' => array(
+				'name' => __( 'Allow unlock with points', 'gamipress' ),
+				'desc' => __( 'Check this option to allow users to unlock this achievement by expend an amount of points.', 'gamipress' ),
+				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
+			$prefix . 'points_to_unlock' => array(
+				'name' => __( 'Points to Unlock', 'gamipress' ),
+				'desc' => __( 'Amount of points needed to optionally unlock this achievement by expending them.', 'gamipress' ),
+				'type' => 'text_small',
+				'default' => '0',
+			),
+			$prefix . 'points_type_to_unlock' => array(
+				'name' => __( 'Points Type to Unlock', 'gamipress' ),
+				'desc' => __( 'Points type of points required to unlock this achievement by expending them (optional).', 'gamipress' ),
+				'type' => 'select',
+				'options' => $points_types_options
 			),
 		),
 		array(
@@ -288,13 +308,13 @@ function gamipress_meta_boxes() {
 		array(
 			$prefix . 'sequential' => array(
 				'name' => __( 'Sequential Requirements', 'gamipress' ),
-				'desc' => __( 'Yes, requirements must be completed in order.', 'gamipress' ),
+				'desc' => __( 'Check this option to force users to complete requirements in order.', 'gamipress' ),
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
 			$prefix . 'show_earners' => array(
 				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => __( 'Yes, display a list of users who have reached this rank.', 'gamipress' ),
+				'desc' => __( 'Check this option to display a list of users who have reached this rank.', 'gamipress' ),
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
@@ -302,6 +322,24 @@ function gamipress_meta_boxes() {
 				'name' => __( 'Congratulations Text', 'gamipress' ),
 				'desc' => __( 'Displayed after rank is reached.', 'gamipress' ),
 				'type' => 'textarea',
+			),
+			$prefix . 'unlock_with_points' => array(
+				'name' => __( 'Allow reach with points', 'gamipress' ),
+				'desc' => __( 'Check this option to allow users to reach this rank by expend an amount of points.', 'gamipress' ),
+				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
+			$prefix . 'points_to_unlock' => array(
+				'name' => __( 'Points to Unlock', 'gamipress' ),
+				'desc' => __( 'Amount of points needed to optionally reach this rank by expending them.', 'gamipress' ),
+				'type' => 'text_small',
+				'default' => '0',
+			),
+			$prefix . 'points_type_to_unlock' => array(
+				'name' => __( 'Points Type to Unlock', 'gamipress' ),
+				'desc' => __( 'Points type of points required to reach this rank by expending them (optional).', 'gamipress' ),
+				'type' => 'select',
+				'options' => $points_types_options
 			),
 		),
 		array(

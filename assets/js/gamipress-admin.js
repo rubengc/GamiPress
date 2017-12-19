@@ -1,6 +1,6 @@
 (function ( $ ) {
 
-	// Dynamically show/hide achievement meta inputs based on "Award By" selection
+	// Dynamically show/hide achievement meta inputs based on "Earned By" selection
 	$("#_gamipress_earned_by").change( function() {
 
 		// Define our potentially unnecessary inputs
@@ -18,12 +18,12 @@
 		gamipress_rank_required.hide();
 
 		// Determine which inputs we should show
-		if ( 'triggers' == $(this).val() ) {
+		if ( $(this).val() === 'triggers' ) {
 			gamipress_sequential.show();
-		} else if ( 'points' == $(this).val() ) {
+		} else if ( $(this).val() === 'points' ) {
 			gamipress_points_required.show();
 			gamipress_points_type_required.show();
-		} else if ( 'rank' == $(this).val() ) {
+		} else if ( $(this).val() === 'rank' ) {
 			gamipress_rank_type_required.show();
 			$('#_gamipress_rank_type_required').change();
 			//gamipress_rank_required.show();
@@ -47,7 +47,7 @@
 
 		gamipress_rank_required.hide();
 
-		if( rank_type !== '' ) {
+		if( rank_type !== '' && $("#_gamipress_earned_by").val() === 'rank' ) {
 
 			$.post(
 				ajaxurl,
@@ -61,7 +61,11 @@
 					$this.next('.spinner').remove();
 
 					gamipress_rank_required_select.html( response );
-					gamipress_rank_required.show();
+
+					// During request user can change the earned by value, so prevent to show if it was changed
+					if( $("#_gamipress_earned_by").val() === 'rank' ) {
+						gamipress_rank_required.show();
+					}
 				}
 			);
 
@@ -69,6 +73,17 @@
 			gamipress_rank_required.hide();
 		}
 	});
+
+	// Dynamically show/hide achievement meta inputs based on "Unlock with Points" checkbox
+	$('#_gamipress_unlock_with_points').change(function() {
+		var target = $('.cmb2-id--gamipress-points-to-unlock, .cmb2-id--gamipress-points-type-to-unlock');
+
+		if( $(this).prop('checked') ) {
+			target.show();
+		} else {
+			target.hide();
+		}
+	}).change();
 
 	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {
 		var field = $(this);

@@ -183,6 +183,15 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         ) )
     );
 
+    $points_types = gamipress_get_points_types();
+    $points_types_output = '';
+
+    foreach ( $points_types as $points_type_slug => $points_type ) {
+
+        $points_types_output .= $points_type['singular_name'] . ' - ' . $points_type['plural_name'] . ' - ' . $points_type_slug . ' (#' . $points_type['ID'] . ')' . '<br>';
+
+    }
+
     $achievement_types = gamipress_get_achievement_types();
     $achievement_types_output = '';
 
@@ -191,13 +200,12 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         $achievement_types_output .= $achievement_type['singular_name'] . ' - ' . $achievement_type['plural_name'] . ' - ' . $achievement_type_slug . ' (#' . $achievement_type['ID'] . ')' . '<br>';
     }
 
-    $points_types = gamipress_get_points_types();
-    $points_types_output = '';
+    $rank_types = gamipress_get_rank_types();
+    $rank_types_output = '';
 
-    foreach ( $points_types as $points_type_slug => $points_type ) {
+    foreach ( $rank_types as $rank_type_slug => $rank_type ) {
 
-        $points_types_output .= $points_type['singular_name'] . ' - ' . $points_type['plural_name'] . ' - ' . $points_type_slug . ' (#' . $points_type['ID'] . ')' . '<br>';
-
+        $rank_types_output .= $rank_type['singular_name'] . ' - ' . $rank_type['plural_name'] . ' - ' . $rank_type_slug . ' (#' . $rank_type['ID'] . ')' . '<br>';
     }
 
     if( GamiPress()->settings === null ) {
@@ -220,15 +228,20 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         'title' => __( 'GamiPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_gamipress_info_tool_fields', array(
+            'points_types' => array(
+                'name' => __( 'Points Types', 'gamipress' ),
+                'type' => 'display',
+                'value' => $points_types_output,
+            ),
             'achievement_types' => array(
                 'name' => __( 'Achievement Types', 'gamipress' ),
                 'type' => 'display',
                 'value' => $achievement_types_output,
             ),
-            'points_types' => array(
-                'name' => __( 'Points Types', 'gamipress' ),
+            'rank_types' => array(
+                'name' => __( 'Rank Types', 'gamipress' ),
                 'type' => 'display',
-                'value' => $points_types_output,
+                'value' => $rank_types_output,
             ),
             'gamipress_settings' => array(
                 'name' => __( 'Settings', 'gamipress' ),

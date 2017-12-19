@@ -51,9 +51,30 @@ function gamipress_register_points_types_shortcode() {
                 ),
                 'default' => '1'
             ),
+            'thumbnail' => array(
+                'name'        => __( 'Show Thumbnail', 'gamipress' ),
+                'description' => __( 'Display the points type featured image.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
+            'awards' => array(
+                'name'        => __( 'Show Points Awards', 'gamipress' ),
+                'description' => __( 'Display the points type points awards.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes',
+            ),
+            'deducts' => array(
+                'name'        => __( 'Show Points Deducts', 'gamipress' ),
+                'description' => __( 'Display the points type points deducts.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes',
+            ),
             'toggle' => array(
-                'name'        => __( 'Show Points Awards Toggle', 'gamipress' ),
-                'description' => __( 'Display the points type points awards toggle.', 'gamipress' ),
+                'name'        => __( 'Show Points Awards/Deducts Toggle', 'gamipress' ),
+                'description' => __( 'Display the points type points awards and deducts toggle.', 'gamipress' ),
                 'type' 	=> 'checkbox',
                 'classes' => 'gamipress-switch',
                 'default' => 'yes'
@@ -70,7 +91,7 @@ function gamipress_register_points_types_shortcode() {
 add_action( 'init', 'gamipress_register_points_types_shortcode' );
 
 /**
- * Achievement List Shortcode.
+ * Points Types Shortcode.
  *
  * @since  1.0.0
  *
@@ -85,10 +106,13 @@ function gamipress_points_types_shortcode( $atts = array () ) {
 
     $atts = shortcode_atts( array(
         // Points atts
-        'type'        => 'all',
-        'columns'       => '1',
-        'toggle'      => 'yes',
-        'wpms'        => 'no',
+        'type'      => 'all',
+        'columns'   => '1',
+        'thumbnail' => 'yes',
+        'awards'    => 'yes',
+        'deducts'   => 'yes',
+        'toggle'    => 'yes',
+        'wpms'      => 'no',
     ), $atts, 'gamipress_points' );
 
     gamipress_enqueue_scripts();
@@ -125,14 +149,32 @@ function gamipress_points_types_shortcode( $atts = array () ) {
         }
 
         foreach( $types as $points_type ) {
+            // Initialize points type
             if( ! isset( $gamipress_template_args['points-types'][$points_type] ) ) {
-                $gamipress_template_args['points-types'][$points_type] = array();
+                $gamipress_template_args['points-types'][$points_type] = array(
+                    'awards' => array(),
+                    'deducts' => array(),
+                );
             }
 
-            $points_awards = gamipress_get_points_type_points_awards( $points_type );
+            // Setup points awards
+            if( $atts['awards'] === 'yes' ) {
 
-            if( $points_awards ) {
-                $gamipress_template_args['points-types'][$points_type] += $points_awards;
+                $points_awards = gamipress_get_points_type_points_awards( $points_type );
+
+                if( $points_awards ) {
+                    $gamipress_template_args['points-types'][$points_type]['awards'] += $points_awards;
+                }
+            }
+
+            // Setup points deducts
+            if( $atts['deducts'] === 'yes' ) {
+
+                $points_deducts = gamipress_get_points_type_points_deducts( $points_type );
+
+                if( $points_deducts ) {
+                    $gamipress_template_args['points-types'][$points_type]['deducts'] += $points_deducts;
+                }
             }
         }
 

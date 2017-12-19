@@ -107,6 +107,26 @@ function gamipress_get_points_award_completed_email_pattern_tags() {
 }
 
 /**
+ * Get an array of email pattern tags used on points deduct completed email
+ *
+ * @since 1.3.7
+ *
+ * @return array The registered points deduct completed email pattern tags
+ */
+function gamipress_get_points_deduct_completed_email_pattern_tags() {
+
+    $email_pattern_tags = gamipress_get_email_pattern_tags();
+
+    return apply_filters( 'gamipress_points_deduct_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
+        '{label}'           =>  __( 'Points deduct label.', 'gamipress' ),
+        '{points}'          =>  __( 'The amount of points deducted.', 'gamipress' ),
+        '{points_balance}'  =>  __( 'The full amount of points user has earned until this date.', 'gamipress' ),
+        '{points_type}'     =>  __( 'The points deduct points type. Singular or plural is based on the amount of points deducted.', 'gamipress' ),
+    ) ) );
+
+}
+
+/**
  * Get an array of email pattern tags used on rank earned email
  *
  * @since 1.3.1
@@ -166,6 +186,8 @@ function gamipress_get_email_pattern_tags_html( $email = '' ) {
         $email_pattern_tags = gamipress_get_step_completed_email_pattern_tags();
     } else if( $email === 'points_award_completed' ) {
         $email_pattern_tags = gamipress_get_points_award_completed_email_pattern_tags();
+    } else if( $email === 'points_deduct_completed' ) {
+        $email_pattern_tags = gamipress_get_points_deduct_completed_email_pattern_tags();
     } else if( $email === 'rank_earned' ) {
         $email_pattern_tags = gamipress_get_rank_earned_email_pattern_tags();
     } else if( $email === 'rank_requirement_completed' ) {
@@ -444,6 +466,32 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             }
         }
 
+    } else if( $gamipress_email_template_args['type'] === 'points_deduct_completed' && isset( $gamipress_email_template_args['points_deduct_id'] ) ) {
+
+        // Get the points deduct post object
+        $points_deduct = get_post( $gamipress_email_template_args['points_deduct_id'] );
+
+        if( $points_deduct ) {
+            $replacements['{label}'] = $points_deduct->post_title;
+
+            // Get the points type to allow specific points type template
+            $points_type = gamipress_get_points_deduct_points_type( $points_deduct->ID );
+
+            if( $points_type ) {
+
+                // Setup vars
+                $points = absint( get_post_meta( $points_deduct->ID, '_gamipress_points', true ) );
+                $singular = $points_type->post_title;
+                $plural = get_post_meta( $points_type->ID, '_gamipress_plural_name', true );
+                $points_balance = gamipress_get_user_points( $user->ID, $points_type->post_name );
+
+                $replacements['{points}'] = $points;
+                $replacements['{points_balance}'] = $points_balance;
+                $replacements['{points_type}'] = _n( $singular, $plural, $points );
+
+            }
+        }
+
     } else if( $gamipress_email_template_args['type'] === 'rank_earned' && isset( $gamipress_email_template_args['rank_id'] ) ) {
 
         // Get the rank post object
@@ -589,6 +637,13 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
     } else if( $gamipress_email_template_args['type'] === 'points_award_completed' ) {
 
         $replacements['{label}'] = __( 'Sample Points Award Label', 'gamipress' );
+        $replacements['{points}'] = 100;
+        $replacements['{points_balance}'] = 1000;
+        $replacements['{points_type}'] = __( 'Sample Points Type', 'gamipress' );
+
+    } else if( $gamipress_email_template_args['type'] === 'points_deduct_completed' ) {
+
+        $replacements['{label}'] = __( 'Sample Points Deduct Label', 'gamipress' );
         $replacements['{points}'] = 100;
         $replacements['{points_balance}'] = 1000;
         $replacements['{points_type}'] = __( 'Sample Points Type', 'gamipress' );
@@ -739,6 +794,33 @@ function gamipress_preview_points_award_completed_email() {
 
 }
 add_action( 'gamipress_action_get_preview_points_award_completed_email', 'gamipress_preview_points_award_completed_email' );
+
+/**
+ * Preview points deduct completed email action
+ *
+ * @since 1.3.7
+ */
+function gamipress_preview_points_deduct_completed_email() {
+
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    global $gamipress_email_template_args;
+
+    $gamipress_email_template_args = array(
+        'type' => 'points_deduct_completed'
+    );
+
+    $subject = gamipress_get_option( 'points_deduct_completed_email_subject' );
+    $message = gamipress_get_option( 'points_deduct_completed_email_content' );
+
+    gamipress_preview_email( $subject, $message );
+
+    exit;
+
+}
+add_action( 'gamipress_action_get_preview_points_deduct_completed_email', 'gamipress_preview_points_deduct_completed_email' );
 
 /**
  * Preview rank earned email action
@@ -903,6 +985,29 @@ function gamipress_send_test_points_award_completed_email() {
 add_action( 'gamipress_action_get_send_test_points_award_completed_email', 'gamipress_send_test_points_award_completed_email' );
 
 /**
+ * Send a test points deduct completed email
+ *
+ * @since 1.3.0
+ */
+function gamipress_send_test_points_deduct_completed_email() {
+
+    global $gamipress_email_template_args;
+
+    $gamipress_email_template_args = array(
+        'type' => 'points_deduct_completed',
+    );
+
+    $subject = gamipress_get_option( 'points_deduct_completed_email_subject' );
+    $message = gamipress_get_option( 'points_deduct_completed_email_content' );
+
+    gamipress_send_test_email( $subject, $message );
+
+    exit;
+
+}
+add_action( 'gamipress_action_get_send_test_points_deduct_completed_email', 'gamipress_send_test_points_deduct_completed_email' );
+
+/**
  * Send a test rank earned email
  *
  * @since 1.3.1
@@ -1053,6 +1158,24 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         $user = get_userdata( $user_id );
         $subject = gamipress_get_option( 'points_award_completed_email_subject' );
         $message = gamipress_get_option( 'points_award_completed_email_content' );
+
+        gamipress_send_email( $user->user_email, $subject, $message );
+
+    } else if( $achievement_type === 'points-deduct' ) {
+
+        if( (bool) gamipress_get_option( 'disable_points_deduct_completed_email', false ) ) {
+            return;
+        }
+
+        $gamipress_email_template_args = array(
+            'user_id' => $user_id,
+            'points_deduct_id' => $achievement_id,
+            'type' => 'points_deduct_completed',
+        );
+
+        $user = get_userdata( $user_id );
+        $subject = gamipress_get_option( 'points_deduct_completed_email_subject' );
+        $message = gamipress_get_option( 'points_deduct_completed_email_content' );
 
         gamipress_send_email( $user->user_email, $subject, $message );
 

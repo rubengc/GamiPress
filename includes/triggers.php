@@ -25,6 +25,8 @@ function gamipress_get_activity_triggers() {
 				'gamipress_specific_new_comment' 		=> __( 'Comment on a specific post', 'gamipress' ),
 				'gamipress_publish_post'     			=> __( 'Publish a new post', 'gamipress' ),
 				'gamipress_publish_page'     			=> __( 'Publish a new page', 'gamipress' ),
+				'gamipress_delete_post'     			=> __( 'Delete a post', 'gamipress' ),
+				'gamipress_delete_page'     			=> __( 'Delete a page', 'gamipress' ),
 			),
 			// Site Interactions
 			__( 'Site Interactions', 'gamipress' ) => array(
@@ -39,6 +41,7 @@ function gamipress_get_activity_triggers() {
 				'any-achievement'      					=> __( 'Unlock any achievement of type', 'gamipress' ),
 				'all-achievements'     					=> __( 'Unlock all Achievements of type', 'gamipress' ),
 				'earn-points' 							=> __( 'Earn an amount of points', 'gamipress' ),
+				'gamipress_expend_points' 				=> __( 'Expend an amount of points', 'gamipress' ),
 				'earn-rank' 							=> __( 'Reach a rank', 'gamipress' ),
 			),
 		)
@@ -266,8 +269,10 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 	switch ( $trigger ) {
 		case 'gamipress_publish_post':
 		case 'gamipress_publish_page':
+		case 'gamipress_delete_post':
+		case 'gamipress_delete_page':
 		case 'gamipress_specific_post_visit':
-			// Add the published/visited post ID
+			// Add the published/deleted/visited post ID
 			$log_meta['post_id'] = $args[0];
 			break;
 		case 'gamipress_user_post_visit':
@@ -281,6 +286,12 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 			// Add the comment ID and post commented ID
 			$log_meta['comment_id'] = $args[0];
 			$log_meta['comment_post_id'] = $args[2];
+			break;
+		case 'gamipress_expend_points':
+			// Add the post ID, the amount of points and the points type
+			$log_meta['post_id'] = $args[0];
+			$log_meta['points'] = $args[2];
+			$log_meta['points_type'] = $args[3];
 			break;
 		case 'gamipress_login':
 		case 'gamipress_site_visit':
@@ -317,7 +328,9 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 	switch ( $trigger ) {
 		case 'gamipress_publish_post':
 		case 'gamipress_publish_page':
-			// User can not publish same post more times, so check it
+		case 'gamipress_delete_post':
+		case 'gamipress_delete_page':
+			// User can not publish/delete same post more times, so check it
 			$log_meta['post_id'] = $args[0];
 			$return = (bool) ( gamipress_get_user_log_count( $user_id, $log_meta ) === 0 );
 			break;
@@ -365,11 +378,14 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 			break;
 		case 'gamipress_publish_post':
 		case 'gamipress_publish_page':
+		case 'gamipress_delete_post':
+		case 'gamipress_delete_page':
 		case 'gamipress_new_comment':
 		case 'gamipress_specific_new_comment':
 		case 'gamipress_specific_post_visit':
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
+		case 'gamipress_expend_points':
 			$user_id = $args[1];
 			break;
 		default :

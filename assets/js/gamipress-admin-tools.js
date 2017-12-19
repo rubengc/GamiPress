@@ -170,6 +170,7 @@
             $('.cmb2-id-data-to-reset input[value="steps"]').prop( 'checked', $(this).prop( 'checked' ) );
         } else if( checked_option === 'points_types' ) {
             $('.cmb2-id-data-to-reset input[value="points_awards"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-data-to-reset input[value="points_deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
         } else if( checked_option === 'rank_types' ) {
             $('.cmb2-id-data-to-reset input[value="ranks"], .cmb2-id-data-to-reset input[value="rank_requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
         } else if( checked_option === 'ranks' ) {

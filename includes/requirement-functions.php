@@ -94,8 +94,8 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         'achievement_post' => ''
     );
 
-    // Specific points award data
-    if( $requirement_type === 'points-award' ) {
+    // Specific points award/deduct data
+    if( $requirement_type === 'points-award' || $requirement_type === 'points-deduct' ) {
         $requirement['points']              = absint( get_post_meta( $requirement_id, '_gamipress_points', true ) );
         $requirement['points_type']         = get_post_meta( $requirement_id, '_gamipress_points_type', true );
         $requirement['maximum_earnings']    = get_post_meta( $requirement_id, '_gamipress_maximum_earnings', true );

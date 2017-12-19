@@ -1,7 +1,7 @@
 (function ( $ ) {
 
     // Send test email click
-    $('#achievement-earned-email-send, #step-completed-email-send, #points-award-completed-email-send, #rank-earned-email-send, #rank-requirement-completed-email-send').click(function(e) {
+    $('#achievement-earned-email-send, #step-completed-email-send, #points-award-completed-email-send, #points-deduct-completed-email-send, #rank-earned-email-send, #rank-requirement-completed-email-send').click(function(e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -78,6 +78,21 @@
 
     if( $('#disable_points_award_completed_email').prop('checked') ) {
         $('.cmb2-id-points-award-completed-email-subject, .cmb2-id-points-award-completed-email-content').hide().addClass('cmb2-tab-ignore');
+    }
+
+    // Disable points deducts completed email
+    $('#disable_points_deduct_completed_email').change( function() {
+        var target = $('.cmb2-id-points-deduct-completed-email-subject, .cmb2-id-points-deduct-completed-email-content');
+
+        if( $(this).prop('checked') ) {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    } );
+
+    if( $('#disable_points_deduct_completed_email').prop('checked') ) {
+        $('.cmb2-id-points-deduct-completed-email-subject, .cmb2-id-points-deduct-completed-email-content').hide().addClass('cmb2-tab-ignore');
     }
 
     // Disable rank earned email

@@ -115,5 +115,134 @@
 		}
 	} );
 
+	// Listen for unlock achievement with points button click
+	$body.on( 'click', '.gamipress-achievement-unlock-with-points-button', function(e) {
+
+		var button = $(this);
+		var submit_wrap = button.parent();
+		var spinner = submit_wrap.find('.gamipress-spinner');
+		var achievement_id = button.data('id');
+
+		// Disable the button
+		button.prop( 'disabled', true );
+
+		// Hide previous notices
+		if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length ) {
+			submit_wrap.find('.gamipress-achievement-unlock-with-points-response').slideUp()
+		}
+
+		// Show the spinner
+		spinner.show();
+
+		$.ajax( {
+			url: gamipress.ajaxurl,
+			method: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'gamipress_unlock_achievement_with_points',
+				achievement_id: achievement_id
+			},
+			success: function( response ) {
+
+				// Ensure response wrap
+				if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length === 0 ) {
+					submit_wrap.prepend('<div class="gamipress-achievement-unlock-with-points-response gamipress-notice" style="display: none;"></div>')
+				}
+
+				var response_wrap = submit_wrap.find('.gamipress-achievement-unlock-with-points-response');
+
+				// Add class gamipress-notice-success on successful unlock, if not will add the class gamipress-notice-error
+				response_wrap.addClass( 'gamipress-notice-' + ( response.success === true ? 'success' : 'error' ) );
+
+				// Update and show response messages
+				response_wrap.html( response.data );
+				response_wrap.slideDown();
+
+				// Hide the spinner
+				spinner.hide();
+
+				if( response.success === true ) {
+					// Hide the button
+					button.slideUp();
+
+					// Add the class earned to the achievement
+					// Single template
+					button.closest('.single-achievement').addClass('user-has-earned');
+					button.closest('.user-has-not-earned[class*="post"]').removeClass('user-has-not-earned').addClass('user-has-earned');
+
+					// Shortcode/Widget template
+					button.closest('.gamipress-achievement.user-has-not-earned').removeClass('user-has-not-earned').addClass('user-has-earned');
+				} else {
+					// Enable the button
+					button.prop( 'disabled', false );
+				}
+			}
+		});
+	});
+
+	// Listen for unlock rank with points button click
+	$body.on( 'click', '.gamipress-rank-unlock-with-points-button', function(e) {
+
+		var button = $(this);
+		var submit_wrap = button.parent();
+		var spinner = submit_wrap.find('.gamipress-spinner');
+		var rank_id = button.data('id');
+
+		// Disable the button
+		button.prop( 'disabled', true );
+
+		// Hide previous notices
+		if( submit_wrap.find('.gamipress-rank-unlock-with-points-response').length ) {
+			submit_wrap.find('.gamipress-rank-unlock-with-points-response').slideUp()
+		}
+
+		// Show the spinner
+		spinner.show();
+
+		$.ajax( {
+			url: gamipress.ajaxurl,
+			method: 'POST',
+			dataType: 'json',
+			data: {
+				action: 'gamipress_unlock_rank_with_points',
+				rank_id: rank_id
+			},
+			success: function( response ) {
+
+				// Ensure response wrap
+				if( submit_wrap.find('.gamipress-rank-unlock-with-points-response').length === 0 ) {
+					submit_wrap.prepend('<div class="gamipress-rank-unlock-with-points-response gamipress-notice" style="display: none;"></div>')
+				}
+
+				var response_wrap = submit_wrap.find('.gamipress-rank-unlock-with-points-response');
+
+				// Add class gamipress-notice-success on successful unlock, if not will add the class gamipress-notice-error
+				response_wrap.addClass( 'gamipress-notice-' + ( response.success === true ? 'success' : 'error' ) );
+
+				// Update and show response messages
+				response_wrap.html( response.data );
+				response_wrap.slideDown();
+
+				// Hide the spinner
+				spinner.hide();
+
+				if( response.success === true ) {
+					// Hide the button
+					button.slideUp();
+
+					// Add the class earned to the rank
+					// Single template
+					button.closest('.single-rank').addClass('user-has-earned');
+					button.closest('.user-has-not-earned[class*="post"]').removeClass('user-has-not-earned').addClass('user-has-earned');
+
+					// Shortcode/Widget template
+					button.closest('.gamipress-rank.user-has-not-earned').removeClass('user-has-not-earned').addClass('user-has-earned');
+				} else {
+					// Enable the button
+					button.prop( 'disabled', false );
+				}
+			}
+		});
+	});
 
 } )( jQuery );

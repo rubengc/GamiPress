@@ -183,7 +183,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 ),
             ),
         );
-    } else if( $type === 'points_award' || $type === 'points_earn' || $type === 'points_revoke' || $type === 'points_deduct' ) {
+    } else if( in_array( $type, array( 'points_award', 'points_earn', 'points_revoke', 'points_deduct', 'points_expend' ) ) ) {
         // Grab our points types as an array
         $points_types_options = array(
             '' => 'Default'
@@ -214,6 +214,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 'type' 	=> 'text_small',
             ),
         );
+
     } else if( $type === 'rank_earn' || $type === 'rank_award' ) {
         $rank_id = ct_get_object_meta( $object_id, $prefix . 'rank_id', true );
 

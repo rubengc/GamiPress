@@ -233,6 +233,52 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_points_award', 10, 3 );
 
 /**
+ * Checks if an user is allowed to work on a given points deduct
+ *
+ * @since  1.3.7
+ *
+ * @param  bool    $return   			The default return value
+ * @param  integer $user_id  			The given user's ID
+ * @param  integer $points_deduct_id  	The given points deduct's post ID
+ *
+ * @return bool              			True if user has access to step, false otherwise
+ */
+function gamipress_user_has_access_to_points_deduct( $return = false, $user_id = 0, $points_deduct_id = 0 ) {
+
+	// If we're not working with a step, bail here
+	if ( 'points-deduct' !== get_post_type( $points_deduct_id ) )
+		return $return;
+
+	// Prevent user from earning points deducts with no points type
+	$points_type = gamipress_get_points_deduct_points_type( $points_deduct_id );
+
+	if ( ! $points_type ) {
+		return false;
+	}
+
+	$maximum_earnings = absint( get_post_meta( $points_deduct_id, '_gamipress_maximum_earnings', true ) );
+
+	// No maximum earnings set
+	if( $maximum_earnings === 0 ) {
+		return $return;
+	}
+
+	$earned_times = count( gamipress_get_user_achievements( array(
+		'user_id'        => absint( $user_id ),
+		'achievement_id' => absint( $points_deduct_id ),
+		'since'          => absint( gamipress_achievement_last_user_activity( $points_deduct_id, $user_id ) )
+	) ) );
+
+	// Prevent user to exceed maximum earnings the same points deduct
+	if ( $return && $earned_times >= $maximum_earnings )
+		$return = false;
+
+	// Send back our eligibility
+	return $return;
+}
+add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_points_deduct', 10, 3 );
+
+/**
  * Checks if an user is allowed to work on a given rank requirement
  *
  * @since  1.0.0
@@ -371,6 +417,17 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 
 		}
 
+	} else if( 'gamipress_expend_points' === get_post_meta( $achievement_id, '_gamipress_trigger_type', true ) ) {
+
+		// Grab our user's points expended and see if they at least as many as required
+		$points_required        = absint( get_post_meta( $achievement_id, '_gamipress_points_required', true ) );
+		$points_type_required   = get_post_meta( $achievement_id, '_gamipress_points_type_required', true );
+		$expended_points 		= gamipress_get_user_points_expended( $user_id, $points_type_required );
+
+		if ( $expended_points >= $points_required )
+			$return = true;
+		else
+			$return = false;
 	}
 
 	// Return our eligibility status
@@ -778,7 +835,17 @@ function gamipress_maybe_award_points( $user_id = 0, $achievement_id = 0 ) {
 	$points_type = get_post_meta( $achievement_id, '_gamipress_points_type', true );
 
 	if ( ! empty( $points ) ) {
-		gamipress_update_user_points( $user_id, $points, false, $achievement_id, $points_type );
+
+		$post_type = get_post_type( $achievement_id );
+
+		if( $post_type === 'points-deduct' ) {
+			gamipress_deduct_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+		} else {
+			gamipress_award_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+		}
+
+		// TODO: Old way to award user points
+		//gamipress_update_user_points( $user_id, $points, false, $achievement_id, $points_type );
 	}
 
 }

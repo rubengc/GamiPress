@@ -183,7 +183,8 @@
 }
 
 /* Requirements UI */
-#gamipress-requirements-ui .spinner{
+#gamipress-requirements-ui .spinner,
+.postbox[id^="gamipress-requirements-ui-"] .spinner {
 	float: none;
 	margin-top: 0;
 }
@@ -514,7 +515,7 @@ body > .gamipress-select2,
 	width: 25em !important;
 }
 
-#requirements-list .gamipress-select2 {
+.requirements-list .gamipress-select2 {
 	max-width: 300px;
 }
 
@@ -976,12 +977,13 @@ body > .gamipress-select2,
 
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(2),
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(5),
-.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(7) {
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(6),
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(8) {
 	margin-left: 20px;
 }
 
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(3),
-.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(8) {
+.cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(9) {
 	margin-left: 40px;
 }
 

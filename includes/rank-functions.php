@@ -897,6 +897,23 @@ function gamipress_get_rank_earners( $rank_id = 0 ) {
 }
 
 /**
+ * Return the given rank's priority
+ *
+ * @since  1.3.7
+ *
+ * @param  integer|WP_Post  $rank_id    The given rank's post ID or rank's post object
+ *
+ * @return integer                      The given rank's priority
+ */
+function gamipress_get_rank_priority( $rank_id = 0 ) {
+
+    $rank = get_post( $rank_id );
+
+    return absint( $rank->menu_order );
+
+}
+
+/**
  * Flush rewrite rules whenever an rank type is published.
  *
  * @since 1.3.1
@@ -1044,6 +1061,7 @@ function gamipress_update_p2p_rank_types( $original_type = '', $new_type = '' ) 
         "rank-requirement-to-{$original_type}" => "rank-requirement-to-{$new_type}",
         "{$original_type}-to-rank-requirement" => "{$new_type}-to-rank-requirement",
         "{$original_type}-to-points-award" => "{$new_type}-to-points-award",
+        "{$original_type}-to-points-deduct" => "{$new_type}-to-points-deduct",
     );
 
     foreach ( $p2p_relationships as $old => $new ) {

@@ -66,6 +66,9 @@ $class = gamipress_get_user_achievements( array( 'achievement_id' => absint( get
      */
     do_action( 'gamipress_after_single_rank_requirements', get_the_ID(), $a ); ?>
 
+    <?php // Rank unlock with points
+    echo gamipress_rank_unlock_with_points_markup( get_the_ID(), $a ); ?>
+
     <?php // Include rank earners, if this rank supports it
     if ( $show_earners = get_post_meta( get_the_ID(), '_gamipress_show_earners', true ) ) {
         echo gamipress_get_rank_earners_list( get_the_ID() );

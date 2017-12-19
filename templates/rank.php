@@ -126,6 +126,9 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
 
         <?php endif; ?>
 
+        <?php // Rank unlock with points
+        echo gamipress_rank_unlock_with_points_markup( get_the_ID(), $a ); ?>
+
         <?php // Rank Earners
         if ( $a['earners'] === 'yes' ) :
             echo gamipress_get_rank_earners_list( get_the_ID() );

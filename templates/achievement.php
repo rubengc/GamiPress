@@ -66,7 +66,8 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
 
         <?php endif; ?>
 
-        <?php echo gamipress_achievement_points_markup( get_the_ID() ); ?>
+        <?php // Achievement points
+        echo gamipress_achievement_points_markup( get_the_ID() ); ?>
 
         <?php
         /**
@@ -128,6 +129,9 @@ $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achiev
             do_action( 'gamipress_after_achievement_steps', get_the_ID(), $a ); ?>
 
         <?php endif; ?>
+
+        <?php // Achievement unlock with points
+        echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a ); ?>
 
         <?php // Achievement Earners
         if ( $a['earners'] === 'yes' ) :
