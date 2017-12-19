@@ -8,13 +8,13 @@
     }).change();
 
     // Make our Triggers list sortable
-    $("#requirements-list").sortable({
+    $(".requirements-list").sortable({
 
         // When the list order is updated
-        update : function () {
+        update : function ( e, ui ) {
 
             // Loop through each element
-            $('#requirements-list li').each(function( index, value ) {
+            $(e.target).find('li').each(function( index, value ) {
 
                 // Write it's current position to our hidden input value
                 $(this).find('input[name="order"]').val( index );
@@ -25,7 +25,7 @@
     });
 
     // Listen for our change to our trigger type selectors
-    $('#requirements-list').on( 'change', '.select-trigger-type', function() {
+    $('.requirements-list').on( 'change', '.select-trigger-type', function() {
 
         // Initialize select 2 on select trigger type
         if( ! $(this).hasClass('select2-hidden-accessible') ) {
@@ -62,7 +62,7 @@
         var points_selector_required = $(this).siblings('.points-required');
         var points_type_selector_required = $(this).siblings('.select-points-type-required');
 
-        if ( trigger_type === 'earn-points' ) {
+        if ( trigger_type === 'earn-points' || trigger_type === 'gamipress_expend_points' ) {
             // Show required points fields
             points_selector_required.show();
             points_type_selector_required.show();
@@ -173,7 +173,7 @@
     $( '.select-trigger-type' ).change();
 
     // Listen for a change to our achievement type selectors
-    $('#requirements-list').on( 'change', '.select-achievement-type', function() {
+    $('.requirements-list').on( 'change', '.select-achievement-type', function() {
 
         // Setup our necessary variables
         var $this                = $(this);
@@ -206,7 +206,7 @@
     });
 
     // Listen for a change to our rank type selectors
-    $('#requirements-list').on( 'change', '.select-rank-type-required', function() {
+    $('.requirements-list').on( 'change', '.select-rank-type-required', function() {
 
         // Setup our necessary variables
         var $this                = $(this);
@@ -242,7 +242,7 @@
     });
 
     // Limit inputs
-    $('#requirements-list').on( 'change', '.limit-type', function() {
+    $('.requirements-list').on( 'change', '.limit-type', function() {
         var limit_type_selector = $(this);
 
         if( limit_type_selector.val() === 'unlimited' ) {
@@ -257,36 +257,46 @@
 })(jQuery);
 
 // Add a requirement
-function gamipress_add_requirement( post_id ) {
-    jQuery( '.requirements-spinner' ).addClass('is-active');
+function gamipress_add_requirement( element, post_id, requirement_type ) {
+
+    var requirements_list = jQuery(element).siblings('.requirements-list');
+    jQuery(element).siblings( '.requirements-spinner' ).addClass('is-active');
 
     jQuery.post(
         ajaxurl,
         {
             action: 'gamipress_add_requirement',
-            post_id: post_id
+            post_id: post_id,
+            requirement_type: requirement_type
         },
         function( response ) {
-            jQuery( response ).appendTo( '#requirements-list' );
+            jQuery( response ).appendTo( requirements_list );
+
+            // Hide the new requirement
+            requirements_list.find( 'li.requirement-row:last').attr('style', 'display: none;');
 
             // Dynamically add the menu order for the new points award to be one higher than the last in line
-            var new_requirement_menu_order = Number( jQuery( '#requirements-list li.requirement-row' ).eq( -2 ).find( 'input[name="order"]' ).val() ) + 1;
-            jQuery( '#requirements-list li.requirement-row:last' ).find( 'input[name="order"]' ).val( new_requirement_menu_order );
+            var new_requirement_menu_order = Number( requirements_list.find( 'li.requirement-row' ).eq( -2 ).find( 'input[name="order"]' ).val() ) + 1;
+            requirements_list.find( 'li.requirement-row:last' ).find( 'input[name="order"]' ).val( new_requirement_menu_order );
 
-            // Trigger a change for the new trigger type <select> element
-            jQuery( '#requirements-list li.requirement-row:last' ).find( '.select-trigger-type' ).change();
-            jQuery( '#requirements-list li.requirement-row:last' ).find( '.limit-type' ).change();
+            // Trigger a change for the new trigger type and limit type elements
+            requirements_list.find( 'li.requirement-row:last' ).find( '.select-trigger-type' ).change();
+            requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).change();
 
             // Hide the spinner
-            jQuery( '.requirements-spinner' ).removeClass('is-active');
+            jQuery(element).siblings( '.requirements-spinner' ).removeClass('is-active');
+
+            // Slide Down the new requirement
+            requirements_list.find( 'li.requirement-row:last').slideDown('fast');
         }
     );
 }
 
 // Delete a requirement
-function gamipress_delete_requirement( requirement_id ) {
+function gamipress_delete_requirement( element, requirement_id ) {
 
-    jQuery( '.requirement-' + requirement_id ).hide();
+    var requirements_list = jQuery(element).closest('.requirements-list');
+    requirements_list.find( '.requirement-' + requirement_id ).slideUp( 'fast' );
 
     jQuery.post(
         ajaxurl,
@@ -295,15 +305,16 @@ function gamipress_delete_requirement( requirement_id ) {
             requirement_id: requirement_id
         },
         function( response ) {
-            jQuery( '.requirement-' + requirement_id ).remove();
+            requirements_list.find( '.requirement-' + requirement_id ).remove();
         }
     );
 }
 
 // Update all requirements
-function gamipress_update_requirements() {
+function gamipress_update_requirements( element ) {
 
-    jQuery( '.requirements-spinner' ).addClass('is-active');
+    var requirements_list = jQuery(element).siblings('.requirements-list');
+    jQuery(element).siblings( '.requirements-spinner' ).addClass('is-active');
 
     var requirement_data = {
         action: 'gamipress_update_requirements',
@@ -311,7 +322,7 @@ function gamipress_update_requirements() {
     };
 
     // Loop through each points award and collect its data
-    jQuery( '.requirement-row' ).each( function() {
+    requirements_list.find( '.requirement-row' ).each( function() {
 
         // Cache our points award object
         var requirement = jQuery(this);
@@ -335,7 +346,7 @@ function gamipress_update_requirements() {
             title                   : requirement.find( '.requirement-title .title' ).val()
         };
 
-        if( requirement_details.requirement_type === 'points-award' ) {
+        if( requirement_details.requirement_type === 'points-award' || requirement_details.requirement_type === 'points-deduct' ) {
             requirement_details.points = requirement.find( '.points' ).val();
             requirement_details.points_type = requirement.find( 'input[name="points_type"]' ).val();
             requirement_details.maximum_earnings = requirement.find( '.maximum-earnings' ).val();
@@ -358,11 +369,11 @@ function gamipress_update_requirements() {
 
             // Update each points award titles
             jQuery.each( titles, function( id, value ) {
-                jQuery('#requirement-' + id + '-title').val(value);
+                requirements_list.find('#requirement-' + id + '-title').val(value);
             });
 
             // Hide the spinner
-            jQuery( '.requirements-spinner' ).removeClass('is-active');
+            jQuery(element).siblings( '.requirements-spinner' ).removeClass('is-active');
         }
     );
 }
