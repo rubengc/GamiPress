@@ -409,7 +409,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 			// If the user just earned the achievement, though, don't let them earn it again
 			// This prevents an infinite loop if the achievement has no maximum earnings limit
 			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id );
-			$minimum_time  	= time() - 2;
+			$minimum_time  	= time() - 1;
 
 			if ( $last_activity >= $minimum_time ) {
 				$return = false;
@@ -469,7 +469,7 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 			// If the user just earned the achievement, though, don't let them earn it again
 			// This prevents an infinite loop if the achievement has no maximum earnings limit
 			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id );
-			$minimum_time 	= time() - 2;
+			$minimum_time 	= time() - 1;
 
 			if ( $last_activity >= $minimum_time ) {
 				$return = false;

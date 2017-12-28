@@ -349,7 +349,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'points_award_completed' => array(
                 'title' => __( 'Points Awards', 'gamipress' ),
-                'icon' => 'dashicons-editor-ol',
+                'icon' => 'dashicons-star-filled',
                 'fields' => array(
                     'points_award_completed_email_actions',
                     'disable_points_award_completed_email',
@@ -359,7 +359,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'points_deduct_completed' => array(
                 'title' => __( 'Points Deducts', 'gamipress' ),
-                'icon' => 'dashicons-editor-ol',
+                'icon' => 'dashicons-star-empty',
                 'fields' => array(
                     'points_deduct_completed_email_actions',
                     'disable_points_deduct_completed_email',

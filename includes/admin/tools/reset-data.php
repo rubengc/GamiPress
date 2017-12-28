@@ -175,6 +175,11 @@ function gamipress_ajax_reset_data_tool() {
                         '1' => 1
                     ) );
 
+                    // Reset from gamipress_logs_meta table
+                    $wpdb->delete( $ct_table->meta->db->table_name, array(
+                        '1' => 1
+                    ) );
+
                 } else {
 
                     // Reset from old gamipress-log CPT

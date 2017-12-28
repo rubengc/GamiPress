@@ -201,6 +201,14 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.8 ###
+
+* New activity trigger added when an user post gets a comment to award content authors.
+* Added filters on emails to allow override anything.
+* Added check on [gamipress_logs] shortcode and GamiPress: Logs widget to avoid show logs to guests when showing logs of current user.
+* Fixed wrong variable name on emails.php.
+* Reset tool now reset logs meta data too.
+
 ### 1.3.7 ###
 
 * New feature: Points Deducts.

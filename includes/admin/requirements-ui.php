@@ -300,7 +300,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
                 <input type="hidden" name="points_type" value="<?php echo $points_type; ?>">
 
 
-                <span class="maximum-earnings-text"><?php echo ( $requirement_type === 'points-award' ?  : __( 'with a maximum number of times to deduct it of', 'gamipress' ) ); ?></span>
+                <span class="maximum-earnings-text"><?php echo ( $requirement_type === 'points-award' ? __( 'with a maximum number of times to earn it of', 'gamipress' ) : __( 'with a maximum number of times to deduct it of', 'gamipress' ) ); ?></span>
                 <input type="number" min="0" name="requirement-maximum-earnings" id="requirement-<?php echo $requirement_id; ?>-maximum-earnings" class="maximum-earnings" value="<?php echo $maximum_earnings; ?>" />
                 <span class="maximum-earnings-notice"><?php _e( '(0 for no maximum)', 'gamipress' ); ?></span>
             </div>
@@ -337,6 +337,8 @@ function gamipress_requirements_ui_get_requirement_type( $post, $metabox ) {
         $requirement_type = 'step';
     } else if( gamipress_is_rank( $post ) ) {
         $requirement_type = 'rank-requirement';
+    } else if( isset( $metabox['args'] ) && isset( $metabox['args']['requirement_type'] ) ) {
+        $requirement_type = $metabox['args']['requirement_type'];
     }
 
     return apply_filters( 'gamipress_requirements_ui_get_requirement_type', $requirement_type, $post );

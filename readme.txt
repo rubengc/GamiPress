@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -118,6 +118,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Purchases](https://gamipress.com/add-ons/gamipress-purchases/) - Allow your users purchase points, achievements or ranks access.
 * [Easy Digital Downloads Points Gateway](https://gamipress.com/add-ons/gamipress-edd-points-gateway/) - Use GamiPress points types as a payment gateway for Easy Digital Downloads.
 * [WooCommerce Points Gateway](https://gamipress.com/add-ons/gamipress-wc-points-gateway/) - Use GamiPress points types as a payment gateway for WooCommerce.
 * [Restrict Content](https://gamipress.com/add-ons/gamipress-restrict-content/) - Limit access to any post or page based on GamiPress interactions.
@@ -196,6 +197,19 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 == Changelog ==
+
+= 1.3.8 =
+
+* New activity trigger added when an user post gets a comment to award content authors.
+* Added filters on emails to allow override anything.
+* Added check on [gamipress_logs] shortcode and GamiPress: Logs widget to avoid show logs to guests when showing logs of current user.
+* Fixed wrong variable name on emails.php.
+* Reset tool now reset logs meta data too.
+
+= 1.3.7.1 =
+
+* Fixed title display on Achievement(s) and Rank(s) widgets.
+* Fixed wrong text on requirements UI.
 
 = 1.3.7 =
 

@@ -140,6 +140,12 @@ function gamipress_logs_shortcode( $atts = array () ) {
 
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' ) {
+
+        // If current_user is set to yes and current user is a guest, then return
+        if( get_current_user_id() === 0 ) {
+            return '';
+        }
+
         $atts['user_id'] = get_current_user_id();
     }
 

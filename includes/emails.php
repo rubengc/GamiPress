@@ -731,8 +731,8 @@ function gamipress_preview_achievement_earned_email() {
         'type' => 'achievement_earned'
     );
 
-    $subject = gamipress_get_option( 'achievement_earned_email_subject' );
-    $message = gamipress_get_option( 'achievement_earned_email_content' );
+    $subject = apply_filters( 'gamipress_preview_achievement_earned_email_subject', gamipress_get_option( 'achievement_earned_email_subject' ) );
+    $message = apply_filters( 'gamipress_preview_achievement_earned_email_content', gamipress_get_option( 'achievement_earned_email_content' ) );
 
     gamipress_preview_email( $subject, $message );
 
@@ -758,8 +758,8 @@ function gamipress_preview_step_completed_email() {
         'type' => 'step_completed'
     );
 
-    $subject = gamipress_get_option( 'step_completed_email_subject' );
-    $message = gamipress_get_option( 'step_completed_email_content' );
+    $subject = apply_filters( 'gamipress_preview_step_completed_email_subject', gamipress_get_option( 'step_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_preview_step_completed_email_content', gamipress_get_option( 'step_completed_email_content' ) );
 
     gamipress_preview_email( $subject, $message );
 
@@ -785,8 +785,8 @@ function gamipress_preview_points_award_completed_email() {
         'type' => 'points_award_completed'
     );
 
-    $subject = gamipress_get_option( 'points_award_completed_email_subject' );
-    $message = gamipress_get_option( 'points_award_completed_email_content' );
+    $subject = apply_filters( 'gamipress_preview_points_award_completed_email_subject', gamipress_get_option( 'points_award_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_preview_points_award_completed_email_content', gamipress_get_option( 'points_award_completed_email_content' ) );
 
     gamipress_preview_email( $subject, $message );
 
@@ -812,8 +812,8 @@ function gamipress_preview_points_deduct_completed_email() {
         'type' => 'points_deduct_completed'
     );
 
-    $subject = gamipress_get_option( 'points_deduct_completed_email_subject' );
-    $message = gamipress_get_option( 'points_deduct_completed_email_content' );
+    $subject = apply_filters( 'gamipress_preview_points_deduct_completed_email_subject', gamipress_get_option( 'points_deduct_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_preview_points_deduct_completed_email_content', gamipress_get_option( 'points_deduct_completed_email_content' ) );
 
     gamipress_preview_email( $subject, $message );
 
@@ -839,8 +839,8 @@ function gamipress_preview_rank_earned_email() {
         'type' => 'rank_earned'
     );
 
-    $subject = gamipress_get_option( 'rank_earned_email_subject' );
-    $message = gamipress_get_option( 'rank_earned_email_content' );
+    $subject = apply_filters( 'gamipress_preview_rank_earned_email_subject', gamipress_get_option( 'rank_earned_email_subject' ) );
+    $message = apply_filters( 'gamipress_preview_rank_earned_email_content', gamipress_get_option( 'rank_earned_email_content' ) );
 
     gamipress_preview_email( $subject, $message );
 
@@ -866,8 +866,8 @@ function gamipress_preview_rank_requirement_completed_email() {
         'type' => 'rank_requirement_completed'
     );
 
-    $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
-    $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+    $subject = apply_filters( 'gamipress_preview_rank_requirement_completed_email_subject', gamipress_get_option( 'rank_requirement_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_preview_rank_requirement_completed_email_content', gamipress_get_option( 'rank_requirement_completed_email_content' ) );
 
     gamipress_preview_email( $subject, $message );
 
@@ -928,8 +928,8 @@ function gamipress_send_test_achievement_earned_email() {
         'type' => 'achievement_earned',
     );
 
-    $subject = gamipress_get_option( 'achievement_earned_email_subject' );
-    $message = gamipress_get_option( 'achievement_earned_email_content' );
+    $subject = apply_filters( 'gamipress_send_test_achievement_earned_email_subject', gamipress_get_option( 'achievement_earned_email_subject' ) );
+    $message = apply_filters( 'gamipress_send_test_achievement_earned_email_content', gamipress_get_option( 'achievement_earned_email_content' ) );
 
     gamipress_send_test_email( $subject, $message );
 
@@ -951,8 +951,8 @@ function gamipress_send_test_step_completed_email() {
         'type' => 'step_completed',
     );
 
-    $subject = gamipress_get_option( 'step_completed_email_subject' );
-    $message = gamipress_get_option( 'step_completed_email_content' );
+    $subject = apply_filters( 'gamipress_send_test_step_completed_email_subject', gamipress_get_option( 'step_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_send_test_step_completed_email_content', gamipress_get_option( 'step_completed_email_content' ) );
 
     gamipress_send_test_email( $subject, $message );
 
@@ -974,8 +974,8 @@ function gamipress_send_test_points_award_completed_email() {
         'type' => 'points_award_completed',
     );
 
-    $subject = gamipress_get_option( 'points_award_completed_email_subject' );
-    $message = gamipress_get_option( 'points_award_completed_email_content' );
+    $subject = apply_filters( 'gamipress_send_test_points_award_completed_email_subject', gamipress_get_option( 'points_award_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_send_test_points_award_completed_email_content', gamipress_get_option( 'points_award_completed_email_content' ) );
 
     gamipress_send_test_email( $subject, $message );
 
@@ -997,8 +997,8 @@ function gamipress_send_test_points_deduct_completed_email() {
         'type' => 'points_deduct_completed',
     );
 
-    $subject = gamipress_get_option( 'points_deduct_completed_email_subject' );
-    $message = gamipress_get_option( 'points_deduct_completed_email_content' );
+    $subject = apply_filters( 'gamipress_send_test_points_deduct_completed_email_subject', gamipress_get_option( 'points_deduct_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_send_test_points_deduct_completed_email_content', gamipress_get_option( 'points_deduct_completed_email_content' ) );
 
     gamipress_send_test_email( $subject, $message );
 
@@ -1020,8 +1020,8 @@ function gamipress_send_test_rank_earned_email() {
         'type' => 'rank_earned',
     );
 
-    $subject = gamipress_get_option( 'rank_earned_email_subject' );
-    $message = gamipress_get_option( 'rank_earned_email_content' );
+    $subject = apply_filters( 'gamipress_send_test_rank_earned_email_subject', gamipress_get_option( 'rank_earned_email_subject' ) );
+    $message = apply_filters( 'gamipress_send_test_rank_earned_email_content', gamipress_get_option( 'rank_earned_email_content' ) );
 
     gamipress_send_test_email( $subject, $message );
 
@@ -1043,8 +1043,8 @@ function gamipress_send_test_rank_requirement_completed_email() {
         'type' => 'rank_requirement_completed',
     );
 
-    $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
-    $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+    $subject = apply_filters( 'gamipress_send_test_rank_requirement_completed_email_subject', gamipress_get_option( 'rank_requirement_completed_email_subject' ) );
+    $message = apply_filters( 'gamipress_send_test_rank_requirement_completed_email_content', gamipress_get_option( 'rank_requirement_completed_email_content' ) );
 
     gamipress_send_test_email( $subject, $message );
 
@@ -1076,7 +1076,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
     if( in_array( $achievement_type, $achievement_types ) ) {
 
-        if( (bool) gamipress_get_option( 'disable_achievement_earned_email', false ) ) {
+        if( (bool) apply_filters( 'gamipress_disable_achievement_earned_email', gamipress_get_option( 'disable_achievement_earned_email', false ), $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -1087,65 +1087,66 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         );
 
         $user = get_userdata( $user_id );
-        $subject = gamipress_get_option( 'achievement_earned_email_subject' );
-        $message = gamipress_get_option( 'achievement_earned_email_content' );
+        $subject = apply_filters( 'gamipress_achievement_earned_email_subject', gamipress_get_option( 'achievement_earned_email_subject' ), $user_id, $achievement_id );
+        $message = apply_filters( 'gamipress_achievement_earned_email_content', gamipress_get_option( 'achievement_earned_email_content' ), $user_id, $achievement_id );
 
         gamipress_send_email( $user->user_email, $subject, $message );
 
     } else if( $achievement_type === 'step' ) {
 
-        if( (bool) gamipress_get_option( 'disable_step_completed_email', false ) ) {
-            return;
-        }
-
         $achievement = gamipress_get_parent_of_achievement( $achievement_id );
 
         // Check if step was assigned to an achievement
-        if( $achievement ) {
+        if( ! $achievement ) {
+            return;
+        }
 
-            $all_steps_earned = true;
-            $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
+        if( (bool) apply_filters( 'gamipress_disable_step_completed_email', gamipress_get_option( 'disable_step_completed_email', false ), $user_id, $achievement_id, $achievement ) ) {
+            return;
+        }
 
-            // Just loop if achievement has more than 1 step
-            if( count( $steps ) > 1 ) {
+        $all_steps_earned = true;
+        $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
 
-                foreach( $steps as $step ) {
-                    // check if user has earned this step
-                    $earned = count( gamipress_get_user_achievements( array(
-                            'user_id' => absint( $user_id ),
-                            'achievement_id' => absint( $step->ID ),
-                            'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
-                        ) ) ) > 0;
+        // Just loop if achievement has more than 1 step
+        if( count( $steps ) > 1 ) {
 
-                    if( ! $earned ) {
-                        // Not all steps has been earned, so continue
-                        $all_steps_earned = false;
-                        break;
-                    }
+            foreach( $steps as $step ) {
+                // check if user has earned this step
+                $earned = count( gamipress_get_user_achievements( array(
+                        'user_id' => absint( $user_id ),
+                        'achievement_id' => absint( $step->ID ),
+                        'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
+                    ) ) ) > 0;
+
+                if( ! $earned ) {
+                    // Not all steps has been earned, so continue
+                    $all_steps_earned = false;
+                    break;
                 }
             }
+        }
 
-            // Just send the email if user has not earned all steps, because user will receive another email that he has earned the achievement
-            if( ! $all_steps_earned ) {
+        // Just send the email if user has not earned all steps, because user will receive another email that he has earned the achievement
+        if( ! $all_steps_earned ) {
 
-                $gamipress_email_template_args = array(
-                    'user_id' => $user_id,
-                    'step_id' => $achievement_id,
-                    'type' => 'step_completed',
-                );
+            $gamipress_email_template_args = array(
+                'user_id' => $user_id,
+                'step_id' => $achievement_id,
+                'type' => 'step_completed',
+            );
 
-                $user = get_userdata( $user_id );
-                $subject = gamipress_get_option( 'step_completed_email_subject' );
-                $message = gamipress_get_option( 'step_completed_email_content' );
+            $user = get_userdata( $user_id );
+            $subject = apply_filters( 'gamipress_step_completed_email_subject', gamipress_get_option( 'step_completed_email_subject' ), $user_id, $achievement_id, $achievement );
+            $message = apply_filters( 'gamipress_step_completed_email_content', gamipress_get_option( 'step_completed_email_content' ), $user_id, $achievement_id, $achievement );
 
-                gamipress_send_email( $user->user_email, $subject, $message );
+            gamipress_send_email( $user->user_email, $subject, $message );
 
-            }
         }
 
     } else if( $achievement_type === 'points-award' ) {
 
-        if( (bool) gamipress_get_option( 'disable_points_award_completed_email', false ) ) {
+        if( (bool) apply_filters( 'gamipress_disable_points_award_completed_email', gamipress_get_option( 'disable_points_award_completed_email', false ), $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -1156,14 +1157,14 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         );
 
         $user = get_userdata( $user_id );
-        $subject = gamipress_get_option( 'points_award_completed_email_subject' );
-        $message = gamipress_get_option( 'points_award_completed_email_content' );
+        $subject = apply_filters( 'gamipress_points_award_completed_email_subject', gamipress_get_option( 'points_award_completed_email_subject' ), $user_id, $achievement_id );
+        $message = apply_filters( 'gamipress_points_award_completed_email_content', gamipress_get_option( 'points_award_completed_email_content' ), $user_id, $achievement_id );
 
         gamipress_send_email( $user->user_email, $subject, $message );
 
     } else if( $achievement_type === 'points-deduct' ) {
 
-        if( (bool) gamipress_get_option( 'disable_points_deduct_completed_email', false ) ) {
+        if( (bool) apply_filters( 'gamipress_disable_points_deduct_completed_email', gamipress_get_option( 'disable_points_deduct_completed_email', false ), $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -1174,60 +1175,61 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         );
 
         $user = get_userdata( $user_id );
-        $subject = gamipress_get_option( 'points_deduct_completed_email_subject' );
-        $message = gamipress_get_option( 'points_deduct_completed_email_content' );
+        $subject = apply_filters( 'gamipress_points_deduct_completed_email_subject', gamipress_get_option( 'points_deduct_completed_email_subject' ), $user_id, $achievement_id );
+        $message = apply_filters( 'gamipress_points_deduct_completed_email_content', gamipress_get_option( 'points_deduct_completed_email_content' ), $user_id, $achievement_id );
 
         gamipress_send_email( $user->user_email, $subject, $message );
 
     } else if( $achievement_type === 'rank-requirement' ) {
 
-        if( (bool) gamipress_get_option( 'disable_rank_requirement_completed_email', false ) ) {
-            return;
-        }
-
         $rank = gamipress_get_rank_requirement_rank( $achievement_id );
 
         // Check if requirement was assigned to a rank
-        if( $rank ) {
+        if( ! $rank ) {
+            return;
+        }
 
-            $all_requirements_earned = true;
-            $requirements = gamipress_get_rank_requirements( $rank->ID );
+        if( (bool) apply_filters( 'gamipress_disable_rank_requirement_completed_email', gamipress_get_option( 'disable_rank_requirement_completed_email', false ), $user_id, $achievement_id, $rank ) ) {
+            return;
+        }
 
-            // Just loop if rank has more than 1 requirement
-            if( count( $requirements ) > 1 ) {
+        $all_requirements_earned = true;
+        $requirements = gamipress_get_rank_requirements( $rank->ID );
 
-                foreach( $requirements as $requirement ) {
-                    // Check if user has earned this requirement
-                    $earned = count( gamipress_get_user_achievements( array(
-                            'user_id' => absint( $user_id ),
-                            'achievement_id' => absint( $requirement->ID ),
-                            'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
-                        ) ) ) > 0;
+        // Just loop if rank has more than 1 requirement
+        if( count( $requirements ) > 1 ) {
 
-                    if( ! $earned ) {
-                        // Not all requirements has been earned, so continue
-                        $all_steps_earned = false;
-                        break;
-                    }
+            foreach( $requirements as $requirement ) {
+                // Check if user has earned this requirement
+                $earned = count( gamipress_get_user_achievements( array(
+                        'user_id' => absint( $user_id ),
+                        'achievement_id' => absint( $requirement->ID ),
+                        'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
+                    ) ) ) > 0;
+
+                if( ! $earned ) {
+                    // Not all requirements has been earned, so continue
+                    $all_requirements_earned = false;
+                    break;
                 }
             }
+        }
 
-            // Just send the email if user has not earned all rank requirements, because user will receive another email that he has earned the rank
-            if( ! $all_requirements_earned ) {
+        // Just send the email if user has not earned all rank requirements, because user will receive another email that he has earned the rank
+        if( ! $all_requirements_earned ) {
 
-                $gamipress_email_template_args = array(
-                    'user_id' => $user_id,
-                    'rank_requirement_id' => $achievement_id,
-                    'type' => 'rank_requirement_completed',
-                );
+            $gamipress_email_template_args = array(
+                'user_id' => $user_id,
+                'rank_requirement_id' => $achievement_id,
+                'type' => 'rank_requirement_completed',
+            );
 
-                $user = get_userdata( $user_id );
-                $subject = gamipress_get_option( 'rank_requirement_completed_email_subject' );
-                $message = gamipress_get_option( 'rank_requirement_completed_email_content' );
+            $user = get_userdata( $user_id );
+            $subject = apply_filters( 'gamipress_rank_requirement_completed_email_subject', gamipress_get_option( 'rank_requirement_completed_email_subject' ), $user_id, $achievement_id, $rank );
+            $message = apply_filters( 'gamipress_rank_requirement_completed_email_content', gamipress_get_option( 'rank_requirement_completed_email_content' ), $user_id, $achievement_id, $rank );
 
-                gamipress_send_email( $user->user_email, $subject, $message );
+            gamipress_send_email( $user->user_email, $subject, $message );
 
-            }
         }
 
     }
@@ -1239,7 +1241,8 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_send_email_to_user',
 /**
  * Function that check for each awarded rank if it should be emailed to the user
  *
- * @since 1.3.1
+ * @since   1.3.1
+ * @updated 1.3.8 Added filters to allow override anything
  *
  * @param $user_id
  * @param $new_rank
@@ -1251,7 +1254,7 @@ function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank
 
     global $gamipress_email_template_args;
 
-    if( (bool) gamipress_get_option( 'disable_rank_earned_email', false ) ) {
+    if( (bool) apply_filters( 'gamipress_disable_rank_earned_email', gamipress_get_option( 'disable_rank_earned_email', false ), $user_id, $new_rank ) ) {
         return;
     }
 
@@ -1262,8 +1265,10 @@ function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank
     );
 
     $user = get_userdata( $user_id );
-    $subject = gamipress_get_option( 'rank_earned_email_subject' );
-    $message = gamipress_get_option( 'rank_earned_email_content' );
+
+    // Available filters to allow override subject
+    $subject = apply_filters( 'gamipress_rank_earned_email_subject', gamipress_get_option( 'rank_earned_email_subject' ), $user_id, $new_rank );
+    $message = apply_filters( 'gamipress_rank_earned_email_content', gamipress_get_option( 'rank_earned_email_content' ), $user_id, $new_rank );
 
     gamipress_send_email( $user->user_email, $subject, $message );
 }

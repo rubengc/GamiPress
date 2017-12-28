@@ -91,6 +91,7 @@ add_action( 'admin_init', 'gamipress_admin_register_scripts' );
 function gamipress_admin_enqueue_scripts( $hook ) {
 
     global $post_type;
+
     //Stylesheets
     wp_enqueue_style( 'gamipress-admin-css' );
 

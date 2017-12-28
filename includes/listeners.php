@@ -104,9 +104,20 @@ function gamipress_approved_comment_listener( $comment_ID, $comment ) {
         return;
     }
 
+    $post_id = absint( $comment[ 'comment_post_ID' ] );
+
     // Trigger comment actions
-    do_action( 'gamipress_specific_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $comment[ 'comment_post_ID' ], $comment );
-    do_action( 'gamipress_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $comment[ 'comment_post_ID' ], $comment );
+    do_action( 'gamipress_specific_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $post_id, $comment );
+    do_action( 'gamipress_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $post_id, $comment );
+
+    if( $post_id !== 0 ) {
+
+        $post_author = absint( get_post_field( 'post_author', $post_id ) );
+
+        // Trigger comment actions to author
+        do_action( 'gamipress_user_specific_post_comment', (int) $comment_ID, $post_author, $post_id, $comment );
+        do_action( 'gamipress_user_post_comment', (int) $comment_ID, $post_author, $post_id, $comment );
+    }
 
 }
 add_action( 'comment_approved_', 'gamipress_approved_comment_listener', 10, 2 );
