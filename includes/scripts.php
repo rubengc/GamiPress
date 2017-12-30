@@ -161,5 +161,26 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         wp_enqueue_style ( 'wp-jquery-ui-dialog' );
     }
 
+    // If dark mode style is registered, then enqueue it as last style to override previous CSS rules
+    if( wp_style_is( 'gamipress-dark-mode-css', 'registered' ) ) {
+        wp_enqueue_style( 'gamipress-dark-mode-css' );
+    }
+
 }
 add_action( 'admin_enqueue_scripts', 'gamipress_admin_enqueue_scripts', 100 );
+
+/**
+ * Register and enqueue dark mode scripts
+ *
+ * @since       1.3.8.1
+ * @return      void
+ */
+function gamipress_admin_register_dark_mode_scripts() {
+
+    // Use minified libraries if SCRIPT_DEBUG is turned off
+    $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+
+    // Stylesheets
+    wp_register_style( 'gamipress-dark-mode-css', GAMIPRESS_URL . 'assets/css/gamipress-dark-mode' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
+}
+add_action( 'doing_dark_mode', 'gamipress_admin_register_dark_mode_scripts', 100 );

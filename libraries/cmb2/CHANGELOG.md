@@ -3,11 +3,66 @@ All notable changes to this project will be documented in this file.
 
 ## Unreleased
 
-## [2.2.5.3 - 2017-08-22][https://github.com/CMB2/CMB2/releases/tag/v2.2.5.3]
+### Enhancements
+
+* Enable linking options pages via tabbed-navigation. Will output tabbed navigation for options-pages which share the same `'tab_group'` CMB2 box property. [This snippet](https://github.com/CMB2/CMB2-Snippet-Library/blob/master/options-and-settings-pages/options-pages-with-tabs-and-submenus.php) demonstrates how to create a top-level menu options page with multiple submenu pages, each with the tabbed navigation. To specify a different tab title than the options-page title, set the `'tab_title'` CMB2 box property. See [#301](https://github.com/CMB2/CMB2/issues/301), [#627](https://github.com/CMB2/CMB2/issues/627).
+
+## [2.3.0 - 2017-12-20](https://github.com/CMB2/CMB2/releases/tag/v2.3.0)
 
 ### Enhancements
 
-* Update to instead initate CMB2 hookup via "cmb2_init_hookup_{$cmb_id}" hook. Allows plugins to unhook/rehook/etc.
+* Updated Italian translation. Props [@Mte90](https://github.com/Mte90) ([#1067](https://github.com/CMB2/CMB2/issues/1067)).
+* Starting with this release, we are fully switching to the more communicative and standard [Semantic Versioning](https://semver.org/). ([#1061](https://github.com/CMB2/CMB2/issues/1061)).
+
+### Bug Fixes
+
+* Update for compatibility with PHP 7.2 (e.g. fixes `Fatal error: Declaration of CMB2_Type_Colorpicker::render() must be compatible with CMB2_Type_Text::render($args = Array)...`). ([#1070](https://github.com/CMB2/CMB2/issues/1070), [#1074](https://github.com/CMB2/CMB2/issues/1074), [#1075](https://github.com/CMB2/CMB2/issues/1075)).
+
+## [2.2.6.2 - 2017-11-24](https://github.com/CMB2/CMB2/releases/tag/v2.2.6.2)
+
+### Bug Fixes
+
+* Fix another issue (introduced in 2.2.6) with repeatable fields not being able to save additional fields. Props [@anhskohbo](https://github.com/anhskohbo) ([#1059](https://github.com/CMB2/CMB2/pull/1059), [#1058](https://github.com/CMB2/CMB2/issues/1058)).
+* Only dequeue `jw-cmb2-rgba-picker-js` script (and enqueue our `wp-color-picker-alpha`) if it is actually found.
+
+## [2.2.6.1 - 2017-11-24](https://github.com/CMB2/CMB2/releases/tag/v2.2.6.1)
+
+### Enhancements
+
+* Merge in the [CMB2 RGBa Colorpicker](https://github.com/JayWood/CMB2_RGBa_Picker) field type functionality to the CMB2 colopicker field type. Adds the ability to add an alpha (transparency) slider to the colorpicker by adding the `'alpha'` option [to the field options array](https://github.com/CMB2/CMB2/blob/6fce2e7ba8f41345a23bc2064e30433bdb11c16c/example-functions.php#L263-L265). Thank you to [JayWood](https://github.com/JayWood) for his work on his custom field type. 
+
+### Bug Fixes
+
+* Fix issue (introduced in 2.2.6) with complex fields set as repeatable not being able to save additional fields. Fixes [#1054](https://github.com/CMB2/CMB2/issues/1054).
+
+## [2.2.6 - 2017-11-14](https://github.com/CMB2/CMB2/releases/tag/v2.2.6)
+
+### Enhancements
+
+* Move the fetching of group label and description to _after_ calling `'before_group'` parameter.
+* Allow using the `'render_row_cb'` param for group fields. Fixes [#1041](https://github.com/CMB2/CMB2/issues/1041).
+* Allow resetting cached CMB2 field objects (new 3rd parameter to `CMB2::get_field()`).
+* Allow resetting cached callback results (`CMB2_Base::unset_param_callback_cache()`).
+* Persian translation provided by [@reza-irdev](https://github.com/reza-irdev) ([#1046](https://github.com/CMB2/CMB2/issues/1046)).
+* Added a `'message_cb'` box property, which allows defining a custom callback for adding options-save messages on `options-page` boxes. An example has been added to [example-functions.php](https://github.com/CMB2/CMB2/commit/43d513c135e52c327bafa06309821c29323ae2dd#diff-378c74d0ffffc1759b8779a135476777).
+* Updated many the oembed-related unit tests to more reliably test the relevant parts, and not so much the actual success of the WordPress functions.
+* Updated travis config to Install PHP5.2/5.3 on trusty for unit tests. Stolen from [gutenberg/pull/2049](https://github.com/WordPress/gutenberg/pull/2049). Intended to compensate for Travis removing support for PHP 5.2/5.3.
+
+### Bug Fixes
+
+* Ensure `'file'` field type ID is removed from the database if the `'file'` field type's value is empty ([Support thread](https://wordpress.org/support/topic/bug-field-of-type-file-does-not-delete-postmeta-properly/)).
+* Fix JS errors when `user_can_richedit()` is false ("Disable the visual editor when writing" user option is checked, or various unsupported browsers). See [#1031](https://github.com/CMB2/CMB2/pull/1031).
+* Fix issue where some European date formats (e.g. `F j, Y`) would not properly translate into jQuery UI date formats. [Support thread](https://wordpress.org/support/topic/using-wordpresss-date-time-format-settings)
+* Fix repeating fields within repeating groups having the values/indexes incorrectly associated. Props [@daggerhart](https://github.com/daggerhart) ([#1047](https://github.com/CMB2/CMB2/pull/1047)). Fixes [#1035](https://github.com/CMB2/CMB2/issues/1035), [#348](https://github.com/CMB2/CMB2/issues/348).
+* Fixed multiple update messages on settings pages when CMB2 option pages were registered ([#1049](https://github.com/CMB2/CMB2/issues/1049)).
+* Fix issue where using multiple oembed fields could cause incorrectly cached arguments to be used.
+* Fix bug where `'select_all_button' => false` was not working for `'taxonomy_multicheck'` field type ([#1005](https://github.com/CMB2/CMB2/issues/1005)).
+
+## [2.2.5.3 - 2017-08-22](https://github.com/CMB2/CMB2/releases/tag/v2.2.5.3)
+
+### Enhancements
+
+* Update to instead initate CMB2 hookup via `"cmb2_init_hookup_{$cmb_id}"` hook. Allows plugins to unhook/rehook/etc.
 
 ### Bug Fixes
 
@@ -19,20 +74,20 @@ All notable changes to this project will be documented in this file.
 * Change the updated-settings notice query variable so that WordPress does not auto-add settings notices on top of ours.
 * For settings pages, only output settings errors if WordPress does not do it by default (for sub-pages of `options-general.php`), and if the errors are not disabled via the `'disable_settings_errors'` box property.
 
-## [2.2.5.2 - 2017-08-08][https://github.com/CMB2/CMB2/releases/tag/v2.2.5.2]
+## [2.2.5.2 - 2017-08-08](https://github.com/CMB2/CMB2/releases/tag/v2.2.5.2)
 
 ### Bug Fixes
 
 * Fix issue in 2.2.5 with non-sortable repeatable groups not having new groups values be emptied on creation/clone. [Support thread](https://wordpress.org/support/topic/the-default-parameter-dont-work-in-group-fields/page/2/)
 * Fix issue in 2.2.5 with options pages not saving when `'parent_slug'` box property was used. Fixes [#1008](https://github.com/CMB2/CMB2/issues/1008).
 
-## [2.2.5.1 - 2017-08-07][https://github.com/CMB2/CMB2/releases/tag/v2.2.5.1]
+## [2.2.5.1 - 2017-08-07](https://github.com/CMB2/CMB2/releases/tag/v2.2.5.1)
 
 ### Bug Fixes
 
 * Fix issue in 2.2.5 which caused empty repeatable groups having the buttons set to have a disabled "Remove Group" button. [Support thread](https://wordpress.org/support/topic/the-default-parameter-dont-work-in-group-fields/)
 
-## [2.2.5 - 2017-08-07][https://github.com/CMB2/CMB2/releases/tag/v2.2.5]
+## [2.2.5 - 2017-08-07](https://github.com/CMB2/CMB2/releases/tag/v2.2.5)
 
 ### Enhancements
 

@@ -890,6 +890,10 @@ body > .gamipress-select2,
 	line-height: 0;
 }
 
+.gamipress-plugin-card .thumbnail a img {
+	max-width: 100%;
+}
+
 .gamipress-plugin-card .action-links {
 	position: relative;
 	top: 0;

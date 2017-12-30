@@ -8,7 +8,7 @@
  * Plugin URI: https://github.com/rubengc/cmb2-tabs
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-tabs
  * Description: Tabs for CMB2 boxes.
- * Version: 1.0.2
+ * Version: 1.0.3
  * Author: Ruben Garcia
  * Author URI: http://rubengc.com/
  * License: GPLv2+
@@ -27,13 +27,14 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
         /**
          * Current version number
          */
-        const VERSION = '1.0.2';
+        const VERSION = '1.0.3';
 
         /**
          * Initialize the plugin by hooking into CMB2
          */
         public function __construct() {
             add_action( 'admin_enqueue_scripts', array( $this, 'setup_admin_scripts' ) );
+            add_action( 'doing_dark_mode', array( $this, 'setup_dark_mode' ) );
             add_action( 'cmb2_before_form', array( $this, 'before_form' ), 10, 4 );
             add_action( 'cmb2_after_form', array( $this, 'after_form' ), 10, 4 );
         }
@@ -100,6 +101,15 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
 
             wp_enqueue_style( 'cmb-tabs', plugins_url( 'css/tabs.css', __FILE__ ), array(), self::VERSION );
             wp_enqueue_style( 'cmb-tabs' );
+
+        }
+
+        /**
+         * Enqueue dark mode styles
+         */
+        public function setup_dark_mode() {
+            wp_enqueue_style( 'cmb-tabs-dark-mode', plugins_url( 'css/dark-mode.css', __FILE__ ), array(), self::VERSION );
+            wp_enqueue_style( 'cmb-tabs-dark-mode' );
 
         }
 

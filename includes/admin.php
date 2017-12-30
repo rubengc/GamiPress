@@ -371,6 +371,14 @@ function gamipress_process_actions() {
 }
 add_action( 'admin_init', 'gamipress_process_actions' );
 
+/**
+ * Overrides the enter title here on rank edit screen
+ *
+ * @param $placeholder
+ * @param $post
+ *
+ * @return string|void
+ */
 function gamipress_admin_enter_title_here( $placeholder, $post ) {
 
     if( gamipress_is_rank( $post->post_type ) ) {
@@ -381,3 +389,49 @@ function gamipress_admin_enter_title_here( $placeholder, $post ) {
 
 }
 add_filter( 'enter_title_here', 'gamipress_admin_enter_title_here', 10, 2 );
+
+/**
+ * Add custom footer text to the admin dashboard
+ *
+ * @since	    1.3.8.1
+ *
+ * @param       string $footer_text The existing footer text
+ *
+ * @return      string
+ */
+function gamipress_admin_footer_text( $footer_text ) {
+    global $typenow;
+
+    if (
+        $typenow == 'points-type'
+        || $typenow == 'achievement-type'
+        || $typenow == 'rank-type'
+        || in_array( $typenow, gamipress_get_achievement_types_slugs() )
+        || in_array( $typenow, gamipress_get_rank_types_slugs() )
+        || ( isset( $_GET['page'] ) && (
+                $_GET['page'] === 'gamipress_settings'
+                || $_GET['page'] === 'gamipress_logs'
+                || $_GET['page'] === 'edit_gamipress_logs'
+                || $_GET['page'] === 'gamipress_add_ons'
+                || $_GET['page'] === 'gamipress_help_support'
+                || $_GET['page'] === 'gamipress_tools'
+            )
+        )
+    ) {
+
+        $gamipress_footer_text = sprintf( __( 'Thank you for using <a href="%1$s" target="_blank">GamiPress</a>! Please leave us a <a href="%2$s" target="_blank">%3$s</a> rating on WordPress.org', 'gamipress' ),
+            'https://gamipress.com',
+            'https://wordpress.org/support/plugin/gamipress/reviews/?rate=5#new-post',
+            '&#9733;&#9733;&#9733;&#9733;&#9733;'
+        );
+
+        return str_replace( '</span>', '', $footer_text ) . ' | ' . $gamipress_footer_text . '</span>';
+
+    } else {
+
+        return $footer_text;
+
+    }
+
+}
+add_filter( 'admin_footer_text', 'gamipress_admin_footer_text' );

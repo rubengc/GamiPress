@@ -28,8 +28,11 @@ class GamiPress_Shortcodes_Editor {
 
 		global $post_type;
 
-		// Just enqueue on add/edit views and on post types that supports editor feature
-		if( ( $hook === 'post.php' || $hook === 'post-new.php' ) && post_type_supports( $post_type, 'editor' ) ) {
+
+		if(
+			( $hook === 'post.php' || $hook === 'post-new.php' ) && post_type_supports( $post_type, 'editor' ) 	// Enqueue on add/edit views of post types that supports editor feature
+			|| $hook === 'gamipress_page_gamipress_settings'													// Enqueue on GamiPress settings screen
+		) {
 
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
@@ -69,7 +72,7 @@ class GamiPress_Shortcodes_Editor {
 		<div id="select_gamipress_shortcode" style="display:none;">
 			<div class="wrap">
 				<h3><?php _e( 'Insert a GamiPress shortcode', 'gamipress' ); ?></h3>
-				<p><?php printf( __( 'See the %s page for more information', 'gamipress' ), '<a target="_blank" href="' . admin_url( 'admin.php?page=gamipress_sub_help_support' ) . '">' . __( 'Help/Support', 'gamipress' ) . '</a>' ); ?></p>
+				<p><?php printf( __( 'See the %s page for more information', 'gamipress' ), '<a target="_blank" href="' . admin_url( 'admin.php?page=gamipress_help_support' ) . '">' . __( 'Help/Support', 'gamipress' ) . '</a>' ); ?></p>
 				<div class="alignleft">
 					<select id="select_shortcode"><?php echo $this->get_shortcode_selector(); ?></select>
 				</div>
