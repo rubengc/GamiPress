@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register [gamipress_logs] shortcode.
+ * Register [gamipress_logs] shortcode
  *
  * @since 1.0.0
  */
@@ -37,6 +37,13 @@ function gamipress_register_logs_shortcode() {
                 'description' => __( 'Number of log entries to display.', 'gamipress' ),
                 'type'        => 'text',
                 'default'     => 10,
+            ),
+            'pagination' => array(
+                'name'        => __( 'Enable Pagination', 'gamipress' ),
+                'description' => __( 'Show pagination links to navigate through all logs.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
             ),
             'orderby' => array(
                 'name'        => __( 'Order By', 'gamipress' ),
@@ -80,12 +87,13 @@ function gamipress_register_logs_shortcode() {
 add_action( 'init', 'gamipress_register_logs_shortcode' );
 
 /**
- * Logs List Shortcode.
+ * Logs List Shortcode
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes.
- * @return string 	   HTML markup.
+ * @param  array $atts Shortcode attributes
+ *
+ * @return string 	   HTML markup
  */
 function gamipress_logs_shortcode( $atts = array () ) {
 
@@ -105,6 +113,7 @@ function gamipress_logs_shortcode( $atts = array () ) {
         'current_user'  => 'no',
         'user_id'       => '0',
         'limit'         => '10',
+        'pagination'    => 'yes',
         'orderby'       => 'date',
         'order'         => 'ASC',
         'include'       => '',
@@ -130,28 +139,29 @@ function gamipress_logs_shortcode( $atts = array () ) {
     // GamiPress template args global
     $gamipress_template_args = $atts;
 
-    // Query Achievements
+    // Query args
     $args = array(
         'orderby'        =>	$atts['orderby'],
         'order'          =>	$atts['order'],
         'items_per_page' =>	$atts['limit'],
-        'access'         => 'public',
+        'paged'          => max( 1, get_query_var( 'paged' ) ),
+        'access'         => 'public', // At frontend just show public logs
     );
-
-    // Force to set current user as user ID
-    if( $atts['current_user'] === 'yes' ) {
-
-        // If current_user is set to yes and current user is a guest, then return
-        if( get_current_user_id() === 0 ) {
-            return '';
-        }
-
-        $atts['user_id'] = get_current_user_id();
-    }
 
     // User
     if( absint( $atts['user_id'] ) !== 0 ) {
         $args['user_id'] = $atts['user_id'];
+    }
+
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' ) {
+
+        // Return if current_user is set to yes and current user is a guest
+        if( get_current_user_id() === 0 ) {
+            return '';
+        }
+
+        $args['user_id'] = get_current_user_id();
     }
 
     // Build $include array

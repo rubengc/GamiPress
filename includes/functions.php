@@ -36,10 +36,38 @@ function gamipress_do_shortcode( $shortcode, $args ) {
     $shortcode_args = '';
 
     foreach( $args as $arg => $value ) {
+
         if( is_array( $value ) ) {
-            $value = str_replace( '"', '\'', json_encode( $value ) );
-            $value = str_replace( '[', '{', $value );
-            $value = str_replace( ']', '}', $value );
+
+            if( array_keys( $value ) !== range( 0, count($value) - 1 ) ) {
+
+                // Turn associative arrays into json to keep keys
+                $value = str_replace( '"', '\'', json_encode( $value ) );
+                $value = str_replace( '[', '{', $value );
+                $value = str_replace( ']', '}', $value );
+
+            } else {
+
+                $is_multidimensional = false;
+
+                foreach ($value as $value_items) {
+                    if ( is_array($value_items) ) {
+                        $is_multidimensional = true;
+                        break;
+                    }
+                }
+
+                if( $is_multidimensional ) {
+                    // Turn multidimensional arrays into json to keep inherit arrays
+                    $value = str_replace( '"', '\'', json_encode( $value ) );
+                    $value = str_replace( '[', '{', $value );
+                    $value = str_replace( ']', '}', $value );
+                } else {
+                    // non associative and non multidimensional arrays, set a string of comma separated values
+                    $value = implode( ',', $value );
+                }
+
+            }
         }
 
         $shortcode_args .= sprintf( ' %s="%s"', $arg, $value);

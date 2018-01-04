@@ -124,46 +124,93 @@
     var gamipress_widget_select2_ranks_multiple = $.extend( true, {}, gamipress_widget_select2_ranks, { multiple: true } );
 
     // Achievement ajax
-    $( gamipress_widget_select2_selector( 'achievement', 'id' ) ).select2( gamipress_widget_select2_achievements );
+    $( '#widgets-right ' + gamipress_widget_select2_selector( 'achievement', 'id' ) ).select2( gamipress_widget_select2_achievements );
 
     // Achievement ajax multiple
-    $(  gamipress_widget_select2_selector( 'achievements', 'include' ) + ', '
-        + gamipress_widget_select2_selector( 'achievements', 'exclude' ) + ', '
-        + gamipress_widget_select2_selector( 'logs', 'include' ) + ', '
-        + gamipress_widget_select2_selector( 'logs', 'exclude' )
+    $(  '#widgets-right ' + gamipress_widget_select2_selector( 'achievements', 'include' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'achievements', 'exclude' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'logs', 'include' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'logs', 'exclude' )
     ).select2( gamipress_widget_select2_achievements_multiple );
 
     // Select2 multiple
-    $(  gamipress_widget_select2_selector( 'achievements', 'type' ) + ', '
-        + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
-        + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
-        + gamipress_widget_select2_selector( 'ranks', 'type' )
+    $(  '#widgets-right ' + gamipress_widget_select2_selector( 'achievements', 'type' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'type' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'points_types' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'achievement_types' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'rank_types' )
     ).select2( gamipress_widget_select2_multiple );
 
     // Rank ajax
-    $( gamipress_widget_select2_selector( 'rank', 'id' ) ).select2( gamipress_widget_select2_ranks );
+    $( '#widgets-right ' + gamipress_widget_select2_selector( 'rank', 'id' ) ).select2( gamipress_widget_select2_ranks );
 
     // Rank ajax multiple
-    $(  gamipress_widget_select2_selector( 'ranks', 'include' ) + ', '
-        + gamipress_widget_select2_selector( 'ranks', 'exclude' )
+    $(  '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'include' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'exclude' )
     ).select2( gamipress_widget_select2_ranks_multiple );
 
     // User ajax
-    $( 'select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
+    $( '#widgets-right select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
 
     // Current user field
-    $( 'input[id^="widget-gamipress"][id$="[current_user]"]').change(function() {
+    $('body').on('change', 'input[id^="widget-gamipress"][id$="[current_user]"]', function() {
         var target = $(this).closest('.cmb-row').next(); // User ID field
 
         if( $(this).prop('checked') ) {
             target.slideUp().addClass('cmb2-tab-ignore');
         } else {
-            target.slideDown().removeClass('cmb2-tab-ignore');
+            if( target.closest('.cmb-tabs-wrap').length ) {
+                // Just show if item tab is active
+                if( target.hasClass('cmb-tab-active-item') ) {
+                    target.slideDown();
+                }
+            } else {
+                target.slideDown();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
         }
     });
 
+    // User earnings
+    $('body').on('change', 'input[id^="widget-gamipress_earnings"][id$="[points]"], '
+        + 'input[id^="widget-gamipress_earnings"][id$="[achievements]"], '
+        + 'input[id^="widget-gamipress_earnings"][id$="[ranks]"]', function() {
+
+        var id_parts = $(this).attr('id').split('[');
+        var id = id_parts[id_parts.length - 1].replace(']', '');
+        var n = $(this).closest('form').find('input[name="widget_number"]').val();
+        var target = undefined;
+
+        if( id === 'points' ) {
+            target = $('.cmb2-id-widget-gamipress-earnings-widget' + n + 'points-types, .cmb2-id-widget-gamipress-earnings-widget' + n + 'awards, .cmb2-id-widget-gamipress-earnings-widget' + n + 'deducts');
+        } else if( id === 'achievements' ) {
+            target = $('.cmb2-id-widget-gamipress-earnings-widget' + n + 'achievement-types, .cmb2-id-widget-gamipress-earnings-widget' + n + 'steps');
+        } else if( id === 'ranks' ) {
+            target = $('.cmb2-id-widget-gamipress-earnings-widget' + n + 'rank-types, .cmb2-id-widget-gamipress-earnings-widget' + n + 'rank-requirements');
+        }
+
+        if( $(this).prop('checked') ) {
+            // Just show if current tab active is ours
+            if( $(this).closest('.cmb-tabs-wrap').find('.cmb-tab.active[id$="[' + id + ']"]').length ) {
+                target.slideDown();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
+        } else {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        }
+    });
+
+    $('input[id^="widget-gamipress_earnings"][id$="[points]"], '
+        + 'input[id^="widget-gamipress_earnings"][id$="[achievements]"], '
+        + 'input[id^="widget-gamipress_earnings"][id$="[ranks]"]').change();
+
     // Initialize on widgets area
     $(document).on('widget-updated widget-added', function(e, widget) {
+
         // Achievement ajax
         widget.find( gamipress_widget_select2_selector( 'achievement', 'id' ) ).select2( gamipress_widget_select2_achievements );
 
@@ -180,7 +227,10 @@
             gamipress_widget_select2_selector( 'achievements', 'type' ) + ', '
             + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
             + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
-            + gamipress_widget_select2_selector( 'ranks', 'type' )
+            + gamipress_widget_select2_selector( 'ranks', 'type' ) + ', '
+            + gamipress_widget_select2_selector( 'earnings', 'points_types' ) + ', '
+            + gamipress_widget_select2_selector( 'earnings', 'achievement_types' ) + ', '
+            + gamipress_widget_select2_selector( 'earnings', 'rank_types' )
         ).select2( gamipress_widget_select2_multiple );
 
         // Rank ajax
@@ -202,7 +252,46 @@
         if( current_user.prop('checked') ) {
             target.hide().addClass('cmb2-tab-ignore');
         } else {
-            target.show().removeClass('cmb2-tab-ignore');
+            if( target.closest('.cmb-tabs-wrap').length ) {
+                // Just show if item tab is active
+                if( target.hasClass('cmb-tab-active-item') ) {
+                    target.show();
+                }
+            } else {
+                target.show();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
         }
+
+        // User earnings
+        widget.find('change', 'input[id^="widget-gamipress_earnings"][id$="[points]"], '
+            + 'input[id^="widget-gamipress_earnings"][id$="[achievements]"], '
+            + 'input[id^="widget-gamipress_earnings"][id$="[ranks]"]').each(function() {
+
+            var id_parts = $(this).attr('id').split('[');
+            var id = id_parts[id_parts.length - 1].replace(']', '');
+            var n = $(this).closest('form').find('input[name="widget_number"]').val();
+            var target = undefined;
+
+            if( id === 'points' ) {
+                target = $('.cmb2-id-widget-gamipress-earnings-widget' + n + 'points-types, .cmb2-id-widget-gamipress-earnings-widget' + n + 'awards, .cmb2-id-widget-gamipress-earnings-widget' + n + 'deducts');
+            } else if( id === 'achievements' ) {
+                target = $('.cmb2-id-widget-gamipress-earnings-widget' + n + 'achievement-types, .cmb2-id-widget-gamipress-earnings-widget' + n + 'steps');
+            } else if( id === 'ranks' ) {
+                target = $('.cmb2-id-widget-gamipress-earnings-widget' + n + 'rank-types, .cmb2-id-widget-gamipress-earnings-widget' + n + 'rank-requirements');
+            }
+
+            if( $(this).prop('checked') ) {
+                // Just show if current tab active is ours
+                if( $(this).closest('.cmb-tabs-wrap').find('.cmb-tab.active[id$="[' + id + ']"]').length ) {
+                    target.slideDown();
+                }
+
+                target.removeClass('cmb2-tab-ignore');
+            } else {
+                target.slideUp().addClass('cmb2-tab-ignore');
+            }
+        });
     });
 })(jQuery);

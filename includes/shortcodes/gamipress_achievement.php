@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register the [gamipress_achievement] shortcode.
+ * Register the [gamipress_achievement] shortcode
  *
  * @since 1.0.0
  */
@@ -73,12 +73,13 @@ function gamipress_register_achievement_shortcode() {
 add_action( 'init', 'gamipress_register_achievement_shortcode' );
 
 /**
- * Single Achievement Shortcode.
+ * Single Achievement Shortcode
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes.
- * @return string 	   HTML markup.
+ * @param  array $atts Shortcode attributes
+ *
+ * @return string 	   HTML markup
  */
 function gamipress_achievement_shortcode( $atts = array() ) {
 	// get the post id

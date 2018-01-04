@@ -15,6 +15,7 @@ require_once GAMIPRESS_DIR . 'includes/shortcodes/shortcodes-editor.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/shortcode.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievement.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievements.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_earnings.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_logs.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points_types.php';

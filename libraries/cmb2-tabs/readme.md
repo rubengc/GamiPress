@@ -77,6 +77,7 @@ function cmb2_sample_metabox() {
 ### 1.0.3
 
 * Added support for dark mode.
+* Fixed tab display on widgets screen.
 
 ### 1.0.2
 

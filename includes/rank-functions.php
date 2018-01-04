@@ -907,9 +907,28 @@ function gamipress_get_rank_earners( $rank_id = 0 ) {
  */
 function gamipress_get_rank_priority( $rank_id = 0 ) {
 
-    $rank = get_post( $rank_id );
+    global $wpdb;
 
-    return absint( $rank->menu_order );
+    if( get_post_field( 'post_status', $rank_id ) === 'auto-draft' ) {
+
+        $rank_type = get_post_type( $rank_id );
+
+        // Get higher menu order
+        $last = $wpdb->get_var( $wpdb->prepare(
+            "SELECT p.menu_order
+			FROM {$wpdb->posts} AS p
+			WHERE p.post_type = %s
+			 AND p.post_status = %s
+			ORDER BY menu_order DESC
+			LIMIT 1",
+            $rank_type,
+            'publish'
+        ) );
+
+        return absint( $last ) + 1;
+    }
+
+    return absint( get_post_field( 'menu_order', $rank_id ) );
 
 }
 

@@ -71,6 +71,21 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     }
 
+    // Points Type
+    if( isset( $ct_query->query_vars['points_type'] ) && ! empty( $ct_query->query_vars['points_type'] ) ) {
+
+        $points_type = $ct_query->query_vars['points_type'];
+
+        if( is_array( $points_type ) ) {
+            $points_type = "'" . implode( "', '", $points_type ) . "'";
+
+            $where .= " AND {$table_name}.points_type IN ( {$points_type} )";
+        } else {
+            $where .= " AND {$table_name}.points_type = '{$points_type}'";
+        }
+
+    }
+
     // Since
     if( isset( $ct_query->query_vars['since'] ) && absint( $ct_query->query_vars['since'] ) > 0 ) {
 
@@ -96,7 +111,10 @@ function gamipress_manage_user_earnings_columns( $columns = array() ) {
 
     $columns['name']    = __( 'Name', 'gamipress' );
     $columns['date']    = __( 'Date', 'gamipress' );
-    $columns['action']  = __( 'Action', 'gamipress' );
+
+    if( current_user_can( gamipress_get_manager_capability() ) ) {
+        $columns['action']  = __( 'Action', 'gamipress' );
+    }
 
     return $columns;
 }
@@ -112,23 +130,20 @@ add_filter( 'manage_gamipress_user_earnings_columns', 'gamipress_manage_user_ear
  */
 function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id ) {
 
+    $can_manage = current_user_can( gamipress_get_manager_capability() );
+
     // Setup vars
     $requirement_types = gamipress_get_requirement_types();
     $achievement_types = gamipress_get_achievement_types();
     $rank_types = gamipress_get_rank_types();
     $achievement = ct_get_object( $object_id );
 
-    // Backward compatibility
-    $achievement->ID = $achievement->post_id;
-    $achievement->date_earned = strtotime( $achievement->date );
-    $user_id = $achievement->user_id;
-
     switch( $column_name ) {
         case 'name':
 
             if( in_array( $achievement->post_type, gamipress_get_requirement_types_slugs() ) ) : ?>
 
-                <?php if( $achievement->post_type === 'step' && $parent_achievement = gamipress_get_parent_of_achievement( $achievement->ID ) ) : ?>
+                <?php if( $achievement->post_type === 'step' && $parent_achievement = gamipress_get_parent_of_achievement( $achievement->post_id ) ) : ?>
 
                     <?php // Step ?>
 
@@ -136,14 +151,14 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                     <?php echo gamipress_get_achievement_post_thumbnail( $parent_achievement->ID, array( 32, 32 ) ); ?>
 
                     <?php // Step title ?>
-                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+                    <strong><?php echo get_the_title( $achievement->post_id ); ?></strong>
 
                     <?php // Step relationship details ?>
                     <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
                     <?php echo ( isset( $achievement_types[$parent_achievement->post_type] ) ? ', ' . $achievement_types[$parent_achievement->post_type]['singular_name'] . ': ' : '' ); ?>
-                    <?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
+                    <?php echo '<a href="' . ( $can_manage ? get_edit_post_link( $parent_achievement->ID ) : get_post_permalink( $parent_achievement->ID ) ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
 
-                <?php elseif( $achievement->post_type === 'points-award' && $points_type = gamipress_get_points_award_points_type( $achievement->ID ) ) : ?>
+                <?php elseif( $achievement->post_type === 'points-award' && $points_type = gamipress_get_points_award_points_type( $achievement->post_id ) ) : ?>
 
                     <?php // Points award ?>
 
@@ -151,13 +166,13 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                     <?php echo gamipress_get_points_type_thumbnail( $points_type->ID, array( 32, 32 ) ); ?>
 
                     <?php // Points award title ?>
-                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+                    <strong><?php echo get_the_title( $achievement->post_id ); ?></strong>
 
                     <?php // Points award relationship details ?>
                     <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
-                    <?php echo ', <a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
+                    <?php echo ', ' . ( $can_manage ? '<a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>' : get_the_title( $points_type->ID ) ); ?>
 
-                <?php elseif( $achievement->post_type === 'points-deduct' && $points_type = gamipress_get_points_deduct_points_type( $achievement->ID ) ) : ?>
+                <?php elseif( $achievement->post_type === 'points-deduct' && $points_type = gamipress_get_points_deduct_points_type( $achievement->post_id ) ) : ?>
 
                     <?php // Points deduct ?>
 
@@ -165,13 +180,13 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                     <?php echo gamipress_get_points_type_thumbnail( $points_type->ID, array( 32, 32 ) ); ?>
 
                     <?php // Points deduct title ?>
-                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+                    <strong><?php echo get_the_title( $achievement->post_id ); ?></strong>
 
                     <?php // Points deduct relationship details ?>
                     <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
-                    <?php echo ', <a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
+                    <?php echo ', ' . ( $can_manage ? '<a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>' : get_the_title( $points_type->ID ) ); ?>
 
-                <?php elseif( $achievement->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $achievement->ID ) ) : ?>
+                <?php elseif( $achievement->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $achievement->post_id ) ) : ?>
 
                     <?php // Rank Requirement ?>
 
@@ -179,12 +194,12 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                     <?php echo gamipress_get_rank_post_thumbnail( $rank->ID, array( 32, 32 ) ); ?>
 
                     <?php // Rank requirement title ?>
-                    <strong><?php echo get_the_title( $achievement->ID ); ?></strong>
+                    <strong><?php echo get_the_title( $achievement->post_id ); ?></strong>
 
                     <?php // Rank relationship details ?>
                     <?php echo ( isset( $requirement_types[$achievement->post_type] ) ? '<br>' . $requirement_types[$achievement->post_type]['singular_name'] : '' ); ?>
                     <?php echo ( isset( $rank_types[$rank->post_type] ) ? ', ' . $rank_types[$rank->post_type]['singular_name'] . ': ' : '' ); ?>
-                    <?php echo '<a href="' . get_edit_post_link( $rank->ID ) . '">' . get_the_title( $rank->ID ) . '</a>'; ?>
+                    <?php echo '<a href="' . ( $can_manage ? get_edit_post_link( $rank->ID ) : get_post_permalink( $rank->ID ) ) . '">' . get_the_title( $rank->ID ) . '</a>'; ?>
 
                 <?php endif; ?>
 
@@ -193,10 +208,10 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                 <?php // Achievement ?>
 
                 <?php // Achievement thumbnail ?>
-                <?php echo gamipress_get_achievement_post_thumbnail( $achievement->ID, array( 32, 32 ) ); ?>
+                <?php echo gamipress_get_achievement_post_thumbnail( $achievement->post_id, array( 32, 32 ) ); ?>
 
                 <?php // Achievement title ?>
-                <strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
+                <strong><?php echo '<a href="' . ( $can_manage ? get_edit_post_link( $achievement->post_id ) : get_post_permalink( $achievement->post_id ) ) . '">' . get_the_title( $achievement->post_id ) . '</a>'; ?></strong>
                 <?php echo ( isset( $achievement_types[$achievement->post_type] ) ? '<br>' . $achievement_types[$achievement->post_type]['singular_name'] : '' ); ?>
 
             <?php elseif( in_array( $achievement->post_type, gamipress_get_rank_types_slugs() ) ) : ?>
@@ -204,10 +219,10 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
                 <?php // Rank ?>
 
                 <?php // Rank thumbnail ?>
-                <?php echo gamipress_get_rank_post_thumbnail( $achievement->ID, array( 32, 32 ) ); ?>
+                <?php echo gamipress_get_rank_post_thumbnail( $achievement->post_id, array( 32, 32 ) ); ?>
 
                 <?php // Rank title ?>
-                <strong><?php echo '<a href="' . get_edit_post_link( $achievement->ID ) . '">' . get_the_title( $achievement->ID ) . '</a>'; ?></strong>
+                <strong><?php echo '<a href="' . ( $can_manage ? get_edit_post_link( $achievement->post_id ) : get_post_permalink( $achievement->post_id ) ) . '">' . get_the_title( $achievement->post_id ) . '</a>'; ?></strong>
                 <?php echo ( isset( $rank_types[$achievement->post_type] ) ? '<br>' . $rank_types[$achievement->post_type]['singular_name'] : '' ); ?>
 
             <?php endif; ?>
@@ -217,18 +232,25 @@ function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id
             <?php
             break;
         case 'date':
+            $time = strtotime( $achievement->date );
             ?>
 
-            <abbr title="<?php echo date( 'Y/m/d g:i:s a', $achievement->date_earned ); ?>"><?php echo date( 'Y/m/d', $achievement->date_earned ); ?></abbr>
+            <abbr title="<?php echo date( 'Y/m/d g:i:s a', $time ); ?>"><?php echo date( 'Y/m/d', $time ); ?></abbr>
 
             <?php
             break;
         case 'action':
+
+            // If user is not manager then skip this
+            if( ! $can_manage ) {
+                break;
+            }
+
             // Setup our revoke URL
             $revoke_url = add_query_arg( array(
                 'action'         => 'revoke',
-                'user_id'        => absint( $user_id ),
-                'achievement_id' => absint( $achievement->ID ),
+                'user_id'        => absint( $achievement->user_id ),
+                'achievement_id' => absint( $achievement->post_id ),
                 'user_earning_id' => absint( $achievement->user_earning_id ),
             ) );
             ?>

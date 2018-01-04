@@ -166,7 +166,7 @@
     $( '#gamipress_achievements_include, #gamipress_achievements_exclude, #gamipress_logs_include, #gamipress_logs_exclude' ).select2( select2_achievements_multiple );
 
     // Select2 multiple
-    $( '#gamipress_achievements_type, #gamipress_points_types_type, #gamipress_points_type, #gamipress_ranks_type' ).select2({
+    $( '#gamipress_achievements_type, #gamipress_points_types_type, #gamipress_points_type, #gamipress_ranks_type, #gamipress_earnings_points_types, #gamipress_earnings_achievement_types, #gamipress_earnings_rank_types' ).select2({
         theme: 'default gamipress-select2',
         placeholder: gamipress_shortcodes_editor.post_type_placeholder,
         allowClear: true,
@@ -174,7 +174,7 @@
     });
 
     // User ajax
-    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id' ).select2({
+    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_earnings_user_id' ).select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',
@@ -210,13 +210,22 @@
     });
 
     // Current user field
-    $( '#gamipress_achievements_current_user, #gamipress_points_current_user, #gamipress_logs_current_user, #gamipress_ranks_current_user').change(function() {
+    $( '#gamipress_achievements_current_user, #gamipress_points_current_user, #gamipress_logs_current_user, #gamipress_ranks_current_user, #gamipress_earnings_current_user').change(function() {
         var target = $(this).closest('.cmb-row').next(); // User ID field
 
         if( $(this).prop('checked') ) {
             target.slideUp().addClass('cmb2-tab-ignore');
         } else {
-            target.slideDown().removeClass('cmb2-tab-ignore');
+            if( target.closest('.cmb-tabs-wrap').length ) {
+                // Just show if item tab is active
+                if( target.hasClass('cmb-tab-active-item') ) {
+                    target.slideDown();
+                }
+            } else {
+                target.slideDown();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
         }
     });
 
@@ -262,6 +271,32 @@
     // Rank ajax multiple
     $( '#gamipress_ranks_include, #gamipress_ranks_exclude' ).select2( select2_ranks_multiple );
 
+    // User earnings
+    $( '#gamipress_earnings_points, #gamipress_earnings_achievements, #gamipress_earnings_ranks' ).change(function() {
+
+        var id = $(this).attr('id');
+        var target = undefined;
+
+        if( id === 'gamipress_earnings_points' ) {
+            target = $('.cmb2-id-gamipress-earnings-points-types, .cmb2-id-gamipress-earnings-awards, .cmb2-id-gamipress-earnings-deducts');
+        } else if( id === 'gamipress_earnings_achievements' ) {
+            target = $('.cmb2-id-gamipress-earnings-achievement-types, .cmb2-id-gamipress-earnings-steps');
+        } else if( id === 'gamipress_earnings_ranks' ) {
+            target = $('.cmb2-id-gamipress-earnings-rank-types, .cmb2-id-gamipress-earnings-rank-requirements');
+        }
+
+        if( $(this).prop('checked') ) {
+            // Just show if current tab active is ours
+            if( $(this).closest('.cmb-tabs-wrap').find('.cmb-tab.active[id$="' + id + '"]').length ) {
+                target.slideDown();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
+        } else {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        }
+    });
+
     // Setup ThickBox when "Add GamiPress Shortcode" link is clicked
     $('body').on( 'click', '#insert_gamipress_shortcodes', function(e) {
         e.preventDefault();
@@ -276,6 +311,9 @@
 
             // Clear all select2 fields
             $( 'select.select2-hidden-accessible', '.gamipress-shortcode-thickbox .cmb2-wrap').val('').change();
+
+            // Trigger change on all checkboxes to initialize visibility
+            $( 'input[type="checkbox"]', '.gamipress-shortcode-thickbox .cmb2-wrap').change();
         }, 0 );
     }
 

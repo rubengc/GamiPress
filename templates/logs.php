@@ -45,6 +45,22 @@ $a = $gamipress_template_args;
 
     <?php endforeach; ?>
 
+    <?php // Pagination
+    if( $a['pagination'] === 'yes' ) : ?>
+
+        <div id="gamipress-logs-pagination" class="gamipress-logs-pagination navigation">
+
+            <?php echo paginate_links( array(
+                'base'    => str_replace( 999999, '%#%', esc_url( get_pagenum_link( 999999 ) ) ),
+                'format'  => '?paged=%#%',
+                'current' => max( 1, get_query_var( 'paged' ) ),
+                'total'   => ceil( $a['query']->found_results / $a['limit'] )
+            ) ); ?>
+
+        </div>
+
+    <?php endif; ?>
+
     <?php
     /**
      * After render logs list

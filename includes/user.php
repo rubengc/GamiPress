@@ -150,28 +150,33 @@ function gamipress_update_user_achievements( $args = array() ) {
  * @return void
  */
 function gamipress_user_profile_data( $user = null ) {
-	// Verify user meets minimum role to view earned achievements
-	if ( current_user_can( gamipress_get_manager_capability() ) ) : ?>
 
-		<hr>
+	?>
+
+	<hr>
+
+	<?php // Verify user meets minimum role to manage earned achievements
+	if ( current_user_can( gamipress_get_manager_capability() ) ) : ?>
 
 		<h2><i class="dashicons dashicons-gamipress"></i> <?php _e( 'GamiPress', 'gamipress' ); ?></h2>
 
-		<?php // Output markup to user rank
-		gamipress_profile_user_rank( $user );
+	<?php endif; ?>
 
-        // Output markup to list user points
-		gamipress_profile_user_points( $user );
+	<?php // Output markup to user rank
+	gamipress_profile_user_rank( $user );
 
-        // Output markup to list user achievements
-		gamipress_profile_user_achievements( $user );
+	// Output markup to list user points
+	gamipress_profile_user_points( $user );
 
-		// Output markup for awarding achievement for user
-		gamipress_profile_award_achievement( $user ); ?>
+	// Output markup to list user achievements
+	gamipress_profile_user_achievements( $user );
 
-		<hr>
+	// Output markup for awarding achievement for user
+	gamipress_profile_award_achievement( $user ); ?>
 
-	<?php endif;
+	<hr>
+
+	<?php
 
 }
 add_action( 'show_user_profile', 'gamipress_user_profile_data' );
@@ -234,13 +239,21 @@ add_action( 'edit_user_profile_update', 'gamipress_save_user_profile_fields' );
  */
 function gamipress_profile_user_rank( $user = null ) {
 
-	$rank_types = gamipress_get_rank_types(); ?>
+	$rank_types = gamipress_get_rank_types();
 
-	<h2><?php _e( 'Ranks', 'gamipress' ); ?></h2>
+	$can_manage = current_user_can( gamipress_get_manager_capability() );
+
+	// Return if not rank types and user is not a manager
+	if( empty( $rank_types ) && ! $can_manage ) {
+		return;
+	}
+	?>
+
+	<h2><?php echo $can_manage ? __( 'Ranks', 'gamipress' ) : __( 'Your Ranks', 'gamipress' ); ?></h2>
 
 	<table class="form-table">
 
-		<?php if( empty( $rank_types ) ) : ?>
+		<?php if( empty( $rank_types ) && $can_manage ) : ?>
 			<tr>
 				<th><label for="user_rank"><?php _e( 'User Ranks', 'gamipress' ); ?></label></th>
 				<td>
@@ -253,40 +266,61 @@ function gamipress_profile_user_rank( $user = null ) {
 
 			<?php foreach( $rank_types as $rank_type => $data ) :
 
-				// Get all published ranks of this type
-				$ranks = gamipress_get_ranks( array(
-					'post_type' => $rank_type,
-					'posts_per_page' => -1
-				) );
+				if( $can_manage ) :
+					// Show an editable form of ranks
 
-				$user_rank_id = gamipress_get_user_rank_id( $user->ID, $rank_type ); ?>
+					// Get all published ranks of this type
+					$ranks = gamipress_get_ranks( array(
+						'post_type' => $rank_type,
+						'posts_per_page' => -1
+					) );
 
-				<tr>
-					<th><label for="user_<?php echo $rank_type; ?>_rank"><?php echo sprintf( __( 'User %s', 'gamipress' ), $data['singular_name'] ); ?></label></th>
-					<td>
+					$user_rank_id = gamipress_get_user_rank_id( $user->ID, $rank_type ); ?>
 
-						<?php if( empty( $ranks ) ) : ?>
+					<tr>
+						<th><label for="user_<?php echo $rank_type; ?>_rank"><?php echo sprintf( __( 'User %s', 'gamipress' ), $data['singular_name'] ); ?></label></th>
+						<td>
 
-							<span class="description">
-								<?php echo sprintf( __( 'No %1$s configured, visit %2$s to configure some %1$s.', 'gamipress' ),
-									strtolower( $data['plural_name'] ),
-									'<a href="' . admin_url( 'edit.php?post_type=' . $rank_type ) . '">' . __( 'this page', 'gamipress' ) . '</a>'
-								); ?>
-							</span>
+							<?php if( empty( $ranks ) ) : ?>
 
-						<?php else : ?>
+								<span class="description">
+									<?php echo sprintf( __( 'No %1$s configured, visit %2$s to configure some %1$s.', 'gamipress' ),
+										strtolower( $data['plural_name'] ),
+										'<a href="' . admin_url( 'edit.php?post_type=' . $rank_type ) . '">' . __( 'this page', 'gamipress' ) . '</a>'
+									); ?>
+								</span>
 
-							<select name="user_<?php echo $rank_type; ?>_rank" id="user_<?php echo $rank_type; ?>_rank" style="min-width: 15em;">
-								<?php foreach( $ranks as $rank ) : ?>
-									<option value="<?php echo $rank->ID; ?>" <?php selected( $user_rank_id, $rank->ID ); ?>><?php echo $rank->post_title; ?></option>
-								<?php endforeach; ?>
-							</select>
-							<span class="description"><?php echo sprintf( __( "The user's %s rank. %s listed are ordered by priority.", 'gamipress' ), strtolower( $data['singular_name'] ), $data['plural_name'] ); ?></span>
+							<?php else : ?>
 
-						<?php endif; ?>
+								<select name="user_<?php echo $rank_type; ?>_rank" id="user_<?php echo $rank_type; ?>_rank" style="min-width: 15em;">
+									<?php foreach( $ranks as $rank ) : ?>
+										<option value="<?php echo $rank->ID; ?>" <?php selected( $user_rank_id, $rank->ID ); ?>><?php echo $rank->post_title; ?></option>
+									<?php endforeach; ?>
+								</select>
+								<span class="description"><?php echo sprintf( __( "The user's %s rank. %s listed are ordered by priority.", 'gamipress' ), strtolower( $data['singular_name'] ), $data['plural_name'] ); ?></span>
 
-					</td>
-				</tr>
+							<?php endif; ?>
+
+						</td>
+					</tr>
+
+				<?php else :
+					// Show the information of each user rank
+
+					$user_rank = gamipress_get_user_rank( $user->ID, $rank_type ); ?>
+
+					<tr>
+						<th><label for="user_<?php echo $rank_type; ?>_rank"><?php echo $data['singular_name']; ?></label></th>
+						<td>
+
+							<?php if( $user_rank ) : ?>
+								<?php echo $user_rank->post_title; ?>
+							<?php endif; ?>
+
+						</td>
+					</tr>
+
+				<?php endif; ?>
 
 			<?php endforeach; ?>
 
@@ -307,13 +341,21 @@ function gamipress_profile_user_rank( $user = null ) {
  */
 function gamipress_profile_user_points( $user = null ) {
 
-    $points_types = gamipress_get_points_types(); ?>
+    $points_types = gamipress_get_points_types();
+
+	$can_manage = current_user_can( gamipress_get_manager_capability() );
+
+	// Return if not points types and user is not a manager
+	if( empty( $points_types ) && ! $can_manage ) {
+		return;
+	}
+	?>
 
     <h2><?php _e( 'Points Balance', 'gamipress' ); ?></h2>
 
     <table class="form-table">
 
-		<?php if( empty( $points_types ) ) : ?>
+		<?php if( empty( $points_types ) && $can_manage ) : ?>
 
 			<tr>
 				<th><label for="user_points"><?php _e( 'User Points', 'gamipress' ); ?></label></th>
@@ -326,26 +368,44 @@ function gamipress_profile_user_points( $user = null ) {
 
 		<?php else : ?>
 
-			<tr>
-				<th><label for="user_points"><?php _e( 'Earned Default Points', 'gamipress' ); ?></label></th>
-				<td>
-					<input type="text" name="user_points" id="user_points" value="<?php echo gamipress_get_user_points( $user->ID ); ?>" class="regular-text" /><br />
-					<span class="description"><?php _e( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ); ?></span>
-				</td>
-			</tr>
-
-			<?php foreach( $points_types as $points_type => $data ) : ?>
+			<?php if( $can_manage ) :
+				// Show an editable form of points ?>
 
 				<tr>
-					<th><label for="user_<?php echo $points_type; ?>_points"><?php echo sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ); ?></label></th>
+					<th><label for="user_points"><?php _e( 'Earned Default Points', 'gamipress' ); ?></label></th>
 					<td>
-						<input type="text" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo gamipress_get_user_points( $user->ID, $points_type ); ?>" class="regular-text" /><br />
-						<span class="description"><?php echo sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ); ?></span>
+						<input type="text" name="user_points" id="user_points" value="<?php echo gamipress_get_user_points( $user->ID ); ?>" class="regular-text" /><br />
+						<span class="description"><?php _e( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ); ?></span>
 					</td>
 				</tr>
 
-			<?php endforeach; ?>
+				<?php foreach( $points_types as $points_type => $data ) : ?>
 
+					<tr>
+						<th><label for="user_<?php echo $points_type; ?>_points"><?php echo sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ); ?></label></th>
+						<td>
+							<input type="text" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo gamipress_get_user_points( $user->ID, $points_type ); ?>" class="regular-text" /><br />
+							<span class="description"><?php echo sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ); ?></span>
+						</td>
+					</tr>
+
+				<?php endforeach; ?>
+
+			<?php else :
+				// Show the information of each user points balance ?>
+
+				<?php foreach( $points_types as $points_type => $data ) : ?>
+
+					<tr>
+						<th><label for="user_<?php echo $points_type; ?>_points"><?php echo $data['plural_name']; ?></label></th>
+						<td>
+							<?php echo gamipress_get_user_points( $user->ID, $points_type ); ?>
+						</td>
+					</tr>
+
+				<?php endforeach; ?>
+
+			<?php endif; ?>
 		<?php endif; ?>
 
     </table>
@@ -362,9 +422,11 @@ function gamipress_profile_user_points( $user = null ) {
  * @return string               concatenated markup
  */
 function gamipress_profile_user_achievements( $user = null ) {
+
+	$can_manage = current_user_can( gamipress_get_manager_capability() );
 	?>
 
-    <h2><?php _e( 'Earned Achievements', 'gamipress' ); ?></h2>
+    <h2><?php echo $can_manage ? __( 'Earned Achievements', 'gamipress' ) : __( 'Your Achievements', 'gamipress' ); ?></h2>
 
 	<?php ct_render_ajax_list_table( 'gamipress_user_earnings',
 		array(
@@ -387,6 +449,13 @@ function gamipress_profile_user_achievements( $user = null ) {
  * @return string               concatenated markup
  */
 function gamipress_profile_award_achievement( $user = null ) {
+
+	$can_manage = current_user_can( gamipress_get_manager_capability() );
+
+	// Return if user is not a manager
+	if( ! $can_manage ) {
+		return;
+	}
 
 	$achievements = gamipress_get_user_achievements( array( 'user_id' => absint( $user->ID ) ) );
 

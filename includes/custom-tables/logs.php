@@ -75,7 +75,11 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     // Include
     if( isset( $ct_query->query_vars['log__in'] ) && ! empty( $ct_query->query_vars['log__in'] ) ) {
 
-        $include = explode( ',', $ct_query->query_vars['log__in'] );
+        if( is_array( $ct_query->query_vars['log__in'] ) ) {
+            $include = implode( ", ", $ct_query->query_vars['log__in'] );
+        } else {
+            $include = $ct_query->query_vars['log__in'];
+        }
 
         if( ! empty( $include ) ) {
             $where .= " AND {$table_name}.log_id IN ( {$include} )";
@@ -85,7 +89,11 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     // Exclude
     if( isset( $ct_query->query_vars['log__not_in'] ) && ! empty( $ct_query->query_vars['log__not_in'] ) ) {
 
-        $exclude = explode( ',', $ct_query->query_vars['log__not_in'] );
+        if( is_array( $ct_query->query_vars['log__not_in'] ) ) {
+            $exclude = implode( ", ", $ct_query->query_vars['log__not_in'] );
+        } else {
+            $exclude = $ct_query->query_vars['log__not_in'];
+        }
 
         if( ! empty( $exclude ) ) {
             $where .= " AND {$table_name}.log_id NOT IN ( {$exclude} )";

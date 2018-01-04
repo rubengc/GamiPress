@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register [gamipress_points_types] shortcode.
+ * Register [gamipress_points_types] shortcode
  *
  * @since 1.0.0
  */
@@ -91,12 +91,13 @@ function gamipress_register_points_types_shortcode() {
 add_action( 'init', 'gamipress_register_points_types_shortcode' );
 
 /**
- * Points Types Shortcode.
+ * Points Types Shortcode
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes.
- * @return string 	   HTML markup.
+ * @param  array $atts Shortcode attributes
+ *
+ * @return string 	   HTML markup
  */
 function gamipress_points_types_shortcode( $atts = array () ) {
     global $gamipress_template_args, $blog_id;

@@ -714,8 +714,14 @@ function gamipress_add_earned_class_single( $classes = array() ) {
 	} else if( is_singular( gamipress_get_rank_types_slugs() ) ) {
 		// Single Rank
 
-		// Check if current user has earned the rank they're viewing
-		$classes[] = gamipress_get_user_achievements( array( 'user_id' => get_current_user_id(), 'achievement_id' => get_the_ID() ) ) ? 'user-has-earned' : 'user-has-not-earned';
+		// Check if current user has earned the rank they're viewing, rank is earned by default if is the lowest priority of this type
+		if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
+			$earned = true;
+		} else {
+			$earned = gamipress_get_user_achievements( array( 'user_id' => get_current_user_id(), 'achievement_id' => get_the_ID() ) );
+		}
+
+		$classes[] = $earned ? 'user-has-earned' : 'user-has-not-earned';
 
 	}
 
@@ -740,7 +746,10 @@ function gamipress_render_earned_achievement_text( $achievement_id = 0, $user_id
 
 	if ( gamipress_has_user_earned_achievement( $achievement_id, $user_id ) ) {
 
-		$earned_message .= '<div class="gamipress-achievement-earned"><p>' . __( 'You have earned this achievement!', 'gamipress' ) . '</p></div>';
+		$achievement_types = gamipress_get_achievement_types();
+		$achievement_type = $achievement_types[get_post_type( $achievement_id )];
+
+		$earned_message .= '<div class="gamipress-achievement-earned"><p>' . sprintf( __( 'You have earned this %s!', 'gamipress' ), $achievement_type['singular_name'] ) . '</p></div>';
 
 		if ( $congrats_text = get_post_meta( $achievement_id, '_gamipress_congratulations_text', true ) ) {
 			$earned_message .= '<div class="gamipress-achievement-congratulations">' . wpautop( $congrats_text ) . '</div>';
@@ -1177,7 +1186,10 @@ function gamipress_render_earned_rank_text( $rank_id = 0, $user_id = 0 ) {
 
 	if ( gamipress_has_user_earned_rank( $rank_id, $user_id ) ) {
 
-		$earned_message .= '<div class="gamipress-rank-earned"><p>' . __( 'You have reached this rank!', 'gamipress' ) . '</p></div>';
+		$rank_types = gamipress_get_rank_types();
+		$rank_type = $rank_types[get_post_type( $rank_id )];
+
+		$earned_message .= '<div class="gamipress-rank-earned"><p>' . sprintf( __( 'You have reached this %s!', 'gamipress' ), $rank_type['singular_name']) . '</p></div>';
 
 		if ( $congrats_text = get_post_meta( $rank_id, '_gamipress_congratulations_text', true ) ) {
 			$earned_message .= '<div class="gamipress-rank-congratulations">' . wpautop( $congrats_text ) . '</div>';

@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register [gamipress_points] shortcode.
+ * Register [gamipress_points] shortcode
  *
  * @since 1.0.0
  */
@@ -95,8 +95,9 @@ add_action( 'init', 'gamipress_register_points_shortcode' );
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes.
- * @return string 	   HTML markup.
+ * @param  array $atts Shortcode attributes
+ *
+ * @return string 	   HTML markup
  */
 function gamipress_points_shortcode( $atts = array () ) {
     global $gamipress_template_args;

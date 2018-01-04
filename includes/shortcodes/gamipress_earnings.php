@@ -1,0 +1,363 @@
+<?php
+/**
+ * GamiPress Earnings Shortcode
+ *
+ * @package     GamiPress\Shortcodes\Shortcode\GamiPress_Earnings
+ * @since       1.3.9
+ */
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Register [gamipress_earnings] shortcode
+ *
+ * @since 1.3.9
+ */
+function gamipress_register_earnings_shortcode() {
+
+    // Setup a custom array of points types
+    $points_types = array(
+        'all' => __( 'All', 'gamipress' ) ,
+    );
+
+    foreach ( gamipress_get_points_types() as $slug => $data ) {
+        $points_types[$slug] = $data['plural_name'];
+    }
+
+    // Setup a custom array of achievement types
+    $achievement_types = array(
+        'all' => __( 'All', 'gamipress' ) ,
+    );
+
+    foreach ( gamipress_get_achievement_types() as $slug => $data ) {
+        $achievement_types[$slug] = $data['plural_name'];
+    }
+
+    // Setup a custom array of rank types
+    $rank_types = array(
+        'all' => __( 'All', 'gamipress' ) ,
+    );
+
+    foreach ( gamipress_get_rank_types() as $slug => $data ) {
+        $rank_types[$slug] = $data['plural_name'];
+    }
+
+    gamipress_register_shortcode( 'gamipress_earnings', array(
+        'name'            => __( 'User Earnings', 'gamipress' ),
+        'description'     => __( 'Output a list of user earnings.', 'gamipress' ),
+        'output_callback' => 'gamipress_earnings_shortcode',
+        'tabs' => array(
+            'general' => array(
+                'icon' => 'dashicons-admin-generic',
+                'title' => __( 'General', 'gamipress' ),
+                'fields' => array(
+                    'current_user',
+                    'user_id',
+                    'limit',
+                    'pagination',
+                    'order',
+                ),
+            ),
+            'points' => array(
+                'icon' => 'dashicons-star-filled',
+                'title' => __( 'Points', 'gamipress' ),
+                'fields' => array(
+                    'points',
+                    'points_types',
+                    'awards',
+                    'deducts'
+                ),
+            ),
+            'achievements' => array(
+                'icon' => 'dashicons-awards',
+                'title' => __( 'Achievements', 'gamipress' ),
+                'fields' => array(
+                    'achievements',
+                    'achievement_types',
+                    'steps',
+                ),
+            ),
+            'ranks' => array(
+                'icon' => 'dashicons-rank',
+                'title' => __( 'Ranks', 'gamipress' ),
+                'fields' => array(
+                    'ranks',
+                    'rank_types',
+                    'rank_requirements',
+                ),
+            ),
+        ),
+        'fields'      => array(
+            'current_user' => array(
+                'name'        => __( 'Current User', 'gamipress' ),
+                'description' => __( 'Show only earned items of the current logged in user.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'user_id' => array(
+                'name'        => __( 'User ID', 'gamipress' ),
+                'description' => __( 'Show only earned items by a specific user.', 'gamipress' ),
+                'type'        => 'select',
+                'default'     => '',
+                'options_cb'  => 'gamipress_options_cb_users'
+            ),
+            'limit' => array(
+                'name'        => __( 'Limit', 'gamipress' ),
+                'description' => __( 'Number of items to display.', 'gamipress' ),
+                'type'        => 'text',
+                'default'     => 10,
+            ),
+            'pagination' => array(
+                'name'        => __( 'Enable Pagination', 'gamipress' ),
+                'description' => __( 'Show pagination links to navigate through all earned items.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'order' => array(
+                'name'        => __( 'Order', 'gamipress' ),
+                'description' => __( 'Sort order.', 'gamipress' ),
+                'type'        => 'select',
+                'options'      => array( 'DESC' => __( 'Newest', 'gamipress' ), 'ASC' => __( 'Older', 'gamipress' ) ),
+                'default'     => 'DESC',
+            ),
+
+            // Points types
+
+            'points' => array(
+                'name'        => __( 'Show Points', 'gamipress' ),
+                'description' => __( 'Show points earned and deducted.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'points_types' => array(
+                'name'        => __( 'Points Type(s)', 'gamipress' ),
+                'description' => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
+                'type'        => 'advanced_select',
+                'multiple'    => true,
+                'options' 	  => $points_types,
+                'default' 	  => 'all',
+            ),
+            'awards' => array(
+                'name'        => __( 'Show Points Awards', 'gamipress' ),
+                'description' => __( 'Show points awarded.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'deducts' => array(
+                'name'        => __( 'Show Points Deductions', 'gamipress' ),
+                'description' => __( 'Show points deducted.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+
+            // Achievement types
+
+            'achievements' => array(
+                'name'        => __( 'Show Achievements', 'gamipress' ),
+                'description' => __( 'Show achievements earned.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'achievement_types' => array(
+                'name'        => __( 'Achievement Type(s)', 'gamipress' ),
+                'description' => __( 'Single or comma-separated list of achievements type(s) to display.', 'gamipress' ),
+                'type'        => 'advanced_select',
+                'multiple'    => true,
+                'options' 	  => $achievement_types,
+                'default' 	  => 'all',
+            ),
+            'steps' => array(
+                'name'        => __( 'Show Steps', 'gamipress' ),
+                'description' => __( 'Show steps completed.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+
+            // Rank types
+
+            'ranks' => array(
+                'name'        => __( 'Show Ranks', 'gamipress' ),
+                'description' => __( 'Show ranks reached.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'rank_types' => array(
+                'name'        => __( 'Rank Type(s)', 'gamipress' ),
+                'description' => __( 'Single or comma-separated list of ranks type(s) to display.', 'gamipress' ),
+                'type'        => 'advanced_select',
+                'multiple'    => true,
+                'options' 	  => $rank_types,
+                'default' 	  => 'all',
+            ),
+            'rank_requirements' => array(
+                'name'        => __( 'Show Rank Requirements', 'gamipress' ),
+                'description' => __( 'Show rank requirements completed.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+        ),
+    ) );
+
+}
+add_action( 'init', 'gamipress_register_earnings_shortcode' );
+
+/**
+ * History Shortcode
+ *
+ * @since  1.3.9
+ *
+ * @param  array $atts Shortcode attributes
+ *
+ * @return string 	   HTML markup
+ */
+function gamipress_earnings_shortcode( $atts = array () ) {
+
+    global $gamipress_template_args;
+
+    $gamipress_template_args = array();
+
+    // Setup table
+    ct_setup_table( 'gamipress_user_earnings' );
+
+    $atts = shortcode_atts( array(
+        'current_user'      => 'yes',
+        'user_id'           => '0',
+        'limit'             => '10',
+        'pagination'        => 'yes',
+        'order'             => 'DESC',
+
+        'points'            => 'yes',
+        'points_types'      => 'all',
+        'awards'            => 'yes',
+        'deducts'           => 'yes',
+
+        'achievements'      => 'yes',
+        'achievement_types' => 'all',
+        'steps'             => 'yes',
+
+        'ranks'             => 'yes',
+        'rank_types'        => 'all',
+        'rank_requirements' => 'yes',
+    ), $atts, 'gamipress_earnings' );
+
+    gamipress_enqueue_scripts();
+
+    // GamiPress template args global
+    $gamipress_template_args = $atts;
+
+    // Query args
+    $args = array(
+        'orderby'           => 'date',
+        'order'             => $atts['order'],
+        'items_per_page'    => $atts['limit'],
+        'paged'             => max( 1, get_query_var( 'paged' ) )
+    );
+
+    // User
+    if( absint( $atts['user_id'] ) !== 0 ) {
+        $args['user_id'] = $atts['user_id'];
+    }
+
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' ) {
+        $args['user_id'] = get_current_user_id();
+    }
+
+    // Return if not user ID provided
+    if( absint( $args['user_id'] ) === 0 ) {
+        return '';
+    }
+
+    $types = array();
+    $points_types = array();
+
+    // Points types
+    if( $atts['points'] === 'yes' ) {
+
+        if( $atts['points_types'] === 'all') {
+            $points_types = gamipress_get_points_types_slugs();
+        } else {
+            $points_types = explode( ',', $atts['points_types'] );
+        }
+
+        // Points awards
+        if( $atts['awards'] === 'yes' ) {
+            $types[] = 'points-award';
+        }
+
+        // Points deducts
+        if( $atts['deducts'] === 'yes' ) {
+            $types[] = 'points-deduct';
+        }
+    }
+
+    // Achievement types
+    if( $atts['achievements'] === 'yes' ) {
+
+        if( $atts['achievement_types'] === 'all') {
+            $achievement_types = gamipress_get_achievement_types_slugs();
+        } else {
+            $achievement_types = explode( ',', $atts['achievement_types'] );
+        }
+
+        $types = array_merge( $types, $achievement_types );
+
+        // Step
+        if( $atts['steps'] === 'yes' ) {
+            $types[] = 'step';
+        }
+    }
+
+    // Rank types
+    if( $atts['ranks'] === 'yes' ) {
+
+        if( $atts['rank_types'] === 'all') {
+            $rank_types = gamipress_get_rank_types_slugs();
+        } else {
+            $rank_types = explode( ',', $atts['rank_types'] );
+        }
+
+        $types = array_merge( $types, $rank_types );
+
+        // Rank requirements
+        if( $atts['rank_requirements'] === 'yes' ) {
+            $types[] = 'rank-requirement';
+        }
+    }
+
+    // Remove types that has 'all' value
+    foreach( $types as $index => $type ) {
+        if( $type === 'all' ) {
+            unset( $types[$index] );
+        }
+    }
+
+    // Return if not types selected
+    if( empty( $types ) ) {
+        return '';
+    }
+
+    $args['post_type'] = $types;
+
+    if( ! empty( $points_types ) ) {
+        $args['points_type'] = $points_types;
+    }
+
+    $gamipress_template_args['query'] = new CT_Query( $args );
+
+    ob_start();
+    gamipress_get_template_part( 'earnings' );
+    $output = ob_get_clean();
+
+    return $output;
+
+}

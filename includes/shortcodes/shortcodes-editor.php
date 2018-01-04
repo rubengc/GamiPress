@@ -11,6 +11,14 @@ if( !defined( 'ABSPATH' ) ) exit;
 class GamiPress_Shortcodes_Editor {
 
 	public function __construct() {
+
+		global $pagenow;
+
+		// Prevent render on customizer
+		if( $pagenow === 'customize.php' ) {
+			return;
+		}
+
 		$this->shortcodes = gamipress_get_shortcodes();
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ), 99 );
@@ -28,10 +36,9 @@ class GamiPress_Shortcodes_Editor {
 
 		global $post_type;
 
-
 		if(
-			( $hook === 'post.php' || $hook === 'post-new.php' ) && post_type_supports( $post_type, 'editor' ) 	// Enqueue on add/edit views of post types that supports editor feature
-			|| $hook === 'gamipress_page_gamipress_settings'													// Enqueue on GamiPress settings screen
+			( in_array( $hook, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) ) && post_type_supports( $post_type, 'editor' ) 	// Add/edit views of post types that supports editor feature
+			|| $hook === 'gamipress_page_gamipress_settings'																						// GamiPress settings screen
 		) {
 
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
@@ -60,6 +67,7 @@ class GamiPress_Shortcodes_Editor {
 	 * @since 1.0.0
 	 */
 	public function render_button() {
+
 		echo '<a id="insert_gamipress_shortcodes" href="#TB_inline?width=660&height=800&inlineId=select_gamipress_shortcode" class="thickbox button gamipress_media_link" data-width="800"><span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'Add GamiPress Shortcode', 'gamipress' ) . '</a>';
 	}
 
@@ -68,7 +76,9 @@ class GamiPress_Shortcodes_Editor {
 	 *
 	 * @since 1.0.0
 	 */
-	public function render_modal() { ?>
+	public function render_modal() {
+		?>
+
 		<div id="select_gamipress_shortcode" style="display:none;">
 			<div class="wrap">
 				<h3><?php _e( 'Insert a GamiPress shortcode', 'gamipress' ); ?></h3>

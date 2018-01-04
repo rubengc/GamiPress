@@ -52,6 +52,22 @@ function gamipress_requirements_ui_meta_box( $post = null, $metabox ) {
     // Define the requirement type to use
     $requirement_type = gamipress_requirements_ui_get_requirement_type( $post, $metabox );
 
+    // If is lowest priority rank then show a notice and prevent to show requirements UI
+    if( $requirement_type === 'rank-requirement' ) {
+
+        if( ( $post->post_status === 'auto-draft' && gamipress_get_rank_priority( $post->ID ) === 1 )
+            || ( $post->post_status !== 'auto-draft' && gamipress_is_lowest_priority_rank( $post->ID ) ) ) {
+
+            echo '<p>' .
+                __( 'The rank with the lowest priority is set as default rank for all users so this rank should be created without requirements.', 'gamipress' )
+                . '<br>'
+                . __( 'You will be able to set requirements on next ranks. After save this rank, if it is not configured as the lowest priority you will be able to edit the requirements again.', 'gamipress' )
+                . '</p>';
+            return;
+
+        }
+    }
+
     // Setup the requirement object based on the requirement type
     $requirement_types = gamipress_get_requirement_types();
     $requirement_type_object = $requirement_types[$requirement_type];

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.8.1
+Stable tag: 1.3.9
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -178,6 +178,7 @@ GamiPress comes with the following shortcodes:
 
 * [[gamipress_achievement]](https://gamipress.com/docs/shortcodes/gamipress_achievement/) to display a desired achievement.
 * [[gamipress_achievements]](https://gamipress.com/docs/shortcodes/gamipress_achievements/) to display a list of achievements.
+* [[gamipress_earnings]](https://gamipress.com/docs/shortcodes/gamipress_earnings/) to display a list of user earnings.
 * [[gamipress_logs]](https://gamipress.com/docs/shortcodes/gamipress_logs/) to display a list of logs.
 * [[gamipress_points_types]](https://gamipress.com/docs/shortcodes/gamipress_points_types/) to display a list of points types with their points awards and deducts.
 * [[gamipress_points]](https://gamipress.com/docs/shortcodes/gamipress_points/) to display current or specific user points balance.
@@ -192,6 +193,7 @@ GamiPress comes with the following widgets:
 
 * Achievement: to display a desired achievement.
 * Achievements: to display a list of achievements.
+* User Earnings: to display a list of user earnings.
 * Logs: to display a list of logs.
 * Points Types: to display a list of points types with their points awards and deducts.
 * User Points: to display current or specific user points balance.
@@ -199,6 +201,20 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 
 == Changelog ==
+
+= 1.3.9 =
+
+* Added the [gamipress_earnings] shortcode.
+* Added the GamiPress: User Earnings widget.
+* Added the "pagination" attribute to the [gamipress_logs] shortcode.
+* Added the "Enable Pagination" field to the GamiPress: Logs widget.
+* Updated user profile output letting users meet their points, achievements and ranks.
+* Added checks to prevent show GamiPress Shortcodes Editor on customizer.
+* Fixed warning on [gamipress_logs] shortcode.
+* Fixed rank earned status on single page.
+* Added notice on rank edit screen to explain better how GamiPress works with lowest priority ranks.
+* Fixed issue with some fields visibility on shortcode editor and widget forms.
+* Fixed issue with select2 fields on widget forms.
 
 = 1.3.8.1 =
 

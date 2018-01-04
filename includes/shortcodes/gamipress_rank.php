@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register the [gamipress_rank] shortcode.
+ * Register the [gamipress_rank] shortcode
  *
  * @since 1.3.1
  */
@@ -73,12 +73,13 @@ function gamipress_register_rank_shortcode() {
 add_action( 'init', 'gamipress_register_rank_shortcode' );
 
 /**
- * Single Rank Shortcode.
+ * Single Rank Shortcode
  *
  * @since  1.3.1
  *
- * @param  array $atts Shortcode attributes.
- * @return string 	   HTML markup.
+ * @param  array $atts Shortcode attributes
+ *
+ * @return string 	   HTML markup
  */
 function gamipress_rank_shortcode( $atts = array() ) {
 

@@ -565,28 +565,9 @@ add_filter( 'cmb2_override_post_name_meta_value', 'gamipress_cmb2_override_post_
 
 function gamipress_cmb2_override_menu_order_display( $data, $post_id ) {
 
-	global $wpdb;
+	// Code has been moved to gamipress_get_rank_priority() on 1.3.9
 
-	if( get_post_field( 'post_status', $post_id ) === 'auto-draft' ) {
-
-		$rank_type = get_post_type( $post_id );
-
-		// Get higher menu order
-		$last = $wpdb->get_var( $wpdb->prepare(
-			"SELECT p.menu_order
-			FROM {$wpdb->posts} AS p
-			WHERE p.post_type = %s
-			 AND p.post_status = %s
-			ORDER BY menu_order DESC
-			LIMIT 1",
-			$rank_type,
-			'publish'
-		) );
-
-		return absint( $last ) + 1;
-	}
-
-	return absint( get_post_field( 'menu_order', $post_id ) );
+	return gamipress_get_rank_priority( $post_id );
 
 }
 add_filter( 'cmb2_override_menu_order_meta_value', 'gamipress_cmb2_override_menu_order_display', 10, 2 );

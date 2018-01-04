@@ -49,5 +49,26 @@
     $('body').on('click', '.cmb-add-row-button', function() {
         $(this).closest('.cmb-repeat').find('.cmb-row').addClass('cmb-tab-active-item');
     });
+
+    // Initialize on widgets area
+    $(document).on('widget-updated widget-added', function(e, widget) {
+
+        if( widget.find('.cmb-tabs').length ) {
+
+            widget.find('.cmb-tabs').each(function() {
+                // Activate first tab
+                if( ! $(this).find('.cmb-tab.active').length ) {
+                    $(this).find('.cmb-tab').first().addClass('active');
+
+                    $($(this).find('.cmb-tab').first().data('fields')).addClass('cmb-tab-active-item');
+
+                    // Support for groups and repeatable fields
+                    $($(this).find('.cmb-tab').first().data('fields')).find('.cmb-repeat .cmb-row, .cmb-repeatable-group .cmb-row').addClass('cmb-tab-active-item');
+                }
+            });
+
+        }
+
+    });
     
 })(jQuery);

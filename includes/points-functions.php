@@ -536,7 +536,9 @@ add_action( 'gamipress_update_user_points', 'gamipress_log_user_points', 10, 8 )
  * @return array An array of our registered points types
  */
 function gamipress_get_points_types() {
+
     return GamiPress()->points_types;
+
 }
 
 /**
@@ -546,6 +548,7 @@ function gamipress_get_points_types() {
  * @return array An array of all our registered points type slugs (empty array if none)
  */
 function gamipress_get_points_types_slugs() {
+
     // Assume we have no registered points types
     $points_type_slugs = array();
 
@@ -556,6 +559,7 @@ function gamipress_get_points_types_slugs() {
 
     // Finally, return our data
     return $points_type_slugs;
+
 }
 
 /**
