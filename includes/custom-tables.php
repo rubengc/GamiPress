@@ -25,6 +25,7 @@ function gamipress_register_custom_tables() {
         'singular' => __( 'User Earning', 'gamipress' ),
         'plural' => __( 'User Earnings', 'gamipress' ),
         'labels' => array(
+            'not_found' => __( 'This user has not earned anything', 'gamipress' )
         ),
         'show_ui' => false,
         'version' => 1,
