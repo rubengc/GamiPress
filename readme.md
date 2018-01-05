@@ -205,6 +205,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.9.1 ###
+
+* Improvements on queries to reset logs from Reset Data Tool.
+* Improvements on DB table existence check.
+
 ### 1.3.9 ###
 
 * Added the [gamipress_earnings] shortcode.

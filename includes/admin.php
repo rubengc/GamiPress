@@ -24,6 +24,8 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
 /**
  * Create GamiPress menus
+ *
+ * @since 1.0.0
  */
 function gamipress_admin_menu() {
 
@@ -47,13 +49,15 @@ function gamipress_admin_menu() {
     }
 
     // GamiPress menu
-    add_menu_page( 'GamiPress', 'GamiPress', $minimum_role, 'gamipress', 'gamipress_settings', 'dashicons-gamipress', 55 );
+    add_menu_page( __( 'GamiPress', 'gamipress' ), __( 'GamiPress', 'gamipress' ), $minimum_role, 'gamipress', '', 'dashicons-gamipress', 55 );
 
 }
 add_action( 'admin_menu', 'gamipress_admin_menu' );
 
 /**
  * Create GamiPress Settings menus
+ *
+ * @since 1.0.0
  */
 function gamipress_admin_submenu() {
 
@@ -69,6 +73,8 @@ add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
 
 /**
  * Register GamiPress dashboard widget.
+ *
+ * @since 1.0.0
  */
 function gamipress_dashboard_widgets() {
 
@@ -78,6 +84,8 @@ add_action( 'wp_dashboard_setup', 'gamipress_dashboard_widgets' );
 
 /**
  * GamiPress dashboard widget output.
+ *
+ * @since 1.0.0
  */
 function gamipress_dashboard_widget() {
     $achievement_types = gamipress_get_achievement_types();

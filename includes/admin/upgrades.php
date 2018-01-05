@@ -146,5 +146,12 @@ function gamipress_database_table_exists( $table_name ) {
         $wpdb->esc_like( $table_name )
     ) );
 
+    if( empty( $table_exist ) ) {
+        $table_exist = $wpdb->get_var( $wpdb->prepare(
+            "SHOW TABLES LIKE %s",
+            $wpdb->esc_like( $wpdb->prefix . $table_name )
+        ) );
+    }
+
     return ! empty( $table_exist );
 }

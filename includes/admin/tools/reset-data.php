@@ -167,18 +167,14 @@ function gamipress_ajax_reset_data_tool() {
                 break;
             case 'logs':
 
-                if( is_gamipress_upgraded_to( '1.2.8' ) ) {
+                if( gamipress_database_table_exists( 'gamipress_logs' ) ) {
                     $ct_table = ct_setup_table( 'gamipress_logs' );
 
                     // Reset from gamipress_logs table
-                    $wpdb->delete( $ct_table->db->table_name, array(
-                        '1' => 1
-                    ) );
+                    $wpdb->query( "DELETE FROM {$ct_table->db->table_name} WHERE 1=1" );
 
                     // Reset from gamipress_logs_meta table
-                    $wpdb->delete( $ct_table->meta->db->table_name, array(
-                        '1' => 1
-                    ) );
+                    $wpdb->query( "DELETE FROM {$ct_table->meta->db->table_name} WHERE 1=1" );
 
                 } else {
 

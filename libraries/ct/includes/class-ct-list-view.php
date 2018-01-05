@@ -244,10 +244,6 @@ if ( ! class_exists( 'CT_List_View' ) ) :
                 $_SERVER['REQUEST_URI'] = remove_query_arg( array( 'locked', 'skipped', 'updated', 'deleted', 'trashed', 'untrashed' ), $_SERVER['REQUEST_URI'] );
                 ?>
 
-                <?php if ( $this->message ) : ?>
-                    <div id="message" class="updated notice notice-success is-dismissible"><p><?php echo $this->message; ?></p></div>
-                <?php endif; ?>
-
                 <?php $ct_list_table->views(); ?>
 
                 <form id="ct-list-filter" method="get">
