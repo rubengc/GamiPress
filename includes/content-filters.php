@@ -1076,7 +1076,7 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	if ( ! $count )
 		return null;
 
-	// Grab the current user's ID if none was specifed
+	// Grab the current user's ID if none was specified
 	if ( ! $user_id )
 		$user_id = get_current_user_id();
 
@@ -1084,19 +1084,17 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	$output = '';
 	$container = gamipress_is_achievement_sequential() ? 'ol' : 'ul';
 
-	$post_type_object = get_post_type_object( 'rank-requirement' );
-
 	$output .= '<h4>' . apply_filters( 'gamipress_rank_requirements_heading', $count . ' ' . _n( 'Requirement', 'Requirements', $count, 'gamipress' ), $requirements ) . '</h4>';
 	$output .= '<' . $container .' class="gamipress-required-requirements">';
 
 	// Concatenate our output
 	foreach ( $requirements as $requirement ) {
 
-		// check if user has earned this Achievement, and add an 'earned' class
+		// check if user has earned this requirement, and add an 'earned' class
 		$earned_status = gamipress_get_user_achievements( array(
 			'user_id' => absint( $user_id ),
 			'achievement_id' => absint( $requirement->ID ),
-			'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
+			'since' => absint( gamipress_achievement_last_user_activity( $rank_id, $user_id ) )
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
 
 		$title = $requirement->post_title;

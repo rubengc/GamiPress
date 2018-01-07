@@ -205,6 +205,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.9.2 ###
+
+* Improvements on rank requirements completion checks.
+* Added check to prevent earn a requirement repeatably.
+
 ### 1.3.9.1 ###
 
 * Improvements on queries to reset logs from Reset Data Tool.

@@ -308,6 +308,16 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 		$return = false;
 	}
 
+	// Prevent user from repeatedly earning the same requirement
+	if ( $return && gamipress_get_user_achievements( array(
+			'user_id'        => absint( $user_id ),
+			'achievement_id' => absint( $rank_requirement_id ),
+			'since'          => absint( gamipress_achievement_last_user_activity( $requirement_rank->ID, $user_id ) )
+		) )
+	) {
+		$return = false;
+	}
+
 	// Send back our eligibility
 	return $return;
 }
