@@ -25,7 +25,7 @@ if( isset( $a['user_id'] ) ) {
     /**
      * Before render rank types list
      *
-     * @param $rank_types       array Array of points types to be rendered
+     * @param $rank_types       array Array of rank types to be rendered
      * @param $template_args    array Template received arguments
      */
     do_action( 'gamipress_before_render_rank_types_list', $a['rank-types'], $a ); ?>
@@ -84,7 +84,7 @@ if( isset( $a['user_id'] ) ) {
     /**
      * After render rank types list
      *
-     * @param $rank_types     array Array of points types to be rendered
+     * @param $rank_types       array Array of rank types to be rendered
      * @param $template_args    array Template received arguments
      */
     do_action( 'gamipress_after_render_rank_types_list', $a['rank-types'], $a ); ?>

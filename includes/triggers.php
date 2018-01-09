@@ -448,19 +448,62 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 
 	global $wpdb;
 
-	$listeners_count = $wpdb->get_var( $wpdb->prepare(
-		"
-		SELECT COUNT(*)
-		FROM   $wpdb->posts AS p
-		LEFT JOIN $wpdb->postmeta AS pm
-		ON ( p.ID = pm.post_id )
-		WHERE p.post_status = %s
-			AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
-			AND ( pm.meta_key = %s AND pm.meta_value = %s )
-		",
-		'publish',
-		'_gamipress_trigger_type', $trigger
-	) );
+	$listeners_count = 0;
+
+	// If is specific trigger then try to get the attached id
+	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+
+		$specific_id = 0;
+
+		// If isset this key it means $args is a requirement object
+		if( isset( $args['achievement_post'] ) ) {
+			$specific_id = absint( $args['achievement_post'] );
+		} else if( ! empty( $args ) ) {
+			$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
+		}
+
+		// If there is a specific id, then try to find the count
+		if( $specific_id !== 0 ) {
+
+			$listeners_count = $wpdb->get_var( $wpdb->prepare(
+				"
+				SELECT COUNT(*)
+				FROM   $wpdb->posts AS p
+				LEFT JOIN $wpdb->postmeta AS pm
+				ON ( p.ID = pm.post_id )
+				LEFT JOIN $wpdb->postmeta AS pm2
+				ON ( p.ID = pm2.post_id )
+				WHERE p.post_status = %s
+					AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
+					AND ( pm.meta_key = %s AND pm.meta_value = %s )
+					AND ( pm2.meta_key = %s AND pm2.meta_value = %s )
+				",
+				'publish',
+				'_gamipress_trigger_type', $trigger,
+				'_gamipress_achievement_post', $specific_id
+			) );
+
+		}
+
+	} else {
+
+		$listeners_count = $wpdb->get_var( $wpdb->prepare(
+			"
+			SELECT COUNT(*)
+			FROM   $wpdb->posts AS p
+			LEFT JOIN $wpdb->postmeta AS pm
+			ON ( p.ID = pm.post_id )
+			WHERE p.post_status = %s
+				AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
+				AND ( pm.meta_key = %s AND pm.meta_value = %s )
+			",
+			'publish',
+			'_gamipress_trigger_type', $trigger
+		) );
+
+	}
+
+
 
 	$has_listeners = ( absint( $listeners_count ) > 0 );
 

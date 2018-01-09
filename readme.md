@@ -187,6 +187,7 @@ GamiPress comes with the following shortcodes:
 * [[gamipress_points]](https://gamipress.com/docs/shortcodes/gamipress_points/) to display current or specific user points balance.
 * [[gamipress_rank]](https://gamipress.com/docs/shortcodes/gamipress_rank/) to display a desired rank.
 * [[gamipress_ranks]](https://gamipress.com/docs/shortcodes/gamipress_ranks/) to display a list of ranks.
+* [[gamipress_user_rank]](https://gamipress.com/docs/shortcodes/gamipress_user_rank/) to display previous, current and/or next rank of an user.
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of available shortcodes, including descriptions of all parameters each shortcode supports.
 
@@ -202,8 +203,17 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 * Rank: to display a desired rank.
 * Ranks: to display a list of ranks.
+* User Rank: to display previous, current and/or next rank of an user.
 
 ## Changelog ##
+
+### 1.3.9.3 ###
+
+* Added the [gamipress_user_rank] shortcode.
+* Added the GamiPress: User Rank widget.
+* Improvements checking if activity has listeners to check if a specific activity trigger has a listener by specific ID.
+* Moved licenses settings tab to a single page.
+* Style improvements on licenses settings page.
 
 ### 1.3.9.2 ###
 

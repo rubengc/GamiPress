@@ -71,9 +71,13 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
         }
 
         public function license_deactivation_handler() {
+
             if( ! isset( $_REQUEST['edd_license_deactivate_license'] ) ) {
                 return;
             }
+
+            // Ajax check
+            $is_ajax = ( isset( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) == 'xmlhttprequest' );
 
             // Add nonce for security and authentication.
             $nonce_name   = isset( $_REQUEST['cmb2_edd_license_deactivation_nonce'] ) ? $_REQUEST['cmb2_edd_license_deactivation_nonce'] : '';
@@ -81,12 +85,24 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
             // Check if nonce is set.
             if ( ! isset( $nonce_name ) ) {
-                return;
+
+                if( $is_ajax ) {
+                    wp_send_json_error( __( 'Security verification not sent.', 'cmb2-edd-license' ) );
+                } else {
+                    return;
+                }
+
             }
 
             // Check if nonce is valid.
             if ( ! wp_verify_nonce( $nonce_name, $nonce_action ) ) {
-                return;
+
+                if( $is_ajax ) {
+                    wp_send_json_error( __( 'Security verification failed.', 'cmb2-edd-license' ) );
+                } else {
+                    return;
+                }
+
             }
 
             $meta_box_id = isset( $_REQUEST['edd_license_deactivate_cmb_id'] ) ? $_REQUEST['edd_license_deactivate_cmb_id'] : '';
@@ -96,13 +112,25 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
             // Check if field id is set.
             if ( empty( $meta_box_id ) || empty( $field_id ) || empty( $object_id ) || empty( $object_type ) ) {
-                return;
+
+                if( $is_ajax ) {
+                    wp_send_json_error( __( 'Some fields are missing.', 'cmb2-edd-license' ) );
+                } else {
+                    return;
+                }
+
             }
 
             $field = cmb2_get_field( $meta_box_id, $field_id, $object_id, $object_type );
 
             if( $field->args( 'type' ) !== 'edd_license' ) {
-                return;
+
+                if( $is_ajax ) {
+                    wp_send_json_error( __( 'Can not setup license object.', 'cmb2-edd-license' ) );
+                } else {
+                    return;
+                }
+
             }
 
             $license = cmb2_edd_license_data( $field->escaped_value() );
@@ -121,7 +149,31 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
                     'wp_override'     => false,
                 ) );
 
-                $this->api_request( $args['server'], $args['license'], $args, 'deactivate_license' );
+                $api_response = $this->api_request( $args['server'], $args['license'], $args, 'deactivate_license' );
+
+                if( $api_response === true ) {
+
+                    if( $is_ajax ) {
+                        wp_send_json_success( __( 'License deactivated successfully.', 'cmb2-edd-license' ) );
+                    } else {
+                        return;
+                    }
+
+                } else {
+
+                    if( $is_ajax ) {
+                        wp_send_json_error( $api_response );
+                    } else {
+                        return;
+                    }
+
+                }
+
+            } else {
+
+                if( $is_ajax ) {
+                    wp_send_json_error( __( 'License has not been activated yet.', 'cmb2-edd-license' ) );
+                }
 
             }
 

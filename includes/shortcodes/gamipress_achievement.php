@@ -14,6 +14,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @since 1.0.0
  */
 function gamipress_register_achievement_shortcode() {
+
 	gamipress_register_shortcode( 'gamipress_achievement', array(
 		'name'            => __( 'Single Achievement', 'gamipress' ),
 		'description'     => __( 'Render a single achievement.', 'gamipress' ),
@@ -69,6 +70,7 @@ function gamipress_register_achievement_shortcode() {
 			),
 		),
 	) );
+
 }
 add_action( 'init', 'gamipress_register_achievement_shortcode' );
 
@@ -82,15 +84,17 @@ add_action( 'init', 'gamipress_register_achievement_shortcode' );
  * @return string 	   HTML markup
  */
 function gamipress_achievement_shortcode( $atts = array() ) {
-	// get the post id
+
 	$atts = shortcode_atts( array(
-	  'id' => get_the_ID(),
+
+	  'id' 				=> get_the_ID(),
 	  'title' 			=> 'yes',
 	  'thumbnail' 		=> 'yes',
 	  'excerpt'	  		=> 'yes',
 	  'steps'	  		=> 'yes',
 	  'toggle' 			=> 'yes',
 	  'earners'	  		=> 'no',
+
 	), $atts, 'gamipress_achievement' );
 
 	// Return if achievement id not specified
@@ -110,4 +114,5 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 
 	// Return our rendered achievement
 	return $output;
+
 }

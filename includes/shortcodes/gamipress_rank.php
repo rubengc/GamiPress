@@ -14,6 +14,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @since 1.3.1
  */
 function gamipress_register_rank_shortcode() {
+
 	gamipress_register_shortcode( 'gamipress_rank', array(
 		'name'            => __( 'Single Rank', 'gamipress' ),
 		'description'     => __( 'Render a single rank.', 'gamipress' ),
@@ -69,6 +70,7 @@ function gamipress_register_rank_shortcode() {
 			),
 		),
 	) );
+
 }
 add_action( 'init', 'gamipress_register_rank_shortcode' );
 
@@ -85,7 +87,7 @@ function gamipress_rank_shortcode( $atts = array() ) {
 
 	$atts = shortcode_atts( array(
 
-	  	'id' => get_the_ID(),
+	  	'id' 			=> get_the_ID(),
 	  	'user_id' 		=> '0',
 	  	'title' 		=> 'yes',
 	  	'thumbnail' 	=> 'yes',

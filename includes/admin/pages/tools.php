@@ -104,7 +104,7 @@ function gamipress_register_tools_page() {
     ) );
 
 }
-add_action( 'cmb2_admin_init', 'gamipress_register_tools_page', 10 );
+add_action( 'cmb2_admin_init', 'gamipress_register_tools_page', 11 );
 
 /**
  * GamiPress registered tools sections

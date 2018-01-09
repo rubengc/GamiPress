@@ -16,9 +16,10 @@ require_once GAMIPRESS_DIR . 'includes/admin/ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
-require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
-require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/support.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/licenses.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
@@ -65,8 +66,8 @@ function gamipress_admin_submenu() {
     $minimum_role = gamipress_get_manager_capability();
 
     // GamiPress sub menus
-    add_submenu_page( 'gamipress', __( 'Add-ons', 'gamipress' ), __( 'Add-ons', 'gamipress' ), $minimum_role, 'gamipress_add_ons', 'gamipress_add_ons_page' );
     add_submenu_page( 'gamipress', __( 'Help / Support', 'gamipress' ), __( 'Help / Support', 'gamipress' ), $minimum_role, 'gamipress_help_support', 'gamipress_help_support_page' );
+    add_submenu_page( 'gamipress', __( 'Add-ons', 'gamipress' ), __( 'Add-ons', 'gamipress' ), $minimum_role, 'gamipress_add_ons', 'gamipress_add_ons_page' );
 
 }
 add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );

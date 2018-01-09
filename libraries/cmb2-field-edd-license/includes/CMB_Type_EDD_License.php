@@ -86,15 +86,12 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
 		if( $field_args['deactivate_button'] !== false && $license_status === 'valid' ) {
 			$deactivation_button = '<p class="deactivate-license">' .
-				// TODO: Can not render a form inside a another form
-                //'<form name="edd_license_deactivate_form" method="post">' .
                     wp_nonce_field( 'cmb2_edd_license_deactivation_nonce_action', 'cmb2_edd_license_deactivation_nonce' ) .
                     '<input type="hidden" name="edd_license_deactivate_cmb_id" value="' . $this->field->cmb_id . '"/>' .
                     '<input type="hidden" name="edd_license_deactivate_field_id" value="' . $this->_id() . '"/>' .
                     '<input type="hidden" name="edd_license_deactivate_object_id" value="' . $this->field->object_id . '"/>' .
                     '<input type="hidden" name="edd_license_deactivate_object_type" value="' . $this->field->object_type . '"/>' .
-                    '<button type="submit" class="button deactivate-license-button" name="edd_license_deactivate_license" value="' . $args['value'] . '">' . $field_args['deactivate_button'] . '</button>' .
-                //'</form>' .
+                    '<button type="button" class="button deactivate-license-button" name="edd_license_deactivate_license" value="' . $args['value'] . '">' . $field_args['deactivate_button'] . '</button>' .
             '</p>';
 		}
 

@@ -816,7 +816,7 @@ body > .gamipress-select2,
 }
 
 /* GamiPress Licensing Settings */
-.gamipress_settings #opt-content-licenses .meta-box-sortables {
+.gamipress_licenses .meta-box-sortables {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -828,49 +828,63 @@ body > .gamipress-select2,
 	margin-right: -8px;
 }
 
-.gamipress_settings #opt-content-licenses .postbox {
+.gamipress_licenses .handlediv,
+.gamipress_page_gamipress_licenses #screen-options-link-wrap {
+	display: none !important;
+}
+
+.gamipress_licenses .postbox.closed .inside {
+	display: block !important;
+}
+
+.gamipress_licenses .postbox {
 	width: 100%;
 	margin: 0 8px 16px;
 }
 
-.gamipress_settings #opt-content-licenses .gamipress-license-thumbnail {
+.gamipress_licenses .gamipress-license-thumbnail {
 	margin: -6px -12px 0;
 }
 
-.gamipress_settings #opt-content-licenses .cmb-row {
+.gamipress_licenses .cmb-row {
 	border: none;
 	padding-bottom: 0;
 }
-.gamipress_settings #opt-content-licenses .cmb-th,
-.gamipress_settings #opt-content-licenses .cmb-td {
-	width: 100%;
-	padding: 6px 0;
-	margin-left: 0;
+
+.gamipress_licenses .cmb2-metabox > .cmb-row:not(:first-of-type) {
+	border: none !important;
 }
 
-.gamipress_settings #opt-content-licenses .cmb-td input {
+.gamipress_licenses .cmb-th,
+.gamipress_licenses .cmb-td {
+	width: 100%;
+	padding: 6px 0 !important;
+	margin-left: 0 !important;
+}
+
+.gamipress_licenses .cmb-td input {
 	width: 100%;
 }
 
-.gamipress_settings #opt-content-licenses .license-expiration-notice,
-.gamipress_settings #opt-content-licenses .renew-license-notice {
+.gamipress_licenses .license-expiration-notice,
+.gamipress_licenses .renew-license-notice {
 	display: inline;
 }
 
-.gamipress_settings #opt-content-licenses .renew-license-notice:before {
+.gamipress_licenses .renew-license-notice:before {
 	content: ' '; /* Add a space between expiration and renew notices */
 }
 
 @media screen and (min-width: 1600px) {
 
-	.gamipress_settings #opt-content-licenses .postbox {
+	.gamipress_licenses .postbox {
 		width: 23%;
 	}
 
 }
 
 @media screen and (min-width: 1200px) and (max-width: 1600px) {
-	.gamipress_settings #opt-content-licenses .postbox {
+	.gamipress_licenses .postbox {
 		width: 31%;
 	}
 }

@@ -12,7 +12,6 @@ require_once GAMIPRESS_DIR . 'includes/admin/settings/general.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/style.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/email.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/logs.php';
-require_once GAMIPRESS_DIR . 'includes/admin/settings/licenses.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/network.php';
 
 /**
@@ -161,7 +160,7 @@ function gamipress_register_settings_page() {
     ) );
 
 }
-add_action( 'cmb2_admin_init', 'gamipress_register_settings_page', 11 );
+add_action( 'cmb2_admin_init', 'gamipress_register_settings_page', 12 );
 
 /**
  * GamiPress registered settings sections
@@ -193,10 +192,6 @@ function gamipress_get_settings_sections() {
             'title' => __( 'Add-ons', 'gamipress' ),
             'icon' => 'dashicons-admin-plugins',
         ),
-        'licenses' => array(
-            'title' => __( 'Licenses', 'gamipress' ),
-            'icon' => 'dashicons-admin-network',
-        ),
     );
 
     if( is_multisite() ) {
@@ -220,25 +215,5 @@ function gamipress_get_settings_sections() {
 function gamipress_get_manager_capability() {
 
     return gamipress_get_option( 'minimum_role', 'manage_options' );
-
-}
-
-/**
- * License field thumbnail.
- *
- * @since  1.1.1
- *
- * @param  array        $field_args Current field args
- * @param  CMB2_Field   $field      Current field object
- */
-function gamipress_license_field_before( $field_args, $field ) {
-
-    if( isset( $field_args['thumbnail'] ) && ! empty( $field_args['thumbnail'] ) ) : ?>
-
-    <div class="gamipress-license-thumbnail">
-        <img src="<?php echo $field_args['thumbnail']; ?>" alt="<?php echo $field_args['item_name']; ?>">
-    </div>
-
-    <?php endif;
 
 }

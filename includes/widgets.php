@@ -17,6 +17,7 @@ require_once GAMIPRESS_DIR .'includes/widgets/points-widget.php';
 require_once GAMIPRESS_DIR .'includes/widgets/points-types-widget.php';
 require_once GAMIPRESS_DIR .'includes/widgets/rank-widget.php';
 require_once GAMIPRESS_DIR .'includes/widgets/ranks-widget.php';
+require_once GAMIPRESS_DIR .'includes/widgets/user-rank-widget.php';
 
 // Register GamiPress widgets
 function gamipress_register_widgets() {
@@ -29,6 +30,7 @@ function gamipress_register_widgets() {
 	register_widget( 'gamipress_points_types_widget' );
 	register_widget( 'gamipress_rank_widget' );
 	register_widget( 'gamipress_ranks_widget' );
+	register_widget( 'gamipress_user_rank_widget' );
 
 }
 add_action( 'widgets_init', 'gamipress_register_widgets' );
