@@ -12,13 +12,6 @@ class GamiPress_Shortcodes_Editor {
 
 	public function __construct() {
 
-		global $pagenow;
-
-		// Prevent render on customizer
-		if( $pagenow === 'customize.php' ) {
-			return;
-		}
-
 		$this->shortcodes = gamipress_get_shortcodes();
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'admin_scripts' ), 99 );
@@ -28,7 +21,7 @@ class GamiPress_Shortcodes_Editor {
 	}
 
 	/**
-	 * Enqueue and localize relevant admin_scripts.
+	 * Enqueue and localize relevant admin scripts
 	 *
 	 * @since  1.0.0
 	 */
@@ -62,7 +55,7 @@ class GamiPress_Shortcodes_Editor {
     }
 
 	/**
-	 * Render shortcode modal insert button.
+	 * Render shortcode modal insert button
 	 *
 	 * @since 1.0.0
 	 */
@@ -72,7 +65,7 @@ class GamiPress_Shortcodes_Editor {
 	}
 
 	/**
-	 * Render shortcode modal content.
+	 * Render shortcode modal content
 	 *
 	 * @since 1.0.0
 	 */
@@ -99,15 +92,30 @@ class GamiPress_Shortcodes_Editor {
 	<?php
 	}
 
+	/**
+	 * Generate the shortcode selector options
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
 	private function get_shortcode_selector() {
 		$output = '';
 
 		foreach( $this->shortcodes as $shortcode ) {
 			$output .= sprintf( '<option value="%1$s">%2$s</option>', $shortcode->slug, $shortcode->name );
 		}
+
 		return $output;
 	}
 
+	/**
+	 * Render all shortcodes sections
+	 *
+	 * @since 1.0.0
+	 *
+	 * @return string
+	 */
 	private function get_shortcode_sections() {
 		foreach( $this->shortcodes as $shortcode ) {
 			$this->get_shortcode_section( $shortcode );
@@ -115,6 +123,10 @@ class GamiPress_Shortcodes_Editor {
 	}
 
 	/**
+	 * Render a shortcode section
+	 *
+	 * @since 1.0.0
+	 *
 	 * @param GamiPress_Shortcode $shortcode
 	 */
 	private function get_shortcode_section( $shortcode ) {
@@ -128,7 +140,24 @@ class GamiPress_Shortcodes_Editor {
 	}
 }
 
+/**
+ * Initialize the shortcodes editor.
+ *
+ * @since 1.0.0
+ */
 function gamipress_shortcodes_add_editor_button() {
+
+	global $pagenow;
+
+	// Prevent render on customizer
+	if( $pagenow === 'customize.php' ) {
+		return;
+	}
+
+	if( (bool) gamipress_get_option( 'disable_shortcodes_editor', false ) ) {
+		return;
+	}
+
 	new GamiPress_Shortcodes_Editor();
 }
 add_action( 'admin_init', 'gamipress_shortcodes_add_editor_button' );

@@ -75,9 +75,9 @@ function gamipress_register_achievement_shortcode() {
 add_action( 'init', 'gamipress_register_achievement_shortcode' );
 
 /**
- * Single Achievement Shortcode
+ * Single achievement shortcode
  *
- * @since  1.0.0
+ * @since 1.0.0
  *
  * @param  array $atts Shortcode attributes
  *
@@ -85,21 +85,11 @@ add_action( 'init', 'gamipress_register_achievement_shortcode' );
  */
 function gamipress_achievement_shortcode( $atts = array() ) {
 
-	$atts = shortcode_atts( array(
-
-	  'id' 				=> get_the_ID(),
-	  'title' 			=> 'yes',
-	  'thumbnail' 		=> 'yes',
-	  'excerpt'	  		=> 'yes',
-	  'steps'	  		=> 'yes',
-	  'toggle' 			=> 'yes',
-	  'earners'	  		=> 'no',
-
-	), $atts, 'gamipress_achievement' );
+	$atts = shortcode_atts( gamipress_achievement_shortcode_defaults(), $atts, 'gamipress_achievement' );
 
 	// Return if achievement id not specified
 	if ( empty($atts['id']) )
-	  return;
+	  return '';
 
 	gamipress_enqueue_scripts();
 
@@ -114,5 +104,26 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 
 	// Return our rendered achievement
 	return $output;
+
+}
+
+/**
+ * Single achievement shortcode defaults attributes values
+ *
+ * @since 1.3.9.4
+ *
+ * @return array
+ */
+function gamipress_achievement_shortcode_defaults() {
+
+	return apply_filters( 'gamipress_achievement_shortcode_defaults', array(
+		'id' 				=> get_the_ID(),
+		'title' 			=> 'yes',
+		'thumbnail' 		=> 'yes',
+		'excerpt'	  		=> 'yes',
+		'steps'	  			=> 'yes',
+		'toggle' 			=> 'yes',
+		'earners'	  		=> 'no',
+	) );
 
 }

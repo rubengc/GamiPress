@@ -276,8 +276,9 @@ function gamipress_deduct_points_to_user( $user_id = 0, $points = 0, $points_typ
  * Posts a log entry when a user earns points
  *
  * @since  1.0.0
- * @updated 1.3.6 Added $reason parameter
- * @updated 1.3.7 Added $og_type parameter
+ * @updated 1.3.6 	Added $reason parameter
+ * @updated 1.3.7 	Added $og_type parameter
+ * @updated 1.3.9.4 Now stores _gamipress_{$points_type}_points for user total and _gamipress_{$points_type}_new_points for last awarded or deducted points
  *
  * @param  integer 			$user_id        	The given user's ID
  * @param  integer 			$new_points     	The new points the user is being awarded/deducted
@@ -307,26 +308,61 @@ function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id 
 		$new_points = $new_points - $current_points;
 	}
 
-    // Default points
-    $user_meta = '_gamipress_points';
+    // Default points meta
+    $points_meta = '_gamipress_points';
+    $new_points_meta = '_gamipress_new_points';
 
+	// Points meta by type
     if( ! empty( $points_type ) ) {
-        $user_meta = "_gamipress_{$points_type}_points";
+		$points_meta = "_gamipress_{$points_type}_points";
+		$new_points_meta = "_gamipress_{$points_type}_new_points";
     }
 
 	// Update our user's total
 	$total_points = max( $current_points + $new_points, 0 );
-	update_user_meta( $user_id, $user_meta, $total_points );
+
+	// Update user's points total
+	update_user_meta( $user_id, $points_meta, $total_points );
+
+	// Update a meta as flag to meet how many points has been awarded or deducted
+	update_user_meta( $user_id, $new_points_meta, $new_points );
 
 	// Available action for triggering other processes
 	do_action( 'gamipress_update_user_points', $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type, $reason, $log_type );
 
 	// Maybe award some points-based achievements
-	foreach ( gamipress_get_points_based_achievements() as $achievement ) {
+	foreach ( gamipress_get_points_based_achievements( $points_type ) as $achievement ) {
 		gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id );
 	}
 
 	return $total_points;
+}
+
+/**
+ * Return an user's latest points awarded or deducted
+ *
+ * @since 1.3.9.4
+ *
+ * @param  integer 	$user_id      	The given user's ID
+ * @param  string 	$points_type   	The points type
+ *
+ * @return integer $user_points  The user's last updated points
+ */
+function gamipress_get_last_updated_user_points( $user_id = 0, $points_type = '' ) {
+
+	// Use current user's ID if none specified
+	if ( ! $user_id )
+		$user_id = wp_get_current_user()->ID;
+
+	// Default points
+	$user_meta = '_gamipress_new_points';
+
+	if( ! empty( $points_type ) ) {
+		$user_meta = "_gamipress_{$points_type}_new_points";
+	}
+
+	// Return our user's latest points as an integer (sanely falls back to 0 if empty)
+	return absint( get_user_meta( $user_id, $user_meta, true ) );
 }
 
 /**

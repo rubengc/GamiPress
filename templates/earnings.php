@@ -15,6 +15,9 @@ $points_types = gamipress_get_points_types();
 $achievement_types = gamipress_get_achievement_types();
 $rank_types = gamipress_get_rank_types();
 
+// Execute the query
+$user_earnings = $a['query']->get_results();
+
 ?>
 
 <div class="gamipress-earnings">
@@ -27,198 +30,206 @@ $rank_types = gamipress_get_rank_types();
      */
     do_action( 'gamipress_before_render_earnings', $a ); ?>
 
-    <?php
-    $earnings_columns = array(
-        'thumbnail'     => __( 'Thumbnail', 'gamipress' ),
-        'description'   => __( 'Description', 'gamipress' ),
-        'date'          => __( 'Date', 'gamipress' ),
-        'points'        => __( 'Points', 'gamipress' ),
-    );
+    <?php if( $a['query']->found_results > 0 ) : ?>
 
-    $earnings_columns = apply_filters( 'gamipress_earnings_columns', $earnings_columns, $a );
-    ?>
+        <?php
+        $earnings_columns = array(
+            'thumbnail'     => __( 'Thumbnail', 'gamipress' ),
+            'description'   => __( 'Description', 'gamipress' ),
+            'date'          => __( 'Date', 'gamipress' ),
+            'points'        => __( 'Points', 'gamipress' ),
+        );
 
-    <table id="gamipress-earnings-table" class="gamipress-earnings-table">
+        $earnings_columns = apply_filters( 'gamipress_earnings_columns', $earnings_columns, $a );
+        ?>
 
-        <thead>
+        <table id="gamipress-earnings-table" class="gamipress-earnings-table">
 
-            <tr>
+            <thead>
 
-                <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>
-                    <th class="gamipress-earnings-col gamipress-earnings-col-<?php echo $column_name; ?>"><?php echo $column_label; ?></th>
-                <?php endforeach ?>
+                <tr>
 
-            </tr>
+                    <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>
+                        <th class="gamipress-earnings-col gamipress-earnings-col-<?php echo $column_name; ?>"><?php echo $column_label; ?></th>
+                    <?php endforeach ?>
 
-        </thead>
+                </tr>
 
-        <tbody>
+            </thead>
 
-        <?php foreach( $a['query']->get_results() as $user_earning ) : ?>
+            <tbody>
 
-            <tr>
+            <?php foreach( $user_earnings as $user_earning ) : ?>
 
-                <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>
+                <tr>
 
-                    <?php
-                    $column_output = '';
+                    <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>
 
-                    switch( $column_name ) {
-                        case 'thumbnail':
+                        <?php
+                        $column_output = '';
 
-                            if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
+                        switch( $column_name ) {
+                            case 'thumbnail':
 
-                                if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
-                                    // Step
+                                if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
 
-                                    // Get the achievement thumbnail and build a link to the achievement
-                                    $column_output = gamipress_get_achievement_post_thumbnail( $achievement->ID );
+                                    if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
+                                        // Step
 
-                                } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
-                                    // Points Award and Deduct
+                                        // Get the achievement thumbnail and build a link to the achievement
+                                        $column_output = gamipress_get_achievement_post_thumbnail( $achievement->ID );
 
-                                    // Get the points type thumbnail
-                                    $column_output = gamipress_get_points_type_thumbnail( $points_type->ID );
+                                    } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
+                                        // Points Award and Deduct
 
-                                } else if( $user_earning->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $user_earning->post_id ) ) {
-                                    // Rank requirement
+                                        // Get the points type thumbnail
+                                        $column_output = gamipress_get_points_type_thumbnail( $points_type->ID );
+
+                                    } else if( $user_earning->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $user_earning->post_id ) ) {
+                                        // Rank requirement
+
+                                        // Get the rank thumbnail
+                                        $column_output = gamipress_get_rank_post_thumbnail( $rank->ID );
+                                    }
+
+                                } else if( in_array( $user_earning->post_type, gamipress_get_achievement_types_slugs() ) ) {
+                                    // Achievement
+
+                                    // Get the achievement thumbnail
+                                    $column_output = gamipress_get_achievement_post_thumbnail( $user_earning->post_id );
+
+                                } else if( in_array( $user_earning->post_type, gamipress_get_rank_types_slugs() ) ) {
+                                    // Rank
 
                                     // Get the rank thumbnail
-                                    $column_output = gamipress_get_rank_post_thumbnail( $rank->ID );
+                                    $column_output = gamipress_get_rank_post_thumbnail( $user_earning->post_id );
+
                                 }
 
-                            } else if( in_array( $user_earning->post_type, gamipress_get_achievement_types_slugs() ) ) {
-                                // Achievement
+                                break;
+                            case 'description':
 
-                                // Get the achievement thumbnail
-                                $column_output = gamipress_get_achievement_post_thumbnail( $user_earning->post_id );
+                                if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
 
-                            } else if( in_array( $user_earning->post_type, gamipress_get_rank_types_slugs() ) ) {
-                                // Rank
+                                    $earning_title = get_the_title( $user_earning->post_id );
+                                    $earning_description = '';
 
-                                // Get the rank thumbnail
-                                $column_output = gamipress_get_rank_post_thumbnail( $user_earning->post_id );
+                                    if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
+                                        // Step
 
-                            }
+                                        // Build a link to the achievement
+                                        $earning_description = sprintf( '%s %s: <a href="%s">%s</a>',
+                                            $achievement_types[$achievement->post_type]['singular_name'],
+                                            __( 'Step', 'gamipress' ),
+                                            get_post_permalink( $achievement->ID ),
+                                            get_the_title( $achievement->ID )
+                                        );
 
-                            break;
-                        case 'description':
+                                    } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
+                                        // Points Award and Deduct
 
-                            if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
+                                        $earning_description = sprintf( '%s %s',
+                                            $points_types[$points_type->post_name]['plural_name'],
+                                            ( $user_earning->post_type === 'points-award' ? __( 'Award', 'gamipress' ) : __( 'Deduction', 'gamipress' ) )
+                                        );
 
-                                $earning_title = get_the_title( $user_earning->post_id );
-                                $earning_description = '';
+                                    } else if( $user_earning->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $user_earning->post_id ) ) {
+                                        // Rank requirement
 
-                                if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
-                                    // Step
+                                        // Build a link to the rank
+                                        $earning_description = sprintf( '%s %s: <a href="%s">%s</a>',
+                                            $rank_types[$rank->post_type]['singular_name'],
+                                            __( 'Requirement', 'gamipress' ),
+                                            get_post_permalink( $rank->ID ),
+                                            get_the_title( $rank->ID )
+                                        );
+                                    }
+
+                                } else if( in_array( $user_earning->post_type, gamipress_get_achievement_types_slugs() ) ) {
+                                    // Achievement
 
                                     // Build a link to the achievement
-                                    $earning_description = sprintf( '%s %s: <a href="%s">%s</a>',
-                                        $achievement_types[$achievement->post_type]['singular_name'],
-                                        __( 'Step', 'gamipress' ),
-                                        get_post_permalink( $achievement->ID ),
-                                        get_the_title( $achievement->ID )
+                                    $earning_title = sprintf( '<a href="%s">%s</a>',
+                                        get_post_permalink( $user_earning->post_id ),
+                                        get_the_title( $user_earning->post_id )
                                     );
+                                    $earning_description = $achievement_types[$user_earning->post_type]['singular_name'];
 
-                                } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
-                                    // Points Award and Deduct
-
-                                    $earning_description = sprintf( '%s %s',
-                                        $points_types[$points_type->post_name]['plural_name'],
-                                        ( $user_earning->post_type === 'points-award' ? __( 'Award', 'gamipress' ) : __( 'Deduction', 'gamipress' ) )
-                                    );
-
-                                } else if( $user_earning->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $user_earning->post_id ) ) {
-                                    // Rank requirement
+                                } else if( in_array( $user_earning->post_type, gamipress_get_rank_types_slugs() ) ) {
+                                    // Rank
 
                                     // Build a link to the rank
-                                    $earning_description = sprintf( '%s %s: <a href="%s">%s</a>',
-                                        $rank_types[$rank->post_type]['singular_name'],
-                                        __( 'Requirement', 'gamipress' ),
-                                        get_post_permalink( $rank->ID ),
-                                        get_the_title( $rank->ID )
+                                    $earning_title = sprintf( '<a href="%s">%s</a>',
+                                        get_post_permalink( $user_earning->post_id ),
+                                        get_the_title( $user_earning->post_id )
                                     );
+                                    $earning_description = $rank_types[$user_earning->post_type]['singular_name'];
+
                                 }
 
-                            } else if( in_array( $user_earning->post_type, gamipress_get_achievement_types_slugs() ) ) {
-                                // Achievement
-
-                                // Build a link to the achievement
-                                $earning_title = sprintf( '<a href="%s">%s</a>',
-                                    get_post_permalink( $user_earning->post_id ),
-                                    get_the_title( $user_earning->post_id )
+                                $column_output = sprintf( '<strong class="gamipress-earning-title">%s</strong>'
+                                    . '<br>'
+                                    . '<span class="gamipress-earning-description">%s</span>',
+                                    $earning_title,
+                                    $earning_description
                                 );
-                                $earning_description = $achievement_types[$user_earning->post_type]['singular_name'];
 
-                            } else if( in_array( $user_earning->post_type, gamipress_get_rank_types_slugs() ) ) {
-                                // Rank
+                                break;
+                            case 'points':
 
-                                // Build a link to the rank
-                                $earning_title = sprintf( '<a href="%s">%s</a>',
-                                    get_post_permalink( $user_earning->post_id ),
-                                    get_the_title( $user_earning->post_id )
-                                );
-                                $earning_description = $rank_types[$user_earning->post_type]['singular_name'];
+                                $points = absint( $user_earning->points );
 
-                            }
+                                if( $points > 0 && isset( $points_types[$user_earning->points_type] ) ) {
 
-                            $column_output = sprintf( '<strong class="gamipress-earning-title">%s</strong>'
-                                . '<br>'
-                                . '<span class="gamipress-earning-description">%s</span>',
-                                $earning_title,
-                                $earning_description
-                            );
+                                    // Setup the output as %d point(s)
+                                    $column_output = $points . ' ' . _n( $points_types[$user_earning->points_type]['singular_name'], $points_types[$user_earning->points_type]['plural_name'], $points );
 
-                            break;
-                        case 'points':
+                                    // For points deducts prepend a "-" sign
+                                    if( $user_earning->post_type === 'points-deduct' ) {
+                                        $column_output = '-' . $column_output;
+                                    }
 
-                            $points = absint( $user_earning->points );
-
-                            if( $points > 0 && isset( $points_types[$user_earning->points_type] ) ) {
-
-                                // Setup the output as %d point(s)
-                                $column_output = $points . ' ' . _n( $points_types[$user_earning->points_type]['singular_name'], $points_types[$user_earning->points_type]['plural_name'], $points );
-
-                                // For points deducts prepend a "-" sign
-                                if( $user_earning->post_type === 'points-deduct' ) {
-                                    $column_output = '-' . $column_output;
                                 }
 
-                            }
+                                break;
+                            case 'date':
 
-                            break;
-                        case 'date':
+                                $column_output = date_i18n( get_option( 'date_format' ), strtotime( $user_earning->date ) );
 
-                            $column_output = date_i18n( get_option( 'date_format' ), strtotime( $user_earning->date ) );
+                                break;
+                        }
 
-                            break;
-                    }
+                        $column_output = apply_filters( 'gamipress_earnings_render_column', $column_output, $column_name, $user_earning, $a )
+                        ?>
 
-                    $column_output = apply_filters( 'gamipress_earnings_render_column', $column_output, $column_name, $user_earning, $a )
-                    ?>
+                        <td class="gamipress-earnings-col gamipress-earnings-col-<?php echo $column_name; ?>"><?php echo $column_output; ?></td>
+                    <?php endforeach ?>
 
-                    <td class="gamipress-earnings-col gamipress-earnings-col-<?php echo $column_name; ?>"><?php echo $column_output; ?></td>
-                <?php endforeach ?>
+                </tr>
 
-            </tr>
+            <?php endforeach; ?>
 
-        <?php endforeach; ?>
+            </tbody>
 
-        </tbody>
+        </table>
 
-    </table>
+        <?php // Pagination
+        if( $a['pagination'] === 'yes' ) : ?>
 
-    <?php // Pagination
-    if( $a['pagination'] === 'yes' ) : ?>
+            <div id="gamipress-earnings-pagination" class="gamipress-earnings-pagination navigation">
+                <?php echo paginate_links( array(
+                    'base'    => str_replace( 999999, '%#%', esc_url( get_pagenum_link( 999999 ) ) ),
+                    'format'  => '?paged=%#%',
+                    'current' => max( 1, get_query_var( 'paged' ) ),
+                    'total'   => ceil( $a['query']->found_results / $a['limit'] )
+                ) ); ?>
+            </div>
 
-        <div id="gamipress-earnings-pagination" class="gamipress-earnings-pagination navigation">
-            <?php echo paginate_links( array(
-                'base'    => str_replace( 999999, '%#%', esc_url( get_pagenum_link( 999999 ) ) ),
-                'format'  => '?paged=%#%',
-                'current' => max( 1, get_query_var( 'paged' ) ),
-                'total'   => ceil( $a['query']->found_results / $a['limit'] )
-            ) ); ?>
-        </div>
+        <?php endif; ?>
+
+    <?php else : ?>
+
+        <p id="gamipress-earnings-no-results"><?php echo __( 'You have not earned anything yet.', 'gamipress' ); ?></p>
 
     <?php endif; ?>
 

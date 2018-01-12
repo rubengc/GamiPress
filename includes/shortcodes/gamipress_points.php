@@ -122,7 +122,7 @@ function gamipress_points_shortcode( $atts = array () ) {
     $is_single_type = false;
     $types = explode( ',', $atts['type'] );
 
-    if( $atts['type'] === 'all') {
+    if( $atts['type'] === 'all' || in_array( 'all', $types ) ) {
         $types = gamipress_get_points_types_slugs();
     } else if ( count( $types ) === 1 ) {
         $is_single_type = true;

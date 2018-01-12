@@ -197,7 +197,6 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 			$earned_times = count( gamipress_get_user_achievements( array(
 				'user_id' => absint( $user_id ),
 				'achievement_id' => absint( $points_award->ID ),
-				'since' => absint( gamipress_achievement_last_user_activity( $points_award->ID, $user_id ) )
 			) ) );
 
 			// User has earned it more times than required times, so is earned
@@ -285,7 +284,6 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 			$earned_times = count( gamipress_get_user_achievements( array(
 				'user_id' => absint( $user_id ),
 				'achievement_id' => absint( $points_deduct->ID ),
-				'since' => absint( gamipress_achievement_last_user_activity( $points_deduct->ID, $user_id ) )
 			) ) );
 
 			// User has earned it more times than required times, so is earned
@@ -449,7 +447,6 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 		$earned_status = gamipress_get_user_achievements( array(
 			'user_id' => absint( $user_id ),
 			'achievement_id' => absint( $step->ID ),
-			'since' => absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) )
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
 
 		$title = $step->post_title;
@@ -1090,11 +1087,10 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	// Concatenate our output
 	foreach ( $requirements as $requirement ) {
 
-		// check if user has earned this requirement, and add an 'earned' class
+		// Check if user has earned this requirement, and add an 'earned' class
 		$earned_status = gamipress_get_user_achievements( array(
 			'user_id' => absint( $user_id ),
 			'achievement_id' => absint( $requirement->ID ),
-			'since' => absint( gamipress_achievement_last_user_activity( $rank_id, $user_id ) )
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
 
 		$title = $requirement->post_title;

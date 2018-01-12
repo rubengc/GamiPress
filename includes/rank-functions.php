@@ -592,7 +592,7 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
 
         // Update the user rank and the time when this rank has been earned
         update_user_meta( $user_id, $meta, $rank_id );
-        update_user_meta( $user_id, $meta . 'earned_time', current_time( 'timestamp' ) );
+        update_user_meta( $user_id, $meta . '_earned_time', current_time( 'timestamp' ) );
 
         // Available action for triggering other processes
         do_action( 'gamipress_update_user_rank', $user_id, $new_rank, $old_rank, $admin_id, $achievement_id );

@@ -513,37 +513,48 @@ function gamipress_get_required_achievements_for_achievement( $achievement_id = 
  * Returns achievements that may be earned when the given achievement is earned.
  *
  * @since   1.0.0
- * @updated 1.3.1 added steps with required points
- * @updated 1.3.2 improved query
+ * @updated 1.3.1 	added steps with required points
+ * @updated 1.3.2 	improved query
+ * @updated 1.3.9.4 added $points_type argument
  *
  * @return array An array of achievements that are dependent on the given achievement
  */
-function gamipress_get_points_based_achievements() {
+function gamipress_get_points_based_achievements( $points_type = '' ) {
 
 	global $wpdb;
 
-	$achievements = get_transient( 'gamipress_points_based_achievements' );
+	if( empty( $points_type ) ) {
+		return array();
+	}
+
+	$achievements = get_transient( "gamipress_{$points_type}_based_achievements" );
 
 	if ( empty( $achievements ) ) {
 
 		// Grab posts that can be earned by unlocking the given achievement
 		$achievements = $wpdb->get_results( $wpdb->prepare(
 			"SELECT *
-			FROM   $wpdb->posts as posts
-			INNER JOIN {$wpdb->postmeta} AS m1
-			ON ( posts.ID = m1.post_id )
-			INNER JOIN $wpdb->postmeta AS m2
-			ON ( posts.ID = m2.post_id )
-			WHERE (
-					( m1.meta_key = %s AND m1.meta_value = %s )
-					OR ( m2.meta_key = %s AND m2.meta_value = %s )
-				)",
-			'_gamipress_trigger_type', 'earn-points',	// Requirements based on earn points
-			'_gamipress_earned_by', 'points'			// Achievements earned by points
+			FROM   $wpdb->posts as p
+			LEFT JOIN {$wpdb->postmeta} AS m1
+			ON ( p.ID = m1.post_id )
+			LEFT JOIN $wpdb->postmeta AS m2
+			ON ( p.ID = m2.post_id )
+			LEFT JOIN $wpdb->postmeta AS m3
+			ON ( p.ID = m3.post_id )
+			WHERE ( m1.meta_key = %s AND m1.meta_value = %s )
+				AND (
+					( m2.meta_key = %s AND m2.meta_value = %s )
+					OR
+					( m3.meta_key = %s AND m3.meta_value = %s )
+				)
+			GROUP BY p.ID",
+			'_gamipress_points_type_required', $points_type,	// Of this post type
+			'_gamipress_trigger_type', 'earn-points',			// Requirements based on earn points
+			'_gamipress_earned_by', 'points'					// Achievements earned by points
 		) );
 
-		// Store these posts to a transient for 1 days
-		set_transient( 'gamipress_points_based_achievements', $achievements, 60*60*24 );
+		// Store these posts to a transient for 1 day
+		set_transient( "gamipress_{$points_type}_based_achievements", $achievements, 60*60*24 );
 	}
 
 	return (array) maybe_unserialize( $achievements );
@@ -559,24 +570,22 @@ function gamipress_bust_points_based_achievements_cache( $post_id ) {
 
 	$post = get_post( $post_id );
 
-	if (
-		gamipress_is_achievement( $post )
-		&& (
-			'points' == get_post_meta( $post_id, '_gamipress_earned_by', true )
-			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'points' == $_POST['_gamipress_earned_by'] )
-		)
-	) {
+	if ( gamipress_is_achievement( $post )
+		&& ( 'points' == get_post_meta( $post_id, '_gamipress_earned_by', true )
+			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'points' === $_POST['_gamipress_earned_by'] ) ) ) {
+
+		$points_type = get_post_meta( $post_id, '_gamipress_points_type_required', true );
 
 		// If the post is one of our achievement types and the achievement is awarded by minimum points, delete the transient
-		delete_transient( 'gamipress_points_based_achievements' );
+		delete_transient( "gamipress_{$points_type}_based_achievements" );
 
-	} else if(
-		in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
-		&& 'earn-points' == get_post_meta( $post_id, '_gamipress_trigger_type', true )
-	) {
+	} else if( in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
+		&& 'earn-points' == get_post_meta( $post_id, '_gamipress_trigger_type', true ) ) {
+
+		$points_type = get_post_meta( $post_id, '_gamipress_points_type_required', true );
 
 		// If the post is one of our requirement types and the trigger type is a points based one, delete the transient
-		delete_transient( 'gamipress_points_based_achievements' );
+		delete_transient( "gamipress_{$points_type}_based_achievements" );
 
 	}
 

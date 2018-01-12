@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.9.3
+Stable tag: 1.3.9.4
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -203,6 +203,21 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.3.9.4 =
+
+* Improvements on achievement and rank template parameters check from external shortcodes and widgets.
+* Improvements on requirements earned status detection at frontend.
+* Improvements on [gamipress_earnings] shortcode and GamiPress: User Earnings widget query.
+* Improvements on user earnings template.
+* Fixed pagination on user earnings at admin user profile screen.
+* Added the column "Administrator" to the logs list screen at admin area.
+* Improvements on "Earn points" related activities, now this activity is able to be awarded multiple times based on the last points movement. For example, earning 30 points, will trigger an activity that requires 10 points 3 times.
+* Improvements on points-related caching methods. Now cache has been separated by points types.
+* Fixed wrong foreach argument on emails.
+* Fixed wrong user meta name to store latest rank earned date.
+* Added setting to disable the shortcodes editor to avoid issues with some page builders.
+* Improved arrow icon to show/hide achievement and rank details.
 
 = 1.3.9.3 =
 

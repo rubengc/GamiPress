@@ -43,14 +43,21 @@ function gamipress_ajax_get_achievements() {
 
 	// Setup template vars
 	$template_args = array(
-		'title' 	=> isset( $_REQUEST['title'] ) ? $_REQUEST['title'] : 'yes',
-		'thumbnail' => isset( $_REQUEST['thumbnail'] ) ? $_REQUEST['thumbnail'] : 'yes',
-		'excerpt'	=> isset( $_REQUEST['excerpt'] ) ? $_REQUEST['excerpt'] : 'yes',
-		'steps'	    => isset( $_REQUEST['steps'] ) ? $_REQUEST['steps'] : 'yes',
-		'earners'	=> isset( $_REQUEST['earners'] ) ? $_REQUEST['earners'] : 'no',
-		'toggle'	=> isset( $_REQUEST['toggle'] ) ? $_REQUEST['toggle'] : 'yes',
 		'user_id' 	=> $user_id, // User ID on achievement is used to meet to which user apply earned checks
 	);
+
+	$achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
+
+	unset( $achievement_fields['id'] );
+
+	// Loop achievement shortcode fields to pass to the rank template
+	foreach( $achievement_fields as $field_id => $field_args ) {
+
+		if( isset( $_REQUEST[$field_id] ) ) {
+			$template_args[$field_id] = $_REQUEST[$field_id];
+		}
+
+	}
 
 	// Convert $type to properly support multiple achievement types
 	if ( 'all' == $type ) {

@@ -231,7 +231,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
         );
     }
 
-    if( $type === 'achievement_award' || $type === 'points_award' || $type === 'points_revoke' || $type === 'rank_award' ) {
+    if( in_array( $type, array( 'achievement_award', 'points_award', 'points_revoke', 'rank_award' ) ) ) {
         $admin_id = ct_get_object_meta( $object_id, $prefix . 'admin_id', true );
         $admin = get_userdata( $admin_id );
 

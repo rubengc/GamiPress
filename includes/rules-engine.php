@@ -390,11 +390,11 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
  *
  * @since  1.0.0
  *
- * @param  bool    $return         The current status of whether or not the user deserves this achievement
- * @param  integer $user_id        The given user's ID
- * @param  integer $achievement_id The given achievement's post ID
+ * @param  bool 	$return 		The current status of whether or not the user deserves this achievement
+ * @param  integer	$user_id 		The given user's ID
+ * @param  integer 	$achievement_id The given achievement's post ID
  *
- * @return bool                    Our possibly updated earning status
+ * @return bool Our possibly updated earning status
  */
 function gamipress_user_meets_points_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
 
@@ -402,6 +402,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 	if (
 		'points' === get_post_meta( $achievement_id, '_gamipress_earned_by', true ) 			// Check for achievements earned by points
 		|| 'earn-points' === get_post_meta( $achievement_id, '_gamipress_trigger_type', true ) 	// Check for requirements with earn points activity
+
 	) {
 
 		// Grab our user's points and see if they at least as many as required
@@ -418,7 +419,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 
 			// If the user just earned the achievement, though, don't let them earn it again
 			// This prevents an infinite loop if the achievement has no maximum earnings limit
-			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id );
+			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id, $user_id );
 			$minimum_time  	= time() - 1;
 
 			if ( $last_activity >= $minimum_time ) {
@@ -444,7 +445,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 	return $return;
 
 }
-add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requirement', 10, 3 );
+add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requirement', 11, 3 );
 
 
 /**
@@ -478,7 +479,7 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 
 			// If the user just earned the achievement, though, don't let them earn it again
 			// This prevents an infinite loop if the achievement has no maximum earnings limit
-			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id );
+			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id, $user_id );
 			$minimum_time 	= time() - 1;
 
 			if ( $last_activity >= $minimum_time ) {
@@ -495,7 +496,7 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 add_filter( 'user_deserves_achievement', 'gamipress_user_meets_rank_requirement', 10, 3 );
 
 /**
- * Validate whether or not a user has completed all requirements for an achievement
+ * Validate whether or not the user has completed all requirements for an achievement
  *
  * @since  1.0.0
  *
@@ -557,7 +558,7 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 add_filter( 'user_deserves_achievement', 'gamipress_user_deserves_limit_requirements', 10, 3 );
 
 /**
- * Count a user's relevant actions for a given achievement
+ * Count the user's relevant actions for a given achievement
  *
  * @since  1.0.0
  *
@@ -686,7 +687,7 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
    -------------------------------------------------- */
 
 /**
- * Award an achievement to a user
+ * Award an achievement to the user
  *
  * @since  1.0.0
  *
@@ -701,7 +702,7 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
  */
 function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $admin_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
 
-	global $wp_filter, $wp_version;
+	global $wp_filter;
 
 	// Sanity Check: ensure we're working with an achievement or requirement post
 	if ( ! ( gamipress_is_achievement( $achievement_id ) || gamipress_is_requirement( $achievement_id ) ) )
@@ -765,7 +766,7 @@ function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $a
 	// Get achievements that can be earned from completing this achievement
 	$dependent_achievements = gamipress_get_dependent_achievements( $achievement_id );
 
-    // See if a user has unlocked all achievements of a given type
+    // See if the user has unlocked all achievements of a given type
     gamipress_maybe_trigger_unlock_all( $user_id, $achievement_id );
 
 	// Loop through each dependent achievement and see if it can be awarded
@@ -777,7 +778,7 @@ function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $a
 add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_additional_achievements_to_user', 10, 2 );
 
 /**
- * Check if a user has unlocked all achievements of a given type
+ * Check if the user has unlocked all achievements of a given type
  *
  * Triggers hook gamipress_unlock_all_{$post_type}
  *
@@ -831,7 +832,74 @@ function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 )
 }
 
 /**
- * Award new points to a user based on logged activites and earned achievements
+ * Award same achievement to the user based ohow many points has earn
+ *
+ * @since  1.0.0
+ *
+ * @param  integer $user_id        The given user's ID
+ * @param  integer $achievement_id The given achievement's post ID
+ */
+function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 0 ) {
+
+	// First, see if the requirement requires a minimum amount of points (just requirements has this meta)
+	if ( 'earn-points' === get_post_meta( $achievement_id, '_gamipress_trigger_type', true ) ) {
+
+		// Grab our user's points and see if they at least as many as required
+		$points_required        = absint( get_post_meta( $achievement_id, '_gamipress_points_required', true ) );
+		$points_type_required   = get_post_meta( $achievement_id, '_gamipress_points_type_required', true );
+
+		// Check if we are in a loop of multiple points to award
+		if( ! ( isset( $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] ) && $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] ) ) {
+
+			// Grab last user's points update
+			$user_last_points = gamipress_get_last_updated_user_points( $user_id, $points_type_required );
+
+			if( $user_last_points > $points_required && $points_required > 0 ) {
+
+				// Starting multiple points award
+				$GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] = true;
+
+				// Set times to award
+				$times_to_award = intval( $user_last_points / $points_required ) - 1; // -1 is to prevent award the current one
+
+				// Check the maximum times this requirement could be earned
+				$maximum_earnings = absint( get_post_meta( $achievement_id, '_gamipress_maximum_earnings', true ) );
+
+				// If maximum earnings is different to 0, we need to set how many times to award it
+				if( $maximum_earnings !== 0 ) {
+
+					$earned_times = count( gamipress_get_user_achievements( array(
+						'user_id'        => absint( $user_id ),
+						'achievement_id' => absint( $achievement_id ),
+						'since'          => absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) )
+					) ) );
+
+					// If times to award and earned times exceed the maximum earnings
+					if( ( $times_to_award + $earned_times ) >= $maximum_earnings  ) {
+						$times_to_award = ( $maximum_earnings - $earned_times ) - 1; // -1 is to prevent award the current one
+					}
+
+				}
+
+				// Award same achievement many times (rules engine will check limited times to earn it)
+				for( $i=0; $i < $times_to_award; $i++ ) {
+					gamipress_award_achievement_to_user( $achievement_id, $user_id );
+				}
+
+				// Ending multiple points award
+				$GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] = false;
+
+			}
+
+		}
+
+	}
+
+}
+add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_multiple_points', 10, 2 );
+
+/**
+ * Award new points to the user based on logged activites and earned achievements
  *
  * @since  1.0.0
  *
@@ -854,15 +922,13 @@ function gamipress_maybe_award_points( $user_id = 0, $achievement_id = 0 ) {
 			gamipress_award_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
 		}
 
-		// TODO: Old way to award user points
-		//gamipress_update_user_points( $user_id, $points, false, $achievement_id, $points_type );
 	}
 
 }
 add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_points', 10, 2 );
 
 /**
- * Award new rank to a user based on logged activites and earned achievements
+ * Award new rank to the user based on logged activites and earned achievements
  *
  * @since  1.3.1
  *
@@ -916,7 +982,7 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_rank', 10, 2 )
    -------------------------------------------------- */
 
 /**
- * Revoke an achievement from a user
+ * Revoke an achievement from the user
  *
  * @since  	1.0.0
  * @updated 1.2.8 Added $earning_id

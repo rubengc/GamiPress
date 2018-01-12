@@ -19,17 +19,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_settings_general_meta_boxes( $meta_boxes ) {
 
-    $automatic_updates_plugins = array();
-
-    /**
-     * Hook to register a plugin on GamiPress automatic updates feature
-     *
-     * @since  1.1.4
-     *
-     * @param array $automatic_updates_plugins Registered plugins for automatic updates
-     */
-    $automatic_updates_plugins = apply_filters( 'gamipress_automatic_updates_plugins', $automatic_updates_plugins );
-
     $meta_boxes['general-settings'] = array(
         'title' => __( 'General Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_general_settings_fields', array(
@@ -62,6 +51,36 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
                 'desc' => __( 'Maximum dimensions for ranks featured image.', 'gamipress' ),
                 'type' => 'size',
             ),
+            'disable_shortcodes_editor' => array(
+                'name' => __( 'Disable Shortcodes Editor', 'gamipress' ),
+                'desc' => __( 'Check this option to disable the shortcodes editor.', 'gamipress' ) . '<br>'
+                . '<small>' . __( 'Check this option if you are experiencing black screens in your theme settings or in your page builder forms.', 'gamipress' ) . '</small>',
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'debug_mode' => array(
+                'name' => __( 'Debug Mode', 'gamipress' ),
+                'desc' => __( 'Check this option to enable the debug mode.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+        ) )
+    );
+
+    $automatic_updates_plugins = array();
+
+    /**
+     * Hook to register a plugin on GamiPress automatic updates feature
+     *
+     * @since  1.1.4
+     *
+     * @param array $automatic_updates_plugins Registered plugins for automatic updates
+     */
+    $automatic_updates_plugins = apply_filters( 'gamipress_automatic_updates_plugins', $automatic_updates_plugins );
+
+    $meta_boxes['automatic-updates-settings'] = array(
+        'title' => __( 'Automatic Updates', 'gamipress' ),
+        'fields' => apply_filters( 'gamipress_general_settings_fields', array(
             'automatic_updates' => array(
                 'name' => __( 'Automatic Updates', 'gamipress' ),
                 'desc' => __( 'Check this option to automatically get the latest features, bugfixes and security updates as they are released.', 'gamipress' ),
@@ -75,18 +94,12 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
                 'classes' => 'gamipress-switch',
                 'options' => $automatic_updates_plugins
             ),
-            'debug_mode' => array(
-                'name' => __( 'Debug Mode', 'gamipress' ),
-                'desc' => __( 'Check this option to enable the debug mode.', 'gamipress' ),
-                'type' => 'checkbox',
-                'classes' => 'gamipress-switch',
-            ),
         ) )
     );
 
     // if not plugins for automatic updates, then remove field
     if( empty( $automatic_updates_plugins ) ) {
-        unset( $meta_boxes['general-settings']['fields']['automatic_updates_plugins'] );
+        unset( $meta_boxes['automatic-updates-settings']['fields']['automatic_updates_plugins'] );
     }
 
     return $meta_boxes;

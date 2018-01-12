@@ -23,14 +23,7 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
-    $gamipress_template_args = wp_parse_args( $template_args, array(
-        'title'     => 'yes',
-        'thumbnail' => 'yes',
-        'excerpt'	=> 'yes',
-        'steps'	    => 'yes',
-        'toggle'	=> 'yes',
-        'earners'	=> 'no',
-    ) );
+    $gamipress_template_args = wp_parse_args( $template_args, gamipress_achievement_shortcode_defaults() );
 
     // If we were given an ID, get the post
     if ( is_numeric( $achievement ) ) {
@@ -78,14 +71,7 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
-    $gamipress_template_args = wp_parse_args( $template_args, array(
-        'title'         => 'yes',
-        'thumbnail'     => 'yes',
-        'excerpt'	    => 'yes',
-        'requirements'	=> 'yes',
-        'toggle'	    => 'yes',
-        'earners'	    => 'no',
-    ) );
+    $gamipress_template_args = wp_parse_args( $template_args, gamipress_rank_shortcode_defaults() );
 
     // If we were given an ID, get the post
     if ( is_numeric( $rank ) ) {

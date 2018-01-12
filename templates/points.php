@@ -17,9 +17,12 @@ $points_types[''] = array(
     'singular_name' => __( 'Point', 'gamipress' ),
     'plural_name' => __( 'Points', 'gamipress' )
 );
+
+// Check to meet if points showed comes from current logged in user
+$is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
 ?>
 
-<div class="gamipress-user-points gamipress-columns-<?php echo $a['columns']; ?>">
+<div class="gamipress-user-points gamipress-columns-<?php echo $a['columns']; ?> <?php echo ( $is_current_user ? 'gamipress-is-current-user' : '' ); ?>">
 
     <?php
     /**

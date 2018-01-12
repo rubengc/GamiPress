@@ -386,7 +386,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
             $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
 
-            if( count( $steps ) ) {
+            if( is_array( $steps ) && count( $steps ) ) {
 
                 $list_tag = gamipress_is_achievement_sequential( $achievement->ID ) ? 'ol' : 'ul';
 
@@ -503,7 +503,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
             $requirements = gamipress_get_rank_requirements( $rank->ID );
 
-            if( count( $requirements ) ) {
+            if( is_array( $requirements ) && count( $requirements ) ) {
 
                 $list_tag = gamipress_is_achievement_sequential( $rank->ID ) ? 'ol' : 'ul';
 
@@ -1109,7 +1109,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
 
         // Just loop if achievement has more than 1 step
-        if( count( $steps ) > 1 ) {
+        if( is_array( $steps ) && count( $steps ) > 1 ) {
 
             foreach( $steps as $step ) {
                 // check if user has earned this step
@@ -1197,7 +1197,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         $requirements = gamipress_get_rank_requirements( $rank->ID );
 
         // Just loop if rank has more than 1 requirement
-        if( count( $requirements ) > 1 ) {
+        if( is_array( $requirements ) && count( $requirements ) > 1 ) {
 
             foreach( $requirements as $requirement ) {
                 // Check if user has earned this requirement

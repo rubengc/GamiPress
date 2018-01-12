@@ -126,7 +126,7 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
-    $atts = shortcode_atts( array(
+    $atts = shortcode_atts( array_merge( array(
 
         // User rank atts
         'type'        	=> '',
@@ -137,15 +137,7 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
         'user_id' 		=> '0',
         'columns'       => '1',
 
-        // Single rank atts
-        'title' 		=> 'yes',
-        'thumbnail' 	=> 'yes',
-        'excerpt'	  	=> 'yes',
-        'requirements'	=> 'yes',
-        'toggle' 		=> 'yes',
-        'earners'	  	=> 'no',
-
-    ), $atts, 'gamipress_user_rank' );
+    ), gamipress_rank_shortcode_defaults() ), $atts, 'gamipress_user_rank' );
 
     gamipress_enqueue_scripts();
 
@@ -179,14 +171,21 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
 
     // Setup template vars
     $template_args = array(
-        'title' 		=> $atts['title'],
-        'thumbnail' 	=> $atts['thumbnail'],
-        'excerpt'	  	=> $atts['excerpt'],
-        'requirements'	=> $atts['requirements'],
-        'toggle' 		=> $atts['toggle'],
-        'earners'		=> $atts['earners'],
         'user_id' 		=> $atts['user_id'], // User ID on rank is used to meet to which user apply earned checks
     );
+
+    $rank_fields = GamiPress()->shortcodes['gamipress_rank']->fields;
+
+    unset( $rank_fields['id'] );
+
+    // Loop rank shortcode fields to pass to the rank template
+    foreach( $rank_fields as $field_id => $field_args ) {
+
+        if( isset( $atts[$field_id] ) ) {
+            $template_args[$field_id] = $atts[$field_id];
+        }
+        
+    }
 
     $gamipress_template_args['template_args'] = $template_args;
 

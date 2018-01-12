@@ -225,9 +225,6 @@ function gamipress_earnings_shortcode( $atts = array () ) {
 
     $gamipress_template_args = array();
 
-    // Setup table
-    ct_setup_table( 'gamipress_user_earnings' );
-
     $atts = shortcode_atts( array(
         'current_user'      => 'yes',
         'user_id'           => '0',
@@ -251,31 +248,27 @@ function gamipress_earnings_shortcode( $atts = array () ) {
 
     gamipress_enqueue_scripts();
 
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' ) {
+        $atts['user_id'] = get_current_user_id();
+    }
+
+    // Return if not user ID provided or current user is a guest
+    if( absint( $atts['user_id'] ) === 0 ) {
+        return '';
+    }
+
     // GamiPress template args global
     $gamipress_template_args = $atts;
 
     // Query args
-    $args = array(
+    $query_args = array(
+        'user_id'           => $atts['user_id'],
         'orderby'           => 'date',
         'order'             => $atts['order'],
         'items_per_page'    => $atts['limit'],
         'paged'             => max( 1, get_query_var( 'paged' ) )
     );
-
-    // User
-    if( absint( $atts['user_id'] ) !== 0 ) {
-        $args['user_id'] = $atts['user_id'];
-    }
-
-    // Force to set current user as user ID
-    if( $atts['current_user'] === 'yes' ) {
-        $args['user_id'] = get_current_user_id();
-    }
-
-    // Return if not user ID provided
-    if( absint( $args['user_id'] ) === 0 ) {
-        return '';
-    }
 
     $types = array();
     $points_types = array();
@@ -346,13 +339,21 @@ function gamipress_earnings_shortcode( $atts = array () ) {
         return '';
     }
 
-    $args['post_type'] = $types;
+    $query_args['post_type'] = $types;
 
     if( ! empty( $points_types ) ) {
-        $args['points_type'] = $points_types;
+        $query_args['points_type'] = $points_types;
+
+        // If looking to show achievements or ranks, some of them do not award any points so wee need to add the empty points type value
+        if( $atts['achievements'] === 'yes' || $atts['ranks'] === 'yes' ) {
+            $points_types[] = '';
+        }
     }
 
-    $gamipress_template_args['query'] = new CT_Query( $args );
+    // Setup table
+    ct_setup_table( 'gamipress_user_earnings' );
+
+    $gamipress_template_args['query'] = new CT_Query( $query_args );
 
     ob_start();
     gamipress_get_template_part( 'earnings' );

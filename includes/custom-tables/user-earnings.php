@@ -28,10 +28,13 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     $table_name = $ct_table->db->table_name;
 
-    // User ID
-    if( isset( $ct_query->query_vars['user_id'] ) && absint( $ct_query->query_vars['user_id'] ) !== 0 ) {
+    // Shorthand
+    $qv = $ct_query->query_vars;
 
-        $user_id = $ct_query->query_vars['user_id'];
+    // User ID
+    if( isset( $qv['user_id'] ) && absint( $qv['user_id'] ) !== 0 ) {
+
+        $user_id = $qv['user_id'];
 
         if( is_array( $user_id ) ) {
             $user_id = implode( ", ", $user_id );
@@ -43,9 +46,9 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
     }
 
     // Post ID
-    if( isset( $ct_query->query_vars['post_id'] ) && absint( $ct_query->query_vars['post_id'] ) !== 0 ) {
+    if( isset( $qv['post_id'] ) && absint( $qv['post_id'] ) !== 0 ) {
 
-        $post_id = $ct_query->query_vars['post_id'];
+        $post_id = $qv['post_id'];
 
         if( is_array( $post_id ) ) {
             $post_id = implode( ", ", $post_id );
@@ -57,39 +60,61 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
     }
 
     // Post Type
-    if( isset( $ct_query->query_vars['post_type'] ) && ! empty( $ct_query->query_vars['post_type'] ) ) {
+    $post_type_where = '';
 
-        $post_type = $ct_query->query_vars['post_type'];
+    if( isset( $qv['post_type'] ) && ! empty( $qv['post_type'] ) ) {
+
+        $post_type = $qv['post_type'];
 
         if( is_array( $post_type ) ) {
             $post_type = "'" . implode( "', '", $post_type ) . "'";
 
-            $where .= " AND {$table_name}.post_type IN ( {$post_type} )";
+            $post_type_where = "{$table_name}.post_type IN ( {$post_type} )";
         } else {
-            $where .= " AND {$table_name}.post_type = '{$post_type}'";
+            $post_type_where = "{$table_name}.post_type = '{$post_type}'";
         }
 
     }
 
     // Points Type
-    if( isset( $ct_query->query_vars['points_type'] ) && ! empty( $ct_query->query_vars['points_type'] ) ) {
+    $points_type_where = '';
 
-        $points_type = $ct_query->query_vars['points_type'];
+    if( isset( $qv['points_type'] ) && ! empty( $qv['points_type'] ) ) {
+
+        $points_type = $qv['points_type'];
 
         if( is_array( $points_type ) ) {
             $points_type = "'" . implode( "', '", $points_type ) . "'";
 
-            $where .= " AND {$table_name}.points_type IN ( {$points_type} )";
+            $points_type_where = "{$table_name}.points_type IN ( {$points_type} )";
         } else {
-            $where .= " AND {$table_name}.points_type = '{$points_type}'";
+            $points_type_where = "{$table_name}.points_type = '{$points_type}'";
         }
 
     }
 
-    // Since
-    if( isset( $ct_query->query_vars['since'] ) && absint( $ct_query->query_vars['since'] ) > 0 ) {
 
-        $since = date( 'Y-m-d H:i:s', $ct_query->query_vars['since'] );
+    if( ! empty( $post_type_where ) && ! empty( $points_type_where ) ) {
+
+        // If is querying by post and points type, then need to set this conditional as OR
+        $where .= " AND ( {$post_type_where} OR {$points_type_where} )";
+
+    } else if( ! empty( $post_type_where ) ) {
+
+        // Where if just looking for post types and not for points types
+        $where .= " AND {$post_type_where}";
+
+    } else if( ! empty( $points_type_where ) ) {
+
+        // Where if just looking for points types and not for post types
+        $where .= " AND {$points_type_where}";
+
+    }
+
+    // Since
+    if( isset( $qv['since'] ) && absint( $qv['since'] ) > 0 ) {
+
+        $since = date( 'Y-m-d H:i:s', $qv['since'] );
 
         $where .= " AND {$table_name}.date > '{$since}'";
     }

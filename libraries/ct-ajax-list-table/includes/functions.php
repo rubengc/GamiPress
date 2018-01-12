@@ -61,8 +61,6 @@ function ct_render_ajax_list_table( $object, $query_args = array(), $view_args =
                 }
                 ?>
 
-                <?php // display_tablenav() renders a hidden nonce field, something that causes errors on edit screen forms ?>
-                <?php //$ct_list_table->display(); ?>
                 <?php ct_render_ajax_list_tablenav( $ct_list_table, 'top' ); ?>
 
                 <table class="wp-list-table <?php echo implode( ' ', $ct_list_table->get_table_classes() ); ?>">

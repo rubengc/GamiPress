@@ -85,22 +85,11 @@ add_action( 'init', 'gamipress_register_rank_shortcode' );
  */
 function gamipress_rank_shortcode( $atts = array() ) {
 
-	$atts = shortcode_atts( array(
-
-	  	'id' 			=> get_the_ID(),
-	  	'user_id' 		=> '0',
-	  	'title' 		=> 'yes',
-	  	'thumbnail' 	=> 'yes',
-	  	'excerpt'	  	=> 'yes',
-	  	'requirements'	=> 'yes',
-	  	'toggle' 		=> 'yes',
-	  	'earners'	  	=> 'no',
-
-	), $atts, 'gamipress_rank' );
+	$atts = shortcode_atts( gamipress_rank_shortcode_defaults(), $atts, 'gamipress_rank' );
 
 	// return if post id not specified
 	if ( empty($atts['id']) )
-	  return;
+	  return '';
 
 	gamipress_enqueue_scripts();
 
@@ -120,4 +109,26 @@ function gamipress_rank_shortcode( $atts = array() ) {
 
 	// Return our rendered rank
 	return $output;
+}
+
+/**
+ * Single rank shortcode defaults attributes values
+ *
+ * @since 1.3.9.4
+ *
+ * @return array
+ */
+function gamipress_rank_shortcode_defaults() {
+
+	return apply_filters( 'gamipress_rank_shortcode_defaults', array(
+		'id' 			=> get_the_ID(),
+		'user_id' 		=> '0',
+		'title' 		=> 'yes',
+		'thumbnail' 	=> 'yes',
+		'excerpt'	  	=> 'yes',
+		'requirements'	=> 'yes',
+		'toggle' 		=> 'yes',
+		'earners'	  	=> 'no',
+	) );
+
 }

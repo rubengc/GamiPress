@@ -192,7 +192,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
 
-	$atts = shortcode_atts( array(
+	$atts = shortcode_atts( array_merge( array(
 		// Achievements atts
 		'type'        	=> 'all',
 		'limit'       	=> '10',
@@ -207,15 +207,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'order'       	=> 'ASC',
 		'include'     	=> '',
 		'exclude'     	=> '',
-
-		// Single achievement atts
-		'title' 		=> 'yes',
-		'thumbnail' 	=> 'yes',
-		'excerpt'	  	=> 'yes',
-		'steps'	  		=> 'yes',
-		'toggle' 		=> 'yes',
-		'earners'	  	=> 'no',
-	), $atts, 'gamipress_achievements' );
+	), gamipress_achievement_shortcode_defaults() ), $atts, 'gamipress_achievements' );
 
 	gamipress_enqueue_scripts();
 

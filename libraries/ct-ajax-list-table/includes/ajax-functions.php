@@ -24,7 +24,13 @@ function ct_ajax_list_table_handle_request() {
     // Setup this constant to allow from CT_List_Table meet that this render comes from this plugin
     @define( 'IS_CT_AJAX_LIST_TABLE', true );
 
-    $query_args = wp_parse_args( json_decode( $_GET['query_args'] ), array(
+    if( is_array( $_GET['query_args'] ) ) {
+        $query_args = $_GET['query_args'];
+    } else {
+        $query_args = json_decode( str_replace( "\\'", "\"", $_GET['query_args'] ), true );
+    }
+
+    $query_args = wp_parse_args( $query_args, array(
         'paged' => 1,
         'items_per_page' => 20,
     ) );
