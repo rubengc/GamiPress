@@ -6,23 +6,35 @@
 	function gamipress_ajax_achievement_list( achievement_list ) {
 		achievement_list.find( '.gamipress-spinner' ).show();
 
+		var data = {
+			action: 'gamipress_get_achievements',
+
+			// Achievements atts
+			type: achievement_list.find('input[type="hidden"][name="type"]').val(),
+			limit: achievement_list.find('input[type="hidden"][name="limit"]').val(),
+			current_user: achievement_list.find('input[type="hidden"][name="current_user"]').val(),
+			user_id: achievement_list.find('input[type="hidden"][name="user_id"]').val(),
+			wpms: achievement_list.find('input[type="hidden"][name="wpms"]').val(),
+			offset: achievement_list.find( '#gamipress_achievements_offset' ).val(),
+			count: achievement_list.find( '#gamipress_achievements_count' ).val(),
+			filter: ( ( achievement_list.find( '#achievements_list_filter').length ) ? achievement_list.find('#achievements_list_filter').val() : '' ),
+			search: achievement_list.find('#achievements_list_search').val(),
+			orderby: achievement_list.find('input[type="hidden"][name="orderby"]').val(),
+			order: achievement_list.find('input[type="hidden"][name="order"]').val(),
+			include: achievement_list.find('input[type="hidden"][name="include"]').val(),
+			exclude: achievement_list.find('input[type="hidden"][name="exclude"]').val(),
+		};
+
+		// Single achievement atts
+		for( var i = 0; i < gamipress.achievement_fields.length; i++ ) {
+			var achievement_field = gamipress.achievement_fields[i];
+
+			data[achievement_field] = achievement_list.find('input[type="hidden"][name="' + achievement_field + '"]').val()
+		}
+
 		$.ajax( {
 			url: gamipress.ajaxurl,
-			data: {
-				action: 'gamipress_get_achievements',
-				type: achievement_list.find('input[type="hidden"][name="type"]').val(),
-				limit: achievement_list.find('input[type="hidden"][name="limit"]').val(),
-				user_id: achievement_list.find('input[type="hidden"][name="user_id"]').val(),
-				wpms: achievement_list.find('input[type="hidden"][name="wpms"]').val(),
-				offset: achievement_list.find( '#gamipress_achievements_offset' ).val(),
-				count: achievement_list.find( '#gamipress_achievements_count' ).val(),
-				filter: ( ( achievement_list.find( '#achievements_list_filter').length ) ? achievement_list.find('#achievements_list_filter').val() : '' ),
-				search: achievement_list.find('#achievements_list_search').val(),
-				orderby: achievement_list.find('input[type="hidden"][name="orderby"]').val(),
-				order: achievement_list.find('input[type="hidden"][name="order"]').val(),
-				include: achievement_list.find('input[type="hidden"][name="include"]').val(),
-				exclude: achievement_list.find('input[type="hidden"][name="exclude"]').val(),
-			},
+			data: data,
 			dataType: 'json',
 			success: function( response ) {
 				achievement_list.find( '.gamipress-spinner' ).hide();

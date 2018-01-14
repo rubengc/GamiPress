@@ -169,9 +169,6 @@
 
     });
 
-    // Trigger a change for our trigger type post selector to determine if it should show
-    $( '.select-trigger-type' ).change();
-
     // Listen for a change to our achievement type selectors
     $('.requirements-list').on( 'change', '.select-achievement-type', function() {
 
@@ -251,6 +248,9 @@
             limit_type_selector.siblings('.limit').show();
         }
     });
+
+    // Trigger a change for our trigger type post selector to determine if it should show
+    $( '.select-trigger-type' ).change();
 
     // Trigger a change for our limit type to determine if limit should show
     $( '.limit-type' ).change();

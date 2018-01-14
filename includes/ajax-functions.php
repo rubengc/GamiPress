@@ -18,18 +18,18 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_ajax_get_achievements() {
 
 	// Setup our AJAX query vars
-	$type       = isset( $_REQUEST['type'] )       ? $_REQUEST['type']       : false;
-	$limit      = isset( $_REQUEST['limit'] )      ? $_REQUEST['limit']      : false;
-	$offset     = isset( $_REQUEST['offset'] )     ? $_REQUEST['offset']     : false;
-	$filter     = isset( $_REQUEST['filter'] )     ? $_REQUEST['filter']     : false;
-	$search     = isset( $_REQUEST['search'] )     ? $_REQUEST['search']     : false;
-	$current_user    = isset( $_REQUEST['current_user'] )    ? $_REQUEST['current_user']    : false;
-	$user_id    = isset( $_REQUEST['user_id'] )    ? $_REQUEST['user_id']    : false;
-	$orderby    = isset( $_REQUEST['orderby'] )    ? $_REQUEST['orderby']    : false;
-	$order      = isset( $_REQUEST['order'] )      ? $_REQUEST['order']      : false;
-	$wpms       = isset( $_REQUEST['wpms'] )       ? $_REQUEST['wpms']       : false;
-	$include    = isset( $_REQUEST['include'] )    ? $_REQUEST['include']    : array();
-	$exclude    = isset( $_REQUEST['exclude'] )    ? $_REQUEST['exclude']    : array();
+	$type       	= isset( $_REQUEST['type'] )       ? $_REQUEST['type']       : false;
+	$limit      	= isset( $_REQUEST['limit'] )      ? $_REQUEST['limit']      : false;
+	$offset     	= isset( $_REQUEST['offset'] )     ? $_REQUEST['offset']     : false;
+	$filter     	= isset( $_REQUEST['filter'] )     ? $_REQUEST['filter']     : false;
+	$search     	= isset( $_REQUEST['search'] )     ? $_REQUEST['search']     : false;
+	$current_user   = isset( $_REQUEST['current_user'] )    ? $_REQUEST['current_user']    : false;
+	$user_id    	= isset( $_REQUEST['user_id'] )    ? $_REQUEST['user_id']    : false;
+	$orderby    	= isset( $_REQUEST['orderby'] )    ? $_REQUEST['orderby']    : false;
+	$order      	= isset( $_REQUEST['order'] )      ? $_REQUEST['order']      : false;
+	$wpms       	= isset( $_REQUEST['wpms'] )       ? $_REQUEST['wpms']       : false;
+	$include    	= isset( $_REQUEST['include'] )    ? $_REQUEST['include']    : array();
+	$exclude    	= isset( $_REQUEST['exclude'] )    ? $_REQUEST['exclude']    : array();
 
 	// Force to set current user as user ID
 	if( $current_user ) {
@@ -107,8 +107,8 @@ function gamipress_ajax_get_achievements() {
 			'post_type'      =>	$type,
 			'orderby'        =>	$orderby,
 			'order'          =>	$order,
-			'posts_per_page' =>	$limit,
-			'offset'         => $offset,
+			'posts_per_page' =>	absint( $limit ),
+			'offset'         => absint( $offset ),
 			'post_status'    => 'publish',
 			'post__not_in'   => array_diff( $hidden, $earned_ids )
 		);

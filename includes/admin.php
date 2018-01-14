@@ -8,10 +8,12 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+require_once GAMIPRESS_DIR . 'includes/admin/auto-update.php';
 require_once GAMIPRESS_DIR . 'includes/admin/contextual-help.php';
 require_once GAMIPRESS_DIR . 'includes/admin/debug.php';
 require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes.php';
 require_once GAMIPRESS_DIR . 'includes/admin/plugins.php';
+require_once GAMIPRESS_DIR . 'includes/admin/achievements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
@@ -22,6 +24,33 @@ require_once GAMIPRESS_DIR . 'includes/admin/pages/licenses.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
+
+/**
+ * Add custom GamiPress body classes
+ *
+ * @since 1.3.9.5
+ *
+ * @param string $admin_body_classes
+ *
+ * @return string
+ */
+function gamipress_admin_body_class( $admin_body_classes ) {
+
+    global $post_type;
+
+    // Add an extra class to meet that current post type is a gamipress post type
+    if(
+        in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) )
+        || in_array( $post_type, gamipress_get_achievement_types_slugs() )
+        || in_array( $post_type, gamipress_get_rank_types_slugs() )
+    ) {
+        $admin_body_classes .= ' gamipress-post-type ';
+    }
+
+    return $admin_body_classes;
+
+}
+add_filter( 'admin_body_class', 'gamipress_admin_body_class' );
 
 /**
  * Create GamiPress menus
@@ -225,7 +254,8 @@ function gamipress_dashboard_widget() {
 /**
  * Register our custom columns
  *
- * @since 1.0.6
+ * @since   1.0.6
+ * @updated 1.3.9.5 Added the thumbnail column
  *
  * @param $posts_columns
  * @param $post_type
@@ -233,11 +263,19 @@ function gamipress_dashboard_widget() {
  * @return mixed
  */
 function gamipress_posts_columns( $posts_columns, $post_type ) {
+
     if( ! in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) ) ) {
         return $posts_columns;
     }
 
+    // Switch Title to Singular Name
     $posts_columns['title'] = __( 'Singular Name', 'gamipress' );
+
+    // Prepend the thumbnail column
+    $chunks                 = array_chunk( $posts_columns, 1, true );
+    $chunks[0]['thumbnail'] = __( 'Image', 'gamipress' );
+
+    $posts_columns = call_user_func_array( 'array_merge', $chunks );
 
     // Try to place our column before date column
     $pos = array_search( 'date', array_keys( $posts_columns ) );
@@ -258,7 +296,8 @@ add_filter( 'manage_posts_columns', 'gamipress_posts_columns', 10, 2 );
 /**
  * Output for our custom columns
  *
- * @since 1.0.6
+ * @since   1.0.6
+ * @updated 1.3.9.5 Added the thumbnail column output
  *
  * @param $column_name
  * @param $post_id
@@ -269,6 +308,22 @@ function gamipress_posts_custom_columns( $column_name, $post_id ) {
     }
 
     switch( $column_name ) {
+        case 'thumbnail':
+            $can_edit_post = current_user_can( 'edit_post', $post_id );
+
+            if( $can_edit_post ) {
+                printf(
+                    '<a href="%s" aria-label="%s">%s</a>',
+                    get_edit_post_link( $post_id ),
+                    /* translators: %s: post title */
+                    esc_attr( sprintf( __( '&#8220;%s&#8221; (Edit)' ), get_post_field( 'post_title', $post_id ) ) ),
+                    get_the_post_thumbnail( $post_id, array( 32, 32 ) )
+                );
+            } else {
+                echo get_the_post_thumbnail( $post_id, array( 32, 32 ) );
+            }
+
+            break;
         case 'plural_name':
             echo get_post_meta( $post_id, '_gamipress_plural_name', true );
             break;

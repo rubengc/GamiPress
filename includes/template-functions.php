@@ -12,8 +12,10 @@ if( !defined( 'ABSPATH' ) ) exit;
  * Render an achievement
  *
  * @since  1.0.0
+ *
  * @param  integer  $achievement    The Achievement's ID
  * @param  array    $template_args  Template args
+ *
  * @return string                   The Achievement's output
  */
 function gamipress_render_achievement( $achievement = 0, $template_args = array() ) {
@@ -21,8 +23,6 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
     global $gamipress_template_args;
 
     // Initialize GamiPress template args global
-    $gamipress_template_args = array();
-
     $gamipress_template_args = wp_parse_args( $template_args, gamipress_achievement_shortcode_defaults() );
 
     // If we were given an ID, get the post
@@ -60,8 +60,10 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
  * Render a rank
  *
  * @since  1.0.0
+ *
  * @param  integer  $rank           The Rank's ID
  * @param  array    $template_args  Template args
+ *
  * @return string                   The Achievement's output
  */
 function gamipress_render_rank( $rank = 0, $template_args = array() ) {
@@ -69,8 +71,6 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
     global $gamipress_template_args;
 
     // Initialize GamiPress template args global
-    $gamipress_template_args = array();
-
     $gamipress_template_args = wp_parse_args( $template_args, gamipress_rank_shortcode_defaults() );
 
     // If we were given an ID, get the post

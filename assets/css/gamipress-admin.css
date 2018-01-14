@@ -321,6 +321,34 @@ li.requirement-row label {
 	display: none;
 }
 
+/* Post lists */
+.gamipress-post-type .wp-list-table .column-thumbnail {
+	width: 40px;
+	text-align: center;
+	padding-right: 0;
+}
+
+@media screen and (max-width: 782px) {
+
+	.gamipress-post-type .wp-list-table .is-expanded td.column-thumbnail {
+		display: table-cell !important;
+	}
+
+	.gamipress-post-type .wp-list-table .column-thumbnail:before {
+		display: none !important;
+	}
+	
+	.gamipress-post-type .wp-list-table .column-thumbnail + .column-title {
+		display: table-cell !important;
+		/*min-width: calc( 100% - 75px ) !important; /* 35px from cb and 40 px from thumbnail */
+	}
+
+	.gamipress-post-type .wp-list-table .is-expanded td:not(.hidden):not(.column-thumbnail):not(.column-title) {
+		margin-left: -40px;
+	}
+	
+}
+
 /* User Profile Area */
 .gamipress-table th {
 	font-weight: bold;

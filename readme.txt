@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.9.4
+Stable tag: 1.3.9.5
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -157,12 +157,15 @@ If you’re looking for something endorsed and maintained by the developers who 
 
 == Screenshots ==
 
-1. Frontend shortcodes and widgets demo
-2. Requirements edit screen
-3. Live shortcode embedder
-4. Builtin widgets
-5. Configurable email templates
-6. Logs edit screen
+1. A huge number of shortcodes and widgets with a lot of display options.
+2. Configure as many points types as you like: Credits, Gems, Coins, etc.
+3. Configure as many achievement types as you like: Badges, Quests, etc.
+4. Configure as many rank types as you like: Grade, Level, etc.
+5. Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank.
+6. Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes.
+7. WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more.
+8. Configurable email templates to let your users get notified automatically about new awards.
+9. Flexible log system with support for public and private logs.
 
 == Frequently Asked Questions ==
 
@@ -203,6 +206,15 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.3.9.5 =
+
+* Added the featured image on points types, achievements and ranks list view at admin area.
+* Added more columns on achievements and ranks list view at admin area.
+* Fixed rank selected on requirements UI when requirement has "Earn Rank" as activity.
+* Fixed achievement template fields on [gamipress_achievements] shortcode and GamiPress: Achievements widget.
+* Improvements on admin area styles.
+* Updated screenshots and readme with improved screenshots descriptions.
 
 = 1.3.9.4 =
 

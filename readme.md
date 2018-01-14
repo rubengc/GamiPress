@@ -149,23 +149,32 @@ If you’re looking for something endorsed and maintained by the developers who 
 
 ## Screenshots ##
 
-**Frontend shortcodes and widgets demo**
-![Frontend shortcodes and widgets demo](https://ps.w.org/gamipress/assets/screenshot-1.png "Frontend shortcodes and widgets demo")
+**A huge number of shortcodes and widgets with a lot of display options**
+![A huge number of shortcodes and widgets with a lot of display options](https://ps.w.org/gamipress/assets/screenshot-1.png "A huge number of shortcodes and widgets with a lot of display options")
 
-**Requirements edit screen**
-![Requirements edit screen](https://ps.w.org/gamipress/assets/screenshot-2.png "Requirements edit screen")
+**Configure as many points types as you like: Credits, Gems, Coins, etc**
+![Configure as many points types as you like: Credits, Gems, Coins, etc](https://ps.w.org/gamipress/assets/screenshot-2.png "Configure as many points types as you like: Credits, Gems, Coins, etc")
 
-**Live shortcode embedder**
-![Live shortcode embedder](https://ps.w.org/gamipress/assets/screenshot-3.png "Live shortcode embedder")
+**Configure as many achievement types as you like: Badges, Quests, etc**
+![Configure as many achievement types as you like: Badges, Quests, etc](https://ps.w.org/gamipress/assets/screenshot-3.png "Configure as many achievement types as you like: Badges, Quests, etc")
 
-**Builtin widgets**
-![Builtin widgets](https://ps.w.org/gamipress/assets/screenshot-4.png "Builtin widgets")
+**Configure as many rank types as you like: Grade, Level, etc**
+![Configure as many rank types as you like: Grade, Level, etc](https://ps.w.org/gamipress/assets/screenshot-4.png "Configure as many rank types as you like: Grade, Level, etc")
 
-**Configurable email templates**
-![Configurable email templates](https://ps.w.org/gamipress/assets/screenshot-5.png "Configurable email templates")
+**Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank**
+![Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank](https://ps.w.org/gamipress/assets/screenshot-5.png "Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank")
 
-**Logs edit screen**
-![Logs edit screen](https://ps.w.org/gamipress/assets/screenshot-6.png "Logs edit screen")
+**Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes**
+![Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes](https://ps.w.org/gamipress/assets/screenshot-6.png "Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes")
+
+**WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more**
+![WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more](https://ps.w.org/gamipress/assets/screenshot-7.png "WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more")
+
+**Configurable email templates to let your users get notified automatically about new awards**
+![Configurable email templates to let your users get notified automatically about new awards](https://ps.w.org/gamipress/assets/screenshot-8.png "Configurable email templates to let your users get notified automatically about new awards")
+
+**Flexible log system with support for public and private logs**
+![Flexible log system with support for public and private logs](https://ps.w.org/gamipress/assets/screenshot-9.png "Flexible log system with support for public and private logs")
 
 ## Frequently Asked Questions ##
 
@@ -206,6 +215,15 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 ## Changelog ##
+
+### 1.3.9.5 ###
+
+* Added the featured image on points types, achievements and ranks list view at admin area.
+* Added more columns on achievements and ranks list view at admin area.
+* Fixed rank selected on requirements UI when requirement has "Earn Rank" as activity.
+* Fixed achievement template fields on [gamipress_achievements] shortcode and GamiPress: Achievements widget.
+* Improvements on admin area styles.
+* Updated screenshots and readme with improved screenshots descriptions.
 
 ### 1.3.9.4 ###
 
