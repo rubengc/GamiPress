@@ -216,6 +216,13 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.9.6 ###
+
+* Improvements on earn and expend points activity checks, now detects how many points user has earned since last earned time.
+* Fixed issue while excluding logs related to achievement unlock when Only log activities in use is enabled.
+* Fixed issue with add-ons update checks.
+* Added support for direct pagination on user earnings table at user profile screen.
+
 ### 1.3.9.5 ###
 
 * Added the featured image on points types, achievements and ranks list view at admin area.

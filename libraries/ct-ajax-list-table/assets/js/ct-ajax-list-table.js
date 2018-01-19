@@ -38,6 +38,21 @@
             ct_ajax_list_table_paginate_table( $(this).closest('.ct-ajax-list-table'), paged );
         });
 
+        table.find('.paging-input .current-page').change(function(e) {
+            var paged = $(this).val();
+
+            var total_pages = parseInt( $(this).closest('.ct-ajax-list-table').find('.tablenav.top .paging-input .total-pages').text() );
+
+            console.log(total_pages);
+
+            if( paged > total_pages ) {
+                paged = total_pages;
+                $(this).val(total_pages);
+            }
+
+            ct_ajax_list_table_paginate_table( $(this).closest('.ct-ajax-list-table'), paged );
+        });
+
     }
 
     // Ajax pagination

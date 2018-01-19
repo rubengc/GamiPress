@@ -38,14 +38,16 @@ function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
 /**
  * Return an user's points awarded
  *
- * @since 1.3.7
+ * @since 	1.3.7
+ * @updated 1.3.9.6 Added $since parameter
  *
- * @param  integer 	$user_id      			The given user's ID
- * @param  string 	$points_type   			The points type
+ * @param  	integer 	$user_id      			The given user's ID
+ * @param  	string 		$points_type   			The points type
+ * @param 	integer   	$since
  *
- * @return integer 	$user_points_awarded  	The user's current points awarded
+ * @return 	integer 	$user_points_awarded  	The user's current points awarded
  */
-function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '' ) {
+function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '', $since = 0 ) {
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
@@ -60,7 +62,8 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '' ) {
 
 	$points_awarded = get_user_meta( $user_id, $user_meta, true );
 
-	if( empty( $points_awarded ) ) {
+	// If user meta not exists or since parameter is defined, recalculate it
+	if( empty( $points_awarded ) || $since !== 0 ) {
 
 		$points_awarded = 0;
 
@@ -68,13 +71,20 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '' ) {
 		$user_points_logs = gamipress_get_user_logs( $user_id, array(
 			'type' => array( 'points_earn', 'points_award' ),
 			'points_type' => $points_type,
-		) );
+		), $since );
 
 		ct_setup_table( 'gamipress_logs' );
 
 		// Loop all logs to retrieve the amount of points awarded
 		foreach( $user_points_logs as $user_points_log ) {
 			$points_awarded += absint( ct_get_object_meta( $user_points_log->log_id, '_gamipress_points', true ) );
+		}
+
+		ct_reset_setup_table();
+
+		// If since parameter has been set, return the points awarded since this date without update it
+		if( $since !== 0 ) {
+			return $points_awarded;
 		}
 
 		// Finally update the user meta
@@ -89,14 +99,16 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '' ) {
 /**
  * Return an user's points deducted
  *
- * @since 1.3.7
+ * @since 	1.3.7
+ * @updated 1.3.9.6 Added $since parameter
  *
- * @param  integer 	$user_id      			The given user's ID
- * @param  string 	$points_type   			The points type
+ * @param  	integer 	$user_id      			The given user's ID
+ * @param  	string 		$points_type   			The points type
+ * @param 	integer   	$since
  *
- * @return integer 	$user_points_deducted  	The user's current points deducted
+ * @return 	integer 	$user_points_deducted  	The user's current points deducted
  */
-function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '' ) {
+function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '', $since = 0 ) {
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
@@ -111,7 +123,8 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '' ) {
 
 	$points_deducted = get_user_meta( $user_id, $user_meta, true );
 
-	if( empty( $points_deducted ) ) {
+	// If user meta not exists or since parameter is defined, recalculate it
+	if( empty( $points_deducted ) || $since !== 0 ) {
 
 		$points_deducted = 0;
 
@@ -119,13 +132,20 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '' ) {
 		$user_points_logs = gamipress_get_user_logs( $user_id, array(
 			'type' => array( 'points_deduct', 'points_revoke' ),
 			'points_type' => $points_type,
-		) );
+		), $since );
 
 		ct_setup_table( 'gamipress_logs' );
 
 		// Loop all logs to retrieve the amount of points deducted
 		foreach( $user_points_logs as $user_points_log ) {
 			$points_deducted += absint( ct_get_object_meta( $user_points_log->log_id, '_gamipress_points', true ) );
+		}
+
+		ct_reset_setup_table();
+
+		// If since parameter has been set, return the points deducted since this date without update it
+		if( $since !== 0 ) {
+			return $points_deducted;
 		}
 
 		// Finally update the user meta
@@ -140,14 +160,16 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '' ) {
 /**
  * Return an user's points expended
  *
- * @since 1.3.7
+ * @since 	1.3.7
+ * @updated 1.3.9.6 Added $since parameter
  *
- * @param  integer 	$user_id      			The given user's ID
- * @param  string 	$points_type   			The points type
+ * @param  	integer 	$user_id      			The given user's ID
+ * @param  	string 		$points_type   			The points type
+ * @param 	integer   	$since
  *
- * @return integer 	$user_points_expended  	The user's current points expended
+ * @return 	integer 	$user_points_expended  	The user's current points expended
  */
-function gamipress_get_user_points_expended( $user_id = 0, $points_type = '' ) {
+function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $since = 0 ) {
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
@@ -162,7 +184,8 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '' ) {
 
 	$points_expended = get_user_meta( $user_id, $user_meta, true );
 
-	if( empty( $points_expended ) ) {
+	// If user meta not exists or since parameter is defined, recalculate it
+	if( empty( $points_expended ) || $since !== 0 ) {
 
 		$points_expended = 0;
 
@@ -170,13 +193,20 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '' ) {
 		$user_points_logs = gamipress_get_user_logs( $user_id, array(
 			'type' => 'points_expend',
 			'points_type' => $points_type,
-		) );
+		), $since );
 
 		ct_setup_table( 'gamipress_logs' );
 
 		// Loop all logs to retrieve the amount of points expended
 		foreach( $user_points_logs as $user_points_log ) {
 			$points_expended += absint( ct_get_object_meta( $user_points_log->log_id, '_gamipress_points', true ) );
+		}
+
+		ct_reset_setup_table();
+
+		// If since parameter has been set, return the points expended since this date without update it
+		if( $since !== 0 ) {
+			return $points_expended;
 		}
 
 		// Finally update the user meta

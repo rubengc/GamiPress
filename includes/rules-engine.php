@@ -408,9 +408,11 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 		// Grab our user's points and see if they at least as many as required
 		$points_required        = absint( get_post_meta( $achievement_id, '_gamipress_points_required', true ) );
 		$points_type_required   = get_post_meta( $achievement_id, '_gamipress_points_type_required', true );
-		$user_points            = gamipress_get_user_points( $user_id, $points_type_required );
 
-		if ( $user_points >= $points_required )
+		// Get user points earned since last time has earning the achievement
+		$awarded_points    		= gamipress_get_user_points_awarded( $user_id, $points_type_required, gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
+
+		if ( $awarded_points >= $points_required )
 			$return = true;
 		else
 			$return = false;
@@ -433,12 +435,15 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 		// Grab our user's points expended and see if they at least as many as required
 		$points_required        = absint( get_post_meta( $achievement_id, '_gamipress_points_required', true ) );
 		$points_type_required   = get_post_meta( $achievement_id, '_gamipress_points_type_required', true );
-		$expended_points 		= gamipress_get_user_points_expended( $user_id, $points_type_required );
+
+		// Get user points expended since last time has earning the achievement
+		$expended_points 		= gamipress_get_user_points_expended( $user_id, $points_type_required, gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
 		if ( $expended_points >= $points_required )
 			$return = true;
 		else
 			$return = false;
+
 	}
 
 	// Return our eligibility status

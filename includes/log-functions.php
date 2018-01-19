@@ -121,13 +121,15 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context
  * Return user logs with the specified meta data
  *
  * @since  1.3.7
+ * @updated 1.3.9.6 Added $since parameter
  *
  * @param int       $user_id
  * @param array     $log_meta
+ * @param integer   $since
  *
  * @return array
  */
-function gamipress_get_user_logs( $user_id = 0, $log_meta = array() ) {
+function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 ) {
 
     global $wpdb;
 
@@ -141,6 +143,7 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array() ) {
     // Initialize query args
     $query_args = array( absint( $user_id ) );
 
+    // Loop all log meta to build the where clause
     foreach ( (array) $log_meta as $key => $meta ) {
 
         if( $key === 'type' ) {
@@ -167,6 +170,19 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array() ) {
 
         }
 
+    }
+
+    // Setup since clause
+    if( $since !== 0 ) {
+
+        $now = date( 'Y-m-d' );
+        $since = date( 'Y-m-d', $since );
+
+        $date = "BETWEEN '$since' AND '$now'";
+
+        if( $since !== $now ) {
+            $where[] = "CAST( p.date AS DATE ) {$date}";
+        }
     }
 
     // Turn arrays into strings

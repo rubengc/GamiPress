@@ -211,6 +211,8 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
                                     }
                                 }
 
+                                $option_key = apply_filters( 'cmb2_edd_license_option_key', $option_key, $cmb );
+
                                 $default = isset( $field['default'] ) ? $field['default'] : '';
 
                                 $args['value'] = cmb2_get_option( $option_key, $field['id'], $default );

@@ -153,6 +153,7 @@ function gamipress_load_activity_triggers() {
 
 		// Grab the post type object, and bail if it's not actually an object
 		$post_type_object = get_post_type_object( $achievement_type );
+
 		if ( ! is_object( $post_type_object ) )
 			continue;
 
@@ -164,9 +165,11 @@ function gamipress_load_activity_triggers() {
 
 	// Loop through each trigger and add our trigger event to the hook
 	foreach ( $activity_triggers as $group => $group_triggers ) {
+
 		foreach( $group_triggers as $trigger => $label ) {
 			add_action( $trigger, 'gamipress_trigger_event', 10, 20 );
 		}
+
 	}
 
 }
@@ -190,12 +193,19 @@ function gamipress_trigger_event() {
 	// Grab our current trigger
 	$trigger = current_filter();
 
-	// if only log events with listeners is enabled, the check if has listeners
-	if( (bool) gamipress_get_option( 'only_log_events_with_listeners', false ) ) {
-		// If not achievements listening it, then return
-		if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
-			return $args[0];
+	// gamipress_unlock_all_{achievement_type} and gamipress_unlock_{achievement_type} are excluded from this check
+	if( strpos( $trigger, 'gamipress_unlock_' ) !== 0 ) {
+
+		// if only log events with listeners is enabled, the check if has listeners
+		if( (bool) gamipress_get_option( 'only_log_events_with_listeners', false ) ) {
+
+			// If not achievements listening it, then return
+			if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
+				return $args[0];
+			}
+
 		}
+
 	}
 
 	// Grab the user ID

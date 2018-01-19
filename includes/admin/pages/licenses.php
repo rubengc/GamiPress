@@ -161,6 +161,7 @@ function gamipress_register_licenses_page() {
                 $meta_box['show_on'] = array(
                     'key'   => 'options-page',
                     'value' => array( 'gamipress_licenses' ),
+                    'option_key' => 'gamipress_settings',
                 );
 
                 $box = new_cmb2_box( $meta_box );
@@ -213,3 +214,24 @@ function gamipress_license_field_before( $field_args, $field ) {
     <?php endif;
 
 }
+
+/**
+ * Filter to set correct option key for our licenses
+ *
+ * @since 1.3.9.6
+ *
+ * @param string $option_key
+ * @param CMB2 $cmb
+ *
+ * @return string
+ */
+function gamipress_licenses_option_key( $option_key, $cmb ) {
+
+    if( isset( $cmb->meta_box['show_on'] ) && isset( $cmb->meta_box['show_on']['option_key'] ) ) {
+        return $cmb->meta_box['show_on']['option_key'];
+    }
+
+    return $option_key;
+
+}
+add_filter( 'cmb2_edd_license_option_key', 'gamipress_licenses_option_key', 10, 2 );
