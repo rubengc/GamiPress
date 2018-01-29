@@ -207,6 +207,16 @@ GamiPress comes with the following widgets:
 
 == Changelog ==
 
+= 1.3.9.7 =
+
+* Added stronger checks on points types, achievement types and rank types slugs to prevent invalid characters.
+* Improvements on multiple points to award when user earns lower amounts that required.
+* Improvements on license error handling with more precise information about license status.
+* Improvements on libraries load to avoid issues on frontend.
+* Removed RGBa ColorPicker library.
+* Added bulk delete action on logs screen.
+* Improvements on logs search function to match user names.
+
 = 1.3.9.6 =
 
 * Improvements on earn and expend points activity checks, now detects how many points user has earned since last earned time.

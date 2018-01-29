@@ -121,6 +121,47 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             <?php
         }
 
+        public function bulk_delete() {
+
+            global $ct_registered_tables, $ct_table;
+
+            // If not CT object, die
+            if ( ! $ct_table )
+                wp_die( __( 'Invalid item type.' ) );
+
+            // If not CT object allow ui, die
+            if ( ! $ct_table->show_ui ) {
+                wp_die( __( 'Sorry, you are not allowed to delete items of this type.' ) );
+            }
+
+            $object_ids = array();
+
+            // Check received items
+            if ( ! empty( $_REQUEST['item'] ) ) {
+                $object_ids = array_map('intval', $_REQUEST['item']);
+            }
+
+            $deleted = 0;
+
+			foreach ( (array) $object_ids as $object_id ) {
+
+                // If not current user can delete, die
+                if ( ! current_user_can( 'delete_item', $object_id ) ) {
+                    wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
+                }
+
+                if ( ! ct_delete_object( $object_id ) )
+                    wp_die( __( 'Error in deleting.' ) );
+
+                $deleted++;
+            }
+
+            $location = add_query_arg( array( 'deleted' => $deleted ), $this->get_link() );
+
+            wp_redirect( $location );
+            exit;
+        }
+
         public function delete() {
 
             global $ct_registered_tables, $ct_table;
@@ -143,7 +184,7 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
             $object_id = (int) $_GET[$primary_key];
 
-            // If not current user can edit, die
+            // If not current user can delete, die
             if ( ! current_user_can( 'delete_item', $object_id ) ) {
                 wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
             }
@@ -170,6 +211,17 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             // Setup CT_Table
             $ct_table = $ct_registered_tables[$this->name];
 
+            // Check for bulk delete
+            if( isset( $_GET['action'] ) ) {
+
+                if( $_GET['action'] === 'delete' ) {
+                    // Deleting
+                    $this->bulk_delete();
+                }
+
+            }
+
+            // Check for delete action
             if( isset( $_GET['ct-action'] ) ) {
 
                 if( $_GET['ct-action'] === 'delete' ) {

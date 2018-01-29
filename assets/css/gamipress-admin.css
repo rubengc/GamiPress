@@ -899,6 +899,10 @@ body > .gamipress-select2,
 	display: inline;
 }
 
+.gamipress_licenses .license-error {
+	color: #a00;
+}
+
 .gamipress_licenses .renew-license-notice:before {
 	content: ' '; /* Add a space between expiration and renew notices */
 }

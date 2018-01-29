@@ -9,9 +9,9 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Parse query args for user earnings
+ * Parse query args for logs
  *
- * @since  1.2.8
+ * @since 1.2.8
  *
  * @param string $where
  * @param CT_Query $ct_query
@@ -28,10 +28,13 @@ function gamipress_logs_query_where( $where, $ct_query ) {
 
     $table_name = $ct_table->db->table_name;
 
-    // Type
-    if( isset( $ct_query->query_vars['type'] ) && ! empty( $ct_query->query_vars['type'] ) ) {
+    // Shorthand
+    $qv = $ct_query->query_vars;
 
-        $type = $ct_query->query_vars['type'];
+    // Type
+    if( isset( $qv['type'] ) && ! empty( $qv['type'] ) ) {
+
+        $type = $qv['type'];
 
         if( is_array( $type ) ) {
             $type = "'" . implode( "', '", $type ) . "'";
@@ -44,9 +47,9 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     }
 
     // Access
-    if( isset( $ct_query->query_vars['access'] ) && ! empty( $ct_query->query_vars['access'] ) ) {
+    if( isset( $qv['access'] ) && ! empty( $qv['access'] ) ) {
 
-        $access = $ct_query->query_vars['access'];
+        $access = $qv['access'];
 
         if( is_array( $access ) ) {
             $access = "'" . implode( "', '", $access ) . "'";
@@ -59,9 +62,9 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     }
 
     // User ID
-    if( isset( $ct_query->query_vars['user_id'] ) && absint( $ct_query->query_vars['user_id'] ) !== 0 ) {
+    if( isset( $qv['user_id'] ) && absint( $qv['user_id'] ) !== 0 ) {
 
-        $user_id = $ct_query->query_vars['user_id'];
+        $user_id = $qv['user_id'];
 
         if( is_array( $user_id ) ) {
             $user_id = implode( ", ", $user_id );
@@ -73,12 +76,12 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     }
 
     // Include
-    if( isset( $ct_query->query_vars['log__in'] ) && ! empty( $ct_query->query_vars['log__in'] ) ) {
+    if( isset( $qv['log__in'] ) && ! empty( $qv['log__in'] ) ) {
 
-        if( is_array( $ct_query->query_vars['log__in'] ) ) {
-            $include = implode( ", ", $ct_query->query_vars['log__in'] );
+        if( is_array( $qv['log__in'] ) ) {
+            $include = implode( ", ", $qv['log__in'] );
         } else {
-            $include = $ct_query->query_vars['log__in'];
+            $include = $qv['log__in'];
         }
 
         if( ! empty( $include ) ) {
@@ -87,12 +90,12 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     }
 
     // Exclude
-    if( isset( $ct_query->query_vars['log__not_in'] ) && ! empty( $ct_query->query_vars['log__not_in'] ) ) {
+    if( isset( $qv['log__not_in'] ) && ! empty( $qv['log__not_in'] ) ) {
 
-        if( is_array( $ct_query->query_vars['log__not_in'] ) ) {
-            $exclude = implode( ", ", $ct_query->query_vars['log__not_in'] );
+        if( is_array( $qv['log__not_in'] ) ) {
+            $exclude = implode( ", ", $qv['log__not_in'] );
         } else {
-            $exclude = $ct_query->query_vars['log__not_in'];
+            $exclude = $qv['log__not_in'];
         }
 
         if( ! empty( $exclude ) ) {
@@ -105,9 +108,58 @@ function gamipress_logs_query_where( $where, $ct_query ) {
 add_filter( 'ct_query_where', 'gamipress_logs_query_where', 10, 2 );
 
 /**
+ * Parse search query args for logs
+ *
+ * @since 1.3.9.7
+ *
+ * @param string $search
+ * @param CT_Query $ct_query
+ *
+ * @return string
+ */
+function gamipress_logs_query_search( $search, $ct_query ) {
+
+    global $ct_table;
+
+    if( $ct_table->name !== 'gamipress_logs' ) {
+        return $search;
+    }
+
+    $table_name = $ct_table->db->table_name;
+
+    // Shorthand
+    $qv = $ct_query->query_vars;
+
+    // Check if is search and query is not filtered by an specific user
+    if( isset( $qv['s'] ) && ! empty( $qv['s'] ) && ! isset( $qv['user_id'] ) ) {
+
+        // Made an user sub-search to retrieve them
+        $users = get_users( array(
+            'count_total' => false,
+            'search' => sprintf( '*%s*', $qv['s'] ),
+            'search_columns' => array(
+                'user_login',
+                'user_email',
+                'display_name',
+            ),
+            'fields' => 'ID',
+        ) );
+
+        if( ! empty( $users ) ) {
+            $search .= " AND ( {$table_name}.user_id IN (" . implode( ',', array_map( 'absint', $users ) ) . ") )";
+        }
+
+    }
+
+    return $search;
+
+}
+add_filter( 'ct_query_search', 'gamipress_logs_query_search', 10, 2 );
+
+/**
  * Columns for logs list view
  *
- * @since  1.2.8
+ * @since 1.2.8
  *
  * @param array $columns
  *

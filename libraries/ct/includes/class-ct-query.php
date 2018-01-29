@@ -231,8 +231,6 @@ if ( ! class_exists( 'CT_Query' ) ) :
                 $search = $this->parse_search( $q );
             }
 
-            $where .= $search;
-
             if ( ! $q['suppress_filters'] ) {
                 /**
                  * Filters the search SQL that is used in the WHERE clause of WP_Query.
@@ -244,6 +242,8 @@ if ( ! class_exists( 'CT_Query' ) ) :
                  */
                 $search = apply_filters_ref_array( 'ct_query_search', array( $search, &$this ) );
             }
+
+            $where .= $search;
 
             // Rand order by
             $rand = ( isset( $q['orderby'] ) && 'rand' === $q['orderby'] );

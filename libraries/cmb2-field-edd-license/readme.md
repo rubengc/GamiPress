@@ -67,10 +67,16 @@ In Addition, you can use the function `cmb2_edd_license_status( $license_key )` 
 
 ## Changelog
 
+### 1.0.2
+
+* Added invalid license error checks.
+
 ### 1.0.1
-* Deactivation functionality
-* Expiration notice
-* Renew notice
+
+* Deactivation functionality.
+* Expiration notice.
+* Renew notice.
 
 ### 1.0.0
-* Initial release
+
+* Initial release.

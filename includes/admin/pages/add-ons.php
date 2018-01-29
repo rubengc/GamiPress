@@ -250,7 +250,7 @@ function gamipress_render_plugin_card( $plugin ) {
             </div>
 
             <div class="desc column-description">
-                <p><?php echo $plugin->info->excerpt; ?></p>
+                <p><?php echo gamipress_esc_plugin_excerpt( $plugin->info->excerpt ); ?></p>
             </div>
 
         </div>
@@ -480,3 +480,22 @@ function gamipress_override_plugin_information( $data, $action = '', $args = nul
 
 }
 add_filter( 'plugins_api', 'gamipress_override_plugin_information', 10, 3 );
+
+/**
+ * Escape plugin description
+ *
+ * @since 1.3.9.7
+ *
+ * @param string $excerpt
+ *
+ * @return string
+ */
+function gamipress_esc_plugin_excerpt( $excerpt ) {
+
+    // To prevent execute shortcodes on website, the are double capsuled on []
+    $excerpt = str_replace( '[[', '[', $excerpt );
+    $excerpt = str_replace( ']]', ']', $excerpt );
+
+    return $excerpt;
+
+}

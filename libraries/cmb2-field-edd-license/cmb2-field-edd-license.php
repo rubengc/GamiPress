@@ -1,16 +1,16 @@
 <?php
 /**
  * @package      CMB2\Field_EDD_License
- * @author       Tsunoa
- * @copyright    Copyright (c) Tsunoa
+ * @author       GamiPress
+ * @copyright    Copyright (c) GamiPress
  *
  * Plugin Name: CMB2 Field Type: EDD License
  * Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * Description: CMB2 field type to store and check EDD Software Licensing licenses.
- * Version: 1.0.0
- * Author: Tsunoa
- * Author URI: https://tsunoa.com/
+ * Version: 1.0.2
+ * Author: GamiPress
+ * Author URI: https://gamipress.com/
  * License: GPLv2+
  */
 
@@ -26,7 +26,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
         /**
          * Current version number
          */
-        const VERSION = '1.0.0';
+        const VERSION = '1.0.2';
 
         /**
          * Initialize the plugin by hooking into CMB2
@@ -178,8 +178,6 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
             }
 
             // TODO: Clear field value on success?
-
-            // TODO: Show admin notice with the operation result
         }
 
         public function check_updates() {
@@ -435,6 +433,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
      * Return the license data of a license key
      *
      * @param string $license_key   License key value (Just pass the field value)
+     *
      * @return bool|stdClass        License data or false (if not license provided or not checked)
      */
     function cmb2_edd_license_data( $license_key ) {

@@ -14,18 +14,18 @@ Custom table registration:
 - [x] Schema parser
 - [ ] Migration process
 - [x] Ability to show or hide from menu
-- [x] Capabilities for Administrators
+- [x] Custom Capabilities (with support for administrators)
 - [ ] Find a way to add easy capability options
 - [x] Ability to easily add meta data functionality
 - [ ] WP rest API support
-- [ ] Frontend support
+- [ ] Frontend support?
 
 List view with support similar to WP tables:
 
 - [x] Pagination
 - [x] Search
 - [ ] Sortable Columns
-- [ ] Bulk actions
+- [x] Bulk actions
 - [ ] List view views
 - [ ] Trash functionality
 - [x] Delete Permanently action

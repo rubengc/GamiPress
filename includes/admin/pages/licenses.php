@@ -45,6 +45,8 @@ function gamipress_licenses_meta_boxes( $meta_boxes ) {
 
                         // Renew link
                         $field['renew_license_link'] = 'https://gamipress.com/renew-a-license';
+                        $field['license_management_link'] = 'https://gamipress.com/account';
+                        $field['contact_link'] = 'https://gamipress.com/contact';
 
                         // Before field row hook to render some extra information
                         $field['before_row'] = 'gamipress_license_field_before';

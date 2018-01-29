@@ -856,8 +856,8 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
 		// Check if we are in a loop of multiple points to award
 		if( ! ( isset( $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] ) && $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] ) ) {
 
-			// Grab last user's points update
-			$user_last_points = gamipress_get_last_updated_user_points( $user_id, $points_type_required );
+			// Get user points earned since last time has earning the achievement
+			$user_last_points = gamipress_get_user_points_awarded( $user_id, $points_type_required, gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
 			if( $user_last_points > $points_required && $points_required > 0 ) {
 

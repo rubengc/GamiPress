@@ -124,6 +124,22 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 add_filter( 'ct_query_where', 'gamipress_user_earnings_query_where', 10, 2 );
 
 /**
+ * Bulk actions for user earnings list view
+ *
+ * @since  1.3.9.7
+ *
+ * @param array $actions
+ *
+ * @return array
+ */
+function custom_gamipress_user_earnings_bulk_actions( $actions = array() ) {
+
+    return array();
+
+}
+add_filter( 'gamipress_user_earnings_bulk_actions', 'custom_gamipress_user_earnings_bulk_actions' );
+
+/**
  * Columns for user earnings list view
  *
  * @since  1.2.8

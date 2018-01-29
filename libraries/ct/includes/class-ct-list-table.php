@@ -95,7 +95,15 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
          */
         protected function get_bulk_actions() {
 
+            global $ct_table;
+
             $actions = array();
+
+            if ( current_user_can( $ct_table->cap->delete_items ) ) {
+                $actions['delete'] = __( 'Delete Permanently' );
+            }
+
+            $actions = apply_filters( "{$ct_table->name}_bulk_actions", $actions );
 
             return $actions;
         }
@@ -295,16 +303,16 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
 
             if ( current_user_can( $ct_table->cap->edit_items ) ): ?>
                 <label class="screen-reader-text" for="cb-select-<?php echo $item->$primary_key; ?>"><?php
-                    printf( __( 'Select %s' ), _draft_or_post_title() );
+                    printf( __( 'Select Item #%d' ), $item->$primary_key );
                     ?></label>
-                <input id="cb-select-<?php echo $item->$primary_key; ?>" type="checkbox" name="post[]" value="<?php echo $item->$primary_key; ?>" />
+                <input id="cb-select-<?php echo $item->$primary_key; ?>" type="checkbox" name="item[]" value="<?php echo $item->$primary_key; ?>" />
                 <div class="locked-indicator">
                     <span class="locked-indicator-icon" aria-hidden="true"></span>
                     <span class="screen-reader-text"><?php
                         printf(
-                        /* translators: %s: post title */
-                            __( '&#8220;%s&#8221; is locked' ),
-                            _draft_or_post_title()
+                        /* translators: %d: item ID */
+                            __( '&#8220;Item #%d&#8221; is locked' ),
+                            $item->$primary_key
                         );
                         ?></span>
                 </div>
