@@ -845,6 +845,9 @@ function gamipress_maybe_update_achievement_type( $data = array(), $post_args = 
 		);
 	}
 
+	// Sanitize post_name
+	$post_args['post_name'] = gamipress_sanitize_slug( $post_args['post_name'] );
+
     if ( gamipress_achievement_type_changed( $post_args ) ) {
 
         $original_type = get_post( $post_args['ID'] )->post_name;

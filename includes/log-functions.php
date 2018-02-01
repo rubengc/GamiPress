@@ -122,6 +122,7 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context
  *
  * @since  1.3.7
  * @updated 1.3.9.6 Added $since parameter
+ * @updated 1.3.9.8 Improvements on since checks
  *
  * @param int       $user_id
  * @param array     $log_meta
@@ -175,14 +176,9 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
     // Setup since clause
     if( $since !== 0 ) {
 
-        $now = date( 'Y-m-d' );
-        $since = date( 'Y-m-d', $since );
+        $date = date( 'Y-m-d H:i:s', $since );
 
-        $date = "BETWEEN '$since' AND '$now'";
-
-        if( $since !== $now ) {
-            $where[] = "CAST( p.date AS DATE ) {$date}";
-        }
+        $where[] = "p.date >= '$date'";
     }
 
     // Turn arrays into strings

@@ -799,6 +799,9 @@ function gamipress_maybe_update_points_type( $data = array(), $post_args = array
 		);
 	}
 
+	// Sanitize post_name
+	$post_args['post_name'] = gamipress_sanitize_slug( $post_args['post_name'] );
+
 	if ( gamipress_points_type_changed( $post_args ) ) {
 
 		$original_type = get_post( $post_args['ID'] )->post_name;

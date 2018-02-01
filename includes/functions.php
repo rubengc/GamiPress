@@ -113,3 +113,26 @@ function gamipress_is_function_disabled( $function ) {
 
     return in_array( $function, $disabled );
 }
+
+/**
+ * Sanitize given slug.
+ *
+ * @since 1.3.9.8
+ *
+ * @param string $slug  Slug to sanitize.
+ *
+ * @return string       Sanitized slug.
+ */
+function gamipress_sanitize_slug( $slug ) {
+
+    // Sanitize slug
+    $slug = sanitize_key( $slug );
+
+    // Check slug length
+    if( strlen( $slug ) > 20 ) {
+        $slug = substr( $slug, 0, 20 );
+    }
+
+    return $slug;
+
+}

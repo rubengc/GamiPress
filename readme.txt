@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.3.9.7
+Stable tag: 1.3.9.8
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -206,6 +206,11 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.3.9.8 =
+
+* Added more accurate checks to determine how many points has earned the user since a specific date.
+* Added stronger sanitization checks on slugs.
 
 = 1.3.9.7 =
 

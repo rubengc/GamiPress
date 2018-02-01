@@ -216,6 +216,11 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.3.9.8 ###
+
+* Added more accurate checks to determine how many points has earned the user since a specific date.
+* Added stronger sanitization checks on slugs.
+
 ### 1.3.9.7 ###
 
 * Added stronger checks on points types, achievement types and rank types slugs to prevent invalid characters.
