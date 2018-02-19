@@ -94,12 +94,21 @@ function gamipress_apply_single_template( $content, $single_template = '' ) {
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
 
+	// Get the original post content (to use as achievement description)
 	$gamipress_template_args['original_content'] = $content;
+
+	// Set the configured layout
+	$gamipress_template_args['layout'] = gamipress_get_post_meta( get_the_ID(), '_gamipress_layout' );
+
+	// If not layout defined, fallback to left layout
+	if( empty( $gamipress_template_args['layout'] ) ) {
+		$gamipress_template_args['layout'] = 'left';
+	}
 
 	ob_start();
 
 	// Try to load single-{template}-{post_type}.php, if not exists load single-{template}.php
-	gamipress_get_template_part( $single_template, get_post_type( get_the_ID() ) );
+	gamipress_get_template_part( $single_template, gamipress_get_post_type( get_the_ID() ) );
 
 	$new_content = ob_get_clean();
 
@@ -168,7 +177,7 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 	$points_type = gamipress_get_points_award_points_type( $points_awards[0]->ID );
 
 	if( $points_type ) {
-		$plural_name = get_post_meta( '_gamipress_plural_name', $points_type->ID, true );
+		$plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
 
 		if( ! $plural_name ) {
 			$plural_name = $points_type->post_title;
@@ -190,7 +199,7 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 		// Check if user has earned this points award, and add an 'earned' class
 		$earned_status = 'user-has-not-earned';
 
-		$maximum_earnings = absint( get_post_meta( $points_award->ID, '_gamipress_maximum_earnings', true ) );
+		$maximum_earnings = absint( gamipress_get_post_meta( $points_award->ID, '_gamipress_maximum_earnings' ) );
 
 		// An unlimited maximum of earnings means points awards could be earned anyway
 		if( $maximum_earnings > 0 ) {
@@ -255,7 +264,7 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 	$points_type = gamipress_get_points_deduct_points_type( $points_deducts[0]->ID );
 
 	if( $points_type ) {
-		$plural_name = get_post_meta( '_gamipress_plural_name', $points_type->ID, true );
+		$plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
 
 		if( ! $plural_name ) {
 			$plural_name = $points_type->post_title;
@@ -277,7 +286,7 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 		// Check if user has earned this points deduct, and add an 'earned' class
 		$earned_status = 'user-has-not-earned';
 
-		$maximum_earnings = absint( get_post_meta( $points_deduct->ID, '_gamipress_maximum_earnings', true ) );
+		$maximum_earnings = absint( gamipress_get_post_meta( $points_deduct->ID, '_gamipress_maximum_earnings' ) );
 
 		// An unlimited maximum of earnings means points deducts could be earned anyway
 		if( $maximum_earnings > 0 ) {
@@ -512,7 +521,7 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 		$achievement_id = $post->ID;
 	}
 
-	$points = absint( get_post_meta( $achievement_id, '_gamipress_points', true ) );
+	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
 
 	// Return if no points configured
 	if( $points === 0 ) {
@@ -520,7 +529,7 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 	}
 
     $points_types = gamipress_get_points_types();
-    $points_type = get_post_meta( $achievement_id, '_gamipress_points_type', true );
+    $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
 
     // Default points label
     $points_label = __( '%d Points', 'gamipress' );
@@ -569,11 +578,11 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 	}
 
 	// Return if this option not was enabled
-	if( ! (bool) get_post_meta( $achievement_id, '_gamipress_unlock_with_points', true ) ) {
+	if( ! (bool) gamipress_get_post_meta( $achievement_id, '_gamipress_unlock_with_points' ) ) {
 		return '';
 	}
 
-	$points = absint( get_post_meta( $achievement_id, '_gamipress_points_to_unlock', true ) );
+	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
 	if( $points === 0 ) {
@@ -589,7 +598,7 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 
 	// Setup vars
 	$points_types = gamipress_get_points_types();
-	$points_type = get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock', true );
+	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock' );
 
 	// Default points label
 	$points_label = __( 'Points', 'gamipress' );
@@ -629,7 +638,7 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 	}
 
 	$rank_types = gamipress_get_rank_types();
-	$rank_type = get_post_type( $rank_id );
+	$rank_type = gamipress_get_post_type( $rank_id );
 
 	if( ! isset( $rank_types[$rank_type] ) ) {
 		return '';
@@ -652,11 +661,11 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 	}
 
 	// Return if this option not was enabled
-	if( ! (bool) get_post_meta( $rank_id, '_gamipress_unlock_with_points', true ) ) {
+	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) ) {
 		return '';
 	}
 
-	$points = absint( get_post_meta( $rank_id, '_gamipress_points_to_unlock', true ) );
+	$points = absint( gamipress_get_post_meta( $rank_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
 	if( $points === 0 ) {
@@ -672,7 +681,7 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 
 	// Setup vars
 	$points_types = gamipress_get_points_types();
-	$points_type = get_post_meta( $rank_id, '_gamipress_points_type_to_unlock', true );
+	$points_type = gamipress_get_post_meta( $rank_id, '_gamipress_points_type_to_unlock' );
 
 	// Default points label
 	$points_label = __( 'Points', 'gamipress' );
@@ -744,11 +753,11 @@ function gamipress_render_earned_achievement_text( $achievement_id = 0, $user_id
 	if ( gamipress_has_user_earned_achievement( $achievement_id, $user_id ) ) {
 
 		$achievement_types = gamipress_get_achievement_types();
-		$achievement_type = $achievement_types[get_post_type( $achievement_id )];
+		$achievement_type = $achievement_types[gamipress_get_post_type( $achievement_id )];
 
 		$earned_message .= '<div class="gamipress-achievement-earned"><p>' . sprintf( __( 'You have earned this %s!', 'gamipress' ), $achievement_type['singular_name'] ) . '</p></div>';
 
-		if ( $congrats_text = get_post_meta( $achievement_id, '_gamipress_congratulations_text', true ) ) {
+		if ( $congrats_text = gamipress_get_post_meta( $achievement_id, '_gamipress_congratulations_text' ) ) {
 			$earned_message .= '<div class="gamipress-achievement-congratulations">' . wpautop( $congrats_text ) . '</div>';
 		}
 	}
@@ -866,7 +875,7 @@ function gamipress_get_post_link_without_hidden_achievement($achievement_id, $re
 
 	$link = null;
 
-	$post = get_post($achievement_id);
+	$post = gamipress_get_post( $achievement_id );
 
 	//Check the ahievement
 	$achievement_id = ( gamipress_is_achievement($post) )? $post->ID : "";
@@ -897,18 +906,19 @@ function gamipress_get_next_previous_achievement_id( $achievement_id , $rel ){
 	$access = false;
 
 	// Redirecting user page based on achievements
-	$post = get_post( absint( $achievement_id ));
+	$post = gamipress_get_post( absint( $achievement_id ));
 
 	//Get hidden achievements ids
 	$hidden = gamipress_get_hidden_achievement_ids( $post->post_type );
 
 	// Fetching achievement types
 	$param = array(
-		'posts_per_page'   => -1, // All achievements
-		'offset'           => 0,  // Start from first achievement
-		'post_type'=> $post->post_type, // set post type as achievement to filter only achievements
-		'orderby' => 'ID',
-		'order' => 'ASC',
+		'posts_per_page'    => -1, // All achievements
+		'offset'            => 0,  // Start from first achievement
+		'post_type'         => $post->post_type, // set post type as achievement to filter only achievements
+		'orderby'           => 'ID',
+		'order'             => 'ASC',
+		'suppress_filters'  => false,
 	);
 
 	$param['order'] = ($rel == 'next') ? 'ASC' : 'DESC';
@@ -965,7 +975,7 @@ function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
 	global $post;
 
 	if( ! empty($post_id) )
-		$post = get_post($post_id);
+		$post = gamipress_get_post( $post_id );
 
     //Title of the post
 	$title = get_the_title( $post->ID );
@@ -1181,11 +1191,11 @@ function gamipress_render_earned_rank_text( $rank_id = 0, $user_id = 0 ) {
 	if ( gamipress_has_user_earned_rank( $rank_id, $user_id ) ) {
 
 		$rank_types = gamipress_get_rank_types();
-		$rank_type = $rank_types[get_post_type( $rank_id )];
+		$rank_type = $rank_types[gamipress_get_post_type( $rank_id )];
 
 		$earned_message .= '<div class="gamipress-rank-earned"><p>' . sprintf( __( 'You have reached this %s!', 'gamipress' ), $rank_type['singular_name']) . '</p></div>';
 
-		if ( $congrats_text = get_post_meta( $rank_id, '_gamipress_congratulations_text', true ) ) {
+		if ( $congrats_text = gamipress_get_post_meta( $rank_id, '_gamipress_congratulations_text' ) ) {
 			$earned_message .= '<div class="gamipress-rank-congratulations">' . wpautop( $congrats_text ) . '</div>';
 		}
 	}

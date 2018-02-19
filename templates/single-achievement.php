@@ -11,23 +11,44 @@ global $gamipress_template_args;
 $a = $gamipress_template_args;
 
 // Check if user has earned this Achievement, and add an 'earned' class
-$class = gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) ) ? 'user-has-earned' : ''; ?>
+$earned = gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) );
 
-<div class="single-achievement achievement-wrap <?php echo $class; ?>">
+// Setup achievement classes
+$classes = array(
+    'single-achievement',
+    'achievement-wrap',
+    ( $earned ? 'user-has-earned' : '' ),
+    'gamipress-layout-' . $a['layout']
+);
+
+/**
+ * Single achievement classes
+ *
+ * @since 1.4.0
+ *
+ * @param array     $classes            Array of achievement classes
+ * @param integer   $achievement_id     The Achievement ID
+ * @param array     $template_args      Template received arguments
+ */
+$classes = apply_filters( 'gamipress_single_achievement_classes', $classes, get_the_ID(), $a ); ?>
+
+<?php // Check if current user has earned this achievement
+echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id() ); ?>
+
+<div class="<?php echo implode( ' ', $classes ); ?>">
 
     <?php
     /**
      * Before single achievement
      *
-     * @param $achievement_id   integer The Achievement ID
-     * @param $template_args    array   Template received arguments
+     * @since 1.0.0
+     *
+     * @param integer $achievement_id   The Achievement ID
+     * @param array   $template_args    Template received arguments
      */
     do_action( 'gamipress_before_single_achievement', get_the_ID(), $a ); ?>
 
-    <?php // Check if current user has earned this achievement
-    echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id() ); ?>
-
-    <div class="alignleft gamipress-achievement-image">
+    <div class="gamipress-achievement-image">
         <?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?>
     </div>
 
@@ -35,72 +56,99 @@ $class = gamipress_get_user_achievements( array( 'achievement_id' => absint( get
     /**
      * After single achievement thumbnail
      *
-     * @param $achievement_id   integer The Achievement ID
-     * @param $template_args    array   Template received arguments
+     * @since 1.0.0
+     *
+     * @param integer $achievement_id   The Achievement ID
+     * @param array   $template_args    Template received arguments
      */
     do_action( 'gamipress_after_single_achievement_thumbnail', get_the_ID(), $a ); ?>
 
-    <?php // Points of the achievement
-    echo gamipress_achievement_points_markup(); ?>
+    <div class="gamipress-achievement-description">
 
-    <?php
-    /**
-     * After single achievement points markup
-     *
-     * @param $achievement_id   integer The Achievement ID
-     * @param $template_args    array   Template received arguments
-     */
-    do_action( 'gamipress_after_single_achievement_points', get_the_ID(), $a ); ?>
+        <?php // Points of the achievement
+        echo gamipress_achievement_points_markup(); ?>
 
-    <?php // Achievement content
-    if( isset( $a['original_content'] ) ) :
-        echo wpautop( $a['original_content'] );
-    endif; ?>
-
-    <?php
-    /**
-     * After single achievement content
-     *
-     * @param $achievement_id   integer The Achievement ID
-     * @param $template_args    array   Template received arguments
-     */
-    do_action( 'gamipress_after_single_achievement_content', get_the_ID(), $a ); ?>
-
-    <?php // Include output for our steps
-    echo gamipress_get_required_achievements_for_achievement_list( get_the_ID() ); ?>
-
-    <?php
-    /**
-     * After single achievement steps
-     *
-     * @param $achievement_id   integer The Achievement ID
-     * @param $template_args    array   Template received arguments
-     */
-    do_action( 'gamipress_after_single_achievement_steps', get_the_ID(), $a ); ?>
-
-    <?php // Achievement unlock with points
-    echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a ); ?>
-
-    <?php // Include achievement earners, if this achievement supports it
-    if ( $show_earners = get_post_meta( get_the_ID(), '_gamipress_show_earners', true ) ) {
-        echo gamipress_get_achievement_earners_list( get_the_ID() );
-
+        <?php
         /**
-         * After single achievement earners
+         * After single achievement points markup
          *
-         * @param $achievement_id   integer The Achievement ID
-         * @param $template_args    array   Template received arguments
+         * @since 1.0.0
+         *
+         * @param integer $achievement_id   The Achievement ID
+         * @param array   $template_args    Template received arguments
          */
-        do_action( 'gamipress_after_single_achievement_earners', get_the_ID(), $a );
+        do_action( 'gamipress_after_single_achievement_points', get_the_ID(), $a ); ?>
 
-    } ?>
+        <?php // Achievement content
+        if( isset( $a['original_content'] ) ) :
+            echo wpautop( $a['original_content'] );
+        endif; ?>
+
+        <?php
+        /**
+         * After single achievement content
+         *
+         * @since 1.0.0
+         *
+         * @param integer $achievement_id   The Achievement ID
+         * @param array   $template_args    Template received arguments
+         */
+        do_action( 'gamipress_after_single_achievement_content', get_the_ID(), $a ); ?>
+
+        <?php // Include output for our steps
+        echo gamipress_get_required_achievements_for_achievement_list( get_the_ID() ); ?>
+
+        <?php
+        /**
+         * After single achievement steps
+         *
+         * @since 1.0.0
+         *
+         * @param integer $achievement_id   The Achievement ID
+         * @param array   $template_args    Template received arguments
+         */
+        do_action( 'gamipress_after_single_achievement_steps', get_the_ID(), $a ); ?>
+
+        <?php // Achievement unlock with points
+        echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a ); ?>
+
+        <?php // Include achievement earners, if this achievement supports it
+        if ( $show_earners = gamipress_get_post_meta( get_the_ID(), '_gamipress_show_earners' ) ) {
+            echo gamipress_get_achievement_earners_list( get_the_ID() );
+
+            /**
+             * After single achievement earners
+             *
+             * @since 1.0.0
+             *
+             * @param integer $achievement_id   The Achievement ID
+             * @param array   $template_args    Template received arguments
+             */
+            do_action( 'gamipress_after_single_achievement_earners', get_the_ID(), $a );
+
+        } ?>
+
+        <?php
+        /**
+         * Single achievement description bottom
+         *
+         * @since 1.4.0
+         *
+         * @param integer $achievement_id   The Achievement ID
+         * @param array   $template_args    Template received arguments
+         */
+        do_action( 'gamipress_single_achievement_description_bottom', get_the_ID(), $a ); ?>
+
+    </div><!-- .gamipress-achievement-description -->
 
     <?php
     /**
      * After single achievement
      *
-     * @param $achievement_id   integer The Achievement ID
-     * @param $template_args    array   Template received arguments
+     * @since 1.0.0
+     *
+     * @param integer $achievement_id   The Achievement ID
+     * @param array   $template_args    Template received arguments
      */
     do_action( 'gamipress_after_single_achievement', get_the_ID(), $a ); ?>
 

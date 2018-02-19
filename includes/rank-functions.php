@@ -24,7 +24,7 @@ function gamipress_is_rank( $post = null ) {
     if( gettype($post) === 'string' ) {
         $post_type = $post;
     } else {
-        $post_type = get_post_type( $post );
+        $post_type = gamipress_get_post_type( $post );
     }
 
     // If post type is NOT a registered rank type, it cannot be an rank
@@ -118,9 +118,9 @@ function gamipress_get_ranks( $args = array() ) {
 
     // Setup our defaults
     $defaults = array(
-        'post_type'                => gamipress_get_rank_types_slugs(),
-        'orderby'                  => 'menu_order',
-        'suppress_filters'         => false,
+        'post_type'         => gamipress_get_rank_types_slugs(),
+        'orderby'           => 'menu_order',
+        'suppress_filters'  => false,
         'rank_relationship' => 'any',
     );
 
@@ -164,14 +164,16 @@ function gamipress_get_ranks( $args = array() ) {
  */
 function gamipress_get_ranks_children_join( $join = '', $query_object = null ) {
 
-    global $wpdb;
+    $posts      = GamiPress()->db->posts;
+    $p2p        = GamiPress()->db->p2p;
+    $p2pmeta    = GamiPress()->db->p2pmeta;
 
-    $join .= " LEFT JOIN $wpdb->p2p AS p2p ON p2p.p2p_from = $wpdb->posts.ID";
+    $join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_from = {$posts}.ID";
 
     if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] != 'any' )
-        $join .= " LEFT JOIN $wpdb->p2pmeta AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
+        $join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
 
-    $join .= " LEFT JOIN $wpdb->p2pmeta AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
+    $join .= " LEFT JOIN {$p2pmeta} AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
 
     return $join;
 
@@ -229,9 +231,10 @@ function gamipress_get_ranks_children_orderby( $orderby = '' ) {
  */
 function gamipress_get_ranks_parents_join( $join = '' ) {
 
-    global $wpdb;
+    $posts  = GamiPress()->db->posts;
+    $p2p    = GamiPress()->db->p2p;
 
-    $join .= " LEFT JOIN $wpdb->p2p AS p2p ON p2p.p2p_to = $wpdb->posts.ID";
+    $join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_to = {$posts}.ID";
 
     return $join;
 
@@ -280,14 +283,16 @@ function gamipress_get_user_rank_id( $user_id = null, $rank_type = '' ) {
         $meta = "_gamipress_{$rank_type}_rank";
     }
 
-    $current_rank_id = get_user_meta( $user_id, $meta, true );
+    $current_rank_id = gamipress_get_user_meta( $user_id, $meta );
 
     if( ! $current_rank_id ) {
+
+        $posts  = GamiPress()->db->posts;
 
         // Get lowest priority rank as default rank to all users
         $current_rank_id = $wpdb->get_var( $wpdb->prepare(
             "SELECT p.ID
-			FROM {$wpdb->posts} AS p
+			FROM {$posts} AS p
 			WHERE p.post_type = %s
 			 AND p.post_status = %s
 			ORDER BY menu_order ASC
@@ -322,7 +327,7 @@ function gamipress_get_user_rank( $user_id = null, $rank_type = '' ) {
 
     $current_rank_id = gamipress_get_user_rank_id( $user_id, $rank_type );
 
-    $rank = get_post( $current_rank_id );
+    $rank = gamipress_get_post( $current_rank_id );
 
     if( $rank ) {
         return apply_filters( 'gamipress_get_user_rank', $rank, $user_id, $current_rank_id );
@@ -405,12 +410,14 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
         $rank_id = get_the_ID();
     }
 
-    $rank_type = get_post_type( $rank_id );
+    $rank_type = gamipress_get_post_type( $rank_id );
+
+    $posts  = GamiPress()->db->posts;
 
     // Get lowest priority rank but bigger than current one
     $next_rank_id = $wpdb->get_var( $wpdb->prepare(
         "SELECT p.ID
-        FROM {$wpdb->posts} AS p
+        FROM {$posts} AS p
         WHERE p.post_type = %s
          AND p.post_status = %s
          AND p.menu_order > %s
@@ -418,7 +425,7 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
         LIMIT 1",
         $rank_type,
         'publish',
-        get_post_field( 'menu_order', $rank_id )
+        gamipress_get_post_field( 'menu_order', $rank_id )
     ) );
 
     if( absint( $next_rank_id ) === $rank_id ) {
@@ -453,7 +460,7 @@ function gamipress_get_next_rank( $rank_id = null ) {
         return false;
     }
 
-    $rank = get_post( $next_rank_id );
+    $rank = gamipress_get_post( $next_rank_id );
 
     if( $rank ) {
         return apply_filters( 'gamipress_get_next_rank', $rank, $next_rank_id, $rank_id );
@@ -480,12 +487,14 @@ function gamipress_get_prev_rank_id( $rank_id = null ) {
         $rank_id = get_the_ID();
     }
 
-    $rank_type = get_post_type( $rank_id );
+    $rank_type = gamipress_get_post_type( $rank_id );
+
+    $posts  = GamiPress()->db->posts;
 
     // Get highest priority rank but less than current one
     $prev_rank_id = $wpdb->get_var( $wpdb->prepare(
         "SELECT p.ID
-        FROM {$wpdb->posts} AS p
+        FROM {$posts} AS p
         WHERE p.post_type = %s
          AND p.post_status = %s
          AND p.menu_order < %s
@@ -493,7 +502,7 @@ function gamipress_get_prev_rank_id( $rank_id = null ) {
         LIMIT 1",
         $rank_type,
         'publish',
-        get_post_field( 'menu_order', $rank_id )
+        gamipress_get_post_field( 'menu_order', $rank_id )
     ) );
 
     if( absint( $prev_rank_id ) === $rank_id ) {
@@ -527,7 +536,7 @@ function gamipress_get_prev_rank( $rank_id = null ) {
         return false;
     }
 
-    $rank = get_post( $prev_rank_id );
+    $rank = gamipress_get_post( $prev_rank_id );
 
     if( $rank ) {
         return apply_filters( 'gamipress_get_prev_rank', $rank, $prev_rank_id, $rank_id );
@@ -583,7 +592,7 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
 
     $old_rank = gamipress_get_user_rank( $user_id );
 
-    $new_rank = get_post( $rank_id );
+    $new_rank = gamipress_get_post( $rank_id );
 
     // Check if is a valid rank and is not the same rank as current one
     if( $new_rank && gamipress_is_rank( $new_rank ) && $new_rank->ID !== $old_rank->ID ) {
@@ -591,8 +600,8 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
         $meta = "_gamipress_{$new_rank->post_type}_rank";
 
         // Update the user rank and the time when this rank has been earned
-        update_user_meta( $user_id, $meta, $rank_id );
-        update_user_meta( $user_id, $meta . '_earned_time', current_time( 'timestamp' ) );
+        gamipress_update_user_meta( $user_id, $meta, $rank_id );
+        gamipress_update_user_meta( $user_id, $meta . '_earned_time', current_time( 'timestamp' ) );
 
         // Available action for triggering other processes
         do_action( 'gamipress_update_user_rank', $user_id, $new_rank, $old_rank, $admin_id, $achievement_id );
@@ -708,7 +717,7 @@ function gamipress_get_rank_requirement_rank( $rank_requirement_id = 0 ) {
  */
 function gamipress_get_rank_earned_time( $user_id = 0, $rank_type = '' ) {
 
-    $earned_time = absint( get_user_meta( $user_id, "_gamipress_{$rank_type}_rank_earned_time", true ) );
+    $earned_time = absint( gamipress_get_user_meta( $user_id, "_gamipress_{$rank_type}_rank_earned_time" ) );
 
     // If user has not earned a rank of this type, try to get the lowest priority rank and get its publish date
     if( $earned_time === 0 ) {
@@ -740,7 +749,7 @@ function gamipress_get_rank_requirements( $rank_id = 0 ) {
         $rank_id = $post->ID;
     }
 
-    $rank_type = get_post_type( $rank_id );
+    $rank_type = gamipress_get_post_type( $rank_id );
 
     $requirements = get_posts( array(
         'post_type'           => 'rank-requirement',
@@ -775,7 +784,7 @@ function gamipress_get_rank_post_thumbnail( $post_id = 0, $image_size = 'gamipre
     if ( ! $image ) {
 
         // Grab our rank type's post thumbnail
-        $rank = get_page_by_path( get_post_type(), OBJECT, 'rank-type' );
+        $rank = get_page_by_path( gamipress_get_post_type( $post_id ), OBJECT, 'rank-type' );
         $image = is_object( $rank ) ? get_the_post_thumbnail( $rank->ID, $image_size, array( 'class' => $class ) ) : false;
 
         // If we still have no image
@@ -813,7 +822,7 @@ function gamipress_get_rank_post_thumbnail( $post_id = 0, $image_size = 'gamipre
     }
 
     // Return our image tag
-    return get_the_post_thumbnail( $post_id, $image_size, array( 'class' => $class ) );
+    return $image;
 }
 
 /**
@@ -866,7 +875,7 @@ function gamipress_get_rank_earners( $rank_id = 0 ) {
 
     global $wpdb;
 
-    $rank_type = get_post_type( $rank_id );
+    $rank_type = gamipress_get_post_type( $rank_id );
 
     $meta = '_gamipress_rank';
 
@@ -909,14 +918,16 @@ function gamipress_get_rank_priority( $rank_id = 0 ) {
 
     global $wpdb;
 
-    if( get_post_field( 'post_status', $rank_id ) === 'auto-draft' ) {
+    if( gamipress_get_post_field( 'post_status', $rank_id ) === 'auto-draft' ) {
 
-        $rank_type = get_post_type( $rank_id );
+        $rank_type = gamipress_get_post_type( $rank_id );
+
+        $posts  = GamiPress()->db->posts;
 
         // Get higher menu order
         $last = $wpdb->get_var( $wpdb->prepare(
             "SELECT p.menu_order
-			FROM {$wpdb->posts} AS p
+			FROM {$posts} AS p
 			WHERE p.post_type = %s
 			 AND p.post_status = %s
 			ORDER BY menu_order DESC
@@ -928,7 +939,7 @@ function gamipress_get_rank_priority( $rank_id = 0 ) {
         return absint( $last ) + 1;
     }
 
-    return absint( get_post_field( 'menu_order', $rank_id ) );
+    return absint( gamipress_get_post_field( 'menu_order', $rank_id ) );
 
 }
 
@@ -959,6 +970,16 @@ add_action( 'transition_post_status', 'gamipress_flush_rewrite_on_published_rank
  */
 function gamipress_maybe_update_rank_type( $data = array(), $post_args = array() ) {
 
+    // Bail if not is main site, on network wide installs ranks are just available on main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return $data;
+    }
+
+    // Bail if not is a points type
+    if( $post_args['post_type'] !== 'rank-type') {
+        return $data;
+    }
+
     // If user set an empty slug, then generate it
     if( empty( $post_args['post_name'] ) ) {
         $post_args['post_name'] = wp_unique_post_slug(
@@ -975,7 +996,7 @@ function gamipress_maybe_update_rank_type( $data = array(), $post_args = array()
 
     if ( gamipress_rank_type_changed( $post_args ) ) {
 
-        $original_type = get_post( $post_args['ID'] )->post_name;
+        $original_type = gamipress_get_post( $post_args['ID'] )->post_name;
         $new_type = $post_args['post_name'];
 
         $data['post_name'] = gamipress_update_rank_types( $original_type, $new_type );
@@ -1055,10 +1076,11 @@ function gamipress_update_rank_types( $original_type = '', $new_type = '' ) {
 function gamipress_update_ranks_rank_types( $original_type = '', $new_type = '' ) {
 
     $items = get_posts( array(
-        'posts_per_page' => -1,
-        'post_status'    => 'any',
-        'post_type'      => $original_type,
-        'fields'         => 'id',
+        'posts_per_page'    => -1,
+        'post_status'       => 'any',
+        'post_type'         => $original_type,
+        'fields'            => 'id',
+        'suppress_filters'  => false,
     ) );
 
     foreach ( $items as $item ) {
@@ -1079,6 +1101,8 @@ function gamipress_update_p2p_rank_types( $original_type = '', $new_type = '' ) 
 
     global $wpdb;
 
+    $p2p = GamiPress()->db->p2p;
+
     $p2p_relationships = array(
         "rank-requirement-to-{$original_type}" => "rank-requirement-to-{$new_type}",
         "{$original_type}-to-rank-requirement" => "{$new_type}-to-rank-requirement",
@@ -1087,7 +1111,7 @@ function gamipress_update_p2p_rank_types( $original_type = '', $new_type = '' ) 
     );
 
     foreach ( $p2p_relationships as $old => $new ) {
-        $wpdb->query( $wpdb->prepare( "UPDATE $wpdb->p2p SET p2p_type = %s WHERE p2p_type = %s", $new, $old ) );
+        $wpdb->query( $wpdb->prepare( "UPDATE $p2p SET p2p_type = %s WHERE p2p_type = %s", $new, $old ) );
     }
 
 }

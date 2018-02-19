@@ -137,14 +137,15 @@ function gamipress_128_upgrade_size() {
     // Retrieve the count of logs to upgrade
     if( ! is_gamipress_upgrade_completed( 'migrate_logs' ) ) {
 
-        $ct_table = ct_setup_table( 'gamipress_logs' );
+        $posts      = GamiPress()->db->posts;
+        $logs_meta 	= GamiPress()->db->logs_meta;
 
         $logs_count = $wpdb->get_var( $wpdb->prepare(
             "SELECT COUNT(*)
-             FROM $wpdb->posts AS p
+             FROM {$posts} AS p
              WHERE p.post_type = %s
               AND ID NOT IN (
-                SELECT lm.meta_value FROM {$ct_table->meta->db->table_name} AS lm WHERE lm.meta_key = %s
+                SELECT lm.meta_value FROM {$logs_meta} AS lm WHERE lm.meta_key = %s
               )",
             'gamipress-log',
             '_gamipress_legacy_log_id'
@@ -180,6 +181,10 @@ add_action( 'wp_ajax_gamipress_128_upgrade_info', 'gamipress_ajax_128_upgrade_in
 function gamipress_ajax_process_128_upgrade() {
 
     global $wpdb;
+
+    $posts      = GamiPress()->db->posts;
+    $logs 		= GamiPress()->db->logs;
+    $logs_meta 	= GamiPress()->db->logs_meta;
 
     // Already upgraded
     if ( is_gamipress_upgraded_to( '1.2.8' ) ) {
@@ -224,9 +229,11 @@ function gamipress_ajax_process_128_upgrade() {
                         continue;
                     }
 
+                    $user_earnings_table = GamiPress()->db->user_earnings;
+
                     $exists = $wpdb->get_var( $wpdb->prepare(
                         "SELECT COUNT(*)
-                         FROM {$ct_table->db->table_name}
+                         FROM {$user_earnings_table}
                         WHERE user_id = %d
                           AND post_id = %d
                           AND date = %s
@@ -275,10 +282,10 @@ function gamipress_ajax_process_128_upgrade() {
 
         $logs = $wpdb->get_results( $wpdb->prepare(
             "SELECT *
-             FROM $wpdb->posts
+             FROM {$posts}
              WHERE post_type = %s
               AND ID NOT IN (
-                SELECT lm.meta_value FROM {$ct_table->meta->db->table_name} AS lm WHERE lm.meta_key = %s
+                SELECT lm.meta_value FROM {$logs_meta} AS lm WHERE lm.meta_key = %s
               )
              ORDER BY ID ASC
             LIMIT %d;",
@@ -293,7 +300,7 @@ function gamipress_ajax_process_128_upgrade() {
 
             $exists = $wpdb->get_var( $wpdb->prepare(
                 "SELECT COUNT(*)
-                 FROM {$ct_table->meta->db->table_name}
+                 FROM {$logs_meta}
                  WHERE ( meta_key = %s
                   AND meta_value = %s )
                  LIMIT 1;",
@@ -420,7 +427,7 @@ function gamipress_ajax_process_128_upgrade() {
 
         $logs_count = $wpdb->get_var( $wpdb->prepare(
             "SELECT COUNT(*)
-             FROM $wpdb->posts AS p
+             FROM {$posts} AS p
              WHERE p.post_type = %s
               AND ID NOT IN (
                 SELECT lm.meta_value FROM {$ct_table->meta->db->table_name} AS lm WHERE lm.meta_key = %s
@@ -443,7 +450,7 @@ function gamipress_ajax_process_128_upgrade() {
             'meta_key' =>  '_gamipress_achievements'
         ) );
 
-        $wpdb->delete( $wpdb->posts, array(
+        $wpdb->delete( $posts, array(
             'post_type' =>  'gamipress-log'
         ) );
 

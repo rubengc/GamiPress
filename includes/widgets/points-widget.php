@@ -29,6 +29,7 @@ class GamiPress_Points_Widget extends GamiPress_Widget {
             'label'         => ( $instance['label'] === 'on' ? 'yes' : 'no' ),
             'current_user'  => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
             'user_id'       => $instance['user_id'],
+            'layout'        => $instance['layout'],
             'wpms'          => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
         ) );
     }

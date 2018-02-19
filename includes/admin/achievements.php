@@ -90,7 +90,7 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
 
             break;
         case 'points':
-            $awarded_points_type = get_post_meta( $post_id, $prefix . 'points_type', true );
+            $awarded_points_type = gamipress_get_post_meta( $post_id, $prefix . 'points_type' );
 
             $points_types = gamipress_get_points_types();
 
@@ -105,7 +105,7 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
 
             $points_type = $points_types[$awarded_points_type];
 
-            $points = absint( get_post_meta( $post_id, $prefix . 'points', true ) );
+            $points = absint( gamipress_get_post_meta( $post_id, $prefix . 'points' ) );
 
             if( $points === 0 ) {
                 break;
@@ -122,13 +122,13 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
                 'admin' 			=> __( 'Admin-awarded Only', 'gamipress' ),
             ) );
 
-            $earned_by = get_post_meta( $post_id, $prefix . 'earned_by', true );
+            $earned_by = gamipress_get_post_meta( $post_id, $prefix . 'earned_by' );
 
             echo ( isset( $earned_by_options[$earned_by] ) ? $earned_by_options[$earned_by] : $earned_by );
 
             break;
         case 'maximum_earnings':
-            $maximum_earnings = absint( get_post_meta( $post_id, $prefix . 'maximum_earnings', true ) );
+            $maximum_earnings = absint( gamipress_get_post_meta( $post_id, $prefix . 'maximum_earnings' ) );
 
             if( $maximum_earnings === 0 ) {
                 echo __( 'Unlimited', 'gamipress' );
@@ -137,13 +137,13 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
             }
             break;
         case 'unlock_with_points':
-            $unlock_with_points = get_post_meta( $post_id, $prefix . 'unlock_with_points', true );
+            $unlock_with_points = gamipress_get_post_meta( $post_id, $prefix . 'unlock_with_points' );
 
             if( ! (bool) $unlock_with_points ) {
                 break;
             }
 
-            $points_type_to_unlock = get_post_meta( $post_id, $prefix . 'points_type_to_unlock', true );
+            $points_type_to_unlock = gamipress_get_post_meta( $post_id, $prefix . 'points_type_to_unlock' );
 
             $points_types = gamipress_get_points_types();
 
@@ -158,7 +158,7 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
 
             $points_type = $points_types[$points_type_to_unlock];
 
-            $points_to_unlock = absint( get_post_meta( $post_id, $prefix . 'points_to_unlock', true ) );
+            $points_to_unlock = absint( gamipress_get_post_meta( $post_id, $prefix . 'points_to_unlock' ) );
 
             if( $points_to_unlock === 0 ) {
                 break;

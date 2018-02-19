@@ -79,6 +79,21 @@ function gamipress_register_points_types_shortcode() {
                 'classes' => 'gamipress-switch',
                 'default' => 'yes'
             ),
+            'layout' => array(
+                'name'        => __( 'Layout', 'gamipress' ),
+                'description' => __( 'Layout to show the points type.', 'gamipress' ),
+                'type' 		  => 'radio',
+                'options' 	  => array(
+                    'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+                    'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+                    'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+                    'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+                    'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+                ),
+                'default' 	  => 'left',
+                'inline' 	  => true,
+                'classes' 	  => 'gamipress-image-options'
+            ),
             'wpms' => array(
                 'name'        => __( 'Include Multisite Points Types', 'gamipress' ),
                 'description' => __( 'Show points types from all network sites.', 'gamipress' ),
@@ -113,6 +128,7 @@ function gamipress_points_types_shortcode( $atts = array () ) {
         'awards'    => 'yes',
         'deducts'   => 'yes',
         'toggle'    => 'yes',
+        'layout'    => 'left',
         'wpms'      => 'no',
     ), $atts, 'gamipress_points' );
 

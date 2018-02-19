@@ -16,10 +16,10 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_register_achievement_shortcode() {
 
 	gamipress_register_shortcode( 'gamipress_achievement', array(
-		'name'            => __( 'Single Achievement', 'gamipress' ),
-		'description'     => __( 'Render a single achievement.', 'gamipress' ),
-		'output_callback' => 'gamipress_achievement_shortcode',
-		'fields'      => array(
+		'name'            	=> __( 'Single Achievement', 'gamipress' ),
+		'description'     	=> __( 'Render a single achievement.', 'gamipress' ),
+		'output_callback' 	=> 'gamipress_achievement_shortcode',
+		'fields'      		=> array(
 			'id' => array(
 				'name'        => __( 'Achievement ID', 'gamipress' ),
 				'description' => __( 'The ID of the achievement to render.', 'gamipress' ),
@@ -30,6 +30,13 @@ function gamipress_register_achievement_shortcode() {
 			'title' => array(
 				'name'        => __( 'Show Title', 'gamipress' ),
 				'description' => __( 'Display the achievement title.', 'gamipress' ),
+				'type' 		  => 'checkbox',
+				'classes' 	  => 'gamipress-switch',
+				'default' => 'yes'
+			),
+			'link' => array(
+				'name'        => __( 'Show Link', 'gamipress' ),
+				'description' => __( 'Add a link on achievement title to the achievement page.', 'gamipress' ),
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
@@ -68,6 +75,21 @@ function gamipress_register_achievement_shortcode() {
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
+			'layout' => array(
+				'name'        => __( 'Layout', 'gamipress' ),
+				'description' => __( 'Layout to show the achievement.', 'gamipress' ),
+				'type' 		  => 'radio',
+				'options' 	  => array(
+					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+				),
+				'default' 	  => 'left',
+				'inline' 	  => true,
+				'classes' 	  => 'gamipress-image-options'
+			),
 		),
 	) );
 
@@ -88,18 +110,29 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 	$atts = shortcode_atts( gamipress_achievement_shortcode_defaults(), $atts, 'gamipress_achievement' );
 
 	// Return if achievement id not specified
-	if ( empty($atts['id']) )
+	if ( empty( $atts['id'] ) )
 	  return '';
 
 	gamipress_enqueue_scripts();
 
+	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		$blog_id = get_current_blog_id();
+		switch_to_blog( get_main_site_id() );
+	}
+
 	// Get the post content and format the achievement display
-	$achievement = get_post( $atts['id'] );
+	$achievement = gamipress_get_post( $atts['id'] );
 	$output = '';
 
 	// If we're dealing with an achievement post
 	if ( gamipress_is_achievement( $achievement ) ) {
 		$output .= gamipress_render_achievement( $achievement, $atts );
+	}
+
+	// If switched to blog, return back to que current blog
+	if( isset( $blog_id ) ) {
+		switch_to_blog( $blog_id );
 	}
 
 	// Return our rendered achievement
@@ -119,11 +152,13 @@ function gamipress_achievement_shortcode_defaults() {
 	return apply_filters( 'gamipress_achievement_shortcode_defaults', array(
 		'id' 				=> get_the_ID(),
 		'title' 			=> 'yes',
+		'link' 				=> 'yes',
 		'thumbnail' 		=> 'yes',
 		'excerpt'	  		=> 'yes',
 		'steps'	  			=> 'yes',
 		'toggle' 			=> 'yes',
 		'earners'	  		=> 'no',
+		'layout'	  		=> 'left',
 	) );
 
 }

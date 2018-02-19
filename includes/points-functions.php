@@ -32,7 +32,7 @@ function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
     }
 
 	// Return our user's points as an integer (sanely falls back to 0 if empty)
-	return absint( get_user_meta( $user_id, $user_meta, true ) );
+	return absint( gamipress_get_user_meta( $user_id, $user_meta ) );
 }
 
 /**
@@ -60,7 +60,7 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '', $si
 		$user_meta = "_gamipress_{$points_type}_points_awarded";
 	}
 
-	$points_awarded = get_user_meta( $user_id, $user_meta, true );
+	$points_awarded = gamipress_get_user_meta( $user_id, $user_meta );
 
 	// If user meta not exists or since parameter is defined, recalculate it
 	if( empty( $points_awarded ) || $since !== 0 ) {
@@ -88,7 +88,7 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '', $si
 		}
 
 		// Finally update the user meta
-		update_user_meta( $user_id, $user_meta, $points_awarded );
+		gamipress_update_user_meta( $user_id, $user_meta, $points_awarded );
 
 	}
 
@@ -121,7 +121,7 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '', $s
 		$user_meta = "_gamipress_{$points_type}_points_deducted";
 	}
 
-	$points_deducted = get_user_meta( $user_id, $user_meta, true );
+	$points_deducted = gamipress_get_user_meta( $user_id, $user_meta );
 
 	// If user meta not exists or since parameter is defined, recalculate it
 	if( empty( $points_deducted ) || $since !== 0 ) {
@@ -149,7 +149,7 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '', $s
 		}
 
 		// Finally update the user meta
-		update_user_meta( $user_id, $user_meta, $points_deducted );
+		gamipress_update_user_meta( $user_id, $user_meta, $points_deducted );
 
 	}
 
@@ -182,7 +182,7 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
 		$user_meta = "_gamipress_{$points_type}_points_expended";
 	}
 
-	$points_expended = get_user_meta( $user_id, $user_meta, true );
+	$points_expended = gamipress_get_user_meta( $user_id, $user_meta );
 
 	// If user meta not exists or since parameter is defined, recalculate it
 	if( empty( $points_expended ) || $since !== 0 ) {
@@ -210,7 +210,7 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
 		}
 
 		// Finally update the user meta
-		update_user_meta( $user_id, $user_meta, $points_expended );
+		gamipress_update_user_meta( $user_id, $user_meta, $points_expended );
 
 	}
 
@@ -352,10 +352,10 @@ function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id 
 	$total_points = max( $current_points + $new_points, 0 );
 
 	// Update user's points total
-	update_user_meta( $user_id, $points_meta, $total_points );
+	gamipress_update_user_meta( $user_id, $points_meta, $total_points );
 
 	// Update a meta as flag to meet how many points has been awarded or deducted
-	update_user_meta( $user_id, $new_points_meta, $new_points );
+	gamipress_update_user_meta( $user_id, $new_points_meta, $new_points );
 
 	// Available action for triggering other processes
 	do_action( 'gamipress_update_user_points', $user_id, $new_points, $total_points, $admin_id, $achievement_id, $points_type, $reason, $log_type );
@@ -392,7 +392,7 @@ function gamipress_get_last_updated_user_points( $user_id = 0, $points_type = ''
 	}
 
 	// Return our user's latest points as an integer (sanely falls back to 0 if empty)
-	return absint( get_user_meta( $user_id, $user_meta, true ) );
+	return absint( gamipress_get_user_meta( $user_id, $user_meta ) );
 }
 
 /**
@@ -425,7 +425,7 @@ function gamipress_update_user_points_awarded( $user_id = 0, $points = 0, $point
 
 	// Update our user's total
 	$total_points = $current_points + $points;
-	update_user_meta( $user_id, $user_meta, $total_points );
+	gamipress_update_user_meta( $user_id, $user_meta, $total_points );
 
 	return $total_points;
 
@@ -461,7 +461,7 @@ function gamipress_update_user_points_deducted( $user_id = 0, $points = 0, $poin
 
 	// Update our user's total
 	$total_points = $current_points + $points;
-	update_user_meta( $user_id, $user_meta, $total_points );
+	gamipress_update_user_meta( $user_id, $user_meta, $total_points );
 
 	return $total_points;
 
@@ -497,7 +497,7 @@ function gamipress_update_user_points_expended( $user_id = 0, $points = 0, $poin
 
 	// Update our user's total
 	$total_points = $current_points + $points;
-	update_user_meta( $user_id, $user_meta, $total_points );
+	gamipress_update_user_meta( $user_id, $user_meta, $total_points );
 
 	return $total_points;
 
@@ -679,6 +679,7 @@ function gamipress_get_points_type_points_awards( $points_type = 0 ) {
  * @return object|bool                 The post object of the points type, or false if none
  */
 function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
+
 	// Grab the current post ID if no points_award_id was specified
 	if ( ! $points_award_id ) {
 		global $post;
@@ -686,11 +687,12 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
 	}
 
     $points_type = get_posts( array(
-        'post_type'           => 'points-type',
-        'posts_per_page'      => 1,
-        'connected_direction' => 'from',
-        'connected_type'      => 'points-award-to-points-type',
-        'connected_items'     => $points_award_id,
+        'post_type'             => 'points-type',
+        'posts_per_page'        => 1,
+        'connected_direction'   => 'from',
+        'connected_type'        => 'points-award-to-points-type',
+        'connected_items'       => $points_award_id,
+        'suppress_filters'      => false,
     ) );
 
     // If it has a points type, return it, otherwise return false
@@ -758,11 +760,12 @@ function gamipress_get_points_deduct_points_type( $points_deduct_id = 0 ) {
 	}
 
 	$points_type = get_posts( array(
-		'post_type'           => 'points-type',
-		'posts_per_page'      => 1,
-		'connected_direction' => 'from',
-		'connected_type'      => 'points-deduct-to-points-type',
-		'connected_items'     => $points_deduct_id,
+		'post_type'             => 'points-type',
+		'posts_per_page'        => 1,
+		'connected_direction'   => 'from',
+		'connected_type'        => 'points-deduct-to-points-type',
+		'connected_items'       => $points_deduct_id,
+		'suppress_filters'      => false,
 	) );
 
 	// If it has a points type, return it, otherwise return false
@@ -782,6 +785,11 @@ function gamipress_get_points_deduct_points_type( $points_deduct_id = 0 ) {
  * @return array            Updated post data.
  */
 function gamipress_maybe_update_points_type( $data = array(), $post_args = array() ) {
+
+	// Bail if not is main site, on network wide installs points are just available on main site
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		return $data;
+	}
 
 	// Bail if not is a points type
 	if( $post_args['post_type'] !== 'points-type') {
@@ -907,9 +915,11 @@ function gamipress_update_points_awards_points_type( $original_type = '', $new_t
 
 	global $wpdb;
 
+	$postmeta = GamiPress()->db->postmeta;
+
 	return $wpdb->get_results( $wpdb->prepare(
 		"
-		UPDATE $wpdb->postmeta
+		UPDATE $postmeta
 		SET meta_value = %s
 		WHERE meta_key = %s
 		AND meta_value = %s

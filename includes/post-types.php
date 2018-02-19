@@ -295,8 +295,9 @@ function gamipress_register_points_types() {
 
     // Grab all of our points type posts
     $points_types = get_posts( array(
-        'post_type'      =>	'points-type',
-        'posts_per_page' =>	-1,
+        'post_type'         =>	'points-type',
+        'posts_per_page'    =>	-1,
+        'suppress_filters'  => false,
     ) );
 
     // Loop through each points type post and register it as a CPT
@@ -310,11 +311,11 @@ function gamipress_register_points_types() {
         }
 
         // Update our post meta to use the points name, if it's empty
-        if ( ! get_post_meta( $points_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $points_type->ID, '_gamipress_plural_name', $points_slug );
+        if ( ! gamipress_get_post_meta( $points_type->ID, '_gamipress_plural_name' ) ) update_post_meta( $points_type->ID, '_gamipress_plural_name', $points_slug );
 
         // Setup our singular and plural versions to use the corresponding meta
         $points_name_singular = $points_type->post_title;
-        $points_name_plural   = get_post_meta( $points_type->ID, '_gamipress_plural_name', true );
+        $points_name_plural   = gamipress_get_post_meta( $points_type->ID, '_gamipress_plural_name' );
 
         // Register the Achievement type
         gamipress_register_points_type( $points_type->ID, $points_name_singular, $points_name_plural, $points_slug );
@@ -358,8 +359,9 @@ function gamipress_register_achievement_types() {
 
 	// Grab all of our achievement type posts
 	$achievement_types = get_posts( array(
-		'post_type'      =>	'achievement-type',
-		'posts_per_page' =>	-1,
+		'post_type'         =>	'achievement-type',
+		'posts_per_page'    =>	-1,
+		'suppress_filters'  => false,
 	) );
 
 	// Loop through each achievement type post and register it as a CPT
@@ -373,11 +375,11 @@ function gamipress_register_achievement_types() {
         }
 
 		// Update our post meta to use the achievement name, if it's empty
-		if ( ! get_post_meta( $achievement_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $achievement_type->ID, '_gamipress_plural_name', $achievement_slug );
+		if ( ! gamipress_get_post_meta( $achievement_type->ID, '_gamipress_plural_name' ) ) update_post_meta( $achievement_type->ID, '_gamipress_plural_name', $achievement_slug );
 
 		// Setup our singular and plural versions to use the corresponding meta
 		$achievement_name_singular 	= $achievement_type->post_title;
-		$achievement_name_plural   	= get_post_meta( $achievement_type->ID, '_gamipress_plural_name', true );
+		$achievement_name_plural   	= gamipress_get_post_meta( $achievement_type->ID, '_gamipress_plural_name' );
 
 		// Register the post type
 		register_post_type( $achievement_slug, array(
@@ -450,8 +452,9 @@ function gamipress_register_rank_types() {
 
 	// Grab all of our rank type posts
 	$rank_types = get_posts( array(
-		'post_type'      =>	'rank-type',
-		'posts_per_page' =>	-1,
+		'post_type'         =>	'rank-type',
+		'posts_per_page'    =>	-1,
+		'suppress_filters'  => false,
 	) );
 
 	// Loop through each rank type post and register it as a CPT
@@ -465,11 +468,11 @@ function gamipress_register_rank_types() {
 		}
 
 		// Update our post meta to use the rank name, if it's empty
-		if ( ! get_post_meta( $rank_type->ID, '_gamipress_plural_name', true ) ) update_post_meta( $rank_type->ID, '_gamipress_plural_name', $rank_slug );
+		if ( ! gamipress_get_post_meta( $rank_type->ID, '_gamipress_plural_name' ) ) update_post_meta( $rank_type->ID, '_gamipress_plural_name', $rank_slug );
 
 		// Setup our singular and plural versions to use the corresponding meta
 		$rank_name_singular 	= $rank_type->post_title;
-		$rank_name_plural   	= get_post_meta( $rank_type->ID, '_gamipress_plural_name', true );
+		$rank_name_plural   	= gamipress_get_post_meta( $rank_type->ID, '_gamipress_plural_name' );
 
 		// Register the post type
 		register_post_type( $rank_slug, array(

@@ -145,7 +145,7 @@
                             results.data.forEach(function(item) {
                                 formatted_results.push({
                                     id: item.ID,
-                                    text: item.post_title,
+                                    text: item.post_title + ' (#' + item.ID + ')',
                                 });
                             });
 
@@ -183,16 +183,26 @@
 
         // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
         if ( '' !== achievement_type && 'specific-achievement' === trigger_type ) {
+            // Add the loader
+            $('<span class="achievement-type-spinner spinner is-active" style="float: none; margin: 0 2px 0 4px;"></span>').insertAfter($this);
+
+            achievement_post.hide();
+
             $.post(
                 ajaxurl,
                 {
-                    action: 'gamipress_requirement_achievement_post',
+                    action: 'gamipress_get_achievements_options_html',
                     requirement_id: requirement_id,
                     requirement_type: requirement_type,
                     achievement_type: achievement_type,
                     excluded_posts: excluded_posts
                 },
                 function( response ) {
+
+                    // Remove the loader
+                    $this.next('.achievement-type-spinner').remove();
+
+                    // Add the new options and show the input again
                     achievement_post.html( response );
                     achievement_post.show();
                 }
@@ -215,8 +225,10 @@
         // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
         if ( '' !== rank_type && 'earn-rank' === trigger_type ) {
 
+            // Add the loader
+            $('<span class="rank-type-spinner spinner is-active" style="float: none; margin: 0 2px 0 4px;"></span>').insertAfter( $this );
+
             rank_selector.hide();
-            $('<span class="spinner is-active" style="float: none;"></span>').insertAfter( $this );
 
             $.post(
                 ajaxurl,
@@ -227,8 +239,10 @@
                 },
                 function( response ) {
 
-                    $this.next('.spinner').remove();
+                    // Remove the loader
+                    $this.next('.rank-type-spinner').remove();
 
+                    // Add the new options and show the input again
                     rank_selector.html( response );
                     rank_selector.show();
                 }

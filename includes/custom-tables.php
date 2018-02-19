@@ -29,6 +29,7 @@ function gamipress_register_custom_tables() {
         ),
         'show_ui' => false,
         'version' => 1,
+        'global' => gamipress_is_network_wide_active(),
         'schema' => array(
             'user_earning_id' => array(
                 'type' => 'bigint',
@@ -70,6 +71,7 @@ function gamipress_register_custom_tables() {
         'plural' => __( 'Logs', 'gamipress' ),
         'show_ui' => true,
         'version' => 1,
+        'global' => gamipress_is_network_wide_active(),
         'supports' => array( 'meta' ),
         'views' => array(
             'list' => array(

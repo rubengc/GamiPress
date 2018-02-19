@@ -465,9 +465,17 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 	// Grab our achievement types
 	$achievement_types = gamipress_get_achievement_types();
+	$rank_types = gamipress_get_rank_types();
 	$requirement_types = gamipress_get_requirement_types();
 
-	$achievement_types = array_merge( $achievement_types, $requirement_types )
+    // Merge achievements and requirements (don't merge ranks)
+	$achievement_types = array_merge( $achievement_types, $requirement_types );
+
+	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		$blog_id = get_current_blog_id();
+		switch_to_blog( get_main_site_id() );
+	}
 	?>
 
 	<h2><?php _e( 'Award an Achievement', 'gamipress' ); ?></h2>
@@ -475,9 +483,9 @@ function gamipress_profile_award_achievement( $user = null ) {
 	<table class="form-table">
 
 		<tr>
-			<th><label for="thechoices"><?php _e( 'Select an Achievement Type to Award:', 'gamipress' ); ?></label></th>
+			<th><label for="gamipress-award-type-select"><?php _e( 'Select an Achievement Type to Award:', 'gamipress' ); ?></label></th>
 			<td>
-				<select id="thechoices">
+				<select id="gamipress-award-type-select">
 				<option>Choose an achievement type</option>
 				<?php foreach ( $achievement_types as $achievement_slug => $achievement_type ) :
 					echo '<option value="'. $achievement_slug .'">' . ucwords( $achievement_type['singular_name'] ) .'</option>';
@@ -488,13 +496,12 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 	</table>
 
-	<div id="boxes">
+	<div id="gamipress-awards-options">
 		<?php foreach ( $achievement_types as $achievement_slug => $achievement_type ) : ?>
-			<table id="<?php echo esc_attr( $achievement_slug ); ?>" class="wp-list-table widefat fixed striped gamipress-table">
+			<table id="<?php echo esc_attr( $achievement_slug ); ?>" class="wp-list-table widefat fixed striped gamipress-table" style="display: none;">
 
 				<thead>
 					<tr>
-						<th width="60px"><?php _e( 'Image', 'gamipress' ); ?></th>
 						<th><?php echo ucwords( $achievement_type['singular_name'] ); ?></th>
 						<th><?php _e( 'Actions', 'gamipress' ); ?></th>
 					</tr>
@@ -504,9 +511,10 @@ function gamipress_profile_award_achievement( $user = null ) {
 				<?php
 				// Load achievement type entries
 				$the_query = new WP_Query( array(
-					'post_type'      => $achievement_slug,
-					'posts_per_page' => -1,
-					'post_status'    => 'publish'
+					'post_type'      	=> $achievement_slug,
+					'posts_per_page' 	=> -1,
+					'post_status'    	=> 'publish',
+					'suppress_filters' 	=> false
 				) );
 
 				if ( $the_query->have_posts() ) : ?>
@@ -520,7 +528,9 @@ function gamipress_profile_award_achievement( $user = null ) {
 							continue;
 						} else if( $achievement_slug === 'points-deduct' && ! $points_type = gamipress_get_points_deduct_points_type( get_the_ID() ) ) {
 							continue;
-						}
+						} else if( $achievement_slug === 'rank-requirement' && ! $parent_rank = gamipress_get_rank_requirement_rank( get_the_ID() ) ) {
+                            continue;
+                        }
 
 						// Setup our award URL
 						$award_url = add_query_arg( array(
@@ -530,24 +540,59 @@ function gamipress_profile_award_achievement( $user = null ) {
 						) );
 						?>
 						<tr>
-							<td><?php the_post_thumbnail( array( 50, 50 ) ); ?></td>
 							<td>
-								<?php if( $achievement_slug === 'step' || $achievement_slug === 'points-award' || $achievement_slug === 'points-deduct' ) : ?>
-									<strong><?php echo get_the_title( get_the_ID() ); ?></strong>
+								<?php if( $achievement_slug === 'step' || $achievement_slug === 'points-award' || $achievement_slug === 'points-deduct' || $achievement_slug === 'rank-requirement' ) : ?>
+
 									<?php // Output parent achievement
 									if( $achievement_slug === 'step' && $parent_achievement ) : ?>
+
+										<?php // Achievement thumbnail ?>
+										<?php echo gamipress_get_achievement_post_thumbnail( $parent_achievement->ID, array( 32, 32 ) ); ?>
+
+										<?php // Step title ?>
+										<strong><?php echo gamipress_get_post_field( 'post_title', get_the_ID() ); ?></strong>
+
+										<?php // Step relationship details ?>
 										<?php echo ( isset( $achievement_types[$parent_achievement->post_type] ) ? '<br> ' . $achievement_types[$parent_achievement->post_type]['singular_name'] . ': ' : '' ); ?>
-										<?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . get_the_title( $parent_achievement->ID ) . '</a>'; ?>
-									<?php elseif( $points_type ) : ?>
+										<?php echo '<a href="' . get_edit_post_link( $parent_achievement->ID ) . '">' . gamipress_get_post_field( 'post_title', $parent_achievement->ID ) . '</a>'; ?>
+
+									<?php elseif( in_array( $achievement_slug, array( 'points-award', 'points-deduct' ) ) && $points_type ) : ?>
+
+										<?php // Points type thumbnail ?>
+										<?php echo gamipress_get_points_type_thumbnail( $points_type->ID, array( 32, 32 ) ); ?>
+
+										<?php // Points award/deduct title ?>
+										<strong><?php echo gamipress_get_post_field( 'post_title', get_the_ID() ); ?></strong>
 										<br>
-										<?php echo '<a href="' . get_edit_post_link( $points_type->ID ) . '">' . get_the_title( $points_type->ID ) . '</a>'; ?>
+										<?php echo '<a href="' . get_edit_post_link( $points_type->ID ) . '">' . gamipress_get_post_field( 'post_title', $points_type->ID ) . '</a>'; ?>
+
+                                    <?php elseif( $achievement_slug === 'rank-requirement' && $parent_rank ) : ?>
+
+										<?php // Rank thumbnail ?>
+										<?php echo gamipress_get_rank_post_thumbnail( $parent_rank->ID, array( 32, 32 ) ); ?>
+
+										<?php // Rank requirement title ?>
+										<strong><?php echo gamipress_get_post_field( 'post_title', get_the_ID() ); ?></strong>
+
+										<?php // Rank requirement relationship details ?>
+                                        <?php echo ( isset( $rank_types[$parent_rank->post_type] ) ? '<br> ' . $rank_types[$parent_rank->post_type]['singular_name'] . ': ' : '' ); ?>
+                                        <?php echo '<a href="' . get_edit_post_link( $parent_rank->ID ) . '">' . gamipress_get_post_field( 'post_title', $parent_rank->ID ) . '</a>'; ?>
+
 									<?php endif; ?>
+
 								<?php else : ?>
-									<strong><?php echo '<a href="' . get_edit_post_link( get_the_ID() ) . '">' . get_the_title( get_the_ID() ) . '</a>'; ?></strong>
+
+									<?php if( in_array( $achievement_slug, gamipress_get_achievement_types_slugs() ) ) : ?>
+										<?php echo gamipress_get_achievement_post_thumbnail( get_the_ID(), array( 32, 32 ) ); ?>
+									<?php elseif( in_array( $achievement_slug, gamipress_get_rank_types_slugs() ) ) : ?>
+										<?php echo gamipress_get_rank_post_thumbnail( get_the_ID(), array( 32, 32 ) ); ?>
+									<?php endif; ?>
+
+									<strong><?php echo '<a href="' . get_edit_post_link( get_the_ID() ) . '">' . gamipress_get_post_field( 'post_title', get_the_ID() ) . '</a>'; ?></strong>
 								<?php endif; ?>
 							</td>
 							<td>
-								<a href="<?php echo esc_url( wp_nonce_url( $award_url, 'gamipress_award_achievement' ) ); ?>"><?php printf( __( 'Award %s', 'gamipress' ), ucwords( $achievement_type['singular_name'] ) ); ?></a>
+								<a class="gamipress-award-achievement" href="<?php echo esc_url( wp_nonce_url( $award_url, 'gamipress_award_achievement' ) ); ?>"><?php printf( __( 'Award %s', 'gamipress' ), ucwords( $achievement_type['singular_name'] ) ); ?></a>
 								<?php if ( in_array( get_the_ID(), (array) $achievement_ids ) ) :
 									// Setup our revoke URL
 									$revoke_url = add_query_arg( array(
@@ -556,7 +601,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 										'achievement_id' => absint( get_the_ID() ),
 									) );
 									?>
-									| <span class="delete"><a class="error" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
+									| <span class="delete"><a class="error gamipress-revoke-achievement" href="<?php echo esc_url( wp_nonce_url( $revoke_url, 'gamipress_revoke_achievement' ) ); ?>"><?php _e( 'Revoke Award', 'gamipress' ); ?></a></span>
 								<?php endif; ?>
 
 							</td>
@@ -573,22 +618,13 @@ function gamipress_profile_award_achievement( $user = null ) {
 
 			</table><!-- #<?php echo esc_attr( $achievement_slug ); ?> -->
 		<?php endforeach; ?>
-	</div><!-- #boxes -->
-
-	<script type="text/javascript">
-		(function($){
-			<?php foreach ( $achievement_types as $achievement_slug => $achievement_type ) { ?>
-				$('#<?php echo $achievement_slug; ?>').hide();
-			<?php } ?>
-			$("#thechoices").change(function(){
-				if ( 'all' == this.value )
-					$("#boxes").children().show();
-				else
-					$("#" + this.value).show().siblings().hide();
-			}).change();
-		})(jQuery);
-	</script>
+	</div><!-- #gamipress-awards-options -->
 	<?php
+
+	// If switched to blog, return back to que current blog
+	if( isset( $blog_id ) ) {
+		switch_to_blog( $blog_id );
+	}
 }
 
 /**
@@ -602,7 +638,7 @@ function gamipress_process_user_data() {
 	if ( current_user_can( gamipress_get_manager_capability() ) ) {
 
 		// Process awarding achievement to user
-		if ( isset( $_GET['action'] ) && 'award' == $_GET['action'] &&  isset( $_GET['user_id'] ) && isset( $_GET['achievement_id'] ) ) {
+		if ( isset( $_GET['action'] ) && $_GET['action'] === 'award' &&  isset( $_GET['user_id'] ) && isset( $_GET['achievement_id'] ) ) {
 
 			// Verify our nonce
 			check_admin_referer( 'gamipress_award_achievement' );
@@ -616,7 +652,7 @@ function gamipress_process_user_data() {
 		}
 
 		// Process revoking achievement from a user
-		if ( isset( $_GET['action'] ) && 'revoke' == $_GET['action'] && isset( $_GET['user_id'] ) && isset( $_GET['achievement_id'] ) ) {
+		if ( isset( $_GET['action'] ) && $_GET['action'] === 'revoke' && isset( $_GET['user_id'] ) && isset( $_GET['achievement_id'] ) ) {
 
 			// Verify our nonce
 			check_admin_referer( 'gamipress_revoke_achievement' );

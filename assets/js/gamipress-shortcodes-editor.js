@@ -60,6 +60,11 @@
                     value = $(el).prop('checked') ? 'yes' : 'no';
                 }
 
+                // For radio inputs, just get checked input value
+                if( $(el).attr('type') === 'radio' ) {
+                    value = $(el).closest('.cmb2-radio-list').find('input[type="radio"]:checked').val()
+                }
+
                 if (value !== '' && value !== undefined && value !== null ) {
 
                     // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
@@ -145,7 +150,7 @@
                 results.data.forEach(function(item) {
                     formatted_results.push({
                         id: item.ID,
-                        text: item.post_title,
+                        text: item.post_title + ' (#' + item.ID + ')',
                     });
                 });
 
@@ -196,7 +201,7 @@
                 results.data.forEach(function(item) {
                     formatted_results.push({
                         id: item.ID,
-                        text: item.user_login,
+                        text: item.user_login  + ' (#' + item.ID + ')',
                     });
                 });
 
@@ -251,7 +256,7 @@
                 results.data.forEach(function(item) {
                     formatted_results.push({
                         id: item.ID,
-                        text: item.post_title,
+                        text: item.post_title  + ' (#' + item.ID + ')',
                     });
                 });
 

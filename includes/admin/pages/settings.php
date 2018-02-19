@@ -27,26 +27,6 @@ function gamipress_register_settings() {
 add_action( 'admin_init', 'gamipress_register_settings' );
 
 /**
- * Helper function to get an option value.
- *
- * @since  1.0.1
- *
- * @param string    $option_name
- * @param bool      $default
- *
- * @return mixed Option value or default parameter value if not exists.
- */
-function gamipress_get_option( $option_name, $default = false ) {
-
-    if( GamiPress()->settings === null ) {
-        GamiPress()->settings = get_option( 'gamipress_settings' );
-    }
-
-    return isset( GamiPress()->settings[ $option_name ] ) ? GamiPress()->settings[ $option_name ] : $default;
-
-}
-
-/**
  * Register settings page.
  *
  * @since  1.0.0

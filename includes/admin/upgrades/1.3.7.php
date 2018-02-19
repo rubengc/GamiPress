@@ -3,7 +3,7 @@
  * 1.3.7 Upgrades
  *
  * @package     GamiPress\Admin\Upgrades\1.3.7
- * @since       1.3.1
+ * @since       1.3.7
  */
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;

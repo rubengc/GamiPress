@@ -27,7 +27,7 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
 
     // If we were given an ID, get the post
     if ( is_numeric( $achievement ) ) {
-        $post = get_post( $achievement );
+        $post = gamipress_get_post( $achievement );
     } else {
         $post = $achievement;
     }
@@ -75,7 +75,7 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
 
     // If we were given an ID, get the post
     if ( is_numeric( $rank ) ) {
-        $post = get_post( $rank );
+        $post = gamipress_get_post( $rank );
     } else {
         $post = $rank;
     }

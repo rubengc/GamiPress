@@ -152,7 +152,7 @@ function gamipress_site_visit_listener() {
 
     // Current User ID
     $user_id = get_current_user_id();
-    $now = current_time( 'timestamp' );
+    $now = strtotime( date('Y-m-d') );
 
     // Website daily visit
     $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_site_visit', $now );

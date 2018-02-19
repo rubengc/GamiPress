@@ -19,14 +19,16 @@ if( isset( $a['user_id'] ) ) {
 }
 ?>
 
-<div id="gamipress-ranks-list" class="gamipress-ranks-list gamipress-columns-<?php echo $a['columns']; ?> <?php echo ( $a['is_user_ranks'] ? 'gamipress-user-ranks' : '' ); ?>">
+<div id="gamipress-ranks-list" class="gamipress-ranks-list <?php echo ( $a['is_user_ranks'] ? 'gamipress-user-ranks' : '' ); ?>">
 
     <?php
     /**
      * Before render rank types list
      *
-     * @param $rank_types       array Array of rank types to be rendered
-     * @param $template_args    array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $rank_types       Array of rank types to be rendered
+     * @param array $template_args    Template received arguments
      */
     do_action( 'gamipress_before_render_rank_types_list', $a['rank-types'], $a ); ?>
 
@@ -42,9 +44,11 @@ if( isset( $a['user_id'] ) ) {
             /**
              * Before render rank type
              *
-             * @param $rank_type        string  Rank type slug
-             * @param $rank_types       array   Array of rank types to be rendered
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param string  $rank_type        Rank type slug
+             * @param array   $rank_types       Array of rank types to be rendered
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_before_render_rank_type', $rank_type, $a['rank-types'], $a ); ?>
 
@@ -54,25 +58,33 @@ if( isset( $a['user_id'] ) ) {
             /**
              * After rank type title
              *
-             * @param $rank_type        string  Rank type slug
-             * @param $rank_types       array   Array of rank types to be rendered
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param string  $rank_type        Rank type slug
+             * @param array   $rank_types       Array of rank types to be rendered
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_rank_type_title', $rank_type, $a['rank-types'], $a ); ?>
 
-            <?php foreach( $rank_ids as $rank_id ) : ?>
+            <div class="gamipress-ranks-container gamipress-columns-<?php echo $a['columns']; ?>">
 
-                <?php echo gamipress_render_rank( $rank_id, $a['template_args'] ) ;?>
+                <?php foreach( $rank_ids as $rank_id ) : ?>
 
-            <?php endforeach; ?>
+                    <?php echo gamipress_render_rank( $rank_id, $a['template_args'] ) ;?>
+
+                <?php endforeach; ?>
+
+            </div><!-- .gamipress-ranks-container -->
 
             <?php
             /**
              * After render rank type
              *
-             * @param $rank_type        string  Rank type slug
-             * @param $rank_types       array   Array of rank types to be rendered
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param string  $rank_type        Rank type slug
+             * @param array   $rank_types       Array of rank types to be rendered
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_render_rank_type', $rank_type, $a['rank-types'], $a ); ?>
 
@@ -84,9 +96,11 @@ if( isset( $a['user_id'] ) ) {
     /**
      * After render rank types list
      *
-     * @param $rank_types       array Array of rank types to be rendered
-     * @param $template_args    array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $rank_types       Array of rank types to be rendered
+     * @param array $template_args    Template received arguments
      */
     do_action( 'gamipress_after_render_rank_types_list', $a['rank-types'], $a ); ?>
 
-</div>
+</div><!-- .gamipress-ranks-list -->

@@ -163,7 +163,7 @@ function gamipress_meta_boxes() {
 		array( 'priority' => 'high', )
 	);
 
-	// Achievements
+	// Achievement Data
 	gamipress_add_meta_box(
 		'achievement-data',
 		__( 'Achievement Data', 'gamipress' ),
@@ -222,12 +222,6 @@ function gamipress_meta_boxes() {
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
-			$prefix . 'show_earners' => array(
-				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => __( 'Check this option to display a list of users who have earned this achievement.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
 			$prefix . 'congratulations_text' => array(
 				'name' => __( 'Congratulations Text', 'gamipress' ),
 				'desc' => __( 'Displayed after achievement is earned.', 'gamipress' ),
@@ -272,6 +266,39 @@ function gamipress_meta_boxes() {
 		)
 	);
 
+	// Achievement Template
+	gamipress_add_meta_box(
+		'achievement-template',
+		__( 'Achievement Template', 'gamipress' ),
+		$achievement_types,
+		array(
+			$prefix . 'show_earners' => array(
+				'name' => __( 'Show Earners', 'gamipress' ),
+				'desc' => __( 'Check this option to display a list of users who have earned this achievement.', 'gamipress' ),
+				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
+			$prefix . 'layout' => array(
+				'name'        => __( 'Layout', 'gamipress' ),
+				'description' => __( 'Layout to show the achievement.', 'gamipress' ),
+				'type' 		  => 'radio',
+				'options' 	  => array(
+					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+				),
+				'default' 	  => 'left',
+				'inline' 	  => true,
+				'classes' 	  => 'gamipress-image-options'
+			),
+		),
+		array(
+			'context'  => 'side',
+		)
+	);
+
 	// Rank Type
 	gamipress_add_meta_box(
 		'rank-type-data',
@@ -312,12 +339,6 @@ function gamipress_meta_boxes() {
 				'type' => 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
-			$prefix . 'show_earners' => array(
-				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => __( 'Check this option to display a list of users who have reached this rank.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
 			$prefix . 'congratulations_text' => array(
 				'name' => __( 'Congratulations Text', 'gamipress' ),
 				'desc' => __( 'Displayed after rank is reached.', 'gamipress' ),
@@ -345,6 +366,39 @@ function gamipress_meta_boxes() {
 		array(
 			'context'  => 'advanced',
 			'priority' => 'high',
+		)
+	);
+
+	// Rank Template
+	gamipress_add_meta_box(
+		'rank-template',
+		__( 'Rank Template', 'gamipress' ),
+		$rank_types,
+		array(
+			$prefix . 'show_earners' => array(
+				'name' => __( 'Show Earners', 'gamipress' ),
+				'desc' => __( 'Check this option to display a list of users who have reached this rank.', 'gamipress' ),
+				'type' => 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
+			$prefix . 'layout' => array(
+				'name'        => __( 'Layout', 'gamipress' ),
+				'description' => __( 'Layout to show the rank.', 'gamipress' ),
+				'type' 		  => 'radio',
+				'options' 	  => array(
+					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+				),
+				'default' 	  => 'left',
+				'inline' 	  => true,
+				'classes' 	  => 'gamipress-image-options'
+			),
+		),
+		array(
+			'context'  => 'side',
 		)
 	);
 

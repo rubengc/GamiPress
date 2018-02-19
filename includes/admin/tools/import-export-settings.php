@@ -24,7 +24,7 @@ function gamipress_import_export_settings_tool_meta_boxes( $meta_boxes ) {
         'fields' => apply_filters( 'gamipress_import_export_settings_tool_fields', array(
             'export_settings' => array(
                 'label' => __( 'Export Settings', 'gamipress' ),
-                'desc' => __( 'Export the GamiPress settings for this site as a .json file. This allows you to easily import the configuration into another site.', 'gamipress' ),
+                'desc' => __( 'Export settings from this site as a file to easily import this configuration to another site.', 'gamipress' ),
                 'type' => 'button',
                 'icon' => 'dashicons-download',
                 'action' => 'export_settings'

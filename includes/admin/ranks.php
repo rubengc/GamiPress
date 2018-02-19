@@ -113,13 +113,13 @@ function gamipress_rank_posts_custom_columns( $column_name, $post_id ) {
             echo get_post_field( 'menu_order', $post_id );
             break;
         case 'unlock_with_points':
-            $unlock_with_points = get_post_meta( $post_id, $prefix . 'unlock_with_points', true );
+            $unlock_with_points = gamipress_get_post_meta( $post_id, $prefix . 'unlock_with_points' );
 
             if( ! (bool) $unlock_with_points ) {
                 break;
             }
 
-            $points_type_to_unlock = get_post_meta( $post_id, $prefix . 'points_type_to_unlock', true );
+            $points_type_to_unlock = gamipress_get_post_meta( $post_id, $prefix . 'points_type_to_unlock' );
 
             $points_types = gamipress_get_points_types();
 
@@ -134,7 +134,7 @@ function gamipress_rank_posts_custom_columns( $column_name, $post_id ) {
 
             $points_type = $points_types[$points_type_to_unlock];
 
-            $points_to_unlock = absint( get_post_meta( $post_id, $prefix . 'points_to_unlock', true ) );
+            $points_to_unlock = absint( gamipress_get_post_meta( $post_id, $prefix . 'points_to_unlock' ) );
 
             if( $points_to_unlock === 0 ) {
                 break;
@@ -187,7 +187,7 @@ function gamipress_next_rank_content_cb( $field, $object_id, $object_type ) {
     }
 
     $rank = gamipress_get_next_rank( $object_id );
-    $rank_type = get_post_type( $object_id );
+    $rank_type = gamipress_get_post_type( $object_id );
 
     if( $rank ) : ?>
         <div class="cmb-th">
@@ -209,7 +209,7 @@ function gamipress_prev_rank_content_cb( $field, $object_id, $object_type ) {
     }
 
     $rank = gamipress_get_prev_rank( $object_id );
-    $rank_type = get_post_type( $object_id );
+    $rank_type = gamipress_get_post_type( $object_id );
 
     if( $rank ) : ?>
         <div class="cmb-th">

@@ -19,7 +19,7 @@ function gamipress_register_rank_shortcode() {
 		'name'            => __( 'Single Rank', 'gamipress' ),
 		'description'     => __( 'Render a single rank.', 'gamipress' ),
 		'output_callback' => 'gamipress_rank_shortcode',
-		'fields'      => array(
+		'fields'      	  => array(
 			'id' => array(
 				'name'        => __( 'Rank ID', 'gamipress' ),
 				'description' => __( 'The ID of the rank to render.', 'gamipress' ),
@@ -30,6 +30,13 @@ function gamipress_register_rank_shortcode() {
 			'title' => array(
 				'name'        => __( 'Show Title', 'gamipress' ),
 				'description' => __( 'Display the rank title.', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+				'default' => 'yes'
+			),
+			'link' => array(
+				'name'        => __( 'Show Link', 'gamipress' ),
+				'description' => __( 'Add a link on rank title to the rank page.', 'gamipress' ),
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
@@ -68,6 +75,21 @@ function gamipress_register_rank_shortcode() {
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
+			'layout' => array(
+				'name'        => __( 'Layout', 'gamipress' ),
+				'description' => __( 'Layout to show the rank.', 'gamipress' ),
+				'type' 		  => 'radio',
+				'options' => array(
+					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+				),
+				'default' 	  => 'left',
+				'inline' 	  => true,
+				'classes' 	  => 'gamipress-image-options'
+			),
 		),
 	) );
 
@@ -93,8 +115,14 @@ function gamipress_rank_shortcode( $atts = array() ) {
 
 	gamipress_enqueue_scripts();
 
+	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		$blog_id = get_current_blog_id();
+		switch_to_blog( get_main_site_id() );
+	}
+
 	// Get the post content and format the rank display
-	$rank = get_post( $atts['id'] );
+	$rank = gamipress_get_post( $atts['id'] );
 
 	// Get the current user if one wasn't specified
 	if( absint( $atts['user_id'] ) === 0 )
@@ -105,6 +133,11 @@ function gamipress_rank_shortcode( $atts = array() ) {
 	// If we're dealing with an rank post
 	if ( gamipress_is_rank( $rank ) ) {
 		$output .= gamipress_render_rank( $rank, $atts );
+	}
+
+	// If switched to blog, return back to que current blog
+	if( isset( $blog_id ) ) {
+		switch_to_blog( $blog_id );
 	}
 
 	// Return our rendered rank
@@ -124,11 +157,13 @@ function gamipress_rank_shortcode_defaults() {
 		'id' 			=> get_the_ID(),
 		'user_id' 		=> '0',
 		'title' 		=> 'yes',
+		'link' 			=> 'yes',
 		'thumbnail' 	=> 'yes',
 		'excerpt'	  	=> 'yes',
 		'requirements'	=> 'yes',
 		'toggle' 		=> 'yes',
 		'earners'	  	=> 'no',
+		'layout'	  	=> 'left',
 	) );
 
 }

@@ -131,7 +131,8 @@ function gamipress_set_upgrade_complete( $upgrade_action = '' ) {
 /**
  * Utility function to check if a database table exists
  *
- * @since  1.3.5
+ * @since   1.3.5
+ * @updated 1.4.0 Added support for network wide database
  *
  * @param  string $table_name The desired table name
  *
@@ -150,6 +151,13 @@ function gamipress_database_table_exists( $table_name ) {
         $table_exist = $wpdb->get_var( $wpdb->prepare(
             "SHOW TABLES LIKE %s",
             $wpdb->esc_like( $wpdb->prefix . $table_name )
+        ) );
+    }
+
+    if( empty( $table_exist ) ) {
+        $table_exist = $wpdb->get_var( $wpdb->prepare(
+            "SHOW TABLES LIKE %s",
+            $wpdb->esc_like( $wpdb->base_prefix . $table_name )
         ) );
     }
 

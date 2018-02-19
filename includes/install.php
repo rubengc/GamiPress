@@ -11,7 +11,11 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_install() {
 
     // Setup default GamiPress options
-    $gamipress_settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();
+    if( gamipress_is_network_wide_active() ) {
+        $gamipress_settings = ( $exists = get_site_option( 'gamipress_settings' ) ) ? $exists : array();
+    } else {
+        $gamipress_settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();
+    }
 
     if ( empty( $gamipress_settings ) ) {
 
@@ -20,7 +24,11 @@ function gamipress_install() {
         $gamipress_settings['achievement_image_size'] = array( 'width' => 100, 'height' => 100 );
         $gamipress_settings['rank_image_size'] = array( 'width' => 100, 'height' => 100 );
 
-        update_option( 'gamipress_settings', $gamipress_settings );
+        if( gamipress_is_network_wide_active() ) {
+            update_site_option( 'gamipress_settings', $gamipress_settings );
+        } else {
+            update_option( 'gamipress_settings', $gamipress_settings );
+        }
     }
 
     // Register GamiPress custom DB tables

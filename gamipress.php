@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.3.9.8
+ * Version:         	1.4.0
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -84,6 +84,18 @@ final class GamiPress {
 	public $shortcodes = array();
 
 	/**
+	 * @var         stdClass $db GamiPress database object
+	 * @since       1.4.0
+	 */
+	public $db;
+
+	/**
+	 * @var         bool $db GamiPress network wide active mark
+	 * @since       1.4.0
+	 */
+	public $network_wide_active = null;
+
+	/**
 	 * Get active instance
 	 *
 	 * @access      public
@@ -118,7 +130,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.3.9.8' );
+		define( 'GAMIPRESS_VER', '1.4.0' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -196,6 +208,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/functions.php';
 		require_once GAMIPRESS_DIR . 'includes/listeners.php';
 		require_once GAMIPRESS_DIR . 'includes/log-functions.php';
+		require_once GAMIPRESS_DIR . 'includes/network.php';
 		require_once GAMIPRESS_DIR . 'includes/points-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/rank-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/requirement-functions.php';
@@ -224,12 +237,47 @@ final class GamiPress {
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
 		// Hook in all our important pieces
+		add_action( 'init', array( $this, 'init' ), 5 );
 		add_action( 'init', array( $this, 'register_image_sizes' ) );
 
 	}
 
 	/**
+	 * Init function
+	 *
+	 * @access      private
+	 * @since       1.4.0
+	 * @return      void
+	 */
+	function init() {
+
+		global $wpdb;
+
+		$this->db = new stdClass();
+
+		// Setup WordPress database tables
+		$this->db->posts 				= $wpdb->posts;
+		$this->db->postmeta 			= $wpdb->postmeta;
+		$this->db->users 				= $wpdb->users;
+		$this->db->usermeta 			= $wpdb->usermeta;
+		$this->db->p2p 					= $wpdb->p2p;
+		$this->db->p2pmeta 				= $wpdb->p2pmeta;
+
+		// Setup GamiPress database tables
+		$this->db->logs 				= $wpdb->gamipress_logs;
+		$this->db->logs_meta 			= $wpdb->gamipress_logs_meta;
+		$this->db->user_earnings 		= $wpdb->gamipress_user_earnings;
+
+		// Trigger our action to let other plugins know that GamiPress is ready
+		do_action( 'gamipress_init' );
+
+	}
+
+	/**
 	 * Register custom WordPress image size(s)
+	 *
+	 * @since       1.0.0
+	 * @return      void
 	 */
 	function register_image_sizes() {
 
@@ -253,7 +301,7 @@ final class GamiPress {
 	/**
 	 * Activation hook for the plugin.
 	 */
-	function activate() {
+	function activate( $network_wide ) {
 
 		// Include our important bits
 		$this->libraries();
@@ -262,6 +310,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/install.php';
 
 		gamipress_install();
+
 	}
 
 	/**
@@ -279,6 +328,7 @@ final class GamiPress {
 	 * @return      void
 	 */
 	public function load_textdomain() {
+
 		// Set filter for language directory
 		$lang_dir = GAMIPRESS_DIR . '/languages/';
 		$lang_dir = apply_filters( 'gamipress_languages_directory', $lang_dir );
@@ -301,6 +351,7 @@ final class GamiPress {
 			// Load the default language files
 			load_plugin_textdomain( 'gamipress', false, $lang_dir );
 		}
+
 	}
 
 }

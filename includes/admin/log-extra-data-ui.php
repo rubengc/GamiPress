@@ -165,7 +165,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 'id'   	=> $prefix . 'achievement_post',
                 'type' 	=> 'select',
                 'options' 	=> array(
-                    $achievement_post_id => get_post_field( 'post_title', $achievement_post_id ),
+                    $achievement_post_id => gamipress_get_specific_activity_trigger_post_title( $achievement_post_id, $trigger ),
                 ),
             );
         }
@@ -179,7 +179,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 'id'   	=> $prefix . 'achievement_id',
                 'type' 	=> 'select',
                 'options' 	=> array(
-                    $achievement_id => get_post_field( 'post_title', $achievement_id ),
+                    $achievement_id => gamipress_get_post_field( 'post_title', $achievement_id ),
                 ),
             ),
         );
@@ -225,7 +225,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
                 'id'   	=> $prefix . 'rank_id',
                 'type' 	=> 'select',
                 'options' 	=> array(
-                    $rank_id => get_post_field( 'post_title', $rank_id ),
+                    $rank_id => gamipress_get_post_field( 'post_title', $rank_id ),
                 ),
             ),
         );

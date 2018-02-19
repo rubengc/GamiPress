@@ -176,12 +176,10 @@ function gamipress_activity_recount_published_content( $response ) {
     foreach( $users as $user ) {
         // Get all user published posts
         $posts = $wpdb->get_results( $wpdb->prepare(
-            "
-            SELECT *
+            "SELECT *
             FROM $wpdb->posts AS p
             WHERE p.post_author = %s
-		       AND p.post_status = 'publish'
-            ",
+		       AND p.post_status = 'publish'",
                 $user->ID
         ) );
 

@@ -10,11 +10,7 @@ global $gamipress_template_args;
 // Shorthand
 $a = $gamipress_template_args;
 
-if( isset( $a['user_id'] ) ) {
-    $user_id = $a['user_id'];
-} else {
-    $user_id = get_current_user_id();
-}
+$user_id = isset( $a['user_id'] ) ? $a['user_id'] : get_current_user_id();
 
 // Check if user has earned this rank, rank is earned by default if is the lowest priority of this type
 if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
@@ -25,32 +21,62 @@ if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
 
 // Check if this rank is the current one of the user
 $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
+
+// Setup rank classes
+$classes = array(
+    'gamipress-rank',
+    ( $earned ? 'user-has-earned' : 'user-has-not-earned' ),
+    ( $current ? 'current-user-rank' : '' ),
+    'gamipress-layout-' . $a['layout']
+);
+
+/**
+ * Rank classes
+ *
+ * @since 1.4.0
+ *
+ * @param array     $classes        Array of rank classes
+ * @param integer   $rank_id        The Rank ID
+ * @param array     $template_args  Template received arguments
+ */
+$classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a );
 ?>
 
 
-<div id="gamipress-rank-<?php the_ID(); ?>" class="gamipress-rank <?php echo ( $earned ? 'user-has-earned' : 'user-has-not-earned' ); ?> <?php echo ( $current ? 'current-user-rank' : '' ); ?>">
+<div id="gamipress-rank-<?php the_ID(); ?>" class="<?php echo implode( ' ', $classes ); ?>">
 
     <?php
     /**
      * Before render rank
      *
-     * @param $rank_id          integer The Rank ID
-     * @param $template_args    array   Template received arguments
+     * @since 1.0.0
+     *
+     * @param integer $rank_id          The Rank ID
+     * @param array   $template_args    Template received arguments
      */
     do_action( 'gamipress_before_render_rank', get_the_ID(), $a ); ?>
 
     <?php // Rank Image
     if( $a['thumbnail'] === 'yes' ) : ?>
         <div class="gamipress-rank-image">
-            <a href="<?php the_permalink(); ?>"><?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?></a>
+
+            <?php // Link to the rank page
+            if( $a['link'] === 'yes' ) : ?>
+                <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?></a>
+            <?php else : ?>
+                <?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?>
+            <?php endif; ?>
+
         </div><!-- .gamipress-rank-image -->
 
         <?php
         /**
          * After rank thumbnail
          *
-         * @param $rank_id          integer The Rank ID
-         * @param $template_args    array   Template received arguments
+         * @since 1.0.0
+         *
+         * @param integer $rank_id          The Rank ID
+         * @param array   $template_args    Template received arguments
          */
         do_action( 'gamipress_after_rank_thumbnail', get_the_ID(), $a ); ?>
 
@@ -61,14 +87,25 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
 
         <?php // Rank Title
         if( $a['title'] === 'yes' ) :  ?>
-            <h2 class="gamipress-rank-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+            <h2 class="gamipress-rank-title">
+
+                <?php // Link to the rank page
+                if( $a['link'] === 'yes' ) : ?>
+                    <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php the_title(); ?></a>
+                <?php else : ?>
+                    <?php the_title(); ?>
+                <?php endif; ?>
+
+            </h2>
 
             <?php
             /**
              * After rank title
              *
-             * @param $rank_id          integer The Rank ID
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param integer $rank_id          The Rank ID
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_rank_title', get_the_ID(), $a ); ?>
         <?php endif; ?>
@@ -77,7 +114,7 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
         if( $a['excerpt'] === 'yes' ) :  ?>
             <div class="gamipress-rank-excerpt">
                 <?php
-                $excerpt = has_excerpt() ? get_post_field( 'post_excerpt', get_the_ID() ) : get_post_field( 'post_content', get_the_ID() );
+                $excerpt = has_excerpt() ? gamipress_get_post_field( 'post_excerpt', get_the_ID() ) : gamipress_get_post_field( 'post_content', get_the_ID() );
                 echo wpautop( apply_filters( 'get_the_excerpt', $excerpt ) );
                 ?>
             </div><!-- .gamipress-rank-excerpt -->
@@ -86,8 +123,10 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
             /**
              * After rank excerpt
              *
-             * @param $rank_id          integer The Rank ID
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param integer $rank_id          The Rank ID
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_rank_excerpt', get_the_ID(), $a ); ?>
 
@@ -119,8 +158,10 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
             /**
              * After rank requirements
              *
-             * @param $rank_id          integer The Rank ID
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param integer $rank_id          The Rank ID
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_rank_requirements', get_the_ID(), $a ); ?>
 
@@ -136,12 +177,25 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
             /**
              * After rank earners
              *
-             * @param $rank_id          integer The Rank ID
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param integer $rank_id          The Rank ID
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_rank_earners', get_the_ID(), $a ); ?>
 
         <?php endif; ?>
+
+        <?php
+        /**
+         * Rank description bottom
+         *
+         * @since 1.4.0
+         *
+         * @param integer $rank_id          The Rank ID
+         * @param array   $template_args    Template received arguments
+         */
+        do_action( 'gamipress_rank_description_bottom', get_the_ID(), $a ); ?>
 
     </div><!-- .gamipress-rank-description -->
 
@@ -149,8 +203,10 @@ $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
     /**
      * After render rank
      *
-     * @param $rank_id          integer The Rank ID
-     * @param $template_args    array   Template received arguments
+     * @since 1.0.0
+     *
+     * @param integer $rank_id          The Rank ID
+     * @param array   $template_args    Template received arguments
      */
     do_action( 'gamipress_after_render_rank', get_the_ID(), $a ); ?>
 

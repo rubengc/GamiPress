@@ -79,6 +79,21 @@ function gamipress_register_points_shortcode() {
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'
             ),
+            'layout' => array(
+                'name'        => __( 'Layout', 'gamipress' ),
+                'description' => __( 'Layout to show the points.', 'gamipress' ),
+                'type' 		  => 'radio',
+                'options' 	  => array(
+                    'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+                    'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+                    'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+                    'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+                    'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+                ),
+                'default' 	  => 'left',
+                'inline' 	  => true,
+                'classes' 	  => 'gamipress-image-options'
+            ),
             'wpms' => array(
                 'name'        => __( 'Include Multisite Points', 'gamipress' ),
                 'description' => __( 'Show points from all network sites.', 'gamipress' ),
@@ -113,16 +128,23 @@ function gamipress_points_shortcode( $atts = array () ) {
         'label'         => 'yes',
         'current_user'  => 'no',
         'user_id'       => '0',
+        'layout'        => 'left',
         'wpms'          => 'no',
     ), $atts, 'gamipress_points' );
 
     gamipress_enqueue_scripts();
 
+    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        $blog_id = get_current_blog_id();
+        switch_to_blog( get_main_site_id() );
+    }
+
     // Single type check to use dynamic template
     $is_single_type = false;
     $types = explode( ',', $atts['type'] );
 
-    if( $atts['type'] === 'all' || in_array( 'all', $types ) ) {
+    if( empty( $atts['type'] ) || $atts['type'] === 'all' || in_array( 'all', $types ) ) {
         $types = gamipress_get_points_types_slugs();
     } else if ( count( $types ) === 1 ) {
         $is_single_type = true;
@@ -181,6 +203,11 @@ function gamipress_points_shortcode( $atts = array () ) {
         gamipress_get_template_part( 'points' );
     }
     $output = ob_get_clean();
+
+    // If switched to blog, return back to que current blog
+    if( isset( $blog_id ) ) {
+        switch_to_blog( $blog_id );
+    }
 
     return $output;
 

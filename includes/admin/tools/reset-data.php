@@ -37,6 +37,10 @@ function gamipress_reset_data_tool_meta_boxes( $meta_boxes ) {
                     'ranks' => __( 'Ranks', 'gamipress' ),
                     'rank_requirements' => __( 'Rank Requirements', 'gamipress' ),
                     'logs' => __( 'Logs', 'gamipress' ),
+                    'earnings' => __( 'Users Earnings', 'gamipress' ),
+                    'earned_points' => __( 'Users Earned Points', 'gamipress' ),
+                    'earned_achievements' => __( 'Users Earned Achievements', 'gamipress' ),
+                    'earned_ranks' => __( 'Users Earned Ranks', 'gamipress' ),
                 ),
             ),
             'reset_data' => array(
@@ -83,7 +87,8 @@ add_filter( 'gamipress_tools_page_bottom', 'gamipress_reset_data_tool_page_botto
 /**
  * AJAX handler for the reset data tool
  *
- * @since 1.1.5
+ * @since   1.1.5
+ * @updated 1.4.0 Added user earnings reset
  */
 function gamipress_ajax_reset_data_tool() {
 
@@ -97,70 +102,85 @@ function gamipress_ajax_reset_data_tool() {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
     }
 
+    ignore_user_abort( true );
+
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
+        set_time_limit( 0 );
+    }
+
     global $wpdb;
+
+    // Setup db table names
+    $posts          = GamiPress()->db->posts;
+    $user_earnings  = GamiPress()->db->user_earnings;
+
+    // Setup vars
+    $achievement_types = gamipress_get_achievement_types();
+    $points_types = gamipress_get_points_types();
+    $rank_types = gamipress_get_rank_types();
 
     foreach( $_POST['items'] as $item ) {
 
         switch( $item ) {
             case 'achievement_types':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'achievement-type'
                 ) );
 
                 break;
             case 'achievements':
 
-                $wpdb->delete( $wpdb->posts, array(
-                    'post_type' => gamipress_get_achievement_types_slugs()
+                $wpdb->delete( $posts, array(
+                    'post_type' => array_keys( $achievement_types )
                 ) );
 
                 break;
             case 'steps':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'step'
                 ) );
 
                 break;
             case 'points_types':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'points-type'
                 ) );
 
                 break;
             case 'points_awards':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'points-award'
                 ) );
 
                 break;
             case 'points_deducts':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'points-deduct'
                 ) );
 
                 break;
             case 'rank_types':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'rank-type'
                 ) );
 
                 break;
             case 'ranks':
 
-                $wpdb->delete( $wpdb->posts, array(
-                    'post_type' => gamipress_get_rank_types_slugs()
+                $wpdb->delete( $posts, array(
+                    'post_type' => array_keys( $rank_types )
                 ) );
 
                 break;
             case 'rank_requirements':
 
-                $wpdb->delete( $wpdb->posts, array(
+                $wpdb->delete( $posts, array(
                     'post_type' => 'rank-requirement'
                 ) );
 
@@ -168,26 +188,96 @@ function gamipress_ajax_reset_data_tool() {
             case 'logs':
 
                 if( gamipress_database_table_exists( 'gamipress_logs' ) ) {
-                    $ct_table = ct_setup_table( 'gamipress_logs' );
+
+                    $logs 		= GamiPress()->db->logs;
+                    $logs_meta 	= GamiPress()->db->logs_meta;
 
                     // Reset from gamipress_logs table
-                    $wpdb->query( "DELETE FROM {$ct_table->db->table_name} WHERE 1=1" );
+                    $wpdb->query( "DELETE FROM {$logs} WHERE 1=1" );
 
                     // Reset from gamipress_logs_meta table
-                    $wpdb->query( "DELETE FROM {$ct_table->meta->db->table_name} WHERE 1=1" );
+                    $wpdb->query( "DELETE FROM {$logs_meta} WHERE 1=1" );
 
                 } else {
 
                     // Reset from old gamipress-log CPT
-                    $wpdb->delete( $wpdb->posts, array(
+                    $wpdb->delete( $posts, array(
                         'post_type' => 'gamipress-log'
                     ) );
 
                 }
                 break;
+            case 'earnings':
+            case 'earned_points':
+            case 'earned_achievements':
+            case 'earned_ranks':
+                break;
             default:
                 do_action( 'gamipress_reset_data_tool_reset', $item );
                 break;
+        }
+
+        // User earnings
+        if(
+            in_array( 'earnings', $_POST['items'] )
+            || in_array( 'earned_points', $_POST['items'] )
+            || in_array( 'earned_achievements', $_POST['items'] )
+            || in_array( 'earned_ranks', $_POST['items'] )
+        ) {
+
+            // For points and ranks, we need to reset all users meta
+            if( in_array( 'earned_points', $_POST['items'] ) || in_array( 'earned_ranks', $_POST['items'] ) ) {
+
+                // Get all stored users
+                $users = $wpdb->get_results( "SELECT {$wpdb->users}.ID FROM {$wpdb->users}" );
+
+                foreach( $users as $user ) {
+
+                    // Reset user earned points
+                    if( in_array( 'earned_points', $_POST['items'] ) ) {
+
+                        foreach( $points_types as $points_type => $points_type_data ) {
+                            // Reset user's points total
+                            gamipress_update_user_meta( $user->ID, "_gamipress_{$points_type}_points", 0 );
+                        }
+
+                    }
+
+                    // Reset user earned ranks
+                    if( in_array( 'earned_ranks', $_POST['items'] ) ) {
+
+                        foreach( $rank_types as $rank_type => $rank_type_data ) {
+                            // Reset user's ranks
+                            gamipress_delete_user_meta( $user->ID, "_gamipress_{$rank_type}_rank" );
+                        }
+
+                    }
+                }
+
+            }
+
+            if( in_array( 'earned_points', $_POST['items'] ) ) {
+                // Reset all points awards and deducts gamipress_user_earnings table
+                $wpdb->query( "DELETE FROM {$user_earnings} WHERE post_type IN ( 'points-award', 'points-deduct' )" );
+
+            }
+
+            if( in_array( 'earned_achievements', $_POST['items'] ) ) {
+                // Reset all achievements and steps from gamipress_user_earnings table
+                $wpdb->query( "DELETE FROM {$user_earnings} WHERE post_type IN ( 'step', '" . implode( "', '", array_keys( $achievement_types ) ) . "' )" );
+
+            }
+
+            if( in_array( 'earned_ranks', $_POST['items'] ) ) {
+                // Reset all ranks and rank requirements from gamipress_user_earnings table
+                $wpdb->query( "DELETE FROM {$user_earnings} WHERE post_type IN ( 'rank-requirement', '" . implode( "', '", array_keys( $rank_types ) ) . "' )" );
+
+            }
+
+            if( in_array( 'earnings', $_POST['items'] ) ) {
+                // Reset all the gamipress_user_earnings table
+                $wpdb->query( "DELETE FROM {$user_earnings} WHERE 1=1" );
+            }
         }
 
     }

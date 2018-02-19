@@ -31,6 +31,12 @@ function gamipress_ajax_get_achievements() {
 	$include    	= isset( $_REQUEST['include'] )    ? $_REQUEST['include']    : array();
 	$exclude    	= isset( $_REQUEST['exclude'] )    ? $_REQUEST['exclude']    : array();
 
+	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		$blog_id = get_current_blog_id();
+		switch_to_blog( get_main_site_id() );
+	}
+
 	// Force to set current user as user ID
 	if( $current_user ) {
 		$user_id = get_current_user_id();
@@ -85,11 +91,21 @@ function gamipress_ajax_get_achievements() {
 	$hidden = gamipress_get_hidden_achievement_ids( $type );
 
 	// If we're polling all sites, grab an array of site IDs
-	if( $wpms && $wpms != 'false' )
+	if( $wpms && $wpms !== 'no' )
 		$sites = gamipress_get_network_site_ids();
 	// Otherwise, use only the current site
 	else
 		$sites = array( get_current_blog_id() );
+
+	// On network wide active installs, force to just loop main site
+	if( gamipress_is_network_wide_active() ) {
+		$sites = array( get_main_site_id() );
+	}
+
+	// On network wide active installs, force to just loop main site
+	if( gamipress_is_network_wide_active() ) {
+		$sites = array( get_main_site_id() );
+	}
 
 	// Loop through each site (default is current site only)
 	foreach( $sites as $site_blog_id ) {
@@ -147,25 +163,31 @@ function gamipress_ajax_get_achievements() {
 
 		endwhile;
 
-		// Sanity helper: if we're filtering for complete and we have no
-		// earned achievements, $achievement_posts should definitely be false
-		/*if ( 'completed' == $filter && empty( $earned_ids ) )
-			$achievements = '';*/
-
 		// Display a message for no results
 		if ( empty( $achievements ) ) {
+
 			$current = current( $type );
-			// If we have exactly one achivement type, get its plural name, otherwise use "achievements"
+
+			// If we have exactly one achievement type, get its plural name, otherwise use "achievements"
 			$post_type_plural = ( 1 == count( $type ) && ! empty( $current ) ) ? get_post_type_object( $current )->labels->name : __( 'achievements' , 'gamipress' );
 
 			// Setup our completion message
 			$achievements .= '<div class="gamipress-no-results">';
 
 			if ( 'completed' == $filter ) {
-				$achievements .= '<p>' . sprintf( __( 'No completed %s to display at this time.', 'gamipress' ), strtolower( $post_type_plural ) ) . '</p>';
+				$no_results_text = sprintf( __( 'No completed %s to display.', 'gamipress' ), strtolower( $post_type_plural ) );
 			} else {
-				$achievements .= '<p>' . sprintf( __( 'No %s to display at this time.', 'gamipress' ), strtolower( $post_type_plural ) ) . '</p>';
+				$no_results_text = sprintf( __( 'No %s to display.', 'gamipress' ), strtolower( $post_type_plural ) );
 			}
+
+			/**
+			 * Filter achievements no results text
+			 *
+			 * @param string $no_results_text
+			 */
+			$no_results_text = apply_filters( 'gamipress_achievements_no_results_text', $no_results_text );
+
+			$achievements .= '<p>' . $no_results_text . '</p>';
 
 			$achievements .= '</div><!-- .gamipress-no-results -->';
 		}
@@ -175,6 +197,11 @@ function gamipress_ajax_get_achievements() {
 			restore_current_blog();
 		}
 
+	}
+
+	// If switched to blog, return back to que current blog
+	if( isset( $blog_id ) ) {
+		switch_to_blog( $blog_id );
 	}
 
 	// Send back our successful response
@@ -269,10 +296,11 @@ function gamipress_ajax_get_posts() {
 		}
 	}
 
+	// On this query, keep $wpdb->posts to get current site posts
 	$results = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT p.ID, p.post_title
-		FROM   $wpdb->posts AS p
+		FROM   {$wpdb->posts} AS p
 		WHERE  1=1
 			   {$post_type}
 		       {$where}
@@ -302,11 +330,14 @@ function gamipress_ajax_get_achievements_options() {
 		: gamipress_get_achievement_types_slugs();
 	$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $achievement_types ) );
 
+	$posts    	= GamiPress()->db->posts;
+	$postmeta 	= GamiPress()->db->postmeta;
+
 	$results = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT p.ID, p.post_title
-		FROM   $wpdb->posts AS p 
-		JOIN $wpdb->postmeta AS pm
+		FROM {$posts} AS p
+		JOIN {$postmeta} AS pm
 		ON p.ID = pm.post_id
 		WHERE  p.post_title LIKE %s
 		       {$post_type}
@@ -364,11 +395,12 @@ function gamipress_achievement_post_ajax_handler() {
 
     // Grab all our posts for this achievement type
     $achievements = get_posts( array(
-        'post_type'      => $achievement_type,
-        'post__not_in'   => $exclude_posts,
-        'posts_per_page' => -1,
-        'orderby'        => 'title',
-        'order'          => 'ASC',
+        'post_type'         => $achievement_type,
+        'post__not_in'      => $exclude_posts,
+        'posts_per_page'    => -1,
+        'orderby'           => 'title',
+        'order'             => 'ASC',
+        'suppress_filters'  => false,
     ));
 
     // Setup our output
@@ -416,9 +448,11 @@ function gamipress_ajax_get_ranks_options_html() {
 		$selected = $_REQUEST['selected'];
 	}
 
+	$posts    	= GamiPress()->db->posts;
+
 	$ranks = $wpdb->get_results( $wpdb->prepare(
 		"SELECT p.ID, p.post_title
-		FROM {$wpdb->posts} AS p
+		FROM {$posts} AS p
 		WHERE p.post_status = %s
 			{$post_type}
 		ORDER BY menu_order DESC",
@@ -457,9 +491,11 @@ function gamipress_ajax_get_ranks_options() {
 		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
 	}
 
+	$posts    	= GamiPress()->db->posts;
+
 	$ranks = $wpdb->get_results( $wpdb->prepare(
 		"SELECT p.ID, p.post_title
-		FROM {$wpdb->posts} AS p
+		FROM {$posts} AS p
 		WHERE p.post_status = %s
 			{$post_type}
 		 AND p.post_title LIKE %s
@@ -484,7 +520,7 @@ function gamipress_ajax_unlock_achievement_with_points() {
 
 	$achievement_id = isset( $_POST['achievement_id'] ) ? $_POST['achievement_id'] : 0;
 
-	$achievement = get_post( $achievement_id );
+	$achievement = gamipress_get_post( $achievement_id );
 
 	// Return if achievement not exists
 	if( ! $achievement ) {
@@ -507,11 +543,11 @@ function gamipress_ajax_unlock_achievement_with_points() {
 	}
 
 	// Return if this option not was enabled
-	if( ! (bool) get_post_meta( $achievement_id, '_gamipress_unlock_with_points', true ) ) {
+	if( ! (bool) gamipress_get_post_meta( $achievement_id, '_gamipress_unlock_with_points' ) ) {
 		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $achievement_type['singular_name'] ) );
 	}
 
-	$points = absint( get_post_meta( $achievement_id, '_gamipress_points_to_unlock', true ) );
+	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
 	if( $points === 0 ) {
@@ -527,7 +563,7 @@ function gamipress_ajax_unlock_achievement_with_points() {
 
 	// Setup points type
 	$points_types = gamipress_get_points_types();
-	$points_type = get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock', true );
+	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock' );
 
 	// Default points label
 	$points_label = __( 'Points', 'gamipress' );
@@ -553,7 +589,7 @@ function gamipress_ajax_unlock_achievement_with_points() {
 	// Award the achievement to the user
 	gamipress_award_achievement_to_user( $achievement_id, $user_id );
 
-	$congratulations = get_post_meta( $achievement_id, '_gamipress_congratulations_text', true );
+	$congratulations = gamipress_get_post_meta( $achievement_id, '_gamipress_congratulations_text' );
 
 	if( empty( $congratulations ) ) {
 		$congratulations = sprintf( __( 'Congratulations! You unlocked the %s %s.', 'gamipress' ), $achievement_type['singular_name'], $achievement->post_title );
@@ -590,7 +626,7 @@ function gamipress_ajax_unlock_rank_with_points() {
 
 	$rank_id = isset( $_POST['rank_id'] ) ? $_POST['rank_id'] : 0;
 
-	$rank = get_post( $rank_id );
+	$rank = gamipress_get_post( $rank_id );
 
 	// Return if rank not exists
 	if( ! $rank ) {
@@ -613,11 +649,11 @@ function gamipress_ajax_unlock_rank_with_points() {
 	}
 
 	// Return if this option not was enabled
-	if( ! (bool) get_post_meta( $rank_id, '_gamipress_unlock_with_points', true ) ) {
+	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) ) {
 		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $rank_type['singular_name'] ) );
 	}
 
-	$points = absint( get_post_meta( $rank_id, '_gamipress_points_to_unlock', true ) );
+	$points = absint( gamipress_get_post_meta( $rank_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
 	if( $points === 0 ) {
@@ -633,7 +669,7 @@ function gamipress_ajax_unlock_rank_with_points() {
 
 	// Setup points type
 	$points_types = gamipress_get_points_types();
-	$points_type = get_post_meta( $rank_id, '_gamipress_points_type_to_unlock', true );
+	$points_type = gamipress_get_post_meta( $rank_id, '_gamipress_points_type_to_unlock' );
 
 	// Default points label
 	$points_label = __( 'Points', 'gamipress' );
@@ -659,7 +695,7 @@ function gamipress_ajax_unlock_rank_with_points() {
 	// Award the rank to the user
 	gamipress_update_user_rank( $user_id, $rank_id );
 
-	$congratulations = get_post_meta( $rank_id, '_gamipress_congratulations_text', true );
+	$congratulations = gamipress_get_post_meta( $rank_id, '_gamipress_congratulations_text' );
 
 	if( empty( $congratulations ) ) {
 		$congratulations = sprintf( __( 'Congratulations! You reached to the %s %s.', 'gamipress' ), $rank_type['singular_name'], $rank->post_title );

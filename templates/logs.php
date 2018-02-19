@@ -17,7 +17,9 @@ $a = $gamipress_template_args;
     /**
      * Before render logs list
      *
-     * @param $template_args array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $template_args Template received arguments
      */
     do_action( 'gamipress_before_render_logs_list', $a ); ?>
 
@@ -27,8 +29,10 @@ $a = $gamipress_template_args;
         /**
          * Before render log
          *
-         * @param $log_id           integer The Log ID
-         * @param $template_args    array   Template received arguments
+         * @since 1.0.0
+         *
+         * @param integer $log_id           The Log ID
+         * @param array   $template_args    Template received arguments
          */
         do_action( 'gamipress_before_render_log', $log->log_id, $a ); ?>
 
@@ -38,8 +42,10 @@ $a = $gamipress_template_args;
         /**
          * After render log
          *
-         * @param $log_id           integer The Log ID
-         * @param $template_args    array   Template received arguments
+         * @since 1.0.0
+         *
+         * @param integer $log_id           The Log ID
+         * @param array   $template_args    Template received arguments
          */
         do_action( 'gamipress_after_render_log', $log->log_id, $a ); ?>
 
@@ -65,7 +71,9 @@ $a = $gamipress_template_args;
     /**
      * After render logs list
      *
-     * @param $template_args array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $template_args Template received arguments
      */
     do_action( 'gamipress_after_render_logs_list', $a ); ?>
 

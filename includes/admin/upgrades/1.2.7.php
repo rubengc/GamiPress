@@ -23,10 +23,12 @@ function gamipress_127_upgrades( $stored_version ) {
 
     global $wpdb;
 
+    $postmeta = GamiPress()->db->postmeta;
+
     // A bug of wrong points awards on newly created points types was discover and fixed, so old points awards need to be updated
     $points_awards = $wpdb->get_results( $wpdb->prepare(
         "SELECT p.post_id
-		FROM   $wpdb->postmeta AS p
+		FROM   $postmeta AS p
 		WHERE  p.meta_key = %s
 		       AND p.meta_value = %s",
         "_gamipress_points_type",

@@ -49,6 +49,7 @@ if ( ! class_exists( 'CT_Table_Meta' ) ) :
 
             $this->db = new CT_DataBase( $this->name, array(
                 'version' => 1,
+                'global' => $this->table->db->global,
                 'schema' => array(
                     'meta_id' => array(
                         'type' => 'bigint',

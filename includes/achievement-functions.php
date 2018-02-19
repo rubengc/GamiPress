@@ -22,7 +22,7 @@ function gamipress_is_achievement( $post = null ) {
 	$return = true;
 
 	// If post type is NOT a registered achievement type, it cannot be an achievement
-	if ( ! in_array( get_post_type( $post ), gamipress_get_achievement_types_slugs() ) ) {
+	if ( ! in_array( gamipress_get_post_type( $post ), gamipress_get_achievement_types_slugs() ) ) {
 		$return = false;
 	}
 
@@ -116,11 +116,19 @@ function gamipress_get_achievements( $args = array() ) {
  * @return string 				The updated "join" string
  */
 function gamipress_get_achievements_children_join( $join = '', $query_object = null ) {
-	global $wpdb;
-	$join .= " LEFT JOIN $wpdb->p2p AS p2p ON p2p.p2p_from = $wpdb->posts.ID";
-	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] != 'any' )
-		$join .= " LEFT JOIN $wpdb->p2pmeta AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
-	$join .= " LEFT JOIN $wpdb->p2pmeta AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
+
+	$posts    	= GamiPress()->db->posts;
+	$p2p 		= GamiPress()->db->p2p;
+	$p2pmeta 	= GamiPress()->db->p2pmeta;
+
+	$join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_from = {$posts}.ID";
+
+	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] != 'any' ) {
+		$join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
+	}
+
+	$join .= " LEFT JOIN {$p2pmeta} AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
+
 	return $join;
 }
 
@@ -133,16 +141,22 @@ function gamipress_get_achievements_children_join( $join = '', $query_object = n
  * @return string 				The updated query "where" string
  */
 function gamipress_get_achievements_children_where( $where = '', $query_object ) {
+
 	global $wpdb;
+
 	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] == 'required' )
 		$where .= " AND p2pm1.meta_key ='Required'";
 
 	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] == 'optional' )
 		$where .= " AND p2pm1.meta_key ='Optional'";
+
 	// ^^ TODO, add required and optional. right now just returns all achievements.
 	$where .= " AND p2pm2.meta_key ='order'";
+
 	$where .= $wpdb->prepare( ' AND p2p.p2p_to = %d', $query_object->query_vars['children_of'] );
+
 	return $where;
+
 }
 
 /**
@@ -153,7 +167,9 @@ function gamipress_get_achievements_children_where( $where = '', $query_object )
  * @return string 		   The updated "orderby" string
  */
 function gamipress_get_achievements_children_orderby( $orderby = '' ) {
+
 	return $orderby = 'p2pm2.meta_value ASC';
+
 }
 
 /**
@@ -164,9 +180,14 @@ function gamipress_get_achievements_children_orderby( $orderby = '' ) {
  * @return string 	    The updated "join" string
  */
 function gamipress_get_achievements_parents_join( $join = '' ) {
-	global $wpdb;
-	$join .= " LEFT JOIN $wpdb->p2p AS p2p ON p2p.p2p_to = $wpdb->posts.ID";
+
+	$posts  = GamiPress()->db->posts;
+	$p2p 	= GamiPress()->db->p2p;
+
+	$join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_to = {$posts}.ID";
+
 	return $join;
+
 }
 
 /**
@@ -178,9 +199,13 @@ function gamipress_get_achievements_parents_join( $join = '' ) {
  * @return string        appended sql where statement
  */
 function gamipress_get_achievements_parents_where( $where = '', $query_object = null ) {
+
 	global $wpdb;
+
 	$where .= $wpdb->prepare( ' AND p2p.p2p_from = %d', $query_object->query_vars['parent_of'] );
+
 	return $where;
+
 }
 
 /**
@@ -243,7 +268,7 @@ function gamipress_is_achievement_sequential( $achievement_id = 0 ) {
 	}
 
 	// If our achievement requires sequential steps, return true, otherwise false
-	if ( get_post_meta( $achievement_id, '_gamipress_sequential', true ) )
+	if ( gamipress_get_post_meta( $achievement_id, '_gamipress_sequential' ) )
 		return true;
 	else
 		return false;
@@ -261,7 +286,7 @@ function gamipress_is_achievement_sequential( $achievement_id = 0 ) {
  */
 function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achievement_id = 0 ) {
 
-	$max_earnings = get_post_meta( $achievement_id, '_gamipress_maximum_earnings', true);
+	$max_earnings = gamipress_get_post_meta( $achievement_id, '_gamipress_maximum_earnings' );
 
 	// Infinite maximum earnings check
     if( $max_earnings === '-1' || empty( $max_earnings ) ) {
@@ -292,7 +317,7 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
 function gamipress_build_achievement_object( $achievement_id = 0, $context = 'earned' ) {
 
 	// Grab the new achievement's $post data, and bail if it doesn't exist
-	$achievement = get_post( $achievement_id );
+	$achievement = gamipress_get_post( $achievement_id );
 	if ( is_null( $achievement ) )
 		return false;
 
@@ -300,8 +325,8 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
 	$achievement_object                 = new stdClass;
 	$achievement_object->ID             = $achievement_id;
 	$achievement_object->post_type      = $achievement->post_type;
-	$achievement_object->points         = absint( get_post_meta( $achievement_id, '_gamipress_points', true ) );
-	$achievement_object->points_type    = get_post_meta( $achievement_id, '_gamipress_points_type', true );
+	$achievement_object->points         = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
+	$achievement_object->points_type    = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
 
 	// Store the current timestamp differently based on context
 	if ( 'earned' == $context ) {
@@ -329,11 +354,12 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 
 	// Grab our hidden achievements
 	$hidden_achievements = get_posts( array(
-		'post_type'      => $achievement_type,
-		'post_status'    => 'publish',
-		'posts_per_page' => -1,
-		'meta_key'       => '_gamipress_hidden',
-		'meta_value'     => 'hidden'
+		'post_type'         => $achievement_type,
+		'post_status'       => 'publish',
+		'posts_per_page'    => -1,
+		'meta_key'          => '_gamipress_hidden',
+		'meta_value'        => 'hidden',
+		'suppress_filters'  => false,
 	) );
 
 	foreach ( $hidden_achievements as $achievement )
@@ -356,12 +382,15 @@ function gamipress_get_hidden_achievement_by_id( $achievement_id ) {
 	// Grab our hidden achievements
 	global $wpdb;
 
+	$posts    = GamiPress()->db->posts;
+	$postmeta = GamiPress()->db->postmeta;
+
 	//Get hidden achievement posts.
 	$hidden_achievements = $wpdb->get_results( $wpdb->prepare(
 		"
 		 SELECT *
-		 FROM {$wpdb->posts} AS p
-		 JOIN {$wpdb->postmeta} AS pm
+		 FROM {$posts} AS p
+		 JOIN {$postmeta} AS pm
 		 ON p.ID = pm.post_id
 		 WHERE p.ID = %d
 		 AND pm.meta_key = '_gamipress_hidden'
@@ -429,6 +458,7 @@ function gamipress_get_user_earned_achievement_types( $user_id = 0 ){
  * @return array                   An array of achievements that are dependent on the given achievement
  */
 function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
+
 	global $wpdb;
 
 	// Grab the current achievement ID if none specified
@@ -437,12 +467,16 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 		$achievement_id = $post->ID;
 	}
 
+	$posts    	= GamiPress()->db->posts;
+	$postmeta 	= GamiPress()->db->postmeta;
+	$p2p 		= GamiPress()->db->p2p;
+
 	// Grab posts that can be earned by unlocking the given achievement
 	$specific_achievements = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT *
-		FROM   $wpdb->posts as posts,
-		       $wpdb->p2p as p2p
+		FROM   {$posts} as posts,
+		       {$p2p} as p2p
 		WHERE  posts.ID = p2p.p2p_to
 		       AND p2p.p2p_from = %d
 		",
@@ -453,13 +487,13 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 	$type_achievements = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT *
-		FROM   $wpdb->posts as posts,
-		       $wpdb->postmeta as meta
+		FROM   {$posts} as posts,
+		       {$postmeta} as meta
 		WHERE  posts.ID = meta.post_id
 		       AND meta.meta_key = '_gamipress_achievement_type'
 		       AND meta.meta_value = %s
 		",
-		get_post_type( $achievement_id )
+		gamipress_get_post_type( $achievement_id )
 	) );
 
 	// Merge our dependent achievements together
@@ -477,6 +511,7 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
  * @return array                   An array of achievements that are dependent on the given achievement
  */
 function gamipress_get_required_achievements_for_achievement( $achievement_id = 0 ) {
+
 	global $wpdb;
 
 	// Grab the current achievement ID if none specified
@@ -486,17 +521,21 @@ function gamipress_get_required_achievements_for_achievement( $achievement_id = 
 	}
 
 	// Don't retrieve requirements if achievement is not earned by steps
-	if ( get_post_meta( $achievement_id, '_gamipress_earned_by', true ) !== 'triggers' )
+	if ( gamipress_get_post_meta( $achievement_id, '_gamipress_earned_by' ) !== 'triggers' )
 		return false;
+
+	$posts    	= GamiPress()->db->posts;
+	$p2p    	= GamiPress()->db->p2p;
+	$p2pmeta    = GamiPress()->db->p2pmeta;
 
 	// Grab our requirements for this achievement
 	$requirements = $wpdb->get_results( $wpdb->prepare(
 		"
 		SELECT   *
-		FROM     $wpdb->posts as posts
-		         LEFT JOIN $wpdb->p2p as p2p
+		FROM     $posts as posts
+		         LEFT JOIN $p2p as p2p
 		                   ON p2p.p2p_from = posts.ID
-		         LEFT JOIN $wpdb->p2pmeta AS p2pmeta
+		         LEFT JOIN $p2pmeta AS p2pmeta
 		                   ON p2p.p2p_id = p2pmeta.p2p_id
 		WHERE    p2p.p2p_to = %d
 		         AND p2pmeta.meta_key = %s
@@ -507,6 +546,7 @@ function gamipress_get_required_achievements_for_achievement( $achievement_id = 
 	) );
 
 	return $requirements;
+
 }
 
 /**
@@ -527,19 +567,22 @@ function gamipress_get_points_based_achievements( $points_type = '' ) {
 		return array();
 	}
 
-	$achievements = get_transient( "gamipress_{$points_type}_based_achievements" );
+	$achievements = gamipress_get_transient( "gamipress_{$points_type}_based_achievements" );
 
 	if ( empty( $achievements ) ) {
+
+		$posts    	= GamiPress()->db->posts;
+		$postmeta 	= GamiPress()->db->postmeta;
 
 		// Grab posts that can be earned by unlocking the given achievement
 		$achievements = $wpdb->get_results( $wpdb->prepare(
 			"SELECT *
-			FROM   $wpdb->posts as p
-			LEFT JOIN {$wpdb->postmeta} AS m1
+			FROM   {$posts} as p
+			LEFT JOIN {$postmeta} AS m1
 			ON ( p.ID = m1.post_id )
-			LEFT JOIN $wpdb->postmeta AS m2
+			LEFT JOIN {$postmeta} AS m2
 			ON ( p.ID = m2.post_id )
-			LEFT JOIN $wpdb->postmeta AS m3
+			LEFT JOIN {$postmeta} AS m3
 			ON ( p.ID = m3.post_id )
 			WHERE ( m1.meta_key = %s AND m1.meta_value = %s )
 				AND (
@@ -554,7 +597,7 @@ function gamipress_get_points_based_achievements( $points_type = '' ) {
 		) );
 
 		// Store these posts to a transient for 1 day
-		set_transient( "gamipress_{$points_type}_based_achievements", $achievements, 60*60*24 );
+		gamipress_set_transient( "gamipress_{$points_type}_based_achievements", $achievements, 60*60*24 );
 	}
 
 	return (array) maybe_unserialize( $achievements );
@@ -571,21 +614,21 @@ function gamipress_bust_points_based_achievements_cache( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( gamipress_is_achievement( $post )
-		&& ( 'points' == get_post_meta( $post_id, '_gamipress_earned_by', true )
+		&& ( 'points' == gamipress_get_post_meta( $post_id, '_gamipress_earned_by' )
 			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'points' === $_POST['_gamipress_earned_by'] ) ) ) {
 
-		$points_type = get_post_meta( $post_id, '_gamipress_points_type_required', true );
+		$points_type = gamipress_get_post_meta( $post_id, '_gamipress_points_type_required' );
 
 		// If the post is one of our achievement types and the achievement is awarded by minimum points, delete the transient
-		delete_transient( "gamipress_{$points_type}_based_achievements" );
+		gamipress_delete_transient( "gamipress_{$points_type}_based_achievements" );
 
-	} else if( in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
-		&& 'earn-points' == get_post_meta( $post_id, '_gamipress_trigger_type', true ) ) {
+	} else if( in_array( gamipress_get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
+		&& 'earn-points' == gamipress_get_post_meta( $post_id, '_gamipress_trigger_type' ) ) {
 
-		$points_type = get_post_meta( $post_id, '_gamipress_points_type_required', true );
+		$points_type = gamipress_get_post_meta( $post_id, '_gamipress_points_type_required' );
 
 		// If the post is one of our requirement types and the trigger type is a points based one, delete the transient
-		delete_transient( "gamipress_{$points_type}_based_achievements" );
+		gamipress_delete_transient( "gamipress_{$points_type}_based_achievements" );
 
 	}
 
@@ -605,17 +648,20 @@ function gamipress_get_rank_based_achievements() {
 
 	global $wpdb;
 
-	$achievements = get_transient( 'gamipress_rank_based_achievements' );
+	$achievements = gamipress_get_transient( 'gamipress_rank_based_achievements' );
 
 	if ( empty( $achievements ) ) {
+
+		$posts    	= GamiPress()->db->posts;
+		$postmeta 	= GamiPress()->db->postmeta;
 
 		// Grab posts that can be earned by unlocking the given achievement
 		$achievements = $wpdb->get_results( $wpdb->prepare(
 			"SELECT *
-			FROM   $wpdb->posts as posts
-			INNER JOIN {$wpdb->postmeta} AS m1
+			FROM   {$posts} as posts
+			INNER JOIN {$postmeta} AS m1
 			ON ( posts.ID = m1.post_id )
-			INNER JOIN $wpdb->postmeta AS m2
+			INNER JOIN {$postmeta} AS m2
 			ON ( posts.ID = m2.post_id )
 			WHERE (
 					( m1.meta_key = %s AND m1.meta_value = %s )
@@ -626,7 +672,7 @@ function gamipress_get_rank_based_achievements() {
 		) );
 
 		// Store these posts to a transient for 1 days
-		set_transient( 'gamipress_rank_based_achievements', $achievements, 60*60*24 );
+		gamipress_set_transient( 'gamipress_rank_based_achievements', $achievements, 60*60*24 );
 	}
 
 	return (array) maybe_unserialize( $achievements );
@@ -644,26 +690,26 @@ function gamipress_get_rank_based_achievements() {
  */
 function gamipress_bust_rank_based_achievements_cache( $post_id ) {
 
-	$post = get_post($post_id);
+	$post = get_post( $post_id );
 
 	if (
 		gamipress_is_achievement( $post )
 		&& (
-			'rank' == get_post_meta( $post_id, '_gamipress_earned_by', true )
+			'rank' == gamipress_get_post_meta( $post_id, '_gamipress_earned_by' )
 			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'rank' == $_POST['_gamipress_earned_by'] )
 		)
 	) {
 
 		// If the post is one of our achievement types, and the achievement is awarded by a rank, delete the transient
-		delete_transient( 'gamipress_rank_based_achievements' );
+		gamipress_delete_transient( 'gamipress_rank_based_achievements' );
 
 	} else if(
-		in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
-		&& 'earn-rank' == get_post_meta( $post_id, '_gamipress_trigger_type', true )
+		in_array( gamipress_get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
+		&& 'earn-rank' == gamipress_get_post_meta( $post_id, '_gamipress_trigger_type' )
 	) {
 
 		// If the post is one of our requirement types and the trigger type is a rank based one, delete the transient
-		delete_transient( 'gamipress_rank_based_achievements' );
+		gamipress_delete_transient( 'gamipress_rank_based_achievements' );
 
 	}
 
@@ -693,7 +739,7 @@ function gamipress_get_achievement_post_thumbnail( $post_id = 0, $image_size = '
 	if ( ! $image ) {
 
 		// Grab our achievement type's post thumbnail
-		$achievement = get_page_by_path( get_post_type(), OBJECT, 'achievement-type' );
+		$achievement = get_page_by_path( gamipress_get_post_type( $post_id ), OBJECT, 'achievement-type' );
 		$image = is_object( $achievement ) ? get_the_post_thumbnail( $achievement->ID, $image_size, array( 'class' => $class ) ) : false;
 
 		// If we still have no image
@@ -750,12 +796,11 @@ function gamipress_get_achievement_earners( $achievement_id = 0 ) {
 		return gamipress_get_achievement_earners_old( $achievement_id );
 	}
 
-	// Setup CT object
-	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
+	$user_earnings = GamiPress()->db->user_earnings;
 
 	$earners = $wpdb->get_col( "
 		SELECT u.user_id
-		FROM {$ct_table->db->table_name} AS u
+		FROM {$user_earnings} AS u
 		WHERE u.post_id = {$achievement_id}
 		GROUP BY u.user_id
 	" );
@@ -834,6 +879,16 @@ add_action( 'transition_post_status', 'gamipress_flush_rewrite_on_published_achi
  */
 function gamipress_maybe_update_achievement_type( $data = array(), $post_args = array() ) {
 
+	// Bail if not is main site, on network wide installs achievements are just available on main site
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		return $data;
+	}
+
+	// Bail if not is a achievement type
+	if( $post_args['post_type'] !== 'achievement-type') {
+		return $data;
+	}
+
 	// If user set an empty slug, then generate it
 	if( empty( $post_args['post_name'] ) ) {
 		$post_args['post_name'] = wp_unique_post_slug(
@@ -882,7 +937,7 @@ function gamipress_achievement_type_changed( $post_args = array() ) {
 
 	if ( is_object( $original_post ) ) {
 		if (
-			'achievement-type' === $post_args['post_type']
+			$post_args['post_type'] === 'achievement-type'
 			&& $original_post->post_status !== 'auto-draft'
 			&& ! empty( $original_post->post_name )
 			&& $original_post->post_name !== $post_args['post_name']
@@ -931,10 +986,11 @@ function gamipress_update_achievement_types( $original_type = '', $new_type = ''
 function gamipress_update_achievements_achievement_types( $original_type = '', $new_type = '' ) {
 
 	$items = get_posts( array(
-		'posts_per_page' => -1,
-		'post_status'    => 'any',
-		'post_type'      => $original_type,
-		'fields'         => 'id',
+		'posts_per_page'    => -1,
+		'post_status'       => 'any',
+		'post_type'         => $original_type,
+		'fields'            => 'id',
+		'suppress_filters'  => false,
 	) );
 
 	foreach ( $items as $item ) {
@@ -955,6 +1011,8 @@ function gamipress_update_p2p_achievement_types( $original_type = '', $new_type 
 
 	global $wpdb;
 
+	$p2p = GamiPress()->db->p2p;
+
 	$p2p_relationships = array(
 		"step-to-{$original_type}" => "step-to-{$new_type}",
 		"{$original_type}-to-step" => "{$new_type}-to-step",
@@ -963,7 +1021,7 @@ function gamipress_update_p2p_achievement_types( $original_type = '', $new_type 
 	);
 
 	foreach ( $p2p_relationships as $old => $new ) {
-		$wpdb->query( $wpdb->prepare( "UPDATE $wpdb->p2p SET p2p_type = %s WHERE p2p_type = %s", $new, $old ) );
+		$wpdb->query( $wpdb->prepare( "UPDATE {$p2p} SET p2p_type = %s WHERE p2p_type = %s", $new, $old ) );
 	}
 
 }
@@ -1014,7 +1072,7 @@ function gamipress_update_active_meta_achievement_types( $original_type = '', $n
 		foreach ( $metas as $meta ) {
 			$meta->meta_value = gamipress_update_meta_achievement_types( $meta->meta_value, $original_type, $new_type );
 
-			update_user_meta( $meta->user_id, $meta->meta_key, $meta->meta_value );
+			gamipress_update_user_meta( $meta->user_id, $meta->meta_key, $meta->meta_value );
 		}
 	}
 
@@ -1141,7 +1199,7 @@ add_filter( 'post_updated_messages', 'gamipress_achievement_type_update_messages
  */
 function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id = 0 ) {
 
-    $post_type = get_post_type( $achievement_id );
+    $post_type = gamipress_get_post_type( $achievement_id );
 
 	$log_meta = array(
 		'achievement_id' => $achievement_id,

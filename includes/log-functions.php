@@ -43,19 +43,22 @@ function gamipress_get_log_types() {
  * @return array The registered log pattern tags
  */
 function gamipress_get_log_pattern_tags( $context = 'default' ) {
+
     return apply_filters( 'gamipress_log_pattern_tags', array(
-        '{user}'                =>  __(  'User assigned.', 'gamipress' ),
-        '{admin}'               =>  __(  'Admin that awards.', 'gamipress' ),
-        '{achievement}'         =>  __(  'Achievement user has earned.', 'gamipress' ),
-        '{achievement_type}'    =>  __(  'Type of the achievement earned.', 'gamipress' ),
-        '{trigger_type}'        =>  __(  'Event type user has triggered.', 'gamipress' ),
-        '{count}'               =>  __(  'Times user triggered this event.', 'gamipress' ),
-        '{points}'              =>  __(  'Points user has earned.', 'gamipress' ),
-        '{points_type}'         =>  __(  'Type of the points earned.', 'gamipress' ),
-        '{total_points}'        =>  __(  'Points user has earned until this log.', 'gamipress' ),
-        '{rank}'                =>  __(  'Rank user has ranked.', 'gamipress' ),
-        '{rank_type}'           =>  __(  'Rank type user has ranked.', 'gamipress' ),
+        '{user}'                =>  __( 'User assigned.', 'gamipress' ),
+        '{admin}'               =>  __( 'Admin that awards.', 'gamipress' ),
+        '{achievement}'         =>  __( 'Achievement user has earned.', 'gamipress' ),
+        '{achievement_type}'    =>  __( 'Type of the achievement earned.', 'gamipress' ),
+        '{trigger_type}'        =>  __( 'Event type user has triggered.', 'gamipress' ),
+        '{count}'               =>  __( 'Times user triggered this event.', 'gamipress' ),
+        '{points}'              =>  __( 'Points user has earned.', 'gamipress' ),
+        '{points_type}'         =>  __( 'Type of the points earned.', 'gamipress' ),
+        '{total_points}'        =>  __( 'Points user has earned until this log.', 'gamipress' ),
+        '{rank}'                =>  __( 'Rank user has ranked.', 'gamipress' ),
+        '{rank_type}'           =>  __( 'Rank type user has ranked.', 'gamipress' ),
+        '{site_title}'          =>  __( 'Site name.', 'gamipress' ),
     ), $context );
+
 }
 
 /**
@@ -72,12 +75,12 @@ function gamipress_get_log_pattern_tags_by_context( $tags, $context = 'default' 
 
     switch( $context ) {
         case 'deduct':
-            $tags['{points}'] = __(  'Points user has lost.', 'gamipress' );
-            $tags['{points_type}'] =  __(  'Type of the points lost.', 'gamipress' );
+            $tags['{points}'] = __( 'Points user has lost.', 'gamipress' );
+            $tags['{points_type}'] =  __( 'Type of the points lost.', 'gamipress' );
             break;
         case 'expend':
-            $tags['{points}'] = __(  'Points user has expended.', 'gamipress' );
-            $tags['{points_type}'] =  __(  'Type of the points expended.', 'gamipress' );
+            $tags['{points}'] = __( 'Points user has expended.', 'gamipress' );
+            $tags['{points_type}'] =  __( 'Type of the points expended.', 'gamipress' );
             break;
     }
 
@@ -134,8 +137,8 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
 
     global $wpdb;
 
-    // Setup table
-    $ct_table = ct_setup_table( 'gamipress_logs' );
+    $logs 		= GamiPress()->db->logs;
+    $logs_meta 	= GamiPress()->db->logs_meta;
 
     // Initialize query definitions
     $joins = array();
@@ -162,7 +165,7 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
             $index = count( $joins );
 
             // Setup query definitions
-            $joins[] = "LEFT JOIN {$ct_table->meta->db->table_name} AS pm{$index} ON ( p.log_id = pm{$index}.log_id )";
+            $joins[] = "LEFT JOIN {$logs_meta} AS pm{$index} ON ( p.log_id = pm{$index}.log_id )";
             $where[] = "pm{$index}.meta_key = %s AND pm{$index}.meta_value = %s";
 
             // Setup query vars
@@ -187,14 +190,12 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
 
     $user_logs = $wpdb->get_results( $wpdb->prepare(
         "SELECT p.*
-         FROM   {$ct_table->db->table_name} AS p
+         FROM   {$logs} AS p
          {$joins}
          WHERE p.user_id = %s
           AND ( {$where} )",
         $query_args
     ) );
-
-    ct_reset_setup_table();
 
     return $user_logs;
 }
@@ -214,13 +215,13 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
 
     global $wpdb;
 
+    $logs 		= GamiPress()->db->logs;
+    $logs_meta 	= GamiPress()->db->logs_meta;
+
     // If not properly upgrade to required version fallback to compatibility function
     if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
         return gamipress_get_user_log_count_old( $user_id, $log_meta );
     }
-
-    // Setup table
-    $ct_table = ct_setup_table( 'gamipress_logs' );
 
     // Initialize query definitions
     $joins = array();
@@ -247,7 +248,7 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
             $index = count( $joins );
 
             // Setup query definitions
-            $joins[] = "LEFT JOIN {$ct_table->meta->db->table_name} AS pm{$index} ON ( p.log_id = pm{$index}.log_id )";
+            $joins[] = "LEFT JOIN {$logs_meta} AS pm{$index} ON ( p.log_id = pm{$index}.log_id )";
             $where[] = "pm{$index}.meta_key = %s AND pm{$index}.meta_value = %s";
 
             // Setup query vars
@@ -264,16 +265,15 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array() ) {
 
     $user_triggers = $wpdb->get_var( $wpdb->prepare(
         "SELECT COUNT(*)
-         FROM   {$ct_table->db->table_name} AS p
+         FROM   {$logs} AS p
          {$joins}
          WHERE p.user_id = %s
           AND ( {$where} )",
         $query_args
     ) );
 
-    ct_reset_setup_table();
-
     return absint( $user_triggers );
+
 }
 
 /**
@@ -367,6 +367,9 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
 
     global $gamipress_pattern_replacements;
 
+    // Setup site pattern replacements
+    $gamipress_pattern_replacements['{site_title}'] = get_bloginfo( 'name' );
+
     $user = get_userdata( $log_data['user_id'] );
 
     // Setup user pattern replacements
@@ -422,7 +425,7 @@ function gamipress_parse_achievement_log_pattern( $log_data, $log_meta ) {
         global $gamipress_pattern_replacements;
 
         // Achievement pattern replacements
-        $achievement       = get_post( $log_meta['achievement_id'] );
+        $achievement       = gamipress_get_post( $log_meta['achievement_id'] );
         $achievement_types = gamipress_get_achievement_types();
         $achievement_type  = ( $achievement && isset( $achievement_types[$achievement->post_type]['singular_name'] ) ) ? $achievement_types[$achievement->post_type]['singular_name'] : '';
 
@@ -472,6 +475,7 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
 
     // If log is a points based entry, then add points pattern replacements
     if( $log_data['type'] === 'points_award' || $log_data['type'] === 'points_revoke' || $log_data['type'] === 'points_earn' || $log_data['type'] === 'points_deduct' ) {
+
         global $gamipress_pattern_replacements;
 
         $points_type = $log_meta['points_type'];
@@ -486,6 +490,9 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
             $points_label = strtolower( $points_types[$points_type]['plural_name'] );
         }
 
+        // {points} tag, absint ensures a positive amount to build a pattern like "User expended 100 points" instead of "User expended -100 points"
+        $gamipress_pattern_replacements['{points}'] = absint( $log_meta['points'] );
+
         // {points_type} tag
         $gamipress_pattern_replacements['{points_type}'] = $points_label;
 
@@ -495,6 +502,7 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
             // {admin_username} tag
             $gamipress_pattern_replacements['{admin}'] = $admin->display_name;
         }
+
     }
 
 }
@@ -514,9 +522,10 @@ function gamipress_parse_rank_log_pattern( $log_data, $log_meta ) {
 
     // If log is a points based entry, then add points pattern replacements
     if( $log_data['type'] === 'rank_award' || $log_data['type'] === 'rank_earn' ) {
+
         global $gamipress_pattern_replacements;
 
-        $rank = get_post( $log_meta['rank_id'] );
+        $rank = gamipress_get_post( $log_meta['rank_id'] );
 
         // {rank} and {tank_type} tags
         $gamipress_pattern_replacements['{rank}'] = $rank ? $rank->post_title : '';
@@ -528,6 +537,7 @@ function gamipress_parse_rank_log_pattern( $log_data, $log_meta ) {
             // {admin_username} tag
             $gamipress_pattern_replacements['{admin}'] = $admin->display_name;
         }
+
     }
 
 }

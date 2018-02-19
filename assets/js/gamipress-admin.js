@@ -79,11 +79,15 @@
 		var target = $('.cmb2-id--gamipress-points-to-unlock, .cmb2-id--gamipress-points-type-to-unlock');
 
 		if( $(this).prop('checked') ) {
-			target.show();
+			target.slideDown(250);
 		} else {
-			target.hide();
+			target.slideUp(250);
 		}
-	}).change();
+	});
+
+	if( ! $('#_gamipress_unlock_with_points').prop('checked') ) {
+		$('.cmb2-id--gamipress-points-to-unlock, .cmb2-id--gamipress-points-type-to-unlock').hide();
+	}
 
 	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {
 		var field = $(this);
@@ -144,6 +148,114 @@
 	});
 
 	$('.gamipress-form input#post_name').trigger( 'keyup' );
+
+    // Award type select
+    if( $("#gamipress-award-type-select").length ) {
+
+        $("#gamipress-award-type-select").change(function(){
+            if ( 'all' == this.value )
+                $("#gamipress-awards-options").children().show();
+            else
+                $("#" + this.value).show().siblings().hide();
+        }).change();
+
+    }
+
+	// User award/revoke ajax from awards table
+	$('body').on('click', '#gamipress-awards-options .gamipress-award-achievement, #gamipress-awards-options .gamipress-revoke-achievement', function(e) {
+		e.preventDefault();
+
+		var $this = $(this);
+
+		// Bail if already running an ajax request
+		if( $this.hasClass('disabled') ) {
+			return;
+		}
+
+		var sibling_selector = ( $this.hasClass('gamipress-award-achievement') ? '.gamipress-revoke-achievement' : '.gamipress-award-achievement' );
+
+		// Add a custom class to avoid multiples clicks
+		$this.addClass('disabled');
+
+		// Also, disable the other link
+		$this.parent().find(sibling_selector).addClass('disabled');
+
+		// Add a loader
+		$( '<span class="spinner is-active"></span>' ).insertAfter( $this );
+
+        // Make the request
+		$.get( $this.attr('href'), function( response ) {
+
+            // Update this awards table (so do not neet to remove the loader and enable the links again)
+            $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
+
+            // Force user earnings table to refresh
+            var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+
+            ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+		} );
+	});
+
+    // User award/revoke ajax from user earnings table
+    $('body').on('click', '.gamipress_user_earnings .gamipress-revoke-user-earning', function(e) {
+
+        e.preventDefault();
+
+        var $this = $(this);
+
+        // Bail if already running an ajax request
+        if( $this.hasClass('disabled') ) {
+            return;
+        }
+
+        // Add a custom class to avoid multiples clicks
+        $this.addClass('disabled');
+
+        // Add a loader
+        $( '<span class="spinner is-active"></span>' ).insertAfter( $this );
+
+        // Make the request
+        $.get( $this.attr('href'), function( response ) {
+
+            // Update this awards table (so do not neet to remove the loader and enable the links again)
+            $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
+
+            // Force user earnings table to refresh
+            var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+
+            ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+        } );
+
+    });
+
+	// Add-ons page
+	if( $('.gamipress_page_gamipress_add_ons').length ) {
+		// Add-ons tabs
+		$('.gamipress_page_gamipress_add_ons .wp-filter a').click(function(e) {
+			e.preventDefault();
+
+			if( $(this).hasClass('current') ) {
+				return;
+			}
+
+			var current = $(this).closest('.wp-filter').find('a.current');
+
+			// Toggle plugin cards visibility
+			$('.gamipress-plugin-card.' + current.data('target')).hide();
+
+			$('.gamipress-plugin-card.' + $(this).data('target')).fadeIn(250);
+
+			// Toggle current class
+			current.removeClass('current');
+			$(this).addClass('current');
+		});
+
+		// Hide all plugins cards
+		$('.gamipress-add-ons .gamipress-plugin-card:not(.' + $('.gamipress_page_gamipress_add_ons .wp-filter a.current').data('target') + ')').hide();
+
+		// Trigger click on first tab
+		$('.gamipress_page_gamipress_add_ons .wp-filter a.current').trigger('click');
+	}
 
 	// Auto initialize upgrade if user reloads the page during an upgrade
 	if( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').length ) {

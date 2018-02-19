@@ -138,6 +138,27 @@ function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
 }
 
 /**
+ * Helper function to get the title of a given specific ID for a specific activity trigger
+ *
+ * @since 1.4.0
+ *
+ * @param integer $specific_id      The specific ID
+ * @param string  $trigger_type     The requirement trigger type
+ *
+ * @return string                   The specific title
+ */
+function gamipress_get_specific_activity_trigger_post_title( $specific_id, $trigger_type ) {
+
+	$override = apply_filters( 'gamipress_specific_activity_trigger_post_title', 'no_override', $specific_id, $trigger_type );
+
+	if( $override !== 'no_override' ) {
+		return $override;
+	}
+
+	return get_post_field( 'post_title', $specific_id );
+}
+
+/**
  * Load up our activity triggers so we can add actions to them
  *
  * @since 1.0.0
@@ -248,10 +269,12 @@ function gamipress_trigger_event() {
 	// Mark the count in the log entry
 	gamipress_insert_log( 'event_trigger', $user_id, 'private', $log_meta );
 
+	$postmeta = GamiPress()->db->postmeta;
+
 	// Now determine if any achievements are earned based on this trigger event
 	$triggered_achievements = $wpdb->get_results( $wpdb->prepare(
 		"SELECT post_id
-		FROM   $wpdb->postmeta
+		FROM   {$postmeta}
 		WHERE  meta_key = '_gamipress_trigger_type'
 		       AND meta_value = %s",
 		$trigger
@@ -458,6 +481,9 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 
 	global $wpdb;
 
+	$posts  	= GamiPress()->db->posts;
+	$postmeta  	= GamiPress()->db->postmeta;
+
 	$listeners_count = 0;
 
 	// If is specific trigger then try to get the attached id
@@ -476,18 +502,14 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 		if( $specific_id !== 0 ) {
 
 			$listeners_count = $wpdb->get_var( $wpdb->prepare(
-				"
-				SELECT COUNT(*)
-				FROM   $wpdb->posts AS p
-				LEFT JOIN $wpdb->postmeta AS pm
-				ON ( p.ID = pm.post_id )
-				LEFT JOIN $wpdb->postmeta AS pm2
-				ON ( p.ID = pm2.post_id )
+				"SELECT COUNT(*)
+				FROM   {$posts} AS p
+				LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id )
+				LEFT JOIN {$postmeta} AS pm2 ON ( p.ID = pm2.post_id )
 				WHERE p.post_status = %s
 					AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
 					AND ( pm.meta_key = %s AND pm.meta_value = %s )
-					AND ( pm2.meta_key = %s AND pm2.meta_value = %s )
-				",
+					AND ( pm2.meta_key = %s AND pm2.meta_value = %s )",
 				'publish',
 				'_gamipress_trigger_type', $trigger,
 				'_gamipress_achievement_post', $specific_id
@@ -498,15 +520,12 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 	} else {
 
 		$listeners_count = $wpdb->get_var( $wpdb->prepare(
-			"
-			SELECT COUNT(*)
-			FROM   $wpdb->posts AS p
-			LEFT JOIN $wpdb->postmeta AS pm
-			ON ( p.ID = pm.post_id )
+			"SELECT COUNT(*)
+			FROM   {$posts} AS p
+			LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id )
 			WHERE p.post_status = %s
 				AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
-				AND ( pm.meta_key = %s AND pm.meta_value = %s )
-			",
+				AND ( pm.meta_key = %s AND pm.meta_value = %s )",
 			'publish',
 			'_gamipress_trigger_type', $trigger
 		) );
@@ -531,7 +550,7 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
 
 	// Grab all of the user's triggers
-	$user_triggers = ( $array_exists = get_user_meta( $user_id, '_gamipress_triggered_triggers', true ) ) ? $array_exists : array( $site_id => array() );
+	$user_triggers = ( $array_exists = gamipress_get_user_meta( $user_id, '_gamipress_triggered_triggers' ) ) ? $array_exists : array( $site_id => array() );
 
 	// Use current site ID if site ID is not set, AND not explicitly set to false
 	if ( ! $site_id && false !== $site_id ) {
@@ -570,23 +589,20 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 
 	global $wpdb;
 
-	$ct_table = ct_setup_table( 'gamipress_logs' );
+	$logs 		= GamiPress()->db->logs;
+	$logs_meta 	= GamiPress()->db->logs_meta;
 
 	// Set to current site id
 	if ( ! $site_id )
 		$site_id = get_current_blog_id();
 
+	// Setup date conditional
 	$date = '';
 
 	if( $since !== 0 ) {
-		$now = date( 'Y-m-d' );
-		$since = date( 'Y-m-d', $since );
+		$since = date( 'Y-m-d H:i:s', $since );
 
-		$date = "BETWEEN '$since' AND '$now'";
-
-		if( $since === $now ) {
-			$date = ">= '$now'";
-		}
+		$date = "AND l.date >= '$since'";
 	}
 
 	// If is specific trigger then try to get the attached id
@@ -604,16 +620,13 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 		// If there is a specific id, then try to find the count
 		if( $specific_id !== 0 ) {
 			$user_triggers = $wpdb->get_var( $wpdb->prepare(
-				"
-				SELECT COUNT(*)
-				FROM   {$ct_table->db->table_name} AS l
-				INNER JOIN {$ct_table->meta->db->table_name} AS lm1
-				ON ( l.log_id = lm1.log_id )
-				INNER JOIN {$ct_table->meta->db->table_name} AS lm2
-				ON ( l.log_id = lm2.log_id )
+				"SELECT COUNT(*)
+				FROM   {$logs} AS l
+				INNER JOIN {$logs_meta} AS lm1 ON ( l.log_id = lm1.log_id )
+				INNER JOIN {$logs_meta} AS lm2 ON ( l.log_id = lm2.log_id )
 				WHERE l.user_id = %d
 					AND l.type = %s
-					AND CAST( l.date AS DATE ) {$date}
+					{$date}
 					AND (
 						( lm1.meta_key = %s AND lm1.meta_value = %s )
 						AND ( lm2.meta_key = %s AND lm2.meta_value = %s )
@@ -630,14 +643,12 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 	} else {
 		// Single trigger count
 		$user_triggers = $wpdb->get_var( $wpdb->prepare(
-			"
-			SELECT COUNT(*)
-			FROM   {$ct_table->db->table_name} AS l
-			INNER JOIN {$ct_table->meta->db->table_name} AS lm
-			ON ( l.log_id = lm.log_id )
+			"SELECT COUNT(*)
+			FROM   {$logs} AS l
+			INNER JOIN {$logs_meta} AS lm ON ( l.log_id = lm.log_id )
 			WHERE l.user_id = %d
 				AND l.type = %s
-				AND CAST( l.date AS DATE ) {$date}
+				{$date}
 				AND (
 					lm.meta_key = %s AND lm.meta_value = %s
 				)
@@ -676,7 +687,7 @@ function gamipress_update_user_trigger_count( $user_id, $trigger, $site_id = 0, 
 	// Update the triggers arary with the new count
 	$user_triggers = gamipress_get_user_triggers( $user_id, false );
 	$user_triggers[$site_id][$trigger] = $trigger_count;
-	update_user_meta( $user_id, '_gamipress_triggered_triggers', $user_triggers );
+	gamipress_update_user_meta( $user_id, '_gamipress_triggered_triggers', $user_triggers );
 
 	// Send back our trigger count for other purposes
 	return $trigger_count;
@@ -715,6 +726,6 @@ function gamipress_reset_user_trigger_count( $user_id, $trigger, $site_id = 0 ) 
 	}
 
 	// Finally, update our user meta
-	update_user_meta( $user_id, '_gamipress_triggered_triggers', $user_triggers );
+	gamipress_update_user_meta( $user_id, '_gamipress_triggered_triggers', $user_triggers );
 
 }

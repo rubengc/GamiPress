@@ -156,7 +156,8 @@ add_action( 'init', 'gamipress_register_ranks_shortcode' );
  * @return string 	   HTML markup
  */
 function gamipress_ranks_shortcode( $atts = array () ) {
-	global $gamipress_template_args, $blog_id, $wpdb;
+
+	global $gamipress_template_args;
 
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
@@ -176,6 +177,12 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 
 	gamipress_enqueue_scripts();
 
+	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+		$blog_id = get_current_blog_id();
+		switch_to_blog( get_main_site_id() );
+	}
+
 	// Single type check to use dynamic template
 	$is_single_type = false;
 	$types = explode( ',', $atts['type'] );
@@ -191,7 +198,12 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		$sites = gamipress_get_network_site_ids();
 	// Otherwise, use only the current site
 	else
-		$sites = array( $blog_id );
+		$sites = array( get_current_blog_id() );
+
+	// On network wide active installs, force to just loop main site
+	if( gamipress_is_network_wide_active() ) {
+		$sites = array( get_main_site_id() );
+	}
 
 	// Just render ranks of users if current_user is yes or a specific user_id has been defined
 	$is_user_ranks = false;
@@ -240,11 +252,12 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		}
 
 		$query_args = array(
-			'post_type'      =>	'', // Is set on each rank type
-			'orderby'        =>	$atts['orderby'],
-			'order'          =>	$atts['order'],
-			'posts_per_page' =>	-1,
-			'post_status'    => 'publish',
+			'post_type'         =>	'', // Is set on each rank type
+			'orderby'           =>	$atts['orderby'],
+			'order'             =>	$atts['order'],
+			'posts_per_page'    =>	-1,
+			'post_status'       => 'publish',
+			'suppress_filters'  => false,
 		);
 
 		$include = ! is_array( $atts['include'] ) && ! empty( $atts['include'] ) ? explode( ',', $atts['include'] ) : $atts['include'];
@@ -269,7 +282,7 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 	foreach( $sites as $site_blog_id ) {
 
 		// If we're not polling the current site, switch to the site we're polling
-		if ( $blog_id != $site_blog_id ) {
+		if ( get_current_blog_id() != $site_blog_id ) {
 			switch_to_blog( $site_blog_id );
 		}
 
@@ -304,7 +317,7 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 
 
 
-		if ( $blog_id != $site_blog_id ) {
+		if ( get_current_blog_id() != $site_blog_id ) {
 			// Come back to current blog
 			restore_current_blog();
 		}
@@ -318,6 +331,11 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		gamipress_get_template_part( 'ranks' );
 	}
 	$output = ob_get_clean();
+
+	// If switched to blog, return back to que current blog
+	if( isset( $blog_id ) ) {
+		switch_to_blog( $blog_id );
+	}
 
 	return $output;
 

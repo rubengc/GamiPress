@@ -209,18 +209,26 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     if( GamiPress()->settings === null ) {
-        GamiPress()->settings = get_option( 'gamipress_settings' );
+        if( gamipress_is_network_wide_active() ) {
+            GamiPress()->settings = ( $exists = get_site_option( 'gamipress_settings' ) ) ? $exists : array();
+        } else {
+            GamiPress()->settings = ( $exists = get_option( 'gamipress_settings' ) ) ? $exists : array();
+        }
     }
 
     $gamipress_settings_output = '';
 
-    foreach ( GamiPress()->settings as $setting_key => $setting_value ) {
+    if( GamiPress()->settings ) {
 
-        if( is_array( $setting_value ) ) {
-            $setting_value = json_encode( $setting_value );
+        foreach ( GamiPress()->settings as $setting_key => $setting_value ) {
+
+            if( is_array( $setting_value ) ) {
+                $setting_value = json_encode( $setting_value );
+            }
+
+            $gamipress_settings_output .= $setting_key . ': ' . $setting_value . '<br>';
+
         }
-
-        $gamipress_settings_output .= $setting_key . ': ' . $setting_value . '<br>';
 
     }
 

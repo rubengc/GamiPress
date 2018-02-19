@@ -25,7 +25,9 @@ if ( 'all' === $a['type'] ) {
     /**
      * Before render achievements list
      *
-     * @param $template_args array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $template_args Template received arguments
      */
     do_action( 'gamipress_before_render_achievements_list', $a ); ?>
 
@@ -35,7 +37,9 @@ if ( 'all' === $a['type'] ) {
         /**
          * Before render achievements list filters
          *
-         * @param $template_args array Template received arguments
+         * @since 1.0.0
+         *
+         * @param array $template_args Template received arguments
          */
         do_action( 'gamipress_before_render_achievements_list_filters', $a ); ?>
 
@@ -76,10 +80,10 @@ if ( 'all' === $a['type'] ) {
 
             <div id="gamipress-achievements-search">
 
-                <form id="achievements_list_search_go_form" action="" method="post">
+                <form id="gamipress-achievements-search-form" action="" method="post">
                     <label for="achievements_list_search"><?php _e( 'Search:', 'gamipress' ); ?></label>
-                    <input type="text" id="achievements_list_search" name="achievements_list_search" value="<?php echo $search; ?>">
-                    <input type="submit" id="achievements_list_search_go" name="achievements_list_search_go" value="<?php echo esc_attr__( 'Go', 'gamipress' ); ?>">
+                    <input type="text" id="gamipress-achievements-search-input" name="achievements_list_search" value="<?php echo $search; ?>">
+                    <input type="submit" id="gamipress-achievements-search-submit" name="achievements_list_search_go" value="<?php echo esc_attr__( 'Go', 'gamipress' ); ?>">
                 </form>
 
             </div>
@@ -90,7 +94,9 @@ if ( 'all' === $a['type'] ) {
         /**
          * After render achievements list filters
          *
-         * @param $template_args array Template received arguments
+         * @since 1.0.0
+         *
+         * @param array $template_args Template received arguments
          */
         do_action( 'gamipress_after_render_achievements_list_filters', $a ); ?>
 
@@ -100,24 +106,26 @@ if ( 'all' === $a['type'] ) {
     <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo $a['columns']; ?>"></div>
 
     <?php // Hidden fields ?>
-    <input type="hidden" id="gamipress_achievements_offset" value="0">
-    <input type="hidden" id="gamipress_achievements_count" value="0">
+    <input type="hidden" id="gamipress-achievements-offset" value="0">
+    <input type="hidden" id="gamipress-achievements-count" value="0">
 
     <?php // Load More button ?>
     <?php if ( $a['load_more'] === 'yes' ) : ?>
 
-        <button type="button" id="achievements_list_load_more" class="gamipress-load-more-button" style="display:none;"><?php echo __( 'Load More', 'gamipress' ); ?></button>
+        <button type="button" id="gamipress-achievements-load-more" class="gamipress-load-more-button" style="display:none;"><?php echo __( 'Load More', 'gamipress' ); ?></button>
 
     <?php endif; ?>
 
     <?php // Loading spinner ?>
-    <div class="gamipress-spinner"></div>
+    <div id="gamipress-achievements-spinner" class="gamipress-spinner"></div>
 
     <?php
     /**
      * After render achievements list
      *
-     * @param $template_args array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $template_args Template received arguments
      */
     do_action( 'gamipress_after_render_achievements_list', $a ); ?>
 

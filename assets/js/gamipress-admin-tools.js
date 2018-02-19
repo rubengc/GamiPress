@@ -175,6 +175,8 @@
             $('.cmb2-id-data-to-reset input[value="ranks"], .cmb2-id-data-to-reset input[value="rank_requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
         } else if( checked_option === 'ranks' ) {
             $('.cmb2-id-data-to-reset input[value="rank_requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+        } else if( checked_option === 'earnings' ) {
+            $('.cmb2-id-data-to-reset input[value="earned_points"], .cmb2-id-data-to-reset input[value="earned_achievements"], .cmb2-id-data-to-reset input[value="earned_ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
         }
 
     });

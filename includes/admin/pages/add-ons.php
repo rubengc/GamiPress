@@ -31,6 +31,15 @@ function gamipress_add_ons_page() {
         <h1 class="wp-heading-inline"><?php _e( 'GamiPress Add-ons', 'gamipress' ); ?></h1>
         <hr class="wp-header-end">
 
+        <div class="wp-filter">
+            <ul class="filter-links">
+                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><?php _e( 'Premium', 'gamipress' ); ?></a></li>
+                <li class="plugins-free"><a href="#" data-target="gamipress-free-add-on"><?php _e( 'Free', 'gamipress' ); ?></a></li>
+                <li class="plugins-integrations"><a href="#" data-target="gamipress-integration-add-on"><?php _e( 'Integrations', 'gamipress' ); ?></a></li>
+                <li class="plugins-tools"><a href="#" data-target="gamipress-tool-add-on"><?php _e( 'Tools', 'gamipress' ); ?></a></li>
+            </ul>
+        </div>
+
         <p><?php _e( 'Add-ons to extend and expand the functionality of GamiPress.', 'gamipress' ); ?></p>
 
         <form id="plugin-filter" method="post">
@@ -106,9 +115,18 @@ function gamipress_render_plugin_card( $plugin ) {
     // Available actions for this plugin
     $action_links = array();
 
-    $details_link = self_admin_url( 'plugin-install.php?tab=plugin-information&amp;plugin=' . $slug . '&amp;TB_iframe=true&amp;width=600&amp;height=550' );
+    $details_link = esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $slug . '&TB_iframe=true&width=600&height=550' ) );
 
     if( $plugin->wp_info ) {
+        // Free add-ons
+
+        if( ( strtolower( substr( $name, -11 ) ) === 'integration' ) ) {
+            $class = 'gamipress-integration-add-on';
+        } else if( ( strtolower( substr( $name, -8 ) ) === 'importer' ) ) {
+            $class = 'gamipress-tool-add-on';
+        } else {
+            $class = 'gamipress-free-add-on';
+        }
 
         // Check plugin status
         if ( current_user_can( 'install_plugins' ) || current_user_can( 'update_plugins' ) ) {
@@ -159,6 +177,9 @@ function gamipress_render_plugin_card( $plugin ) {
             }
         }
     } else {
+        // Premium add-ons
+
+        $class = 'gamipress-premium-add-on';
 
         $plugin_file = $slug . '/' . $slug . '.php';
 
@@ -231,7 +252,7 @@ function gamipress_render_plugin_card( $plugin ) {
     $action_links[] = '<a href="' . esc_url( $details_link ) . '" class="more-details thickbox open-plugin-details-modal" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '">' . __( 'More Details' ) . '</a>';
 
     ?>
-    <div class="gamipress-plugin-card plugin-card plugin-card-<?php echo sanitize_html_class( $slug ); ?>">
+    <div class="gamipress-plugin-card plugin-card plugin-card-<?php echo sanitize_html_class( $slug ); ?> <?php echo $class; ?>">
 
         <div class="plugin-card-top">
 

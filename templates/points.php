@@ -20,16 +20,37 @@ $points_types[''] = array(
 
 // Check to meet if points showed comes from current logged in user
 $is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
-?>
 
-<div class="gamipress-user-points gamipress-columns-<?php echo $a['columns']; ?> <?php echo ( $is_current_user ? 'gamipress-is-current-user' : '' ); ?>">
+
+// Setup points classes
+$classes = array(
+    'gamipress-user-points',
+    ( $is_current_user ? 'gamipress-is-current-user' : '' ),
+    'gamipress-columns-' . $a['columns'],
+    'gamipress-layout-' . $a['layout']
+);
+
+/**
+ * Points classes
+ *
+ * @since 1.4.0
+ *
+ * @param array     $classes            Array of points classes
+ * @param integer   $points_types       Array of points types to be rendered
+ * @param array     $template_args      Template received arguments
+ */
+$classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $a ); ?>
+
+<div class="<?php echo implode( ' ', $classes ); ?>">
 
     <?php
     /**
      * Before render user points list
      *
-     * @param $points_types     array Array of points types to be rendered
-     * @param $template_args    array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $points_types     Array of points types to be rendered
+     * @param array $template_args    Template received arguments
      */
     do_action( 'gamipress_before_render_points_list', $points_types, $a ); ?>
 
@@ -39,10 +60,12 @@ $is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
         /**
          * Before render user points
          *
-         * @param $points_type      string  Points type slug
-         * @param $count            integer Amount of this points type
-         * @param $points_types     array   Array of points types to be rendered
-         * @param $template_args    array   Template received arguments
+         * @since 1.0.0
+         *
+         * @param string  $points_type      Points type slug
+         * @param integer $count            Amount of this points type
+         * @param array   $points_types     Array of points types to be rendered
+         * @param array   $template_args    Template received arguments
          */
         do_action( 'gamipress_before_render_points', $points_type, $count, $points_types, $a ); ?>
 
@@ -50,63 +73,75 @@ $is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
 
             <?php // User Points Image
             if( $a['thumbnail'] === 'yes' ) : ?>
-                <span class="gamipress-user-points-image gamipress-user-points-<?php echo $points_type; ?>-image">
+                <div class="gamipress-user-points-image gamipress-user-points-<?php echo $points_type; ?>-image">
                     <?php echo gamipress_get_points_type_thumbnail( $points_type ); ?>
-                </span><!-- .gamipress-points-image -->
+                </div><!-- .gamipress-user-points-image -->
 
                 <?php
                 /**
                  * After user points thumbnail
                  *
-                 * @param $points_type      string  Points type slug
-                 * @param $count            integer Amount of this points type
-                 * @param $points_types     array   Array of points types to be rendered
-                 * @param $template_args    array   Template received arguments
+                 * @since 1.0.0
+                 *
+                 * @param string  $points_type      Points type slug
+                 * @param integer $count            Amount of this points type
+                 * @param array   $points_types     Array of points types to be rendered
+                 * @param array   $template_args    Template received arguments
                  */
                 do_action( 'gamipress_after_user_points_thumbnail', $points_type, $count, $points_types, $a ); ?>
 
             <?php endif; ?>
 
-            <span class="gamipress-user-points-count"><?php echo $count; ?></span>
+            <div class="gamipress-user-points-description">
 
-            <?php
-            /**
-             * After user points count
-             *
-             * @param $points_type      string  Points type slug
-             * @param $count            integer Amount of this points type
-             * @param $points_types     array   Array of points types to be rendered
-             * @param $template_args    array   Template received arguments
-             */
-            do_action( 'gamipress_after_user_points_count', $points_type, $count, $points_types, $a ); ?>
-
-            <?php // User Points Label
-            if( $a['label'] === 'yes' ) : ?>
-                <span class="gamipress-user-points-label"><?php echo $points_types[$points_type]['plural_name']; ?></span>
+                <span class="gamipress-user-points-count"><?php echo $count; ?></span>
 
                 <?php
                 /**
-                 * After user points label
+                 * After user points count
                  *
-                 * @param $points_type      string  Points type slug
-                 * @param $count            integer Amount of this points type
-                 * @param $points_types     array   Array of points types to be rendered
-                 * @param $template_args    array   Template received arguments
+                 * @since 1.0.0
+                 *
+                 * @param string  $points_type      Points type slug
+                 * @param integer $count            Amount of this points type
+                 * @param array   $points_types     Array of points types to be rendered
+                 * @param array   $template_args    Template received arguments
                  */
-                do_action( 'gamipress_after_user_points_label', $points_type, $count, $points_types, $a ); ?>
+                do_action( 'gamipress_after_user_points_count', $points_type, $count, $points_types, $a ); ?>
 
-            <?php endif; ?>
+                <?php // User Points Label
+                if( $a['label'] === 'yes' ) : ?>
+                    <span class="gamipress-user-points-label"><?php echo $points_types[$points_type]['plural_name']; ?></span>
 
-        </div>
+                    <?php
+                    /**
+                     * After user points label
+                     *
+                     * @since 1.0.0
+                     *
+                     * @param string  $points_type      Points type slug
+                     * @param integer $count            Amount of this points type
+                     * @param array   $points_types     Array of points types to be rendered
+                     * @param array   $template_args    Template received arguments
+                     */
+                    do_action( 'gamipress_after_user_points_label', $points_type, $count, $points_types, $a ); ?>
+
+                <?php endif; ?>
+
+            </div><!-- .gamipress-user-points-description -->
+
+        </div><!-- .gamipress-points -->
 
         <?php
         /**
          * After render user points
          *
-         * @param $points_type      string  Points type slug
-         * @param $count            integer Amount of this points type
-         * @param $points_types     array   Array of points types to be rendered
-         * @param $template_args    array   Template received arguments
+         * @since 1.0.0
+         *
+         * @param string  $points_type      Points type slug
+         * @param integer $count            Amount of this points type
+         * @param array   $points_types     Array of points types to be rendered
+         * @param array   $template_args    Template received arguments
          */
         do_action( 'gamipress_after_render_points', $points_type, $count, $points_types, $a ); ?>
 
@@ -116,9 +151,11 @@ $is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
     /**
      * After render user points list
      *
-     * @param $points_types     array Array of points types rendered
-     * @param $template_args    array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $points_types     Array of points types rendered
+     * @param array $template_args    Template received arguments
      */
     do_action( 'gamipress_after_render_points_list', $points_types, $a ); ?>
 
-</div>
+</div><!-- .gamipress-user-points -->

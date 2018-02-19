@@ -23,9 +23,11 @@ function gamipress_110_upgrades( $stored_version ) {
 
     global $wpdb;
 
+    $postmeta = GamiPress()->db->postmeta;
+
     // Update wp_login trigger to gamipress_login
     $wpdb->update(
-        $wpdb->postmeta,
+        $postmeta,
         array(
             'meta_value' => 'gamipress_login'
         ),

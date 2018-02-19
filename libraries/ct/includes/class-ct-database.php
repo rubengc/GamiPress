@@ -31,7 +31,7 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
         /**
          * @var boolean Is this table for a site, or global
          */
-        protected $global = false;
+        public $global = false;
 
         /**
          * @var string Database version key (saved in _options or _sitemeta)

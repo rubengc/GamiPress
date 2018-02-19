@@ -22,7 +22,7 @@ function gamipress_is_requirement( $post = null ) {
     $return = true;
 
     // If post type is NOT a registered requirement type, it cannot be a requirement
-    if ( ! in_array( get_post_type( $post ), gamipress_get_requirement_types_slugs() ) ) {
+    if ( ! in_array( gamipress_get_post_type( $post ), gamipress_get_requirement_types_slugs() ) ) {
         $return = false;
     }
 
@@ -75,30 +75,30 @@ function gamipress_get_requirement_types_slugs() {
  */
 function gamipress_get_requirement_object( $requirement_id = 0 ) {
 
-    $requirement_type = get_post_type( $requirement_id );
+    $requirement_type = gamipress_get_post_type( $requirement_id );
 
     // Setup our default requirements array, assume we require nothing
     $requirement = array(
-        'count'            => absint( get_post_meta( $requirement_id, '_gamipress_count', true ) ),
-        'limit'            => absint( get_post_meta( $requirement_id, '_gamipress_limit', true ) ),
-        'limit_type'       => get_post_meta( $requirement_id, '_gamipress_limit_type', true ),
-        'trigger_type'     => get_post_meta( $requirement_id, '_gamipress_trigger_type', true ),
+        'count'            => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_count' ) ),
+        'limit'            => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) ),
+        'limit_type'       => gamipress_get_post_meta( $requirement_id, '_gamipress_limit_type' ),
+        'trigger_type'     => gamipress_get_post_meta( $requirement_id, '_gamipress_trigger_type' ),
         // Points vars
-        'points_required' => absint( get_post_meta( $requirement_id, '_gamipress_points_required', true ) ),
-        'points_type_required' => get_post_meta( $requirement_id, '_gamipress_points_type_required', true ),
+        'points_required' => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_points_required' ) ),
+        'points_type_required' => gamipress_get_post_meta( $requirement_id, '_gamipress_points_type_required' ),
         // Rank vars
-        'rank_required' => absint( get_post_meta( $requirement_id, '_gamipress_rank_required', true ) ),
-        'rank_type_required' => get_post_meta( $requirement_id, '_gamipress_rank_type_required', true ),
+        'rank_required' => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_rank_required' ) ),
+        'rank_type_required' => gamipress_get_post_meta( $requirement_id, '_gamipress_rank_type_required' ),
         // Achievement vars
-        'achievement_type' => get_post_meta( $requirement_id, '_gamipress_achievement_type', true ),
+        'achievement_type' => gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_type' ),
         'achievement_post' => ''
     );
 
     // Specific points award/deduct data
     if( $requirement_type === 'points-award' || $requirement_type === 'points-deduct' ) {
-        $requirement['points']              = absint( get_post_meta( $requirement_id, '_gamipress_points', true ) );
-        $requirement['points_type']         = get_post_meta( $requirement_id, '_gamipress_points_type', true );
-        $requirement['maximum_earnings']    = get_post_meta( $requirement_id, '_gamipress_maximum_earnings', true );
+        $requirement['points']              = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_points' ) );
+        $requirement['points_type']         = gamipress_get_post_meta( $requirement_id, '_gamipress_points_type' );
+        $requirement['maximum_earnings']    = gamipress_get_post_meta( $requirement_id, '_gamipress_maximum_earnings' );
 
         if( $requirement['maximum_earnings'] === '' ) {
             $requirement['maximum_earnings'] = 1;
@@ -115,13 +115,13 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
             'suppress_filters' => false,
             'connected_type'   => $requirement['achievement_type'] . '-to-' . $requirement_type,
             'connected_to'     => $requirement_id
-        ));
+        ) );
 
         if ( ! empty( $connected_activities ) ) {
-            $requirements['achievement_post'] = $connected_activities[0]->ID;
+            $requirement['achievement_post'] = $connected_activities[0]->ID;
         }
     } else if ( in_array( $requirement['trigger_type'], array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
-        $achievement_post = absint( get_post_meta( $requirement_id, '_gamipress_achievement_post', true ) );
+        $achievement_post = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_post' ) );
 
         if ( $achievement_post > 0  ) {
             $requirement['achievement_post'] = $achievement_post;
@@ -145,7 +145,9 @@ function gamipress_get_requirement_connection_id( $requirement_id = 0 ) {
 
     global $wpdb;
 
-    $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $wpdb->p2p WHERE p2p_from = %d ", $requirement_id ) );
+    $p2p = GamiPress()->db->p2p;
+
+    $p2p_id = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_id FROM $p2p WHERE p2p_from = %d ", $requirement_id ) );
 
     return $p2p_id;
 
@@ -164,7 +166,9 @@ function gamipress_get_requirement_connected_id( $requirement_id = 0 ) {
 
     global $wpdb;
 
-    $p2p_to = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_to FROM $wpdb->p2p WHERE p2p_from = %d ", $requirement_id ) );
+    $p2p = GamiPress()->db->p2p;
+
+    $p2p_to = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_to FROM $p2p WHERE p2p_from = %d ", $requirement_id ) );
 
     return $p2p_to;
 
@@ -181,10 +185,13 @@ function gamipress_get_unassigned_requirements() {
 
     global $wpdb;
 
+    $posts  = GamiPress()->db->posts;
+    $p2p    = GamiPress()->db->p2p;
+
     $requirements = $wpdb->get_results( "
         SELECT p.ID
-        FROM {$wpdb->posts} AS p
-        LEFT JOIN {$wpdb->p2p} AS p2p
+        FROM {$posts} AS p
+        LEFT JOIN {$p2p} AS p2p
         ON p2p.p2p_from = p.ID
         WHERE p.post_type IN( 'points-award', 'step', 'rank-requirement' )
         AND p2p.p2p_from IS NULL

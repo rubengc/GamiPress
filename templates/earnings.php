@@ -26,7 +26,9 @@ $user_earnings = $a['query']->get_results();
     /**
      * Before render earnings
      *
-     * @param $template_args array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $template_args Template received arguments
      */
     do_action( 'gamipress_before_render_earnings', $a ); ?>
 
@@ -40,6 +42,14 @@ $user_earnings = $a['query']->get_results();
             'points'        => __( 'Points', 'gamipress' ),
         );
 
+        /**
+         * Earnings columns
+         *
+         * @since 1.0.0
+         *
+         * @param array $earnings_columns   Earnings columns to be rendered
+         * @param array $template_args      Template received arguments
+         */
         $earnings_columns = apply_filters( 'gamipress_earnings_columns', $earnings_columns, $a );
         ?>
 
@@ -111,7 +121,7 @@ $user_earnings = $a['query']->get_results();
 
                                 if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
 
-                                    $earning_title = get_the_title( $user_earning->post_id );
+                                    $earning_title = gamipress_get_post_field( 'post_title', $user_earning->post_id );
                                     $earning_description = '';
 
                                     if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
@@ -122,7 +132,7 @@ $user_earnings = $a['query']->get_results();
                                             $achievement_types[$achievement->post_type]['singular_name'],
                                             __( 'Step', 'gamipress' ),
                                             get_post_permalink( $achievement->ID ),
-                                            get_the_title( $achievement->ID )
+                                            gamipress_get_post_field( 'post_title', $achievement->ID )
                                         );
 
                                     } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
@@ -141,7 +151,7 @@ $user_earnings = $a['query']->get_results();
                                             $rank_types[$rank->post_type]['singular_name'],
                                             __( 'Requirement', 'gamipress' ),
                                             get_post_permalink( $rank->ID ),
-                                            get_the_title( $rank->ID )
+                                            gamipress_get_post_field( 'post_title', $rank->ID )
                                         );
                                     }
 
@@ -151,7 +161,7 @@ $user_earnings = $a['query']->get_results();
                                     // Build a link to the achievement
                                     $earning_title = sprintf( '<a href="%s">%s</a>',
                                         get_post_permalink( $user_earning->post_id ),
-                                        get_the_title( $user_earning->post_id )
+                                        gamipress_get_post_field( 'post_title', $user_earning->post_id )
                                     );
                                     $earning_description = $achievement_types[$user_earning->post_type]['singular_name'];
 
@@ -161,7 +171,7 @@ $user_earnings = $a['query']->get_results();
                                     // Build a link to the rank
                                     $earning_title = sprintf( '<a href="%s">%s</a>',
                                         get_post_permalink( $user_earning->post_id ),
-                                        get_the_title( $user_earning->post_id )
+                                        gamipress_get_post_field( 'post_title', $user_earning->post_id )
                                     );
                                     $earning_description = $rank_types[$user_earning->post_type]['singular_name'];
 
@@ -199,7 +209,17 @@ $user_earnings = $a['query']->get_results();
                                 break;
                         }
 
-                        $column_output = apply_filters( 'gamipress_earnings_render_column', $column_output, $column_name, $user_earning, $a )
+                        /**
+                         * Render earnings column
+                         *
+                         * @since 1.0.0
+                         *
+                         * @param string    $column_output  Default column output
+                         * @param string    $column_name    The column name
+                         * @param stdClass  $user_earning   The column name
+                         * @param array     $template_args  Template received arguments
+                         */
+                        $column_output = apply_filters( 'gamipress_earnings_render_column', $column_output, $column_name, $user_earning, $a );
                         ?>
 
                         <td class="gamipress-earnings-col gamipress-earnings-col-<?php echo $column_name; ?>"><?php echo $column_output; ?></td>
@@ -211,7 +231,7 @@ $user_earnings = $a['query']->get_results();
 
             </tbody>
 
-        </table>
+        </table><!-- .gamipress-earnings-table -->
 
         <?php // Pagination
         if( $a['pagination'] === 'yes' ) : ?>
@@ -237,7 +257,9 @@ $user_earnings = $a['query']->get_results();
     /**
      * After render earnings
      *
-     * @param $template_args array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $template_args Template received arguments
      */
     do_action( 'gamipress_after_render_earnings', $a ); ?>
 

@@ -24,12 +24,13 @@ class GamiPress_Points_Types_Widget extends GamiPress_Widget {
 
     public function get_widget( $args, $instance ) {
         echo gamipress_do_shortcode( 'gamipress_points_types', array(
-            'type'              => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
-            'thumbnail'         => ( isset( $instance['thumbnail'] ) && $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
-            'awards'     => ( isset( $instance['awards'] ) && $instance['awards'] === 'on' ? 'yes' : 'no' ),
-            'deducts'    => ( isset( $instance['deducts'] ) && $instance['deducts'] === 'on' ? 'yes' : 'no' ),
-            'toggle'            => ( isset( $instance['toggle'] ) && $instance['toggle'] === 'on' ? 'yes' : 'no' ),
-            'wpms'              => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
+            'type'          => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
+            'thumbnail'     => ( isset( $instance['thumbnail'] ) && $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
+            'awards'        => ( isset( $instance['awards'] ) && $instance['awards'] === 'on' ? 'yes' : 'no' ),
+            'deducts'       => ( isset( $instance['deducts'] ) && $instance['deducts'] === 'on' ? 'yes' : 'no' ),
+            'toggle'        => ( isset( $instance['toggle'] ) && $instance['toggle'] === 'on' ? 'yes' : 'no' ),
+            'layout'        => $instance['layout'],
+            'wpms'          => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
         ) );
     }
 }

@@ -54,11 +54,11 @@ add_filter( 'manage_posts_columns', 'gamipress_requirements_posts_columns', 10, 
  * @param $post_id
  */
 function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
-    if( ! in_array( get_post_type( $post_id ), gamipress_get_requirement_types_slugs() ) || $column_name !== 'connected_to' ) {
+    if( ! in_array( gamipress_get_post_type( $post_id ), gamipress_get_requirement_types_slugs() ) || $column_name !== 'connected_to' ) {
         return;
     }
 
-    $post_type = get_post_type( $post_id );
+    $post_type = gamipress_get_post_type( $post_id );
 
     if( ( $post_type === 'points-award' ) ) {
         $connected_label = __( 'Points Type', 'gamipress' );

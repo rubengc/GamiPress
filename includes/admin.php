@@ -55,9 +55,15 @@ add_filter( 'admin_body_class', 'gamipress_admin_body_class' );
 /**
  * Create GamiPress menus
  *
- * @since 1.0.0
+ * @since   1.0.0
+ * @updated 1.4.0 Added multisite support
  */
 function gamipress_admin_menu() {
+
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
 
     // Set minimum role setting for menus
     $minimum_role = gamipress_get_manager_capability();
@@ -303,7 +309,8 @@ add_filter( 'manage_posts_columns', 'gamipress_posts_columns', 10, 2 );
  * @param $post_id
  */
 function gamipress_posts_custom_columns( $column_name, $post_id ) {
-    if( ! in_array( get_post_type( $post_id ), array( 'points-type', 'achievement-type', 'rank-type' ) ) ) {
+
+    if( ! in_array( gamipress_get_post_type( $post_id ), array( 'points-type', 'achievement-type', 'rank-type' ) ) ) {
         return;
     }
 
@@ -325,7 +332,7 @@ function gamipress_posts_custom_columns( $column_name, $post_id ) {
 
             break;
         case 'plural_name':
-            echo get_post_meta( $post_id, '_gamipress_plural_name', true );
+            echo gamipress_get_post_meta( $post_id, '_gamipress_plural_name' );
             break;
         case 'post_name':
             echo get_post_field( 'post_name', $post_id );
@@ -343,7 +350,7 @@ add_action( 'manage_posts_custom_column', 'gamipress_posts_custom_columns', 10, 
  */
 function gamipress_on_delete_post( $post_id ) {
 
-    $post_type = get_post_type( $post_id );
+    $post_type = gamipress_get_post_type( $post_id );
 
     $is_achievement = gamipress_is_achievement( $post_id );
 
@@ -356,13 +363,17 @@ function gamipress_on_delete_post( $post_id ) {
     if( $post_type === 'achievement-type' || $post_type === 'rank-type' ) {
         // Remove all achievements of this achievement type or if is a rank type, remove all ranks of this rank type
 
+        $dependent_type = get_post_field( 'post_name', $post_id );
+
         global $wpdb;
 
-        $dependents = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM   $wpdb->posts AS p WHERE  p.post_type = %s", $post_type ) );
+        $posts = GamiPress()->db->posts;
+
+        $dependents = $wpdb->get_results( $wpdb->prepare( "SELECT p.ID FROM {$posts} AS p WHERE  p.post_type = %s", $dependent_type ) );
 
         foreach( $dependents as $dependent ) {
-            // Remove the achievement
-            wp_delete_post( $dependent['ID'] );
+            // Remove the achievement or rank of this type
+            wp_delete_post( $dependent->ID );
         }
     } else if( $post_type === 'points-type' ) {
 

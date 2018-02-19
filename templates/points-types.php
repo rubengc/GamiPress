@@ -17,16 +17,35 @@ if( isset( $a['user_id'] ) ) {
 } else {
     $user_id = get_current_user_id();
 }
-?>
 
-<div class="gamipress-points-types gamipress-columns-<?php echo $a['columns']; ?>">
+// Setup points classes
+$classes = array(
+    'gamipress-points-types',
+    'gamipress-columns-' . $a['columns'],
+    'gamipress-layout-' . $a['layout']
+);
+
+/**
+ * Points types classes
+ *
+ * @since 1.4.0
+ *
+ * @param array     $classes            Array of points types classes
+ * @param integer   $points_types       Array of points types to be rendered
+ * @param array     $template_args      Template received arguments
+ */
+$classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points-types'], $a ); ?>
+
+<div class="<?php echo implode( ' ', $classes ); ?>">
 
     <?php
     /**
      * Before render points types list
      *
-     * @param $points_types     array Array of points types to be rendered
-     * @param $template_args    array Template received arguments
+     * @since 1.0.0
+     *
+     * @param array $points_types     Array of points types to be rendered
+     * @param array $template_args    Template received arguments
      */
     do_action( 'gamipress_before_render_points_types_list', $a['points-types'], $a ); ?>
 
@@ -54,11 +73,13 @@ if( isset( $a['user_id'] ) ) {
             /**
              * Before render points type
              *
-             * @param $points_type      string  Points type slug
-             * @param $points_awards    array   Array of points awards
-             * @param $points_deducts   array   Array of points deducts
-             * @param $points_types     array   Array of points types to be rendered
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param string  $points_type      Points type slug
+             * @param array   $points_awards    Array of points awards
+             * @param array   $points_deducts   Array of points deducts
+             * @param array   $points_types     Array of points types to be rendered
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_before_render_points_type', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
 
@@ -72,111 +93,125 @@ if( isset( $a['user_id'] ) ) {
                 /**
                  * After points type thumbnail
                  *
-                 * @param $points_type      string  Points type slug
-                 * @param $points_awards    array   Array of points awards
-                 * @param $points_deducts   array   Array of points deducts
-                 * @param $points_types     array   Array of points types to be rendered
-                 * @param $template_args    array   Template received arguments
+                 * @since 1.0.0
+                 *
+                 * @param string  $points_type      Points type slug
+                 * @param array   $points_awards    Array of points awards
+                 * @param array   $points_deducts   Array of points deducts
+                 * @param array   $points_types     Array of points types to be rendered
+                 * @param array   $template_args    Template received arguments
                  */
                 do_action( 'gamipress_after_points_type_thumbnail', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
 
             <?php endif; ?>
 
-            <h2 class="gamipress-points-type-title"><?php echo $points_types[$points_type]['plural_name']; ?></h2>
+            <div class="gamipress-points-type-description">
 
-            <?php
-            /**
-             * After points type title
-             *
-             * @param $points_type      string  Points type slug
-             * @param $points_awards    array   Array of points awards
-             * @param $points_deducts   array   Array of points deducts
-             * @param $points_types     array   Array of points types to be rendered
-             * @param $template_args    array   Template received arguments
-             */
-            do_action( 'gamipress_after_points_type_title', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
+                <h2 class="gamipress-points-type-title"><?php echo $points_types[$points_type]['plural_name']; ?></h2>
 
-            <?php if( $a['awards'] === 'yes' && $points_awards ) : ?>
+                <?php
+                /**
+                 * After points type title
+                 *
+                 * @since 1.0.0
+                 *
+                 * @param string  $points_type      Points type slug
+                 * @param array   $points_awards    Array of points awards
+                 * @param array   $points_deducts   Array of points deducts
+                 * @param array   $points_types     Array of points types to be rendered
+                 * @param array   $template_args    Template received arguments
+                 */
+                do_action( 'gamipress_after_points_type_title', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
 
-                <div class="gamipress-points-type-awards">
+                <?php if( $a['awards'] === 'yes' && $points_awards ) : ?>
 
-                    <?php if ( $a['toggle'] === 'yes' ) : ?>
+                    <div class="gamipress-points-type-awards">
 
-                        <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
-                            <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
-                        </div>
+                        <?php if ( $a['toggle'] === 'yes' ) : ?>
 
-                        <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                            <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
+                                <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
+                            </div>
+
+                            <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                                <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $a ); ?>
+                            </div><!-- .gamipress-extras-window -->
+
+                        <?php else : ?>
+
                             <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $a ); ?>
-                        </div><!-- .gamipress-extras-window -->
 
-                    <?php else : ?>
+                        <?php endif; ?>
 
-                        <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $a ); ?>
+                    </div><!-- .gamipress-points-type-awards -->
 
-                    <?php endif; ?>
+                    <?php
+                    /**
+                     * After points type points awards
+                     *
+                     * @since 1.0.0
+                     *
+                     * @param string  $points_type      Points type slug
+                     * @param array   $points_awards    Array of points awards
+                     * @param array   $points_deducts   Array of points deducts
+                     * @param array   $points_types     Array of points types to be rendered
+                     * @param array   $template_args    Template received arguments
+                     */
+                    do_action( 'gamipress_after_points_type_points_awards', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
 
-                </div><!-- .gamipress-points-type-awards -->
+                <?php endif; ?>
 
-                <?php
-                /**
-                 * After points type points awards
-                 *
-                 * @param $points_type      string  Points type slug
-                 * @param $points_awards    array   Array of points awards
-                 * @param $points_deducts   array   Array of points deducts
-                 * @param $points_types     array   Array of points types to be rendered
-                 * @param $template_args    array   Template received arguments
-                 */
-                do_action( 'gamipress_after_points_type_points_awards', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
+                <?php if( $a['deducts'] === 'yes' && $points_deducts ) : ?>
 
-            <?php endif; ?>
+                    <div class="gamipress-points-type-deducts">
 
-            <?php if( $a['deducts'] === 'yes' && $points_deducts ) : ?>
+                        <?php if ( $a['toggle'] === 'yes' ) : ?>
 
-                <div class="gamipress-points-type-deducts">
+                            <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
+                                <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
+                            </div>
 
-                    <?php if ( $a['toggle'] === 'yes' ) : ?>
+                            <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                                <?php echo gamipress_get_points_deducts_for_points_types_list_markup( $points_deducts, $user_id, $a ); ?>
+                            </div><!-- .gamipress-extras-window -->
 
-                        <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
-                            <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
-                        </div>
+                        <?php else : ?>
 
-                        <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
                             <?php echo gamipress_get_points_deducts_for_points_types_list_markup( $points_deducts, $user_id, $a ); ?>
-                        </div><!-- .gamipress-extras-window -->
 
-                    <?php else : ?>
+                        <?php endif; ?>
 
-                        <?php echo gamipress_get_points_deducts_for_points_types_list_markup( $points_deducts, $user_id, $a ); ?>
+                    </div><!-- .gamipress-points-type-deducts -->
 
-                    <?php endif; ?>
+                    <?php
+                    /**
+                     * After points type points deducts
+                     *
+                     * @since 1.0.0
+                     *
+                     * @param string  $points_type      Points type slug
+                     * @param array   $points_awards    Array of points awards
+                     * @param array   $points_deducts   Array of points deducts
+                     * @param array   $points_types     Array of points types to be rendered
+                     * @param array   $template_args    Template received arguments
+                     */
+                    do_action( 'gamipress_after_points_type_points_deducts', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
 
-                </div><!-- .gamipress-points-type-deducts -->
+                <?php endif; ?>
 
-                <?php
-                /**
-                 * After points type points deducts
-                 *
-                 * @param $points_type      string  Points type slug
-                 * @param $points_awards    array   Array of points awards
-                 * @param $points_deducts   array   Array of points deducts
-                 * @param $points_types     array   Array of points types to be rendered
-                 * @param $template_args    array   Template received arguments
-                 */
-                do_action( 'gamipress_after_points_type_points_deducts', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
-
-            <?php endif; ?>
+            </div><!-- .gamipress-points-type-description -->
 
             <?php
             /**
              * After render points type
              *
-             * @param $points_type      string  Points type slug
-             * @param $points_awards    array   Array of points awards
-             * @param $points_deducts   array   Array of points deducts
-             * @param $points_types     array   Array of points types to be rendered
-             * @param $template_args    array   Template received arguments
+             * @since 1.0.0
+             *
+             * @param string  $points_type      Points type slug
+             * @param array   $points_awards    Array of points awards
+             * @param array   $points_deducts   Array of points deducts
+             * @param array   $points_types     Array of points types to be rendered
+             * @param array   $template_args    Template received arguments
              */
             do_action( 'gamipress_after_render_points_type', $points_type, $points_awards, $points_deducts, $a['points-types'], $a ); ?>
 
@@ -188,8 +223,8 @@ if( isset( $a['user_id'] ) ) {
     /**
      * After render points types list
      *
-     * @param $points_types     array Array of points types to be rendered
-     * @param $template_args    array Template received arguments
+     * @param array $points_types     Array of points types to be rendered
+     * @param array $template_args    Template received arguments
      */
     do_action( 'gamipress_after_render_points_types_list', $a['points-types'], $a ); ?>
 

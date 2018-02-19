@@ -32,6 +32,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
          * Initialize the plugin by hooking into CMB2
          */
         public function __construct() {
+
             add_filter( 'cmb2_admin_init', array( $this, 'includes' ) );
 
             add_filter( 'cmb2_after_init', array( $this, 'license_deactivation_handler' ) );
@@ -43,6 +44,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
             add_action( 'admin_enqueue_scripts', array( $this, 'setup_admin_scripts' ) );
 
             add_action( 'cmb2_save_field',  array( $this, 'save_field' ), 10, 4 );
+
         }
 
         public function includes() {
@@ -63,11 +65,13 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
          * Enqueue scripts and styles
          */
         public function setup_admin_scripts() {
+
             // Script is registered instead of enqueued because it is enqueued on demand
             wp_register_script( 'cmb-edd-license-js', plugins_url( 'assets/js/edd-license.js', __FILE__ ), array( 'jquery' ), self::VERSION, true );
 
             // CSS needs to be enqueued
             wp_enqueue_style( 'cmb-edd-license-css', plugins_url( 'assets/css/edd-license.css', __FILE__ ), array(), self::VERSION );
+
         }
 
         public function license_deactivation_handler() {
@@ -389,21 +393,16 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
                 return false;
             }
 
-            // Retrieve license key
-            $license_key = trim( esc_attr( $args['value'] ) );
-
-            // Abort if license key is empty
-            if ( empty( $license_key ) ) {
-                return false;
-            }
-
             // Item name
             $item_name = ! empty( $args['item_name'] ) ? sanitize_text_field( $args['item_name'] ) : false;
             $item_id   = ! empty( $args['item_id'] ) ? (int) $args['item_id'] : false;
 
+            // Retrieve license key
+            $license_key = trim( esc_attr( $args['value'] ) );
+
             // Prepare updater arguments
             $api_params = array(
-                'license' => $license_key,
+                'license' => ( cmb2_edd_license_status( $license_key ) === 'valid' ? $license_key : '' ),
             );
 
             // Add license ID or name for identification

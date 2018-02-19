@@ -64,7 +64,6 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
     public function get_widget( $args, $instance ) {
 
         echo gamipress_do_shortcode( 'gamipress_user_rank', array(
-
             'type'          => $instance['type'],
             'prev_rank'     => ( $instance['prev_rank'] === 'on' ? 'yes' : 'no' ),
             'current_rank'  => ( $instance['current_rank'] === 'on' ? 'yes' : 'no' ),
@@ -74,12 +73,13 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
             'columns'       => $instance['columns'],
 
             'title'         => ( $instance['show_title'] === 'on' ? 'yes' : 'no' ),
+            'link'          => ( $instance['link'] === 'on' ? 'yes' : 'no' ),
             'thumbnail'     => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
             'excerpt'       => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'requirements'  => ( $instance['requirements'] === 'on' ? 'yes' : 'no' ),
             'toggle'        => ( $instance['toggle'] === 'on' ? 'yes' : 'no' ),
             'earners'       => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
-
+            'layout'        => $instance['layout'],
         ) );
 
     }
