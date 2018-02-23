@@ -209,6 +209,7 @@ function ct_get_table_capabilities( $args ) {
         'edit_item'          => 'edit_'         . $singular_base,
         'read_item'          => 'read_'         . $singular_base,
         'delete_item'        => 'delete_'       . $singular_base,
+        'delete_items'       => 'delete_'       . $plural_base,
         // Primitive capabilities used outside of map_meta_cap():
         'edit_items'         => 'edit_'         . $plural_base,
         'edit_others_items'  => 'edit_others_'  . $plural_base,

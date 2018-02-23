@@ -87,7 +87,7 @@ function gamipress_register_user_rank_shortcode() {
                 'default'     => 'yes'
             ),
             'user_id' => array(
-                'name'        => __( 'User ID', 'gamipress' ),
+                'name'        => __( 'User', 'gamipress' ),
                 'description' => __( 'Show a specific user ranks.', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',

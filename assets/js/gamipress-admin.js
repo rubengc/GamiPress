@@ -5,15 +5,13 @@
 
 		// Define our potentially unnecessary inputs
 		var gamipress_sequential = $('#_gamipress_sequential').parent().parent();
-		var gamipress_points_required = $('#_gamipress_points_required').parent().parent();
-		var gamipress_points_type_required = $('#_gamipress_points_type_required').parent().parent();
+		var gamipress_points_required = $('#_gamipress_points_required').closest('.cmb-row');
 		var gamipress_rank_type_required = $('#_gamipress_rank_type_required').parent().parent();
 		var gamipress_rank_required = $('#_gamipress_rank_required').parent().parent();
 
 		// Hide our potentially unnecessary inputs
 		gamipress_sequential.hide();
 		gamipress_points_required.hide();
-		gamipress_points_type_required.hide();
 		gamipress_rank_type_required.hide();
 		gamipress_rank_required.hide();
 
@@ -22,7 +20,6 @@
 			gamipress_sequential.show();
 		} else if ( $(this).val() === 'points' ) {
 			gamipress_points_required.show();
-			gamipress_points_type_required.show();
 		} else if ( $(this).val() === 'rank' ) {
 			gamipress_rank_type_required.show();
 			$('#_gamipress_rank_type_required').change();
@@ -76,7 +73,7 @@
 
 	// Dynamically show/hide achievement meta inputs based on "Unlock with Points" checkbox
 	$('#_gamipress_unlock_with_points').change(function() {
-		var target = $('.cmb2-id--gamipress-points-to-unlock, .cmb2-id--gamipress-points-type-to-unlock');
+		var target = $('.cmb2-id--gamipress-points-to-unlock');
 
 		if( $(this).prop('checked') ) {
 			target.slideDown(250);
@@ -86,7 +83,7 @@
 	});
 
 	if( ! $('#_gamipress_unlock_with_points').prop('checked') ) {
-		$('.cmb2-id--gamipress-points-to-unlock, .cmb2-id--gamipress-points-type-to-unlock').hide();
+		$('.cmb2-id--gamipress-points-to-unlock').hide();
 	}
 
 	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {

@@ -499,3 +499,28 @@ function gamipress_sanitize_slug( $slug ) {
     return $slug;
 
 }
+
+/**
+ * Helper function to recursively check if something is in a multidimensional array
+ *
+ * @since 1.4.1
+ *
+ * @param mixed $needle
+ * @param array $haystack
+ * @param bool  $strict
+ *
+ * @return bool
+ */
+function gamipress_in_array( $needle, $haystack, $strict = false ) {
+
+    foreach( $haystack as $item ) {
+        if (
+            ( $strict ? $item === $needle : $item == $needle )
+            || ( is_array( $item ) && gamipress_in_array( $needle, $item, $strict ) )
+        ) {
+            return true;
+        }
+    }
+
+    return false;
+}

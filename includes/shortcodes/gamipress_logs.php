@@ -26,7 +26,7 @@ function gamipress_register_logs_shortcode() {
                 'classes' 	  => 'gamipress-switch',
             ),
             'user_id' => array(
-                'name'        => __( 'User ID', 'gamipress' ),
+                'name'        => __( 'User', 'gamipress' ),
                 'description' => __( 'Show only logs by a specific user. Leave blank to show logs of all users.', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',

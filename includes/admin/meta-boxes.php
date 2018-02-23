@@ -80,15 +80,6 @@ function gamipress_meta_boxes() {
 	// Start with an underscore to hide fields from custom fields list
 	$prefix = '_gamipress_';
 
-    // Grab our points types as an array
-    $points_types_options = array(
-        '' => __( 'Default Points', 'gamipress' )
-    );
-
-    foreach( gamipress_get_points_types() as $slug => $data ) {
-        $points_types_options[$slug] = $data['plural_name'];
-    }
-
 	// Grab our achievement types as an array
 	$achievement_types = gamipress_get_achievement_types_slugs();
 
@@ -172,14 +163,8 @@ function gamipress_meta_boxes() {
 			$prefix . 'points' => array(
 				'name' => __( 'Points Awarded', 'gamipress' ),
 				'desc' => __( 'Points awarded for earning this achievement (optional). Leave empty if no points are awarded.', 'gamipress' ),
-				'type' => 'text_small',
+				'type' => 'gamipress_points',
 				'default' => '0',
-			),
-			$prefix . 'points_type' => array(
-				'name' => __( 'Points Type', 'gamipress' ),
-				'desc' => __( 'Points type to award for earning this achievement (optional).', 'gamipress' ),
-				'type' => 'select',
-				'options' => $points_types_options
 			),
 			$prefix . 'earned_by' => array(
 				'name'    => __( 'Earned By:', 'gamipress' ),
@@ -195,14 +180,9 @@ function gamipress_meta_boxes() {
 			$prefix . 'points_required' => array(
 				'name' => __( 'Minimum Points Required', 'gamipress' ),
 				'desc' => __( 'Fewest number of points required for earning this achievement.', 'gamipress' ),
-				'type' => 'text_small',
+				'type' => 'gamipress_points',
+				'points_type_key' => $prefix . 'points_type_required',
 				'default' => '0',
-			),
-			$prefix . 'points_type_required' => array(
-				'name' => __( 'Points Type Required', 'gamipress' ),
-				'desc' => __( 'Points type of points required for earning this achievement (optional).', 'gamipress' ),
-				'type' => 'select',
-				'options' => $points_types_options
 			),
 			$prefix . 'rank_type_required' => array(
 				'name' => __( 'Rank Type Required', 'gamipress' ),
@@ -250,14 +230,9 @@ function gamipress_meta_boxes() {
 			$prefix . 'points_to_unlock' => array(
 				'name' => __( 'Points to Unlock', 'gamipress' ),
 				'desc' => __( 'Amount of points needed to optionally unlock this achievement by expending them.', 'gamipress' ),
-				'type' => 'text_small',
+				'type' => 'gamipress_points',
+				'points_type_key' => $prefix . 'points_type_to_unlock',
 				'default' => '0',
-			),
-			$prefix . 'points_type_to_unlock' => array(
-				'name' => __( 'Points Type to Unlock', 'gamipress' ),
-				'desc' => __( 'Points type of points required to unlock this achievement by expending them (optional).', 'gamipress' ),
-				'type' => 'select',
-				'options' => $points_types_options
 			),
 		),
 		array(
@@ -353,14 +328,9 @@ function gamipress_meta_boxes() {
 			$prefix . 'points_to_unlock' => array(
 				'name' => __( 'Points to Unlock', 'gamipress' ),
 				'desc' => __( 'Amount of points needed to optionally reach this rank by expending them.', 'gamipress' ),
-				'type' => 'text_small',
+				'type' => 'gamipress_points',
+				'points_type_key' => $prefix . 'points_type_to_unlock',
 				'default' => '0',
-			),
-			$prefix . 'points_type_to_unlock' => array(
-				'name' => __( 'Points Type to Unlock', 'gamipress' ),
-				'desc' => __( 'Points type of points required to reach this rank by expending them (optional).', 'gamipress' ),
-				'type' => 'select',
-				'options' => $points_types_options
 			),
 		),
 		array(
@@ -477,13 +447,7 @@ function gamipress_meta_boxes() {
 			$prefix . 'points' => array(
 				'name' => __( 'Points', 'gamipress' ),
 				'desc' => '',
-				'type' => 'text_small',
-			),
-			$prefix . 'points_type' => array(
-				'name' => __( 'Points Type', 'gamipress' ),
-				'desc' => '',
-				'type' => 'select',
-				'options' => $points_types_options
+				'type' => 'gamipress_points',
 			),
 			$prefix . 'maximum_earnings' => array(
 				'name' => __( 'Maximum Earnings', 'gamipress' ),

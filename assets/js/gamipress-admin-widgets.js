@@ -19,23 +19,10 @@
                     action: 'gamipress_get_achievements_options'
                 };
             },
-            processResults: function( results, page ) {
-                if( results === null ) {
-                    return { results: [] };
-                }
-
-                var formatted_results = [];
-
-                results.data.forEach(function(item) {
-                    formatted_results.push({
-                        id: item.ID,
-                        text: item.post_title,
-                    });
-                });
-
-                return { results: formatted_results };
-            }
+            processResults: gamipress_select2_posts_process_results
         },
+        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
+        templateResult: gamipress_select2_posts_template_result,
         theme: 'default gamipress-select2',
         placeholder: gamipress_admin_widgets.id_placeholder,
         allowClear: true,
@@ -60,26 +47,14 @@
             data: function( params ) {
                 return {
                     q: params.term,
+                    page: params.page || 1,
                     action: 'gamipress_get_users'
                 };
             },
-            processResults: function( results, page ) {
-                if( results === null ) {
-                    return { results: [] };
-                }
-
-                var formatted_results = [];
-
-                results.data.forEach(function(item) {
-                    formatted_results.push({
-                        id: item.ID,
-                        text: item.user_login,
-                    });
-                });
-
-                return { results: formatted_results };
-            }
+            processResults: gamipress_select2_users_process_results
         },
+        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
+        templateResult: gamipress_select2_users_template_result,
         theme: 'default gamipress-select2',
         placeholder: gamipress_admin_widgets.user_placeholder,
         allowClear: true,
@@ -98,23 +73,10 @@
                     action: 'gamipress_get_ranks_options'
                 };
             },
-            processResults: function( results, page ) {
-                if( results === null ) {
-                    return { results: [] };
-                }
-
-                var formatted_results = [];
-
-                results.data.forEach(function(item) {
-                    formatted_results.push({
-                        id: item.ID,
-                        text: item.post_title,
-                    });
-                });
-
-                return { results: formatted_results };
-            }
+            processResults: gamipress_select2_posts_process_results
         },
+        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
+        templateResult: gamipress_select2_posts_template_result,
         theme: 'default gamipress-select2',
         placeholder: gamipress_admin_widgets.rank_placeholder,
         allowClear: true,

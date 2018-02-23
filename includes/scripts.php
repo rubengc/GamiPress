@@ -73,12 +73,13 @@ function gamipress_admin_register_scripts() {
     wp_register_style( 'gamipress-admin-css', GAMIPRESS_URL . 'assets/css/gamipress-admin' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
 
     // Scripts
+    wp_register_script( 'gamipress-admin-functions-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-functions' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-admin-js', GAMIPRESS_URL . 'assets/js/gamipress-admin' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-admin-widgets-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-widgets' . $suffix . '.js', array( 'jquery', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-admin-widgets-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-widgets' . $suffix . '.js', array( 'jquery', 'gamipress-admin-functions-js', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-requirements-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-requirements-ui' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable', 'gamipress-admin-functions-js', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-log-extra-data-ui-js', GAMIPRESS_URL . 'assets/js/gamipress-log-extra-data-ui' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
     wp_register_script( 'gamipress-admin-settings-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-settings' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
-    wp_register_script( 'gamipress-admin-tools-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-tools' . $suffix . '.js', array( 'jquery', 'jquery-ui-dialog' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-admin-tools-js', GAMIPRESS_URL . 'assets/js/gamipress-admin-tools' . $suffix . '.js', array( 'jquery', 'jquery-ui-dialog', 'gamipress-admin-functions-js', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
 
 }
 add_action( 'admin_init', 'gamipress_admin_register_scripts' );
@@ -105,9 +106,27 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         || in_array( $post_type, gamipress_get_rank_types_slugs() )
         || $hook === 'widgets.php'
         || $hook === 'gamipress_page_gamipress_settings'
+        || $hook === 'gamipress_page_gamipress_tools'
     ) {
+        // Enqueue Select2 library
         wp_enqueue_script( 'gamipress-select2-js' );
         wp_enqueue_style( 'gamipress-select2-css' );
+
+        // Setup an array of post type labels to use on post selector field
+        $post_types = get_post_types( array(), 'objects' );
+        $post_type_labels = array();
+
+        foreach( $post_types as $key => $obj ) {
+            $post_type_labels[$key] = $obj->labels->singular_name;
+        }
+
+        // Localize admin functions script
+        wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
+            'post_type_labels' => $post_type_labels
+        ) );
+
+        wp_enqueue_script( 'gamipress-admin-functions-js' );
+
     }
 
     // Requirements ui script
@@ -155,7 +174,10 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     if( $hook === 'gamipress_page_gamipress_tools' ) {
 
         wp_localize_script( 'gamipress-admin-tools-js', 'gamipress_admin_tools', array(
-            'recount_activity_notice' => __( 'Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed.', 'gamipress' ),
+            'recount_activity_notice'   => __( 'Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed.', 'gamipress' ),
+            'achievements_placeholder'  => __( 'Select Achievements', 'gamipress' ),
+            'rank_placeholder'          => __( 'Select a Rank', 'gamipress' ),
+            'users_placeholder'         => __( 'Select Users', 'gamipress' ),
         ) );
 
         wp_enqueue_script( 'gamipress-admin-tools-js' );

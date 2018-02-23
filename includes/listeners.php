@@ -169,9 +169,15 @@ function gamipress_site_visit_listener() {
         // Post daily visit
         $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
 
-        // Trigger specific daily visit action if not triggered today
+        // Trigger daily post visit action if not triggered today
         if( $count === 0 ) {
+
+            // Trigger any post visit
+            do_action( 'gamipress_post_visit', $post->ID, $user_id, $post );
+
+            // Trigger specific post visit
             do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
+
         }
 
     }

@@ -170,6 +170,7 @@ function gamipress_manage_logs_columns( $columns = array() ) {
     $columns['title']       = __( 'Title', 'gamipress' );
     $columns['type']        = __( 'Type', 'gamipress' );
     $columns['user_id']     = __( 'User', 'gamipress' );
+    $columns['post_id']     = __( 'Post', 'gamipress' );
     $columns['admin_id']    = __( 'Administrator', 'gamipress' );
     $columns['date']        = __( 'Date', 'gamipress' );
 
@@ -223,6 +224,51 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
 
             endif;
             break;
+        case 'post_id':
+
+            $trigger = ct_get_object_meta( $object_id, '_gamipress_trigger_type', true );
+
+            if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) :
+                // Is is an specific activity trigger, then will get a post assigned
+
+                $post_id = ct_get_object_meta($object_id, '_gamipress_achievement_post', true);
+
+                if( $post_id ) :
+
+                    if( current_user_can( 'edit_post', $post_id ) ) {
+                        ?>
+
+                        <a href="<?php echo get_edit_post_link( $post_id ); ?>"><?php echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger ); ?></a>
+
+                        <?php
+                    } else {
+                        echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger );
+                    }
+
+                endif;
+
+            else :
+                // Also, some activity triggers stores a post ID (for example, comments and visits)
+
+                $post_id = ct_get_object_meta($object_id, '_gamipress_post_id', true);
+
+                if( $post_id ) :
+
+                    if( current_user_can( 'edit_post', $post_id ) ) {
+                        ?>
+
+                        <a href="<?php echo get_edit_post_link( $post_id ); ?>"><?php echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger ); ?></a>
+
+                        <?php
+                    } else {
+                        echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger );
+                    }
+
+                endif;
+
+            endif;
+
+            break;
         case 'admin_id':
 
             if( in_array( $log->type, array( 'achievement_award', 'points_award', 'points_revoke', 'rank_award' ) ) ) :
@@ -232,7 +278,7 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
 
                 if( $admin ) :
 
-                    if( current_user_can('edit_users')) {
+                    if( current_user_can( 'edit_users' ) ) {
                         ?>
 
                         <a href="<?php echo get_edit_user_link( $admin_id ); ?>"><?php echo $admin->display_name . ' (' . $admin->user_login . ')'; ?></a>

@@ -21,7 +21,7 @@ function gamipress_register_rank_shortcode() {
 		'output_callback' => 'gamipress_rank_shortcode',
 		'fields'      	  => array(
 			'id' => array(
-				'name'        => __( 'Rank ID', 'gamipress' ),
+				'name'        => __( 'Rank', 'gamipress' ),
 				'description' => __( 'The ID of the rank to render.', 'gamipress' ),
 				'type'        => 'select',
 				'default'     => '',

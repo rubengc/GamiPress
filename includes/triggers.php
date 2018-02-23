@@ -12,6 +12,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * GamiPress activity triggers
  *
  * @since  1.0.0
+ *
  * @return array Array of all activity triggers
  */
 function gamipress_get_activity_triggers() {
@@ -26,13 +27,14 @@ function gamipress_get_activity_triggers() {
 				'gamipress_user_post_comment'  			=> __( 'Get a comment on a post', 'gamipress' ),
 				'gamipress_user_specific_post_comment' 	=> __( 'Get a comment on a specific post', 'gamipress' ),
 				'gamipress_publish_post'     			=> __( 'Publish a new post', 'gamipress' ),
-				'gamipress_publish_page'     			=> __( 'Publish a new page', 'gamipress' ),
 				'gamipress_delete_post'     			=> __( 'Delete a post', 'gamipress' ),
+				'gamipress_publish_page'     			=> __( 'Publish a new page', 'gamipress' ),
 				'gamipress_delete_page'     			=> __( 'Delete a page', 'gamipress' ),
 			),
 			// Site Interactions
 			__( 'Site Interactions', 'gamipress' ) => array(
 				'gamipress_site_visit'  				=> __( 'Daily visit the website', 'gamipress' ),
+				'gamipress_post_visit'  				=> __( 'Daily visit any post', 'gamipress' ),
 				'gamipress_specific_post_visit'  		=> __( 'Daily visit a specific post', 'gamipress' ),
 				'gamipress_user_post_visit'  			=> __( 'Get visits on any post', 'gamipress' ),
 				'gamipress_user_specific_post_visit'	=> __( 'Get visits on a specific post', 'gamipress' ),
@@ -62,11 +64,33 @@ function gamipress_get_activity_triggers() {
  */
 function gamipress_get_specific_activity_triggers() {
 
+	// Get all public post types which means they are visitable
+	$public_post_types = get_post_types( array( 'public' => true ) );
+
+	// Remove attachment from public post types
+	if( isset( $public_post_types['attachment'] ) ) {
+		unset( $public_post_types['attachment'] );
+	}
+
+	// Remove keys
+	$public_post_types = array_values( $public_post_types );
+
+	// Get all post types with comments support
+	$comments_post_types = get_post_types_by_support( 'comments' );
+
+	// Remove attachment from post types with comments support
+	if( $index = array_search( 'attachment', $comments_post_types ) ) {
+		unset( $comments_post_types[$index] );
+	}
+
+	// Remove keys
+	$comments_post_types = array_values( $comments_post_types );
+
 	return apply_filters( 'gamipress_specific_activity_triggers', array(
-		'gamipress_specific_new_comment' 		=> array( 'post', 'page' ),
-		'gamipress_user_specific_post_comment'  => array( 'post', 'page' ),
-		'gamipress_specific_post_visit'  		=> array( 'post', 'page' ),
-		'gamipress_user_specific_post_visit'  	=> array( 'post', 'page' ),
+		'gamipress_specific_new_comment' 		=> $comments_post_types,
+		'gamipress_user_specific_post_comment'  => $comments_post_types,
+		'gamipress_specific_post_visit'  		=> $public_post_types,
+		'gamipress_user_specific_post_visit'  	=> $public_post_types,
 	) );
 
 }
@@ -117,7 +141,9 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
  * Helper function for returning a specific activity trigger label
  *
  * @since  1.0.0
+ *
  * @param string $activity_trigger
+ *
  * @return string
  */
 function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
@@ -162,7 +188,6 @@ function gamipress_get_specific_activity_trigger_post_title( $specific_id, $trig
  * Load up our activity triggers so we can add actions to them
  *
  * @since 1.0.0
- * @return void
  */
 function gamipress_load_activity_triggers() {
 
@@ -200,6 +225,7 @@ add_action( 'init', 'gamipress_load_activity_triggers' );
  * Handle each of our activity triggers
  *
  * @since 1.0.0
+ *
  * @return mixed
  */
 function gamipress_trigger_event() {
@@ -308,6 +334,7 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 		case 'gamipress_publish_page':
 		case 'gamipress_delete_post':
 		case 'gamipress_delete_page':
+		case 'gamipress_post_visit':
 		case 'gamipress_specific_post_visit':
 			// Add the published/deleted/visited post ID
 			$log_meta['post_id'] = $args[0];
@@ -425,6 +452,7 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 		case 'gamipress_specific_new_comment':
 		case 'gamipress_user_post_comment':
 		case 'gamipress_user_specific_post_comment':
+		case 'gamipress_post_visit':
 		case 'gamipress_specific_post_visit':
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
@@ -543,8 +571,10 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
  * Wrapper function for returning a user's array of sprung triggers
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id The given user's ID
  * @param  integer $site_id The desired Site ID to check
+ *
  * @return array            An array of the triggers a user has triggered
  */
 function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
@@ -668,11 +698,13 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
  * Update the user's trigger count for a given trigger by 1
  *
  * @since  1.0.0
- * @param  integer $user_id The given user's ID
- * @param  string  $trigger The trigger we're updating
- * @param  integer $site_id The desired Site ID to update
- * @param  array $args        The triggered args
- * @return integer          The updated trigger count
+ *
+ * @param  integer 	$user_id 	The given user's ID
+ * @param  string  	$trigger 	The trigger we're updating
+ * @param  integer 	$site_id 	The desired Site ID to update
+ * @param  array 	$args 		The triggered args
+ *
+ * @return integer          	The updated trigger count
  */
 function gamipress_update_user_trigger_count( $user_id, $trigger, $site_id = 0, $args = array() ) {
 
@@ -698,9 +730,11 @@ function gamipress_update_user_trigger_count( $user_id, $trigger, $site_id = 0, 
  * Reset a user's trigger count for a given trigger to 0 or reset ALL triggers
  *
  * @since  1.0.0
+ *
  * @param  integer $user_id The given user's ID
  * @param  string  $trigger The trigger we're updating (or "all" to dump all triggers)
  * @param  integer $site_id The desired Site ID to update (or "all" to dump across all sites)
+ *
  * @return integer          The updated trigger count
  */
 function gamipress_reset_user_trigger_count( $user_id, $trigger, $site_id = 0 ) {

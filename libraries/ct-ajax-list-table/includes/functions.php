@@ -97,8 +97,6 @@ function ct_render_ajax_list_table( $object, $query_args = array(), $view_args =
 
         <?php
 
-        @define( 'IS_CT_AJAX_LIST_TABLE', false );
-
     }
 
 }

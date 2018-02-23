@@ -1,4 +1,5 @@
 (function( $ ) {
+
     // Clean Data Tool
     $("#search_data_to_clean").click(function(e) {
         e.preventDefault();
@@ -248,9 +249,15 @@
         // Disable the button
         $this.prop('disabled', true);
 
-        // Show the spinner
+        // Show a notice to let know to the user that process could take a while
         $this.parent().prepend('<p id="recount-activity-notice" class="cmb2-metabox-description">' + gamipress_admin_tools.recount_activity_notice + '</p>');
-        $this.parent().append('<span id="recount-activity-response"><span class="spinner is-active" style="float: none;"></span></span>');
+
+        if( ! $('#recount-activity-response').length ) {
+            $this.parent().append('<span id="recount-activity-response"></span>');
+        }
+
+        // Show the spinner
+        $('#recount-activity-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
         $.post(
             ajaxurl,
@@ -291,4 +298,164 @@
             $this.prop('disabled', false);
         });
     });
+
+    // Bulk Awards Tool
+
+    // Award to all users
+    $('#bulk-awards').on('change', '#bulk_award_points_all_users, #bulk_award_achievements_all_users, #bulk_award_rank_all_users', function() {
+
+        var target = $('#' + $(this).attr('id').replace('_all', '')).closest('.cmb-row');
+
+        if( $(this).prop('checked') ) {
+            target.slideUp(250).addClass('cmb2-tab-ignore');
+        } else {
+            target.slideDown(250).removeClass('cmb2-tab-ignore');
+        }
+
+    });
+
+    // Achievements ajax
+    $('#bulk_award_achievements').select2({
+        ajax: {
+            url: ajaxurl,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            cache: true,
+            data: function( params ) {
+                return {
+                    q: params.term,
+                    action: 'gamipress_get_achievements_options'
+                };
+            },
+            processResults: gamipress_select2_posts_process_results
+        },
+        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
+        templateResult: gamipress_select2_posts_template_result,
+        theme: 'default gamipress-select2',
+        placeholder: gamipress_admin_tools.achievements_placeholder,
+        allowClear: true,
+        closeOnSelect: false,
+        multiple: true
+    });
+
+    // Rank ajax
+    $('#bulk_award_rank').select2({
+        ajax: {
+            url: ajaxurl,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            cache: true,
+            data: function( params ) {
+                return {
+                    q: params.term,
+                    action: 'gamipress_get_ranks_options'
+                };
+            },
+            processResults: gamipress_select2_posts_process_results
+        },
+        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
+        templateResult: gamipress_select2_posts_template_result,
+        theme: 'default gamipress-select2',
+        placeholder: gamipress_admin_tools.rank_placeholder,
+        allowClear: true,
+        multiple: false
+    });
+
+    // User ajax
+    $( '#bulk_award_points_users, #bulk_award_achievements_users, #bulk_award_rank_users' ).select2({
+        ajax: {
+            url: ajaxurl,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            cache: true,
+            data: function( params ) {
+                return {
+                    q: params.term,
+                    page: params.page || 1,
+                    action: 'gamipress_get_users'
+                };
+            },
+            processResults: gamipress_select2_users_process_results
+        },
+        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
+        templateResult: gamipress_select2_users_template_result,
+        theme: 'default gamipress-select2',
+        placeholder: gamipress_admin_tools.users_placeholder,
+        allowClear: true,
+        closeOnSelect: false,
+        multiple: true
+    });
+
+    $("#bulk_award_points_button, #bulk_award_achievements_button, #bulk_award_rank_button").click(function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var response_id = $this.attr('id').replace('_button', '_response');
+        var active_tab = $this.closest('.cmb-tabs-wrap').find('.cmb-tab.active');
+        var data = {
+            action: 'gamipress_bulk_awards_tool',
+            bulk_award: $this.attr('id').replace('bulk_award_', '').replace('_button', '')
+        };
+
+        // Loop all fields to build the request data
+        $(active_tab.data('fields')).find('input, select, textarea').each(function() {
+
+            if( $(this).attr('type') === 'checkbox' ) {
+                // Checkboxes are sent just when checked
+                if( $(this).prop('checked') ) {
+                    data[$(this).attr('name')] = $(this).val();
+                }
+            } else {
+                data[$(this).attr('name')] = $(this).val();
+            }
+
+        });
+
+        // Disable the button
+        $this.prop('disabled', true);
+
+        if( ! $('#' + response_id).length ) {
+            $this.parent().append('<span id="' + response_id + '"></span>');
+        }
+
+        // Show the spinner
+        $('#' + response_id).html('<span class="spinner is-active" style="float: none;"></span>');
+
+        $.post(
+            ajaxurl,
+            data,
+            function( response ) {
+
+                if( response.success === false ) {
+                    $('#' + response_id).css({color:'#a00'});
+                }
+
+                $('#' + response_id).html(response.data);
+
+                if( response.success === true ) {
+
+                    setTimeout(function() {
+                        $('#' + response_id).remove();
+                    }, 5000);
+                }
+
+                // Enable the button
+                $this.prop('disabled', false);
+            }
+        ).fail(function() {
+
+            $('#' + response_id).html('The server has returned an internal error.');
+
+            setTimeout(function() {
+                $('#' + response_id).remove();
+            }, 5000);
+
+            // Enable the button
+            $this.prop('disabled', false);
+        });
+    });
+
 })( jQuery );

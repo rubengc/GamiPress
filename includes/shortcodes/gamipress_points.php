@@ -73,7 +73,7 @@ function gamipress_register_points_shortcode() {
                 'classes' 	  => 'gamipress-switch',
             ),
             'user_id' => array(
-                'name'        => __( 'User ID', 'gamipress' ),
+                'name'        => __( 'User', 'gamipress' ),
                 'description' => __( 'Show only points earned by a specific user. Leave blank to show points of logged in user.', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',

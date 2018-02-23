@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.0
+Stable tag: 1.4.1
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -102,6 +102,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 = LMS integrations =
 
 * [LearnDash](https://wordpress.org/plugins/gamipress-learndash-integration/)
+* [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
 * [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [LifterLMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
 * [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
@@ -225,6 +226,20 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.4.1 =
+
+* Added a bulk awards tool that let's award points, achievements or ranks to all or a group of users.
+* New event: Daily visit any post.
+* Added support for all public post types on events daily visit a specific post and get visits on a specific post.
+* Added support for all post types with comments support on events comment on a specific post and get a comment on a specific post.
+* Added the column "Post" to the logs list screen at admin area.
+* Fully reworked all posts and users selectors.
+* Replaced "Achievement ID" field label to "Achievement".
+* Replaced "Rank ID" field label to "Rank".
+* Replaced "User ID" field label to "User".
+* Added the field "gamipress_points" to show easy controls to set points types amounts (like points awarded on achievements).
+* Improvements on admin area styles.
 
 = 1.4.0 =
 

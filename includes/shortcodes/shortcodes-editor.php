@@ -40,7 +40,22 @@ class GamiPress_Shortcodes_Editor {
 			wp_enqueue_script( 'gamipress-select2-js' );
 			wp_enqueue_style( 'gamipress-select2-css' );
 
-			wp_enqueue_script( 'gamipress-shortcodes-editor', GAMIPRESS_URL . 'assets/js/gamipress-shortcodes-editor' . $min . '.js', array( 'jquery', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
+            // Setup an array of post type labels to use on post selector field
+            $post_types = get_post_types( array(), 'objects' );
+            $post_type_labels = array();
+
+            foreach( $post_types as $key => $obj ) {
+                $post_type_labels[$key] = $obj->labels->singular_name;
+            }
+
+            // Localize admin functions script
+            wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
+                'post_type_labels' => $post_type_labels
+            ) );
+
+			wp_enqueue_script( 'gamipress-admin-functions-js' );
+
+			wp_enqueue_script( 'gamipress-shortcodes-editor', GAMIPRESS_URL . 'assets/js/gamipress-shortcodes-editor' . $min . '.js', array( 'jquery', 'gamipress-admin-functions-js', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
 
 			wp_localize_script( 'gamipress-shortcodes-editor', 'gamipress_shortcodes_editor', array(
 				'id_placeholder'          => __( 'Select a Post', 'gamipress' ),

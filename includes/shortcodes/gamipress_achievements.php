@@ -120,7 +120,7 @@ function gamipress_register_achievements_shortcode() {
 				'type'        => 'select',
 				'options'      => array(
 					'menu_order' => __( 'Menu Order', 'gamipress' ),
-					'ID'         => __( 'Achievement ID', 'gamipress' ),
+					'ID'         => __( 'Achievement', 'gamipress' ),
 					'title'      => __( 'Achievement Title', 'gamipress' ),
 					'date'       => __( 'Published Date', 'gamipress' ),
 					'modified'   => __( 'Last Modified Date', 'gamipress' ),
@@ -143,7 +143,7 @@ function gamipress_register_achievements_shortcode() {
 				'classes' 	  => 'gamipress-switch',
 			),
 			'user_id' => array(
-				'name'        => __( 'User ID', 'gamipress' ),
+				'name'        => __( 'User', 'gamipress' ),
 				'description' => __( 'Show only achievements earned by a specific user.', 'gamipress' ),
 				'type'        => 'select',
 				'default'     => '',

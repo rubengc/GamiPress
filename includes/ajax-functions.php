@@ -233,22 +233,38 @@ function gamipress_ajax_get_users() {
 	// Pull back the search string
 	$search = esc_sql( like_escape( $_REQUEST['q'] ) );
 
-	$sql = "SELECT ID, user_login FROM {$wpdb->users}";
-
-	// Build our query
-	if ( !empty( $search ) ) {
-		$sql .= " WHERE user_login LIKE '%{$search}%'";
+	if ( ! empty( $search ) ) {
+		$where = " WHERE user_login LIKE '%{$search}%'";
+		$where .= " OR user_email LIKE '%{$search}%'";
+		$where .= " OR display_name LIKE '%{$search}%'";
 	}
 
-	if( empty( $_REQUEST['q'] ) ) {
-		$sql .= " LIMIT 10";
-	}
+	// Pagination args
+	$page = isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1;
+	$limit = 20;
+	$offset = $limit * ( $page - 1 );
 
 	// Fetch our results (store as associative array)
-	$results = $wpdb->get_results( $sql, 'ARRAY_A' );
+	$results = $wpdb->get_results(
+		"SELECT ID, user_login, user_email, display_name
+		 FROM {$wpdb->users}
+		 {$where}
+		 LIMIT {$offset}, {$limit}",
+		'ARRAY_A' );
+
+	$count = $wpdb->get_var(
+		"SELECT COUNT(*)
+		 FROM {$wpdb->users}
+		 {$where}"
+	);
+
+	$response = array(
+		'results' => $results,
+		'more_results' => absint( $count ) > $offset,
+	);
 
 	// Return our results
-	wp_send_json_success( $results );
+	wp_send_json_success( $response );
 }
 add_action( 'wp_ajax_gamipress_get_users', 'gamipress_ajax_get_users' );
 
@@ -296,22 +312,42 @@ function gamipress_ajax_get_posts() {
 		}
 	}
 
+	// Pagination args
+	$page = isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1;
+	$limit = 20;
+	$offset = $limit * ( $page - 1 );
+
 	// On this query, keep $wpdb->posts to get current site posts
 	$results = $wpdb->get_results( $wpdb->prepare(
-		"
-		SELECT p.ID, p.post_title
+		"SELECT p.ID, p.post_title, p.post_type
 		FROM   {$wpdb->posts} AS p
 		WHERE  1=1
 			   {$post_type}
 		       {$where}
 			   AND p.post_title LIKE %s
 		       AND p.post_status IN( 'publish', 'inherit' )
-		",
+	    LIMIT {$offset}, {$limit}",
 		"%%{$search}%%"
 	) );
 
+	$count = $wpdb->get_var( $wpdb->prepare(
+		"SELECT COUNT(*)
+		FROM   {$wpdb->posts} AS p
+		WHERE  1=1
+			   {$post_type}
+		       {$where}
+			   AND p.post_title LIKE %s
+		       AND p.post_status IN( 'publish', 'inherit' )",
+		"%%{$search}%%"
+	) );
+
+	$response = array(
+		'results' => $results,
+		'more_results' => absint( $count ) > $offset,
+	);
+
 	// Return our results
-	wp_send_json_success( $results );
+	wp_send_json_success( $response );
 }
 add_action( 'wp_ajax_gamipress_get_posts', 'gamipress_ajax_get_posts' );
 
@@ -330,12 +366,18 @@ function gamipress_ajax_get_achievements_options() {
 		: gamipress_get_achievement_types_slugs();
 	$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $achievement_types ) );
 
+	// For single type, is not needed to add the post type, but for multiples types is a better option to distinguish them easily
+	$select = 'p.ID, p.post_title';
+
+	if( count( $achievement_types ) > 1 ) {
+		$select = 'p.ID, p.post_title, p.post_type';
+	}
+
 	$posts    	= GamiPress()->db->posts;
 	$postmeta 	= GamiPress()->db->postmeta;
 
 	$results = $wpdb->get_results( $wpdb->prepare(
-		"
-		SELECT p.ID, p.post_title
+		"SELECT {$select}
 		FROM {$posts} AS p
 		JOIN {$postmeta} AS pm
 		ON p.ID = pm.post_id
@@ -343,8 +385,7 @@ function gamipress_ajax_get_achievements_options() {
 		       {$post_type}
 		       AND p.post_status = 'publish'
 		       AND pm.meta_key = %s
-		       AND pm.meta_value = %s
-		",
+		       AND pm.meta_value = %s",
 		"%%{$search}%%",
 		"_gamipress_hidden",
 		"show"
@@ -455,7 +496,7 @@ function gamipress_ajax_get_ranks_options_html() {
 		FROM {$posts} AS p
 		WHERE p.post_status = %s
 			{$post_type}
-		ORDER BY menu_order DESC",
+		ORDER BY p.post_type ASC, p.menu_order DESC",
 		'publish'
 	) );
 
@@ -482,11 +523,16 @@ function gamipress_ajax_get_ranks_options() {
 	// Pull back the search string
 	$search = isset( $_REQUEST['q'] ) ? like_escape( $_REQUEST['q'] ) : '';
 
+	// For single type, is not needed to add the post type, but for multiples types is a better option to distinguish them easily
+	$select = 'p.ID, p.post_title';
+
 	// Post type conditional
 	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : gamipress_get_rank_types_slugs() );
 
 	if ( is_array( $post_type ) ) {
 		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
+
+		$select = 'p.ID, p.post_title, p.post_type';
 	} else {
 		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
 	}
@@ -494,12 +540,12 @@ function gamipress_ajax_get_ranks_options() {
 	$posts    	= GamiPress()->db->posts;
 
 	$ranks = $wpdb->get_results( $wpdb->prepare(
-		"SELECT p.ID, p.post_title
+		"SELECT {$select}
 		FROM {$posts} AS p
 		WHERE p.post_status = %s
 			{$post_type}
 		 AND p.post_title LIKE %s
-		ORDER BY menu_order DESC",
+		ORDER BY p.post_type ASC, p.menu_order DESC",
 		'publish',
 		"%%{$search}%%"
 	) );

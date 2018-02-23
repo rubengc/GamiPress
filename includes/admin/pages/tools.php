@@ -9,6 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 // GamiPress Tools
+require_once GAMIPRESS_DIR . 'includes/admin/tools/bulk-awards.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/recount-activity.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/clean-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/reset-data.php';
@@ -45,6 +46,20 @@ function gamipress_register_tools_page() {
 
             // Loop tools section meta boxes
             foreach( $meta_boxes as $meta_box_id => $meta_box ) {
+
+                // Check meta box tabs
+                if( isset( $meta_box['tabs'] ) && ! empty( $meta_box['tabs'] ) ) {
+
+                    // Loop meta box tabs
+                    foreach( $meta_box['tabs'] as $tab_id => $tab ) {
+
+                        $tab['id'] = $tab_id;
+
+                        $meta_box['tabs'][$tab_id] = $tab;
+
+                    }
+
+                }
 
                 // Only add tools meta box if has fields
                 if( isset( $meta_box['fields'] ) && ! empty( $meta_box['fields'] ) ) {

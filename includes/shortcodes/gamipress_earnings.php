@@ -96,7 +96,7 @@ function gamipress_register_earnings_shortcode() {
                 'default' 	  => 'yes',
             ),
             'user_id' => array(
-                'name'        => __( 'User ID', 'gamipress' ),
+                'name'        => __( 'User', 'gamipress' ),
                 'description' => __( 'Show only earned items by a specific user.', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',
