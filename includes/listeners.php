@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Listener for content publishing
+ * Listener for user log in
  *
  * Triggers: gamipress_login
  *
@@ -17,8 +17,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  *
  * @param string  $user_login Username.
  * @param WP_User $user       WP_User object of the logged-in user.
- *
- * @return void
  */
 function gamipress_login_listener( $user_login, $user ) {
 
@@ -152,7 +150,7 @@ function gamipress_site_visit_listener() {
 
     // Current User ID
     $user_id = get_current_user_id();
-    $now = strtotime( date('Y-m-d') );
+    $now = strtotime( date( 'Y-m-d' ) );
 
     // Website daily visit
     $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_site_visit', $now );

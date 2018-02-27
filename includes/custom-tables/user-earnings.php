@@ -169,7 +169,7 @@ add_filter( 'manage_gamipress_user_earnings_columns', 'gamipress_manage_user_ear
  * @param string $column_name
  * @param integer $object_id
  */
-function gamipress_manage_user_earnings_custom_column(  $column_name, $object_id ) {
+function gamipress_manage_user_earnings_custom_column( $column_name, $object_id ) {
 
     $can_manage = current_user_can( gamipress_get_manager_capability() );
 

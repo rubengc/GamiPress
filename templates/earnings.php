@@ -71,6 +71,9 @@ $user_earnings = $a['query']->get_results();
 
             <?php foreach( $user_earnings as $user_earning ) : ?>
 
+                <?php // Skip earnings that post assigned has been deleted
+                if( ! gamipress_post_exists( $user_earning->post_id ) ) { continue; } ?>
+
                 <tr>
 
                     <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>

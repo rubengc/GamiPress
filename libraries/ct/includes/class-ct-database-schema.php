@@ -185,7 +185,18 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
 
                 // KEY definition
                 if( $field_args['key'] ) {
-                    $keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
+
+                    /*
+                     * Indexes have a maximum size of 767 bytes. WordPress 4.2 was moved to utf8mb4, which uses 4 bytes per character.
+                     * This means that an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+                     */
+                    $max_index_length = 191;
+
+                    if( $field_args['length'] > $max_index_length ) {
+                        $keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $max_index_length . '))';
+                    } else {
+                        $keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
+                    }
                 }
 
                 $fields_def[] = $schema;

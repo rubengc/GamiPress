@@ -1236,7 +1236,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
 
 }
-add_action( 'gamipress_award_achievement', 'gamipress_maybe_send_email_to_user', 10, 5 );
+add_action( 'gamipress_award_achievement', 'gamipress_maybe_send_email_to_user', 20, 5 );
 
 /**
  * Function that check for each awarded rank if it should be emailed to the user
@@ -1272,4 +1272,4 @@ function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank
 
     gamipress_send_email( $user->user_email, $subject, $message );
 }
-add_action( 'gamipress_update_user_rank', 'gamipress_maybe_send_email_to_user_for_rank_earned', 10, 5 );
+add_action( 'gamipress_update_user_rank', 'gamipress_maybe_send_email_to_user_for_rank_earned', 20, 5 );

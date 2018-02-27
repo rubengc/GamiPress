@@ -398,7 +398,7 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 		case 'gamipress_delete_page':
 			// User can not publish/delete same post more times, so check it
 			$log_meta['post_id'] = $args[0];
-			$return = (bool) ( gamipress_get_user_log_count( $user_id, $log_meta ) === 0 );
+			$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
 			break;
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
@@ -408,7 +408,7 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 
 			// Guests are allowed to trigger the visit unlimited times
 			if( $log_meta['visitor_id'] !== 0 ) {
-				$return = (bool) ( gamipress_get_user_log_count( $user_id, $log_meta ) === 0 );
+				$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
 			}
 			break;
 		case 'gamipress_new_comment':
@@ -417,7 +417,7 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 		case 'gamipress_user_specific_post_comment':
 			// User can not publish same comment more times, so check it
 			$log_meta['comment_id'] = $args[0];
-			$return = (bool) ( gamipress_get_user_log_count( $user_id, $log_meta ) === 0 );
+			$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
 			break;
 	}
 
@@ -712,12 +712,21 @@ function gamipress_update_user_trigger_count( $user_id, $trigger, $site_id = 0, 
 	if ( ! $site_id )
 		$site_id = get_current_blog_id();
 
-	// Grab the current count and increase it by 1
-	$trigger_count = absint( gamipress_get_user_trigger_count( $user_id, $trigger, $site_id, $args ) );
+	// Get the user triggered triggers
+	$user_triggers = gamipress_get_user_triggers( $user_id, false );
+
+	if( isset( $user_triggers[$site_id][$trigger] ) ) {
+		// If already have this count, just retrieve it
+		$trigger_count = absint( $user_triggers[$site_id][$trigger] );
+	} else {
+		// Grab the current count directly from the database
+		$trigger_count = absint( gamipress_get_user_trigger_count( $user_id, $trigger, 0, $site_id, $args ) );
+	}
+
+	// Increase the current count by 1
 	$trigger_count += (int) apply_filters( 'gamipress_update_user_trigger_count', 1, $user_id, $trigger, $site_id, $args );
 
-	// Update the triggers arary with the new count
-	$user_triggers = gamipress_get_user_triggers( $user_id, false );
+	// Update the triggers array with the new count
 	$user_triggers[$site_id][$trigger] = $trigger_count;
 	gamipress_update_user_meta( $user_id, '_gamipress_triggered_triggers', $user_triggers );
 

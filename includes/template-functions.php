@@ -19,6 +19,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return string                   The Achievement's output
  */
 function gamipress_render_achievement( $achievement = 0, $template_args = array() ) {
+
     global $post;
     global $gamipress_template_args;
 

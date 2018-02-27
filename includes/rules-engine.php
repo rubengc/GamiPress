@@ -300,6 +300,11 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 	// If is a rank requirement, we need to check if rank requirement is for next rank and not other
 	$requirement_rank = gamipress_get_rank_requirement_rank( $rank_requirement_id );
 
+	// Bail if not rank assigned to this rank requirement
+	if( ! $requirement_rank ) {
+		return false;
+	}
+
 	$next_user_rank_id = gamipress_get_next_user_rank_id( $user_id, $requirement_rank->post_type );
 
 	if( $return && $next_user_rank_id === 0 ) {

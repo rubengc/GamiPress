@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.1
+Stable tag: 1.4.2
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -226,6 +226,15 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.4.2 =
+
+* Fixed user points balance on emails, now emails will send the updated points balance instead of the old one.
+* Fixed output for [gamipress_earnings] shortcode and GamiPress: User Earnings widget when the earning gets removed.
+* Important query performance on duplicity checks.
+* Improvements on cached queries for post visits listeners.
+* Improvements on rank requirements checks on rules engine to prevent notices when rank requirement is wrong configured.
+* Compatibility support for old database engines.
 
 = 1.4.1 =
 

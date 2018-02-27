@@ -396,6 +396,38 @@ function gamipress_get_post_field( $field, $post_id = null  ) {
 }
 
 /**
+ * Helper function to check if a post exists.
+ *
+ * Important: On network wide installs, this function will check the post from main site, so use only for points, achievements and ranks posts
+ *
+ * @since  1.4.2
+ *
+ * @param integer  $post_id     Post ID.
+ *
+ * @return bool                 True if exists, false if not.
+ */
+function gamipress_post_exists( $post_id  ) {
+
+    $post_id = absint( $post_id );
+
+    if( $post_id === 0 ) {
+        return false;
+    }
+
+    global $wpdb;
+
+    // GamiPress post are stored on main site, so if we are not on main site, then we need to get their fields from global table
+    $posts = GamiPress()->db->posts;
+
+    $found = $wpdb->get_var( $wpdb->prepare(
+        "SELECT ID FROM {$posts} WHERE ID = %d",
+        $post_id
+    ) );
+
+    return absint( $found ) === $post_id;
+}
+
+/**
  * Register GamiPress types and flush rewrite rules.
  *
  * @since 1.0.0
