@@ -241,6 +241,7 @@ GamiPress comes with the following widgets:
 
 * Fixed user points balance on emails, now emails will send the updated points balance instead of the old one.
 * Fixed output for [gamipress_earnings] shortcode and GamiPress: User Earnings widget when the earning gets removed.
+* Fixed specific achievement and rank post selectors on requirements.
 * Important query performance on duplicity checks.
 * Improvements on cached queries for post visits listeners.
 * Improvements on rank requirements checks on rules engine to prevent notices when rank requirement is wrong configured.

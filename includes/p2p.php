@@ -92,6 +92,22 @@ function gamipress_register_achievement_relationships() {
                 ),
             ) );
 
+            // Connect each achievement type to a rank requirement
+            // Used to get a rank requirement's required achievement (e.g. this step requires earning Level 1)
+            p2p_register_connection_type( array(
+                'name'      => $achievement_type . '-to-rank-requirement',
+                'from'      => $achievement_type,
+                'to'        => 'rank-requirement',
+                'admin_box' => false,
+                'fields'    => array(
+                    'order'   => array(
+                        'title'   => __( 'Order', 'gamipress' ),
+                        'type'    => 'text',
+                        'default' => 0,
+                    ),
+                ),
+            ) );
+
             // Connect each achievement type to a points award
             // Used to get a points award's required achievement (e.g. this points award requires earning Level 1)
             p2p_register_connection_type( array(
@@ -159,11 +175,27 @@ function gamipress_register_rank_relationships() {
             ) );
 
             // Connect each rank type to a step
-            // Used to get a requirement's required rank (e.g. this requirement requires earning Level 1)
+            // Used to get a step's required rank (e.g. this requirement requires earning Level 1)
+            p2p_register_connection_type( array(
+                'name'      => $rank_type . '-to-step',
+                'from'      => $rank_type,
+                'to'        => 'step',
+                'admin_box' => false,
+                'fields'    => array(
+                    'order'   => array(
+                        'title'   => __( 'Order', 'gamipress' ),
+                        'type'    => 'text',
+                        'default' => 0,
+                    ),
+                ),
+            ) );
+
+            // Connect each rank type to a rank requirement
+            // Used to get a rank requirement's required rank (e.g. this requirement requires earning Level 1)
             p2p_register_connection_type( array(
                 'name'      => $rank_type . '-to-rank-requirement',
                 'from'      => $rank_type,
-                'to'        => 'step',
+                'to'        => 'rank-requirement',
                 'admin_box' => false,
                 'fields'    => array(
                     'order'   => array(
