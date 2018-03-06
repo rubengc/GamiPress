@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.2
+Stable tag: 1.4.3
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -226,6 +226,25 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.4.3 =
+
+* Added a bulk revokes tool that let's revoke points, achievements or ranks to all or a group of users.
+* Added title on user earnings table.
+* Added support for meta data on user earnings table.
+* Improvements on "Log in to the website" event detection.
+* Improvements on recount activity tool recounting large amounts of records.
+* Improvements on bulk awards tool.
+* Improvements parsing points tags on logs patterns.
+* Renamed hook "achievement_object" to "gamipress_achievement_object".
+* Added gamipress_revoke_achievement_to_user( $achievement_id, $user_id, $user_earning_id ) function.
+* Added gamipress_award_rank_to_user( $rank_id, $user_id, $args ) function.
+* Added gamipress_revoke_rank_to_user( $user_id, $rank_id, $new_rank_id, $args ) function.
+* Added gamipress_upgrade_rank_to_user( $user_id, $rank_type ) function.
+* Added gamipress_downgrade_rank_to_user( $user_id, $rank_type ) function.
+* Added gamipress_get_prev_user_rank_id( $user_id, $rank_type ) function.
+* Added gamipress_insert_user_earning( $user_id, $data, $meta ) function.
+* Added the ability to gamipress_trigger_event() to be called directly.
 
 = 1.4.2 =
 

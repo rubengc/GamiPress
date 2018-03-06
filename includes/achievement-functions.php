@@ -336,7 +336,7 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
 	}
 
 	// Return our achievement object, available filter so we can extend it elsewhere
-	return apply_filters( 'achievement_object', $achievement_object, $achievement_id, $context );
+	return apply_filters( 'gamipress_achievement_object', $achievement_object, $achievement_id, $context );
 
 }
 

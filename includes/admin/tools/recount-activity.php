@@ -20,7 +20,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
 
     /**
-     * Hook to add recountable activity triggers (login or daily visits are not recountable because they are not getting stored in the database)
+     * Hook to add recountable activity triggers (login or daily visits are not recountable because they aren't stored in database)
      *
      * @since 1.1.8
      */
@@ -64,7 +64,8 @@ add_filter( 'gamipress_tools_general_meta_boxes', 'gamipress_recount_activity_to
 /**
  * AJAX handler for the recount activity tool
  *
- * @since 1.1.8
+ * @since   1.1.8
+ * @updated 1.4.2 Added the run again utility
  */
 function gamipress_ajax_recount_activity_tool() {
 
@@ -86,22 +87,36 @@ function gamipress_ajax_recount_activity_tool() {
 
     $response = array(
         'success' => true,
+        'run_again' => false,
         'message' =>  __( 'Activity recount process has been done successfully.', 'gamipress' )
     );
 
     $activity = $_POST['activity'];
+    $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
 
     /**
      * Hook to process activity recount
      *
-     * @since 1.1.8
+     * @since   1.1.8
+     * @updated 1.4.2 Added $loop parameter
      *
-     * @param array $response Response to return. array( success => true|false, message => string )
+     * @param array $response   Response to return. Response format: array(
+     *                              success => true|false,
+     *                              run_again => true|false,
+     *                              message => string
+     *                          )
+     * @param int   $loop       Parameter to meet in which loop is the tool (just increased if run_again is set to true).
+     *                          Important: First loop will be 0.
      */
-    $response = apply_filters( "gamipress_activity_recount_$activity", $response );
+    $response = apply_filters( "gamipress_activity_recount_$activity", $response, $loop );
 
     if( ! is_array( $response ) ) {
         wp_send_json_error( 'Activity recount process has failed!', 'gamipress' );
+    }
+
+    if( $response['run_again'] ) {
+        // Return the full response
+        wp_send_json_success( $response );
     }
 
     if( $response['success'] === true ) {
@@ -117,82 +132,126 @@ add_action( 'wp_ajax_gamipress_recount_activity_tool', 'gamipress_ajax_recount_a
 /**
  * Recount comments activity
  *
- * @since 1.1.8
+ * @since   1.1.8
+ * @updated 1.4.2 Added $loop parameter
  *
  * @param array $response
+ * @param int   $loop
  *
  * @return array $response
  */
-function gamipress_activity_recount_comments( $response ) {
+function gamipress_activity_recount_comments( $response, $loop ) {
 
     global $wpdb;
 
-    // Get all stored users
-    $users = $wpdb->get_results( "SELECT {$wpdb->users}.ID FROM {$wpdb->users}" );
+    // Set a limit of 100 comments
+    $limit = 100;
 
-    foreach( $users as $user ) {
-        // Get all user approved comments
-        $comments = $wpdb->get_results( $wpdb->prepare(
-            "
-            SELECT *
-            FROM $wpdb->comments AS c
-            WHERE c.user_id = %s
-		       AND c.comment_approved = '1'
-            ",
-            $user->ID
-        ) );
+    // Get all approved comments count
+    $comments_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE comment_approved = '1'" ) );
 
-        foreach( $comments as $comment ) {
-            // Trigger comment actions
-            do_action( 'gamipress_specific_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
-            do_action( 'gamipress_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
+    // On first loop send an informational text
+    if( $loop === 0 && $comments_count > $limit ) {
+        $response['run_again'] = true;
+        $response['message'] = sprintf( __( '%d comments found, recounting...', 'gamipress' ), $comments_count );
 
-            // GamiPress has a 2 seconds delay to prevent unlimited earnings
-            sleep( 2 );
+        // Return early to inform
+        return $response;
+    }
+
+    // Get all approved comments
+    $comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_approved = '1' LIMIT {$loop}, {$limit}" );
+
+    foreach( $comments as $comment ) {
+
+        // Trigger comment actions to user
+        do_action( 'gamipress_specific_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
+        do_action( 'gamipress_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
+
+        if( $comment->comment_post_ID !== 0 ) {
+
+            $post_author = absint( get_post_field( 'post_author', $comment->comment_post_ID ) );
+
+            // Trigger comment actions to author
+            do_action( 'gamipress_user_specific_post_comment', (int) $comment->ID, $post_author, $comment->comment_post_ID, $comment );
+            do_action( 'gamipress_user_post_comment', (int) $comment->ID, $post_author, $comment->comment_post_ID, $comment );
         }
+
+        // GamiPress has a 1 second delay to prevent unlimited earnings
+        sleep( 1 );
+    }
+
+    $recounted_comments = $limit * ( $loop + 1 );
+
+    // Check remaining comments
+    if( $recounted_comments < $comments_count ) {
+        $response['run_again'] = true;
+        $response['message'] = sprintf( __( '%d remaining comments to finish recount', 'gamipress' ), ( $comments_count - $recounted_comments ) );
     }
 
     return $response;
 
 }
-add_filter( 'gamipress_activity_recount_comments', 'gamipress_activity_recount_comments' );
+add_filter( 'gamipress_activity_recount_comments', 'gamipress_activity_recount_comments', 10, 2 );
 
 /**
  * Recount published content
  *
- * @since 1.1.8
+ * @since   1.1.8
+ * @updated 1.4.2 Added $loop parameter
  *
  * @param array $response
+ * @param int   $loop
  *
  * @return array $response
  */
-function gamipress_activity_recount_published_content( $response ) {
+function gamipress_activity_recount_published_content( $response, $loop ) {
 
     global $wpdb;
 
-    // Get all stored users
-    $users = $wpdb->get_results( "SELECT {$wpdb->users}.ID FROM {$wpdb->users}" );
+    // Set a limit of 100 posts
+    $limit = 100;
 
-    foreach( $users as $user ) {
-        // Get all user published posts
-        $posts = $wpdb->get_results( $wpdb->prepare(
-            "SELECT *
-            FROM $wpdb->posts AS p
-            WHERE p.post_author = %s
-		       AND p.post_status = 'publish'",
-                $user->ID
-        ) );
+    // Get all public post types which means they are visitable
+    $public_post_types = get_post_types( array( 'public' => true ) );
 
-        foreach( $posts as $post ) {
-            // Trigger content publishing action for each post
-            do_action( "gamipress_publish_{$post->post_type}", $post->ID, $post->post_author, $post );
+    // Remove attachment from public post types
+    if( isset( $public_post_types['attachment'] ) ) {
+        unset( $public_post_types['attachment'] );
+    }
 
-            // GamiPress has a 2 seconds delay to prevent unlimited earnings
-            sleep( 2 );
-        }
+    // Get all published posts
+    $posts_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN ( '" . implode( "', '", $public_post_types ) . "' )" ) );
+
+    // On first loop send an informational text
+    if( $loop === 0 && $posts_count > $limit ) {
+        $response['run_again'] = true;
+        $response['message'] = sprintf( __( '%d posts found, recounting...', 'gamipress' ), $posts_count );
+
+        // Return early to inform
+        return $response;
+    }
+
+    // Get all published posts
+    $posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN ( '" . implode( "', '", $public_post_types ) . "' ) LIMIT {$loop}, {$limit}" );
+
+    foreach( $posts as $post ) {
+        // Trigger content publishing action for each post
+        do_action( "gamipress_publish_{$post->post_type}", $post->ID, $post->post_author, $post );
+
+        // GamiPress has a 1 second delay to prevent unlimited earnings
+        sleep( 1 );
+    }
+
+    $recounted_posts = $limit * ( $loop + 1 );
+
+    // Check remaining posts
+    if( $recounted_posts < $posts_count ) {
+        $response['run_again'] = true;
+        $response['message'] = sprintf( __( '%d remaining posts to finish recount', 'gamipress' ), ( $posts_count - $recounted_posts ) );
     }
 
     return $response;
 
 }
-add_filter( 'gamipress_activity_recount_published_content', 'gamipress_activity_recount_published_content' );
+add_filter( 'gamipress_activity_recount_published_content', 'gamipress_activity_recount_published_content', 10, 2 );

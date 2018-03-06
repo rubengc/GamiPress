@@ -556,3 +556,20 @@ function gamipress_in_array( $needle, $haystack, $strict = false ) {
 
     return false;
 }
+
+/**
+ * Check if a specific action or filter has been hooked
+ *
+ * @since 1.4.3
+ *
+ * @param string $filter
+ *
+ * @return bool
+ */
+function gamipress_has_filters( $filter ) {
+
+    global $wp_filter;
+
+    return (bool) ( isset( $wp_filter[$filter] ) && count( $wp_filter[$filter] ) > 0 );
+
+}

@@ -11,6 +11,9 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
 
     class CT_DataBase_Schema {
 
+        /**
+         * @var array Schema fields definition
+         */
         public $fields = array();
 
         public function __construct( $schema ) {
@@ -55,151 +58,9 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
             $keys = array();
 
             foreach( $this->fields as $field_id => $field_args ) {
-                $schema = '';
-
-                // Field name
-                $schema .= $field_id . ' ';
-
-                // Type definition
-                $schema .= $field_args['type'];
-
-                // Type definition args
-                switch( strtoupper( $field_args['type'] ) ) {
-                    case 'ENUM':
-                    case 'SET':
-                        $schema .= '(' . implode( ',', $field_args['options'] ) . ')';
-                        break;
-                    case 'REAL':
-                    case 'DOUBLE':
-                    case 'FLOAT':
-                    case 'DECIMAL':
-                    case 'NUMERIC':
-                        if( $field_args['length'] !== 0 ) {
-                            $schema .= '(' . $field_args['length'] . ',' . $field_args['decimals'] . ')';
-                        }
-                        break;
-                    case 'TIME':
-                    case 'TIMESTAMP':
-                    case 'DATETIME':
-                        if( $field_args['format'] !== '' ) {
-                            $schema .= '(' . $field_args['format'] . ')';
-                        }
-                        break;
-                    default:
-                        if( $field_args['length'] !== 0 ) {
-                            $schema .= '(' . $field_args['length'] . ')';
-                        }
-                        break;
-                }
-
-                $schema .= ' ';
-
-                // Type specific definitions
-                switch( strtoupper( $field_args['type'] ) ) {
-                    case 'TINYINT':
-                    case 'SMALLINT':
-                    case 'MEDIUMINT':
-                    case 'INT':
-                    case 'INTEGER':
-                    case 'BIGINT':
-                    case 'REAL':
-                    case 'DOUBLE':
-                    case 'FLOAT':
-                    case 'DECIMAL':
-                    case 'NUMERIC':
-                        // UNSIGNED definition
-                        if( $field_args['unsigned'] !== null ) {
-                            if( $field_args['unsigned'] ) {
-                                $schema .= 'UNSIGNED ';
-                            } else {
-                                $schema .= 'SIGNED ';
-                            }
-                        }
-
-                        // ZEROFILL definition
-                        if( $field_args['zerofill'] !== null && $field_args['zerofill'] ) {
-                            $schema .= 'ZEROFILL ';
-                        }
-                        break;
-                    case 'CHAR':
-                    case 'VARCHAR':
-                    case 'TINYTEXT':
-                    case 'TEXT':
-                    case 'MEDIUMTEXT':
-                    case 'LONGTEXT':
-                    case 'ENUM':
-                    case 'SET':
-                        // BINARY definition
-                        if( $field_args['binary'] !== null && $field_args['binary']) {
-                            $schema .= 'BINARY ';
-                        }
-
-                        // CHARACTER SET definition
-                        if( $field_args['charset'] !== false ) {
-                            $schema .= 'CHARACTER SET ' . $field_args['charset'] . ' ';
-                        }
-
-                        // COLLATE definition
-                        if( $field_args['collate'] !== false ) {
-                            $schema .= 'COLLATE ' . $field_args['collate'] . ' ';
-                        }
-                        break;
-                }
 
 
-                // NULL definition
-                if( $field_args['nullable'] ) {
-                    $schema .= 'NULL ';
-                } else {
-                    $schema .= 'NOT NULL ';
-                }
-
-                // DEFAULT definition
-                if( $field_args['default'] !== false ) {
-
-                    if( gettype( $field_args['default'] ) === 'string' ) {
-                        $field_args['default'] = "'" . $field_args['default'] . "'";
-                    }
-
-                    if( $field_args['default'] === null ) {
-                        $field_args['default'] = 'NULL';
-                    }
-
-                    $schema .= 'DEFAULT ' . $field_args['default'] . ' ';
-                }
-
-                // UNIQUE definition
-                if( $field_args['unique'] ) {
-                    $schema .= 'UNIQUE ';
-                }
-
-                // AUTO_INCREMENT definition
-                if( $field_args['auto_increment'] ) {
-                    $schema .= 'AUTO_INCREMENT ';
-                }
-
-                // PRIMARY KEY definition
-                if( $field_args['primary_key'] ) {
-                    $primary_key = $field_id;
-                }
-
-                // KEY definition
-                if( $field_args['key'] ) {
-
-                    /*
-                     * Indexes have a maximum size of 767 bytes. WordPress 4.2 was moved to utf8mb4, which uses 4 bytes per character.
-                     * This means that an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
-                     */
-                    $max_index_length = 191;
-
-                    if( $field_args['length'] > $max_index_length ) {
-                        $keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $max_index_length . '))';
-                    } else {
-                        $keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
-                    }
-                }
-
-                $fields_def[] = $schema;
+                $fields_def[] = $this->field_array_to_schema( $field_id, $field_args );
 
             }
 
@@ -215,6 +76,175 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
             return $sql;
         }
 
+        /**
+         * Convert a field definition into a schema string
+         *
+         * @param string $field_id
+         * @param array $field_args
+         *
+         * @return string               A schema string like: field type(length,decimals) UNSIGNED NOT NULL
+         */
+        public function field_array_to_schema( $field_id, $field_args ) {
+
+            $schema = '';
+
+            // Field name
+            $schema .= $field_id . ' ';
+
+            // Type definition
+            $schema .= $field_args['type'];
+
+            // Type definition args
+            switch( strtoupper( $field_args['type'] ) ) {
+                case 'ENUM':
+                case 'SET':
+                    if( is_array( $field_args['options'] ) ) {
+                        $schema .= '(' . implode( ',', $field_args['options'] ) . ')';
+                    } else {
+                        $schema .= '(' . $field_args['options'] . ')';
+                    }
+                    break;
+                case 'REAL':
+                case 'DOUBLE':
+                case 'FLOAT':
+                case 'DECIMAL':
+                case 'NUMERIC':
+                    if( $field_args['length'] !== 0 ) {
+                        $schema .= '(' . $field_args['length'] . ',' . $field_args['decimals'] . ')';
+                    }
+                    break;
+                case 'TIME':
+                case 'TIMESTAMP':
+                case 'DATETIME':
+                    if( $field_args['format'] !== '' ) {
+                        $schema .= '(' . $field_args['format'] . ')';
+                    }
+                    break;
+                default:
+                    if( $field_args['length'] !== 0 ) {
+                        $schema .= '(' . $field_args['length'] . ')';
+                    }
+                    break;
+            }
+
+            $schema .= ' ';
+
+            // Type specific definitions
+            switch( strtoupper( $field_args['type'] ) ) {
+                case 'TINYINT':
+                case 'SMALLINT':
+                case 'MEDIUMINT':
+                case 'INT':
+                case 'INTEGER':
+                case 'BIGINT':
+                case 'REAL':
+                case 'DOUBLE':
+                case 'FLOAT':
+                case 'DECIMAL':
+                case 'NUMERIC':
+                    // UNSIGNED definition
+                    if( $field_args['unsigned'] !== null ) {
+                        if( $field_args['unsigned'] ) {
+                            $schema .= 'UNSIGNED ';
+                        } else {
+                            $schema .= 'SIGNED ';
+                        }
+                    }
+
+                    // ZEROFILL definition
+                    if( $field_args['zerofill'] !== null && $field_args['zerofill'] ) {
+                        $schema .= 'ZEROFILL ';
+                    }
+                    break;
+                case 'CHAR':
+                case 'VARCHAR':
+                case 'TINYTEXT':
+                case 'TEXT':
+                case 'MEDIUMTEXT':
+                case 'LONGTEXT':
+                case 'ENUM':
+                case 'SET':
+                    // BINARY definition
+                    if( $field_args['binary'] !== null && $field_args['binary']) {
+                        $schema .= 'BINARY ';
+                    }
+
+                    // CHARACTER SET definition
+                    if( $field_args['charset'] !== false ) {
+                        $schema .= 'CHARACTER SET ' . $field_args['charset'] . ' ';
+                    }
+
+                    // COLLATE definition
+                    if( $field_args['collate'] !== false ) {
+                        $schema .= 'COLLATE ' . $field_args['collate'] . ' ';
+                    }
+                    break;
+            }
+
+
+            // NULL definition
+            if( $field_args['nullable'] ) {
+                $schema .= 'NULL ';
+            } else {
+                $schema .= 'NOT NULL ';
+            }
+
+            // DEFAULT definition
+            if( $field_args['default'] !== false ) {
+
+                if( gettype( $field_args['default'] ) === 'string' ) {
+                    $field_args['default'] = "'" . $field_args['default'] . "'";
+                }
+
+                if( $field_args['default'] === null ) {
+                    $field_args['default'] = 'NULL';
+                }
+
+                $schema .= 'DEFAULT ' . $field_args['default'] . ' ';
+            }
+
+            // UNIQUE definition
+            if( $field_args['unique'] ) {
+                $schema .= 'UNIQUE ';
+            }
+
+            // AUTO_INCREMENT definition
+            if( $field_args['auto_increment'] ) {
+                $schema .= 'AUTO_INCREMENT ';
+            }
+
+            // PRIMARY KEY definition
+            if( $field_args['primary_key'] ) {
+                $primary_key = $field_id;
+            }
+
+            // KEY definition
+            if( $field_args['key'] ) {
+
+                /*
+                 * Indexes have a maximum size of 767 bytes. WordPress 4.2 was moved to utf8mb4, which uses 4 bytes per character.
+                 * This means that an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+                 */
+                $max_index_length = 191;
+
+                if( $field_args['length'] > $max_index_length ) {
+                    $keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $max_index_length . '))';
+                } else {
+                    $keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
+                }
+            }
+
+            return $schema;
+
+        }
+
+        /**
+         * Convert a schema string into an array of fields definitions
+         *
+         * @param string $schema
+         *
+         * @return array
+         */
         public function string_schema_to_array( $schema ) {
 
             $schema_array = explode( ',', trim( $schema ) );

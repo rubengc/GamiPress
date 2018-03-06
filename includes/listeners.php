@@ -13,14 +13,22 @@ if( !defined( 'ABSPATH' ) ) exit;
  *
  * Triggers: gamipress_login
  *
- * @since  1.1.0
+ * @since   1.1.0
+ * @updated 1.4.3 Changed event triggering by calling directly to gamipress_trigger_event()
  *
  * @param string  $user_login Username.
  * @param WP_User $user       WP_User object of the logged-in user.
  */
 function gamipress_login_listener( $user_login, $user ) {
 
+    // Sometimes this event is triggered before gamipress_load_activity_triggers()
+    // so to avoid issues, method has changed to trigger the event directly
     do_action( 'gamipress_login', $user->ID, $user );
+
+    gamipress_trigger_event( array(
+        'event' => 'gamipress_login',
+        'user_id' => $user->ID,
+    ) );
 
 }
 add_action( 'wp_login', 'gamipress_login_listener', 10, 2 );

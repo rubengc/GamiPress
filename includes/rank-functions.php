@@ -448,8 +448,6 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
  */
 function gamipress_get_next_rank( $rank_id = null ) {
 
-    global $wpdb;
-
     if( $rank_id === null ) {
         $rank_id = get_the_ID();
     }
@@ -524,8 +522,6 @@ function gamipress_get_prev_rank_id( $rank_id = null ) {
  */
 function gamipress_get_prev_rank( $rank_id = null ) {
 
-    global $wpdb;
-
     if( $rank_id === null ) {
         $rank_id = get_the_ID();
     }
@@ -540,6 +536,46 @@ function gamipress_get_prev_rank( $rank_id = null ) {
 
     if( $rank ) {
         return apply_filters( 'gamipress_get_prev_rank', $rank, $prev_rank_id, $rank_id );
+    }
+
+    return false;
+
+}
+
+/**
+ * Return previous user rank
+ *
+ * @since 1.4.3
+ *
+ * @param integer $user_id The given user's ID
+ * @param string  $rank_type The given rank's type
+ *
+ * @return bool|int
+ */
+function gamipress_get_prev_user_rank_id( $user_id = null, $rank_type = '' ) {
+
+    if( $user_id === null ) {
+        $user_id = get_current_user_id();
+    }
+
+    $old_meta = "_gamipress_{$rank_type}_previous_rank";
+    $prev_user_rank_id = absint( gamipress_get_user_meta( $user_id, $old_meta ) );
+
+    // Check if there is a previous rank stored, if not, try to get previous rank of current user rank
+    if( $prev_user_rank_id === 0 ) {
+
+        $user_rank_id = gamipress_get_user_rank_id( $user_id, $rank_type );
+
+        // If there is not previous rank and not current rank, return lowest priority rank ID
+        if( ! $user_rank_id ) {
+            return gamipress_get_lowest_priority_rank_id( $rank_type );
+        }
+
+        $prev_user_rank_id = gamipress_get_prev_rank_id( $user_rank_id );
+    }
+
+    if( $prev_user_rank_id ) {
+        return apply_filters( 'gamipress_get_prev_user_rank_id', $prev_user_rank_id, $user_id, $rank_type );
     }
 
     return false;
@@ -565,6 +601,172 @@ function gamipress_is_lowest_priority_rank( $rank_id = null ) {
 
     // Return true if previous rank is 0 or the same that given one
     return (bool) ( $rank_id === $prev_rank_id || $prev_rank_id === 0 );
+
+}
+
+/**
+ * Get the lowest priority rank ID of a rank type
+ *
+ * @since 1.4.3
+ *
+ * @param string $rank_type The given rank's type
+ *
+ * @return int
+ */
+function gamipress_get_lowest_priority_rank_id( $rank_type = null ) {
+
+    global $wpdb;
+
+    $posts = GamiPress()->db->posts;
+
+    // Get the lowest priority rank
+    $rank_id = $wpdb->get_var( $wpdb->prepare(
+        "SELECT p.ID
+        FROM {$posts} AS p
+        WHERE p.post_type = %s
+         AND p.post_status = %s
+        ORDER BY menu_order ASC
+        LIMIT 1",
+        $rank_type,
+        'publish'
+    ) );
+
+    // Return true if previous rank is 0 or the same that given one
+    return apply_filters( 'gamipress_get_lowest_priority_rank_id', absint( $rank_id ), $rank_type );
+
+}
+
+/**
+ * Award rank to an user
+ *
+ * @since 1.4.3
+ *
+ * @param integer 			$rank_id 		The rank is being awarded
+ * @param integer 			$user_id 		The given user's ID
+ * @param array 			$args			Array of extra arguments
+ *
+ * @return bool|WP_Post                     WP Post object of newly rank awarded, false if process fails
+ */
+function gamipress_award_rank_to_user( $rank_id = 0, $user_id = 0, $args = array() ) {
+
+    // Bail if not is a valid rank
+    if( ! gamipress_is_rank( $rank_id ) ) {
+        return false;
+    }
+
+    // Initialize args
+    $args = wp_parse_args( $args, array(
+        'admin_id' => 0,
+        'achievement_id' => null,
+    ) );
+
+    // Available action for triggering other processes
+    do_action( 'gamipress_award_rank_to_user', $user_id, $rank_id, $args );
+
+    return gamipress_update_user_rank( $user_id, $rank_id, $args['admin_id'], $args['achievement_id'] );
+
+}
+
+/**
+ * Revoke rank to an user
+ *
+ * @since 1.4.3
+ *
+ * @param integer 			$user_id 		The given user's ID
+ * @param integer 			$rank_id 		The rank is being revoked
+ * @param integer 			$new_rank_id    The new user rank, if not provided user will get the previous rank
+ * @param array 			$args			Array of extra arguments
+ *
+ * @return bool|WP_Post                     WP Post object of newly rank revoked, false if process fails
+ */
+function gamipress_revoke_rank_to_user( $user_id = 0, $rank_id = 0, $new_rank_id = 0, $args = array() ) {
+
+    // Bail if not is a valid rank
+    if( ! gamipress_is_rank( $rank_id ) ) {
+        return false;
+    }
+
+    // Initialize args
+    $args = wp_parse_args( $args, array(
+        'admin_id' => 0,
+        'achievement_id' => null,
+    ) );
+
+    // If not new rank provided, then get the previous user rank
+    if( $new_rank_id === 0 ) {
+        $rank_type = gamipress_get_post_type( $rank_id );
+
+        $new_rank_id = gamipress_get_prev_user_rank_id( $user_id, $rank_type );
+    }
+
+    // Available action for triggering other processes
+    do_action( 'gamipress_revoke_rank_to_user', $user_id, $rank_id, $new_rank_id, $args );
+
+    // Removes the rank from the user earnings table
+    gamipress_revoke_achievement_to_user( $rank_id, $user_id );
+
+    // Set the new rank to the user
+    return gamipress_update_user_rank( $user_id, $new_rank_id, $args['admin_id'], $args['achievement_id'] );
+
+}
+
+/**
+ * Upgrade the given user to the next rank of a rank type
+ *
+ * @since 1.4.3
+ *
+ * @param int       $user_id    The given user's ID
+ * @param string    $rank_type  The given rank's type
+ *
+ * @return bool|WP_Post         WP Post object of newly rank upgraded, false if process fails
+ */
+function gamipress_upgrade_user_to_next_rank( $user_id = 0, $rank_type = '' ) {
+
+    // Bail if not is a valid rank type
+    if( ! gamipress_is_rank( $rank_type ) ) {
+        return false;
+    }
+
+    $user_rank_id = gamipress_get_user_rank_id( $user_id, $rank_type );
+    $next_rank_id = gamipress_get_next_rank_id( $user_rank_id );
+
+    // User is already on higher rank, so bail here
+    if( $next_rank_id === $user_rank_id ) {
+        return false;
+    }
+
+    // Award the next rank to the user
+    return gamipress_award_rank_to_user( $next_rank_id, $user_id );
+
+}
+
+/**
+ * Downgrade the given user to the previous rank of a rank type
+ *
+ * @since 1.4.3
+ *
+ * @param int       $user_id    The given user's ID
+ * @param string    $rank_type  The given rank's type
+ *
+ * @return bool|WP_Post         WP Post object of newly rank downgraded, false if process fails
+ */
+function gamipress_downgrade_user_to_prev_rank( $user_id = 0, $rank_type = '' ) {
+
+    // Bail if not is a valid rank type
+    if( ! gamipress_is_rank( $rank_type ) ) {
+        return false;
+    }
+
+    $user_rank_id = gamipress_get_user_rank_id( $user_id, $rank_type );
+    $prev_rank_id = gamipress_get_prev_rank_id( $user_rank_id );
+
+    // User is already on lowest rank, so bail here
+    if( $prev_rank_id === $user_rank_id ) {
+        return false;
+    }
+
+    // Award the previous rank to the user
+    return gamipress_revoke_rank_to_user( $user_id, $user_rank_id, $prev_rank_id );
 
 }
 
@@ -602,6 +804,10 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
         // Update the user rank and the time when this rank has been earned
         gamipress_update_user_meta( $user_id, $meta, $rank_id );
         gamipress_update_user_meta( $user_id, $meta . '_earned_time', current_time( 'timestamp' ) );
+
+        // Stores the user old rank to meet it for revokes
+        $old_meta = "_gamipress_{$new_rank->post_type}_previous_rank";
+        gamipress_update_user_meta( $user_id, $old_meta, $old_rank->ID );
 
         // Available action for triggering other processes
         do_action( 'gamipress_update_user_rank', $user_id, $new_rank, $old_rank, $admin_id, $achievement_id );

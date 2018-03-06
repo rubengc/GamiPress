@@ -12,7 +12,7 @@ Custom table registration:
 - [x] Automatic table creation if not exists
 - [x] Easy field definition
 - [x] Schema parser
-- [ ] Migration process
+- [x] Automatic schema updater
 - [x] Ability to show or hide from menu
 - [x] Custom Capabilities (with support for administrators)
 - [ ] Find a way to add easy capability options

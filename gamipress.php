@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.4.2
+ * Version:         	1.4.3
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -130,7 +130,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.4.2' );
+		define( 'GAMIPRESS_VER', '1.4.3' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -186,6 +186,7 @@ final class GamiPress {
 
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.2.8.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.3.1.php';
+		require_once GAMIPRESS_DIR . 'includes/compatibility/1.4.3.php';
 
 	}
 
@@ -220,6 +221,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/template-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/triggers.php';
 		require_once GAMIPRESS_DIR . 'includes/user.php';
+		require_once GAMIPRESS_DIR . 'includes/user-earnings-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/widgets.php';
 
 	}
@@ -268,6 +270,7 @@ final class GamiPress {
 		$this->db->logs 				= $wpdb->gamipress_logs;
 		$this->db->logs_meta 			= $wpdb->gamipress_logs_meta;
 		$this->db->user_earnings 		= $wpdb->gamipress_user_earnings;
+		$this->db->user_earnings_meta 	= $wpdb->gamipress_user_earnings_meta;
 
 		// Trigger our action to let other plugins know that GamiPress is ready
 		do_action( 'gamipress_init' );

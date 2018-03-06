@@ -36,6 +36,7 @@ function gamipress_init_multisite() {
             GamiPress()->db->logs 				    = $wpdb->base_prefix . 'gamipress_logs';
             GamiPress()->db->logs_meta 			    = $wpdb->base_prefix . 'gamipress_logs_meta';
             GamiPress()->db->user_earnings 		    = $wpdb->base_prefix . 'gamipress_user_earnings';
+            GamiPress()->db->user_earnings_meta     = $wpdb->base_prefix . 'gamipress_user_earnings_meta';
 
         }
 

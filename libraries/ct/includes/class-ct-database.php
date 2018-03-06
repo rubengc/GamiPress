@@ -49,19 +49,19 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
         public $table_name = '';
 
         /**
-         * @var string Table schema
+         * @var CT_DataBase_Schema Table schema
          */
-        protected $schema = '';
+        public $schema = '';
 
         /**
          * @var string Database character-set & collation for table
          */
-        protected $charset_collation = '';
+        public $charset_collation = '';
 
         /**
          * @var WPDB Database object (usually $GLOBALS['wpdb'])
          */
-        protected $db = false;
+        public $db = false;
 
         /** Methods ***************************************************************/
 
@@ -136,6 +136,10 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
          * @since 1.0.0
          */
         protected function upgrade() {
+
+            $schema_updater = new CT_DataBase_Schema_Updater( $this );
+
+            $schema_updater->run();
 
         }
 
@@ -366,12 +370,14 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
          * @return bool
          */
         private function exists() {
+
             $table_exist = $this->db->get_var( $this->db->prepare(
                 "SHOW TABLES LIKE %s",
                 $this->db->esc_like( $this->table_name )
             ) );
 
             return ! empty( $table_exist );
+
         }
 
     }

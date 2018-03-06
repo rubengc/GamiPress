@@ -14,7 +14,8 @@ require_once GAMIPRESS_DIR . 'includes/custom-tables/user-earnings.php';
 /**
  * Register all GamiPress Custom DB Tables
  *
- * @since  1.2.8
+ * @since   1.2.8
+ * @updated 1.4.3 User Earnings v2: Added the field title
  *
  * @return void
  */
@@ -28,14 +29,18 @@ function gamipress_register_custom_tables() {
             'not_found' => __( 'This user has not earned anything', 'gamipress' )
         ),
         'show_ui' => false,
-        'version' => 1,
+        'version' => 2,
         'global' => gamipress_is_network_wide_active(),
+        'supports' => array( 'meta' ),
         'schema' => array(
             'user_earning_id' => array(
                 'type' => 'bigint',
                 'length' => '20',
                 'auto_increment' => true,
                 'primary_key' => true,
+            ),
+            'title' => array(
+                'type' => 'text',
             ),
             'user_id' => array(
                 'type' => 'bigint',

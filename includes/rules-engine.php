@@ -703,16 +703,16 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
  *
  * @since  1.0.0
  *
- * @param  integer $achievement_id The given achievement ID to award
- * @param  integer $user_id        The given user's ID
- * @param  integer $admin_id       The given admin's ID
- * @param  string $this_trigger    The trigger
- * @param  integer $site_id        The triggered site id
- * @param  array $args             The triggered args
+ * @param  integer 	$achievement_id The given achievement ID to award
+ * @param  integer 	$user_id        The given user's ID
+ * @param  integer 	$admin_id       The given admin's ID
+ * @param  string 	$trigger    	The trigger
+ * @param  integer 	$site_id        The triggered site id
+ * @param  array 	$args           The triggered args
  *
  * @return mixed                   False on not achievement, void otherwise
  */
-function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $admin_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
+function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $admin_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
 	global $wp_filter;
 
@@ -738,7 +738,7 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id );
 
 	// Available hook for unlocking any achievement of this achievement type
-	do_action( 'gamipress_unlock_' . $achievement_object->post_type, $user_id, $achievement_id, $this_trigger, $site_id, $args );
+	do_action( 'gamipress_unlock_' . $achievement_object->post_type, $user_id, $achievement_id, $trigger, $site_id, $args );
 
 	// Patch for WordPress to support recursive actions, specifically for gamipress_award_achievement
 	// Because global iteration is fun, assuming we can get this fixed for WordPress 3.9
@@ -751,7 +751,7 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	}
 
 	// Available hook to do other things with each awarded achievement
-	do_action( 'gamipress_award_achievement', $user_id, $achievement_id, $this_trigger, $site_id, $args );
+	do_action( 'gamipress_award_achievement', $user_id, $achievement_id, $trigger, $site_id, $args );
 
 	if ( $is_recursed_filter ) {
 		reset( $wp_filter[ 'gamipress_award_achievement' ] );
@@ -994,26 +994,17 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_rank', 10, 2 )
    -------------------------------------------------- */
 
 /**
- * Revoke an achievement from the user
+ * Revoke an achievement to the user
  *
- * @since  	1.0.0
- * @updated 1.2.8 Added $earning_id
+ * @since  	1.4.3
  *
- * @see gamipress_revoke_achievement_from_user_old()
- *
- * @param  integer $achievement_id The given achievement's post ID
- * @param  integer $user_id        The given user's ID
- * @param  integer $earning_id     The user's earning ID
+ * @param int 	$achievement_id The given achievement's post ID
+ * @param int 	$user_id        The given user's ID
+ * @param int 	$earning_id     The user's earning ID
  *
  * @return void
  */
-function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id = 0, $earning_id = 0 ) {
-
-	// If not properly upgrade to required version fallback to compatibility function
-	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
-		gamipress_revoke_achievement_from_user_old( $achievement_id, $user_id );
-		return;
-	}
+function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0, $earning_id = 0 ) {
 
 	// Use the current user's ID if none specified
 	if ( ! $user_id )
@@ -1023,6 +1014,7 @@ function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id =
 	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
 	if( $earning_id === 0 ) {
+
 		$query = new CT_Query( array(
 			'user_id' => $user_id,
 			'post_id' => $achievement_id,
@@ -1034,7 +1026,11 @@ function gamipress_revoke_achievement_from_user( $achievement_id = 0, $user_id =
 		if( count( $results ) > 0 ) {
 			$earning_id = $results[0]->user_earning_id;
 		}
+
 	}
+
+	// Available action for triggering other processes
+	do_action( 'gamipress_revoke_achievement_to_user', $user_id, $achievement_id, $earning_id );
 
 	if( $earning_id ) {
 		$ct_table->db->delete( $earning_id );

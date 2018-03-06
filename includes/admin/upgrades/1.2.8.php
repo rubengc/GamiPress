@@ -278,7 +278,7 @@ function gamipress_ajax_process_128_upgrade() {
         $ct_table = ct_setup_table( 'gamipress_logs' );
         $prefix = '_gamipress_';
 
-        $limit = 20;
+        $limit = 50;
 
         $logs = $wpdb->get_results( $wpdb->prepare(
             "SELECT *

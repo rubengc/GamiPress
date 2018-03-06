@@ -232,11 +232,6 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
  */
 function gamipress_award_points_to_user( $user_id = 0, $points = 0, $points_type = '', $args = array() ) {
 
-	// If points are negative, turn them to positive
-	if( $points < 0 ) {
-		$points *= -1;
-	}
-
 	// Initialize args
 	$args = wp_parse_args( $args, array(
 		'admin_id' => 0,
@@ -244,6 +239,11 @@ function gamipress_award_points_to_user( $user_id = 0, $points = 0, $points_type
 		'reason' => '',
 		'log_type' => '',
 	) );
+
+	// If points are negative, turn them to positive
+	if( $points < 0  && $args['admin_id'] === 0 ) {
+		$points *= -1;
+	}
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
@@ -274,11 +274,6 @@ function gamipress_award_points_to_user( $user_id = 0, $points = 0, $points_type
  */
 function gamipress_deduct_points_to_user( $user_id = 0, $points = 0, $points_type = '', $args = array() ) {
 
-	// If points are positive, turn them to negative
-	if( $points > 0 ) {
-		$points *= -1;
-	}
-
 	// Initialize args
 	$args = wp_parse_args( $args, array(
 		'admin_id' => 0,
@@ -286,6 +281,11 @@ function gamipress_deduct_points_to_user( $user_id = 0, $points = 0, $points_typ
 		'reason' => '',
 		'log_type' => '',
 	) );
+
+	// If points are positive, turn them to negative
+	if( $points > 0 && $args['admin_id'] === 0 ) {
+		$points *= -1;
+	}
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
@@ -522,7 +522,7 @@ function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin
 
     $log_meta = array(
         'achievement_id' => $achievement_id,
-        'points' => number_format( $new_points ),
+        'points' => $new_points,
         'points_type' => $points_type,
         'total_points' => number_format( $total_points ),
     );

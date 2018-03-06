@@ -119,21 +119,22 @@ function gamipress_update_user_achievements( $args = array() ) {
 	if ( ! $args['user_id'] )
 		$args['user_id'] = get_current_user_id();
 
-	// Setup CT object
-	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
-
 	// Lets to append the new achievements array
 	if ( is_array( $args['new_achievements'] ) && ! empty( $args['new_achievements'] ) ) {
 
 		foreach( $args['new_achievements'] as $new_achievement ) {
-			$ct_table->db->insert( array(
-				'user_id' => absint( $args['user_id'] ),
+
+			$user_earning_data = array(
+				'title' => gamipress_get_post_field( 'post_title', $new_achievement->ID ),
 				'post_id' => $new_achievement->ID,
 				'post_type' => $new_achievement->post_type,
 				'points' => absint( $new_achievement->points ),
 				'points_type' => $new_achievement->points_type,
 				'date' => date( 'Y-m-d H:i:s', $new_achievement->date_earned )
-			) );
+			);
+
+			gamipress_insert_user_earning( absint( $args['user_id'] ), $user_earning_data );
+
 		}
 
 	}
@@ -660,7 +661,7 @@ function gamipress_process_user_data() {
 			$earning_id = isset( $_GET['user_earning_id'] ) ? absint( $_GET['user_earning_id'] ) : 0 ;
 
 			// Revoke the achievement
-			gamipress_revoke_achievement_from_user( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ), $earning_id );
+			gamipress_revoke_achievement_to_user( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ), $earning_id );
 
 			// Redirect back to the user editor
 			wp_redirect( add_query_arg( 'user_id', absint( $_GET['user_id'] ), admin_url( 'user-edit.php' ) ) );

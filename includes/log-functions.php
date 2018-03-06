@@ -371,7 +371,7 @@ function gamipress_get_user_last_log( $user_id = 0, $log_meta = array() ) {
  * @param  string   $access     Access to this log ( public|private )
  * @param  array    $log_meta   Log meta data
  *
- * @return integer             	The post ID of the newly created log entry
+ * @return integer             	The log ID of the newly created log entry
  */
 function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $log_meta = array() ) {
 
@@ -575,7 +575,7 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
         }
 
         // {points} tag, absint ensures a positive amount to build a pattern like "User expended 100 points" instead of "User expended -100 points"
-        $gamipress_pattern_replacements['{points}'] = absint( $log_meta['points'] );
+        $gamipress_pattern_replacements['{points}'] = number_format( absint( $log_meta['points'] ) );
 
         // {points_type} tag
         $gamipress_pattern_replacements['{points_type}'] = $points_label;

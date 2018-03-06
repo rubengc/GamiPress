@@ -193,6 +193,7 @@ function gamipress_load_activity_triggers() {
 
 	// Grab our activity triggers
 	$activity_triggers = gamipress_get_activity_triggers();
+    $excluded_to_load = gamipress_get_activity_triggers_excluded_to_load();
 
 	// Loop through each achievement type and add triggers for unlocking them
 	foreach ( gamipress_get_achievement_types_slugs() as $achievement_type ) {
@@ -213,7 +214,12 @@ function gamipress_load_activity_triggers() {
 	foreach ( $activity_triggers as $group => $group_triggers ) {
 
 		foreach( $group_triggers as $trigger => $label ) {
-			add_action( $trigger, 'gamipress_trigger_event', 10, 20 );
+
+            // Hook if trigger is not excluded to be loaded
+            if( ! in_array( $trigger, $excluded_to_load ) ) {
+			    add_action( $trigger, 'gamipress_trigger_event', 10, 20 );
+            }
+
 		}
 
 	}
@@ -222,11 +228,32 @@ function gamipress_load_activity_triggers() {
 add_action( 'init', 'gamipress_load_activity_triggers' );
 
 /**
- * Handle each of our activity triggers
+ * Get activity triggers excluded to be loaded automatically from gamipress_load_activity_triggers()
  *
  * @since 1.0.0
+ */
+function gamipress_get_activity_triggers_excluded_to_load() {
+
+    return apply_filters( 'gamipress_activity_triggers_excluded_to_load', array(
+        'gamipress_login'
+    ) );
+
+}
+
+/**
+ * Handle each of our activity triggers
  *
- * @return mixed
+ * If method is called directly, pass an array of arguments with next items:
+ * array(
+ * 	'event' => 'gamipress_login',
+ * 	'user_id' => 1,
+ *  'specific_id' => 100 // Just if is an specefici trigger
+ * )
+ *
+ * @since 	1.0.0
+ * @updated 1.4.3 Added the ability to be called directly
+ *
+ * @return bool
  */
 function gamipress_trigger_event() {
 
@@ -237,8 +264,13 @@ function gamipress_trigger_event() {
 
 	$args = func_get_args();
 
+	// Check if method has been called directly
+	if( isset( $args[0] ) && is_array( $args[0] ) && isset( $args[0]['event'] ) ) {
+		$args = $args[0];
+	}
+
 	// Grab our current trigger
-	$trigger = current_filter();
+	$trigger = ( isset( $args['event'] ) ? $args['event'] : current_filter() );
 
 	// gamipress_unlock_all_{achievement_type} and gamipress_unlock_{achievement_type} are excluded from this check
 	if( strpos( $trigger, 'gamipress_unlock_' ) !== 0 ) {
@@ -256,17 +288,17 @@ function gamipress_trigger_event() {
 	}
 
 	// Grab the user ID
-	$user_id = gamipress_trigger_get_user_id( $trigger, $args );
+	$user_id = ( isset( $args['user_id'] ) ? $args['user_id'] : gamipress_trigger_get_user_id( $trigger, $args ) );
 	$user_data = get_user_by( 'id', $user_id );
 
 	// Sanity check, if we don't have a user object, bail here
 	if ( ! is_object( $user_data ) ) {
-		return $args[0];
+		return false;
 	}
 
 	// If the user doesn't satisfy the trigger requirements, bail here
 	if ( ! apply_filters( 'gamipress_user_deserves_trigger', true, $user_id, $trigger, $site_id, $args ) ) {
-		return $args[0];
+		return false;
 	}
 
 	// Update hook count for this user
@@ -281,7 +313,7 @@ function gamipress_trigger_event() {
 
 	// If is specific trigger then try to get the attached id
 	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
-		$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
+		$specific_id = ( isset( $args['specific_id'] ) ? $args['specific_id'] : gamipress_specific_trigger_get_id( $trigger, $args ) );
 
 		// If there is a specific id, then add it to the log meta data
 		if( $specific_id !== 0 ) {
@@ -310,7 +342,7 @@ function gamipress_trigger_event() {
 		gamipress_maybe_award_achievement_to_user( $achievement->post_id, $user_id, $trigger, $site_id, $args );
 	}
 
-	return $args[ 0 ];
+	return true;
 
 }
 
@@ -438,6 +470,11 @@ add_filter( 'gamipress_user_deserves_trigger', 'gamipress_trigger_duplicity_chec
  */
 function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 
+	// If gamipress_trigger_event() has called directly, then get user ID from args
+	if( isset( $args['event'] ) && isset( $args['user_id'] ) ) {
+		return $args['user_id'];
+	}
+
 	switch ( $trigger ) {
 		case 'gamipress_login':
 		case 'gamipress_site_visit':
@@ -478,6 +515,11 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
  * @return integer          Specific ID.
  */
 function gamipress_specific_trigger_get_id( $trigger = '', $args = array() ) {
+
+	// If gamipress_trigger_event() has called directly, then get user ID from args
+	if( isset( $args['event'] ) && isset( $args['specific_id'] ) ) {
+		return $args['specific_id'];
+	}
 
 	switch ( $trigger ) {
 		case 'gamipress_specific_new_comment':
@@ -713,7 +755,7 @@ function gamipress_update_user_trigger_count( $user_id, $trigger, $site_id = 0, 
 		$site_id = get_current_blog_id();
 
 	// Get the user triggered triggers
-	$user_triggers = gamipress_get_user_triggers( $user_id, false );
+	$user_triggers = gamipress_get_user_triggers( $user_id, $site_id );
 
 	if( isset( $user_triggers[$site_id][$trigger] ) ) {
 		// If already have this count, just retrieve it

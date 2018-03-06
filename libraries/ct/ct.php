@@ -98,6 +98,7 @@ if ( ! class_exists( 'CT' ) ) :
             require_once CT_DIR . 'includes/class-ct-table-meta.php';
             require_once CT_DIR . 'includes/class-ct-database.php';
             require_once CT_DIR . 'includes/class-ct-database-schema.php';
+            require_once CT_DIR . 'includes/class-ct-database-schema-updater.php';
             require_once CT_DIR . 'includes/class-ct-query.php';
             require_once CT_DIR . 'includes/class-ct-list-table.php';
             require_once CT_DIR . 'includes/class-ct-view.php';

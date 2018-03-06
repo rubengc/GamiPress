@@ -233,39 +233,42 @@
     });
 
     // Recount Activity Tool
-    $("#recount_activity").click(function(e) {
-        e.preventDefault();
+    function gamipress_run_recount_activity_tool( loop ) {
 
-        $('#recount-activity-warning').remove();
-
-        if( $('#activity_to_recount').val() === '' ) {
-            $(this).parent().prepend('<p id="recount-activity-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose an activity to recount.</p>');
-            return false;
+        if( loop === undefined ) {
+            loop = 0;
         }
 
-        var $this = $(this);
+        var button = $("#recount_activity");
         var activity = $('#activity_to_recount').val();
-
-        // Disable the button
-        $this.prop('disabled', true);
-
-        // Show a notice to let know to the user that process could take a while
-        $this.parent().prepend('<p id="recount-activity-notice" class="cmb2-metabox-description">' + gamipress_admin_tools.recount_activity_notice + '</p>');
-
-        if( ! $('#recount-activity-response').length ) {
-            $this.parent().append('<span id="recount-activity-response"></span>');
-        }
-
-        // Show the spinner
-        $('#recount-activity-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
         $.post(
             ajaxurl,
             {
                 action: 'gamipress_recount_activity_tool',
-                activity: activity
+                activity: activity,
+                loop: loop // Used on run again utility to let know to the tool in which loop we are now
             },
             function( response ) {
+
+                // Run again utility
+                if( response.data.run_again !== undefined && response.data.run_again && response.success === true ) {
+
+                    var running_selector = '#recount-activity-response #running-' + activity;
+
+                    if( ! $(running_selector).length ) {
+                        $('#recount-activity-response').append( '<span id="running-' + activity + '"></span>' );
+                    }
+
+                    $(running_selector).html( response.data.message );
+
+                    loop++;
+
+                    // Run again passing the next loop index
+                    gamipress_run_recount_activity_tool( loop );
+
+                    return;
+                }
 
                 $('#recount-activity-notice').remove();
 
@@ -282,8 +285,9 @@
                     }, 2000);
                 }
 
-                // Enable the button
-                $this.prop('disabled', false);
+                // Enable the button and the activity select
+                button.prop('disabled', false);
+                $('#activity_to_recount').prop('disabled', false);
             }
         ).fail(function() {
 
@@ -294,15 +298,49 @@
                 $('#recount-activity-response').remove();
             }, 5000);
 
-            // Enable the button
-            $this.prop('disabled', false);
+            // Enable the button and the activity select
+            button.prop('disabled', false);
+            $('#activity_to_recount').prop('disabled', false);
         });
+    }
+
+    $("#recount_activity").click(function(e) {
+        e.preventDefault();
+
+        $('#recount-activity-warning').remove();
+
+        if( $('#activity_to_recount').val() === '' ) {
+            $(this).parent().prepend('<p id="recount-activity-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose an activity to recount.</p>');
+            return false;
+        }
+
+        var $this = $(this);
+
+        // Disable the button and the activity select
+        $this.prop('disabled', true);
+        $('#activity_to_recount').prop('disabled', true);
+
+        // Show a notice to let know to the user that process could take a while
+        $this.parent().prepend('<p id="recount-activity-notice" class="cmb2-metabox-description">' + gamipress_admin_tools.recount_activity_notice + '</p>');
+
+        if( ! $('#recount-activity-response').length ) {
+            $this.parent().append('<span id="recount-activity-response"></span>');
+        }
+
+        // Show the spinner
+        $('#recount-activity-response').html('<span class="spinner is-active" style="float: none;"></span>');
+
+        // Make the ajax request
+        gamipress_run_recount_activity_tool();
     });
 
-    // Bulk Awards Tool
+    // Bulk Awards/Revokes Tool
 
     // Award to all users
-    $('#bulk-awards').on('change', '#bulk_award_points_all_users, #bulk_award_achievements_all_users, #bulk_award_rank_all_users', function() {
+    $('#bulk-awards, #bulk-revokes').on('change',
+        '#bulk_award_points_all_users, #bulk_award_achievements_all_users, #bulk_award_rank_all_users, '
+        + '#bulk_revoke_points_all_users, #bulk_revoke_achievements_all_users, #bulk_revoke_rank_all_users'
+        , function() {
 
         var target = $('#' + $(this).attr('id').replace('_all', '')).closest('.cmb-row');
 
@@ -315,7 +353,7 @@
     });
 
     // Achievements ajax
-    $('#bulk_award_achievements').select2({
+    $('#bulk_award_achievements, #bulk_revoke_achievements').select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',
@@ -340,7 +378,7 @@
     });
 
     // Rank ajax
-    $('#bulk_award_rank').select2({
+    $('#bulk_award_rank, #bulk_revoke_rank').select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',
@@ -364,7 +402,8 @@
     });
 
     // User ajax
-    $( '#bulk_award_points_users, #bulk_award_achievements_users, #bulk_award_rank_users' ).select2({
+    $( '#bulk_award_points_users, #bulk_award_achievements_users, #bulk_award_rank_users, '
+        + '#bulk_revoke_points_users, #bulk_revoke_achievements_users, #bulk_revoke_rank_users').select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',
@@ -389,16 +428,28 @@
         multiple: true
     });
 
-    $("#bulk_award_points_button, #bulk_award_achievements_button, #bulk_award_rank_button").click(function(e) {
+    $('#bulk_award_points_button, #bulk_award_achievements_button, #bulk_award_rank_button, '
+        + '#bulk_revoke_points_button, #bulk_revoke_achievements_button, #bulk_revoke_rank_button').click(function(e) {
         e.preventDefault();
 
         var $this = $(this);
         var response_id = $this.attr('id').replace('_button', '_response');
         var active_tab = $this.closest('.cmb-tabs-wrap').find('.cmb-tab.active');
-        var data = {
-            action: 'gamipress_bulk_awards_tool',
-            bulk_award: $this.attr('id').replace('bulk_award_', '').replace('_button', '')
-        };
+        var action = ( $this.attr('id').indexOf('bulk_award_') !== -1 ? 'bulk_award' : 'bulk_revoke' );
+        var data;
+
+        if( action === 'bulk_award' ) {
+            data = {
+                action: 'gamipress_bulk_awards_tool',
+                bulk_award: $this.attr('id').replace('bulk_award_', '').replace('_button', '')
+            };
+        } else if( action === 'bulk_revoke' ) {
+            data = {
+                action: 'gamipress_bulk_revokes_tool',
+                bulk_revoke: $this.attr('id').replace('bulk_revoke_', '').replace('_button', '')
+            };
+        }
+
 
         // Loop all fields to build the request data
         $(active_tab.data('fields')).find('input, select, textarea').each(function() {
