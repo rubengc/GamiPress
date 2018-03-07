@@ -341,8 +341,8 @@ function gamipress_dashboard_widget_logs_old() {
 
         echo '<ul>';
 
-        $today    = date( 'Y-m-d', current_time( 'timestamp' ) );
-        $yesterday = date( 'Y-m-d', strtotime( '-1 day', current_time( 'timestamp' ) ) );
+        $today      = date( 'Y-m-d', current_time( 'timestamp' ) );
+        $yesterday  = date( 'Y-m-d', strtotime( '-1 day', current_time( 'timestamp' ) ) );
 
         while ( $posts->have_posts() ) {
             $posts->the_post();

@@ -792,22 +792,32 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
         $user_id = get_current_user_id();
     }
 
+    // Get user old rank if has one
     $old_rank = gamipress_get_user_rank( $user_id );
 
     $new_rank = gamipress_get_post( $rank_id );
 
+    // If is the same rank, return
+    if( $old_rank && $new_rank && $new_rank->ID === $old_rank->ID ) {
+        return $new_rank;
+    }
+
     // Check if is a valid rank and is not the same rank as current one
-    if( $new_rank && gamipress_is_rank( $new_rank ) && $new_rank->ID !== $old_rank->ID ) {
+    if( $new_rank && gamipress_is_rank( $new_rank ) ) {
 
         $meta = "_gamipress_{$new_rank->post_type}_rank";
 
         // Update the user rank and the time when this rank has been earned
-        gamipress_update_user_meta( $user_id, $meta, $rank_id );
+        gamipress_update_user_meta( $user_id, $meta, $new_rank->ID );
         gamipress_update_user_meta( $user_id, $meta . '_earned_time', current_time( 'timestamp' ) );
 
-        // Stores the user old rank to meet it for revokes
-        $old_meta = "_gamipress_{$new_rank->post_type}_previous_rank";
-        gamipress_update_user_meta( $user_id, $old_meta, $old_rank->ID );
+        if( $old_rank ) {
+
+            // Stores the user old rank to meet it for revokes
+            $old_meta = "_gamipress_{$new_rank->post_type}_previous_rank";
+            gamipress_update_user_meta( $user_id, $old_meta, $old_rank->ID );
+
+        }
 
         // Available action for triggering other processes
         do_action( 'gamipress_update_user_rank', $user_id, $new_rank, $old_rank, $admin_id, $achievement_id );

@@ -393,7 +393,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $lo
         'type' 	        => $type,
         'access'	    => $access,
         'user_id'	    => $user_id === 0 ? get_current_user_id() : absint( $user_id ),
-        'date'	        => date( 'Y-m-d H:i:s' ),
+        'date'	        => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
     );
 
     // Auto-generated post title

@@ -16,6 +16,8 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
          */
         public $fields = array();
 
+        public $primary_key = '';
+
         public function __construct( $schema ) {
 
             if( gettype( $schema ) === 'string' ) {
@@ -54,7 +56,6 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
         public function __toString() {
 
             $fields_def = array();
-            $primary_key = '';
             $keys = array();
 
             foreach( $this->fields as $field_id => $field_args ) {
@@ -66,7 +67,7 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
 
             // Setup PRIMARY KEY definition
             $sql = implode( ', ', $fields_def ) . ', '
-                . 'PRIMARY KEY  (' . $primary_key . ')'; // Add two spaces to avoid issues
+                . 'PRIMARY KEY  (' . $this->primary_key . ')'; // Add two spaces to avoid issues
 
             // Setup KEY definition
             if( ! empty( $keys ) ) {
@@ -215,7 +216,7 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
 
             // PRIMARY KEY definition
             if( $field_args['primary_key'] ) {
-                $primary_key = $field_id;
+                $this->primary_key = $field_id;
             }
 
             // KEY definition

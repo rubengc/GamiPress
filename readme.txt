@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.3
+Stable tag: 1.4.4
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -226,6 +226,14 @@ GamiPress comes with the following widgets:
 * User Rank: to display previous, current and/or next rank of an user.
 
 == Changelog ==
+
+= 1.4.4 =
+
+* Fixed timezone issues when server and WordPress has different timezones (now WordPress timezone prevails).
+* Fixed empty primary key on database table creation.
+* Prevent warnings on 1.4.3 upgrade.
+* Avoid some PHP warnings on ajax functions.
+* Added more information to System Info Tool and some improvements.
 
 = 1.4.3 =
 

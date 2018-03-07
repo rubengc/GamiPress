@@ -183,6 +183,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         ) )
     );
 
+    // Get all points types
     $points_types = gamipress_get_points_types();
     $points_types_output = '';
 
@@ -192,6 +193,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     }
 
+    // Get all achievement types
     $achievement_types = gamipress_get_achievement_types();
     $achievement_types_output = '';
 
@@ -200,6 +202,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         $achievement_types_output .= $achievement_type['singular_name'] . ' - ' . $achievement_type['plural_name'] . ' - ' . $achievement_type_slug . ' (#' . $achievement_type['ID'] . ')' . '<br>';
     }
 
+    // Get all rank types
     $rank_types = gamipress_get_rank_types();
     $rank_types_output = '';
 
@@ -208,6 +211,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         $rank_types_output .= $rank_type['singular_name'] . ' - ' . $rank_type['plural_name'] . ' - ' . $rank_type_slug . ' (#' . $rank_type['ID'] . ')' . '<br>';
     }
 
+    // Get all settings stored
     if( GamiPress()->settings === null ) {
         if( gamipress_is_network_wide_active() ) {
             GamiPress()->settings = ( $exists = get_site_option( 'gamipress_settings' ) ) ? $exists : array();
@@ -232,6 +236,12 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     }
 
+    // Check database tables
+    $logs_exists = gamipress_database_table_exists( 'gamipress_logs' );
+    $logs_meta_exists = gamipress_database_table_exists( 'gamipress_logs_meta' );
+    $user_earnings_exists = gamipress_database_table_exists( 'gamipress_user_earnings' );
+    $user_earnings_meta_exists = gamipress_database_table_exists( 'gamipress_user_earnings_meta' );
+
     $meta_boxes['gamipress-info'] = array(
         'title' => __( 'GamiPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
@@ -250,6 +260,30 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Rank Types', 'gamipress' ),
                 'type' => 'display',
                 'value' => $rank_types_output,
+            ),
+            'gamipress_logs' => array(
+                'name' => __( 'Logs Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $logs_exists ? 'Yes' : 'No' ),
+                'classes' => ( $logs_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_logs_meta' => array(
+                'name' => __( 'Logs Meta Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $logs_meta_exists ? 'Yes' : 'No' ),
+                'classes' => ( $logs_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_user_earnigns' => array(
+                'name' => __( 'User Earnings Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $user_earnings_exists ? 'Yes' : 'No' ),
+                'classes' => ( $user_earnings_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_user_earnigns_meta' => array(
+                'name' => __( 'User Earnings Meta Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $user_earnings_meta_exists ? 'Yes' : 'No' ),
+                'classes' => ( $user_earnings_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'gamipress_settings' => array(
                 'name' => __( 'Settings', 'gamipress' ),

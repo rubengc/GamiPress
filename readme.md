@@ -237,6 +237,14 @@ GamiPress comes with the following widgets:
 
 ## Changelog ##
 
+### 1.4.4 ###
+
+* Fixed timezone issues when server and WordPress has different timezones (now WordPress timezone prevails).
+* Fixed empty primary key on database table creation.
+* Prevent warnings on 1.4.3 upgrade.
+* Avoid some PHP warnings on ajax functions.
+* Added more information to System Info Tool and some improvements.
+
 ### 1.4.3 ###
 
 * Added a bulk revokes tool that let's revoke points, achievements or ranks to all or a group of users.

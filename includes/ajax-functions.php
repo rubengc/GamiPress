@@ -120,13 +120,14 @@ function gamipress_ajax_get_achievements() {
 
 		// Query Achievements
 		$args = array(
-			'post_type'      =>	$type,
-			'orderby'        =>	$orderby,
-			'order'          =>	$order,
-			'posts_per_page' =>	absint( $limit ),
-			'offset'         => absint( $offset ),
-			'post_status'    => 'publish',
-			'post__not_in'   => array_diff( $hidden, $earned_ids )
+			'post_type'      	=> $type,
+			'orderby'        	=> $orderby,
+			'order'          	=> $order,
+			'posts_per_page' 	=> absint( $limit ),
+			'offset'         	=> absint( $offset ),
+			'post_status'    	=> 'publish',
+			'post__in' 			=> array(),
+			'post__not_in'   	=> array_diff( $hidden, $earned_ids )
 		);
 
 		// Filter - query completed or non completed achievements
@@ -232,6 +233,7 @@ function gamipress_ajax_get_users() {
 
 	// Pull back the search string
 	$search = esc_sql( like_escape( $_REQUEST['q'] ) );
+	$where = '';
 
 	if ( ! empty( $search ) ) {
 		$where = " WHERE user_login LIKE '%{$search}%'";

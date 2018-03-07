@@ -32,7 +32,7 @@ function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = a
         'post_type' 	=> '',
         'points'	    => 0,
         'points_type'	=> '',
-        'date'	        => date( 'Y-m-d H:i:s' ),
+        'date'	        => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
     ) );
 
     // If title is empty, try to get the title from post assigned

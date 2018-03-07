@@ -826,6 +826,33 @@ body > .gamipress-select2,
 	color: #32373c;
 }
 
+/* GamiPress label utility */
+.gamipress-label-info,
+.gamipress-label-success,
+.gamipress-label-warning,
+.gamipress-label-danger {
+	color: #fff;
+	padding: 1px 5px;
+	font-size: 12px;
+	font-weight: 500;
+	border-radius: 2px;
+}
+
+.gamipress-label-info {
+	background-color: #00a0d2;
+}
+
+.gamipress-label-success {
+	background-color: #46b450;
+}
+
+.gamipress-label-warning {
+	background-color: #ffb900;
+}
+.gamipress-label-danger {
+	background-color: #dc3232;
+}
+
 /* GamiPress forms on widgets area */
 .widget[id*="_gamipress_"] .widget-content .cmb-th {
 	float: none;

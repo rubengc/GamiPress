@@ -252,8 +252,7 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
         }
 
         $log_message = sprintf(
-            __( "[GamiPress] Email failed to send.\nSend time: %s\nTo: %s\nSubject: %s\n\n", 'gamipress' ),
-            date_i18n( 'F j Y H:i:s', current_time( 'timestamp' ) ),
+            __( "[GamiPress] Email failed to send to %s with subject: %s", 'gamipress' ),
             $to,
             $subject
         );

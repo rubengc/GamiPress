@@ -77,6 +77,7 @@ function _gamipress_p2p_load_admin() {
  * @since 1.0.5
  */
 function _gamipress_p2p_maybe_install() {
+
 	if ( ! current_user_can( 'manage_options' ) )
 		return;
 
@@ -88,6 +89,7 @@ function _gamipress_p2p_maybe_install() {
 	P2P_Storage::install();
 
 	update_option( 'p2p_storage', P2P_Storage::$version );
+
 }
 add_action( 'admin_notices', '_gamipress_p2p_maybe_install' );
 

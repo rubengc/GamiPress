@@ -22,6 +22,11 @@ function gamipress_143_upgrades( $stored_version ) {
         return $stored_version;
     }
 
+    // Prevent run upgrade until database tables are created
+    if( ! gamipress_database_table_exists( 'gamipress_user_earnings' ) ) {
+        return $stored_version;
+    }
+
     // Check if there is something to migrate
     $upgrade_size = gamipress_143_upgrade_size();
 
