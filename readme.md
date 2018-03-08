@@ -199,6 +199,20 @@ If you’re looking for something endorsed and maintained by the developers who 
 
 ## Frequently Asked Questions ##
 
+#### Is GamiPress compatible with any theme? ####
+
+We built GamiPress so that it will work with modern WordPress themes. GamiPress just adds positional styles which will allow you to better customize everything for your specific needs.
+
+#### Can GamiPress be easily translated? ####
+
+Yes, GamiPress is stored in the official WordPress plugins repository where you (and anyone) are able to [submit your own translations](https://translate.wordpress.org/projects/wp-plugins/gamipress).
+
+#### Does GamiPress work with WordPress multisite? ####
+
+Yes. You can use GamiPress on a WordPress multisite network.
+
+In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/getting-started/multisite/).
+
 #### Where can I find documentation about GamiPress? ####
 
 Check the [Getting Started](https://gamipress.com/docs/getting-started/) docs where you can start getting familiarized with GamiPress.
@@ -235,7 +249,20 @@ GamiPress comes with the following widgets:
 * Ranks: to display a list of ranks.
 * User Rank: to display previous, current and/or next rank of an user.
 
+#### Do you offer custom development services? ####
+
+No, We're unable to provide custom development services, as our focus is developing the core GamiPress plugin, and the official GamiPress add-ons.
+
 ## Changelog ##
+
+### 1.4.5 ###
+
+* Added the attribute "filter_value" to [gamipress_achievements] shortcode.
+* Added the field "Initial Filter Value" to GamiPress: Achievements widget.
+* Make first page of results of [gamipress_achievements] shortcode and GamiPress: Achievements widget load directly.
+* Improvements on [gamipress_achievements] shortcode and GamiPress: Achievements widget filtering.
+* Added more filters on achievements template to make it more customizable.
+* Added more frequently asked questions.
 
 ### 1.4.4 ###
 

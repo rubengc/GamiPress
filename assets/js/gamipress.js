@@ -39,15 +39,15 @@
 			success: function( response ) {
 				achievement_list.find( '#gamipress-achievements-spinner' ).hide();
 
-				if ( response.data.message === null ) {
+				if ( response.data.achievements === null ) {
 					//alert("That's all folks!");
 				} else {
 
-					achievement_list.find( '#gamipress-achievements-container' ).append( response.data.message );
+					achievement_list.find( '#gamipress-achievements-container' ).append( response.data.achievements );
 					achievement_list.find( '#gamipress-achievements-offset' ).val( response.data.offset );
 					achievement_list.find( '#gamipress-achievements-count' ).val( response.data.achievement_count );
 
-					// Just continue if load more has been enables
+					// Just continue if load more has been enabled
 					if( achievement_list.find( '#gamipress-achievements-load-more').length ) {
 
 						if ( response.data.query_count <= response.data.offset ) {
@@ -104,11 +104,6 @@
     $body.on( 'click', '#gamipress-achievements-load-more', function() {
 		gamipress_ajax_achievement_list( $(this).closest('.gamipress-achievements-list') );
 	} );
-
-	// Initial achievements lists load
-	$('.gamipress-achievements-list').each(function() {
-		gamipress_ajax_achievement_list( $(this) );
-	});
 
 	// Listen for users clicking the show/hide details link
     $body.on( 'click', '.gamipress-open-close-switch a', function( event ) {
