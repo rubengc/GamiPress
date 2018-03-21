@@ -446,12 +446,17 @@ function gamipress_flush_rewrite_rules() {
 /**
  * Utility to execute a shortcode passing an array of args
  *
+ * @since   1.0.0
+ * @updated 1.4.6 Added $content parameter
+ *
  * @param string    $shortcode The shortcode to execute
  * @param array     $args      The args to pass to the shortcode
+ * @param string    $content   Content to pass to the shortcode (optional)
  *
  * @return string   $output    Output from the shortcode execution with the given args
  */
-function gamipress_do_shortcode( $shortcode, $args ) {
+function gamipress_do_shortcode( $shortcode, $args, $content = '' ) {
+
     $shortcode_args = '';
 
     foreach( $args as $arg => $value ) {
@@ -492,7 +497,20 @@ function gamipress_do_shortcode( $shortcode, $args ) {
         $shortcode_args .= sprintf( ' %s="%s"', $arg, $value);
     }
 
+    if( ! empty( $content ) ) {
+
+        // If content passed, then execute shortcode as [shortcode]content[/shortcode]
+        return do_shortcode( sprintf( '[%s %s]$s[/%s]',
+            $shortcode,
+            $shortcode_args,
+            $content,
+            $shortcode
+        ) );
+
+    }
+
     return do_shortcode( sprintf( '[%s %s]', $shortcode, $shortcode_args ) );
+
 }
 
 /**

@@ -191,7 +191,7 @@ function gamipress_next_rank_content_cb( $field, $object_id, $object_type ) {
 
     if( $rank ) : ?>
         <div class="cmb-th">
-            <label><?php echo sprintf( __( 'Next %s', 'gamipress' ), gamipress_get_rank_type_singular( $rank_type ) ); ?></label>
+            <label><?php echo sprintf( __( 'Next %s', 'gamipress' ), gamipress_get_rank_type_singular( $rank_type, true ) ); ?></label>
         </div>
         <p>
             <?php echo $rank->post_title; ?>
@@ -213,7 +213,7 @@ function gamipress_prev_rank_content_cb( $field, $object_id, $object_type ) {
 
     if( $rank ) : ?>
         <div class="cmb-th">
-            <label><?php echo sprintf( __( 'Previous %s', 'gamipress' ), gamipress_get_rank_type_singular( $rank_type ) ); ?></label>
+            <label><?php echo sprintf( __( 'Previous %s', 'gamipress' ), gamipress_get_rank_type_singular( $rank_type, true ) ); ?></label>
         </div>
         <p>
             <?php echo $rank->post_title; ?>

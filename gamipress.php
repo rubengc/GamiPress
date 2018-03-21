@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.4.5
+ * Version:         	1.4.6
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -130,7 +130,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.4.5' );
+		define( 'GAMIPRESS_VER', '1.4.6' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -199,6 +199,12 @@ final class GamiPress {
 	 */
 	private function includes() {
 
+		// GamiPress functions
+		require_once GAMIPRESS_DIR . 'includes/functions/achievement-types.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/points-types.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/rank-types.php';
+
+		// The rest of files
 		require_once GAMIPRESS_DIR . 'includes/p2p.php';
 		require_once GAMIPRESS_DIR . 'includes/admin.php';
 		require_once GAMIPRESS_DIR . 'includes/custom-tables.php';
@@ -240,19 +246,20 @@ final class GamiPress {
 		register_deactivation_hook( __FILE__, array( $this, 'deactivate' ) );
 
 		// Hook in all our important pieces
-		add_action( 'init', array( $this, 'init' ), 5 );
+		add_action( 'init', array( $this, 'pre_init' ), 5 );
+		add_action( 'init', array( $this, 'init' ) );
 		add_action( 'init', array( $this, 'register_image_sizes' ) );
 
 	}
 
 	/**
-	 * Init function
+	 * Pre init function
 	 *
 	 * @access      private
-	 * @since       1.4.0
+	 * @since       1.4.6
 	 * @return      void
 	 */
-	function init() {
+	function pre_init() {
 
 		global $wpdb;
 
@@ -271,6 +278,17 @@ final class GamiPress {
 		$this->db->logs_meta 			= $wpdb->gamipress_logs_meta;
 		$this->db->user_earnings 		= $wpdb->gamipress_user_earnings;
 		$this->db->user_earnings_meta 	= $wpdb->gamipress_user_earnings_meta;
+
+	}
+
+	/**
+	 * Init function
+	 *
+	 * @access      private
+	 * @since       1.4.0
+	 * @return      void
+	 */
+	function init() {
 
 		// Trigger our action to let other plugins know that GamiPress is ready
 		do_action( 'gamipress_init' );

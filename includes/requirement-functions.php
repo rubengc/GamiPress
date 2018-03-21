@@ -79,6 +79,8 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
 
     // Setup our default requirements array, assume we require nothing
     $requirement = array(
+        'ID'               => $requirement_id,
+        'title'            => gamipress_get_post_field( 'post_title', $requirement_id ),
         'count'            => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_count' ) ),
         'limit'            => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) ),
         'limit_type'       => gamipress_get_post_meta( $requirement_id, '_gamipress_limit_type' ),

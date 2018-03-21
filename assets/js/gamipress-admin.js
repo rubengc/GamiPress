@@ -4,21 +4,17 @@
 	$("#_gamipress_earned_by").change( function() {
 
 		// Define our potentially unnecessary inputs
-		var gamipress_sequential = $('#_gamipress_sequential').parent().parent();
 		var gamipress_points_required = $('#_gamipress_points_required').closest('.cmb-row');
 		var gamipress_rank_type_required = $('#_gamipress_rank_type_required').parent().parent();
 		var gamipress_rank_required = $('#_gamipress_rank_required').parent().parent();
 
 		// Hide our potentially unnecessary inputs
-		gamipress_sequential.hide();
 		gamipress_points_required.hide();
 		gamipress_rank_type_required.hide();
 		gamipress_rank_required.hide();
 
 		// Determine which inputs we should show
-		if ( $(this).val() === 'triggers' ) {
-			gamipress_sequential.show();
-		} else if ( $(this).val() === 'points' ) {
+		 if ( $(this).val() === 'points' ) {
 			gamipress_points_required.show();
 		} else if ( $(this).val() === 'rank' ) {
 			gamipress_rank_type_required.show();

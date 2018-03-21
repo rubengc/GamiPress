@@ -381,8 +381,16 @@ function gamipress_register_achievement_types() {
 		$achievement_name_singular 	= $achievement_type->post_title;
 		$achievement_name_plural   	= gamipress_get_post_meta( $achievement_type->ID, '_gamipress_plural_name' );
 
-		// Register the post type
-		register_post_type( $achievement_slug, array(
+		/**
+		 * Available filter to make a desired achievement type not public
+		 *
+		 * @since 1.4.6
+		 *
+		 * @param bool $return
+		 */
+		$public = apply_filters( "gamipress_public_achievement_{$achievement_slug}", true );
+
+		$post_type_args = array(
 			'labels'             => array(
 				'name'               => $achievement_name_plural,
 				'singular_name'      => $achievement_name_singular,
@@ -402,18 +410,40 @@ function gamipress_register_achievement_types() {
 				'remove_featured_image' => sprintf( __( 'Remove %s image', 'gamipress' ), strtolower( $achievement_name_singular ) ),
 				'use_featured_image'    => sprintf( __( 'Use %s image', 'gamipress' ), strtolower( $achievement_name_singular ) ),
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'             => $public,
+			'publicly_queryable' => $public,
 			'show_ui'            => current_user_can( gamipress_get_manager_capability() ),
 			'show_in_menu'       => 'gamipress_achievements',
 			'query_var'          => true,
 			'rewrite'            => array( 'slug' => $achievement_slug ),
 			'capability_type'    => 'post',
-			'has_archive'        => true,
+			'has_archive'        => $public,
 			'hierarchical'       => true,
 			'menu_position'      => null,
 			'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail', 'page-attributes' )
-		) );
+		);
+
+		/**
+		 * Available filter to override any achievement type post type args
+		 *
+		 * @since 1.4.6
+		 *
+		 * @param array 	$post_type_args
+		 * @param string 	$achievement_type
+		 */
+		$post_type_args = apply_filters( 'gamipress_achievement_post_type_args', $post_type_args, $achievement_slug );
+
+		/**
+		 * Available filter to override a desired achievement type post type args
+		 *
+		 * @since 1.4.6
+		 *
+		 * @param array 	$post_type_args
+		 */
+		$post_type_args = apply_filters( "gamipress_achievement_{$achievement_slug}_post_type_args", $post_type_args );
+
+		// Register the post type
+		register_post_type( $achievement_slug, $post_type_args );
 
 		// Register the Achievement type
 		gamipress_register_achievement_type( $achievement_type->ID, $achievement_name_singular, $achievement_name_plural, $achievement_slug );
@@ -474,8 +504,16 @@ function gamipress_register_rank_types() {
 		$rank_name_singular 	= $rank_type->post_title;
 		$rank_name_plural   	= gamipress_get_post_meta( $rank_type->ID, '_gamipress_plural_name' );
 
-		// Register the post type
-		register_post_type( $rank_slug, array(
+		/**
+		 * Available filter to make a desired rank type not public
+         *
+         * @since 1.4.6
+		 *
+		 * @param bool $return
+		 */
+		$public = apply_filters( "gamipress_public_rank_{$rank_slug}", true );
+
+		$post_type_args = array(
 			'labels'             => array(
 				'name'               => $rank_name_plural,
 				'singular_name'      => $rank_name_singular,
@@ -495,20 +533,42 @@ function gamipress_register_rank_types() {
 				'remove_featured_image' => sprintf( __( 'Remove %s image', 'gamipress' ), strtolower( $rank_name_singular ) ),
 				'use_featured_image'    => sprintf( __( 'Use %s image', 'gamipress' ), strtolower( $rank_name_singular ) ),
 			),
-			'public'             => true,
-			'publicly_queryable' => true,
+			'public'             => $public,
+			'publicly_queryable' => $public,
 			'show_ui'            => current_user_can( gamipress_get_manager_capability() ),
 			'show_in_menu'       => 'gamipress_ranks',
 			'query_var'          => true,
 			'rewrite'            => array( 'slug' => $rank_slug ),
 			'capability_type'    => 'post',
-			'has_archive'        => true,
+			'has_archive'        => $public,
 			'hierarchical'       => true,
 			'menu_position'      => null,
 			'supports'           => array( 'title', 'editor', 'excerpt', 'author', 'thumbnail' )
-		) );
+		);
 
-		// Register the Achievement type
+		/**
+		 * Available filter to override any rank type post type args
+		 *
+		 * @since 1.4.6
+		 *
+		 * @param array 	$post_type_args
+		 * @param string 	$rank_type
+		 */
+		$post_type_args = apply_filters( 'gamipress_rank_post_type_args', $post_type_args, $rank_slug );
+
+		/**
+		 * Available filter to override a desired rank type post type args
+		 *
+		 * @since 1.4.6
+		 *
+		 * @param array 	$post_type_args
+		 */
+		$post_type_args = apply_filters( "gamipress_rank_{$rank_slug}_post_type_args", $post_type_args );
+
+		// Register the post type
+		register_post_type( $rank_slug, $post_type_args );
+
+		// Register the rank type
 		gamipress_register_rank_type( $rank_type->ID, $rank_name_singular, $rank_name_plural, $rank_slug );
 
 	}

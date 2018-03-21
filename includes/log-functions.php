@@ -613,7 +613,7 @@ function gamipress_parse_rank_log_pattern( $log_data, $log_meta ) {
 
         // {rank} and {tank_type} tags
         $gamipress_pattern_replacements['{rank}'] = $rank ? $rank->post_title : '';
-        $gamipress_pattern_replacements['{rank_type}'] = $rank ? gamipress_get_rank_type_singular( $rank->post_type ) : '';
+        $gamipress_pattern_replacements['{rank_type}'] = $rank ? gamipress_get_rank_type_singular( $rank->post_type, true ) : '';
 
         if( $log_data['type'] === 'rank_award' ) {
             $admin = get_userdata( $log_meta['admin_id'] );

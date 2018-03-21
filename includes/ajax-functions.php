@@ -281,7 +281,7 @@ function gamipress_ajax_get_ranks_options_html() {
 		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
 		$singular_name = __( 'Rank', 'gamipress' );
 	} else {
-		$singular_name = gamipress_get_rank_type_singular( $post_type );
+		$singular_name = gamipress_get_rank_type_singular( $post_type, true );
 		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
 	}
 

@@ -28,38 +28,6 @@ function gamipress_is_achievement( $post = null ) {
 
 	// If we pass both previous tests, this is a valid achievement (with filter to override)
 	return apply_filters( 'gamipress_is_achievement', $return, $post );
-}
-
-/**
- * Get GamiPress Achievement Types
- *
- * Returns a multidimensional array of slug, single name and plural name for all achievement types.
- *
- * @since  1.0.0
- * @return array An array of our registered achievement types
- */
-function gamipress_get_achievement_types() {
-	return GamiPress()->achievement_types;
-}
-
-/**
- * Get GamiPress Achievement Type Slugs
- *
- * @since  1.0.0
- * @return array An array of all our registered achievement type slugs (empty array if none)
- */
-function gamipress_get_achievement_types_slugs() {
-
-	// Assume we have no registered achievement types
-	$achievement_type_slugs = array();
-
-	// If we do have any achievement types, loop through each and add their slug to our array
-	foreach ( GamiPress()->achievement_types as $slug => $data ) {
-		$achievement_type_slugs[] = $slug;
-	}
-
-	// Finally, return our data
-	return $achievement_type_slugs;
 
 }
 
@@ -74,7 +42,8 @@ function gamipress_get_achievements( $args = array() ) {
 
 	// Setup our defaults
 	$defaults = array(
-		'post_type'                => gamipress_get_achievement_types_slugs(),
+		'post_type'                => array_merge( gamipress_get_achievement_types_slugs(), gamipress_get_requirement_types_slugs() ),
+		'numberposts'			   => -1,
 		'suppress_filters'         => false,
 		'achievement_relationship' => 'any',
 	);
@@ -123,13 +92,14 @@ function gamipress_get_achievements_children_join( $join = '', $query_object = n
 
 	$join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_from = {$posts}.ID";
 
-	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] != 'any' ) {
-		$join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
-	}
+	//if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] !== 'any' ) {
+		//$join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
+	//}
 
 	$join .= " LEFT JOIN {$p2pmeta} AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
 
 	return $join;
+
 }
 
 /**
@@ -140,17 +110,21 @@ function gamipress_get_achievements_children_join( $join = '', $query_object = n
  * @param  object $query_object The complete query object
  * @return string 				The updated query "where" string
  */
-function gamipress_get_achievements_children_where( $where = '', $query_object ) {
+function gamipress_get_achievements_children_where( $where = '', $query_object = null ) {
 
 	global $wpdb;
 
-	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] == 'required' )
-		$where .= " AND p2pm1.meta_key ='Required'";
-
-	if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] == 'optional' )
-		$where .= " AND p2pm1.meta_key ='Optional'";
-
 	// ^^ TODO, add required and optional. right now just returns all achievements.
+
+	// Check for required relationship
+	//if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] === 'required' )
+		//$where .= " AND p2pm1.meta_key = 'Required'";
+
+	// Check for optional relationship
+	//if ( isset( $query_object->query_vars['achievement_relationship'] ) && $query_object->query_vars['achievement_relationship'] === 'optional' )
+		//$where .= " AND p2pm1.meta_key = 'Optional'";
+
+	// Filter by order meta
 	$where .= " AND p2pm2.meta_key ='order'";
 
 	$where .= $wpdb->prepare( ' AND p2p.p2p_to = %d', $query_object->query_vars['children_of'] );
@@ -862,9 +836,11 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0 ) {
  * @param object $post       Post object.
  */
 function gamipress_flush_rewrite_on_published_achievement( $new_status, $old_status, $post ) {
+
 	if ( 'achievement-type' === $post->post_type && 'publish' === $new_status && 'publish' !== $old_status ) {
 		gamipress_flush_rewrite_rules();
 	}
+
 }
 add_action( 'transition_post_status', 'gamipress_flush_rewrite_on_published_achievement', 10, 3 );
 

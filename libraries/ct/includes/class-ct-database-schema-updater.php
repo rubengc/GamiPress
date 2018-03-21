@@ -163,8 +163,11 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
             if( strpos( $field->Type, '(' ) !== false ) {
                 // Check for "type(length)" or "type(length) signed|unsigned"
 
-                $type_parts = explode( '(', $field->Type )[1];
-                $type_definition = explode( ')', $type_parts )[0];
+                $type_parts = explode( '(', $field->Type );
+                $type_part = $type_parts[1];
+
+                $type_definition_parts = explode( ')', $type_part );
+                $type_definition = $type_definition_parts[0];
 
                 if( ! empty( $type_definition ) ) {
 

@@ -196,12 +196,6 @@ function gamipress_meta_boxes() {
 				'type' => 'select',
 				'options_cb' => 'gamipress_options_cb_posts'
 			),
-			$prefix . 'sequential' => array(
-				'name' => __( 'Sequential Steps', 'gamipress' ),
-				'desc' => __( 'Check this option to force users to complete steps in order.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
 			$prefix . 'congratulations_text' => array(
 				'name' => __( 'Congratulations Text', 'gamipress' ),
 				'desc' => __( 'Displayed after achievement is earned.', 'gamipress' ),
@@ -308,12 +302,6 @@ function gamipress_meta_boxes() {
 		__( 'Rank Data', 'gamipress' ),
 		$rank_types,
 		array(
-			$prefix . 'sequential' => array(
-				'name' => __( 'Sequential Requirements', 'gamipress' ),
-				'desc' => __( 'Check this option to force users to complete requirements in order.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
 			$prefix . 'congratulations_text' => array(
 				'name' => __( 'Congratulations Text', 'gamipress' ),
 				'desc' => __( 'Displayed after rank is reached.', 'gamipress' ),

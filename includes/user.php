@@ -427,7 +427,7 @@ function gamipress_profile_user_achievements( $user = null ) {
 	$can_manage = current_user_can( gamipress_get_manager_capability() );
 	?>
 
-    <h2><?php echo $can_manage ? __( 'Earned Achievements', 'gamipress' ) : __( 'Your Achievements', 'gamipress' ); ?></h2>
+    <h2><?php echo $can_manage ? __( 'User Earnings', 'gamipress' ) : __( 'Your Achievements', 'gamipress' ); ?></h2>
 
 	<?php ct_render_ajax_list_table( 'gamipress_user_earnings',
 		array(

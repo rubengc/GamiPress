@@ -37,77 +37,6 @@ function gamipress_is_rank( $post = null ) {
 }
 
 /**
- * Get GamiPress Rank Types
- *
- * Returns a multidimensional array of slug, single name and plural name for all rank types.
- *
- * @since  1.3.1
- *
- * @return array An array of our registered rank types
- */
-function gamipress_get_rank_types() {
-    return GamiPress()->rank_types;
-}
-
-/**
- * Get GamiPress Rank Type Slugs
- *
- * @since  1.3.1
- *
- * @return array An array of all our registered rank type slugs (empty array if none)
- */
-function gamipress_get_rank_types_slugs() {
-    // Assume we have no registered rank types
-    $rank_type_slugs = array();
-
-    // If we do have any rank types, loop through each and add their slug to our array
-    foreach ( GamiPress()->rank_types as $slug => $data ) {
-        $rank_type_slugs[] = $slug;
-    }
-
-    // Finally, return our data
-    return $rank_type_slugs;
-}
-
-/**
- * Get the desired Rank Type singular
- *
- * @since  1.3.1
- *
- * @param string $rank_type
- *
- * @return string
- */
-function gamipress_get_rank_type_singular( $rank_type = '' ) {
-
-    if( isset( GamiPress()->rank_types[$rank_type] ) ) {
-        return GamiPress()->rank_types[$rank_type]['singular_name'];
-    }
-
-    return __( 'Rank', 'gamipress' );
-
-}
-
-/**
- * Get the desired Rank Type plural
- *
- * @since  1.3.1
- *
- * @param string $rank_type
- *
- * @return string
- */
-function gamipress_get_rank_plural( $rank_type = '' ) {
-
-    if( isset( GamiPress()->rank_types[$rank_type] ) ) {
-        return GamiPress()->rank_types[$rank_type]['plural_name'];
-    }
-
-    return __( 'Ranks', 'gamipress' );
-
-}
-
-/**
  * Return registered ranks
  *
  * @since 1.3.1
@@ -118,7 +47,8 @@ function gamipress_get_ranks( $args = array() ) {
 
     // Setup our defaults
     $defaults = array(
-        'post_type'         => gamipress_get_rank_types_slugs(),
+        'post_type'         => array_merge( gamipress_get_rank_types_slugs(), gamipress_get_requirement_types_slugs() ),
+        'numberposts'       => -1,
         'orderby'           => 'menu_order',
         'suppress_filters'  => false,
         'rank_relationship' => 'any',
@@ -170,8 +100,8 @@ function gamipress_get_ranks_children_join( $join = '', $query_object = null ) {
 
     $join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_from = {$posts}.ID";
 
-    if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] != 'any' )
-        $join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
+    //if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] != 'any' )
+        //$join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
 
     $join .= " LEFT JOIN {$p2pmeta} AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
 
@@ -193,14 +123,20 @@ function gamipress_get_ranks_children_where( $where = '', $query_object ) {
 
     global $wpdb;
 
-    if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'required' )
-        $where .= " AND p2pm1.meta_key ='Required'";
-
-    if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'optional' )
-        $where .= " AND p2pm1.meta_key ='Optional'";
-
     // ^^ TODO, add required and optional. right now just returns all ranks.
+
+    // Check for required relationship
+    //if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'required' )
+        //$where .= " AND p2pm1.meta_key ='Required'";
+
+    // Check for optional relationship
+    //if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'optional' )
+        //$where .= " AND p2pm1.meta_key ='Optional'";
+
+
+    // Filter by order meta
     $where .= " AND p2pm2.meta_key ='order'";
+
     $where .= $wpdb->prepare( ' AND p2p.p2p_to = %d', $query_object->query_vars['children_of'] );
 
     return $where;
@@ -217,7 +153,9 @@ function gamipress_get_ranks_children_where( $where = '', $query_object ) {
  * @return string 		   The updated "orderby" string
  */
 function gamipress_get_ranks_children_orderby( $orderby = '' ) {
+
     return $orderby = 'p2pm2.meta_value ASC';
+
 }
 
 /**

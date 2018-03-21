@@ -1,5 +1,5 @@
 (function($) {
-    // Hide our Triggers metabox if unnecessary
+    // Hide requirements meta box if unnecessary
     $("#_gamipress_earned_by").change( function() {
         if ( 'triggers' == $(this).val() )
             $('#gamipress-requirements-ui').show();
@@ -7,7 +7,7 @@
             $('#gamipress-requirements-ui').hide();
     }).change();
 
-    // Make our Triggers list sortable
+    // Make requirements list sortable
     $(".requirements-list").sortable({
 
         // When the list order is updated
@@ -24,6 +24,76 @@
         }
     });
 
+    // On change sequential requirements, add order display on all requirements
+    $("#_gamipress_sequential").change( function() {
+
+        $('.requirements-list .requirement-header-title .requirement-order').remove();
+
+        if( $(this).prop('checked') ) {
+            var index = 1;
+
+            $('.requirements-list .requirement-published .requirement-header-title').each(function() {
+                $(this).prepend('<span class="requirement-order">' + index + ' -</span>');
+
+                index++;
+            });
+        }
+
+    }).change();
+
+    // Change status action
+    $('.requirements-list').on( 'change', '.requirement-action.requirement-action-change-status input', function() {
+
+        var $this = $(this);
+        var requirement = $this.closest('.requirement-row');
+
+        // Enable/Disable all inputs
+        requirement.find('input:not([id="' + $this.attr('id') + '"]), select, textarea').prop( 'disabled', ! $this.prop('checked') );
+
+        if( $this.prop('checked') ) {
+            // Remove a custom class to the requirement
+            requirement.removeClass('requirement-disabled');
+            requirement.addClass('requirement-published');
+
+            // Change action title
+            $this.attr('title', $this.data('enabled-title'));
+        } else {
+            // Add a custom class to the requirement
+            requirement.addClass('requirement-disabled');
+            requirement.removeClass('requirement-published');
+
+            // Change action title
+            $this.attr('title', $this.data('disabled-title'));
+        }
+
+        // Trigger change event on sequential input to update the order again
+        $("#_gamipress_sequential").change();
+    });
+
+    // Duplicate action
+    $('.requirements-list').on( 'click', '.requirement-action.requirement-action-duplicate', function() {
+
+        // Bail if already clicked
+        if( $(this).hasClass('requirement-action-active') ) {
+            return;
+        }
+
+        // Add a custom class to meet that has been clicked
+        $(this).addClass('requirement-action-active');
+
+        gamipress_duplicate_requirement( this, $(this).closest('.requirement-row').attr('data-requirement-id') );
+    });
+
+    // Delete action
+    $('.requirements-list').on( 'click', '.requirement-action.requirement-action-delete', function() {
+        gamipress_delete_requirement( this, $(this).closest('.requirement-row').attr('data-requirement-id') );
+    });
+
+    // On change requirement title, also update requirement header title
+    $('.requirements-list').on( 'change keyup', '.requirement-title input', function() {
+        $(this).closest('.requirement-row').find('.requirement-header-title strong').html($(this).val());
+    });
+
     // Listen for our change to our trigger type selectors
     $('.requirements-list').on( 'change', '.select-trigger-type', function() {
 
@@ -36,8 +106,8 @@
         var trigger_type = $(this).val();
 
         // Common selectors for points and rank trigger types
-        var count = $(this).siblings('.required-count');
-        var count_text = $(this).siblings('.required-count-text');
+        var count = $(this).siblings('.count');
+        var count_text = $(this).siblings('.count-text');
         var limit_text = $(this).siblings('.limit-text');
         var limit = $(this).siblings('.limit');
         var limit_type = $(this).siblings('.limit-type');
@@ -256,9 +326,51 @@
 
     // Trigger a change for our limit type to determine if limit should show
     $( '.limit-type' ).change();
+
+    // Trigger a change for our change status input
+    $( '.requirement-action-change-status input' ).change();
+
+    // Add a custom data with current fields values to check their changes
+    $('.requirements-list input, .requirements-list select, .requirements-list textarea').each( function() {
+        $(this).data('unsaved-value', $(this).val());
+    });
+
+    // Check if any field has change their values
+    $('.requirements-list').on( 'change', 'input, select, textarea', function() {
+
+        var row = $(this).closest('.requirement-row');
+        var has_unsaved_changes = false;
+
+        // Check if any field has change his value
+        row.find('input, select, textarea').each( function() {
+            if( $(this).val() !== $(this).data('unsaved-value') ) {
+                has_unsaved_changes = true;
+            }
+        });
+
+        // If not has unsaved changes, remove warning and return
+        if( ! has_unsaved_changes ) {
+            row.find('.requirement-header-title .requirement-unsaved-changes').remove();
+            return;
+        }
+
+        // If has unsaved changes and not the waring, add it
+        if( has_unsaved_changes && ! row.find('.requirement-header-title .requirement-unsaved-changes').length ) {
+            row.find('.requirement-header-title').append('<span class="requirement-unsaved-changes dashicons dashicons-warning" title="Unsaved Changes"></span>');
+        }
+
+    });
 })(jQuery);
 
-// Add a requirement
+/**
+ * Add a requirement
+ *
+ * @since 1.0.0
+ *
+ * @param element
+ * @param post_id
+ * @param requirement_type
+ */
 function gamipress_add_requirement( element, post_id, requirement_type ) {
 
     var requirements_list = jQuery(element).siblings('.requirements-list');
@@ -286,19 +398,97 @@ function gamipress_add_requirement( element, post_id, requirement_type ) {
             requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).change();
 
             // Hide the spinner
-            jQuery(element).siblings( '.requirements-spinner' ).removeClass('is-active');
+            requirements_list.siblings( '.requirements-spinner' ).removeClass('is-active');
 
             // Slide Down the new requirement
             requirements_list.find( 'li.requirement-row:last').slideDown('fast');
+
+            // Add a custom data with current fields values to check their changes
+            requirements_list.find( 'li.requirement-row:last').find('input, select, textarea').each( function() {
+                $(this).data('unsaved-value', $(this).val());
+            });
+
+            // Trigger change event on sequential input to update the order again
+            $("#_gamipress_sequential").change();
         }
     );
 }
 
-// Delete a requirement
+/**
+ * Duplicate a requirement
+ *
+ * @since 1.4.6
+ *
+ * @param element
+ * @param requirement_id
+ */
+function gamipress_duplicate_requirement( element, requirement_id ) {
+
+    var requirements_list = jQuery(element).closest('.requirements-list');
+    requirements_list.siblings( '.requirements-spinner' ).addClass('is-active');
+
+    jQuery.post(
+        ajaxurl,
+        {
+            action: 'gamipress_duplicate_requirement',
+            post_id: $('input#post_ID').val(),
+            requirement_id: requirement_id
+        },
+        function( response ) {
+            jQuery( response ).appendTo( requirements_list );
+
+            // Hide the new requirement
+            requirements_list.find( 'li.requirement-row:last').attr('style', 'display: none;');
+
+            // Dynamically add the menu order for the new points award to be one higher than the last in line
+            var new_requirement_menu_order = Number( requirements_list.find( 'li.requirement-row' ).eq( -2 ).find( 'input[name="order"]' ).val() ) + 1;
+            requirements_list.find( 'li.requirement-row:last' ).find( 'input[name="order"]' ).val( new_requirement_menu_order );
+
+            // Trigger a change for the new trigger type and limit type elements
+            requirements_list.find( 'li.requirement-row:last' ).find( '.select-trigger-type' ).change();
+            requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).change();
+
+            // Hide the spinner
+            requirements_list.siblings( '.requirements-spinner' ).removeClass('is-active');
+
+            // Slide Down the new requirement
+            requirements_list.find( 'li.requirement-row:last').slideDown('fast');
+
+            // Add a custom data with current fields values to check their changes
+            requirements_list.find( 'li.requirement-row:last').find('input, select, textarea').each( function() {
+                $(this).data('unsaved-value', $(this).val());
+            });
+
+            // Trigger change event on sequential input to update the order again
+            $("#_gamipress_sequential").change();
+
+            // If current element has a custom class for requirement actions, remove it
+            if( jQuery(element).hasClass('requirement-action-active') ) {
+                jQuery(element).removeClass('requirement-action-active');
+            }
+        }
+    );
+
+}
+
+/**
+ * Delete a requirement
+ *
+ * @since 1.0.0
+ *
+ * @param element
+ * @param requirement_id
+ */
 function gamipress_delete_requirement( element, requirement_id ) {
 
     var requirements_list = jQuery(element).closest('.requirements-list');
     requirements_list.find( '.requirement-' + requirement_id ).slideUp( 'fast' );
+
+    // Remove requirement published class to update requirements order
+    requirements_list.find( '.requirement-' + requirement_id).removeClass('requirement-published')
+
+    // Trigger change event on sequential input to update the order again
+    $("#_gamipress_sequential").change();
 
     jQuery.post(
         ajaxurl,
@@ -312,14 +502,22 @@ function gamipress_delete_requirement( element, requirement_id ) {
     );
 }
 
-// Update all requirements
+/**
+ * Update all requirements
+ *
+ * @since 1.0.0
+ *
+ * @param element
+ */
 function gamipress_update_requirements( element ) {
 
     var requirements_list = jQuery(element).siblings('.requirements-list');
-    jQuery(element).siblings( '.requirements-spinner' ).addClass('is-active');
+    requirements_list.siblings( '.requirements-spinner' ).addClass('is-active');
 
     var requirement_data = {
         action: 'gamipress_update_requirements',
+        post_id: $('input#post_ID').val(),
+        _gamipress_sequential: ( $('input#_gamipress_sequential').prop('checked') ? 'on' : '' ),
         requirements: []
     };
 
@@ -335,11 +533,12 @@ function gamipress_update_requirements( element ) {
             requirement_id          : requirement.find( 'input[name="requirement_id"]').val(),
             requirement_type        : requirement.find( 'input[name="requirement_type"]').val(),
             order                   : requirement.find( 'input[name="order"]' ).val(),
+            status                  : ( requirement.find( '.requirement-action-change-status input' ).prop('checked') ? 'publish' : 'pending' ),
             points_required         : requirement.find( '.points-required' ).val(),
             points_type_required    : requirement.find( '.select-points-type-required' ).val(),
             rank_type_required      : requirement.find( '.select-rank-type-required' ).val(),
             rank_required           : requirement.find( '.select-rank-required' ).val(),
-            required_count          : requirement.find( '.required-count' ).val(),
+            count                   : requirement.find( '.count' ).val(),
             limit                   : requirement.find( '.limit' ).val(),
             limit_type              : requirement.find( '.limit-type' ).val(),
             trigger_type            : trigger_type,
@@ -371,8 +570,17 @@ function gamipress_update_requirements( element ) {
 
             // Update each points award titles
             jQuery.each( titles, function( id, value ) {
+                requirements_list.find('.requirement-' + id + ' .requirement-header-title strong').html(value);
                 requirements_list.find('#requirement-' + id + '-title').val(value);
             });
+
+            // Update all unsaved values to meet that current ones has been saved
+            requirements_list.find('input, select, textarea').each( function() {
+                $(this).data('unsaved-value', $(this).val());
+            });
+
+            // Remove all unsaved data warnings
+            requirements_list.find('.requirement-unsaved-changes').remove();
 
             // Hide the spinner
             jQuery(element).siblings( '.requirements-spinner' ).removeClass('is-active');

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.5
+Stable tag: 1.4.6
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -139,6 +139,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Daily Login Rewards](https://gamipress.com/add-ons/gamipress-daily-login-rewards/) - Add daily rewards to perform your site visits.
 * [Reports](https://gamipress.com/add-ons/gamipress-reports/) - Live reports for a quick view of points in circulation, achievements earned and user ranks.
 * [Purchases](https://gamipress.com/add-ons/gamipress-purchases/) - Allow your users purchase points, achievements or ranks access.
 * [Easy Digital Downloads Points Gateway](https://gamipress.com/add-ons/gamipress-edd-points-gateway/) - Use GamiPress points types as a payment gateway for Easy Digital Downloads.
@@ -154,10 +155,11 @@ If you’re looking for something endorsed and maintained by the developers who 
 
 = Helpful Links =
 
-* [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress official website
-* [Add-ons](https://gamipress.com/add-ons "GamiPress Add-ons") - GamiPress official add-ons
-* [Documentation](https://gamipress.com/docs "GamiPress documentation") - GamiPress online documentation
-* [Contact](https://gamipress.com/contact-us "GamiPress contact") - GamiPress contact page
+* [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress Official Website
+* [Add-ons](https://gamipress.com/add-ons "GamiPress Add-ons") - GamiPress Official Add-ons
+* [Documentation](https://gamipress.com/docs "GamiPress Documentation") - GamiPress Official Documentation
+* [Documentation](https://gamipress.com/customize "GamiPress Code Snippets") - GamiPress Official Code Snippets
+* [Contact](https://gamipress.com/contact-us "GamiPress Contact") - GamiPress Contact
 * [GitHub](https://github.com/rubengc/gamipress "GamiPress on GitHub") - GamiPress GitHub repository
 
 == Installation ==
@@ -209,6 +211,10 @@ Check the [Getting Started](https://gamipress.com/docs/getting-started/) docs wh
 
 Also, we have the [tutorials](https://gamipress.com/docs/tutorials/) sections where you can find step-by-step guides to accomplish some common task to start working with GamiPress.
 
+= Where can I find code snippets to customize GamiPress? =
+
+Check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress.
+
 = Which shortcodes come bundled with GamiPress? =
 
 GamiPress comes with the following shortcodes:
@@ -243,7 +249,24 @@ GamiPress comes with the following widgets:
 
 No, We're unable to provide custom development services, as our focus is developing the core GamiPress plugin, and the official GamiPress add-ons.
 
+Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
+
 == Changelog ==
+
+= 1.4.6 =
+
+* Added new email template tags: {achievement_url}, {achievement_link}, {achievement_congratulations}, {rank_url}, {rank_link} and {rank_congratulations}.
+* Replaced the text "Earned Achievements" to "User Earnings" on user profile screen.
+* Added filters on achievements and ranks post types registration.
+* Moved "Sequential Steps" fields into "Required Steps" meta box.
+* Moved "Sequential Requirements" fields into "Required Requirements" meta box.
+* Capability check when saving deleting steps, points awards/deducts and rank requirements.
+* Added the ability to duplicate steps, points awards/deducts and rank requirements.
+* Update the requirements UI with a new style.
+* Improvements when querying achievement steps.
+* Improvements when querying rank requirements.
+* Improvements admin area styles.
+* Added more functions to easily get the types objects (achievement, points and ranks) and their labels.
 
 = 1.4.5 =
 

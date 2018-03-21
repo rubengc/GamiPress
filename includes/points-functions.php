@@ -593,50 +593,17 @@ function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin
 add_action( 'gamipress_update_user_points', 'gamipress_log_user_points', 10, 8 );
 
 /**
- * Get GamiPress Points Types
- *
- * Returns a multidimensional array of slug, single name and plural name for all points types.
- *
- * @since  1.0.0
- *
- * @return array An array of our registered points types
- */
-function gamipress_get_points_types() {
-
-    return GamiPress()->points_types;
-
-}
-
-/**
- * Get GamiPress Points Type Slugs
- *
- * @since  1.0.0
- * @return array An array of all our registered points type slugs (empty array if none)
- */
-function gamipress_get_points_types_slugs() {
-
-    // Assume we have no registered points types
-    $points_type_slugs = array();
-
-    // If we do have any points types, loop through each and add their slug to our array
-    foreach ( GamiPress()->points_types as $slug => $data ) {
-        $points_type_slugs[] = $slug;
-    }
-
-    // Finally, return our data
-    return $points_type_slugs;
-
-}
-
-/**
  * Get Points Type Points Awards
  *
- * @since  1.0.0
+ * @since  	1.0.0
+ * @updated 1.4.6 Added $post_status parameter
  *
- * @param  integer|string $points_type The points type's post ID or the points type slug
- * @return array|bool                  Array of WP_Post of the points awards, or false if none
+ * @param integer|string 	$points_type 	The points type's post ID or the points type slug
+ * @param string 			$post_status 	The points awards status (publish by default)
+ *
+ * @return array|bool                  		Array of WP_Post of the points awards, or false if none
  */
-function gamipress_get_points_type_points_awards( $points_type = 0 ) {
+function gamipress_get_points_type_points_awards( $points_type = 0, $post_status = 'publish' ) {
 
 	// Try to find the points type by slug
 	if( ! is_numeric( $points_type ) && ! empty( $points_type ) ) {
@@ -655,6 +622,7 @@ function gamipress_get_points_type_points_awards( $points_type = 0 ) {
 
 	$points_awards = get_posts( array(
 		'post_type'           => 'points-award',
+		'post_status'         => $post_status,
 		'posts_per_page'      => -1,
 		'suppress_filters'    => false,
 		'connected_direction' => 'to',
@@ -705,12 +673,16 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
 /**
  * Get Points Type Points Deducts
  *
- * @since  1.3.7
+ * @since  	1.3.7
+ * @updated 1.4.6 Added $post_status parameter
  *
- * @param  integer|string $points_type The points type's post ID or the points type slug
- * @return array|bool                  Array of WP_Post of the points deducts, or false if none
+ * @param integer|string 	$points_type 	The points type's post ID or the points type slug
+ * @param string 			$post_status 	The points deducts status (publish by default)
+
+ *
+ * @return array|bool                  		Array of WP_Post of the points deducts, or false if none
  */
-function gamipress_get_points_type_points_deducts( $points_type = 0 ) {
+function gamipress_get_points_type_points_deducts( $points_type = 0, $post_status = 'publish' ) {
 
 	// Try to find the points type by slug
 	if( ! is_numeric( $points_type ) && ! empty( $points_type ) ) {
@@ -729,6 +701,7 @@ function gamipress_get_points_type_points_deducts( $points_type = 0 ) {
 
 	$points_deducts = get_posts( array(
 		'post_type'           => 'points-deduct',
+		'post_status'         => $post_status,
 		'posts_per_page'      => -1,
 		'suppress_filters'    => false,
 		'connected_direction' => 'to',
@@ -994,4 +967,5 @@ function gamipress_get_points_type_thumbnail( $points_type = '', $image_size = '
 
 	// Return our image tag with custom size
 	return get_the_post_thumbnail( $post_id, $image_size, array( 'class' => $class ) );
+
 }

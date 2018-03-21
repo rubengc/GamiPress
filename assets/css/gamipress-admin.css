@@ -189,10 +189,22 @@
 	margin-top: 0;
 }
 
+.gamipress-requirements-sequential {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.gamipress-requirements-sequential label {
+    color: #aaaaaa;
+    font-style: italic;
+    margin-left: 45px;
+}
+
 li.requirement-row {
 	background: #fff;
-	border-bottom: 1px solid #e9e9e9;
-	padding: 20px 25px;
+	border: 1px solid #e9e9e9;
+	padding: 15px;
 	margin: 0;
 	position: relative;
 }
@@ -206,20 +218,63 @@ li.requirement-row.ui-sortable-helper {
 	z-index: 2 !important;
 }
 
-li.requirement-row:last-child {
-	border: none;
+li.requirement-row:not(:first-child) {
+	margin-top: 8px;
 }
 
-li.requirement-row .requirement-handle {
-	display: block;
-	background: url( '../img/ui_handle.png' );
-	width: 7px;
-	height: calc( 100% - 20px );
-	margin: 10px 10px 5px 0;
-	position: absolute;
-	top: 0;
-	left: 10px;
+li.requirement-row .requirement-header {
+	background: #fafafa;
+	border-bottom: 1px solid #e9e9e9;
+	margin: -15px -15px 15px -15px;
 	cursor: move;
+}
+
+li.requirement-row .requirement-header .requirement-header-title {
+	display: inline-block;
+	line-height: 1.5;
+	padding: 8px 12px;
+    min-height: 15px;
+    font-weight: 600;
+}
+
+li.requirement-row .requirement-header .requirement-header-title .requirement-order {
+    color: #72777c;
+}
+
+li.requirement-row .requirement-header .requirement-header-title .requirement-unsaved-changes {
+    color: #ffb900;
+    height: 17px;
+}
+
+li.requirement-row .requirement-header .requirement-actions {
+	display: flex;
+	float: right;
+}
+
+li.requirement-row .requirement-header .requirement-actions .requirement-action {
+	cursor: pointer;
+	padding: 8px;
+	color: #72777c;
+}
+
+li.requirement-row .requirement-header .requirement-actions .requirement-action:hover {
+	color: #444;
+}
+
+li.requirement-row .requirement-header .requirement-actions .requirement-action:not(:first-child) {
+    border-left: 1px solid #e9e9e9;
+}
+
+li.requirement-row .requirement-header .requirement-actions .requirement-action-change-status {
+    position: relative;
+}
+
+li.requirement-row .requirement-actions .requirement-action.requirement-action-delete {
+	color: #ca4a1f;
+}
+
+li.requirement-row .requirement-actions .requirement-action.requirement-action-delete:hover {
+	color: #a00;
 }
 
 li.requirement-row .required-duration {
@@ -235,7 +290,7 @@ li.requirement-row .points-required {
 	width: 100px;
 }
 
-li.requirement-row .required-count,
+li.requirement-row .count,
 li.requirement-row .limit,
 li.requirement-row .maximum-earnings {
 	max-width: 60px;
@@ -245,24 +300,6 @@ li.requirement-row .title {
 	width: 400px;
 }
 
-li.requirement-row .delete-requirement {
-	display: table;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	right: 4px;
-	margin: auto 0;
-	text-decoration: none;
-	color: #72777c;
-}
-
-
-li.requirement-row .delete-requirement:hover,
-li.requirement-row .delete-requirement:active,
-li.requirement-row .delete-requirement:focus {
-	color: #c00;
-}
-
 li.requirement-row input, li.requirement-row select {
 	vertical-align: middle;
 }
@@ -270,6 +307,10 @@ li.requirement-row input, li.requirement-row select {
 li.requirement-row label {
 	width: 50px;
 	display: inline-block;
+}
+
+li.requirement-row.requirement-disabled {
+    color: rgba( 51, 51, 51, 0.5 );
 }
 
 @media screen and (max-width: 782px) {
@@ -671,6 +712,16 @@ body > .gamipress-select2,
 	color: rgba(255,255,255,0.7);
 }
 
+.gamipress-select2.select2-container--disabled .select2-selection--single {
+    background: rgba( 255, 255, 255, 0.5 ) !important;
+    border-color: rgba( 222, 222, 222, 0.75 ) !important;
+    box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.04 ) !important;
+}
+
+.gamipress-select2.select2-container--disabled .select2-selection--single .select2-selection__rendered {
+    color: rgba( 51, 51, 51, 0.5 ) !important;
+}
+
 @media screen and (max-width: 782px) {
 	.gamipress-select2 .select2-selection,
 	.gamipress-select2 .select2-search--dropdown .select2-search__field,
@@ -762,6 +813,41 @@ body > .gamipress-select2,
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+li.requirement-row .requirement-header .requirement-actions .requirement-action .gamipress-switch {
+    position: relative;
+}
+
+.gamipress-requirements-sequential.gamipress-switch input + label:before,
+.gamipress-requirements-sequential.gamipress-switch input + label:after {
+    top: 2px;
+}
+
+label[for="_gamipress_sequential"] {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Switch small version */
+.gamipress-switch.gamipress-switch-small label {
+    width: 40px;
+}
+
+.gamipress-switch.gamipress-switch-small input + label:before,
+.gamipress-switch.gamipress-switch-small input + label:after {
+    width: 36px;
+    height: 18px;
+}
+
+.gamipress-switch.gamipress-switch-small input + label:after {
+    width: 18px;
+}
+
+.gamipress-switch.gamipress-switch-small input:checked + label:after {
+    margin-left: 18px;
 }
 
 /* GamiPress image options control */

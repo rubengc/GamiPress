@@ -55,11 +55,14 @@ function gamipress_get_achievement_earned_email_pattern_tags() {
     $email_pattern_tags = gamipress_get_email_pattern_tags();
 
     return apply_filters( 'gamipress_achievement_earned_email_pattern_tags', array_merge( $email_pattern_tags, array(
-        '{achievement_title}'   =>  __(  'Achievement title.', 'gamipress' ),
-        '{achievement_excerpt}'   =>  __(  'Achievement excerpt.', 'gamipress' ),
-        '{achievement_image}'   =>  __(  'Achievement featured image.', 'gamipress' ),
-        '{achievement_steps}'   =>  __(  'Achievement steps.', 'gamipress' ),
-        '{achievement_type}'    =>  __(  'Type of the achievement.', 'gamipress' ),
+        '{achievement_title}'           =>  __(  'Achievement title.', 'gamipress' ),
+        '{achievement_url}'             =>  __(  'URL to the achievement.', 'gamipress' ),
+        '{achievement_link}'            =>  __(  'Link to the achievement with the achievement title as text.', 'gamipress' ),
+        '{achievement_excerpt}'         =>  __(  'Achievement excerpt.', 'gamipress' ),
+        '{achievement_image}'           =>  __(  'Achievement featured image.', 'gamipress' ),
+        '{achievement_steps}'           =>  __(  'Achievement steps.', 'gamipress' ),
+        '{achievement_type}'            =>  __(  'Type of the achievement.', 'gamipress' ),
+        '{achievement_congratulations}' =>  __(  'Achievement congratulations text.', 'gamipress' ),
     ) ) );
 
 }
@@ -76,12 +79,15 @@ function gamipress_get_step_completed_email_pattern_tags() {
     $email_pattern_tags = gamipress_get_email_pattern_tags();
 
     return apply_filters( 'gamipress_step_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
-        '{label}'               =>  __(  'Step label.', 'gamipress' ),
-        '{achievement_title}'   =>  __(  'Step Achievement title.', 'gamipress' ),
-        '{achievement_excerpt}' =>  __(  'Step Achievement excerpt.', 'gamipress' ),
-        '{achievement_image}'   =>  __(  'Step Achievement featured image.', 'gamipress' ),
-        '{achievement_steps}'   =>  __(  'Step Achievement steps.', 'gamipress' ),
-        '{achievement_type}'    =>  __(  'Type of the step achievement.', 'gamipress' ),
+        '{label}'                       =>  __(  'Step label.', 'gamipress' ),
+        '{achievement_title}'           =>  __(  'Step achievement title.', 'gamipress' ),
+        '{achievement_url}'             =>  __(  'URL to the step achievement.', 'gamipress' ),
+        '{achievement_link}'            =>  __(  'Link to the step achievement with the achievement title as text.', 'gamipress' ),
+        '{achievement_excerpt}'         =>  __(  'Step achievement excerpt.', 'gamipress' ),
+        '{achievement_image}'           =>  __(  'Step achievement featured image.', 'gamipress' ),
+        '{achievement_steps}'           =>  __(  'Step achievement steps.', 'gamipress' ),
+        '{achievement_type}'            =>  __(  'Type of the step achievement.', 'gamipress' ),
+        '{achievement_congratulations}' =>  __(  'Step achievement congratulations text.', 'gamipress' ),
     ) ) );
 
 }
@@ -138,11 +144,14 @@ function gamipress_get_rank_earned_email_pattern_tags() {
     $email_pattern_tags = gamipress_get_email_pattern_tags();
 
     return apply_filters( 'gamipress_rank_earned_email_pattern_tags', array_merge( $email_pattern_tags, array(
-        '{rank_title}'          =>  __(  'Rank title.', 'gamipress' ),
-        '{rank_excerpt}'        =>  __(  'Rank excerpt.', 'gamipress' ),
-        '{rank_image}'          =>  __(  'Rank featured image.', 'gamipress' ),
-        '{rank_requirements}'   =>  __(  'Rank requirements.', 'gamipress' ),
-        '{rank_type}'           =>  __(  'Type of the rank.', 'gamipress' ),
+        '{rank_title}'              =>  __(  'Rank title.', 'gamipress' ),
+        '{rank_url}'                =>  __(  'URL to the rank.', 'gamipress' ),
+        '{rank_link}'               =>  __(  'Link to the rank with the rank title as text.', 'gamipress' ),
+        '{rank_excerpt}'            =>  __(  'Rank excerpt.', 'gamipress' ),
+        '{rank_image}'              =>  __(  'Rank featured image.', 'gamipress' ),
+        '{rank_requirements}'       =>  __(  'Rank requirements.', 'gamipress' ),
+        '{rank_type}'               =>  __(  'Type of the rank.', 'gamipress' ),
+        '{rank_congratulations}'    =>  __(  'Rank congratulations text.', 'gamipress' ),
     ) ) );
 
 }
@@ -159,12 +168,15 @@ function gamipress_get_rank_requirement_completed_email_pattern_tags() {
     $email_pattern_tags = gamipress_get_email_pattern_tags();
 
     return apply_filters( 'gamipress_step_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
-        '{label}'               =>  __(  'Requirement label.', 'gamipress' ),
-        '{rank_title}'          =>  __(  'Requirement rank title.', 'gamipress' ),
-        '{rank_excerpt}'        =>  __(  'Requirement rank excerpt.', 'gamipress' ),
-        '{rank_image}'          =>  __(  'Requirement rank featured image.', 'gamipress' ),
-        '{rank_requirements}'   =>  __(  'Requirement rank requirements.', 'gamipress' ),
-        '{rank_type}'           =>  __(  'Type of the rank.', 'gamipress' ),
+        '{label}'                   =>  __(  'Requirement label.', 'gamipress' ),
+        '{rank_title}'              =>  __(  'Requirement rank title.', 'gamipress' ),
+        '{rank_url}'                =>  __(  'URL to the requirement rank.', 'gamipress' ),
+        '{rank_link}'               =>  __(  'Link to the requirement rank with the rank title as text.', 'gamipress' ),
+        '{rank_excerpt}'            =>  __(  'Requirement rank excerpt.', 'gamipress' ),
+        '{rank_image}'              =>  __(  'Requirement rank featured image.', 'gamipress' ),
+        '{rank_requirements}'       =>  __(  'Requirement rank requirements.', 'gamipress' ),
+        '{rank_type}'               =>  __(  'Type of the rank.', 'gamipress' ),
+        '{rank_congratulations}'    =>  __(  'Requirement rank congratulations text.', 'gamipress' ),
     ) ) );
 
 }
@@ -408,10 +420,13 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             }
 
             $replacements['{achievement_title}'] = $achievement->post_title;
+            $replacements['{achievement_url}'] = get_the_permalink( $achievement->ID );
+            $replacements['{achievement_link}'] = sprintf( '<a href="%s" title="%s">%s</a>', $replacements['{achievement_url}'], $replacements['{achievement_title}'], $replacements['{achievement_title}'] );
             $replacements['{achievement_excerpt}'] = $achievement->post_excerpt;
             $replacements['{achievement_image}'] = gamipress_get_achievement_post_thumbnail( $achievement->ID );
             $replacements['{achievement_steps}'] = $achievement_steps_html;
             $replacements['{achievement_type}'] = $achievement_type['singular_name'];
+            $replacements['{achievement_congratulations}'] = gamipress_get_post_meta( $achievement->ID, '_gamipress_congratulations_text' );
 
         }
 
@@ -525,10 +540,13 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             }
 
             $replacements['{rank_title}'] = $rank->post_title;
+            $replacements['{rank_url}'] = get_the_permalink( $rank->ID );
+            $replacements['{rank_link}'] = sprintf( '<a href="%s" title="%s">%s</a>', $replacements['{rank_url}'], $replacements['{rank_title}'], $replacements['{rank_title}'] );
             $replacements['{rank_excerpt}'] = $rank->post_excerpt;
             $replacements['{rank_image}'] = gamipress_get_rank_post_thumbnail( $rank->ID );
             $replacements['{rank_requirements}'] = $rank_requirements_html;
-            $replacements['{rank_type}'] = gamipress_get_rank_type_singular( $rank->post_type );
+            $replacements['{rank_type}'] = gamipress_get_rank_type_singular( $rank->post_type, true );
+            $replacements['{rank_congratulations}'] = gamipress_get_post_meta( $rank->ID, '_gamipress_congratulations_text' );
 
         }
 
@@ -613,6 +631,8 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
     if( $gamipress_email_template_args['type'] === 'achievement_earned' ) {
 
         $replacements['{achievement_title}'] = __( 'Sample Achievement', 'gamipress' );
+        $replacements['{achievement_url}'] = '#';
+        $replacements['{achievement_link}'] = '<a href="#" title="' . $replacements['{achievement_title}'] . '">' . $replacements['{achievement_title}'] . '</a>';
         $replacements['{achievement_excerpt}'] = __( 'Sample Achievement Excerpt', 'gamipress' );
         $replacements['{achievement_image}'] = '<div style="' . $img_placeholder_style . '">100x100</div>';
         $replacements['{achievement_steps}'] = '<ul>'
@@ -620,6 +640,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
                 . '<li style="text-decoration: line-through;">' . __(  'Earned achievement step.', 'gamipress' ) . '</li>'
             . '</ul>';
         $replacements['{achievement_type}'] = __( 'Sample Achievement Type', 'gamipress' );
+        $replacements['{achievement_congratulations}'] = __( 'Sample Achievement Congratulations Text', 'gamipress' );
 
     } else if( $gamipress_email_template_args['type'] === 'step_completed' ) {
 
@@ -650,6 +671,8 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
     } else if( $gamipress_email_template_args['type'] === 'rank_earned' ) {
 
         $replacements['{rank_title}'] = __( 'Sample Rank', 'gamipress' );
+        $replacements['{rank_url}'] = '#';
+        $replacements['{rank_link}'] = '<a href="#" title="' . $replacements['{rank_title}'] . '">' . $replacements['{rank_title}'] . '</a>';
         $replacements['{rank_excerpt}'] = __( 'Sample Rank Excerpt', 'gamipress' );
         $replacements['{rank_image}'] = '<div style="' . $img_placeholder_style . '">100x100</div>';
         $replacements['{rank_requirements}'] = '<ul>'
@@ -657,6 +680,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
             . '<li style="text-decoration: line-through;">' . __(  'Completed rank requirement.', 'gamipress' ) . '</li>'
             . '</ul>';
         $replacements['{rank_type}'] = __( 'Sample Rank Type', 'gamipress' );
+        $replacements['{rank_congratulations}'] = __( 'Sample Rank Congratulations Text', 'gamipress' );
 
     } else if( $gamipress_email_template_args['type'] === 'rank_requirement_completed' ) {
 
