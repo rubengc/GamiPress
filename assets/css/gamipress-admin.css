@@ -176,9 +176,10 @@
 
 }
 
-/* Points/achievement types edit screen */
+/* Points/achievement/rank types edit screen */
 .post-type-points-type #post-body #post-body-content,
-.post-type-achievement-type #post-body #post-body-content {
+.post-type-achievement-type #post-body #post-body-content,
+.post-type-rank-type #post-body #post-body-content {
 	display: none;
 }
 

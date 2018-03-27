@@ -237,10 +237,10 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     // Check database tables
-    $logs_exists = gamipress_database_table_exists( 'gamipress_logs' );
-    $logs_meta_exists = gamipress_database_table_exists( 'gamipress_logs_meta' );
-    $user_earnings_exists = gamipress_database_table_exists( 'gamipress_user_earnings' );
-    $user_earnings_meta_exists = gamipress_database_table_exists( 'gamipress_user_earnings_meta' );
+    $logs_exists = gamipress_database_table_exists( GamiPress()->db->logs );
+    $logs_meta_exists = gamipress_database_table_exists( GamiPress()->db->logs_meta );
+    $user_earnings_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings );
+    $user_earnings_meta_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings_meta );
 
     $meta_boxes['gamipress-info'] = array(
         'title' => __( 'GamiPress Info', 'gamipress' ),

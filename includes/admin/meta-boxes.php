@@ -8,6 +8,14 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/achievement-type.php';
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/achievements.php';
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/points-type.php';
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/rank-type.php';
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/ranks.php';
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/requirements.php';
+require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes/logs.php';
+
 /**
  * Helper function to register custom meta boxes
  *
@@ -76,410 +84,65 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
  *
  * @since  1.0.0
  */
-function gamipress_meta_boxes() {
-	// Start with an underscore to hide fields from custom fields list
-	$prefix = '_gamipress_';
+function gamipress_init_meta_boxes() {
 
-	// Grab our achievement types as an array
-	$achievement_types = gamipress_get_achievement_types_slugs();
+	global $post, $pagenow, $ct_table;
 
-	// Grab our rank types as an array
-	$rank_types = gamipress_get_rank_types_slugs();
+    if( ! in_array( $pagenow, array( 'post-new.php', 'post.php', 'admin.php' ) ) ) {
+        return;
+    }
 
-	$rank_types_options = array();
+    $post_type = '';
 
-	foreach( gamipress_get_rank_types() as $slug => $data ) {
-		$rank_types_options[$slug] = $data['singular_name'];
-	}
+    // Get post type from global post
+    if( $post && $post->post_type ) {
+        $post_type = $post->post_type;
+    }
 
-	// Grab our requirement types as an array
-	$requirement_types = gamipress_get_requirement_types_slugs();
+    // On post.php post ID is on GET parameters
+    if( empty( $post_type ) && isset( $_GET['post'] ) ) {
+        $post_type = gamipress_get_post_field( 'post_type', $_GET['post'] );
+    }
 
-	// Check if points types are public
-	$public_points_type = apply_filters( 'gamipress_public_points_type', false );
+    // On post-new.php and sometimes on post.php post type is on GET or POST parameters
+    if( empty( $post_type ) && isset( $_REQUEST['post_type'] ) ) {
+        $post_type = $_REQUEST['post_type'];
+    }
 
-	// Points Type
-	gamipress_add_meta_box(
-		'points-type-data',
-		__( 'Points Type Data', 'gamipress' ),
-		'points-type',
-		array(
-			'post_title' => array(
-				'name' 	=> __( 'Singular Name', 'gamipress' ),
-				'desc' 	=> __( 'The singular name for this points type.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			$prefix . 'plural_name' => array(
-				'name' 	=> __( 'Plural Name', 'gamipress' ),
-				'desc' 	=> __( 'The plural name for this points type.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			'post_name' => array(
-				'name' 	=> __( 'Slug', 'gamipress' ),
-				'desc' 	=>  (( $public_points_type ) ? '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' : '' ) . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this points type from any other (leave blank to automatically generate one).', 'gamipress' ),
-				'type' 	=> 'text_medium',
-				'attributes' => array(
-					'maxlength' => 20
-				)
-			),
-		),
-		array( 'priority' => 'high', )
-	);
+    // Check if there is a CT view
+    if( empty( $post_type ) && $pagenow === 'admin.php' && $ct_table ) {
+        $post_type = $ct_table->name;
+    }
 
-	// Achievement Type
-	gamipress_add_meta_box(
-		'achievement-type-data',
-		__( 'Achievement Type Data', 'gamipress' ),
-		'achievement-type',
-		array(
-			'post_title' => array(
-				'name' 	=> __( 'Singular Name', 'gamipress' ),
-				'desc' 	=> __( 'The singular name for this achievement type.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			$prefix . 'plural_name' => array(
-				'name' 	=> __( 'Plural Name', 'gamipress' ),
-				'desc' 	=> __( 'The plural name for this achievement type.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			'post_name' => array(
-				'name' 	=> __( 'Slug', 'gamipress' ),
-				'desc' 	=> '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this achievement type from any other (leave blank to automatically generate one).', 'gamipress' ),
-				'type' 	=> 'text_medium',
-				'attributes' => array(
-					'maxlength' => 20
-				)
-			),
-		),
-		array( 'priority' => 'high', )
-	);
+    // Check if there is the edit GamiPress logs screen
+    if( empty( $post_type ) && $pagenow === 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] === 'edit_gamipress_logs' ) {
+        $post_type = 'gamipress_logs';
+    }
 
-	// Achievement Data
-	gamipress_add_meta_box(
-		'achievement-data',
-		__( 'Achievement Data', 'gamipress' ),
-		$achievement_types,
-		array(
-			$prefix . 'points' => array(
-				'name' => __( 'Points Awarded', 'gamipress' ),
-				'desc' => __( 'Points awarded for earning this achievement (optional). Leave empty if no points are awarded.', 'gamipress' ),
-				'type' => 'gamipress_points',
-				'default' => '0',
-			),
-			$prefix . 'earned_by' => array(
-				'name'    => __( 'Earned By:', 'gamipress' ),
-				'desc'    => __( 'How this achievement can be earned.', 'gamipress' ),
-				'type'    => 'select',
-				'options' => apply_filters( 'gamipress_achievement_earned_by', array(
-					'triggers' 			=> __( 'Completing Steps', 'gamipress' ),
-					'points' 			=> __( 'Minimum Number of Points', 'gamipress' ),
-					'rank' 				=> __( 'Reach a Rank', 'gamipress' ),
-					'admin' 			=> __( 'Admin-awarded Only', 'gamipress' ),
-				) )
-			),
-			$prefix . 'points_required' => array(
-				'name' => __( 'Minimum Points Required', 'gamipress' ),
-				'desc' => __( 'Fewest number of points required for earning this achievement.', 'gamipress' ),
-				'type' => 'gamipress_points',
-				'points_type_key' => $prefix . 'points_type_required',
-				'default' => '0',
-			),
-			$prefix . 'rank_type_required' => array(
-				'name' => __( 'Rank Type Required', 'gamipress' ),
-				'desc' => __( 'Rank Type of the required rank for earning this achievement.', 'gamipress' ),
-				'type' => 'select',
-				'options' => $rank_types_options
-			),
-			$prefix . 'rank_required' => array(
-				'name' => __( 'Rank Required', 'gamipress' ),
-				'desc' => __( 'Rank required for earning this achievement.', 'gamipress' ),
-				'type' => 'select',
-				'options_cb' => 'gamipress_options_cb_posts'
-			),
-			$prefix . 'congratulations_text' => array(
-				'name' => __( 'Congratulations Text', 'gamipress' ),
-				'desc' => __( 'Displayed after achievement is earned.', 'gamipress' ),
-				'type' => 'textarea',
-			),
-			$prefix . 'maximum_earnings' => array(
-				'name' => __( 'Maximum Earnings', 'gamipress' ),
-				'desc' => __( 'Number of times a user can earn this achievement (leave empty for no maximum).', 'gamipress' ),
-				'type' => 'text_small',
-				'default' => '1',
-			),
-			$prefix . 'hidden' => array(
-				'name'    => __( 'Hidden?', 'gamipress' ),
-				'type'    => 'select',
-				'options' => array(
-					'show' 		=> __( 'Show to User', 'gamipress' ),
-					'hidden' 	=> __( 'Hidden to User', 'gamipress' ),
-				),
-			),
-			$prefix . 'unlock_with_points' => array(
-				'name' => __( 'Allow unlock with points', 'gamipress' ),
-				'desc' => __( 'Check this option to allow users to unlock this achievement by expend an amount of points.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
-			$prefix . 'points_to_unlock' => array(
-				'name' => __( 'Points to Unlock', 'gamipress' ),
-				'desc' => __( 'Amount of points needed to optionally unlock this achievement by expending them.', 'gamipress' ),
-				'type' => 'gamipress_points',
-				'points_type_key' => $prefix . 'points_type_to_unlock',
-				'default' => '0',
-			),
-		),
-		array(
-			'context'  => 'advanced',
-			'priority' => 'high',
-		)
-	);
+    /**
+     * Hook to register meta boxes
+     *
+     * @since 1.4.7
+     *
+     * @param string $post_type
+     */
+	do_action( 'gamipress_init_meta_boxes', $post_type );
 
-	// Achievement Template
-	gamipress_add_meta_box(
-		'achievement-template',
-		__( 'Achievement Template', 'gamipress' ),
-		$achievement_types,
-		array(
-			$prefix . 'show_earners' => array(
-				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => __( 'Check this option to display a list of users who have earned this achievement.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
-			$prefix . 'layout' => array(
-				'name'        => __( 'Layout', 'gamipress' ),
-				'description' => __( 'Layout to show the achievement.', 'gamipress' ),
-				'type' 		  => 'radio',
-				'options' 	  => array(
-					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
-					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
-					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
-					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
-					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
-				),
-				'default' 	  => 'left',
-				'inline' 	  => true,
-				'classes' 	  => 'gamipress-image-options'
-			),
-		),
-		array(
-			'context'  => 'side',
-		)
-	);
-
-	// Rank Type
-	gamipress_add_meta_box(
-		'rank-type-data',
-		__( 'Rank Type Data', 'gamipress' ),
-		'rank-type',
-		array(
-			'post_title' => array(
-				'name' 	=> __( 'Singular Name', 'gamipress' ),
-				'desc' 	=> __( 'The singular name for this rank type.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			$prefix . 'plural_name' => array(
-				'name' 	=> __( 'Plural Name', 'gamipress' ),
-				'desc' 	=> __( 'The plural name for this rank type.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			'post_name' => array(
-				'name' 	=> __( 'Slug', 'gamipress' ),
-				'desc' 	=> '<span class="gamipress-permalink hide-if-no-js">' . site_url() . '/<strong class="gamipress-post-name"></strong>/</span><br>' . __( 'Slug is used for internal references, as some shortcode attributes, to completely differentiate this rank type from any other (leave blank to automatically generate one).', 'gamipress' ),
-				'type' 	=> 'text_medium',
-				'attributes' => array(
-					'maxlength' => 20
-				)
-			),
-		),
-		array( 'priority' => 'high', )
-	);
-
-	// Rank Data
-	gamipress_add_meta_box(
-		'rank-data',
-		__( 'Rank Data', 'gamipress' ),
-		$rank_types,
-		array(
-			$prefix . 'congratulations_text' => array(
-				'name' => __( 'Congratulations Text', 'gamipress' ),
-				'desc' => __( 'Displayed after rank is reached.', 'gamipress' ),
-				'type' => 'textarea',
-			),
-			$prefix . 'unlock_with_points' => array(
-				'name' => __( 'Allow reach with points', 'gamipress' ),
-				'desc' => __( 'Check this option to allow users to reach this rank by expend an amount of points.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
-			$prefix . 'points_to_unlock' => array(
-				'name' => __( 'Points to Unlock', 'gamipress' ),
-				'desc' => __( 'Amount of points needed to optionally reach this rank by expending them.', 'gamipress' ),
-				'type' => 'gamipress_points',
-				'points_type_key' => $prefix . 'points_type_to_unlock',
-				'default' => '0',
-			),
-		),
-		array(
-			'context'  => 'advanced',
-			'priority' => 'high',
-		)
-	);
-
-	// Rank Template
-	gamipress_add_meta_box(
-		'rank-template',
-		__( 'Rank Template', 'gamipress' ),
-		$rank_types,
-		array(
-			$prefix . 'show_earners' => array(
-				'name' => __( 'Show Earners', 'gamipress' ),
-				'desc' => __( 'Check this option to display a list of users who have reached this rank.', 'gamipress' ),
-				'type' => 'checkbox',
-				'classes' => 'gamipress-switch'
-			),
-			$prefix . 'layout' => array(
-				'name'        => __( 'Layout', 'gamipress' ),
-				'description' => __( 'Layout to show the rank.', 'gamipress' ),
-				'type' 		  => 'radio',
-				'options' 	  => array(
-					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
-					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
-					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
-					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
-					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
-				),
-				'default' 	  => 'left',
-				'inline' 	  => true,
-				'classes' 	  => 'gamipress-image-options'
-			),
-		),
-		array(
-			'context'  => 'side',
-		)
-	);
-
-	// Rank Details
-	gamipress_add_meta_box(
-		'rank-details',
-		__( 'Rank Details', 'gamipress' ),
-		$rank_types,
-		array(
-			'menu_order' => array(
-				'name' 	=> __( 'Priority', 'gamipress' ),
-				'desc' 	=> __( 'The rank priority defines the order an user can achieve ranks. User will need to get lower priority ranks before get this one.', 'gamipress' ),
-				'type' 	=> 'text_medium',
-			),
-			$prefix . 'next_rank' => array(
-				'content_cb' 	=> 'gamipress_next_rank_content_cb',
-				'type' 	=> 'html',
-				'classes' => 'gamipress-no-pad'
-			),
-			$prefix . 'prev_rank' => array(
-				'content_cb' 	=> 'gamipress_prev_rank_content_cb',
-				'type' 	=> 'html',
-				'classes' => 'gamipress-no-pad'
-			),
-		),
-		array(
-			'context' => 'side',
-			'priority' => 'default',
-		)
-	);
-
-	// Requirements
-	gamipress_add_meta_box(
-		'requirement-data',
-		__( 'Requirement Data', 'gamipress' ),
-		$requirement_types,
-		array(
-			$prefix . 'trigger_type' => array(
-				'name' => __( 'Trigger Type', 'gamipress' ),
-				'desc' => '',
-				'type' => 'advanced_select',
-				'options' => gamipress_get_activity_triggers()
-			),
-			$prefix . 'count' => array(
-				'name' => __( 'Count', 'gamipress' ),
-				'desc' => '',
-				'type' => 'text_small',
-			),
-			$prefix . 'limit' => array(
-				'name' => __( 'Limit', 'gamipress' ),
-				'desc' => '',
-				'type' => 'text_small',
-			),
-			$prefix . 'limit_type' => array(
-				'name' => __( 'Limit Type', 'gamipress' ),
-				'desc' => '',
-				'type' => 'select',
-				'options' => array(
-					'unlimited' => __( 'Unlimited', 'gamipress' ),
-					'daily'     => __( 'Per Day', 'gamipress' ),
-					'weekly'    => __( 'Per Week', 'gamipress' ),
-					'monthly'   => __( 'Per Month', 'gamipress' ),
-					'yearly'    => __( 'Per Year', 'gamipress' ),
-				)
-			),
-			$prefix . 'achievement_type' => array(
-				'name' => __( 'Achievement Type', 'gamipress' ),
-				'desc' => '',
-				'type' => 'text',
-			),
-			$prefix . 'achievement_post' => array(
-				'name' => __( 'Achievement Post', 'gamipress' ),
-				'desc' => '',
-				'type' => 'text_small',
-			),
-			$prefix . 'points' => array(
-				'name' => __( 'Points', 'gamipress' ),
-				'desc' => '',
-				'type' => 'gamipress_points',
-			),
-			$prefix . 'maximum_earnings' => array(
-				'name' => __( 'Maximum Earnings', 'gamipress' ),
-				'desc' => '',
-				'type' => 'text_small',
-			),
-		),
-		array( 'priority' => 'high' )
-	);
-
-	// Log
-	gamipress_add_meta_box(
-		'log-data',
-		__( 'Log Data', 'gamipress' ),
-		'gamipress_logs',
-		array(
-			'user_id' => array(
-				'name' 	=> __( 'User', 'gamipress' ),
-				'desc' 	=> __( 'User assigned to this log.', 'gamipress' ),
-				'type' 	=> 'select',
-				'options_cb' => 'gamipress_options_cb_users'
-			),
-			'type' => array(
-				'name' 	=> __( 'Type', 'gamipress' ),
-				'desc' 	=> __( 'The log type.', 'gamipress' ),
-				'type' 	=> 'select',
-				'options' 	=> gamipress_get_log_types(),
-			),
-			$prefix . 'pattern' => array(
-				'name' 	=> __( 'Pattern', 'gamipress' ),
-				'desc' 	=> __( 'The log output pattern. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html(),
-				'type' 	=> 'text',
-			),
-		),
-		array( 'priority' => 'high' )
-	);
+    /**
+     * Hook to register meta boxes
+     *
+     * @since 1.4.7
+     */
+	do_action( "gamipress_init_{$post_type}_meta_boxes" );
 
 }
-add_action( 'cmb2_admin_init', 'gamipress_meta_boxes' );
+add_action( 'cmb2_admin_init', 'gamipress_init_meta_boxes' );
 
 function gamipress_remove_meta_boxes() {
 
 	remove_meta_box( 'slugdiv', 'points-type', 'normal' );
 	remove_meta_box( 'slugdiv', 'achievement-type', 'normal' );
+	remove_meta_box( 'slugdiv', 'rank-type', 'normal' );
 
 }
 add_action( 'admin_menu', 'gamipress_remove_meta_boxes' );
@@ -584,3 +247,45 @@ add_filter( 'cmb2_override_menu_order_meta_value', 'gamipress_cmb2_override_menu
 add_filter( 'cmb2_override_post_title_meta_save', '__return_true' );
 add_filter( 'cmb2_override_post_name_meta_save', '__return_true' );
 add_filter( 'cmb2_override_menu_order_meta_save', '__return_true' );
+
+// Options callback to return achievement types as options
+function gamipress_options_cb_achievement_types( $field ) {
+
+	// Setup a custom array of achievement types
+	$options = array( 'all' => __( 'All', 'gamipress' ) );
+
+	foreach ( gamipress_get_achievement_types() as $slug => $data ) {
+		$options[$slug] = $data['plural_name'];
+	}
+
+	return $options;
+
+}
+
+// Options callback to return points types as options
+function gamipress_options_cb_points_types( $field ) {
+
+	// Setup a custom array of points types
+	$options = array( 'all' => __( 'All', 'gamipress' ) );
+
+	foreach ( gamipress_get_points_types() as $slug => $data ) {
+		$options[$slug] = $data['plural_name'];
+	}
+
+	return $options;
+
+}
+
+// Options callback to return rank types as options
+function gamipress_options_cb_rank_types( $field ) {
+
+	// Setup a custom array of achievement types
+	$options = array( 'all' => __( 'All', 'gamipress' ) );
+
+	foreach ( gamipress_get_rank_types() as $slug => $data ) {
+		$options[$slug] = $data['plural_name'];
+	}
+
+	return $options;
+
+}

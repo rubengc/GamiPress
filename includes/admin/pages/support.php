@@ -15,7 +15,9 @@ if( !defined( 'ABSPATH' ) ) exit;
  *
  * @return void
  */
-function gamipress_help_support_page() { ?>
+function gamipress_help_support_page() {
+    ?>
+
     <div class="wrap">
         <div id="icon-options-general" class="icon32"></div>
         <h1 class="wp-heading-inline"><?php _e( 'GamiPress Help and Support', 'gamipress' ); ?></h1>
@@ -56,5 +58,6 @@ function gamipress_help_support_page() { ?>
 
         <?php do_action( 'gamipress_help_support_page_shortcodes' ); ?>
     </div>
+
     <?php
 }

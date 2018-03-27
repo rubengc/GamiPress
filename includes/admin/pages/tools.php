@@ -26,80 +26,86 @@ require_once GAMIPRESS_DIR . 'includes/admin/tools/system-info.php';
  */
 function gamipress_register_tools_page() {
 
+    $is_tools_page = ( isset( $_GET['page'] ) && $_GET['page'] === 'gamipress_tools' );
+
     $tabs = array();
     $boxes = array();
 
-    // Loop tools sections
-    foreach( gamipress_get_tools_sections() as $section_id => $section ) {
+    if( $is_tools_page ) {
 
-        $meta_boxes = array();
+        // Loop tools sections
+        foreach( gamipress_get_tools_sections() as $section_id => $section ) {
 
-        /**
-         * Filter: gamipress_tools_{$section_id}_meta_boxes
-         *
-         * @param array $meta_boxes
-         *
-         * @return array
-         */
-        $meta_boxes = apply_filters( "gamipress_tools_{$section_id}_meta_boxes", $meta_boxes );
+            $meta_boxes = array();
 
-        if( ! empty( $meta_boxes ) ) {
+            /**
+             * Filter: gamipress_tools_{$section_id}_meta_boxes
+             *
+             * @param array $meta_boxes
+             *
+             * @return array
+             */
+            $meta_boxes = apply_filters( "gamipress_tools_{$section_id}_meta_boxes", $meta_boxes );
 
-            // Loop tools section meta boxes
-            foreach( $meta_boxes as $meta_box_id => $meta_box ) {
+            if( ! empty( $meta_boxes ) ) {
 
-                // Check meta box tabs
-                if( isset( $meta_box['tabs'] ) && ! empty( $meta_box['tabs'] ) ) {
+                // Loop tools section meta boxes
+                foreach( $meta_boxes as $meta_box_id => $meta_box ) {
 
-                    // Loop meta box tabs
-                    foreach( $meta_box['tabs'] as $tab_id => $tab ) {
+                    // Check meta box tabs
+                    if( isset( $meta_box['tabs'] ) && ! empty( $meta_box['tabs'] ) ) {
 
-                        $tab['id'] = $tab_id;
+                        // Loop meta box tabs
+                        foreach( $meta_box['tabs'] as $tab_id => $tab ) {
 
-                        $meta_box['tabs'][$tab_id] = $tab;
+                            $tab['id'] = $tab_id;
 
-                    }
+                            $meta_box['tabs'][$tab_id] = $tab;
 
-                }
-
-                // Only add tools meta box if has fields
-                if( isset( $meta_box['fields'] ) && ! empty( $meta_box['fields'] ) ) {
-
-                    // Loop meta box fields
-                    foreach( $meta_box['fields'] as $field_id => $field ) {
-
-                        $field['id'] = $field_id;
-
-                        $meta_box['fields'][$field_id] = $field;
+                        }
 
                     }
 
-                    $meta_box['id'] = $meta_box_id;
+                    // Only add tools meta box if has fields
+                    if( isset( $meta_box['fields'] ) && ! empty( $meta_box['fields'] ) ) {
 
-                    $meta_box['display_cb'] = false;
-                    $meta_box['admin_menu_hook'] = false;
+                        // Loop meta box fields
+                        foreach( $meta_box['fields'] as $field_id => $field ) {
 
-                    $meta_box['show_on'] = array(
-                        'key'   => 'options-page',
-                        'value' => array( 'gamipress_tools' ),
-                    );
+                            $field['id'] = $field_id;
 
-                    $box = new_cmb2_box( $meta_box );
+                            $meta_box['fields'][$field_id] = $field;
 
-                    $box->object_type( 'options-page' );
+                        }
 
-                    $boxes[] = $box;
+                        $meta_box['id'] = $meta_box_id;
 
+                        $meta_box['display_cb'] = false;
+                        $meta_box['admin_menu_hook'] = false;
+
+                        $meta_box['show_on'] = array(
+                            'key'   => 'options-page',
+                            'value' => array( 'gamipress_tools' ),
+                        );
+
+                        $box = new_cmb2_box( $meta_box );
+
+                        $box->object_type( 'options-page' );
+
+                        $boxes[] = $box;
+
+                    }
                 }
+
+                $tabs[] = array(
+                    'id'    => $section_id,
+                    'title' => ( ( isset( $section['icon'] ) ) ? '<i class="dashicons ' . $section['icon'] . '"></i>' : '' ) . $section['title'],
+                    'desc'  => '',
+                    'boxes' => array_keys( $meta_boxes ),
+                );
             }
-
-            $tabs[] = array(
-                'id'    => $section_id,
-                'title' => ( ( isset( $section['icon'] ) ) ? '<i class="dashicons ' . $section['icon'] . '"></i>' : '' ) . $section['title'],
-                'desc'  => '',
-                'boxes' => array_keys( $meta_boxes ),
-            );
         }
+
     }
 
     // Create the options page

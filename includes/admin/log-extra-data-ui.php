@@ -140,7 +140,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
             array(
                 'name' 	=> __( 'Trigger', 'gamipress' ),
                 'desc' 	=> __( 'The event user has triggered.', 'gamipress' ),
-                'id'   	=> $prefix . 'trigger_type',
+                'id'   	=> ( ( ! is_gamipress_upgraded_to( '1.4.7' ) ) ? $prefix : '' ) . 'trigger_type',
                 'type' 	=> 'advanced_select',
                 'options' 	=> gamipress_get_activity_triggers(),
             ),
@@ -152,7 +152,11 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
             ),
         );
 
-        $trigger = ct_get_object_meta( $object_id, $prefix . 'trigger_type', true );
+        if( ! is_gamipress_upgraded_to( '1.4.7' ) ) {
+            $trigger = ct_get_object_meta( $object_id, $prefix . 'trigger_type', true );
+        } else {
+            $trigger = $object->trigger_type;
+        }
 
         // If is a specific activity trigger, then add the achievement_post field
         if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {

@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.4.6
+ * Version:         	1.4.7
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -96,6 +96,12 @@ final class GamiPress {
 	public $network_wide_active = null;
 
 	/**
+	 * @var         GamiPress_Cache $cache GamiPress cache class
+	 * @since       1.4.0
+	 */
+	public $cache = null;
+
+	/**
 	 * Get active instance
 	 *
 	 * @access      public
@@ -130,7 +136,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.4.6' );
+		define( 'GAMIPRESS_VER', '1.4.7' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -187,6 +193,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.2.8.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.3.1.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.4.3.php';
+		require_once GAMIPRESS_DIR . 'includes/compatibility/1.4.7.php';
 
 	}
 
@@ -213,6 +220,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/achievement-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/activity-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/ajax-functions.php';
+		require_once GAMIPRESS_DIR . 'includes/cache.php';
 		require_once GAMIPRESS_DIR . 'includes/functions.php';
 		require_once GAMIPRESS_DIR . 'includes/listeners.php';
 		require_once GAMIPRESS_DIR . 'includes/log-functions.php';
@@ -229,6 +237,9 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/user.php';
 		require_once GAMIPRESS_DIR . 'includes/user-earnings-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/widgets.php';
+
+        // Setup the GamiPress cache
+        $this->cache = new GamiPress_Cache();
 
 	}
 

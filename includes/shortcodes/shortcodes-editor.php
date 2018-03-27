@@ -10,6 +10,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 class GamiPress_Shortcodes_Editor {
 
+	public $button_rendered = false;
+
 	public function __construct() {
 
 		$this->shortcodes = gamipress_get_shortcodes();
@@ -76,6 +78,8 @@ class GamiPress_Shortcodes_Editor {
 	 */
 	public function render_button() {
 
+		$this->button_rendered = true;
+
 		echo '<a id="insert_gamipress_shortcodes" href="#TB_inline?width=660&height=800&inlineId=select_gamipress_shortcode" class="thickbox button gamipress_media_link" data-width="800"><span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'Add GamiPress Shortcode', 'gamipress' ) . '</a>';
 	}
 
@@ -85,6 +89,10 @@ class GamiPress_Shortcodes_Editor {
 	 * @since 1.0.0
 	 */
 	public function render_modal() {
+
+		// Return early if button hasn't been rendered
+		if( ! $this->button_rendered ) { return; }
+
 		?>
 
 		<div id="select_gamipress_shortcode" style="display:none;">

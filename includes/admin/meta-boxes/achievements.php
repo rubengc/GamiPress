@@ -1,0 +1,152 @@
+<?php
+/**
+ * Achievements Meta Boxes
+ *
+ * @package     GamiPress\Admin\Meta_Boxes\Achievements
+ * @since       1.4.7
+ */
+// Exit if accessed directly
+if( !defined( 'ABSPATH' ) ) exit;
+
+/**
+ * Register achievements meta boxes
+ *
+ * @param string $post_type
+ *
+ * @since 1.0.0
+ */
+function gamipress_achievements_meta_boxes( $post_type ) {
+
+    // Start with an underscore to hide fields from custom fields list
+    $prefix = '_gamipress_';
+
+    // Grab our achievement types slugs
+    $achievement_types = gamipress_get_achievement_types_slugs();
+
+    if( ! in_array( $post_type, $achievement_types ) ) {
+        return;
+    }
+
+    // Build a rank options (for rank type required field)
+    $rank_types_options = array();
+
+    foreach( gamipress_get_rank_types() as $slug => $data ) {
+        $rank_types_options[$slug] = $data['singular_name'];
+    }
+
+    // Achievement Data
+    gamipress_add_meta_box(
+        'achievement-data',
+        __( 'Achievement Data', 'gamipress' ),
+        $achievement_types,
+        array(
+            $prefix . 'points' => array(
+                'name' => __( 'Points Awarded', 'gamipress' ),
+                'desc' => __( 'Points awarded for earning this achievement (optional). Leave empty if no points are awarded.', 'gamipress' ),
+                'type' => 'gamipress_points',
+                'default' => '0',
+            ),
+            $prefix . 'earned_by' => array(
+                'name'    => __( 'Earned By:', 'gamipress' ),
+                'desc'    => __( 'How this achievement can be earned.', 'gamipress' ),
+                'type'    => 'select',
+                'options' => apply_filters( 'gamipress_achievement_earned_by', array(
+                    'triggers' 			=> __( 'Completing Steps', 'gamipress' ),
+                    'points' 			=> __( 'Minimum Number of Points', 'gamipress' ),
+                    'rank' 				=> __( 'Reach a Rank', 'gamipress' ),
+                    'admin' 			=> __( 'Admin-awarded Only', 'gamipress' ),
+                ) )
+            ),
+            $prefix . 'points_required' => array(
+                'name' => __( 'Minimum Points Required', 'gamipress' ),
+                'desc' => __( 'Fewest number of points required for earning this achievement.', 'gamipress' ),
+                'type' => 'gamipress_points',
+                'points_type_key' => $prefix . 'points_type_required',
+                'default' => '0',
+            ),
+            $prefix . 'rank_type_required' => array(
+                'name' => __( 'Rank Type Required', 'gamipress' ),
+                'desc' => __( 'Rank Type of the required rank for earning this achievement.', 'gamipress' ),
+                'type' => 'select',
+                'options' => $rank_types_options
+            ),
+            $prefix . 'rank_required' => array(
+                'name' => __( 'Rank Required', 'gamipress' ),
+                'desc' => __( 'Rank required for earning this achievement.', 'gamipress' ),
+                'type' => 'select',
+                'options_cb' => 'gamipress_options_cb_posts'
+            ),
+            $prefix . 'congratulations_text' => array(
+                'name' => __( 'Congratulations Text', 'gamipress' ),
+                'desc' => __( 'Displayed after achievement is earned.', 'gamipress' ),
+                'type' => 'textarea',
+            ),
+            $prefix . 'maximum_earnings' => array(
+                'name' => __( 'Maximum Earnings', 'gamipress' ),
+                'desc' => __( 'Number of times a user can earn this achievement (leave empty for no maximum).', 'gamipress' ),
+                'type' => 'text_small',
+                'default' => '1',
+            ),
+            $prefix . 'hidden' => array(
+                'name'    => __( 'Hidden?', 'gamipress' ),
+                'type'    => 'select',
+                'options' => array(
+                    'show' 		=> __( 'Show to User', 'gamipress' ),
+                    'hidden' 	=> __( 'Hidden to User', 'gamipress' ),
+                ),
+            ),
+            $prefix . 'unlock_with_points' => array(
+                'name' => __( 'Allow unlock with points', 'gamipress' ),
+                'desc' => __( 'Check this option to allow users to unlock this achievement by expend an amount of points.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch'
+            ),
+            $prefix . 'points_to_unlock' => array(
+                'name' => __( 'Points to Unlock', 'gamipress' ),
+                'desc' => __( 'Amount of points needed to optionally unlock this achievement by expending them.', 'gamipress' ),
+                'type' => 'gamipress_points',
+                'points_type_key' => $prefix . 'points_type_to_unlock',
+                'default' => '0',
+            ),
+        ),
+        array(
+            'context'  => 'advanced',
+            'priority' => 'high',
+        )
+    );
+
+    // Achievement Template
+    gamipress_add_meta_box(
+        'achievement-template',
+        __( 'Achievement Template', 'gamipress' ),
+        $achievement_types,
+        array(
+            $prefix . 'show_earners' => array(
+                'name' => __( 'Show Earners', 'gamipress' ),
+                'desc' => __( 'Check this option to display a list of users who have earned this achievement.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch'
+            ),
+            $prefix . 'layout' => array(
+                'name'        => __( 'Layout', 'gamipress' ),
+                'description' => __( 'Layout to show the achievement.', 'gamipress' ),
+                'type' 		  => 'radio',
+                'options' 	  => array(
+                    'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+                    'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+                    'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+                    'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+                    'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+                ),
+                'default' 	  => 'left',
+                'inline' 	  => true,
+                'classes' 	  => 'gamipress-image-options'
+            ),
+        ),
+        array(
+            'context'  => 'side',
+        )
+    );
+
+}
+add_action( 'gamipress_init_meta_boxes', 'gamipress_achievements_meta_boxes' );

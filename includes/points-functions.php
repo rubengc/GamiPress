@@ -586,8 +586,27 @@ function gamipress_log_user_points( $user_id, $new_points, $total_points, $admin
 		gamipress_update_user_points_expended( $user_id, $new_points, $points_type );
 	}
 
+	// Decide trigger type value based on log type
+	switch( $type ) {
+		case 'points_earn':
+			$trigger = 'gamipress_earn_points';
+			break;
+		case 'points_deduct':
+			$trigger = 'gamipress_deduct_points';
+			break;
+		case 'points_award':
+			$trigger = 'gamipress_award_points';
+			break;
+		case 'points_revoke':
+			$trigger = 'gamipress_revoke_points';
+			break;
+		default:
+			$trigger = __( '(no trigger)', 'gamipress' );
+			break;
+	}
+
 	// Create the log entry
-	gamipress_insert_log( $type, $user_id, $access, $log_meta );
+	gamipress_insert_log( $type, $user_id, $access, $trigger, $log_meta );
 
 }
 add_action( 'gamipress_update_user_points', 'gamipress_log_user_points', 10, 8 );

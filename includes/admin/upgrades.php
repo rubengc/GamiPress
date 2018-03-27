@@ -15,6 +15,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.3.0.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.3.1.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.3.7.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.3.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.7.php';
 
 /**
  * GamiPress upgrades
@@ -134,14 +135,20 @@ function gamipress_set_upgrade_complete( $upgrade_action = '' ) {
  *
  * @since   1.3.5
  * @updated 1.4.0 Added support for network wide database
+ * @updated 1.4.7 Cached return
  *
  * @param  string $table_name The desired table name
  *
- * @return bool                   If the function was successfully added
+ * @return bool               Whatever if table exists or not
  */
 function gamipress_database_table_exists( $table_name ) {
 
     global $wpdb;
+
+    // If result already cached, return it
+    if( isset( GamiPress()->cache->installed_tables[$table_name] ) ) {
+        return GamiPress()->cache->installed_tables[$table_name];
+    }
 
     $table_exist = $wpdb->get_var( $wpdb->prepare(
         "SHOW TABLES LIKE %s",
@@ -162,5 +169,49 @@ function gamipress_database_table_exists( $table_name ) {
         ) );
     }
 
+    // Cache function result
+    GamiPress()->cache->installed_tables[$table_name] = ( ! empty( $table_exist ) );
+
     return ! empty( $table_exist );
+
+}
+
+/**
+ * Utility function to check if a database table has a specific field
+ *
+ * @since 1.4.7
+ *
+ * @param  string $table_name   The desired table name
+ * @param  string $column_name  The desired column name
+ *
+ * @return bool                 Whatever if table exists and has this column or not
+ */
+function gamipress_database_table_has_column( $table_name, $column_name ) {
+
+    global $wpdb;
+
+    // If result already cached, return it
+    if( isset( GamiPress()->cache->installed_table_columns[$table_name] ) && isset( GamiPress()->cache->installed_table_columns[$table_name][$column_name] ) ) {
+        return GamiPress()->cache->installed_tables[$table_name][$column_name];
+    }
+
+    if( ! gamipress_database_table_exists( $table_name ) ) {
+        return false;
+    }
+
+    $column_exists = $wpdb->get_var( $wpdb->prepare(
+        "SHOW COLUMNS FROM {$table_name} LIKE %s",
+        $wpdb->esc_like( $column_name )
+    ) );
+
+    // Check if already cached any column from this table, if not, initialize it
+    if( ! isset( GamiPress()->cache->installed_table_columns[$table_name] ) ) {
+        GamiPress()->cache->installed_table_columns[$table_name] = array();
+    }
+
+    // Cache function result
+    GamiPress()->cache->installed_table_columns[$table_name][$column_name] = ( ! empty( $column_exists ) );
+
+    return ! empty( $column_exists );
+
 }

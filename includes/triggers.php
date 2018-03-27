@@ -308,7 +308,7 @@ function gamipress_trigger_event() {
 	$log_meta = array(
 		'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
 		'count' => $new_count,
-		'trigger_type' => $trigger,
+		//'trigger_type' => $trigger, // Removed since 1.4.7
 	);
 
 	// If is specific trigger then try to get the attached id
@@ -325,7 +325,7 @@ function gamipress_trigger_event() {
 	$log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $trigger, $site_id, $args );
 
 	// Mark the count in the log entry
-	gamipress_insert_log( 'event_trigger', $user_id, 'private', $log_meta );
+	gamipress_insert_log( 'event_trigger', $user_id, 'private', $trigger, $log_meta );
 
 	$postmeta = GamiPress()->db->postmeta;
 
@@ -655,8 +655,8 @@ function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
 function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site_id = 0, $args = array() ) {
 
 	// If not properly upgrade to required version fallback to compatibility function
-	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
-		return gamipress_get_user_trigger_count_old(  $user_id, $trigger, $since, $site_id, $args );
+	if( ! is_gamipress_upgraded_to( '1.4.7' ) ) {
+		return gamipress_get_user_trigger_count_old_147(  $user_id, $trigger, $since, $site_id, $args );
 	}
 
 	global $wpdb;
@@ -693,20 +693,17 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 		if( $specific_id !== 0 ) {
 			$user_triggers = $wpdb->get_var( $wpdb->prepare(
 				"SELECT COUNT(*)
-				FROM   {$logs} AS l
+				FROM {$logs} AS l
 				INNER JOIN {$logs_meta} AS lm1 ON ( l.log_id = lm1.log_id )
-				INNER JOIN {$logs_meta} AS lm2 ON ( l.log_id = lm2.log_id )
 				WHERE l.user_id = %d
 					AND l.type = %s
+					AND l.trigger_type = %s
 					{$date}
-					AND (
-						( lm1.meta_key = %s AND lm1.meta_value = %s )
-						AND ( lm2.meta_key = %s AND lm2.meta_value = %s )
-					)
+					AND ( lm1.meta_key = %s AND lm1.meta_value = %s )
 				",
 				absint( $user_id ),
 				'event_trigger',
-				'_gamipress_trigger_type', $trigger,
+				$trigger,
 				'_gamipress_achievement_post', $specific_id
 			) );
 		} else {
@@ -716,18 +713,15 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 		// Single trigger count
 		$user_triggers = $wpdb->get_var( $wpdb->prepare(
 			"SELECT COUNT(*)
-			FROM   {$logs} AS l
-			INNER JOIN {$logs_meta} AS lm ON ( l.log_id = lm.log_id )
+			FROM {$logs} AS l
 			WHERE l.user_id = %d
 				AND l.type = %s
+				AND l.trigger_type = %s
 				{$date}
-				AND (
-					lm.meta_key = %s AND lm.meta_value = %s
-				)
 			",
 			absint( $user_id ),
 			'event_trigger',
-			'_gamipress_trigger_type', $trigger
+			$trigger
 		) );
 	}
 

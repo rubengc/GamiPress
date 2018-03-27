@@ -15,15 +15,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_register_achievements_shortcode() {
 
-	// Setup a custom array of achievement types
-	$achievement_types = array( 'all' => __( 'All', 'gamipress' ) );
-
-	foreach ( gamipress_get_achievement_types() as $slug => $data ) {
-
-		$achievement_types[$slug] = $data['plural_name'];
-
-	}
-
 	$achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
 
 	unset( $achievement_fields['id'] );
@@ -42,6 +33,7 @@ function gamipress_register_achievements_shortcode() {
 					'filter',
 					'filter_value',
 					'search',
+					'search_value',
 					'load_more',
 				),
 			),
@@ -71,7 +63,7 @@ function gamipress_register_achievements_shortcode() {
 				'description' => __( 'Single or comma-separated list of achievement type(s) to display.', 'gamipress' ),
 				'type'        => 'advanced_select',
 				'multiple'    => true,
-				'options'     => $achievement_types,
+				'options_cb'  => 'gamipress_options_cb_achievement_types',
 				'default'     => 'all',
 			),
 			'columns' => array(
@@ -112,6 +104,12 @@ function gamipress_register_achievements_shortcode() {
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
+			),
+			'search_value' => array(
+				'name'        => __( 'Initial Search Value', 'gamipress' ),
+				'description' => __( 'Set search initial value. If you hide the search, user won\'t be able to change this value.', 'gamipress' ),
+				'type' 	=> 'text',
+				'default' => ''
 			),
 			'load_more' => array(
 				'name'        => __( 'Show the "Load More" button', 'gamipress' ),
@@ -213,6 +211,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'filter' 	  	    => 'yes',
 		'filter_value' 	    => 'all',
 		'search' 	  	    => 'yes',
+		'search_value' 	  	=> '',
 		'load_more' 	    => 'yes',
 		'current_user'      => 'no',
 		'user_id'     	    => '0',
@@ -245,7 +244,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 
     // Initializes filter and search values
     $query_args['filter'] = $atts['filter_value'];
-    $query_args['search'] = '';
+    $query_args['search'] = isset( $atts['search_value'] ) ? $atts['search_value'] : '';
 
     $query = gamipress_achievements_shortcode_query( $query_args );
 

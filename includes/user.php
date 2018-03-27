@@ -75,10 +75,9 @@ function gamipress_get_user_achievements( $args = array() ) {
 		$achievements[$key] = $achievement;
 
 		if( isset( $args['display'] ) && $args['display'] ) {
-			// Unset hidden achievements on display context
-			$hidden = gamipress_get_hidden_achievement_by_id( $achievement->post_id );
 
-			if( ! empty( $hidden ) ) {
+			// Unset hidden achievements on display context
+			if( gamipress_is_achievement_hidden( $achievement->post_id ) ) {
 				unset( $achievements[$key] );
 			}
 		}

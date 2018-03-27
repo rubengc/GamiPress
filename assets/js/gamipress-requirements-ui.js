@@ -71,7 +71,8 @@
     });
 
     // Duplicate action
-    $('.requirements-list').on( 'click', '.requirement-action.requirement-action-duplicate', function() {
+    $('.requirements-list').on( 'click', '.requirement-action.requirement-action-duplicate', function(e) {
+        e.preventDefault();
 
         // Bail if already clicked
         if( $(this).hasClass('requirement-action-active') ) {
@@ -85,7 +86,9 @@
     });
 
     // Delete action
-    $('.requirements-list').on( 'click', '.requirement-action.requirement-action-delete', function() {
+    $('.requirements-list').on( 'click', '.requirement-action.requirement-action-delete', function(e) {
+        e.preventDefault();
+
         gamipress_delete_requirement( this, $(this).closest('.requirement-row').attr('data-requirement-id') );
     });
 

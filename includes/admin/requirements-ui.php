@@ -794,7 +794,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     // Grab all of the relevant values of that requirement
     $requirement_id         = isset( $requirement['ID'] ) ? $requirement['ID'] : $requirement['requirement_id'];
     $requirement_type       = gamipress_get_post_type( $requirement_id );
-    $required_count         = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
+    $count                  = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
     $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
@@ -840,7 +840,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     update_post_meta( $requirement_id, '_gamipress_points_type_required', $points_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_type_required', $rank_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_required', $rank_required );
-    update_post_meta( $requirement_id, '_gamipress_count', $required_count );
+    update_post_meta( $requirement_id, '_gamipress_count', $count );
     update_post_meta( $requirement_id, '_gamipress_limit', $limit );
     update_post_meta( $requirement_id, '_gamipress_limit_type', $limit_type );
     update_post_meta( $requirement_id, '_gamipress_trigger_type', $trigger_type );
@@ -927,7 +927,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
-    $required_count         = ( ! empty( $requirement['required_count'] ) ) ? absint( $requirement['required_count'] ) : 1;
+    $count                  = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
     $trigger_type           = $requirement['trigger_type'];
@@ -1024,7 +1024,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
 
     if( $trigger_type !== 'earn-points' && $trigger_type !== 'earn-rank' ) {
         // Add "%d time(s)" to title
-        $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( _n( '%d time', '%d times', $required_count ), $required_count ) );
+        $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( _n( '%d time', '%d times', $count ), $count ) );
     }
 
     // Add "(limited to %d per %s)" to title if is limited

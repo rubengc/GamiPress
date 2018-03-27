@@ -15,33 +15,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_register_earnings_shortcode() {
 
-    // Setup a custom array of points types
-    $points_types = array(
-        'all' => __( 'All', 'gamipress' ) ,
-    );
-
-    foreach ( gamipress_get_points_types() as $slug => $data ) {
-        $points_types[$slug] = $data['plural_name'];
-    }
-
-    // Setup a custom array of achievement types
-    $achievement_types = array(
-        'all' => __( 'All', 'gamipress' ) ,
-    );
-
-    foreach ( gamipress_get_achievement_types() as $slug => $data ) {
-        $achievement_types[$slug] = $data['plural_name'];
-    }
-
-    // Setup a custom array of rank types
-    $rank_types = array(
-        'all' => __( 'All', 'gamipress' ) ,
-    );
-
-    foreach ( gamipress_get_rank_types() as $slug => $data ) {
-        $rank_types[$slug] = $data['plural_name'];
-    }
-
     gamipress_register_shortcode( 'gamipress_earnings', array(
         'name'            => __( 'User Earnings', 'gamipress' ),
         'description'     => __( 'Output a list of user earnings.', 'gamipress' ),
@@ -137,7 +110,7 @@ function gamipress_register_earnings_shortcode() {
                 'description' => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
                 'type'        => 'advanced_select',
                 'multiple'    => true,
-                'options' 	  => $points_types,
+                'options_cb'  => 'gamipress_options_cb_points_types',
                 'default' 	  => 'all',
             ),
             'awards' => array(
@@ -169,7 +142,7 @@ function gamipress_register_earnings_shortcode() {
                 'description' => __( 'Single or comma-separated list of achievements type(s) to display.', 'gamipress' ),
                 'type'        => 'advanced_select',
                 'multiple'    => true,
-                'options' 	  => $achievement_types,
+                'options_cb'  => 'gamipress_options_cb_achievement_types',
                 'default' 	  => 'all',
             ),
             'steps' => array(
@@ -194,7 +167,7 @@ function gamipress_register_earnings_shortcode() {
                 'description' => __( 'Single or comma-separated list of ranks type(s) to display.', 'gamipress' ),
                 'type'        => 'advanced_select',
                 'multiple'    => true,
-                'options' 	  => $rank_types,
+                'options_cb'  => 'gamipress_options_cb_rank_types',
                 'default' 	  => 'all',
             ),
             'rank_requirements' => array(

@@ -784,108 +784,64 @@ function gamipress_has_user_earned_achievement( $achievement_id = 0, $user_id = 
 
 }
 
+
 /**
- * Get current page post id
+ * Hide the hidden achievement post link from next and previous post link
  *
  * @since  1.0.0
  *
- * @return integer
- */
-function gamipress_get_current_page_post_id() {
-
-	global $posts;
-
-	$current_post_id = null;
-
-	foreach($posts as $post){
-		if($post->post_type != 'page') {
-			//Get current page achievement id
-			$current_post_id = $post->ID;
-		}
-	}
-
-	//Return current post id
-    return $current_post_id;
-}
-
-
-/**
- * Hide the hidden achievement post link from next post link
- *
- * @since  1.0.0
- *
- * @param $link
+ * @param string  $output   The adjacent post link.
+ * @param string  $format   Link anchor format.
+ * @param string  $link     Link permalink format.
+ * @param WP_Post $post     The adjacent post.
+ * @param string  $adjacent Whether the post is previous or next.
  *
  * @return string
  */
-function gamipress_hide_next_hidden_achievement_link($link) {
+function gamipress_hide_next_previous_hidden_achievement_link( $output, $format, $link, $post, $adjacent ) {
 
-	if($link) {
+	$post = get_post();
 
-		// Get current achievement id
-		$achievement_id = gamipress_get_current_page_post_id();
+	if( $post && gamipress_is_achievement( $post ) && $output ) {
 
-		// Get post link , without hidden achievement
-		$link = gamipress_get_post_link_without_hidden_achievement( $achievement_id, 'next' );
-
-	}
-
-	return $link;
-
-}
-add_filter('next_post_link', 'gamipress_hide_next_hidden_achievement_link');
-
-/**
- * Hide the hidden achievement post link from previous post link
- *
- * @since  1.0.0
- *
- * @param $link
- *
- * @return string
- */
-function gamipress_hide_previous_hidden_achievement_link($link) {
-
-	if($link) {
-
-		//Get current achievement id
-		$achievement_id = gamipress_get_current_page_post_id();
-
-		//Get post link , without hidden achievement
-		$link = gamipress_get_post_link_without_hidden_achievement($achievement_id, 'prev');
+		// Get post link, without hidden achievement
+		$output = gamipress_get_post_link_without_hidden_achievement( $post->ID, $adjacent );
 
 	}
 
-	return $link;
+	return $output;
 
 }
-
-add_filter('previous_post_link', 'gamipress_hide_previous_hidden_achievement_link');
+add_filter( 'next_post_link', 'gamipress_hide_next_previous_hidden_achievement_link', 10, 5 );
+add_filter( 'previous_post_link', 'gamipress_hide_next_previous_hidden_achievement_link', 10, 5 );
 
 
 /**
  * Get post link without hidden achievement link
  *
- * @param $achievement_id
- * @param $rel
+ * @since  1.0.0
+ *
+ * @param int 		$achievement_id	The achievement ID
+ * @param string 	$rel			'next'|'previous'
+ *
  * @return string
  */
-function gamipress_get_post_link_without_hidden_achievement($achievement_id, $rel) {
+function gamipress_get_post_link_without_hidden_achievement( $achievement_id, $rel ) {
 
+	// Check if is an achievement
+	if( ! gamipress_is_achievement( $achievement_id ) ) {
+		return '';
+	}
 
-	$link = null;
+	$link = '';
 
-	$post = gamipress_get_post( $achievement_id );
+	// Get next post id without hidden achievement id
+	$next_post_id = gamipress_get_next_previous_achievement_id( $achievement_id, $rel );
 
-	//Check the ahievement
-	$achievement_id = ( gamipress_is_achievement($post) )? $post->ID : "";
-
-	//Get next post id without hidden achievement id
-	$next_post_id = gamipress_get_next_previous_achievement_id($achievement_id, $rel);
-
-	if ($next_post_id)
-		//Generate post link
-		$link = gamipress_generate_post_link_by_post_id($next_post_id, $rel);
+	if ( $next_post_id ) {
+		// Generate post link
+		$link = gamipress_generate_post_link_by_post_id( $next_post_id, $rel );
+	}
 
 
 	return $link;
@@ -895,15 +851,18 @@ function gamipress_get_post_link_without_hidden_achievement($achievement_id, $re
 /**
  * Get next or previous post id , without hidden achievement id
  *
- * @param $achievement_id
- * @param $rel
- * @return integer
+ * @since  1.0.0
+ *
+ * @param int 		$achievement_id	The achievement ID
+ * @param string 	$rel			'next'|'previous'
+ *
+ * @return int|bool
  */
-function gamipress_get_next_previous_achievement_id( $achievement_id , $rel ){
+function gamipress_get_next_previous_achievement_id( $achievement_id , $rel ) {
 
-	$nested_post_id = null;
+	global $wpdb;
 
-	$access = false;
+	$posts = GamiPress()->db->posts;
 
 	// Redirecting user page based on achievements
 	$post = gamipress_get_post( absint( $achievement_id ));
@@ -911,89 +870,63 @@ function gamipress_get_next_previous_achievement_id( $achievement_id , $rel ){
 	//Get hidden achievements ids
 	$hidden = gamipress_get_hidden_achievement_ids( $post->post_type );
 
-	// Fetching achievement types
-	$param = array(
-		'posts_per_page'    => -1, // All achievements
-		'offset'            => 0,  // Start from first achievement
-		'post_type'         => $post->post_type, // set post type as achievement to filter only achievements
-		'orderby'           => 'ID',
-		'order'             => 'ASC',
-		'suppress_filters'  => false,
-	);
-
-	$param['order'] = ($rel == 'next') ? 'ASC' : 'DESC';
+	$operator = ( $rel === 'next' ? '>' : '<' );
+	$order = ( $rel === 'next' ? 'ASC' : 'DESC' );
+	$hidden_where = ( count( $hidden ) ? "AND ID NOT IN ( " . implode( $hidden, ', ' ) . " )" : '' );
 
 
-	$achievement_types = get_posts($param);
+	$next_id = absint( $wpdb->get_var( $wpdb->prepare(
+		"SELECT ID
+		FROM {$posts}
+		WHERE post_type = %s
+		AND post_status = %s
+		{$hidden_where}
+		AND ID {$operator} %d
+		ORDER BY ID {$order}
+		LIMIT 1",
+		$post->post_type,
+		'publish',
+		$post->ID
+	) ) );
 
-	foreach ($achievement_types as $achievement){
-
-		$check = false;
-
-		//Compare next achievement
-		if($achievement->ID > $achievement_id && $rel == 'next') {
-			$check = true;
-		}
-
-		//Compare previous achievement
-		if($achievement->ID < $achievement_id && $rel == 'prev') {
-			$check = true;
-		}
-
-		if($check){
-			// Checks achievement in hidden achievements
-			if (in_array($achievement->ID, $hidden)) {
-				continue;
-			} else {
-				$access = true;
-			}
-		}
-
-		if($access) {
-			// Get next or previous achievement without hidden achievements
-			if (!in_array($achievement->ID, $hidden) && !$nested_post_id) {
-				$nested_post_id = $achievement->ID;
-			}
-		}
-	}
-
-	// return next or previous achievement without hidden achievement id
-	return $nested_post_id;
+	// Return next or previous achievement preventing hidden achievements
+	return ( $next_id !== absint( $post->ID ) ? $next_id : false );
 
 }
 
 /**
  * Generate the post link based on custom post object
  *
- * @param $post_id
- * @param $rel
+ * @since  1.0.0
+ *
+ * @param int 		$post_id
+ * @param string 	$rel
  *
  * @return string
  */
-function gamipress_generate_post_link_by_post_id( $post_id , $rel) {
+function gamipress_generate_post_link_by_post_id( $post_id, $rel ) {
 
-	global $post;
+	$post = gamipress_get_post( $post_id );
 
-	if( ! empty($post_id) )
-		$post = gamipress_get_post( $post_id );
+	if( ! $post ) {
+		return '';
+	}
 
-    //Title of the post
+    // Title of the post
 	$title = get_the_title( $post->ID );
 
-	if ( empty( $post->post_title ) && $rel == 'next')
-		$title = __( 'Next Post' );
+	if ( empty( $post->post_title ) ) {
+		if( $rel === 'next' ) {
+			$title = __( 'Next Post' );
+		} else {
+			$title = __( 'Previous Post' );
+		}
+	}
 
-	if ( empty( $post->post_title ) && $rel == 'prev')
-		$title = __( 'Previous Post' );
-
-
-	$rel =  ($rel == 'prev') ? 'prev' : 'next';
-
-	$nav_prev = ($rel == 'prev') ? '<span class="meta-nav">←</span> ' : '';
-	$nav_next = ($rel == 'next') ? ' <span class="meta-nav">→</span>' : '';
+	$nav = ($rel == 'next') ? '%s <span class="meta-nav">→</span>' : '<span class="meta-nav">←</span> %s';
 
 	// Build link
-	$link = '<a href="' . get_permalink( $post ) . '" rel="'.$rel.'">' . $nav_prev . $title . $nav_next. '</a>';
+	$link = '<a href="' . get_permalink( $post ) . '" rel="'.$rel.'">' . sprintf( $nav, $title ) . '</a>';
 
 	return $link;
 

@@ -18,7 +18,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_143_upgrades( $stored_version ) {
 
     // Already upgrade
-    if ( version_compare( $stored_version, '1.4.3', '>' ) ) {
+    if ( version_compare( $stored_version, '1.4.3', '>=' ) ) {
         return $stored_version;
     }
 
@@ -171,7 +171,7 @@ function gamipress_ajax_process_143_upgrade() {
     // ----------------------------
     if( ! is_gamipress_upgrade_completed( 'update_user_earnings' ) ) {
 
-        // Migrate from user meta _gamipress_achievements to gamipress_user_earnings table
+        // Update gamipress_user_earnings table title field
         $ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
         $limit = 100;

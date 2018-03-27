@@ -18,12 +18,12 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_128_upgrades( $stored_version ) {
 
     // Already upgrade
-    if ( version_compare( $stored_version, '1.2.8', '>' ) ) {
+    if ( version_compare( $stored_version, '1.2.8', '>=' ) ) {
         return $stored_version;
     }
 
     // Prevent run upgrade until database tables are created
-    if( ! gamipress_database_table_exists( 'gamipress_logs' ) || ! gamipress_database_table_exists( 'gamipress_user_earnings' ) ) {
+    if( ! gamipress_database_table_exists( GamiPress()->db->logs ) || ! gamipress_database_table_exists( GamiPress()->db->user_earnings ) ) {
         return $stored_version;
     }
 
@@ -63,7 +63,7 @@ function gamipress_128_upgrades_notices() {
     }
 
     // Prevent run upgrade until database tables are created
-    if( ! gamipress_database_table_exists( 'gamipress_logs' ) || ! gamipress_database_table_exists( 'gamipress_user_earnings' ) ) {
+    if( ! gamipress_database_table_exists( GamiPress()->db->logs ) || ! gamipress_database_table_exists( GamiPress()->db->user_earnings ) ) {
         return;
     }
 

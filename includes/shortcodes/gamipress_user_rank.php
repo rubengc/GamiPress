@@ -15,13 +15,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_register_user_rank_shortcode() {
 
-    // Setup a custom array of points types
-    $rank_types = array();
-
-    foreach ( gamipress_get_rank_types() as $slug => $data ) {
-        $rank_types[$slug] = $data['singular_name'];
-    }
-
     // Setup the rank fields
     $rank_fields = GamiPress()->shortcodes['gamipress_rank']->fields;
 
@@ -56,7 +49,7 @@ function gamipress_register_user_rank_shortcode() {
                 'name'        => __( 'Rank Type', 'gamipress' ),
                 'description' => __( 'Choose the rank type to display.', 'gamipress' ),
                 'type'        => 'select',
-                'options'     => $rank_types,
+                'options_cb'  => 'gamipress_options_cb_rank_types',
             ),
             'prev_rank' => array(
                 'name'        => __( 'Show Previous Rank', 'gamipress' ),

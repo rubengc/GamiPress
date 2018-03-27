@@ -813,6 +813,7 @@ function gamipress_log_user_rank( $user_id, $new_rank, $old_rank, $admin_id = 0,
     );
 
     $access = 'public';
+    $trigger = '';
 
     // Alter our log pattern if this was an admin action
     if ( $admin_id ) {
@@ -821,14 +822,23 @@ function gamipress_log_user_rank( $user_id, $new_rank, $old_rank, $admin_id = 0,
 
         $log_meta['pattern'] = gamipress_get_option( 'rank_awarded_log_pattern', __( '{admin} ranked {user} to {rank_type} {rank}', 'gamipress' ) );
         $log_meta['admin_id'] = $admin_id;
+        $trigger = 'gamipress_award_rank';
     } else {
         $type = 'rank_earn';
         $log_meta['pattern'] = gamipress_get_option( 'rank_earned_log_pattern', __( '{user} ranked to {rank_type} {rank}', 'gamipress' ) );
-        $log_meta['achievement_id'] = $achievement_id;
+
+        if( $achievement_id ) {
+            $log_meta['achievement_id'] = $achievement_id;
+            $trigger = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+        }
+
+        if( empty( $trigger ) ) {
+            $trigger = 'gamipress_unlock_rank';
+        }
     }
 
     // Create the log entry
-    gamipress_insert_log( $type, $user_id, $access, $log_meta );
+    gamipress_insert_log( $type, $user_id, $access, $trigger, $log_meta );
 
 }
 add_action( 'gamipress_update_user_rank', 'gamipress_log_user_rank', 10, 5 );

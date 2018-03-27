@@ -317,11 +317,23 @@ function gamipress_get_user_last_log( $user_id = 0, $log_meta = array() ) {
 
         if( $key === 'type' ) {
 
+            // Backward compatibility for _gamipress_type meta
             if( is_array( $meta ) ) {
                 $meta = "'" . implode( "', '", $meta ) . "'";
                 $where[] = "l.type IN ({$meta})";
             } else {
                 $where[] = "l.type = %s";
+                $query_args[] = $meta;
+            }
+
+        } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
+
+            // Backward compatibility for _gamipress_trigger_type meta
+            if( is_array( $meta ) ) {
+                $meta = "'" . implode( "', '", $meta ) . "'";
+                $where[] = "l.trigger_type IN ({$meta})";
+            } else {
+                $where[] = "l.trigger_type = %s";
                 $query_args[] = $meta;
             }
 
@@ -363,24 +375,37 @@ function gamipress_get_user_last_log( $user_id = 0, $log_meta = array() ) {
 /**
  * Posts a log entry when a user unlocks any achievement post
  *
- * @since  1.0.0
- * @updated  1.2.8 Added $type
+ * @since   1.0.0
+ * @updated 1.2.8 Added $type parameter
+ * @updated 1.4.7 Added $trigger_type parameter
  *
- * @param  string   $type  	    The log type
- * @param  int      $user_id  	The user ID
- * @param  string   $access     Access to this log ( public|private )
- * @param  array    $log_meta   Log meta data
+ * @param  string   $type  	        The log type
+ * @param  int      $user_id  	    The user ID
+ * @param  string   $access         Access to this log ( public|private )
+ * @param  string   $trigger_type   Access to this log ( public|private )
+ * @param  array    $log_meta       Log meta data
  *
- * @return integer             	The log ID of the newly created log entry
+ * @return int             	        The log ID of the newly created log entry
  */
-function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $log_meta = array() ) {
+function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $trigger_type = '', $log_meta = array() ) {
+
+    // Backward compatibility for functions that called it by the old way
+    if( is_array( $trigger_type ) && empty( $log_meta ) ) {
+        $log_meta = $trigger_type;
+    }
+
+    // Trigger type is not a meta yet, so update it correctly
+    if( isset( $log_meta['trigger_type'] ) ) {
+        $trigger_type = $log_meta['trigger_type'];
+        unset( $log_meta['trigger_type'] );
+    }
 
     // If not properly upgrade to required version fallback to compatibility function
-    if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
+    if( ! is_gamipress_upgraded_to( '1.4.7' ) ) {
 
-        $log_meta['type'] = $type;
+        $log_meta['trigger_type'] = $trigger_type;
 
-        return gamipress_insert_log_old( $user_id, $access, $log_meta );
+        return gamipress_insert_log_old_147( $user_id, $access, $log_meta );
     }
 
     // Setup table
@@ -391,6 +416,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $lo
         'title'	        => '',
         'description'	=> '',
         'type' 	        => $type,
+        'trigger_type' 	=> $trigger_type,
         'access'	    => $access,
         'user_id'	    => $user_id === 0 ? get_current_user_id() : absint( $user_id ),
         'date'	        => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
@@ -457,10 +483,15 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
     $user = get_userdata( $log_data['user_id'] );
 
     // Setup user pattern replacements
-    $gamipress_pattern_replacements['{user_id}'] = $user->ID;
-    $gamipress_pattern_replacements['{user}'] = $user->display_name;
+    $gamipress_pattern_replacements['{user_id}'] = ( $user ? $user->ID : '' );
+    $gamipress_pattern_replacements['{user}'] = ( $user ? $user->display_name : '' );
 
     // TODO: Add more user tags
+
+    // Since 1.4.7 trigger_type is on logs table, so get it from log data
+    if( is_gamipress_upgraded_to( '1.4.7' ) ) {
+        $gamipress_pattern_replacements['{trigger_type}'] = $log_data['trigger_type'];
+    }
 
     foreach( $log_meta as $log_meta_key => $log_meta_value ) {
         if( in_array( $log_meta_key, array( 'pattern', 'type' ) ) ) {
@@ -714,7 +745,12 @@ function gamipress_get_log_meta_data_defaults( $log_meta, $log_id, $log_data ) {
 
     if( $log_data['type'] === 'event_trigger' ) {
         // Event trigger meta data
-        $meta_keys[] = 'trigger_type';
+
+        // If not upgraded to 1.4.7 yet, return trigger_type as a meta data
+        if( ! is_gamipress_upgraded_to( '1.4.7' ) ) {
+            $meta_keys[] = 'trigger_type';
+        }
+
         $meta_keys[] = 'count';
     } else if( $log_data['type'] === 'achievement_earn' || $log_data['type'] === 'achievement_award' ) {
         // Achievement earn meta data
@@ -734,10 +770,18 @@ function gamipress_get_log_meta_data_defaults( $log_meta, $log_id, $log_data ) {
             // Specific points award meta data
             $meta_keys[] = 'admin_id';
         }
+    } else if( $log_data['type'] === 'rank_earn' || $log_data['type'] === 'rank_award' ) {
+        // Achievement earn meta data
+        $meta_keys[] = 'rank_id';
+
+        if( $log_data['type'] === 'rank_award' ) {
+            // Specific rank award meta data
+            $meta_keys[] = 'admin_id';
+        }
     }
 
     foreach( $meta_keys as $meta_key ) {
-        $log_meta[$meta_key] =  ct_get_object_meta( $log_id, $prefix . $meta_key, true );
+        $log_meta[$meta_key] = ct_get_object_meta( $log_id, $prefix . $meta_key, true );
     }
 
     return $log_meta;

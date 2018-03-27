@@ -46,6 +46,21 @@ function gamipress_logs_query_where( $where, $ct_query ) {
 
     }
 
+    // Trigger Type
+    if( isset( $qv['trigger_type'] ) && ! empty( $qv['trigger_type'] ) && is_gamipress_upgraded_to( '1.4.7' ) ) {
+
+        $trigger_type = $qv['trigger_type'];
+
+        if( is_array( $trigger_type ) ) {
+            $trigger_type = "'" . implode( "', '", $trigger_type ) . "'";
+
+            $where .= " AND {$table_name}.trigger_type IN ( {$trigger_type} )";
+        } else {
+            $where .= " AND {$table_name}.trigger_type = '{$trigger_type}'";
+        }
+
+    }
+
     // Access
     if( isset( $qv['access'] ) && ! empty( $qv['access'] ) ) {
 
@@ -212,7 +227,7 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
 
             if( $user ) :
 
-                if( current_user_can('edit_users')) {
+                if( current_user_can( 'edit_users' ) ) {
                     ?>
 
                     <a href="<?php echo get_edit_user_link( $log->user_id ); ?>"><?php echo $user->display_name . ' (' . $user->user_login . ')'; ?></a>

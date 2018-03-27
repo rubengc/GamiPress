@@ -318,10 +318,17 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
  * Get an array of post IDs for achievements that are marked as "hidden"
  *
  * @since  1.0.0
+ *
  * @param  string $achievement_type Limit the array to a specific type of achievement
+ *
  * @return array                    An array of hidden achivement post IDs
  */
 function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
+
+	// Return hidden achievements cached
+	if( isset( GamiPress()->cache->hidden_achievements_ids[$achievement_type] ) ) {
+		return GamiPress()->cache->hidden_achievements_ids[$achievement_type];
+	}
 
 	// Assume we have no hidden achievements
 	$hidden_ids = array();
@@ -339,41 +346,29 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 	foreach ( $hidden_achievements as $achievement )
 		$hidden_ids[] = $achievement->ID;
 
+	// Cache hidden achievements
+	GamiPress()->cache->hidden_achievements_ids[$achievement_type] = $hidden_ids;
+
 	// Return our results
 	return $hidden_ids;
 }
 
 /**
- * Get an array of post IDs for achievements that are marked as "hidden"
+ * Check if achievement is marked as "hidden"
  *
- * @since  1.0.0
- * @param  integer $achievement_id Limit the array to a specific id of achievement
- * @return array  An array of hidden achivement post IDs
+ * @since 1.4.7
+ *
+ * @param int $achievement_id The achievement ID
+ *
+ * @return bool
  */
 
-function gamipress_get_hidden_achievement_by_id( $achievement_id ) {
+function gamipress_is_achievement_hidden( $achievement_id ) {
 
-	// Grab our hidden achievements
-	global $wpdb;
+    $hidden = gamipress_get_post_meta( $achievement_id, '_gamipress_hidden' );
 
-	$posts    = GamiPress()->db->posts;
-	$postmeta = GamiPress()->db->postmeta;
+    return ( $hidden === 'hidden' );
 
-	//Get hidden achievement posts.
-	$hidden_achievements = $wpdb->get_results( $wpdb->prepare(
-		"
-		 SELECT *
-		 FROM {$posts} AS p
-		 JOIN {$postmeta} AS pm
-		 ON p.ID = pm.post_id
-		 WHERE p.ID = %d
-		 AND pm.meta_key = '_gamipress_hidden'
-		 AND pm.meta_value = 'hidden'
-         ",
-		$achievement_id));
-
-	// Return our results
-	return $hidden_achievements;
 }
 
 /**
@@ -1167,13 +1162,15 @@ add_filter( 'post_updated_messages', 'gamipress_achievement_type_update_messages
 /**
  * Log a user's achivements earns/awards
  *
- * @since 1.0.0
+ * @since   1.0.0
+ * @updated 1.4.7 Added $trigger parameter
  *
- * @param integer $user_id        The user ID
- * @param integer $achievement_id The associated achievement ID
- * @param integer $admin_id       An admin ID (if admin-awarded)
+ * @param int       $user_id        The user ID
+ * @param int       $achievement_id The associated achievement ID
+ * @param int       $admin_id       An admin ID (if admin-awarded)
+ * @param string    $trigger        The trigger that fires this function
  */
-function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id = 0 ) {
+function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id = 0, $trigger = '' ) {
 
     $post_type = gamipress_get_post_type( $achievement_id );
 
@@ -1190,17 +1187,25 @@ function gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin
 
 		$log_meta['pattern'] =  gamipress_get_option( 'achievement_awarded_log_pattern', __( '{admin} awarded {user} with the the {achievement} {achievement_type}', 'gamipress' ) );
 		$log_meta['admin_id'] = $admin_id;
+
+        if( empty( $trigger ) ) {
+            $trigger = 'gamipress_award_achievement';
+        }
 	} else {
 		$type = 'achievement_earn';
 
-        if( $post_type === 'step' || $post_type === 'points-award' || $post_type === 'points-deduct' ) {
+        if( in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
             $log_meta['pattern'] = gamipress_get_option( 'requirement_complete_log_pattern', __( '{user} completed the {achievement_type} {achievement}', 'gamipress' ) );
         } else {
             $log_meta['pattern'] = gamipress_get_option( 'achievement_earned_log_pattern', __( '{user} unlocked the {achievement} {achievement_type}', 'gamipress' ) );
         }
+
+        if( empty( $trigger ) ) {
+            $trigger = 'gamipress_unlock_achievement';
+        }
 	}
 
 	// Create the log entry
-    gamipress_insert_log( $type, $user_id, $access, $log_meta );
+    gamipress_insert_log( $type, $user_id, $access, $trigger, $log_meta );
 
 }

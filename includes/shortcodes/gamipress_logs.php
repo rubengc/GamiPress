@@ -14,6 +14,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @since 1.0.0
  */
 function gamipress_register_logs_shortcode() {
+
     gamipress_register_shortcode( 'gamipress_logs', array(
         'name'            => __( 'Logs', 'gamipress' ),
         'description'     => __( 'Output a list of logs.', 'gamipress' ),
@@ -83,6 +84,7 @@ function gamipress_register_logs_shortcode() {
             ),
         ),
     ) );
+
 }
 add_action( 'init', 'gamipress_register_logs_shortcode' );
 

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.6
+Stable tag: 1.4.7
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -252,6 +252,19 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.4.7 =
+
+* Fixed next and previous pagination links of hidden achievements.
+* Fixed wrong count detection on requirements UI when generates the requirement title.
+* Prevent scroll when a requirement action is clicked.
+* Added the attribute "search_value" to [gamipress_achievements] shortcode.
+* Added the field "Initial Search Value" to GamiPress: Achievements widget.
+* Moved the logs meta field trigger_type to the logs tables to improve logs queries performance.
+* Improvements on custom table queries.
+* Added checks to prevent run code outside the desired post type screens.
+* Added checks to prevent run code outside the GamiPress custom pages (settings and tools).
+* Added a huge number of improvements and speed performance on queries and functions.
 
 = 1.4.6 =
 

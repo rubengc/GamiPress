@@ -15,15 +15,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_register_points_types_shortcode() {
 
-    // Setup a custom array of points types
-    $points_types = array(
-        'all' => __( 'All', 'gamipress' ) ,
-    );
-
-    foreach ( gamipress_get_points_types() as $slug => $data ) {
-        $points_types[$slug] = $data['plural_name'];
-    }
-
     gamipress_register_shortcode( 'gamipress_points_types', array(
         'name'            => __( 'Points Types', 'gamipress' ),
         'description'     => __( 'Output a list of points types with their points awards.', 'gamipress' ),
@@ -34,7 +25,7 @@ function gamipress_register_points_types_shortcode() {
                 'description' => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
                 'type'        => 'advanced_select',
                 'multiple'    => true,
-                'options'     => $points_types,
+                'options_cb'  => 'gamipress_options_cb_points_types',
                 'default'     => 'all',
             ),
             'columns' => array(

@@ -19,7 +19,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
 
         public function __construct($name, $args) {
 
-            parent::__construct($name, $args);
+            parent::__construct( $name, $args );
 
             $this->columns = isset( $args['columns'] ) ? $args['columns'] : 2;
 

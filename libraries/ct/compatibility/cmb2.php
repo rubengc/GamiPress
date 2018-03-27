@@ -27,6 +27,11 @@ function ct_cmb2_add_meta_boxes( $ct_table_name, $object ) {
         return;
     }
 
+    // If not object given, return
+    if( ! $object ) {
+        return;
+    }
+
     $primary_key = $ct_table->db->primary_key;
 
     // Setup a false post var to allow CMB2 trigger cmb2_override_meta_value hook

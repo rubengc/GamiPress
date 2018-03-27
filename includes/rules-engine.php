@@ -735,7 +735,7 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	gamipress_update_user_achievements( array( 'user_id' => $user_id, 'new_achievements' => array( $achievement_object ) ) );
 
 	// Log the earning of the award
-	gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id );
+	gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id, $trigger );
 
 	// Available hook for unlocking any achievement of this achievement type
 	do_action( 'gamipress_unlock_' . $achievement_object->post_type, $user_id, $achievement_id, $trigger, $site_id, $args );

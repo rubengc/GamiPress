@@ -17,7 +17,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_130_upgrades( $stored_version ) {
 
-    if ( version_compare( $stored_version, '1.3.0', '>' ) ) {
+    if ( version_compare( $stored_version, '1.3.0', '>=' ) ) {
         return $stored_version;
     }
 
