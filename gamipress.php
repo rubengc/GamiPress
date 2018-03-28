@@ -96,10 +96,10 @@ final class GamiPress {
 	public $network_wide_active = null;
 
 	/**
-	 * @var         GamiPress_Cache $cache GamiPress cache class
+	 * @var         array $cache GamiPress cache class
 	 * @since       1.4.0
 	 */
-	public $cache = null;
+	public $cache = array();
 
 	/**
 	 * Get active instance
@@ -237,9 +237,6 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/user.php';
 		require_once GAMIPRESS_DIR . 'includes/user-earnings-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/widgets.php';
-
-        // Setup the GamiPress cache
-        $this->cache = new GamiPress_Cache();
 
 	}
 

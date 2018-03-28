@@ -145,9 +145,11 @@ function gamipress_database_table_exists( $table_name ) {
 
     global $wpdb;
 
+    $cache = gamipress_get_cache( 'installed_tables', array() );
+
     // If result already cached, return it
-    if( isset( GamiPress()->cache->installed_tables[$table_name] ) ) {
-        return GamiPress()->cache->installed_tables[$table_name];
+    if( isset( $cache[$table_name] ) ) {
+        return $cache[$table_name];
     }
 
     $table_exist = $wpdb->get_var( $wpdb->prepare(
@@ -170,7 +172,9 @@ function gamipress_database_table_exists( $table_name ) {
     }
 
     // Cache function result
-    GamiPress()->cache->installed_tables[$table_name] = ( ! empty( $table_exist ) );
+    $cache[$table_name] = ( ! empty( $table_exist ) );
+
+    gamipress_set_cache( 'installed_tables', $cache );
 
     return ! empty( $table_exist );
 
@@ -190,9 +194,11 @@ function gamipress_database_table_has_column( $table_name, $column_name ) {
 
     global $wpdb;
 
+    $cache = gamipress_get_cache( 'installed_table_columns', array() );
+
     // If result already cached, return it
-    if( isset( GamiPress()->cache->installed_table_columns[$table_name] ) && isset( GamiPress()->cache->installed_table_columns[$table_name][$column_name] ) ) {
-        return GamiPress()->cache->installed_tables[$table_name][$column_name];
+    if( isset( $cache[$table_name] ) && isset( $cache[$table_name][$column_name] ) ) {
+        return $cache[$table_name][$column_name];
     }
 
     if( ! gamipress_database_table_exists( $table_name ) ) {
@@ -205,12 +211,14 @@ function gamipress_database_table_has_column( $table_name, $column_name ) {
     ) );
 
     // Check if already cached any column from this table, if not, initialize it
-    if( ! isset( GamiPress()->cache->installed_table_columns[$table_name] ) ) {
-        GamiPress()->cache->installed_table_columns[$table_name] = array();
+    if( ! isset( $cache[$table_name] ) ) {
+        $cache[$table_name] = array();
     }
 
     // Cache function result
-    GamiPress()->cache->installed_table_columns[$table_name][$column_name] = ( ! empty( $column_exists ) );
+    $cache[$table_name][$column_name] = ( ! empty( $column_exists ) );
+
+    gamipress_set_cache( 'installed_table_columns', $cache );
 
     return ! empty( $column_exists );
 

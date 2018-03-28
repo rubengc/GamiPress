@@ -256,11 +256,14 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 = 1.4.7 =
 
 * Fixed next and previous pagination links of hidden achievements.
+* Improvements detecting hidden achievements.
 * Fixed wrong count detection on requirements UI when generates the requirement title.
 * Prevent scroll when a requirement action is clicked.
 * Added the attribute "search_value" to [gamipress_achievements] shortcode.
 * Added the field "Initial Search Value" to GamiPress: Achievements widget.
+* Fixed missing $ on requirements UI.
 * Moved the logs meta field trigger_type to the logs tables to improve logs queries performance.
+* Prevent to render Shortcodes Editor window if button has't been rendered.
 * Improvements on custom table queries.
 * Added checks to prevent run code outside the desired post type screens.
 * Added checks to prevent run code outside the GamiPress custom pages (settings and tools).

@@ -376,10 +376,12 @@
  */
 function gamipress_add_requirement( element, post_id, requirement_type ) {
 
-    var requirements_list = jQuery(element).siblings('.requirements-list');
-    jQuery(element).siblings( '.requirements-spinner' ).addClass('is-active');
+    var $ = jQuery;
 
-    jQuery.post(
+    var requirements_list = $(element).siblings('.requirements-list');
+    $(element).siblings( '.requirements-spinner' ).addClass('is-active');
+
+    $.post(
         ajaxurl,
         {
             action: 'gamipress_add_requirement',
@@ -387,7 +389,7 @@ function gamipress_add_requirement( element, post_id, requirement_type ) {
             requirement_type: requirement_type
         },
         function( response ) {
-            jQuery( response ).appendTo( requirements_list );
+            $( response ).appendTo( requirements_list );
 
             // Hide the new requirement
             requirements_list.find( 'li.requirement-row:last').attr('style', 'display: none;');
@@ -427,10 +429,12 @@ function gamipress_add_requirement( element, post_id, requirement_type ) {
  */
 function gamipress_duplicate_requirement( element, requirement_id ) {
 
-    var requirements_list = jQuery(element).closest('.requirements-list');
+    var $ = jQuery;
+
+    var requirements_list = $(element).closest('.requirements-list');
     requirements_list.siblings( '.requirements-spinner' ).addClass('is-active');
 
-    jQuery.post(
+    $.post(
         ajaxurl,
         {
             action: 'gamipress_duplicate_requirement',
@@ -438,7 +442,7 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
             requirement_id: requirement_id
         },
         function( response ) {
-            jQuery( response ).appendTo( requirements_list );
+            $( response ).appendTo( requirements_list );
 
             // Hide the new requirement
             requirements_list.find( 'li.requirement-row:last').attr('style', 'display: none;');
@@ -466,8 +470,8 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
             $("#_gamipress_sequential").change();
 
             // If current element has a custom class for requirement actions, remove it
-            if( jQuery(element).hasClass('requirement-action-active') ) {
-                jQuery(element).removeClass('requirement-action-active');
+            if( $(element).hasClass('requirement-action-active') ) {
+                $(element).removeClass('requirement-action-active');
             }
         }
     );
@@ -484,7 +488,9 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
  */
 function gamipress_delete_requirement( element, requirement_id ) {
 
-    var requirements_list = jQuery(element).closest('.requirements-list');
+    var $ = jQuery;
+
+    var requirements_list = $(element).closest('.requirements-list');
     requirements_list.find( '.requirement-' + requirement_id ).slideUp( 'fast' );
 
     // Remove requirement published class to update requirements order
@@ -493,7 +499,7 @@ function gamipress_delete_requirement( element, requirement_id ) {
     // Trigger change event on sequential input to update the order again
     $("#_gamipress_sequential").change();
 
-    jQuery.post(
+    $.post(
         ajaxurl,
         {
             action: 'gamipress_delete_requirement',
@@ -514,7 +520,9 @@ function gamipress_delete_requirement( element, requirement_id ) {
  */
 function gamipress_update_requirements( element ) {
 
-    var requirements_list = jQuery(element).siblings('.requirements-list');
+    var $ = jQuery;
+
+    var requirements_list = $(element).siblings('.requirements-list');
     requirements_list.siblings( '.requirements-spinner' ).addClass('is-active');
 
     var requirement_data = {
@@ -528,7 +536,7 @@ function gamipress_update_requirements( element ) {
     requirements_list.find( '.requirement-row' ).each( function() {
 
         // Cache our points award object
-        var requirement = jQuery(this);
+        var requirement = $(this);
         var trigger_type = requirement.find( '.select-trigger-type' ).val();
 
         // Setup our points award object
@@ -564,15 +572,15 @@ function gamipress_update_requirements( element ) {
 
     });
 
-    jQuery.post(
+    $.post(
         ajaxurl,
         requirement_data,
         function( response ) {
             // Parse response
-            var titles = jQuery.parseJSON( response );
+            var titles = $.parseJSON( response );
 
             // Update each points award titles
-            jQuery.each( titles, function( id, value ) {
+            $.each( titles, function( id, value ) {
                 requirements_list.find('.requirement-' + id + ' .requirement-header-title strong').html(value);
                 requirements_list.find('#requirement-' + id + '-title').val(value);
             });
@@ -586,7 +594,7 @@ function gamipress_update_requirements( element ) {
             requirements_list.find('.requirement-unsaved-changes').remove();
 
             // Hide the spinner
-            jQuery(element).siblings( '.requirements-spinner' ).removeClass('is-active');
+            $(element).siblings( '.requirements-spinner' ).removeClass('is-active');
         }
     );
 }

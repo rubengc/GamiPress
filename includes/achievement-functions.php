@@ -325,9 +325,11 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
  */
 function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 
+	$cache = gamipress_get_cache( 'hidden_achievements_ids', array() );
+
 	// Return hidden achievements cached
-	if( isset( GamiPress()->cache->hidden_achievements_ids[$achievement_type] ) ) {
-		return GamiPress()->cache->hidden_achievements_ids[$achievement_type];
+	if( isset( $cache[$achievement_type] ) ) {
+		return $cache[$achievement_type];
 	}
 
 	// Assume we have no hidden achievements
@@ -343,11 +345,14 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 		'suppress_filters'  => false,
 	) );
 
-	foreach ( $hidden_achievements as $achievement )
+	foreach ( $hidden_achievements as $achievement ) {
 		$hidden_ids[] = $achievement->ID;
+	}
 
 	// Cache hidden achievements
-	GamiPress()->cache->hidden_achievements_ids[$achievement_type] = $hidden_ids;
+	$cache[$achievement_type] = $hidden_ids;
+
+	gamipress_set_cache( 'hidden_achievements_ids', $cache );
 
 	// Return our results
 	return $hidden_ids;

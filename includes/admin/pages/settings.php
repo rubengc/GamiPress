@@ -35,10 +35,10 @@ add_action( 'admin_init', 'gamipress_register_settings' );
  */
 function gamipress_register_settings_page() {
 
-    $is_settings_page = ( isset( $_GET['page'] ) && $_GET['page'] === 'gamipress_settings' );
-
     $tabs = array();
     $boxes = array();
+
+    $is_settings_page = ( isset( $_GET['page'] ) && $_GET['page'] === 'gamipress_settings' );
 
     if( $is_settings_page ) {
 

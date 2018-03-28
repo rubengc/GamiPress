@@ -26,10 +26,10 @@ require_once GAMIPRESS_DIR . 'includes/admin/tools/system-info.php';
  */
 function gamipress_register_tools_page() {
 
-    $is_tools_page = ( isset( $_GET['page'] ) && $_GET['page'] === 'gamipress_tools' );
-
     $tabs = array();
     $boxes = array();
+
+    $is_tools_page = ( isset( $_GET['page'] ) && $_GET['page'] === 'gamipress_tools' );
 
     if( $is_tools_page ) {
 
