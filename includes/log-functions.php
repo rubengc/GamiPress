@@ -405,7 +405,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
 
         $log_meta['trigger_type'] = $trigger_type;
 
-        return gamipress_insert_log_old_147( $user_id, $access, $log_meta );
+        return gamipress_insert_log_old_147( $type, $user_id, $access, $log_meta );
     }
 
     // Setup table

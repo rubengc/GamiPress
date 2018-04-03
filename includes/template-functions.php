@@ -119,6 +119,7 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
  * @return string
  */
 function gamipress_get_template_part( $slug, $name = null, $load = true ) {
+
     // Execute code for this part
     do_action( 'get_template_part_' . $slug, $slug, $name );
 
@@ -158,6 +159,7 @@ function gamipress_get_template_part( $slug, $name = null, $load = true ) {
  * @return string The template filename if one is located.
  */
 function gamipress_locate_template( $template_names, $load = false, $require_once = true ) {
+
     // No file found yet
     $located = false;
 
@@ -189,6 +191,7 @@ function gamipress_locate_template( $template_names, $load = false, $require_onc
         load_template( $located, $require_once );
 
     return $located;
+
 }
 
 /**
@@ -199,6 +202,7 @@ function gamipress_locate_template( $template_names, $load = false, $require_onc
  * @return array
  */
 function gamipress_get_theme_template_paths() {
+
     $file_paths = array();
 
     // Lets add-ons register template paths
@@ -215,4 +219,5 @@ function gamipress_get_theme_template_paths() {
     $file_paths[] =  GAMIPRESS_DIR . 'templates/';
 
     return array_map( 'trailingslashit', $file_paths );
+
 }

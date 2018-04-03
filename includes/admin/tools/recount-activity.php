@@ -146,6 +146,7 @@ function gamipress_activity_recount_comments( $response, $loop ) {
 
     // Set a limit of 100 comments
     $limit = 100;
+    $offset = ( $loop !== 0 ? $limit * ( $loop + 1 ) : 0 );
 
     // Get all approved comments count
     $comments_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE comment_approved = '1'" ) );
@@ -160,7 +161,7 @@ function gamipress_activity_recount_comments( $response, $loop ) {
     }
 
     // Get all approved comments
-    $comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_approved = '1' LIMIT {$loop}, {$limit}" );
+    $comments = $wpdb->get_results( "SELECT * FROM {$wpdb->comments} WHERE comment_approved = '1' LIMIT {$offset}, {$limit}" );
 
     foreach( $comments as $comment ) {
 
@@ -211,6 +212,7 @@ function gamipress_activity_recount_published_content( $response, $loop ) {
 
     // Set a limit of 100 posts
     $limit = 100;
+    $offset = ( $loop !== 0 ? $limit * ( $loop + 1 ) : 0 );
 
     // Get all public post types which means they are visitable
     $public_post_types = get_post_types( array( 'public' => true ) );
@@ -233,7 +235,7 @@ function gamipress_activity_recount_published_content( $response, $loop ) {
     }
 
     // Get all published posts
-    $posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN ( '" . implode( "', '", $public_post_types ) . "' ) LIMIT {$loop}, {$limit}" );
+    $posts = $wpdb->get_results( "SELECT * FROM {$wpdb->posts} WHERE post_status = 'publish' AND post_type IN ( '" . implode( "', '", $public_post_types ) . "' ) LIMIT {$offset}, {$limit}" );
 
     foreach( $posts as $post ) {
         // Trigger content publishing action for each post

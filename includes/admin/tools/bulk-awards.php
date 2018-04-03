@@ -173,6 +173,10 @@ function gamipress_ajax_bulk_awards_tool() {
     }
 
     $bulk_award = $_POST['bulk_award'];
+    $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
+    $limit = 100;
+    $offset = ( $loop !== 0 ? $limit * ( $loop + 1 ) : 0 );
+    $run_again = false;
 
     ignore_user_abort( true );
 
@@ -244,8 +248,17 @@ function gamipress_ajax_bulk_awards_tool() {
     }
 
     if( $to_all_users ) {
+
         // Get all stored users
-        $users = $wpdb->get_results( "SELECT ID FROM {$wpdb->users}" );
+        $users = $wpdb->get_results( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT {$offset}, {$limit}" );
+
+        if( empty( $users ) && $loop !== 0 ) {
+            // Return a success message
+            wp_send_json_success( __( 'Bulk award process has been done successfully.', 'gamipress' ) );
+        } else {
+            $run_again = true;
+        }
+
     } else {
         // Get specific stored users
         $users = $wpdb->get_results( "SELECT ID FROM {$wpdb->users} WHERE ID IN( " . implode( ', ', $specific_users ) . " )" );
@@ -282,8 +295,22 @@ function gamipress_ajax_bulk_awards_tool() {
 
     }
 
-    // Return a success message
-    wp_send_json_success( __( 'Bulk award process has been done successfully.', 'gamipress' ) );
+    if( $run_again ) {
+
+        $awarded_users = $limit * ( $loop + 1 );
+        $users_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->users} ORDER BY ID ASC" ) );
+
+        // Return a run again message (just when awarding to all users)
+        wp_send_json_success( array(
+            'run_again' => $run_again,
+            'message' => sprintf( __( '%d remaining users', 'gamipress' ), ( $users_count - $awarded_users ) ),
+        ) );
+
+    } else {
+        // Return a success message
+        wp_send_json_success( __( 'Bulk award process has been done successfully.', 'gamipress' ) );
+    }
+
 
 }
 add_action( 'wp_ajax_gamipress_bulk_awards_tool', 'gamipress_ajax_bulk_awards_tool' );

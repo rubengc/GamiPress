@@ -10,7 +10,17 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 class GamiPress_Shortcodes_Editor {
 
+	/**
+	 * @var         bool $button_rendered Flag to check if button has been rendered
+	 * @since       1.4.7
+	 */
 	public $button_rendered = false;
+
+	/**
+	 * @var         bool $rendering_shortcodes Flag to check if currently is rendering shortcodes
+	 * @since       1.4.7.1
+	 */
+	public $rendering_shortcodes = false;
 
 	public function __construct() {
 
@@ -74,9 +84,14 @@ class GamiPress_Shortcodes_Editor {
 	/**
 	 * Render shortcode modal insert button
 	 *
+	 * @param string $editor_id
+	 *
 	 * @since 1.0.0
 	 */
-	public function render_button() {
+	public function render_button( $editor_id ) {
+
+		// Prevent to render button inside shortcodes editor window
+		if( $this->rendering_shortcodes ) { return; }
 
 		$this->button_rendered = true;
 
@@ -92,6 +107,8 @@ class GamiPress_Shortcodes_Editor {
 
 		// Return early if button hasn't been rendered
 		if( ! $this->button_rendered ) { return; }
+
+		$this->rendering_shortcodes = true;
 
 		?>
 
@@ -112,7 +129,9 @@ class GamiPress_Shortcodes_Editor {
 			</div>
 		</div>
 
-	<?php
+		<?php
+
+		$this->rendering_shortcodes = false;
 	}
 
 	/**
@@ -172,8 +191,8 @@ function gamipress_shortcodes_add_editor_button() {
 
 	global $pagenow;
 
-	// Prevent render on customizer
-	if( $pagenow === 'customize.php' ) {
+	// Prevent render on customizer and widgets
+	if( $pagenow === 'customize.php' || $pagenow === 'widgets.php' ) {
 		return;
 	}
 

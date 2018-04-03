@@ -65,6 +65,11 @@
                     value = $(el).closest('.cmb2-radio-list').find('input[type="radio"]:checked').val()
                 }
 
+                if( typeof value === 'string' ) {
+                    // Replaces " by ' on text fields
+                    value = value.replace(/"/g, "'");
+                }
+
                 if (value !== '' && value !== undefined && value !== null ) {
 
                     // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
@@ -76,9 +81,14 @@
         });
 
         // Allow external functions to add their own data to the array of attrs
-        $('#' + shortcode + '_wrapper').trigger( 'gamipress_get_shortcode_attributes', [ attrs, inputs ] );
+        var args = { attributes: attrs, inputs: inputs };
 
-        return attrs;
+        $('#' + shortcode + '_wrapper').trigger( 'gamipress_shortcode_attributes', [ args ] );
+
+        // TODO: gamipress_get_shortcode_attributes is deprecated since 1.4.8, just keep for backward compatibility
+        $('#' + shortcode + '_wrapper').trigger( 'gamipress_get_shortcode_attributes', [ args.attributes, args.inputs ] );
+
+        return args.attributes;
     }
 
     function gamipress_get_shortcode_inputs( shortcode ) {
@@ -97,7 +107,12 @@
         $.trim( output );
         output += ']';
 
-        return output;
+        // Allow external functions to construct their own shortcode
+        var args = { output: output, shortcode: shortcode, attributes: attributes };
+
+        $('#' + shortcode + '_wrapper').trigger( 'gamipress_construct_shortcode', [ args ] );
+
+        return args.output;
     }
 
     function gamipress_shortcode_hide_all_sections() {
@@ -267,6 +282,7 @@
     // Setup ThickBox when "Add GamiPress Shortcode" link is clicked
     $('body').on( 'click', '#insert_gamipress_shortcodes', function(e) {
         e.preventDefault();
+
         gamipress_shortcode_setup_thickbox( $(this) );
     });
 

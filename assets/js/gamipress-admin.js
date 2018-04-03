@@ -259,6 +259,7 @@
 
 var gamipress_current_upgrade_info;
 var gamipress_current_upgrade_progress;
+var gamipress_current_upgrade_cancelled = false;
 
 // Start upgrade
 function gamipress_start_upgrade( version ) {
@@ -266,7 +267,13 @@ function gamipress_start_upgrade( version ) {
 	var $ = $ || jQuery;
 	version = version.replace('.', '').replace('.', '').replace('.', '');
 
-	$('#gamipress-upgrade-notice').html('<p>Upgrading GamiPress database...</p><div class="gamipress-upgrade-progress"><div class="gamipress-upgrade-progress-bar" style="width: 0%;"></div></div>');
+	$('#gamipress-upgrade-notice').html(
+		'<p>Upgrading GamiPress database... <span></span></p>'
+		+ '<div class="gamipress-upgrade-progress"><div class="gamipress-upgrade-progress-bar" style="width: 0%;"></div></div>'
+		+ '<p style="display: none;">'
+			+ '<a id="gamipress-cancel-upgrade" href="#" class="button">Cancel Upgrade</a>'
+		+ '</p>'
+	);
 
 	$.ajax({
 		url: ajaxurl,
@@ -285,6 +292,24 @@ function gamipress_start_upgrade( version ) {
 			gamipress_current_upgrade_info = response.data.total;
 			gamipress_current_upgrade_progress = 0;
 
+            // Show a visual text with remaining entries
+            $('#gamipress-upgrade-notice p:first span').html( gamipress_current_upgrade_info - gamipress_current_upgrade_progress + ' remaining entries' );
+
+            // Add a click event on the upgrade cancel button
+            // Note: Function is placed here because clicking fast on start upgrade could provoke cancelling it at start
+            $('body').click('#gamipress-cancel-upgrade', function(e) {
+                e.preventDefault();
+
+                $('#gamipress-upgrade-notice').html('<p>Cancelling upgrade...</p>');
+
+                gamipress_current_upgrade_cancelled = true;
+
+                gamipress_stop_upgrade( version, true );
+            });
+
+            // Show the cancel upgrade button
+            $('#gamipress-cancel-upgrade').parent().show();
+
 			gamipress_run_upgrade( version );
 
 		},
@@ -298,6 +323,10 @@ function gamipress_start_upgrade( version ) {
 
 // Run upgrade
 function gamipress_run_upgrade( version ) {
+
+    if( gamipress_current_upgrade_cancelled ) {
+        return;
+    }
 
 	var $ = $ || jQuery;
 	version = version.replace('.', '').replace('.', '').replace('.', '');
@@ -324,6 +353,9 @@ function gamipress_run_upgrade( version ) {
 				return;
 			}
 
+            // Show a visual text with remaining entries
+            $('#gamipress-upgrade-notice p:first span').html( gamipress_current_upgrade_info - gamipress_current_upgrade_progress + ' remaining entries' );
+
 			// Update progress bar width
 			$('#gamipress-upgrade-notice .gamipress-upgrade-progress .gamipress-upgrade-progress-bar').attr('style', 'width: ' + ( ( gamipress_current_upgrade_progress / gamipress_current_upgrade_info ) * 100 ) + '%')
 
@@ -339,7 +371,11 @@ function gamipress_run_upgrade( version ) {
 }
 
 // Stop upgrade
-function gamipress_stop_upgrade( version ) {
+function gamipress_stop_upgrade( version, show_result ) {
+
+    if( show_result === undefined ) {
+        show_result = false;
+    }
 
 	var $ = $ || jQuery;
 	version = version.replace('.', '').replace('.', '').replace('.', '');
@@ -348,7 +384,17 @@ function gamipress_stop_upgrade( version ) {
 		url: ajaxurl,
 		data: {
 			action: 'gamipress_stop_process_' + version + '_upgrade'
-		}
+		},
+        success: function( response ) {
+            if( show_result ) {
+                $('#gamipress-upgrade-notice').html('<p class="error">Upgrade cancelled.</p>');
+            }
+        },
+        error: function( response ) {
+            if( show_result ) {
+                $('#gamipress-upgrade-notice').html('<p class="error">Upgrade cancellation failed.</p>');
+            }
+        }
 	});
 
 }

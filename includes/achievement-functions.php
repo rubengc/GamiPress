@@ -319,20 +319,37 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
  *
  * @since  1.0.0
  *
- * @param  string $achievement_type Limit the array to a specific type of achievement
+ * @param  string|array $achievement_type 	Limit the array to a specific type of achievement
  *
- * @return array                    An array of hidden achivement post IDs
+ * @return array                    		An array of hidden achievement post IDs
  */
 function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 
-	$cache = gamipress_get_cache( 'hidden_achievements_ids', array() );
-
-	// Return hidden achievements cached
-	if( isset( $cache[$achievement_type] ) ) {
-		return $cache[$achievement_type];
+	if( ! is_array( $achievement_type ) ) {
+		$achievement_type = array( $achievement_type );
 	}
 
-	// Assume we have no hidden achievements
+	$cache = gamipress_get_cache( 'hidden_achievements_ids', array() );
+	$hidden_ids = array();
+	$all_cached = true;
+
+	// loop al given types looking if all has been cached
+	foreach( $achievement_type as $type ) {
+
+		if( isset( $cache[$type] ) ) {
+			$hidden_ids = array_merge( $hidden_ids, $cache[$type] );
+		} else {
+			$all_cached = false;
+		}
+
+	}
+
+	// Return hidden achievements cached
+	if( $all_cached ) {
+		return $hidden_ids;
+	}
+
+	// Reset the hidden ids var
 	$hidden_ids = array();
 
 	// Grab our hidden achievements
@@ -346,12 +363,19 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 	) );
 
 	foreach ( $hidden_achievements as $achievement ) {
+
 		$hidden_ids[] = $achievement->ID;
+
+		// Initialize hidden achievement type cache
+		if( ! isset( $cache[$achievement->post_type] ) ) {
+			$cache[$achievement->post_type] = array();
+		}
+
+		$cache[$achievement->post_type] = $achievement->ID;
+
 	}
 
 	// Cache hidden achievements
-	$cache[$achievement_type] = $hidden_ids;
-
 	gamipress_set_cache( 'hidden_achievements_ids', $cache );
 
 	// Return our results

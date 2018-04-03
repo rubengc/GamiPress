@@ -24,6 +24,10 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.7.php';
  */
 function gamipress_process_upgrades() {
 
+    if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
     // Get stored version
     $stored_version = get_option( 'gamipress_version', '1.0.0' );
 

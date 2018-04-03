@@ -428,25 +428,28 @@
         multiple: true
     });
 
-    $('#bulk_award_points_button, #bulk_award_achievements_button, #bulk_award_rank_button, '
-        + '#bulk_revoke_points_button, #bulk_revoke_achievements_button, #bulk_revoke_rank_button').click(function(e) {
-        e.preventDefault();
+    function gamipress_run_bulk_tool( button, loop ) {
 
-        var $this = $(this);
-        var response_id = $this.attr('id').replace('_button', '_response');
-        var active_tab = $this.closest('.cmb-tabs-wrap').find('.cmb-tab.active');
-        var action = ( $this.attr('id').indexOf('bulk_award_') !== -1 ? 'bulk_award' : 'bulk_revoke' );
+        if( loop === undefined ) {
+            loop = 0;
+        }
+
+        var response_id = button.attr('id').replace('_button', '_response');
+        var active_tab = button.closest('.cmb-tabs-wrap').find('.cmb-tab.active');
+        var action = ( button.attr('id').indexOf('bulk_award_') !== -1 ? 'bulk_award' : 'bulk_revoke' );
         var data;
 
         if( action === 'bulk_award' ) {
             data = {
                 action: 'gamipress_bulk_awards_tool',
-                bulk_award: $this.attr('id').replace('bulk_award_', '').replace('_button', '')
+                bulk_award: button.attr('id').replace('bulk_award_', '').replace('_button', ''),
+                loop: loop
             };
         } else if( action === 'bulk_revoke' ) {
             data = {
                 action: 'gamipress_bulk_revokes_tool',
-                bulk_revoke: $this.attr('id').replace('bulk_revoke_', '').replace('_button', '')
+                bulk_revoke: button.attr('id').replace('bulk_revoke_', '').replace('_button', ''),
+                loop: loop
             };
         }
 
@@ -466,19 +469,38 @@
         });
 
         // Disable the button
-        $this.prop('disabled', true);
+        button.prop('disabled', true);
 
         if( ! $('#' + response_id).length ) {
-            $this.parent().append('<span id="' + response_id + '"></span>');
+            button.parent().append('<span id="' + response_id + '" style="display: inline-block; padding: 5px 0 0 8px;"></span>');
         }
 
-        // Show the spinner
-        $('#' + response_id).html('<span class="spinner is-active" style="float: none;"></span>');
+        if( ! $('#' + response_id).find('.spinner').length ) {
+            // Show the spinner
+            $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
+        }
 
         $.post(
             ajaxurl,
             data,
             function( response ) {
+
+                // Run again utility
+                if( response.data.run_again !== undefined && response.data.run_again && response.success === true ) {
+
+                    if( ! $('#' + response_id).find('#' + response_id + '-message').length ) {
+                        $('#' + response_id).append('<span id="' + response_id + '-message" style="padding-left: 5px;"></span>');
+                    }
+
+                    $('#' + response_id).find('#' + response_id + '-message').html(response.data.message);
+
+                    loop++;
+
+                    // Run again passing the next loop index
+                    gamipress_run_bulk_tool( button, loop );
+
+                    return;
+                }
 
                 if( response.success === false ) {
                     $('#' + response_id).css({color:'#a00'});
@@ -486,27 +508,28 @@
 
                 $('#' + response_id).html(response.data);
 
-                if( response.success === true ) {
-
-                    setTimeout(function() {
-                        $('#' + response_id).remove();
-                    }, 5000);
+                if( response.success !== false ) {
+                    loop++;
                 }
 
                 // Enable the button
-                $this.prop('disabled', false);
+                button.prop('disabled', false);
             }
         ).fail(function() {
 
             $('#' + response_id).html('The server has returned an internal error.');
 
-            setTimeout(function() {
-                $('#' + response_id).remove();
-            }, 5000);
-
             // Enable the button
-            $this.prop('disabled', false);
+            button.prop('disabled', false);
         });
+
+    }
+
+    $('#bulk_award_points_button, #bulk_award_achievements_button, #bulk_award_rank_button, '
+        + '#bulk_revoke_points_button, #bulk_revoke_achievements_button, #bulk_revoke_rank_button').click(function(e) {
+        e.preventDefault();
+
+        gamipress_run_bulk_tool( $(this) );
     });
 
 })( jQuery );

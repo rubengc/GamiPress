@@ -124,7 +124,7 @@
 	$body.on( 'click', '.gamipress-achievement-unlock-with-points-button', function(e) {
 
 		var button = $(this);
-		var submit_wrap = button.parent();
+		var submit_wrap = button.closest('.gamipress-achievement-unlock-with-points');
 		var spinner = submit_wrap.find('.gamipress-spinner');
 		var achievement_id = button.data('id');
 
@@ -189,7 +189,7 @@
 	$body.on( 'click', '.gamipress-rank-unlock-with-points-button', function(e) {
 
 		var button = $(this);
-		var submit_wrap = button.parent();
+		var submit_wrap = button.closest('.gamipress-rank-unlock-with-points');
 		var spinner = submit_wrap.find('.gamipress-spinner');
 		var rank_id = button.data('id');
 
