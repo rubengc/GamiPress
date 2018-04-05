@@ -263,6 +263,12 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.4.7.2 ###
+
+* Fixed wrong activity recount tool offset.
+* Fixed typo on gamipress_do_shortcode() function.
+* Improvements on requirements UI when saving a large amount of requirements.
+
 ### 1.4.7.1 ###
 
 * Added event to override shortcode output from the Shortcodes Editor.

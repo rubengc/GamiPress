@@ -514,11 +514,17 @@ function gamipress_delete_requirement( element, requirement_id ) {
 /**
  * Update all requirements
  *
- * @since 1.0.0
+ * @since   1.0.0
+ * @updated 1.4.7.2 Added loop parameter
  *
  * @param element
+ * @param loop
  */
-function gamipress_update_requirements( element ) {
+function gamipress_update_requirements( element, loop ) {
+
+    if( loop === undefined ) {
+        loop = 0;
+    }
 
     var $ = jQuery;
 
@@ -528,12 +534,24 @@ function gamipress_update_requirements( element ) {
     var requirement_data = {
         action: 'gamipress_update_requirements',
         post_id: $('input#post_ID').val(),
+        loop: loop,
         _gamipress_sequential: ( $('input#_gamipress_sequential').prop('checked') ? 'on' : '' ),
         requirements: []
     };
 
-    // Loop through each points award and collect its data
-    requirements_list.find( '.requirement-row' ).each( function() {
+    // On large requirements list, we need to store them in groups
+    var requirements = requirements_list.find( '.requirement-row' );
+
+    // So let's to define an offset and limit
+    var requirements_limit = 20;
+    var current_offset = ( loop * requirements_limit );
+    var current_limit = ( ( loop + 1 ) * requirements_limit );
+
+    // To set smaller groups of requirements to being stored
+    var current_requirements = requirements.slice( current_offset, current_limit );
+
+    // Loop through current requirements and collect its data
+    current_requirements.each( function() {
 
         // Cache our points award object
         var requirement = $(this);
@@ -569,7 +587,6 @@ function gamipress_update_requirements( element ) {
 
         // Add our relevant data to the array
         requirement_data.requirements.push( requirement_details );
-
     });
 
     $.post(
@@ -579,22 +596,39 @@ function gamipress_update_requirements( element ) {
             // Parse response
             var titles = $.parseJSON( response );
 
-            // Update each points award titles
+            // Loop all given titles
             $.each( titles, function( id, value ) {
-                requirements_list.find('.requirement-' + id + ' .requirement-header-title strong').html(value);
-                requirements_list.find('#requirement-' + id + '-title').val(value);
+
+                var requirement = requirements_list.find('.requirement-' + id );
+
+                // Update the title
+                requirement.find('.requirement-header-title strong').html(value);
+                requirement.find('.requirement-title .title').val(value);
+
+                // Update unsaved values to meet that current ones has been saved
+                requirement.find('input, select, textarea').each( function() {
+                    $(this).data('unsaved-value', $(this).val());
+                });
+
+                // Remove unsaved data warning
+                requirement.find('.requirement-unsaved-changes').remove();
             });
 
-            // Update all unsaved values to meet that current ones has been saved
-            requirements_list.find('input, select, textarea').each( function() {
-                $(this).data('unsaved-value', $(this).val());
-            });
+            if( current_limit < requirements.length ) {
 
-            // Remove all unsaved data warnings
-            requirements_list.find('.requirement-unsaved-changes').remove();
+                // Continue looping each group of requirements to save them
+                loop++;
 
-            // Hide the spinner
-            $(element).siblings( '.requirements-spinner' ).removeClass('is-active');
+                gamipress_update_requirements( element, loop );
+
+            } else {
+
+                // All requirements saved successfully Hide the spinner
+                $(element).siblings( '.requirements-spinner' ).removeClass('is-active');
+
+            }
+
+
         }
     );
 }

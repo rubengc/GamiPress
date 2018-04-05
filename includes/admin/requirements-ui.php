@@ -727,6 +727,7 @@ function gamipress_update_requirements_ajax_handler() {
     }
 
     $post_id = $_POST['post_id'];
+    $order = absint( $_POST['loop'] );
 
     // Save sequential steps (now placed on requirements UI)
     if( isset( $_POST['_gamipress_sequential'] ) && ! empty( $_POST['_gamipress_sequential'] ) ) {
@@ -743,15 +744,18 @@ function gamipress_update_requirements_ajax_handler() {
         $new_titles = array();
 
         // Loop through each of the created requirements
-        foreach ( $_POST['requirements'] as $key => $requirement ) {
+        foreach ( $_POST['requirements'] as $requirement ) {
 
-            $requirement_updated = gamipress_update_requirement( $requirement, $key );
+            $requirement_updated = gamipress_update_requirement( $requirement, $order );
 
             // Grab the requirement ID
             $requirement_id = $requirement['requirement_id'];
 
             // Add the title to our AJAX return
             $new_titles[$requirement_id] = stripslashes( $requirement_updated['title'] );
+
+            // Update order
+            $order++;
 
         }
 

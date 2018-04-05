@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.4.7.1
+Stable tag: 1.4.7.2
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -252,6 +252,12 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.4.7.2 =
+
+* Fixed wrong activity recount tool offset.
+* Fixed typo on gamipress_do_shortcode() function.
+* Improvements on requirements UI when saving a large amount of requirements.
 
 = 1.4.7.1 =
 

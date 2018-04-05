@@ -500,7 +500,7 @@ function gamipress_do_shortcode( $shortcode, $args, $content = '' ) {
     if( ! empty( $content ) ) {
 
         // If content passed, then execute shortcode as [shortcode]content[/shortcode]
-        return do_shortcode( sprintf( '[%s %s]$s[/%s]',
+        return do_shortcode( sprintf( '[%s %s]%s[/%s]',
             $shortcode,
             $shortcode_args,
             $content,
