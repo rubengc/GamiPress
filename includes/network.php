@@ -46,7 +46,7 @@ function gamipress_init_multisite() {
 add_action( 'gamipress_init', 'gamipress_init_multisite' );
 
 /**
- * Create array of blog ids in the network if multisite setting is on
+ * Create array of blog ids in network
  *
  * @since  1.0.0
  *
@@ -56,11 +56,14 @@ function gamipress_get_network_site_ids() {
 
     global $wpdb;
 
-    if( is_multisite() && (bool) gamipress_get_option( 'ms_show_all_achievements', false ) ) {
+    if( is_multisite() ) {
+
         $blog_ids = $wpdb->get_results( "SELECT blog_id FROM " . $wpdb->base_prefix . "blogs" );
+
         foreach ($blog_ids as $key => $value ) {
             $sites[] = $value->blog_id;
         }
+
     } else {
         $sites[] = get_current_blog_id();
     }
@@ -156,6 +159,70 @@ function gamipress_is_network_wide_active() {
 }
 
 /**
+ * Check if a plugin is active on any site of network
+ *
+ * @since 1.4.8
+ *
+ * @param string $plugin Path to the main plugin file from plugins directory.
+ *
+ * @return array
+ */
+function gamipress_is_plugin_active_on_network( $plugin ) {
+
+    return ! empty( gamipress_get_plugin_active_sites( $plugin ) );
+
+}
+
+/**
+ * Get all sites a plugin is active
+ *
+ * @since 1.4.8
+ *
+ * @param string $plugin Path to the main plugin file from plugins directory.
+ *
+ * @return array
+ */
+function gamipress_get_plugin_active_sites( $plugin ) {
+
+    // Bail if not is a multisite install
+    if( ! is_multisite() ) {
+        return array( get_current_blog_id() );
+    }
+
+    // If plugin is active network wide, return all sites
+    if( is_plugin_active_for_network( $plugin ) ) {
+        return gamipress_get_network_site_ids();
+    }
+
+    global $blog_id;
+
+    $sites_active = array();
+
+    // Store a copy of the original ID for later
+    $cached_id = $blog_id;
+
+    // Loop through all sites
+    foreach( gamipress_get_network_site_ids() as $site_blog_id ) {
+
+        // If we're polling a different blog, switch to it
+        if ( $blog_id != $site_blog_id ) {
+            switch_to_blog( $site_blog_id );
+        }
+
+        if( is_plugin_active( $plugin ) ) {
+            $sites_active[] = $site_blog_id;
+        }
+
+    }
+
+    // Restore the original blog so the sky doesn't fall
+    switch_to_blog( $cached_id );
+
+    return $sites_active;
+
+}
+
+/**
  * On save settings, also update GamiPress site option to make it network wide accessible
  *
  * @since 1.4.0
@@ -195,10 +262,17 @@ function gamipress_main_site_edit_post_link( $link, $post_id, $context ) {
         return $link;
     }
 
-    $post_type = gamipress_get_post_type( $post_id );
+    // Try to get the post type of current site
+    $post_type = get_post_type( $post_id );
+
+    if( ! $post_type ) {
+        // If this post not exists on current site, then get his post type from main site
+        $post_type = gamipress_get_post_type( $post_id );
+    }
 
     if(
         in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) )
+        || in_array( $post_type, gamipress_get_requirement_types_slugs() )
         || in_array( $post_type, gamipress_get_achievement_types_slugs() )
         || in_array( $post_type, gamipress_get_rank_types_slugs() )
     ) {

@@ -102,7 +102,9 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
         <?php endif; ?>
 
         <?php // Achievement points
-        echo gamipress_achievement_points_markup( get_the_ID() ); ?>
+        if( $a['points_awarded'] === 'yes' ) :
+            echo gamipress_achievement_points_markup( get_the_ID() );
+        endif; ?>
 
         <?php
         /**

@@ -1094,6 +1094,69 @@ label[for="_gamipress_sequential"] {
 	}
 }
 
+/* Fixed save buttons on GamiPress Settings */
+.gamipress_settings input[name="submit-cmb"],
+.gamipress_settings input[name="reset-cmb"] {
+    float: right;
+}
+
+.gamipress_settings input[name="reset-cmb"] {
+    margin-right: 0 !important;
+}
+
+@media screen and (min-width: 782px) {
+
+    .gamipress_settings .gamipress-sticky-bar {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+
+        left: 160px;
+        width: calc( 100% - 160px );
+
+        z-index: 1;
+
+        background: #fafafa;
+        border-top: 1px solid #e5e5e5;
+        box-shadow: 0 -1px 1px rgba(0,0,0,0.04);
+        padding: 10px 0;
+    }
+
+    .gamipress_settings .gamipress-sticky-bar input[name="reset-cmb"] {
+        margin-right: 19px !important;
+    }
+
+}
+
+@media screen and (max-width: 782px) {
+
+    .gamipress_settings #cmo-options-form > #poststuff + div {
+        position: fixed;
+        width: 100%;
+        background: #fafafa;
+        border-top: 1px solid #e5e5e5;
+        box-shadow: 0 -1px 1px rgba(0,0,0,0.04);
+        right: 0;
+        bottom: 0;
+        padding: 10px 14px;
+        z-index: 1;
+    }
+
+    .gamipress_settings input[name="submit-cmb"] {
+        padding: 6px 14px;
+        line-height: normal;
+        font-size: 14px;
+        vertical-align: middle;
+        height: auto;
+    }
+
+    .gamipress_settings input[name="submit-cmb"],
+    .gamipress_settings input[name="reset-cmb"] {
+        margin-bottom: 0;
+    }
+
+}
+
 /* GamiPress Licensing Settings */
 .gamipress_licenses .meta-box-sortables {
 	display: -webkit-box;
@@ -1123,6 +1186,10 @@ label[for="_gamipress_sequential"] {
 
 .gamipress_licenses .gamipress-license-thumbnail {
 	margin: -6px -12px 0;
+}
+
+.gamipress_licenses .gamipress-license-thumbnail img {
+	width: 100%;
 }
 
 .gamipress_licenses .cmb-row {
@@ -1180,6 +1247,10 @@ label[for="_gamipress_sequential"] {
 .gamipress_page_gamipress_add_ons .wp-filter a:hover,
 .gamipress_page_gamipress_add_ons .wp-filter a:focus {
 	box-shadow: none;
+}
+
+.gamipress_page_gamipress_add_ons .wp-filter a .dashicons {
+    vertical-align: bottom;
 }
 
 .gamipress-add-ons {

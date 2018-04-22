@@ -24,6 +24,7 @@ class GamiPress_Logs_Widget extends GamiPress_Widget {
 
     public function get_widget( $args, $instance ) {
         echo gamipress_do_shortcode( 'gamipress_logs', array(
+            'type'          => $instance['type'],
             'order'         => $instance['order'],
             'limit'         => $instance['limit'],
             'pagination'    => ( $instance['pagination'] === 'on' ? 'yes' : 'no' ),

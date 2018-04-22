@@ -151,6 +151,17 @@ function gamipress_register_licenses_page() {
 
                     }
 
+                    // Register custom update message on plugins menu
+                    if( isset( $field['file'] ) && ! is_multisite() ) {
+
+                        $plugin_file = plugin_basename( $field['file'] );
+
+                        // Register custom plugin row for licensed plugins to update package if an active license exists
+                        add_action( "after_plugin_row_$plugin_file", 'gamipress_license_plugin_update_row', 5, 2 );
+                        add_action( "in_plugin_update_message-$plugin_file", 'gamipress_license_in_plugin_update_message', 10, 2 );
+
+                    }
+
                     $meta_box['fields'][$field_id] = $field;
 
                 }
@@ -214,6 +225,100 @@ function gamipress_license_field_before( $field_args, $field ) {
         </div>
 
     <?php endif;
+
+}
+
+/**
+ * Force package and download link update for licensed plugins.
+ *
+ * @since  1.4.8
+ *
+ * @param  string   $file           Plugin file
+ * @param  array    $plugin_data    An array of plugin data.
+ */
+function gamipress_license_plugin_update_row( $file, $plugin_data ) {
+
+    $update_cache = get_site_transient( 'update_plugins' );
+
+    if ( ! isset( $update_cache->response[ $file ] ) ) {
+        return;
+    }
+
+    $response = $update_cache->response[ $file ];
+
+    // If there is not a package link, then try to update it
+    if ( empty( $response->package ) ) {
+
+        // Turn plugin slug like 'plugin-slug' to 'plugin_slug'
+        $slug = str_replace( '-', '_', $response->slug );
+
+        // Get the stored license key
+        $license = gamipress_get_option( $slug . '_license', '' );
+
+        // Check the license status
+        $license_status = cmb2_edd_license_status( $license );
+
+        if( $license_status === 'valid' ) {
+
+            // Make a new request to the API to check package and download link
+            $api_params = array(
+                'edd_action' => 'get_version',
+                'license'    => $license,
+                'item_name'  => $response->name,
+                'slug'       => $response->slug,
+                'url'        => home_url(),
+            );
+
+            $api_request = wp_remote_post( 'https://gamipress.com/edd-sl-api', array( 'timeout' => 15, 'sslverify' => true, 'body' => $api_params ) );
+
+            if ( ! is_wp_error( $api_request ) ) {
+
+                // Decode the API response
+                $version_info = json_decode( wp_remote_retrieve_body( $api_request ) );
+
+                // If package link provided, update it
+                if( ! empty( $version_info->package ) ) {
+                    $update_cache->response[ $file ]->package = $version_info->package;
+                }
+
+                // If download link provided, update it
+                if( ! empty( $version_info->download_link ) ) {
+                    $update_cache->response[ $file ]->download_link = $version_info->download_link;
+                }
+
+                // Update site transient with updated data
+                set_site_transient( 'update_plugins', $update_cache );
+
+            }
+
+        }
+
+    }
+
+}
+
+/**
+ * Advice to user about invalid license keys
+ *
+ * @param array $plugin_data
+ * @param array $response
+ */
+function gamipress_license_in_plugin_update_message( $plugin_data, $response ) {
+
+    // Turn plugin slug like 'plugin-slug' to 'plugin_slug'
+    $slug = str_replace( '-', '_', $response->slug );
+
+    // Get the stored license key
+    $license = gamipress_get_option( $slug . '_license', '' );
+
+    // Check the license status
+    $license_status = cmb2_edd_license_status( $license );
+
+    if( $license_status !== 'valid' ) {
+
+        echo '&nbsp;<strong><a href="' . esc_url( admin_url( 'admin.php?page=gamipress_licenses' ) ) . '">' . __( 'Enter valid license key for automatic updates.', 'gamipress' ) . '</a></strong>';
+
+    }
 
 }
 

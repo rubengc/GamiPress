@@ -20,6 +20,7 @@ function gamipress_select2_posts_template_result( item ) {
         return '<strong>' + item.post_title + '</strong>'
             + '<span class="result-description">'
             + 'ID: ' + item.ID + '<span class="align-right">' + post_type_label + '</span>'
+            + ( item.site_name !== undefined ? ' (' + item.site_name + ')' : '' )
             + '</span>';
     }
 
@@ -50,7 +51,7 @@ function gamipress_select2_posts_process_results( response, params ) {
 
     results.forEach( function( item ) {
 
-        // Extend select2 keys (id and text) with given keys (ID, post_title and optionally post_type)
+        // Extend select2 keys (id and text) with given keys (ID, post_title and optionally post_type, site_id and site_name)
         formatted_results.push( jQuery.extend({
             id: item.ID,
             text: item.post_title + ' (#' + item.ID + ')',

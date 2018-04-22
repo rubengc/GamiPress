@@ -52,6 +52,11 @@ add_filter( 'gamipress_process_upgrades', 'gamipress_147_upgrades', 147 );
  */
 function gamipress_147_upgrades_notices() {
 
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
+
     // Check user permissions
     if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
         return;
@@ -116,7 +121,7 @@ function gamipress_147_upgrade_size() {
     $upgrade_size = 0;
 
     // Retrieve the count of users earnings to upgrade
-    if( ! is_gamipress_upgrade_completed( 'update_logs_trigger_type' ) ) {
+    if( ! is_gamipress_upgrade_completed( 'update_logs_trigger_type' ) && gamipress_database_table_has_column( GamiPress()->db->logs, 'trigger_type' ) ) {
 
         $logs = GamiPress()->db->logs;
 

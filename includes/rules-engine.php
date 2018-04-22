@@ -131,7 +131,7 @@ function gamipress_user_has_access_to_specific_requirement( $return = false, $us
 		return $return;
 
 	// If is specific trigger rules engine needs the attached id
-	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+	if( $return && in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
 
 		$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
 		$required_id = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_post' ) );

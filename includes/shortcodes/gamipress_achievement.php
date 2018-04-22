@@ -48,6 +48,13 @@ function gamipress_register_achievement_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+			'points_awarded' => array(
+				'name'        => __( 'Show Points Awarded', 'gamipress' ),
+				'description' => __( 'Display the achievement points awarded (on achievements where this setting is set).', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch',
+				'default' => 'yes'
+			),
 			'excerpt' => array(
 				'name'        => __( 'Show Excerpt', 'gamipress' ),
 				'description' => __( 'Display the achievement short description.', 'gamipress' ),
@@ -68,6 +75,12 @@ function gamipress_register_achievement_shortcode() {
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
+			),
+			'unlock_button' => array(
+				'name'        => __( 'Show Unlock Button', 'gamipress' ),
+				'description' => __( 'Display the "Unlock using points" (on achievements where unlock with points is allowed).', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch'
 			),
 			'earners' => array(
 				'name'        => __( 'Show Earners', 'gamipress' ),
@@ -154,9 +167,11 @@ function gamipress_achievement_shortcode_defaults() {
 		'title' 			=> 'yes',
 		'link' 				=> 'yes',
 		'thumbnail' 		=> 'yes',
+		'points_awarded' 	=> 'yes',
 		'excerpt'	  		=> 'yes',
 		'steps'	  			=> 'yes',
 		'toggle' 			=> 'yes',
+		'unlock_button' 	=> 'yes',
 		'earners'	  		=> 'no',
 		'layout'	  		=> 'left',
 	) );

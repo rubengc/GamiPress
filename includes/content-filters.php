@@ -532,15 +532,15 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
     $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
 
     // Default points label
-    $points_label = __( '%d Points', 'gamipress' );
+    $points_label = $points . ' ' . _n( __( 'Point', 'gamipress' ), __( 'Points', 'gamipress' ), $points );
 
     if( isset( $points_types[$points_type] ) ) {
         // Points type label
-        $points_label = '%d ' . $points_types[$points_type]['plural_name'];
+        $points_label = $points . ' ' . _n( $points_types[$points_type]['singular_name'], $points_types[$points_type]['plural_name'], $points );
     }
 
 	// Return our markup
-	return '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . sprintf( $points_label, $points ) . '</div>';
+	return '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . $points_label . '</div>';
 }
 
 /**

@@ -142,5 +142,18 @@
         $('.cmb2-id-automatic-updates-plugins').hide();
     }
 
+    // Fixed action buttons on settings
+    $(window).on('scroll', function(e) {
+
+        if( $(window).scrollTop() + $(window).height() > $(document).height() - 70 ) {
+            $('.gamipress_settings input[name="submit-cmb"]').parent().removeClass('gamipress-sticky-bar')
+        } else {
+            $('.gamipress_settings input[name="submit-cmb"]').parent().addClass('gamipress-sticky-bar')
+        }
+
+    });
+
+    $(window).trigger('scroll')
+
 })( jQuery );
 

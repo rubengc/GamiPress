@@ -52,6 +52,11 @@ add_filter( 'gamipress_process_upgrades', 'gamipress_143_upgrades', 143 );
  */
 function gamipress_143_upgrades_notices() {
 
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
+
     // Check user permissions
     if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
         return;

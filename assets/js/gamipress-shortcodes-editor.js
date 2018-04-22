@@ -173,7 +173,7 @@
     $( '#gamipress_achievements_include, #gamipress_achievements_exclude, #gamipress_logs_include, #gamipress_logs_exclude' ).select2( select2_achievements_multiple );
 
     // Select2 multiple
-    $( '#gamipress_achievements_type, #gamipress_points_types_type, #gamipress_points_type, #gamipress_ranks_type, #gamipress_earnings_points_types, #gamipress_earnings_achievement_types, #gamipress_earnings_rank_types' ).select2({
+    $( '#gamipress_achievements_type, #gamipress_points_types_type, #gamipress_points_type, #gamipress_ranks_type, #gamipress_logs_type, #gamipress_earnings_points_types, #gamipress_earnings_achievement_types, #gamipress_earnings_rank_types' ).select2({
         theme: 'default gamipress-select2',
         placeholder: gamipress_shortcodes_editor.post_type_placeholder,
         allowClear: true,

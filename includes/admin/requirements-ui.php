@@ -395,9 +395,12 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
             <option value=""><?php _e( 'Choose an achievement', 'gamipress'); ?></option>
         </select>
 
+        <?php // For multisite installs, we need to store site ID of attached post ?>
+        <input type="hidden" class="select-post-site-id" value="<?php echo $requirements['achievement_post_site_id']; ?>" />
+
         <select class="select-post select-post-<?php echo $requirement_id; ?>">
             <?php if( ! empty( $requirements['achievement_post'] ) ) :
-                $achievement_post_title = gamipress_get_specific_activity_trigger_post_title( $requirements['achievement_post'], $requirements['trigger_type'] ); ?>
+                $achievement_post_title = gamipress_get_specific_activity_trigger_post_title( $requirements['achievement_post'], $requirements['trigger_type'], $requirements['achievement_post_site_id'] ); ?>
                 <option value="<?php esc_attr_e( $requirements['achievement_post'] ); ?>" selected="selected"><?php echo $achievement_post_title; ?> (#<?php echo $requirements['achievement_post']; ?>)</option>
             <?php endif; ?>
         </select>
@@ -813,6 +816,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
 
     $wpdb->query( $wpdb->prepare( "DELETE FROM $p2p WHERE p2p_to=%d", $requirement_id ) );
     delete_post_meta( $requirement_id, '_gamipress_achievement_post' );
+    delete_post_meta( $requirement_id, '_gamipress_achievement_post_site_id' );
 
     // Connect the achievement with the requirement
     if( $trigger_type === 'specific-achievement' ) {
@@ -831,9 +835,11 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     // Specific activity trigger type
     if( in_array( $trigger_type, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
         $achievement_post_id = absint( $requirement['achievement_post'] );
+        $achievement_post_site_id = ( empty( $requirement['achievement_post_site_id'] ) ? get_current_blog_id() : absint( $requirement['achievement_post_site_id'] ) );
 
         // Update achievement post to check it on rules engine
         update_post_meta( $requirement_id, '_gamipress_achievement_post', $achievement_post_id );
+        update_post_meta( $requirement_id, '_gamipress_achievement_post_site_id', $achievement_post_site_id );
     }
 
     // Update the requirement order
@@ -978,7 +984,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
             $title = sprintf( __( 'Unlock all %s', 'gamipress' ), $achievement_type );
             break;
         case 'specific-achievement':
-            $title = 'Unlock "' . gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type ) . '"';
+            $title = 'Unlock "' . gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) . '"';
             break;
         default:
             $title = gamipress_get_activity_trigger_label( $trigger_type );
@@ -989,12 +995,13 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     // Specific activity trigger type
     if( in_array( $trigger_type, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
         $achievement_post_id = absint( $requirement['achievement_post'] );
+        $achievement_post_site_id = absint( $requirement['achievement_post_site_id'] );
 
         if( $achievement_post_id ) {
             // Filtered title
             $title = sprintf(
                 gamipress_get_specific_activity_trigger_label( $trigger_type ),
-                gamipress_get_specific_activity_trigger_post_title( $achievement_post_id, $trigger_type )
+                gamipress_get_specific_activity_trigger_post_title( $achievement_post_id, $trigger_type, $achievement_post_site_id )
             );
         }
     }

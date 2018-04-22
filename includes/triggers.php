@@ -166,19 +166,37 @@ function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
 /**
  * Helper function to get the title of a given specific ID for a specific activity trigger
  *
- * @since 1.4.0
+ * @since 	1.4.0
+ * @updated 1.4.8 Added $site_id parameter
  *
  * @param integer $specific_id      The specific ID
  * @param string  $trigger_type     The requirement trigger type
+ * @param integer $site_id     		The site ID
  *
  * @return string                   The specific title
  */
-function gamipress_get_specific_activity_trigger_post_title( $specific_id, $trigger_type ) {
+function gamipress_get_specific_activity_trigger_post_title( $specific_id, $trigger_type, $site_id ) {
 
-	$override = apply_filters( 'gamipress_specific_activity_trigger_post_title', 'no_override', $specific_id, $trigger_type );
+	$override = apply_filters( 'gamipress_specific_activity_trigger_post_title', 'no_override', $specific_id, $trigger_type, $site_id );
 
 	if( $override !== 'no_override' ) {
 		return $override;
+	}
+
+	if( gamipress_is_network_wide_active() && $site_id !== get_current_blog_id() ) {
+
+		$current_blog_id = get_current_blog_id();
+
+		// Switch to the given site to get the post title from this site
+		switch_to_blog( $site_id );
+
+		$post_title = get_post_field( 'post_title', $specific_id );
+
+		// Restore the current blog
+		switch_to_blog( $current_blog_id );
+
+		return $post_title;
+
 	}
 
 	return get_post_field( 'post_title', $specific_id );
@@ -318,6 +336,7 @@ function gamipress_trigger_event() {
 		// If there is a specific id, then add it to the log meta data
 		if( $specific_id !== 0 ) {
 			$log_meta['achievement_post'] = $specific_id;
+			$log_meta['achievement_post_site_id'] = $site_id;
 		}
 	}
 

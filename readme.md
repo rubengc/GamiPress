@@ -28,65 +28,23 @@ GamiPress combines three of the most powerful award systems you could add to you
 * Reaching a specific rank.
 * Expending an amount of points.
 
-### Unlimited Points Types ###
+### Features ###
 
-* Create as many types of points as you like (Credits, Gems, Coins, etc).
-* Easily define how automatically your users will earn points using the 'Points Awards' tool.
-* Management of each user points wallet.
-
-### Unlimited Achievements Types ###
-
-* Create as many types of achievement as you like (Quests, Badges, etc).
-* Easily define how they relate to one another using the 'Required Steps' tool.
-* Set default images for each achievement type or select unique images for every achievement item.
-
-### Unlimited Rank Types ###
-
-* Create as many types of rank as you like (Level, Grade, etc).
-* Easily define how they relate to one another using the 'Rank Requirements' tool.
-* Set default images for each rank type or select unique images for every rank item.
-
-### Drag and drop controls ###
-
-* Simple yet powerful admin interface for defining the "Required Steps" for any achievement.
-* Easily link together one or more triggers, steps or actions into the conditions needed to earn an achievement.
-* Limit by period of time in which the user can complete a requirement (daily, weekly, monthly or yearly).
-
-### Reward user progress ###
-
-* Issue digital rewards for any combination of achievements.
-* Award points for commenting, logging in, visiting or completing any combination of tasks.
-* Display a congratulatory message, customizable per achievement, on each achievement page.
-
-### Widgets, Shortcodes and Shortcode Embedder ###
-
-* Multiple options and parameters for each widget or shortcode for greater flexibility.
-* Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes.
-* Shortcode to integrate specific available achievements into any post or page of your site.
-* Integrated shortcode documentation within the plugin menu.
-* Just activate GamiPress and place simple shortcodes on any page or post, and you've got a gamification system running on your WordPress site!
-
-### Email notifications ###
-
-* Notify to your users about their progression through emails.
-* Easily define the template to be used for each email type.
-* Enable or disable any email type as you like.
-
-### Powerful tools ###
-
-* Built in tools to recount old activities, migrate plugin configuration or clean testing data.
-
-### Log everything ###
-
-* Flexible log system with support for public and private logs.
-* Display the latest logs anywhere on your site for all users or a specific one.
-
-### Theme Agnostic ###
-
-* GamiPress works with just about any standard WordPress theme.
-* No special hooks or theme updates are needed.
-* Overwritable templates system to allow you customize everything you want through your GamiPress theme folder.
-* Turn any page or post into a way to display available achievements, earned points or latest logs and for users to track their progress.
+* **Unlimited Points Types:** Configure as many types of points as you like (Credits, Gems, Coins, etc).
+* **Unlimited Achievement Types:** Configure as many types of achievement as you like (Quests, Badges, etc).
+* **Unlimited Rank Types:** Configure as many types of rank as you like (Level, Grade, etc).
+* **Automatic points awards and deductions:** Easily configure automatic ways to award or deduct points to your users.
+* **Achievement steps:** Define conditional steps, thresholds and more.
+* **Rank requirements:** Define conditional requirements to reach any rank.
+* **Time limit requirements:** Limit by time period when the user can complete a specific requirement (daily, weekly, monthly or yearly).
+* **Drag and drop controls:** Powerful controls to setup your gamification environment in minutes.
+* **Emails:** Your users will get notified automatically about new awards.
+* **Logs:** Flexible log system with support for public and private logs.
+* **Shortcodes & Widgets:** WordPress-friendly shortcodes and widgets to show the user points wallet, earned achievements, latest logs, and more.
+* **Live shortcode embedder:** Missing a shortcode parameter? Just press the “Insert GamiPress Shortcode" button and set up any shortcode without a worry.
+* **Theme Agnostic:** GamiPress works with just about any standard WordPress theme. No special hooks or theme updates are needed.
+* **Templates System:** Overwritable templates system to allow you customize everything you want through your GamiPress theme folder.
+* **Data centralization on Multisite:** Centralize all the data on multisite installs and show anything you want on any sub-site.
 
 ### Integrated with your favorites WordPress plugins ###
 
@@ -262,6 +220,29 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.4.8 ###
+
+* Added the attribute "points_awarded" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
+* Added the field "Show Points Awarded" to GamiPress: Achievement and GamiPress: Achievements widgets.
+* Added the attribute "unlock_button" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
+* Added the field "Show Unlock Button" to GamiPress: Achievement and GamiPress: Achievements widgets.
+* Added the attribute "unlock_button" to [gamipress_rank], [gamipress_ranks] and [gamipress_user_rank] shortcodes.
+* Added the field "Show Unlock Button" to GamiPress: Rank, GamiPress: Ranks and GamiPress: User Rank widgets.
+* Added the attribute "type" to [gamipress_logs] shortcode.
+* Added the field "Log Type(s)" to GamiPress: Logs widget.
+* Fixed singular/plural check on achievements points.
+* Fixed wrong notice about plugins updates from the plugins screen.
+* Fixed wrong notice about upgrade process failed.
+* Fixed wrong notice about upgrade process on multisite installs.
+* Fixed wrong edit links on multisite installs.
+* Added stronger checks on dashboard widget to prevent to show it on sub-sites or to users without permissions.
+* Added site ID to requirement object for sub-site attached posts.
+* Improved awards engine workflow with specific activity events.
+* Improved instructions on invalid license keys.
+* Added sticky action buttons on GamiPress settings.
+* Improvements admin area styles.
+* Readme reduction to better resume all built-in features.
 
 ### 1.4.7.2 ###
 

@@ -80,8 +80,10 @@ add_action( 'wp_ajax_gamipress_get_users', 'gamipress_ajax_get_users' );
  * AJAX Helper for selecting posts
  *
  * @since 1.0.0
+ * @updated 1.4.8 Added multisite support
  */
 function gamipress_ajax_get_posts() {
+
 	global $wpdb;
 
 	// Pull back the search string
@@ -125,37 +127,91 @@ function gamipress_ajax_get_posts() {
 	$limit = 20;
 	$offset = $limit * ( $page - 1 );
 
-	// On this query, keep $wpdb->posts to get current site posts
-	$results = $wpdb->get_results( $wpdb->prepare(
-		"SELECT p.ID, p.post_title, p.post_type
-		FROM   {$wpdb->posts} AS p
-		WHERE  1=1
-			   {$post_type}
-		       {$where}
-			   AND p.post_title LIKE %s
-		       AND p.post_status IN( 'publish', 'inherit' )
-	    LIMIT {$offset}, {$limit}",
-		"%%{$search}%%"
-	) );
+	if( gamipress_is_network_wide_active() ) {
 
-	$count = $wpdb->get_var( $wpdb->prepare(
-		"SELECT COUNT(*)
-		FROM   {$wpdb->posts} AS p
-		WHERE  1=1
+		$results = array();
+		$count = 0;
+
+		foreach( gamipress_get_network_site_ids() as $site_id ) {
+
+			switch_to_blog( $site_id );
+
+			$site_name = get_bloginfo( 'name' );
+
+			// On this query, keep $wpdb->posts to get sub site posts
+			$site_results = $wpdb->get_results( $wpdb->prepare(
+				"SELECT p.ID, p.post_title, p.post_type
+				 FROM   {$wpdb->posts} AS p
+				 WHERE  1=1
+					   {$post_type}
+					   {$where}
+					   AND p.post_title LIKE %s
+					   AND p.post_status IN( 'publish', 'inherit' )
+				 LIMIT {$offset}, {$limit}",
+				"%%{$search}%%"
+			) );
+
+			// Loop all site results to add the site ID and name
+			foreach( $site_results as $index => $site_result ) {
+
+				$site_result->site_id = absint( $site_id );
+				$site_result->site_name = $site_name;
+
+				$site_results[$index] = $site_result;
+			}
+
+			// Merge it to all results
+			$results = array_merge( $results, $site_results );
+
+			$count += absint( $wpdb->get_var( $wpdb->prepare(
+				"SELECT COUNT(*)
+				 FROM   {$wpdb->posts} AS p
+				 WHERE  1=1
+					   {$post_type}
+					   {$where}
+					   AND p.post_title LIKE %s
+					   AND p.post_status IN( 'publish', 'inherit' )",
+				"%%{$search}%%"
+			) ) );
+
+		}
+
+	} else {
+
+		// On this query, keep $wpdb->posts to get current site posts
+		$results = $wpdb->get_results( $wpdb->prepare(
+			"SELECT p.ID, p.post_title, p.post_type
+             FROM   {$wpdb->posts} AS p
+             WHERE  1=1
+                   {$post_type}
+                   {$where}
+                   AND p.post_title LIKE %s
+                   AND p.post_status IN( 'publish', 'inherit' )
+             LIMIT {$offset}, {$limit}",
+			"%%{$search}%%"
+		) );
+
+		$count = absint( $wpdb->get_var( $wpdb->prepare(
+			"SELECT COUNT(*)
+            FROM   {$wpdb->posts} AS p
+            WHERE  1=1
 			   {$post_type}
 		       {$where}
 			   AND p.post_title LIKE %s
 		       AND p.post_status IN( 'publish', 'inherit' )",
-		"%%{$search}%%"
-	) );
+			"%%{$search}%%"
+		) ) );
+
+	}
 
 	$response = array(
 		'results' => $results,
-		'more_results' => absint( $count ) > $offset,
+		'more_results' => $count > $limit && $count > $offset,
 	);
 
 	// Return our results
 	wp_send_json_success( $response );
+
 }
 add_action( 'wp_ajax_gamipress_get_posts', 'gamipress_ajax_get_posts' );
 
@@ -165,6 +221,7 @@ add_action( 'wp_ajax_gamipress_get_posts', 'gamipress_ajax_get_posts' );
  * @since 1.0.0
  */
 function gamipress_ajax_get_achievements_options() {
+
 	global $wpdb;
 
 	// Pull back the search string
@@ -201,6 +258,7 @@ function gamipress_ajax_get_achievements_options() {
 
 	// Return our results
 	wp_send_json_success( $results );
+
 }
 add_action( 'wp_ajax_gamipress_get_achievements_options', 'gamipress_ajax_get_achievements_options' );
 

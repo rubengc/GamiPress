@@ -247,18 +247,21 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
                 // Is is an specific activity trigger, then will get a post assigned
 
                 $post_id = ct_get_object_meta($object_id, '_gamipress_achievement_post', true);
+                $site_id = ct_get_object_meta($object_id, '_gamipress_achievement_post_site_id', true);
 
                 if( $post_id ) :
 
-                    if( current_user_can( 'edit_post', $post_id ) ) {
-                        ?>
+                    $post_title = gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger, $site_id );
 
-                        <a href="<?php echo get_edit_post_link( $post_id ); ?>"><?php echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger ); ?></a>
+                    if( current_user_can( 'edit_post', $post_id ) ) : ?>
 
-                        <?php
-                    } else {
-                        echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger );
-                    }
+                        <a href="<?php echo get_edit_post_link( $post_id ); ?>"><?php echo $post_title; ?></a>
+
+                    <?php else :
+
+                        echo $post_title;
+
+                    endif;
 
                 endif;
 
@@ -269,15 +272,17 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
 
                 if( $post_id ) :
 
-                    if( current_user_can( 'edit_post', $post_id ) ) {
-                        ?>
+                    $post_title = gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger, get_current_blog_id() );
 
-                        <a href="<?php echo get_edit_post_link( $post_id ); ?>"><?php echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger ); ?></a>
+                    if( current_user_can( 'edit_post', $post_id ) ) : ?>
 
-                        <?php
-                    } else {
-                        echo gamipress_get_specific_activity_trigger_post_title( $post_id, $trigger );
-                    }
+                        <a href="<?php echo get_edit_post_link( $post_id ); ?>"><?php echo $post_title; ?></a>
+
+                    <?php else :
+
+                        echo $post_title;
+
+                    endif;
 
                 endif;
 

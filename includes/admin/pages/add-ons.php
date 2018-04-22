@@ -33,10 +33,10 @@ function gamipress_add_ons_page() {
 
         <div class="wp-filter">
             <ul class="filter-links">
-                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><?php _e( 'Premium', 'gamipress' ); ?></a></li>
-                <li class="plugins-free"><a href="#" data-target="gamipress-free-add-on"><?php _e( 'Free', 'gamipress' ); ?></a></li>
-                <li class="plugins-integrations"><a href="#" data-target="gamipress-integration-add-on"><?php _e( 'Integrations', 'gamipress' ); ?></a></li>
-                <li class="plugins-tools"><a href="#" data-target="gamipress-tool-add-on"><?php _e( 'Tools', 'gamipress' ); ?></a></li>
+                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><span class="dashicons dashicons-star-filled"></span> <?php _e( 'Premium', 'gamipress' ); ?></a></li>
+                <li class="plugins-free"><a href="#" data-target="gamipress-free-add-on"><span class="dashicons dashicons-heart"></span> <?php _e( 'Free', 'gamipress' ); ?></a></li>
+                <li class="plugins-integrations"><a href="#" data-target="gamipress-integration-add-on"><span class="dashicons dashicons-admin-plugins"></span> <?php _e( 'Integrations', 'gamipress' ); ?></a></li>
+                <li class="plugins-tools"><a href="#" data-target="gamipress-tool-add-on"><span class="dashicons dashicons-admin-tools"></span> <?php _e( 'Tools', 'gamipress' ); ?></a></li>
             </ul>
         </div>
 
@@ -240,6 +240,11 @@ function gamipress_render_plugin_card( $plugin ) {
                     $button_text
                 );
             }
+        } else if( $slug === 'all-access-pass' ) {
+
+            // "Get All Access Pass" action
+            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get All Access Pass', 'gamipress' ) . '</a>';
+
         } else {
 
             // "Get this Add-on" action

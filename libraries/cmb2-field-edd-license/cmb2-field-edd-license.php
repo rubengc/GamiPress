@@ -436,12 +436,15 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
      * @return bool|stdClass        License data or false (if not license provided or not checked)
      */
     function cmb2_edd_license_data( $license_key ) {
+
         if( ! empty( $license_key ) ) {
+
             $key = substr( md5( $license_key ), 0, 10 );
 
             if( false !== ( $license_data = get_transient( "cmb2_edd_license_data_$key" ) ) ) {
                 return $license_data;
             }
+
         }
 
         return false;

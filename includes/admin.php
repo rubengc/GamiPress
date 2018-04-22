@@ -111,10 +111,22 @@ add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
  * Register GamiPress dashboard widget.
  *
  * @since 1.0.0
+ * @updated 1.4.8 Added network and user checks
  */
 function gamipress_dashboard_widgets() {
 
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
+
+    // Bail if current user can manage GamiPress
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
     wp_add_dashboard_widget( 'gamipress', 'GamiPress', 'gamipress_dashboard_widget' );
+
 }
 add_action( 'wp_dashboard_setup', 'gamipress_dashboard_widgets' );
 
@@ -124,10 +136,10 @@ add_action( 'wp_dashboard_setup', 'gamipress_dashboard_widgets' );
  * @since 1.0.0
  */
 function gamipress_dashboard_widget() {
+
+    // Get our types
     $achievement_types = gamipress_get_achievement_types();
-
     $points_types = gamipress_get_points_types();
-
     $rank_types = gamipress_get_rank_types();
     ?>
 

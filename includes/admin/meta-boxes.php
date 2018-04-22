@@ -32,8 +32,8 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 	// ID for hooks
 	$hook_id = str_replace( '-', '_', $id );
 
-	// First, filter the fields to allow extend it
-	$fields = apply_filters( "gamipress_{$hook_id}_fields", $fields );
+	// First, filter fields to allow extend it
+	$fields = apply_filters( "gamipress_{$hook_id}_fields", $fields, $args );
 
 	foreach( $fields as $field_id => $field ) {
 
@@ -59,10 +59,13 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 		'priority'     	=> 'default',
 	) );
 
-	// Parse tabs
-	foreach( $args['tabs'] as $tab_id => $tab ) {
+	// Filter tabs to allow extend it
+	$tabs = apply_filters( "gamipress_{$hook_id}_tabs", $args['tabs'], $fields, $args );
 
-		$args['tabs'][$tab_id]['id'] = $tab_id;
+	// Parse tabs
+	foreach( $tabs as $tab_id => $tab ) {
+
+		$tabs[$tab_id]['id'] = $tab_id;
 
 	}
 
@@ -70,7 +73,7 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 		'id'           	=> $id,
 		'title'        	=> $title,
 		'object_types' 	=> ! is_array( $object_types) ? array( $object_types ) : $object_types,
-		'tabs'      	=> $args['tabs'],
+		'tabs'      	=> $tabs,
 		'vertical_tabs' => $args['vertical_tabs'],
 		'context'      	=> $args['context'],
 		'priority'     	=> $args['priority'],
@@ -285,6 +288,16 @@ function gamipress_options_cb_rank_types( $field ) {
 	foreach ( gamipress_get_rank_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
 	}
+
+	return $options;
+
+}
+
+// Options callback to return log types as options
+function gamipress_options_cb_log_types( $field ) {
+
+	// Setup a custom array of log types
+	$options = array_merge( array( 'all' => __( 'All', 'gamipress' ) ), gamipress_get_log_types() );
 
 	return $options;
 

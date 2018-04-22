@@ -69,6 +69,12 @@ function gamipress_register_rank_shortcode() {
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+			'unlock_button' => array(
+				'name'        => __( 'Show Unlock Button', 'gamipress' ),
+				'description' => __( 'Display the "Unlock using points" (on ranks where unlock with points is allowed).', 'gamipress' ),
+				'type' 	=> 'checkbox',
+				'classes' => 'gamipress-switch'
+			),
 			'earners' => array(
 				'name'        => __( 'Show Earners', 'gamipress' ),
 				'description' => __( 'Display a list of users that actually are in this rank.', 'gamipress' ),
@@ -162,6 +168,7 @@ function gamipress_rank_shortcode_defaults() {
 		'excerpt'	  	=> 'yes',
 		'requirements'	=> 'yes',
 		'toggle' 		=> 'yes',
+		'unlock_button' => 'yes',
 		'earners'	  	=> 'no',
 		'layout'	  	=> 'left',
 	) );

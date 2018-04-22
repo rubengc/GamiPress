@@ -20,6 +20,14 @@ function gamipress_register_logs_shortcode() {
         'description'     => __( 'Output a list of logs.', 'gamipress' ),
         'output_callback' => 'gamipress_logs_shortcode',
         'fields'      => array(
+            'type' => array(
+                'name'        => __( 'Log Type(s)', 'gamipress' ),
+                'description' => __( 'Single or comma-separated list of log type(s) to display.', 'gamipress' ),
+                'type'        => 'advanced_select',
+                'multiple'    => true,
+                'options_cb'  => 'gamipress_options_cb_log_types',
+                'default'     => 'all',
+            ),
             'current_user' => array(
                 'name'        => __( 'Current User', 'gamipress' ),
                 'description' => __( 'Show only logs of the current logged in user.', 'gamipress' ),
@@ -112,6 +120,7 @@ function gamipress_logs_shortcode( $atts = array () ) {
     ct_setup_table( 'gamipress_logs' );
 
     $atts = shortcode_atts( array(
+        'type'          => 'all',
         'current_user'  => 'no',
         'user_id'       => '0',
         'limit'         => '10',
@@ -147,13 +156,21 @@ function gamipress_logs_shortcode( $atts = array () ) {
     // GamiPress template args global
     $gamipress_template_args = $atts;
 
+    // Type check
+    $types = explode( ',', $atts['type'] );
+
+    if( $atts['type'] === 'all') {
+        $types = array_keys( gamipress_get_log_types() );
+    }
+
     // Query args
     $args = array(
-        'orderby'        =>	$atts['orderby'],
-        'order'          =>	$atts['order'],
-        'items_per_page' =>	$atts['limit'],
-        'paged'          => max( 1, get_query_var( 'paged' ) ),
-        'access'         => 'public', // At frontend just show public logs
+        'type'              =>	$types,
+        'orderby'           =>	$atts['orderby'],
+        'order'             =>	$atts['order'],
+        'items_per_page'    =>	$atts['limit'],
+        'paged'             => max( 1, get_query_var( 'paged' ) ),
+        'access'            => 'public', // At frontend just show public logs
     );
 
     // User

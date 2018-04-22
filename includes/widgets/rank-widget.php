@@ -47,6 +47,7 @@ class GamiPress_Rank_Widget extends GamiPress_Widget {
             'excerpt'       => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'requirements'  => ( $instance['requirements'] === 'on' ? 'yes' : 'no' ),
             'toggle'        => ( $instance['toggle'] === 'on' ? 'yes' : 'no' ),
+            'unlock_button' => ( $instance['unlock_button'] === 'on' ? 'yes' : 'no' ),
             'earners'       => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
             'layout'        => $instance['layout'],
         ) );

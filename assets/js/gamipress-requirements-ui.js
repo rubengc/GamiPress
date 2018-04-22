@@ -218,6 +218,15 @@
                     allowClear: true,
                     multiple: false
                 });
+
+                post_selector.on('select2:select', function (e) {
+                    var item = e.params.data;
+
+                    // If site ID is defined, then update the hidden field
+                    if( item.site_id !== undefined ) {
+                        $(this).siblings('.select-post-site-id').val( item.site_id );
+                    }
+                });
             }
         } else {
             // Hide select post
@@ -559,21 +568,22 @@ function gamipress_update_requirements( element, loop ) {
 
         // Setup our points award object
         var requirement_details = {
-            requirement_id          : requirement.find( 'input[name="requirement_id"]').val(),
-            requirement_type        : requirement.find( 'input[name="requirement_type"]').val(),
-            order                   : requirement.find( 'input[name="order"]' ).val(),
-            status                  : ( requirement.find( '.requirement-action-change-status input' ).prop('checked') ? 'publish' : 'pending' ),
-            points_required         : requirement.find( '.points-required' ).val(),
-            points_type_required    : requirement.find( '.select-points-type-required' ).val(),
-            rank_type_required      : requirement.find( '.select-rank-type-required' ).val(),
-            rank_required           : requirement.find( '.select-rank-required' ).val(),
-            count                   : requirement.find( '.count' ).val(),
-            limit                   : requirement.find( '.limit' ).val(),
-            limit_type              : requirement.find( '.limit-type' ).val(),
-            trigger_type            : trigger_type,
-            achievement_type        : requirement.find( '.select-achievement-type' ).val(),
-            achievement_post        : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post' ).val() : requirement.find( 'select.select-achievement-post' ).val() ),
-            title                   : requirement.find( '.requirement-title .title' ).val()
+            requirement_id              : requirement.find( 'input[name="requirement_id"]').val(),
+            requirement_type            : requirement.find( 'input[name="requirement_type"]').val(),
+            order                       : requirement.find( 'input[name="order"]' ).val(),
+            status                      : ( requirement.find( '.requirement-action-change-status input' ).prop('checked') ? 'publish' : 'pending' ),
+            points_required             : requirement.find( '.points-required' ).val(),
+            points_type_required        : requirement.find( '.select-points-type-required' ).val(),
+            rank_type_required          : requirement.find( '.select-rank-type-required' ).val(),
+            rank_required               : requirement.find( '.select-rank-required' ).val(),
+            count                       : requirement.find( '.count' ).val(),
+            limit                       : requirement.find( '.limit' ).val(),
+            limit_type                  : requirement.find( '.limit-type' ).val(),
+            trigger_type                : trigger_type,
+            achievement_type            : requirement.find( '.select-achievement-type' ).val(),
+            achievement_post            : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post' ).val() : requirement.find( 'select.select-achievement-post' ).val() ),
+            achievement_post_site_id    : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post-site-id' ).val() : '' ),
+            title                       : requirement.find( '.requirement-title .title' ).val()
         };
 
         if( requirement_details.requirement_type === 'points-award' || requirement_details.requirement_type === 'points-deduct' ) {

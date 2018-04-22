@@ -93,7 +93,8 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         'rank_type_required' => gamipress_get_post_meta( $requirement_id, '_gamipress_rank_type_required' ),
         // Achievement vars
         'achievement_type' => gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_type' ),
-        'achievement_post' => ''
+        'achievement_post' => '',
+        'achievement_post_site_id' => get_current_blog_id()
     );
 
     // Specific points award/deduct data
@@ -111,6 +112,7 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
 
     // If the requirement requires a specific achievement
     if ( ! empty( $requirement['achievement_type'] ) ) {
+
         $connected_activities = @get_posts( array(
             'post_type'        => $requirement['achievement_type'],
             'posts_per_page'   => 1,
@@ -122,12 +124,20 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         if ( ! empty( $connected_activities ) ) {
             $requirement['achievement_post'] = $connected_activities[0]->ID;
         }
+
     } else if ( in_array( $requirement['trigger_type'], array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+
         $achievement_post = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_post' ) );
+        $achievement_post_site_id = gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_post_site_id' );
 
         if ( $achievement_post > 0  ) {
             $requirement['achievement_post'] = $achievement_post;
+
+            if( ! empty( $achievement_post_site_id ) ) {
+                $requirement['achievement_post_site_id'] = absint( $achievement_post_site_id );
+            }
         }
+
     }
 
     // Available filter for overriding elsewhere
