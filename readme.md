@@ -221,6 +221,11 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.4.8.1 ###
+
+* Fixed compatibility issues with old PHP versions.
+* Improvements on upgrade process messages.
+
 ### 1.4.8 ###
 
 * Added the attribute "points_awarded" to [gamipress_achievement] and [gamipress_achievements] shortcodes.

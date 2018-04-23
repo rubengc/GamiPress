@@ -223,6 +223,7 @@
 
 	// Add-ons page
 	if( $('.gamipress_page_gamipress_add_ons').length ) {
+
 		// Add-ons tabs
 		$('.gamipress_page_gamipress_add_ons .wp-filter a').click(function(e) {
 			e.preventDefault();
@@ -248,6 +249,7 @@
 
 		// Trigger click on first tab
 		$('.gamipress_page_gamipress_add_ons .wp-filter a.current').trigger('click');
+
 	}
 
 	// Auto initialize upgrade if user reloads the page during an upgrade
@@ -386,12 +388,12 @@ function gamipress_stop_upgrade( version, show_result ) {
 			action: 'gamipress_stop_process_' + version + '_upgrade'
 		},
         success: function( response ) {
-            if( show_result ) {
+            if( show_result === true ) {
                 $('#gamipress-upgrade-notice').html('<p class="error">Upgrade cancelled.</p>');
             }
         },
         error: function( response ) {
-            if( show_result ) {
+            if( show_result === true ) {
                 $('#gamipress-upgrade-notice').html('<p class="error">Upgrade cancellation failed.</p>');
             }
         }

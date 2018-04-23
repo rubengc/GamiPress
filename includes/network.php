@@ -169,7 +169,9 @@ function gamipress_is_network_wide_active() {
  */
 function gamipress_is_plugin_active_on_network( $plugin ) {
 
-    return ! empty( gamipress_get_plugin_active_sites( $plugin ) );
+    $active_sites = gamipress_get_plugin_active_sites( $plugin );
+
+    return ! empty( $active_sites );
 
 }
 
