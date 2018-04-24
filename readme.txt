@@ -89,6 +89,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [GamiPress - Block Users](https://wordpress.org/plugins/gamipress-block-users/) - Block users and roles from getting awarded through the GamiPress awards engine.
 * [GamiPress - Notifications By Type](https://wordpress.org/plugins/gamipress-notifications-by-type/) - Set different notifications settings by type.
 * [GamiPress - Emails By Type](https://wordpress.org/plugins/gamipress-emails-by-type/) - Set different emails settings by type.
 * [GamiPress - Multimedia Content](https://wordpress.org/plugins/gamipress-multimedia-content/) - Add activity triggers based on multimedia content creation and interaction.
