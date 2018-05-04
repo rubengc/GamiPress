@@ -60,7 +60,7 @@
 .gamipress-rank:not(.gamipress-layout-none),
 .single-achievement:not(.gamipress-layout-none),
 .single-rank:not(.gamipress-layout-none),
-.gamipress-user-points:not(.gamipress-layout-none){
+.gamipress-user-points:not(.gamipress-layout-none) {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;

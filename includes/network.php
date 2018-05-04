@@ -293,3 +293,40 @@ function gamipress_main_site_edit_post_link( $link, $post_id, $context ) {
 
 }
 add_filter( 'get_edit_post_link', 'gamipress_main_site_edit_post_link', 10, 3 );
+
+/**
+ * Override CMB2 can save function to avoid issues on multisite installs
+ *
+ * @since 1.4.9
+ *
+ * @param bool      $can_save
+ * @param object    $cmb
+ *
+ * @return bool
+ */
+function gamipress_network_can_save_meta_boxes( $can_save, $cmb ) {
+
+    global $post;
+
+   if( is_multisite() && $post ) {
+
+       // Custom can save check
+       $can_save = (
+           $cmb->prop( 'save_fields' )
+           // check nonce
+           && isset( $_POST[ $cmb->nonce() ] )
+           && wp_verify_nonce( $_POST[ $cmb->nonce() ], $cmb->nonce() )
+           // check if autosave
+           && ! ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
+           // get the metabox types & compare it to this type
+           && ( in_array( $post->post_type, $cmb->box_types() ) )
+           // Don't do updates during a switch-to-blog instance.
+           //&& ! ( is_multisite() && ms_is_switched() ) // Removed, ms_is_switched() always returns true
+       );
+
+   }
+
+    return $can_save;
+
+}
+add_filter( 'cmb2_can_save', 'gamipress_network_can_save_meta_boxes', 10, 2 );

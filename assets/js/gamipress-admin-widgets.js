@@ -136,6 +136,21 @@
         }
     });
 
+    // Inline field
+    $('body').on('change', 'input[id^="widget-gamipress_points"][id$="[inline]"]', function() {
+        // Get the columns and layout fields
+        var target = $(this).closest('.cmb2-wrap').find(
+            '.cmb-row[class*="columns"], '
+            + '.cmb-row[class*="layout"]'
+        );
+
+        if( $(this).prop('checked') ) {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    });
+
     // User earnings
     $('body').on('change', 'input[id^="widget-gamipress_earnings"][id$="[points]"], '
         + 'input[id^="widget-gamipress_earnings"][id$="[achievements]"], '
@@ -209,21 +224,36 @@
 
         // Current user field
         var current_user = widget.find( 'input[id^="widget-gamipress"][id$="[current_user]"]');
-        var target = current_user.closest('.cmb-row').next(); // User ID field
+        var current_user_target = current_user.closest('.cmb-row').next(); // User ID field
 
         if( current_user.prop('checked') ) {
-            target.hide().addClass('cmb2-tab-ignore');
+            current_user_target.hide().addClass('cmb2-tab-ignore');
         } else {
-            if( target.closest('.cmb-tabs-wrap').length ) {
+            if( current_user_target.closest('.cmb-tabs-wrap').length ) {
                 // Just show if item tab is active
-                if( target.hasClass('cmb-tab-active-item') ) {
-                    target.show();
+                if( current_user_target.hasClass('cmb-tab-active-item') ) {
+                    current_user_target.show();
                 }
             } else {
-                target.show();
+                current_user_target.show();
             }
 
-            target.removeClass('cmb2-tab-ignore');
+            current_user_target.removeClass('cmb2-tab-ignore');
+        }
+
+        // Inline field
+        var inline = widget.find( 'input[id^="widget-gamipress_points"][id$="[inline]"]');
+
+        // Get the columns and layout fields
+        var inline_target = inline.closest('.cmb2-wrap').find(
+            '.cmb-row[class*="columns"], '
+            + '.cmb-row[class*="layout"]'
+        );
+
+        if( inline.prop('checked') ) {
+            inline_target.hide().addClass('cmb2-tab-ignore');
+        } else {
+            inline_target.show().removeClass('cmb2-tab-ignore');
         }
 
         // User earnings

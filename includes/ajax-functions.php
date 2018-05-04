@@ -19,9 +19,64 @@ function gamipress_ajax_get_achievements() {
 
 	// Send back our successful response
 	wp_send_json_success( gamipress_achievements_shortcode_query( $_REQUEST ) );
+
 }
 add_action( 'wp_ajax_gamipress_get_achievements', 'gamipress_ajax_get_achievements' );
 add_action( 'wp_ajax_nopriv_gamipress_get_achievements', 'gamipress_ajax_get_achievements' );
+
+/**
+ * Ajax Helper for returning logs
+ *
+ * @since 1.4.9
+ *
+ * @return void
+ */
+function gamipress_ajax_get_logs() {
+
+	// Set current page var
+    if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 ) {
+        set_query_var( 'paged', $_REQUEST['page'] );
+    }
+
+    $atts = $_REQUEST;
+
+    // Unset non required shortcode atts
+    unset( $atts['action'] );
+    unset( $atts['page'] );
+
+	// Send back our successful response
+	wp_send_json_success( gamipress_do_shortcode( 'gamipress_logs', $atts ) );
+
+}
+add_action( 'wp_ajax_gamipress_get_logs', 'gamipress_ajax_get_logs' );
+add_action( 'wp_ajax_nopriv_gamipress_get_logs', 'gamipress_ajax_get_logs' );
+
+/**
+ * Ajax Helper for returning user earnings
+ *
+ * @since 1.4.9
+ *
+ * @return void
+ */
+function gamipress_ajax_get_user_earnings() {
+
+	// Set current page var
+	if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 ) {
+		set_query_var( 'paged', $_REQUEST['page'] );
+	}
+
+    $atts = $_REQUEST;
+
+    // Unset non required shortcode atts
+    unset( $atts['action'] );
+    unset( $atts['page'] );
+
+	// Send back our successful response
+	wp_send_json_success( gamipress_do_shortcode( 'gamipress_earnings', $atts ) );
+
+}
+add_action( 'wp_ajax_gamipress_get_user_earnings', 'gamipress_ajax_get_user_earnings' );
+add_action( 'wp_ajax_nopriv_gamipress_get_user_earnings', 'gamipress_ajax_get_user_earnings' );
 
 /**
  * AJAX Helper for selecting users in Shortcode Embedder
@@ -38,7 +93,7 @@ function gamipress_ajax_get_users() {
 	global $wpdb;
 
 	// Pull back the search string
-	$search = esc_sql( like_escape( $_REQUEST['q'] ) );
+	$search = esc_sql( $wpdb->esc_like( $_REQUEST['q'] ) );
 	$where = '';
 
 	if ( ! empty( $search ) ) {
@@ -87,7 +142,7 @@ function gamipress_ajax_get_posts() {
 	global $wpdb;
 
 	// Pull back the search string
-	$search = isset( $_REQUEST['q'] ) ? like_escape( $_REQUEST['q'] ) : '';
+	$search = isset( $_REQUEST['q'] ) ? $wpdb->esc_like( $_REQUEST['q'] ) : '';
 
 	// Post type conditional
 	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] :  array( 'post', 'page' ) );
@@ -225,7 +280,7 @@ function gamipress_ajax_get_achievements_options() {
 	global $wpdb;
 
 	// Pull back the search string
-	$search = isset( $_REQUEST['q'] ) ? like_escape( $_REQUEST['q'] ) : '';
+	$search = isset( $_REQUEST['q'] ) ? $wpdb->esc_like( $_REQUEST['q'] ) : '';
 	$achievement_types = isset( $_REQUEST['post_type'] ) && 'all' !== $_REQUEST['post_type']
 		? array( esc_sql( $_REQUEST['post_type'] ) )
 		: gamipress_get_achievement_types_slugs();
@@ -387,7 +442,7 @@ function gamipress_ajax_get_ranks_options() {
 	global $wpdb;
 
 	// Pull back the search string
-	$search = isset( $_REQUEST['q'] ) ? like_escape( $_REQUEST['q'] ) : '';
+	$search = isset( $_REQUEST['q'] ) ? $wpdb->esc_like( $_REQUEST['q'] ) : '';
 
 	// For single type, is not needed to add the post type, but for multiples types is a better option to distinguish them easily
 	$select = 'p.ID, p.post_title';

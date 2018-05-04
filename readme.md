@@ -82,6 +82,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [GamiPress - BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
 * [GamiPress - Block Users](https://wordpress.org/plugins/gamipress-block-users/) - Block users and roles from getting awarded through the GamiPress awards engine.
 * [GamiPress - Notifications By Type](https://wordpress.org/plugins/gamipress-notifications-by-type/) - Set different notifications settings by type.
 * [GamiPress - Emails By Type](https://wordpress.org/plugins/gamipress-emails-by-type/) - Set different emails settings by type.
@@ -221,6 +222,23 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.4.9 ###
+
+* Added the attribute "access" to [gamipress_logs] shortcode.
+* Added the field "Log Access" to GamiPress: Logs widget.
+* Added the attribute "inline" to [gamipress_points] shortcode.
+* Added the field "Inline" to GamiPress: User Points Balance widget.
+* Added ajax pagination to [gamipress_logs] shortcode and GamiPress: Logs widget.
+* Added ajax pagination to [gamipress_earnings] shortcode and GamiPress: User Earnings widget.
+* Added new filters to the logs template.
+* Added new filters to the earnings template.
+* Fixed fields saving on multisite installs.
+* Added backward compatibility with older WordPress intalls.
+* Updated deprecated WordPress functions.
+* Fixed wrong achievements shown when filter is set to completed and user hasn't completed anyone.
+* Fixed wrong points amount when GamiPress is network wide active.
+* Added extra checks with multisite shortcode fields when GamiPress is network wide active.
 
 ### 1.4.8.1 ###
 

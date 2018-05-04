@@ -20,8 +20,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_render_achievement( $achievement = 0, $template_args = array() ) {
 
-    global $post;
-    global $gamipress_template_args;
+    global $post, $gamipress_template_args;
 
     // Initialize GamiPress template args global
     $gamipress_template_args = wp_parse_args( $template_args, gamipress_achievement_shortcode_defaults() );
@@ -55,6 +54,7 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
 
     // Return our filterable markup
     return $output;
+
 }
 
 /**
@@ -68,8 +68,8 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
  * @return string                   The Achievement's output
  */
 function gamipress_render_rank( $rank = 0, $template_args = array() ) {
-    global $post;
-    global $gamipress_template_args;
+
+    global $post, $gamipress_template_args;
 
     // Initialize GamiPress template args global
     $gamipress_template_args = wp_parse_args( $template_args, gamipress_rank_shortcode_defaults() );
@@ -103,6 +103,7 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
 
     // Return our filterable markup
     return $output;
+
 }
 
 /**
@@ -139,6 +140,7 @@ function gamipress_get_template_part( $slug, $name = null, $load = true ) {
 
     // Return the part that is found
     return gamipress_locate_template( $templates, $load, false );
+
 }
 
 /**

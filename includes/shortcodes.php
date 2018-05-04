@@ -177,7 +177,8 @@ function gamipress_shortcode_help_attributes( $key, $value ) {
 /**
  * Remove multisite specific fields
  *
- * @since 1.2.0
+ * @since 	1.2.0
+ * @updated 1.4.9 wpms field is removed also if GamiPress is network wide active
  *
  * @param array $fields
  *
@@ -185,7 +186,7 @@ function gamipress_shortcode_help_attributes( $key, $value ) {
  */
 function gamipress_shortcodes_remove_multisite_fields( $fields ) {
 
-	if( ! is_multisite() ) {
+	if( ! is_multisite() || gamipress_is_network_wide_active() ) {
 		if( isset( $fields['wpms'] ) ) {
 			unset( $fields['wpms'] );
 		}

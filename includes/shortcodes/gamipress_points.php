@@ -28,20 +28,6 @@ function gamipress_register_points_shortcode() {
                 'options_cb'  => 'gamipress_options_cb_points_types',
                 'default'     => 'all',
             ),
-            'columns' => array(
-                'name'        => __( 'Columns', 'gamipress' ),
-                'description' => __( 'Columns to divide each points balance.', 'gamipress' ),
-                'type' 	=> 'select',
-                'options' => array(
-                    '1' => __( '1 Column', 'gamipress' ),
-                    '2' => __( '2 Columns', 'gamipress' ),
-                    '3' => __( '3 Columns', 'gamipress' ),
-                    '4' => __( '4 Columns', 'gamipress' ),
-                    '5' => __( '5 Columns', 'gamipress' ),
-                    '6' => __( '6 Columns', 'gamipress' ),
-                ),
-                'default' => '1'
-            ),
             'thumbnail' => array(
                 'name'        => __( 'Show Thumbnail', 'gamipress' ),
                 'description' => __( 'Display the points type featured image.', 'gamipress' ),
@@ -68,6 +54,26 @@ function gamipress_register_points_shortcode() {
                 'type'        => 'select',
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'
+            ),
+            'inline' => array(
+                'name'        => __( 'Inline', 'gamipress' ),
+                'description' => __( 'Show points balance inline (as text).', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
+            'columns' => array(
+                'name'        => __( 'Columns', 'gamipress' ),
+                'description' => __( 'Columns to divide each points balance.', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
             ),
             'layout' => array(
                 'name'        => __( 'Layout', 'gamipress' ),
@@ -106,6 +112,7 @@ add_action( 'init', 'gamipress_register_points_shortcode' );
  * @return string 	   HTML markup
  */
 function gamipress_points_shortcode( $atts = array () ) {
+
     global $gamipress_template_args;
 
     // Initialize GamiPress template args global
@@ -114,11 +121,12 @@ function gamipress_points_shortcode( $atts = array () ) {
     $atts = shortcode_atts( array(
         // Points atts
         'type'          => 'all',
-        'columns'       => '1',
         'thumbnail'     => 'yes',
         'label'         => 'yes',
         'current_user'  => 'no',
         'user_id'       => '0',
+        'inline'        => 'no',
+        'columns'       => '1',
         'layout'        => 'left',
         'wpms'          => 'no',
     ), $atts, 'gamipress_points' );
@@ -151,7 +159,7 @@ function gamipress_points_shortcode( $atts = array () ) {
         $atts['user_id'] = get_current_user_id();
 
     // If we're polling all sites, grab an array of site IDs
-    if( $atts['wpms'] === 'yes' ) {
+    if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() ) {
         $sites = gamipress_get_network_site_ids();
     // Otherwise, use only the current site
     } else {
@@ -187,13 +195,39 @@ function gamipress_points_shortcode( $atts = array () ) {
 
     }
 
-    ob_start();
-    if( $is_single_type ) {
-        gamipress_get_template_part( 'points', $atts['type'] );
+    if( $atts['inline'] === 'yes' ) {
+
+        $output = '';
+
+        // Get the last points type to show to meet if should append the separator or not
+        $last_points_type = key( array_slice( $gamipress_template_args['points'], -1, 1, true ) );
+
+        // Inline rendering
+        foreach( $gamipress_template_args['points'] as $points_type => $count ) {
+
+            $output .=
+                // Thumbnail
+                ( $gamipress_template_args['thumbnail'] === 'yes' ? gamipress_get_points_type_thumbnail( $points_type ) . ' ' : '' )
+                // Points amount
+                . $count
+                // Points label
+                . ( $gamipress_template_args['label'] === 'yes' ? ' ' . gamipress_get_points_type_plural( $points_type ) : '' )
+                // Points separator
+                . ( $points_type !== $last_points_type ? ', ' : '' );
+        }
+
     } else {
-        gamipress_get_template_part( 'points' );
+
+        // Template rendering
+        ob_start();
+        if( $is_single_type ) {
+            gamipress_get_template_part( 'points', $atts['type'] );
+        } else {
+            gamipress_get_template_part( 'points' );
+        }
+        $output = ob_get_clean();
+
     }
-    $output = ob_get_clean();
 
     // If switched to blog, return back to que current blog
     if( isset( $blog_id ) ) {

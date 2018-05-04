@@ -184,7 +184,7 @@ function gamipress_register_earnings_shortcode() {
 add_action( 'init', 'gamipress_register_earnings_shortcode' );
 
 /**
- * History Shortcode
+ * User Earnings Shortcode
  *
  * @since  1.3.9
  *
@@ -240,12 +240,42 @@ function gamipress_earnings_shortcode( $atts = array () ) {
     // GamiPress template args global
     $gamipress_template_args = $atts;
 
+    $gamipress_template_args['query'] = gamipress_earnings_shortcode_query( $atts );
+
+    if( ! $gamipress_template_args['query'] ) {
+        return '';
+    }
+
+    ob_start();
+    gamipress_get_template_part( 'earnings' );
+    $output = ob_get_clean();
+
+    // If switched to blog, return back to que current blog
+    if( isset( $blog_id ) ) {
+        switch_to_blog( $blog_id );
+    }
+
+    return $output;
+
+}
+
+/**
+ * User Earnings Shortcode Query
+ *
+ * @since  1.4.9
+ *
+ * @param  array $args Query arguments
+ *
+ * @return CT_Query
+ */
+function gamipress_earnings_shortcode_query( $args = array () ) {
+
     // Query args
     $query_args = array(
-        'user_id'           => $atts['user_id'],
+        'user_id'           => $args['user_id'],
         'orderby'           => 'date',
-        'order'             => $atts['order'],
-        'items_per_page'    => $atts['limit'],
+        'order'             => $args['order'],
+        'items_per_page'    => $args['limit'],
         'paged'             => max( 1, get_query_var( 'paged' ) )
     );
 
@@ -253,55 +283,55 @@ function gamipress_earnings_shortcode( $atts = array () ) {
     $points_types = array();
 
     // Points types
-    if( $atts['points'] === 'yes' ) {
+    if( $args['points'] === 'yes' ) {
 
-        if( $atts['points_types'] === 'all') {
+        if( $args['points_types'] === 'all') {
             $points_types = gamipress_get_points_types_slugs();
         } else {
-            $points_types = explode( ',', $atts['points_types'] );
+            $points_types = explode( ',', $args['points_types'] );
         }
 
         // Points awards
-        if( $atts['awards'] === 'yes' ) {
+        if( $args['awards'] === 'yes' ) {
             $types[] = 'points-award';
         }
 
         // Points deducts
-        if( $atts['deducts'] === 'yes' ) {
+        if( $args['deducts'] === 'yes' ) {
             $types[] = 'points-deduct';
         }
     }
 
     // Achievement types
-    if( $atts['achievements'] === 'yes' ) {
+    if( $args['achievements'] === 'yes' ) {
 
-        if( $atts['achievement_types'] === 'all') {
+        if( $args['achievement_types'] === 'all') {
             $achievement_types = gamipress_get_achievement_types_slugs();
         } else {
-            $achievement_types = explode( ',', $atts['achievement_types'] );
+            $achievement_types = explode( ',', $args['achievement_types'] );
         }
 
         $types = array_merge( $types, $achievement_types );
 
         // Step
-        if( $atts['steps'] === 'yes' ) {
+        if( $args['steps'] === 'yes' ) {
             $types[] = 'step';
         }
     }
 
     // Rank types
-    if( $atts['ranks'] === 'yes' ) {
+    if( $args['ranks'] === 'yes' ) {
 
-        if( $atts['rank_types'] === 'all') {
+        if( $args['rank_types'] === 'all') {
             $rank_types = gamipress_get_rank_types_slugs();
         } else {
-            $rank_types = explode( ',', $atts['rank_types'] );
+            $rank_types = explode( ',', $args['rank_types'] );
         }
 
         $types = array_merge( $types, $rank_types );
 
         // Rank requirements
-        if( $atts['rank_requirements'] === 'yes' ) {
+        if( $args['rank_requirements'] === 'yes' ) {
             $types[] = 'rank-requirement';
         }
     }
@@ -315,7 +345,7 @@ function gamipress_earnings_shortcode( $atts = array () ) {
 
     // Return if not types selected
     if( empty( $types ) ) {
-        return '';
+        return false;
     }
 
     $query_args['post_type'] = $types;
@@ -324,7 +354,7 @@ function gamipress_earnings_shortcode( $atts = array () ) {
         $query_args['points_type'] = $points_types;
 
         // If looking to show achievements or ranks, some of them do not award any points so wee need to add the empty points type value
-        if( $atts['achievements'] === 'yes' || $atts['ranks'] === 'yes' ) {
+        if( $args['achievements'] === 'yes' || $args['ranks'] === 'yes' ) {
             $points_types[] = '';
         }
     }
@@ -332,17 +362,6 @@ function gamipress_earnings_shortcode( $atts = array () ) {
     // Setup table
     ct_setup_table( 'gamipress_user_earnings' );
 
-    $gamipress_template_args['query'] = new CT_Query( $query_args );
-
-    ob_start();
-    gamipress_get_template_part( 'earnings' );
-    $output = ob_get_clean();
-
-    // If switched to blog, return back to que current blog
-    if( isset( $blog_id ) ) {
-        switch_to_blog( $blog_id );
-    }
-
-    return $output;
+    return new CT_Query( $query_args );
 
 }

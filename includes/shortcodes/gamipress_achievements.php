@@ -249,7 +249,8 @@ function gamipress_achievements_shortcode( $atts = array () ) {
     $query = gamipress_achievements_shortcode_query( $query_args );
 
     // GamiPress template args global
-    // Important! This var need to be set before render the achievements list to prevent get overwritten by gamipress_render_achievement() used on gamipress_achievements_shortcode_query()
+    // Important! This var need to be set before render the achievements list to prevent get overwritten
+    // by gamipress_render_achievement() used on gamipress_achievements_shortcode_query()
     $gamipress_template_args = $atts;
     $gamipress_template_args['query'] = $query;
 
@@ -368,12 +369,13 @@ function gamipress_achievements_shortcode_query( $args ) {
 	// Grab our hidden achievements (used to filter the query)
 	$hidden = gamipress_get_hidden_achievement_ids( $type );
 
-	// If we're polling all sites, grab an array of site IDs
-	if( $wpms && $wpms !== 'no' )
+	if( $wpms && $wpms !== 'no' ) {
+        // If we're polling all sites, grab an array of site IDs
 		$sites = gamipress_get_network_site_ids();
-	// Otherwise, use only the current site
-	else
+	} else {
+        // Otherwise, use only the current site
 		$sites = array( get_current_blog_id() );
+	}
 
 	// On network wide active installs, force to just loop main site
 	if( gamipress_is_network_wide_active() ) {
@@ -396,54 +398,59 @@ function gamipress_achievements_shortcode_query( $args ) {
 		// Grab user earned achievements (used to filter the query)
 		$earned_ids = gamipress_get_user_earned_achievement_ids( $user_id, $type );
 
-		// Query Achievements
-		$args = array(
-			'post_type'      	=> $type,
-			'orderby'        	=> $orderby,
-			'order'          	=> $order,
-			'posts_per_page' 	=> absint( $limit ),
-			'offset'         	=> absint( $offset ),
-			'post_status'    	=> 'publish',
-			'post__in' 			=> array(),
-			'post__not_in'   	=> array_diff( $hidden, $earned_ids )
-		);
+        // If filter is to load earned achievements and user hasn't earned anything, don't need to continue
+        if( $filter === 'completed' && empty( $earned_ids ) ) {
 
-		// Filter - query completed or non completed achievements
-		if( $filter == 'completed' && ! empty( $earned_ids ) ) {
-			// Include earned achievements
-			$args[ 'post__in' ] = $earned_ids;
-		} else if( $filter == 'not-completed' && ! empty( $earned_ids ) ) {
-			// Exclude earned achievements
-			$args[ 'post__not_in' ] = array_merge( $hidden, $earned_ids );
-		}
+            // Query Achievements
+            $args = array(
+                'post_type'      	=> $type,
+                'orderby'        	=> $orderby,
+                'order'          	=> $order,
+                'posts_per_page' 	=> absint( $limit ),
+                'offset'         	=> absint( $offset ),
+                'post_status'    	=> 'publish',
+                'post__in' 			=> array(),
+                'post__not_in'   	=> array_diff( $hidden, $earned_ids )
+            );
 
-		// Include certain achievements
-		if( ! empty( $include ) ) {
-			$args[ 'post__not_in' ] = array_diff( $args[ 'post__not_in' ], $include );
-			$args[ 'post__in' ] = array_merge( $args[ 'post__in' ], $include  );
-		}
+            // Filter - query completed or non completed achievements
+            if( $filter === 'completed' && ! empty( $earned_ids ) ) {
+                // Include earned achievements
+                $args[ 'post__in' ] = $earned_ids;
+            } else if( $filter === 'not-completed' && ! empty( $earned_ids ) ) {
+                // Exclude earned achievements
+                $args[ 'post__not_in' ] = array_merge( $hidden, $earned_ids );
+            }
 
-		// Exclude certain achievements
-		if( ! empty( $exclude ) ) {
-			$args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $exclude );
-		}
+            // Include certain achievements
+            if( ! empty( $include ) ) {
+                $args[ 'post__not_in' ] = array_diff( $args[ 'post__not_in' ], $include );
+                $args[ 'post__in' ] = array_merge( $args[ 'post__in' ], $include  );
+            }
 
-		// Search
-		if( $search ) {
-			$args[ 's' ] = $search;
-		}
+            // Exclude certain achievements
+            if( ! empty( $exclude ) ) {
+                $args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $exclude );
+            }
 
-		// Loop Achievements
-		$achievement_posts = new WP_Query( $args );
-		$query_count = absint( $achievement_posts->found_posts );
+            // Search
+            if( $search ) {
+                $args[ 's' ] = $search;
+            }
 
-		while( $achievement_posts->have_posts() ) : $achievement_posts->the_post();
+            // Loop Achievements
+            $achievement_posts = new WP_Query( $args );
+            $query_count = absint( $achievement_posts->found_posts );
 
-			$achievements .= gamipress_render_achievement( get_the_ID(), $template_args );
+            while( $achievement_posts->have_posts() ) : $achievement_posts->the_post();
 
-			$achievement_count++;
+                $achievements .= gamipress_render_achievement( get_the_ID(), $template_args );
 
-		endwhile;
+                $achievement_count++;
+
+            endwhile;
+
+        }
 
 		// Display a message for no results
 		if( empty( $achievements ) ) {

@@ -250,7 +250,7 @@ function gamipress_update_post_meta( $post_id, $meta_key, $meta_value, $prev_val
  */
 function gamipress_delete_post_meta( $post_id, $meta_key, $meta_value = '' ) {
 
-    if( gamipress_is_network_wide_active() ) {
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
 
         $site_id = get_current_blog_id();
 

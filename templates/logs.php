@@ -13,46 +13,104 @@ $a = $gamipress_template_args;
 
 <div class="gamipress-logs">
 
-    <?php
-    /**
-     * Before render logs list
-     *
-     * @since 1.0.0
-     *
-     * @param array $template_args Template received arguments
-     */
-    do_action( 'gamipress_before_render_logs_list', $a ); ?>
-
-    <?php foreach( $a['query']->get_results() as $log ) : ?>
+    <div class="gamipress-logs-atts">
 
         <?php
         /**
-         * Before render log
+         * Before render logs atts
          *
-         * @since 1.0.0
+         * @since 1.4.9
          *
-         * @param integer $log_id           The Log ID
-         * @param array   $template_args    Template received arguments
+         * @param array $template_args Template received arguments
          */
-        do_action( 'gamipress_before_render_log', $log->log_id, $a ); ?>
+        do_action( 'gamipress_before_render_logs_atts', $a ); ?>
 
-        <div id="gamipress-log-<?php echo $log->log_id; ?>" class="gamipress-log"><?php echo apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id ); ?></div>
+        <?php // Hidden fields for ajax request
+        foreach( $a as $arg => $arg_value ) :
+
+            // Skip excluded args
+            if( in_array( $arg, array( 'query' ) ) ) {
+                continue;
+            } ?>
+            <input type="hidden" name="<?php echo $arg; ?>" value="<?php echo ( is_array( $arg_value ) ? implode(',', $arg_value ) : $arg_value ); ?>">
+        <?php endforeach; ?>
 
         <?php
         /**
-         * After render log
+         * After render logs atts
+         *
+         * @since 1.4.9
+         *
+         * @param array $template_args Template received arguments
+         */
+        do_action( 'gamipress_after_render_logs_atts', $a ); ?>
+
+    </div>
+
+    <div class="gamipress-logs-list">
+
+        <?php
+        /**
+         * Before render logs list
          *
          * @since 1.0.0
          *
-         * @param integer $log_id           The Log ID
-         * @param array   $template_args    Template received arguments
+         * @param array $template_args Template received arguments
          */
-        do_action( 'gamipress_after_render_log', $log->log_id, $a ); ?>
+        do_action( 'gamipress_before_render_logs_list', $a ); ?>
 
-    <?php endforeach; ?>
+        <?php foreach( $a['query']->get_results() as $log ) : ?>
+
+            <?php
+            /**
+             * Before render log
+             *
+             * @since 1.0.0
+             *
+             * @param integer $log_id           The Log ID
+             * @param array   $template_args    Template received arguments
+             */
+            do_action( 'gamipress_before_render_log', $log->log_id, $a ); ?>
+
+            <div id="gamipress-log-<?php echo $log->log_id; ?>" class="gamipress-log"><?php echo apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id ); ?></div>
+
+            <?php
+            /**
+             * After render log
+             *
+             * @since 1.0.0
+             *
+             * @param integer $log_id           The Log ID
+             * @param array   $template_args    Template received arguments
+             */
+            do_action( 'gamipress_after_render_log', $log->log_id, $a ); ?>
+
+        <?php endforeach; ?>
+
+        <?php
+        /**
+         * After render logs list
+         *
+         * @since 1.0.0
+         *
+         * @param array $template_args Template received arguments
+         */
+        do_action( 'gamipress_after_render_logs_list', $a ); ?>
+
+    </div>
 
     <?php // Pagination
     if( $a['pagination'] === 'yes' ) : ?>
+
+        <?php
+        /**
+         * Before render logs list pagination
+         *
+         * @since 1.4.9
+         *
+         * @param array $template_args Template received arguments
+         */
+        do_action( 'gamipress_before_render_logs_list_pagination', $a ); ?>
 
         <div id="gamipress-logs-pagination" class="gamipress-logs-pagination navigation">
 
@@ -65,16 +123,19 @@ $a = $gamipress_template_args;
 
         </div>
 
-    <?php endif; ?>
+        <?php
+        /**
+         * After render logs list pagination
+         *
+         * @since 1.4.9
+         *
+         * @param array $template_args Template received arguments
+         */
+        do_action( 'gamipress_after_render_logs_list_pagination', $a ); ?>
 
-    <?php
-    /**
-     * After render logs list
-     *
-     * @since 1.0.0
-     *
-     * @param array $template_args Template received arguments
-     */
-    do_action( 'gamipress_after_render_logs_list', $a ); ?>
+        <?php // Loading spinner ?>
+        <div id="gamipress-logs-spinner" class="gamipress-spinner" style="display: none;"></div>
+
+    <?php endif; ?>
 
 </div>

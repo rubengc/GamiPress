@@ -136,7 +136,7 @@ function gamipress_points_types_shortcode( $atts = array () ) {
     }
 
     // If we're polling all sites, grab an array of site IDs
-    if( $atts['wpms'] === 'yes' )
+    if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() )
         $sites = gamipress_get_network_site_ids();
     // Otherwise, use only the current site
     else

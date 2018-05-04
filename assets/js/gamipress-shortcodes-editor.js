@@ -224,6 +224,31 @@
         }
     });
 
+    // Inline field
+    $( '#gamipress_points_inline').change(function() {
+        // Get the columns and layout fields
+        var target = $(this).closest('.cmb2-wrap').find(
+            '.cmb2-id-gamipress-points-columns, '
+            + '.cmb2-id-gamipress-points-layout'
+        );
+
+        if( $(this).prop('checked') ) {
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    });
+
+    $('body').on('gamipress_shortcode_attributes', '#gamipress_points_wrapper', function( e, args ) {
+
+        // If user checks inline, then columns and layout has no sense
+        if( args.attributes.inline === 'yes' ) {
+            delete args.attributes.columns;
+            delete args.attributes.layout;
+        }
+
+    });
+
     var select2_ranks = {
         ajax: {
             url: ajaxurl,

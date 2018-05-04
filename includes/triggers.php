@@ -265,7 +265,7 @@ function gamipress_get_activity_triggers_excluded_to_load() {
  * array(
  * 	'event' => 'gamipress_login',
  * 	'user_id' => 1,
- *  'specific_id' => 100 // Just if is an specefici trigger
+ *  'specific_id' => 100 // Just if is an specific trigger
  * )
  *
  * @since 	1.0.0

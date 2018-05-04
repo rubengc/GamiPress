@@ -2,8 +2,14 @@
 
 	var $body = $( 'body' );
 
-	// Our main achievement list AJAX call
+    /**
+     * Achievement list ajax call
+     *
+     * @since 1.0.0
+     */
 	function gamipress_ajax_achievement_list( achievement_list ) {
+
+        // Show the spinner
 		achievement_list.find( '#gamipress-achievements-spinner' ).show();
 
 		var data = {
@@ -37,11 +43,11 @@
 			data: data,
 			dataType: 'json',
 			success: function( response ) {
+
+                // Hide the spinner
 				achievement_list.find( '#gamipress-achievements-spinner' ).hide();
 
-				if ( response.data.achievements === null ) {
-					//alert("That's all folks!");
-				} else {
+				if ( response.data.achievements !== null ) {
 
 					achievement_list.find( '#gamipress-achievements-container' ).append( response.data.achievements );
 					achievement_list.find( '#gamipress-achievements-offset' ).val( response.data.offset );
@@ -69,7 +75,11 @@
 		} );
 	}
 
-	// Reset all our base query vars and run an AJAX call
+    /**
+     * Reset achievements query vars and run an ajax call
+     *
+     * @since 1.0.0
+     */
 	function gamipress_ajax_achievement_list_reset( achievement_list ) {
 		achievement_list.find( '#gamipress-achievements-offset' ).val( 0 );
 		achievement_list.find( '#gamipress-achievements-count' ).val( 0 );
@@ -80,32 +90,52 @@
 		gamipress_ajax_achievement_list( achievement_list );
 	}
 
-	// Listen for changes to the achievement filter
+    /**
+     * Perform an achievements ajax call on change the select filter
+     *
+     * @since 1.0.0
+     */
     $body.on( 'change', '#achievements_list_filter', function() {
 		gamipress_ajax_achievement_list_reset( $(this).closest('.gamipress-achievements-list') );
 	} );
 
-	// Listen for search queries
+    /**
+     * Perform an achievements ajax call on submit the search form
+     *
+     * @since 1.0.0
+     */
     $body.on( 'submit', '#gamipress-achievements-search-form', function( event ) {
 		event.preventDefault();
 
 		gamipress_ajax_achievement_list_reset( $(this).closest('.gamipress-achievements-list') );
 
-		// Disabled submit button
+		// Disable submit button on submit a search
 		$(this).find('#gamipress-achievements-search-submit').prop('disabled', true);
 	});
 
-	// Enabled submit button
+    /**
+     * Enable the achievements search button when search input gets the focus
+     *
+     * @since 1.0.0
+     */
     $body.on( 'focus', '#gamipress-achievements-search-input', function (e) {
 		$(this).closest('.gamipress-achievements-list').find('#gamipress-achievements-search-submit').prop('disabled', false);
 	} );
 
-	// Listen for users clicking the "Load More" button
+    /**
+     * Achievements load more button
+     *
+     * @since 1.0.0
+     */
     $body.on( 'click', '#gamipress-achievements-load-more', function() {
 		gamipress_ajax_achievement_list( $(this).closest('.gamipress-achievements-list') );
 	} );
 
-	// Listen for users clicking the show/hide details link
+    /**
+     * Show/hide details link
+     *
+     * @since 1.0.0
+     */
     $body.on( 'click', '.gamipress-open-close-switch a', function( event ) {
 		event.preventDefault();
 
@@ -120,7 +150,11 @@
 		}
 	} );
 
-	// Listen for unlock achievement with points button click
+	/**
+	 * Unlock achievement with points button
+	 *
+	 * @since 1.3.7
+	 */
 	$body.on( 'click', '.gamipress-achievement-unlock-with-points-button', function(e) {
 
 		var button = $(this);
@@ -185,7 +219,11 @@
 		});
 	});
 
-	// Listen for unlock rank with points button click
+	/**
+	 * Unlock rank with points button
+	 *
+	 * @since 1.3.7
+	 */
 	$body.on( 'click', '.gamipress-rank-unlock-with-points-button', function(e) {
 
 		var button = $(this);
@@ -249,5 +287,105 @@
 			}
 		});
 	});
+
+    /**
+     * Logs ajax pagination
+     *
+     * @since 1.4.9
+     */
+    $body.on( 'click', '#gamipress-logs-pagination a', function (e) {
+        e.preventDefault();
+
+        var $this = $(this);
+
+        if( $this.hasClass('current') ) {
+            return false;
+        }
+
+        var logs = $this.closest('.gamipress-logs');
+
+        // Regex to match wordpress permalink config (paged={d}|/page/{d})
+        var matches = $this.attr('href').match(/paged=(\d+)|\/page\/(\d+)/);
+        var page = ( matches[1] !== undefined ) ? matches[1] : matches[2];
+
+        var data = {
+            action: 'gamipress_get_logs',
+            page: page,
+        };
+
+        logs.find('.gamipress-logs-atts input').each(function() {
+            data[$(this).attr('name')] = $(this).val();
+        });
+
+        // Show the spinner
+        logs.find( '#gamipress-logs-spinner' ).show();
+
+        $.ajax( {
+            url: gamipress.ajaxurl,
+            data: data,
+            dataType: 'json',
+            success: function( response ) {
+
+                // Hide the spinner
+                logs.find( '#gamipress-logs-spinner' ).hide();
+
+                var parsed_content = $(response.data);
+
+                logs.find('.gamipress-logs-list').html( parsed_content.find('.gamipress-logs-list').html() );
+                logs.find('.gamipress-logs-pagination').html( parsed_content.find('.gamipress-logs-pagination').html() );
+
+            }
+        } );
+    });
+
+    /**
+     * Earnings ajax pagination
+     *
+     * @since 1.4.9
+     */
+    $body.on( 'click', '#gamipress-earnings-pagination a', function (e) {
+        e.preventDefault();
+
+        var $this = $(this);
+
+        if( $this.hasClass('current') ) {
+            return false;
+        }
+
+        var earnings = $this.closest('.gamipress-earnings');
+
+        // Regex to match wordpress permalink config (paged={d}|/page/{d})
+        var matches = $this.attr('href').match(/paged=(\d+)|\/page\/(\d+)/);
+        var page = ( matches[1] !== undefined ) ? matches[1] : matches[2];
+
+        var data = {
+            action: 'gamipress_get_user_earnings',
+            page: page,
+        };
+
+        earnings.find('.gamipress-earnings-atts input').each(function() {
+            data[$(this).attr('name')] = $(this).val();
+        });
+
+        // Show the spinner
+        earnings.find( '#gamipress-earnings-spinner' ).show();
+
+        $.ajax( {
+            url: gamipress.ajaxurl,
+            data: data,
+            dataType: 'json',
+            success: function( response ) {
+
+                // Hide the spinner
+                earnings.find( '#gamipress-earnings-spinner' ).hide();
+
+                var parsed_content = $(response.data);
+
+                earnings.find('.gamipress-earnings-table').html( parsed_content.find('.gamipress-earnings-table').html() );
+                earnings.find('.gamipress-earnings-pagination').html( parsed_content.find('.gamipress-earnings-pagination').html() );
+
+            }
+        } );
+    });
 
 } )( jQuery );

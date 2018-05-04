@@ -41,6 +41,17 @@ function gamipress_register_logs_shortcode() {
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'
             ),
+            'access' => array(
+                'name'        => __( 'Log Access', 'gamipress' ),
+                'description' => __( 'Set the access type of logs to display. Some logs has a private access like event trigger logs.', 'gamipress' ),
+                'type'        => 'select',
+                'options'     => array(
+                    'any'       => __( 'Any', 'gamipress' ),
+                    'public'    => __( 'Public', 'gamipress' ),
+                    'private'   => __( 'Private', 'gamipress' ),
+                ),
+                'default'     => 'any',
+            ),
             'limit' => array(
                 'name'        => __( 'Limit', 'gamipress' ),
                 'description' => __( 'Number of log entries to display.', 'gamipress' ),
@@ -116,13 +127,11 @@ function gamipress_logs_shortcode( $atts = array () ) {
 
     $gamipress_template_args = array();
 
-    // Setup table
-    ct_setup_table( 'gamipress_logs' );
-
     $atts = shortcode_atts( array(
         'type'          => 'all',
         'current_user'  => 'no',
         'user_id'       => '0',
+        'access'        => 'any',
         'limit'         => '10',
         'pagination'    => 'yes',
         'orderby'       => 'date',
@@ -147,37 +156,6 @@ function gamipress_logs_shortcode( $atts = array () ) {
 
     gamipress_enqueue_scripts();
 
-    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-        $blog_id = get_current_blog_id();
-        switch_to_blog( get_main_site_id() );
-    }
-
-    // GamiPress template args global
-    $gamipress_template_args = $atts;
-
-    // Type check
-    $types = explode( ',', $atts['type'] );
-
-    if( $atts['type'] === 'all') {
-        $types = array_keys( gamipress_get_log_types() );
-    }
-
-    // Query args
-    $args = array(
-        'type'              =>	$types,
-        'orderby'           =>	$atts['orderby'],
-        'order'             =>	$atts['order'],
-        'items_per_page'    =>	$atts['limit'],
-        'paged'             => max( 1, get_query_var( 'paged' ) ),
-        'access'            => 'public', // At frontend just show public logs
-    );
-
-    // User
-    if( absint( $atts['user_id'] ) !== 0 ) {
-        $args['user_id'] = $atts['user_id'];
-    }
-
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' ) {
 
@@ -186,30 +164,24 @@ function gamipress_logs_shortcode( $atts = array () ) {
             return '';
         }
 
-        $args['user_id'] = get_current_user_id();
+        $atts['user_id'] = get_current_user_id();
     }
 
-    // Build $include array
-    if ( ! is_array( $atts['include'] ) && ! empty( $atts['include'] ) ) {
-        $include = explode( ',', $atts['include'] );
+    // GamiPress template args global
+    $gamipress_template_args = $atts;
+
+    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        $blog_id = get_current_blog_id();
+        switch_to_blog( get_main_site_id() );
     }
 
-    // Build $exclude array
-    if ( ! is_array( $atts['exclude'] ) && ! empty( $atts['exclude'] ) ) {
-        $exclude = explode( ',', $atts['exclude'] );
-    }
+    // Get the logs query
+    $gamipress_template_args['query'] = gamipress_logs_shortcode_query( $atts );
 
-    // Include certain achievements
-    if ( isset( $include ) && ! empty( $include ) ) {
-        $args[ 'log__in' ] = $include;
+    if( ! $gamipress_template_args['query'] ) {
+        return '';
     }
-
-    // Exclude certain achievements
-    if ( isset( $exclude ) && ! empty( $exclude ) ) {
-        $args[ 'log__not_in' ] = $exclude;
-    }
-
-    $gamipress_template_args['query'] = new CT_Query( $args );
 
     ob_start();
         gamipress_get_template_part( 'logs' );
@@ -221,6 +193,70 @@ function gamipress_logs_shortcode( $atts = array () ) {
     }
 
     return $output;
+
+}
+
+/**
+ * Logs List Shortcode Query
+ *
+ * @since  1.4.9
+ *
+ * @param  array $args Query arguments
+ *
+ * @return CT_Query
+ */
+function gamipress_logs_shortcode_query( $args ) {
+
+    // Type check
+    $types = explode( ',', $args['type'] );
+
+    if( $args['type'] === 'all') {
+        $types = array_keys( gamipress_get_log_types() );
+    }
+
+    // Logs query args
+    $query_args = array(
+        'type'              => $types,
+        'orderby'           => $args['orderby'],
+        'order'             => $args['order'],
+        'items_per_page'    => $args['limit'],
+        'paged'             => max( 1, get_query_var( 'paged' ) ),
+    );
+
+    // Access
+    if( $args['access'] !== 'any' ) {
+        $query_args['access'] = $args['access'];
+    }
+
+    // User
+    if( absint( $args['user_id'] ) !== 0 ) {
+        $query_args['user_id'] = $args['user_id'];
+    }
+
+    // Build $include array
+    if ( ! is_array( $args['include'] ) && ! empty( $args['include'] ) ) {
+        $include = explode( ',', $args['include'] );
+    }
+
+    // Build $exclude array
+    if ( ! is_array( $args['exclude'] ) && ! empty( $args['exclude'] ) ) {
+        $exclude = explode( ',', $args['exclude'] );
+    }
+
+    // Include certain achievements
+    if ( isset( $include ) && ! empty( $include ) ) {
+        $query_args[ 'log__in' ] = $include;
+    }
+
+    // Exclude certain achievements
+    if ( isset( $exclude ) && ! empty( $exclude ) ) {
+        $query_args[ 'log__not_in' ] = $exclude;
+    }
+
+    // Setup table
+    ct_setup_table( 'gamipress_logs' );
+
+    return new CT_Query( $query_args );
 
 }
 

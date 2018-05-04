@@ -21,7 +21,6 @@ $points_types[''] = array(
 // Check to meet if points showed comes from current logged in user
 $is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
 
-
 // Setup points classes
 $classes = array(
     'gamipress-user-points',
