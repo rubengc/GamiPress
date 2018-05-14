@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2018-05-04 12:53+0200\n"
+"POT-Creation-Date: 2018-05-14 13:12+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -83,7 +83,7 @@ msgid "Help / Support"
 msgstr ""
 
 #: includes/admin.php:105 includes/admin/pages/settings.php:178
-#: includes/admin/plugins.php:56
+#: includes/admin/plugins.php:66
 msgid "Add-ons"
 msgstr ""
 
@@ -676,54 +676,54 @@ msgid "Maximum Earnings"
 msgstr ""
 
 #: includes/admin/meta-boxes/achievements.php:86
-msgid "Number of times a user can earn this achievement (leave empty for no maximum)."
-msgstr ""
-
-#: includes/admin/meta-boxes/achievements.php:91
-msgid "Hidden?"
+msgid "Number of times a user can earn this achievement (set it to 0 for no maximum)."
 msgstr ""
 
 #: includes/admin/meta-boxes/achievements.php:94
+msgid "Hidden?"
+msgstr ""
+
+#: includes/admin/meta-boxes/achievements.php:97
 msgid "Show to User"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:95
+#: includes/admin/meta-boxes/achievements.php:98
 msgid "Hidden to User"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:99
+#: includes/admin/meta-boxes/achievements.php:102
 msgid "Allow unlock with points"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:100
+#: includes/admin/meta-boxes/achievements.php:103
 msgid "Check this option to allow users to unlock this achievement by expend an amount of points."
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:105
+#: includes/admin/meta-boxes/achievements.php:108
 #: includes/admin/meta-boxes/ranks.php:48
 msgid "Points to Unlock"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:106
+#: includes/admin/meta-boxes/achievements.php:109
 msgid "Amount of points needed to optionally unlock this achievement by expending them."
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:121
+#: includes/admin/meta-boxes/achievements.php:124
 msgid "Achievement Template"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:125
+#: includes/admin/meta-boxes/achievements.php:128
 #: includes/admin/meta-boxes/ranks.php:68
 #: includes/shortcodes/gamipress_achievement.php:86
 #: includes/shortcodes/gamipress_rank.php:79
 msgid "Show Earners"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:126
+#: includes/admin/meta-boxes/achievements.php:129
 msgid "Check this option to display a list of users who have earned this achievement."
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:131
+#: includes/admin/meta-boxes/achievements.php:134
 #: includes/admin/meta-boxes/ranks.php:74
 #: includes/shortcodes/gamipress_achievement.php:92
 #: includes/shortcodes/gamipress_points.php:79
@@ -732,12 +732,12 @@ msgstr ""
 msgid "Layout"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:132
+#: includes/admin/meta-boxes/achievements.php:135
 #: includes/shortcodes/gamipress_achievement.php:93
 msgid "Layout to show the achievement."
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:135
+#: includes/admin/meta-boxes/achievements.php:138
 #: includes/admin/meta-boxes/ranks.php:78
 #: includes/shortcodes/gamipress_achievement.php:96
 #: includes/shortcodes/gamipress_points.php:83
@@ -746,7 +746,7 @@ msgstr ""
 msgid "Left"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:136
+#: includes/admin/meta-boxes/achievements.php:139
 #: includes/admin/meta-boxes/ranks.php:79
 #: includes/shortcodes/gamipress_achievement.php:97
 #: includes/shortcodes/gamipress_points.php:84
@@ -755,7 +755,7 @@ msgstr ""
 msgid "Top"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:137
+#: includes/admin/meta-boxes/achievements.php:140
 #: includes/admin/meta-boxes/ranks.php:80
 #: includes/shortcodes/gamipress_achievement.php:98
 #: includes/shortcodes/gamipress_points.php:85
@@ -764,7 +764,7 @@ msgstr ""
 msgid "Right"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:138
+#: includes/admin/meta-boxes/achievements.php:141
 #: includes/admin/meta-boxes/ranks.php:81
 #: includes/shortcodes/gamipress_achievement.php:99
 #: includes/shortcodes/gamipress_points.php:86
@@ -773,7 +773,7 @@ msgstr ""
 msgid "Bottom"
 msgstr ""
 
-#: includes/admin/meta-boxes/achievements.php:139
+#: includes/admin/meta-boxes/achievements.php:142
 #: includes/admin/meta-boxes/ranks.php:82
 #: includes/shortcodes/gamipress_achievement.php:100
 #: includes/shortcodes/gamipress_points.php:87
@@ -1051,7 +1051,8 @@ msgid "Enter valid license key for automatic updates."
 msgstr ""
 
 #: includes/admin/pages/settings.php:135 includes/admin/pages/settings.php:142
-#: includes/admin/plugins.php:25 includes/admin/tools/system-info.php:289
+#: includes/admin/plugins.php:29 includes/admin/plugins.php:32
+#: includes/admin/tools/system-info.php:289
 msgid "Settings"
 msgstr ""
 
@@ -4404,27 +4405,27 @@ msgstr ""
 msgid "No %s found."
 msgstr ""
 
-#: includes/widgets/achievement-widget.php:16
+#: includes/widgets/achievement-widget.php:17
 msgid "GamiPress: Achievement"
 msgstr ""
 
-#: includes/widgets/achievement-widget.php:17
+#: includes/widgets/achievement-widget.php:18
 msgid "Display a desired achievement."
 msgstr ""
 
-#: includes/widgets/achievements-widget.php:16
+#: includes/widgets/achievements-widget.php:17
 msgid "GamiPress: Achievements"
 msgstr ""
 
-#: includes/widgets/achievements-widget.php:17
+#: includes/widgets/achievements-widget.php:18
 msgid "Display a list of achievements."
 msgstr ""
 
-#: includes/widgets/earnings-widget.php:16
+#: includes/widgets/earnings-widget.php:17
 msgid "GamiPress: User Earnings"
 msgstr ""
 
-#: includes/widgets/earnings-widget.php:17
+#: includes/widgets/earnings-widget.php:18
 msgid "Display a list of user earnings."
 msgstr ""
 
@@ -4436,11 +4437,11 @@ msgstr ""
 msgid "Display a list of logs."
 msgstr ""
 
-#: includes/widgets/points-types-widget.php:16
+#: includes/widgets/points-types-widget.php:17
 msgid "GamiPress: Points Types"
 msgstr ""
 
-#: includes/widgets/points-types-widget.php:17
+#: includes/widgets/points-types-widget.php:18
 msgid "Display a list of points types with their points awards."
 msgstr ""
 
@@ -4452,19 +4453,19 @@ msgstr ""
 msgid "Display current or specific user points balance."
 msgstr ""
 
-#: includes/widgets/rank-widget.php:16
+#: includes/widgets/rank-widget.php:17
 msgid "GamiPress: Rank"
 msgstr ""
 
-#: includes/widgets/rank-widget.php:17
+#: includes/widgets/rank-widget.php:18
 msgid "Display a desired rank."
 msgstr ""
 
-#: includes/widgets/ranks-widget.php:16
+#: includes/widgets/ranks-widget.php:17
 msgid "GamiPress: Ranks"
 msgstr ""
 
-#: includes/widgets/ranks-widget.php:17
+#: includes/widgets/ranks-widget.php:18
 msgid "Display a list of ranks."
 msgstr ""
 

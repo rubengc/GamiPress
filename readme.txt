@@ -218,6 +218,8 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 * Fixed unlock button display on achievements and ranks.
 * Fixed wrong settings link on plugins screen on multisite installs.
 * Improved "Maximum earnings" field workflow on achievements, now to set unlimited maximum earnings is required to set it to 0.
+* Fixed wrong links texts on readme.
+* Added new integrations to the readme.
 
 = 1.4.9.1 =
 
