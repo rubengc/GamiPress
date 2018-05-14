@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Plugins row action links
  *
- * @since 1.1.0
+ * @since   1.1.0
+ * @updated 1.4.9.2 Added support for multisite URL when GamiPress is network wide active
  *
  * @param array     $links  Array of plugin action links
  * @param string    $file   Plugin file
@@ -19,14 +20,22 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return array    $links
  */
 function gamipress_plugin_action_links( $links, $file ) {
+
     if ( $file != 'gamipress/gamipress.php' )
         return $links;
 
-    $settings_link = '<a href="' . admin_url( 'admin.php?page=gamipress_settings' ) . '">' . esc_html__( 'Settings', 'gamipress' ) . '</a>';
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        // Set settings link to main site
+        $settings_link = '<a href="' . get_admin_url( get_main_site_id(), 'admin.php?page=gamipress_settings' ) . '">' . esc_html__( 'Settings', 'gamipress' ) . '</a>';
+    } else {
+        // Set settings link to current site
+        $settings_link = '<a href="' . admin_url( 'admin.php?page=gamipress_settings' ) . '">' . esc_html__( 'Settings', 'gamipress' ) . '</a>';
+    }
 
     array_unshift( $links, $settings_link );
 
     return $links;
+
 }
 add_filter( 'plugin_action_links', 'gamipress_plugin_action_links', 10, 2 );
 
@@ -42,6 +51,7 @@ add_filter( 'plugin_action_links', 'gamipress_plugin_action_links', 10, 2 );
  * @return array    $input
  */
 function gamipress_plugin_row_meta( $input, $file ) {
+
     if ( $file != 'gamipress/gamipress.php' )
         return $input;
 

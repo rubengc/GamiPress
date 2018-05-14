@@ -83,8 +83,11 @@ function gamipress_achievements_meta_boxes( $post_type ) {
             ),
             $prefix . 'maximum_earnings' => array(
                 'name' => __( 'Maximum Earnings', 'gamipress' ),
-                'desc' => __( 'Number of times a user can earn this achievement (leave empty for no maximum).', 'gamipress' ),
+                'desc' => __( 'Number of times a user can earn this achievement (set it to 0 for no maximum).', 'gamipress' ),
                 'type' => 'text_small',
+                'attributes' => array(
+                    'type' => 'number'
+                ),
                 'default' => '1',
             ),
             $prefix . 'hidden' => array(

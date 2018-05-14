@@ -168,7 +168,9 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
         <?php endif; ?>
 
         <?php // Rank unlock with points
-        echo gamipress_rank_unlock_with_points_markup( get_the_ID(), $a ); ?>
+        if ( $a['unlock_button'] === 'yes' ) :
+            echo gamipress_rank_unlock_with_points_markup( get_the_ID(), $a );
+        endif; ?>
 
         <?php // Rank Earners
         if ( $a['earners'] === 'yes' ) :

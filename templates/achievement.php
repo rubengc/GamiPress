@@ -174,7 +174,9 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
         <?php endif; ?>
 
         <?php // Achievement unlock with points
-        echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a ); ?>
+        if ( $a['unlock_button'] === 'yes' ) :
+            echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a );
+        endif; ?>
 
         <?php // Achievement Earners
         if ( $a['earners'] === 'yes' ) :

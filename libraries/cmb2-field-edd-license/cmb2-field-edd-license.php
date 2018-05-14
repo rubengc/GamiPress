@@ -373,6 +373,16 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
          */
         public function check_item_updates( $args = array() ) {
 
+            // Bail if not in admin area
+            if( ! is_admin() ) {
+                return false;
+            }
+
+            // Include required files
+            if( ! function_exists( 'get_plugin_data' ) ) {
+                include ABSPATH . '/wp-admin/includes/plugin.php';
+            }
+
             $args = wp_parse_args( $args, array(
                 'server'          => '',
                 'item_id'         => '',

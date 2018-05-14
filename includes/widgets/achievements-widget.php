@@ -11,11 +11,13 @@ if( !defined( 'ABSPATH' ) ) exit;
 class GamiPress_Achievements_Widget extends GamiPress_Widget {
 
     public function __construct() {
+
         parent::__construct(
             'gamipress_achievements_widget',
             __( 'GamiPress: Achievements', 'gamipress' ),
             __( 'Display a list of achievements.', 'gamipress' )
         );
+
     }
 
     public function get_tabs() {
@@ -56,14 +58,19 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
         $fields = array_combine( $keys, array_values( $fields ) );
 
         return $fields;
+
     }
 
     public function get_widget( $args, $instance ) {
+
         echo gamipress_do_shortcode( 'gamipress_achievements', array(
             'type'              => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
             'columns'           => $instance['columns'],
             'filter'            => ( $instance['filter'] === 'on' ? 'yes' : 'no' ),
+            'filter_value'      => $instance['filter_value'],
             'search'            => ( $instance['search'] === 'on' ? 'yes' : 'no' ),
+            'search_value'      => $instance['search_value'],
+            'load_more'         => ( $instance['load_more'] === 'on' ? 'yes' : 'no' ),
             'limit'             => $instance['limit'],
             'orderby'           => $instance['orderby'],
             'order'             => $instance['order'],
@@ -84,6 +91,7 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
             'earners'           => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
             'layout'            => $instance['layout'],
         ) );
+
     }
 
 }

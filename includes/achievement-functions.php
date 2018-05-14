@@ -263,7 +263,7 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
 	$max_earnings = gamipress_get_post_meta( $achievement_id, '_gamipress_maximum_earnings' );
 
 	// Infinite maximum earnings check
-    if( $max_earnings === '-1' || empty( $max_earnings ) ) {
+    if( $max_earnings === '-1' || $max_earnings === '0' || empty( $max_earnings ) ) {
 		return false;
 	}
 

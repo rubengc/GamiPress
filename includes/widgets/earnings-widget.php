@@ -11,11 +11,13 @@ if( !defined( 'ABSPATH' ) ) exit;
 class GamiPress_Earnings_Widget extends GamiPress_Widget {
 
     public function __construct() {
+
         parent::__construct(
             'gamipress_earnings_widget',
             __( 'GamiPress: User Earnings', 'gamipress' ),
             __( 'Display a list of user earnings.', 'gamipress' )
         );
+
     }
 
     public function get_tabs() {
@@ -30,10 +32,13 @@ class GamiPress_Earnings_Widget extends GamiPress_Widget {
     }
 
     public function get_fields() {
+
         return GamiPress()->shortcodes['gamipress_earnings']->fields;
+
     }
 
     public function get_widget( $args, $instance ) {
+
         echo gamipress_do_shortcode( 'gamipress_earnings', array(
             'current_user'      => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
             'user_id'           => $instance['user_id'],
@@ -54,5 +59,6 @@ class GamiPress_Earnings_Widget extends GamiPress_Widget {
             'rank_types'        => $instance['rank_types'],
             'rank_requirements' => ( $instance['rank_requirements'] === 'on' ? 'yes' : 'no' ),
         ) );
+
     }
 }

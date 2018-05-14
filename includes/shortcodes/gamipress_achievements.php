@@ -206,7 +206,6 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	$atts = shortcode_atts( array_merge( array(
 		// Achievements atts
 		'type'        	    => 'all',
-		'limit'       	    => '10',
 		'columns'           => '1',
 		'filter' 	  	    => 'yes',
 		'filter_value' 	    => 'all',
@@ -215,11 +214,12 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'load_more' 	    => 'yes',
 		'current_user'      => 'no',
 		'user_id'     	    => '0',
-		'wpms'        	    => 'no',
+		'limit'       	    => '10',
 		'orderby'     	    => 'menu_order',
 		'order'       	    => 'ASC',
 		'include'     	    => '',
 		'exclude'     	    => '',
+		'wpms'        	    => 'no',
 	), gamipress_achievement_shortcode_defaults() ), $atts, 'gamipress_achievements' );
 
 	gamipress_enqueue_scripts();
@@ -398,8 +398,8 @@ function gamipress_achievements_shortcode_query( $args ) {
 		// Grab user earned achievements (used to filter the query)
 		$earned_ids = gamipress_get_user_earned_achievement_ids( $user_id, $type );
 
-        // If filter is to load earned achievements and user hasn't earned anything, don't need to continue
-        if( $filter === 'completed' && empty( $earned_ids ) ) {
+        // If filter is set to load earned achievements and user hasn't earned anything, don't need to continue
+        if( ! ( $filter === 'completed' && empty( $earned_ids ) ) ) {
 
             // Query Achievements
             $args = array(
@@ -463,9 +463,9 @@ function gamipress_achievements_shortcode_query( $args ) {
 			// Setup our completion message
 			$achievements .= '<div class="gamipress-no-results">';
 
-			if ( 'completed' == $filter ) {
+			if ( 'completed' === $filter ) {
 				$no_results_text = sprintf( __( 'No completed %s to display.', 'gamipress' ), strtolower( $post_type_plural ) );
-			} else if ( 'not-completed' == $filter ) {
+			} else if ( 'not-completed' === $filter ) {
 				$no_results_text = sprintf( __( 'You completed all %s.', 'gamipress' ), strtolower( $post_type_plural ) );
 			} else {
 				$no_results_text = sprintf( __( 'No %s to display.', 'gamipress' ), strtolower( $post_type_plural ) );

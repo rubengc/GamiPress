@@ -11,11 +11,13 @@ if( !defined( 'ABSPATH' ) ) exit;
 class GamiPress_Rank_Widget extends GamiPress_Widget {
 
     public function __construct() {
+
         parent::__construct(
             'gamipress_rank_widget',
             __( 'GamiPress: Rank', 'gamipress' ),
             __( 'Display a desired rank.', 'gamipress' )
         );
+
     }
 
     public function get_fields() {
@@ -36,9 +38,11 @@ class GamiPress_Rank_Widget extends GamiPress_Widget {
         $fields = array_combine( $keys, array_values( $fields ) );
 
         return $fields;
+
     }
 
     public function get_widget( $args, $instance ) {
+
         echo gamipress_do_shortcode( 'gamipress_rank', array(
             'id'            => $instance['id'],
             'title'         => ( $instance['show_title'] === 'on' ? 'yes' : 'no' ),
@@ -51,6 +55,7 @@ class GamiPress_Rank_Widget extends GamiPress_Widget {
             'earners'       => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
             'layout'        => $instance['layout'],
         ) );
+
     }
 
 }
