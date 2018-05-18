@@ -40,6 +40,10 @@ function ct_cmb2_add_meta_boxes( $ct_table_name, $object ) {
     // Let know to this compatibility module it needs to operate
     $ct_cmb2_override = true;
 
+    // Fix: CMB2 stop enqueuing their assets so need to add it again
+    CMB2_hookup::enqueue_cmb_css();
+    CMB2_hookup::enqueue_cmb_js();
+
 }
 add_action( 'add_meta_boxes', 'ct_cmb2_add_meta_boxes', 10, 2 );
 

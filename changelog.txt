@@ -1,5 +1,200 @@
 == Changelog ==
 
+= 1.4.9.2 =
+
+* Fixed incorrect values on GamiPress: Achievements widget.
+* Fixed unlock button display on achievements and ranks.
+* Fixed wrong settings link on plugins screen on multisite installs.
+* Improved "Maximum earnings" field workflow on achievements, now to set unlimited maximum earnings is required to set it to 0.
+* Fixed wrong links texts on readme.
+* Added new integrations to the readme.
+
+= 1.4.9.1 =
+
+* Fixed wrong achievements query results on [gamipress_achievements] shortcode.
+* Added extra checks to meet core files loaded for WordPress plugins method call.
+
+= 1.4.9 =
+
+* Added the attribute "access" to [gamipress_logs] shortcode.
+* Added the field "Log Access" to GamiPress: Logs widget.
+* Added the attribute "inline" to [gamipress_points] shortcode.
+* Added the field "Inline" to GamiPress: User Points Balance widget.
+* Added ajax pagination to [gamipress_logs] shortcode and GamiPress: Logs widget.
+* Added ajax pagination to [gamipress_earnings] shortcode and GamiPress: User Earnings widget.
+* Added new filters to the logs template.
+* Added new filters to the earnings template.
+* Fixed fields saving on multisite installs.
+* Added backward compatibility with older WordPress intalls.
+* Updated deprecated WordPress functions.
+* Fixed wrong achievements shown when filter is set to completed and user hasn't completed anyone.
+* Fixed wrong points amount when GamiPress is network wide active.
+* Added extra checks with multisite shortcode fields when GamiPress is network wide active.
+
+= 1.4.8.1 =
+
+* Fixed compatibility issues with old PHP versions.
+* Improvements on upgrade process messages.
+
+= 1.4.8 =
+
+* Added the attribute "points_awarded" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
+* Added the field "Show Points Awarded" to GamiPress: Achievement and GamiPress: Achievements widgets.
+* Added the attribute "unlock_button" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
+* Added the field "Show Unlock Button" to GamiPress: Achievement and GamiPress: Achievements widgets.
+* Added the attribute "unlock_button" to [gamipress_rank], [gamipress_ranks] and [gamipress_user_rank] shortcodes.
+* Added the field "Show Unlock Button" to GamiPress: Rank, GamiPress: Ranks and GamiPress: User Rank widgets.
+* Added the attribute "type" to [gamipress_logs] shortcode.
+* Added the field "Log Type(s)" to GamiPress: Logs widget.
+* Fixed singular/plural check on achievements points.
+* Fixed wrong notice about plugins updates from the plugins screen.
+* Fixed wrong notice about upgrade process failed.
+* Fixed wrong notice about upgrade process on multisite installs.
+* Fixed wrong edit links on multisite installs.
+* Added stronger checks on dashboard widget to prevent to show it on sub-sites or to users without permissions.
+* Added site ID to requirement object for sub-site attached posts.
+* Improved awards engine workflow with specific activity events.
+* Improved instructions on invalid license keys.
+* Added sticky action buttons on GamiPress settings.
+* Improvements admin area styles.
+* Readme reduction to better resume all built-in features.
+
+= 1.4.7.2 =
+
+* Fixed wrong activity recount tool offset.
+* Fixed typo on gamipress_do_shortcode() function.
+* Improvements on requirements UI when saving a large amount of requirements.
+
+= 1.4.7.1 =
+
+* Added event to override shortcode output from the Shortcodes Editor.
+* Added formatting check on Shortcodes Editor fields values.
+* Fixed spinner display when unlocking an achievement or a rank with points.
+* Fixed wrong array index notice when checking hidden achievements.
+* Added stronger checks to ensure run upgrade process just when an administrator is running it.
+* Added a remaining entries counter to visually know the number of entries pending while upgrading.
+* Added a cancel upgrade action.
+* Fixed wrong offset on recount activity tool.
+* Added sub-processing to bulk awards and revokes tool when awarding or revoking to all users.
+
+= 1.4.7 =
+
+* Fixed next and previous pagination links of hidden achievements.
+* Improvements detecting hidden achievements.
+* Fixed wrong count detection on requirements UI when generates the requirement title.
+* Prevent scroll when a requirement action is clicked.
+* Added the attribute "search_value" to [gamipress_achievements] shortcode.
+* Added the field "Initial Search Value" to GamiPress: Achievements widget.
+* Fixed missing $ on requirements UI.
+* Moved the logs meta field trigger_type to the logs tables to improve logs queries performance.
+* Prevent to render Shortcodes Editor window if button has't been rendered.
+* Improvements on custom table queries.
+* Added checks to prevent run code outside the desired post type screens.
+* Added checks to prevent run code outside the GamiPress custom pages (settings and tools).
+* Added a huge number of improvements and speed performance on queries and functions.
+
+= 1.4.6 =
+
+* Added new email template tags: {achievement_url}, {achievement_link}, {achievement_congratulations}, {rank_url}, {rank_link} and {rank_congratulations}.
+* Replaced the text "Earned Achievements" to "User Earnings" on user profile screen.
+* Added filters on achievements and ranks post types registration.
+* Moved "Sequential Steps" fields into "Required Steps" meta box.
+* Moved "Sequential Requirements" fields into "Required Requirements" meta box.
+* Capability check when saving deleting steps, points awards/deducts and rank requirements.
+* Added the ability to duplicate steps, points awards/deducts and rank requirements.
+* Update the requirements UI with a new style.
+* Improvements when querying achievement steps.
+* Improvements when querying rank requirements.
+* Improvements admin area styles.
+* Added more functions to easily get the types objects (achievement, points and ranks) and their labels.
+
+= 1.4.5 =
+
+* Added the attribute "filter_value" to [gamipress_achievements] shortcode.
+* Added the field "Initial Filter Value" to GamiPress: Achievements widget.
+* Make first page of results of [gamipress_achievements] shortcode and GamiPress: Achievements widget load directly.
+* Improvements on [gamipress_achievements] shortcode and GamiPress: Achievements widget filtering.
+* Added more filters on achievements template to make it more customizable.
+* Added more frequently asked questions.
+
+= 1.4.4 =
+
+* Fixed timezone issues when server and WordPress has different timezones (now WordPress timezone prevails).
+* Fixed empty primary key on database table creation.
+* Prevent warnings on 1.4.3 upgrade.
+* Avoid some PHP warnings on ajax functions.
+* Added more information to System Info Tool and some improvements.
+
+= 1.4.3 =
+
+* Added a bulk revokes tool that let's revoke points, achievements or ranks to all or a group of users.
+* Added title on user earnings table.
+* Added support for meta data on user earnings table.
+* Improvements on "Log in to the website" event detection.
+* Improvements on recount activity tool recounting large amounts of records.
+* Improvements on bulk awards tool.
+* Improvements parsing points tags on logs patterns.
+* Renamed hook "achievement_object" to "gamipress_achievement_object".
+* Added gamipress_revoke_achievement_to_user( $achievement_id, $user_id, $user_earning_id ) function.
+* Added gamipress_award_rank_to_user( $rank_id, $user_id, $args ) function.
+* Added gamipress_revoke_rank_to_user( $user_id, $rank_id, $new_rank_id, $args ) function.
+* Added gamipress_upgrade_rank_to_user( $user_id, $rank_type ) function.
+* Added gamipress_downgrade_rank_to_user( $user_id, $rank_type ) function.
+* Added gamipress_get_prev_user_rank_id( $user_id, $rank_type ) function.
+* Added gamipress_insert_user_earning( $user_id, $data, $meta ) function.
+* Added the ability to gamipress_trigger_event() to be called directly.
+
+= 1.4.2 =
+
+* Fixed user points balance on emails, now emails will send the updated points balance instead of the old one.
+* Fixed output for [gamipress_earnings] shortcode and GamiPress: User Earnings widget when the earning gets removed.
+* Fixed specific achievement and rank post selectors on requirements.
+* Important query performance on duplicity checks.
+* Improvements on cached queries for post visits listeners.
+* Improvements on rank requirements checks on rules engine to prevent notices when rank requirement is wrong configured.
+* Compatibility support for old database engines.
+
+= 1.4.1 =
+
+* Added a bulk awards tool that let's award points, achievements or ranks to all or a group of users.
+* New event: Daily visit any post.
+* Added support for all public post types on events daily visit a specific post and get visits on a specific post.
+* Added support for all post types with comments support on events comment on a specific post and get a comment on a specific post.
+* Added the column "Post" to the logs list screen at admin area.
+* Fully reworked all posts and users selectors.
+* Replaced "Achievement ID" field label to "Achievement".
+* Replaced "Rank ID" field label to "Rank".
+* Replaced "User ID" field label to "User".
+* Added the field "gamipress_points" to show easy controls to set points types amounts (like points awarded on achievements).
+* Improvements on admin area styles.
+
+= 1.4.0 =
+
+* Added multisite support with the ability to connect everything network wide.
+* Added {site_title} tags on logs patterns.
+* Added the attribute "layout" to [gamipress_achievement], [gamipress_achievements], [gamipress_points], [gamipress_points_types], [gamipress_rank], [gamipress_user_rank] and [gamipress_ranks] shortcodes.
+* Added the field "Layout" to GamiPress: Achievement, GamiPress: Achievements, GamiPress: Points, GamiPress: Points Types, GamiPress: Rank, GamiPress: User Rank and GamiPress: Ranks widgets.
+* Added the attribute "link" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
+* Added the field "Show Link" to GamiPress: Achievement and GamiPress: Achievements widgets.
+* Added the attribute "link" to [gamipress_rank], [gamipress_user_rank] and [gamipress_ranks] shortcodes.
+* Added the field "Show Link" to GamiPress: Rank, GamiPress: User Rank and GamiPress: Ranks widgets.
+* Added the meta box "Achievement Template" on achievement edit screen.
+* Added the meta box "Rank Template" on rank edit screen.
+* Fixed [gamipress_points] points types issue when type is empty.
+* Fixed default rank image now truly relies on rank type image.
+* Fixed achievements list loader where unlock using points buttons are on list.
+* Fixed achievement selector on requirements UI when requirements is based on unlock a specific achievement.
+* Added the ability to reset user earnings from reset data tool.
+* Added tabs on GamiPress add-ons page.
+* Improvements parsing log pattern tags on points deductions and expending them.
+* Improvements on site visits detection.
+* Improvements on admin area styles.
+* Added more accurate checks to determine how many points has earned the user since a specific date.
+* Added stronger sanitization checks on slugs.
+* Improvements on custom table queries.
+* Reset public changelog (moved old changelog to changelog.txt file).
+* Set GamiPress 1.4.0 as new stable release! :)
+
 = 1.3.9.7 =
 
 * Added stronger checks on points types, achievement types and rank types slugs to prevent invalid characters.

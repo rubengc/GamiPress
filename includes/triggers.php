@@ -200,6 +200,92 @@ function gamipress_get_specific_activity_trigger_post_title( $specific_id, $trig
 	}
 
 	return get_post_field( 'post_title', $specific_id );
+
+}
+
+/**
+ * Helper function to determine if a given specific ID is public to get his permalink
+ *
+ * @since 1.5.0
+ *
+ * @param integer $specific_id      The specific ID
+ * @param string  $trigger_type     The requirement trigger type
+ * @param integer $site_id     		The site ID
+ *
+ * @return bool
+ */
+function gamipress_is_specific_activity_trigger_post_type_public( $specific_id, $trigger_type, $site_id ) {
+
+	$override = apply_filters( 'gamipress_specific_activity_trigger_is_post_type_public', 'no_override', $specific_id, $trigger_type, $site_id );
+
+	if( $override !== 'no_override' ) {
+		return (bool) $override;
+	}
+
+    // Get all public registered post types
+    $public_post_types = get_post_types( array( 'public' => true ) );
+
+	if( gamipress_is_network_wide_active() && $site_id !== get_current_blog_id() ) {
+
+		$current_blog_id = get_current_blog_id();
+
+		// Switch to the given site to get the post title from this site
+		switch_to_blog( $site_id );
+
+		$post_type = get_post_field( 'post_type', $specific_id );
+
+		// Restore the current blog
+		switch_to_blog( $current_blog_id );
+
+	} else {
+        $post_type = get_post_field( 'post_type', $specific_id );
+    }
+
+	return in_array( $post_type, $public_post_types );
+
+}
+
+/**
+ * Helper function to get the permalink of a given specific ID for a specific activity trigger
+ *
+ * @since 	1.5.0
+ *
+ * @param integer $specific_id      The specific ID
+ * @param string  $trigger_type     The requirement trigger type
+ * @param integer $site_id     		The site ID
+ *
+ * @return false|string             The specific permalink
+ */
+function gamipress_get_specific_activity_trigger_permalink( $specific_id, $trigger_type, $site_id ) {
+
+    $override = apply_filters( 'gamipress_specific_activity_trigger_permalink', 'no_override', $specific_id, $trigger_type, $site_id );
+
+    if( $override !== 'no_override' ) {
+        return $override;
+    }
+
+    if( ! gamipress_is_specific_activity_trigger_post_type_public( $specific_id, $trigger_type, $site_id ) ) {
+        return false;
+    }
+
+    if( gamipress_is_network_wide_active() && $site_id !== get_current_blog_id() ) {
+
+        $current_blog_id = get_current_blog_id();
+
+        // Switch to the given site to get the post title from this site
+        switch_to_blog( $site_id );
+
+        $permalink = get_permalink( $specific_id );
+
+        // Restore the current blog
+        switch_to_blog( $current_blog_id );
+
+        return $permalink;
+
+    }
+
+    return get_permalink( $specific_id );
+
 }
 
 /**
