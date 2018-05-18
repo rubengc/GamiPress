@@ -216,17 +216,17 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 = 1.5.0 =
 
 * **New Features**
-* New: Support for WordPress personal data exporters.
-* New: Support for WordPress personal data erasers.
+* Support for WordPress personal data exporters.
+* Support for WordPress personal data erasers.
 * **Bug Fixes**
-* Fix: Requirements links at fronted when assigned post is not public.
-* Fix: Assets enqueuing on logs edit screen.
+* Requirements links at fronted when assigned post is not public.
+* Assets enqueuing on logs edit screen.
 * **Improvements**
-* Tweak: Make changelog notes more clear.
+* Make changelog notes more clear.
 * **Developer Notes**
-* Dev: New filter - gamipress_specific_activity_trigger_permalink.
-* Dev: New filter - gamipress_specific_activity_trigger_is_post_type_public.
-* Dev: Added new filters for new privacy functions.
-* Dev: Added 1.5.0 backward compatibility for GamiPress deprecated methods.
-* Dev: Reset public changelog (moved old changelog to changelog.txt file).
-* Dev: Set GamiPress 1.5.0 as new stable release! :)
+* New filter - gamipress_specific_activity_trigger_permalink.
+* New filter - gamipress_specific_activity_trigger_is_post_type_public.
+* Added new filters for new privacy functions.
+* Added 1.5.0 backward compatibility for GamiPress deprecated methods.
+* Reset public changelog (moved old changelog to changelog.txt file).
+* Set GamiPress 1.5.0 as new stable release! :)
