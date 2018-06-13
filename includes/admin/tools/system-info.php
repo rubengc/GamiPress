@@ -34,11 +34,13 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'PHP Version', 'gamipress' ),
                 'type' => 'display',
                 'value' => PHP_VERSION,
+                'classes' => ( version_compare( PHP_VERSION, '7.0.0', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'db_version' => array(
                 'name' => __( 'MySQL Version', 'gamipress' ),
                 'type' => 'display',
                 'value' => $wpdb->db_version(),
+                'classes' => ( version_compare( $wpdb->db_version(), '5.6', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'server_software' => array(
                 'name' => __( 'Webserver Info', 'gamipress' ),
@@ -241,6 +243,8 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $logs_meta_exists = gamipress_database_table_exists( GamiPress()->db->logs_meta );
     $user_earnings_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings );
     $user_earnings_meta_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings_meta );
+    $last_upgrade = get_option( 'gamipress_version', '1.0.0' );
+    $last_required_upgrade = gamipress_get_last_required_upgrade();
 
     $meta_boxes['gamipress-info'] = array(
         'title' => __( 'GamiPress Info', 'gamipress' ),
@@ -260,6 +264,12 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Rank Types', 'gamipress' ),
                 'type' => 'display',
                 'value' => $rank_types_output,
+            ),
+            'gamipress_last_upgrade' => array(
+                'name' => __( 'Last Upgrade', 'gamipress' ),
+                'type' => 'display',
+                'value' => $last_upgrade,
+                'classes' => ( version_compare( $last_upgrade, $last_required_upgrade, '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'gamipress_logs' => array(
                 'name' => __( 'Logs Database', 'gamipress' ),

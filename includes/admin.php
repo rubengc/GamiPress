@@ -53,7 +53,7 @@ function gamipress_admin_body_class( $admin_body_classes ) {
 add_filter( 'admin_body_class', 'gamipress_admin_body_class' );
 
 /**
- * Create GamiPress menus
+ * Add GamiPress menus
  *
  * @since   1.0.0
  * @updated 1.4.0 Added multisite support
@@ -73,7 +73,7 @@ function gamipress_admin_menu() {
 
     // Achievements menu
     if( ! empty( $achievement_types ) ) {
-        add_menu_page( __( 'Achivements', 'gamipress' ), __( 'Achievements', 'gamipress' ), $minimum_role, 'gamipress_achievements', 'gamipress_achievements', 'dashicons-awards', 53 );
+        add_menu_page( __( 'Achievements', 'gamipress' ), __( 'Achievements', 'gamipress' ), $minimum_role, 'gamipress_achievements', 'gamipress_achievements', 'dashicons-awards', 53 );
     }
 
     // Rank types
@@ -91,7 +91,7 @@ function gamipress_admin_menu() {
 add_action( 'admin_menu', 'gamipress_admin_menu' );
 
 /**
- * Create GamiPress Settings menus
+ * Add GamiPress submenus
  *
  * @since 1.0.0
  */
@@ -106,6 +106,192 @@ function gamipress_admin_submenu() {
 
 }
 add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
+
+/**
+ * Add GamiPress admin bar menus to quickly access to menu items
+ *
+ * @since 1.5.1
+ */
+function gamipress_admin_bar_menu( $wp_admin_bar ) {
+
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
+
+    // Bail if current user can't manage GamiPress
+    if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    // GamiPress
+    $wp_admin_bar->add_node( array(
+        'id'    => 'gamipress',
+        'title'	=>	'<span class="ab-icon"></span>' . __( 'GamiPress', 'gamipress' ),
+        'meta'  => array( 'class' => 'gamipress' ),
+    ) );
+
+    // Check registered points types
+    $points_types = gamipress_get_points_types();
+
+    // - Points Types
+    $wp_admin_bar->add_node( array(
+        'id'     => 'points-types',
+        'title'  => __( 'Points Types', 'gamipress' ),
+        'parent' => ( ! empty( $points_types ) ? 'points-group' : 'gamipress' ),
+        'href'   => admin_url( 'edit.php?post_type=points-type' )
+    ) );
+
+    if( ! empty( $points_types ) ) {
+
+        // Points Group
+        $wp_admin_bar->add_group( array(
+            'id'     => 'points-group',
+            'parent' => 'gamipress',
+        ) );
+
+        foreach( $points_types as $points_type => $data ) {
+
+            // - - Achievements
+            $wp_admin_bar->add_node( array(
+                'id'     => 'points-' . $points_type,
+                'title'  => $data['plural_name'],
+                'parent' => 'points-types',
+                'href'   => get_edit_post_link( $data['ID'] )
+            ) );
+
+        }
+
+    }
+
+    // Check registered achievement types
+    $achievement_types = gamipress_get_achievement_types();
+
+    // - Achievement Types
+    $wp_admin_bar->add_node( array(
+        'id'     => 'achievement-types',
+        'title'  => __( 'Achievement Types', 'gamipress' ),
+        'parent' => ( ! empty( $achievement_types ) ? 'achievements-group' : 'gamipress' ),
+        'href'   => admin_url( 'edit.php?post_type=achievement-type' )
+    ) );
+
+    if( ! empty( $achievement_types ) ) {
+
+        // Achievements Group
+        $wp_admin_bar->add_group( array(
+            'id'     => 'achievements-group',
+            'parent' => 'gamipress',
+        ) );
+
+        foreach( $achievement_types as $achievement_type => $data ) {
+
+            // - - Achievements
+            $wp_admin_bar->add_node( array(
+                'id'     => 'achievement-' . $achievement_type,
+                'title'  => $data['plural_name'],
+                'parent' => 'achievement-types',
+                'href'   => admin_url( 'edit.php?post_type=' . $achievement_type )
+            ) );
+
+        }
+
+    }
+
+    // Check registered rank types
+    $rank_types = gamipress_get_rank_types();
+
+    // - Rank Types
+    $wp_admin_bar->add_node( array(
+        'id'     => 'rank-types',
+        'title'  => __( 'Rank Types', 'gamipress' ),
+        'parent' => ( ! empty( $rank_types ) ? 'ranks-group' : 'gamipress' ),
+        'href'   => admin_url( 'edit.php?post_type=rank-type' )
+    ) );
+
+    if( ! empty( $rank_types ) ) {
+
+        // Achievements Group
+        $wp_admin_bar->add_group( array(
+            'id'     => 'ranks-group',
+            'parent' => 'gamipress',
+        ) );
+
+        foreach( $rank_types as $rank_type => $data ) {
+
+            // - - Achievements
+            $wp_admin_bar->add_node( array(
+                'id'     => 'rank-' . $rank_type,
+                'title'  => $data['plural_name'],
+                'parent' => 'rank-types',
+                'href'   => admin_url( 'edit.php?post_type=' . $rank_type )
+            ) );
+
+        }
+
+    }
+
+}
+add_action( 'admin_bar_menu', 'gamipress_admin_bar_menu', 100 );
+
+/**
+ * Add GamiPress admin bar submenus to quickly access to menu items
+ *
+ * @since 1.5.1
+ */
+function gamipress_admin_bar_submenu( $wp_admin_bar ) {
+
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
+
+    // Bail if current user can't manage GamiPress
+    if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    // Help / Support
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-support',
+        'title'  => __( 'Help / Support', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_help_support' )
+    ) );
+
+    // Add-ons
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-add-ons',
+        'title'  => __( 'Add-ons', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_add_ons' )
+    ) );
+
+    // Licenses
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-licenses',
+        'title'  => __( 'Licenses', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_licenses' )
+    ) );
+
+    // Tools
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-tools',
+        'title'  => __( 'Tools', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_tools' )
+    ) );
+
+    // Settings
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-settings',
+        'title'  => __( 'Settings', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_settings' )
+    ) );
+
+}
+add_action( 'admin_bar_menu', 'gamipress_admin_bar_submenu', 102 );
 
 /**
  * Register GamiPress dashboard widget.
@@ -390,7 +576,7 @@ function gamipress_on_delete_post( $post_id ) {
     } else if( $post_type === 'points-type' ) {
 
         // Get assigned points awards
-        $points_awards = gamipress_get_assigned_requirements( $post_id, 'points-award' );
+        $points_awards = gamipress_get_assigned_requirements( $post_id, 'points-award', 'any' );
 
         if( $points_awards ) {
 
@@ -402,7 +588,7 @@ function gamipress_on_delete_post( $post_id ) {
         }
 
         // Get assigned points deducts
-        $points_deducts = gamipress_get_assigned_requirements( $post_id, 'points-deduct' );
+        $points_deducts = gamipress_get_assigned_requirements( $post_id, 'points-deduct', 'any' );
 
         if( $points_deducts ) {
 
@@ -427,7 +613,7 @@ function gamipress_on_delete_post( $post_id ) {
         }
 
         // Get assigned requirements
-        $assigned_requirements = gamipress_get_assigned_requirements( $post_id, $requirement_type );
+        $assigned_requirements = gamipress_get_assigned_requirements( $post_id, $requirement_type, 'any' );
 
         if( $assigned_requirements ) {
 

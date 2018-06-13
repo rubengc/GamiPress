@@ -1,69 +1,9 @@
 (function( $ ) {
 
-    // Clean Data Tool
-    $("#search_data_to_clean").click(function(e) {
-        e.preventDefault();
-
-        var $this = $(this);
-
-        $this.prop('disabled', true);
-
-        // Show the spinner
-        $this.parent().append('<span id="clean-data-response"><span class="spinner is-active" style="float: none;"></span></span>');
-
-        $.post(
-            ajaxurl,
-            {
-                action: 'gamipress_search_data_to_clean'
-            },
-            function( response ) {
-                if( response.success === false ) {
-                    $('#clean-data-response').css({color:'#a00'});
-                }
-
-                $('#clean-data-response').html(response.data.message);
-
-                if( response.success === true && response.data.found_results > 0 ) {
-
-                    $this.hide();
-                    $("#clean_data").show();
-                }
-
-                $this.prop('disabled', false);
-            }
-        );
-    });
-
-    $("#clean_data").hide();
-
-    $("#clean_data").click(function(e) {
-        e.preventDefault();
-
-        var $this = $(this);
-
-        $this.prop('disabled', true);
-
-        // Show the spinner
-        $('#clean-data-response').html('<span class="spinner is-active" style="float: none;"></span>');
-
-        $.post(
-            ajaxurl,
-            {
-                action: 'gamipress_clean_data_tool'
-            },
-            function( response ) {
-                if( response.success === false ) {
-                    $('#clean-data-response').css({color:'#a00'});
-                }
-
-                $('#clean-data-response').html(response.data);
-
-                //$this.prop('disabled', false);
-            }
-        );
-    });
-
+    // ----------------------------------
     // Reset Data Tool
+    // ----------------------------------
+
     var reset_data_dialog = $("#reset-data-dialog");
 
     reset_data_dialog.dialog({
@@ -182,7 +122,10 @@
 
     });
 
+    // ----------------------------------
     // Import Settings Tool
+    // ----------------------------------
+
     $('#import_settings').click(function(e) {
         e.preventDefault();
 
@@ -232,7 +175,10 @@
         });
     });
 
+    // ----------------------------------
     // Recount Activity Tool
+    // ----------------------------------
+
     function gamipress_run_recount_activity_tool( loop ) {
 
         if( loop === undefined ) {

@@ -17,6 +17,7 @@ require_once GAMIPRESS_DIR . 'includes/custom-tables/user-earnings.php';
  * @since   1.2.8
  * @updated 1.4.3 User Earnings v2: Added the field title
  * @updated 1.4.7 Logs v2: Added the field trigger_type
+ * @updated 1.5.1 Logs v3: Removed the field description and make type and trigger_type indexes
  *
  * @return void
  */
@@ -76,7 +77,7 @@ function gamipress_register_custom_tables() {
         'singular' => __( 'Log', 'gamipress' ),
         'plural' => __( 'Logs', 'gamipress' ),
         'show_ui' => true,
-        'version' => 2,
+        'version' => 3,
         'global' => gamipress_is_network_wide_active(),
         'supports' => array( 'meta' ),
         'views' => array(
@@ -101,15 +102,14 @@ function gamipress_register_custom_tables() {
             'title' => array(
                 'type' => 'text',
             ),
-            'description' => array(
-                'type' => 'text',
-            ),
             'type' => array(
                 'type' => 'text',
+                'key' => true,
             ),
             'trigger_type' => array(
                 'type' => 'varchar',
                 'length' => '255',
+                'key' => true,
             ),
             'access' => array(
                 'type' => 'varchar',
@@ -122,7 +122,7 @@ function gamipress_register_custom_tables() {
             ),
             'date' => array(
                 'type' => 'datetime',
-                'default' => '0000-00-00 00:00:00'
+                'default' => '0000-00-00 00:00:00',
             )
         ),
     ) );

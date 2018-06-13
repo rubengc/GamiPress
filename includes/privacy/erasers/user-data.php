@@ -42,7 +42,6 @@ add_filter( 'wp_privacy_personal_data_erasers', 'gamipress_privacy_register_user
 function gamipress_privacy_user_data_eraser( $email_address, $page = 1 ) {
 
     // Setup vars
-    $export_items   = array();
     $points_types = gamipress_get_points_types();
     $achievement_types = gamipress_get_achievement_types();
     $rank_types = gamipress_get_rank_types();

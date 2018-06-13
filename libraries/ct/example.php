@@ -6,13 +6,14 @@
  * http://nacin.com/2010/05/11/in-wordpress-prefix-everything/
  */
 
+// Include the Custom Table lib
+require_once __DIR__ . '/ct.php';
+
 /* ----------------------------------
  * INITIALIZATION
    ---------------------------------- */
 
 function yourprefix_init() {
-
-    require_once __DIR__ . '/ct.php';
 
     $ct_table = ct_register_table( 'demo_logs', array(
         'singular' => 'Log',

@@ -90,28 +90,15 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
 
             break;
         case 'points':
+
+            // Get the points vars
             $awarded_points_type = gamipress_get_post_meta( $post_id, $prefix . 'points_type' );
-
-            $points_types = gamipress_get_points_types();
-
-            $points_types[''] = array(
-                'singular_name' => __( 'Point', 'gamipress' ),
-                'plural_name' => __( 'Points', 'gamipress' ),
-            );
-
-            if( ! isset( $points_types[$awarded_points_type] ) ) {
-                break;
-            }
-
-            $points_type = $points_types[$awarded_points_type];
-
             $points = absint( gamipress_get_post_meta( $post_id, $prefix . 'points' ) );
 
-            if( $points === 0 ) {
-                break;
+            if( $points !== 0 ) {
+                echo gamipress_format_points( $points, $awarded_points_type );
             }
 
-            echo $points . ' ' . _n( $points_type['singular_name'], $points_type['plural_name'], $points );
             break;
         case 'earned_by':
 
@@ -126,6 +113,30 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
 
             echo ( isset( $earned_by_options[$earned_by] ) ? $earned_by_options[$earned_by] : $earned_by );
 
+            switch( $earned_by ) {
+                case 'points':
+
+                    // Get the points vars
+                    $required_points_type = gamipress_get_post_meta( $post_id, $prefix . 'points_type_required' );
+                    $required_points = absint( gamipress_get_post_meta( $post_id, $prefix . 'points_required' ) );
+
+                    if( $required_points !== 0 ) {
+                        echo '<br><strong>' . gamipress_format_points( $required_points, $required_points_type ) . '</strong>';
+                    }
+
+                    break;
+                case 'rank':
+
+                    // Get the rank ID
+                    $required_rank_id = absint( gamipress_get_post_meta( $post_id, $prefix . 'rank_required' ) );
+
+                    if( $required_rank_id !== 0 ) {
+                        echo '<br><strong><a href="' . get_edit_post_link( $required_rank_id ) . '">' . gamipress_get_post_field( 'post_title', $required_rank_id ) . '</a></strong>';
+                    }
+
+                    break;
+            }
+
             break;
         case 'maximum_earnings':
             $maximum_earnings = absint( gamipress_get_post_meta( $post_id, $prefix . 'maximum_earnings' ) );
@@ -137,34 +148,21 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
             }
             break;
         case 'unlock_with_points':
+
             $unlock_with_points = gamipress_get_post_meta( $post_id, $prefix . 'unlock_with_points' );
 
             if( ! (bool) $unlock_with_points ) {
                 break;
             }
 
+            // Get the points vars
             $points_type_to_unlock = gamipress_get_post_meta( $post_id, $prefix . 'points_type_to_unlock' );
-
-            $points_types = gamipress_get_points_types();
-
-            $points_types[''] = array(
-                'singular_name' => __( 'Point', 'gamipress' ),
-                'plural_name' => __( 'Points', 'gamipress' ),
-            );
-
-            if( ! isset( $points_types[$points_type_to_unlock] ) ) {
-                break;
-            }
-
-            $points_type = $points_types[$points_type_to_unlock];
-
             $points_to_unlock = absint( gamipress_get_post_meta( $post_id, $prefix . 'points_to_unlock' ) );
 
-            if( $points_to_unlock === 0 ) {
-                break;
+            if( $points_to_unlock !== 0 ) {
+                echo gamipress_format_points( $points_to_unlock, $points_type_to_unlock );
             }
 
-            echo $points_to_unlock . ' ' . _n( $points_type['singular_name'], $points_type['plural_name'], $points_to_unlock );
             break;
     }
 

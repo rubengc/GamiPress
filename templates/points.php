@@ -53,7 +53,9 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
      */
     do_action( 'gamipress_before_render_points_list', $points_types, $a ); ?>
 
-    <?php foreach( $a['points'] as $points_type => $count ) : ?>
+    <?php foreach( $a['points'] as $points_type => $amount ) :
+
+        $label_position = gamipress_get_points_type_label_position( $points_type ); ?>
 
         <?php
         /**
@@ -62,11 +64,11 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
          * @since 1.0.0
          *
          * @param string  $points_type      Points type slug
-         * @param integer $count            Amount of this points type
+         * @param integer $amount           Amount of this points type
          * @param array   $points_types     Array of points types to be rendered
          * @param array   $template_args    Template received arguments
          */
-        do_action( 'gamipress_before_render_points', $points_type, $count, $points_types, $a ); ?>
+        do_action( 'gamipress_before_render_points', $points_type, $amount, $points_types, $a ); ?>
 
         <div class="gamipress-points gamipress-user-points-<?php echo $points_type; ?>">
 
@@ -83,34 +85,19 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
                  * @since 1.0.0
                  *
                  * @param string  $points_type      Points type slug
-                 * @param integer $count            Amount of this points type
+                 * @param integer $amount           Amount of this points type
                  * @param array   $points_types     Array of points types to be rendered
                  * @param array   $template_args    Template received arguments
                  */
-                do_action( 'gamipress_after_user_points_thumbnail', $points_type, $count, $points_types, $a ); ?>
+                do_action( 'gamipress_after_user_points_thumbnail', $points_type, $amount, $points_types, $a ); ?>
 
             <?php endif; ?>
 
             <div class="gamipress-user-points-description">
 
-                <span class="gamipress-user-points-count"><?php echo $count; ?></span>
-
-                <?php
-                /**
-                 * After user points count
-                 *
-                 * @since 1.0.0
-                 *
-                 * @param string  $points_type      Points type slug
-                 * @param integer $count            Amount of this points type
-                 * @param array   $points_types     Array of points types to be rendered
-                 * @param array   $template_args    Template received arguments
-                 */
-                do_action( 'gamipress_after_user_points_count', $points_type, $count, $points_types, $a ); ?>
-
-                <?php // User Points Label
-                if( $a['label'] === 'yes' ) : ?>
-                    <span class="gamipress-user-points-label"><?php echo $points_types[$points_type]['plural_name']; ?></span>
+                <?php // User Points Label (before)
+                if( $a['label'] === 'yes' && $label_position === 'before' ) : ?>
+                    <span class="gamipress-user-points-label"><?php echo gamipress_get_points_amount_label( $amount, $points_type ); ?></span>
 
                     <?php
                     /**
@@ -119,11 +106,46 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
                      * @since 1.0.0
                      *
                      * @param string  $points_type      Points type slug
-                     * @param integer $count            Amount of this points type
+                     * @param integer $amount           Amount of this points type
                      * @param array   $points_types     Array of points types to be rendered
                      * @param array   $template_args    Template received arguments
                      */
-                    do_action( 'gamipress_after_user_points_label', $points_type, $count, $points_types, $a ); ?>
+                    do_action( 'gamipress_after_user_points_label', $points_type, $amount, $points_types, $a ); ?>
+
+                <?php endif; ?>
+
+                <span class="gamipress-user-points-amount"><?php echo gamipress_format_amount( $amount, $points_type ); ?></span>
+
+                <?php
+                /**
+                 * After user points amount
+                 *
+                 * @since   1.0.0
+                 * @updated 1.5.1 Fixed filter name, changed from 'gamipress_after_user_points_count' to 'gamipress_after_user_points_amount'
+                 *
+                 * @param string  $points_type      Points type slug
+                 * @param integer $amount           Amount of this points type
+                 * @param array   $points_types     Array of points types to be rendered
+                 * @param array   $template_args    Template received arguments
+                 */
+                do_action( 'gamipress_after_user_points_amount', $points_type, $amount, $points_types, $a ); ?>
+
+                <?php // User Points Label (after)
+                if( $a['label'] === 'yes' && $label_position !== 'before' ) : ?>
+                    <span class="gamipress-user-points-label"><?php echo gamipress_get_points_amount_label( $amount, $points_type ); ?></span>
+
+                    <?php
+                    /**
+                     * After user points label
+                     *
+                     * @since 1.0.0
+                     *
+                     * @param string  $points_type      Points type slug
+                     * @param integer $amount           Amount of this points type
+                     * @param array   $points_types     Array of points types to be rendered
+                     * @param array   $template_args    Template received arguments
+                     */
+                    do_action( 'gamipress_after_user_points_label', $points_type, $amount, $points_types, $a ); ?>
 
                 <?php endif; ?>
 
@@ -138,11 +160,11 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
          * @since 1.0.0
          *
          * @param string  $points_type      Points type slug
-         * @param integer $count            Amount of this points type
+         * @param integer $amount           Amount of this points type
          * @param array   $points_types     Array of points types to be rendered
          * @param array   $template_args    Template received arguments
          */
-        do_action( 'gamipress_after_render_points', $points_type, $count, $points_types, $a ); ?>
+        do_action( 'gamipress_after_render_points', $points_type, $amount, $points_types, $a ); ?>
 
     <?php endforeach; ?>
 

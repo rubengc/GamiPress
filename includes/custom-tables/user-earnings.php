@@ -193,7 +193,7 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
 
                 <?php if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) : ?>
 
-                    <?php if( $user_earning->post_type === 'step' && $parent_achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) ) : ?>
+                    <?php if( $user_earning->post_type === 'step' && $parent_achievement = gamipress_get_step_achievement( $user_earning->post_id ) ) : ?>
 
                         <?php // Step ?>
 

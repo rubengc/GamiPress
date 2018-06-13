@@ -22,7 +22,9 @@ require_once GAMIPRESS_DIR . 'includes/admin/settings/network.php';
  * @return void
  */
 function gamipress_register_settings() {
+
 	register_setting( 'gamipress_settings', 'gamipress_settings' );
+
 }
 add_action( 'admin_init', 'gamipress_register_settings' );
 

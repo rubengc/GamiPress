@@ -16,6 +16,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.3.1.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.3.7.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.3.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.7.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.5.1.php';
 
 /**
  * GamiPress upgrades
@@ -37,16 +38,30 @@ function gamipress_process_upgrades() {
 
     /**
      * Before process upgrades action
+     *
+     * @since 1.1.0
+     *
+     * @param string $stored_version Latest upgrade version
      */
     do_action( 'gamipress_before_process_upgrades', $stored_version );
 
     /**
      * Version upgrade filter
+     *
+     * @since 1.1.0
+     *
+     * @param string $stored_version Latest upgrade version
+     *
+     * @return string
      */
     $stored_version = apply_filters( 'gamipress_process_upgrades', $stored_version );
 
     /**
      * After process upgrades action
+     *
+     * @since 1.1.0
+     *
+     * @param string $stored_version Latest upgrade version
      */
     do_action( 'gamipress_after_process_upgrades', $stored_version );
 
@@ -57,9 +72,37 @@ function gamipress_process_upgrades() {
 add_action( 'admin_init', 'gamipress_process_upgrades' );
 
 /**
+ * Get the latest GamiPress version that requires an upgrade
+ *
+ * @since 1.5.1
+ *
+ * @return string   Last version that required an upgrade
+ */
+function gamipress_get_last_required_upgrade() {
+
+    $version = '1.1.0';
+
+    /**
+     * Get the last required upgrade (useful to meet if version stored and current required is the same)
+     *
+     * @since 1.5.1
+     *
+     * @param string $stored_version Latest upgrade version
+     *
+     * @return string
+     */
+    return apply_filters( 'gamipress_get_last_required_upgrade', $version );
+
+}
+
+/**
  * Helper function to check if GamiPress has been upgraded successfully
  *
  * @since 1.2.8
+ *
+ * @param string $desired_version
+ *
+ * @return bool
  */
 function is_gamipress_upgraded_to( $desired_version = '1.0.0' ) {
 

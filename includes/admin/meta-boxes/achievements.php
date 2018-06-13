@@ -146,9 +146,7 @@ function gamipress_achievements_meta_boxes( $post_type ) {
                 'classes' 	  => 'gamipress-image-options'
             ),
         ),
-        array(
-            'context'  => 'side',
-        )
+        array( 'context'  => 'side', )
     );
 
 }

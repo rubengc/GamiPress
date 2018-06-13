@@ -108,7 +108,6 @@ function gamipress_update_user_achievements( $args = array() ) {
 	$defaults = array(
 		'user_id'          => 0,     // The given user's ID
 		'site_id'          => get_current_blog_id(), // The given site's ID
-		//'all_achievements' => false, // An array of ALL achievements earned by the user // TODO: Not supported since 1.2.8
 		'new_achievements' => false, // An array of NEW achievements earned by the user
 	);
 
@@ -522,7 +521,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 					<?php while ( $the_query->have_posts() ) : $the_query->the_post();
 
 						// if not parent object, skip
-						if( $achievement_slug === 'step' && ! $parent_achievement = gamipress_get_parent_of_achievement( get_the_ID() ) ) {
+						if( $achievement_slug === 'step' && ! $parent_achievement = gamipress_get_step_achievement( get_the_ID() ) ) {
 							continue;
 						} else if( $achievement_slug === 'points-award' && ! $points_type = gamipress_get_points_award_points_type( get_the_ID() ) ) {
 							continue;

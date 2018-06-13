@@ -133,46 +133,99 @@ add_action( 'wp_insert_comment', 'gamipress_approved_comment_listener', 10, 2 );
 /**
  * Listener for daily visits
  *
- * Triggers: gamipress_site_visit, gamipress_specific_post_visit
+ * Triggers: gamipress_site_visit, gamipress_specific_post_visit, gamipress_user_post_visit, gamipress_user_specific_post_visit
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.5.1 Now is triggered through ajax
  *
  * @return void
  */
 function gamipress_site_visit_listener() {
 
-    // Bail if is an ajax request
-    if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-        return;
-    }
+    $events_triggered = array();
 
-    // Bail if is admin area
-    if( is_admin() ) {
-        return;
-    }
-
-    // Bail if not logged in
-    if( ! is_user_logged_in() ) {
-        return;
-    }
-
-    // Current User ID
+    // Check current logged in user ID
     $user_id = get_current_user_id();
-    $now = strtotime( date( 'Y-m-d', current_time( 'timestamp' ) ) );
 
-    // Website daily visit
-    $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_site_visit', $now );
-
-    // Trigger daily visit action if not triggered today
-    if( $count === 0 ) {
-        do_action( 'gamipress_site_visit', $user_id );
+    // Bail if there is no user to award
+    if( $user_id === 0 ) {
+        // Return an array of events triggered
+        wp_send_json_success( $events_triggered );
+        exit;
     }
 
-    global $post;
+    // Current time
+    $now = strtotime( date( 'Y-m-d 00:00:00', current_time( 'timestamp' ) ) );
 
-    if( $post ) {
+    // ---------------------------
+    // Website daily visit
+    // ---------------------------
 
-        // Post daily visit
+    /**
+     * Filter to set if site visits should be tracked or not
+     *
+     * @since 1.5.1
+     *
+     * @param bool  $track_visits   Whatever if visits should be tracked (default true)
+     * @param int   $user_id        The user ID that made the visit
+     *
+     * @return bool
+     */
+    $track_visits = apply_filters( 'gamipress_track_site_visits', true, $user_id );
+
+    if( $track_visits ) {
+
+        $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_site_visit', $now );
+
+        // Trigger daily visit action if not triggered today
+        if( $count === 0 ) {
+            do_action( 'gamipress_site_visit', $user_id );
+
+            $events_triggered['gamipress_site_visit'] = array( $user_id );
+        }
+
+    }
+
+    // Check the given post ID
+    $post_id = absint( $_REQUEST['post_id'] );
+
+    if( $post_id === 0 ) {
+        // Return an array of events triggered
+        wp_send_json_success( $events_triggered );
+        exit;
+    }
+
+    // Check if post really exists
+    $post = get_post( $post_id );
+
+    if( ! $post ) {
+        // Return an array of events triggered
+        wp_send_json_success( $events_triggered );
+        exit;
+    }
+
+    // ---------------------------
+    // Post daily visit
+    // ---------------------------
+
+    /**
+     * Filter to set if post visits should be tracked or not
+     *
+     * Note: Post visits event will award to the visitor
+     *
+     * @since 1.5.1
+     *
+     * @param bool  $track_visits   Whatever if post visits should be tracked (default true)
+     * @param int   $user_id        The user ID that made the visit
+     * @param int   $post_id        The post ID that has been visited
+     * @param int   $post           The post object that has been visited
+     *
+     * @return bool
+     */
+    $track_post_visits = apply_filters( 'gamipress_track_post_visits', true, $user_id, $post_id, $post );
+
+    if( $track_post_visits ) {
+
         $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
 
         // Trigger daily post visit action if not triggered today
@@ -181,55 +234,65 @@ function gamipress_site_visit_listener() {
             // Trigger any post visit
             do_action( 'gamipress_post_visit', $post->ID, $user_id, $post );
 
+            $events_triggered['gamipress_post_visit'] = array( $post->ID, $user_id, $post );
+
             // Trigger specific post visit
             do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
 
+            $events_triggered['gamipress_specific_post_visit'] = array( $post->ID, $user_id, $post );
+
         }
 
     }
-}
-add_action( 'wp_head', 'gamipress_site_visit_listener' );
 
-/**
- * Listener for user post visits
- *
- * Triggers: gamipress_user_post_visit, gamipress_user_specific_post_visit
- *
- * @since  1.2.9
- *
- * @return void
- */
-function gamipress_user_post_visit_listener() {
+    // ---------------------------
+    // User post daily visit
+    // ---------------------------
 
-    // Bail if is an ajax request
-    if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-        return;
-    }
+    $post_author = absint( $post->post_author );
 
-    // Bail if is admin area
-    if( is_admin() ) {
-        return;
-    }
+    /**
+     * Filter to set if user post visits should be tracked or not
+     *
+     * Note: User post visits event will award to the post author
+     *
+     * @since 1.5.1
+     *
+     * @param bool  $track_visits   Whatever if user post visits should be tracked (default true)
+     * @param int   $user_id        The user ID that made the visit
+     * @param int   $post_author    The post author ID that receive the visit
+     * @param int   $post_id        The post ID that has been visited
+     * @param int   $post           The post object that has been visited
+     *
+     * @return bool
+     */
+    $track_user_post_visits = apply_filters( 'gamipress_track_user_post_visits', true, $user_id, $post_author, $post_id, $post );
 
-    // Current User ID
-    $user_id = get_current_user_id();
-
-    global $post;
-
-    if( $post ) {
-
-        $post_author = absint( $post->post_author );
+    if( $track_user_post_visits ) {
 
         // Trigger user post visit action to the author if visitor not is the author
         if( $post_author && $post_author !== $user_id ) {
+
+            // Trigger user post visit
             do_action( 'gamipress_user_post_visit', $post->ID, $post_author, $user_id, $post );
+
+            $events_triggered['gamipress_user_post_visit'] = array( $post->ID, $post_author, $user_id, $post );
+
+            // Trigger user specific post visit
             do_action( 'gamipress_user_specific_post_visit', $post->ID, $post_author, $user_id, $post );
+
+            $events_triggered['gamipress_user_specific_post_visit'] = array( $post->ID, $post_author, $user_id, $post );
+
         }
 
     }
 
+    // Return an array of events triggered
+    wp_send_json_success( $events_triggered );
+    exit;
+
 }
-add_action( 'wp_head', 'gamipress_user_post_visit_listener' );
+add_action( 'wp_ajax_gamipress_track_visit', 'gamipress_site_visit_listener' );
 
 /**
  * Listener for expend points

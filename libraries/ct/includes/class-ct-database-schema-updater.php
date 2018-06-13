@@ -14,7 +14,7 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
         /**
          * @var CT_DataBase Database object
          */
-        public $db;
+        public $ct_db;
 
         /**
          * @var CT_DataBase_Schema Database Schema object
@@ -28,11 +28,16 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
          */
         public function __construct( $ct_db ) {
 
-            $this->db = $ct_db;
+            $this->ct_db = $ct_db;
             $this->schema = $ct_db->schema;
 
         }
 
+        /**
+         * Run the database schema update
+         *
+         * @return bool
+         */
         public function run() {
 
             if( $this->schema ) {
@@ -44,7 +49,7 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
                 $current_schema_fields = array();
 
                 // Get a description of current schema
-                $schema_description = $this->db->db->get_results( "DESCRIBE {$this->db->table_name}" );
+                $schema_description = $this->ct_db->db->get_results( "DESCRIBE {$this->ct_db->table_name}" );
 
                 // Check stored schema with configured fields to check field deletions and build a custom array to be used after
                 foreach( $schema_description as $field ) {
@@ -70,10 +75,20 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
                             'action' => 'ADD',
                             'column' => $field_id
                         );
+
                     } else {
                         // Check changes in field definition
 
-                        // TODO!!!
+                        // Check if key definition has changed
+                        if( $field_args['key'] !== $current_schema_fields[$field_id]['key'] ) {
+                            $alters[] = array(
+                                // Based the action on current key, if is true then ADD, if is false then DROP
+                                'action' => ( $field_args['key'] ? 'ADD INDEX' : 'DROP INDEX' ),
+                                'column' => $field_id
+                            );
+                        }
+
+                        // TODO: Check the rest of available field args to determine was changed!!!
                     }
 
                 }
@@ -87,23 +102,57 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
 
                     switch( $alter['action'] ) {
                         case 'ADD':
-                            $sql .= "ALTER TABLE {$this->db->table_name} ADD " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            $sql .= "ALTER TABLE {$this->ct_db->table_name} ADD " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            break;
+                        case 'ADD INDEX':
+
+                            /*
+                             * Indexes have a maximum size of 767 bytes. WordPress 4.2 was moved to utf8mb4, which uses 4 bytes per character.
+                             * This means that an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
+                             */
+                            $max_index_length = 191;
+
+                            if( $schema_fields[$column]['length'] > $max_index_length || $schema_fields[$column]['type'] === 'text' ) {
+                                $add_index_query = '' . $column . '(' . $column . '(' . $max_index_length . '))';
+                            } else {
+                                $add_index_query = '' . $column . '(' . $column . ')';
+                            }
+
+                            // Prevent errors if index already exists
+                            drop_index( $this->ct_db->table_name, $column );
+
+                            // For indexes query should be executed directly
+                            $this->ct_db->db->query( "ALTER TABLE {$this->ct_db->table_name} ADD INDEX {$add_index_query}" );
                             break;
                         case 'MODIFY':
-                            $sql .= "ALTER TABLE {$this->db->table_name} MODIFY " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            $sql .= "ALTER TABLE {$this->ct_db->table_name} MODIFY " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
                             break;
                         case 'DROP':
-                            $sql .= "ALTER TABLE {$this->db->table_name} DROP COLUMN {$column}; ";
+                            $sql .= "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}; ";
+
+                            // Better use a built-in function here?
+                            //maybe_drop_column( $this->ct_db->table_name, $column, "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}" );
                         break;
+                        case 'DROP INDEX':
+                            // For indexes query should be executed directly
+                            //$this->ct_db->db->query( "ALTER TABLE {$this->ct_db->table_name} DROP INDEX {$column}" );
+
+                            // Use a built-in function for safe drop
+                            drop_index( $this->ct_db->table_name, $column );
+                            break;
 
                     }
                 }
 
-                // Execute the SQL
-                $updated = $this->db->db->query( $sql );
+                if( ! empty( $sql ) ) {
+                    // Execute the SQL
+                    $updated = $this->ct_db->db->query( $sql );
 
-                // Was anything updated?
-                return ! empty( $updated );
+                    // Was anything updated?
+                    return ! empty( $updated );
+                }
+
+                return true;
 
             }
 

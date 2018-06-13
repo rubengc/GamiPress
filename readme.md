@@ -223,6 +223,31 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.5.1 ###
+
+* **New Features**
+* Added a quick menu at WordPress admin bar to access to the different GamiPress admin screens.
+* Added settings to customize the points output per points type (through the points type edit screen).
+* Added extra information about achievement setup with "Earned by" is setup to a minimum of points or by reach a rank (on admin area).
+* **Bug Fixes**
+* Order display doesn't gets updated after drop the requirement on a different position when sequential requirements is enabled.
+* Added extra check on the awards engine to prevent award removed points types.
+* Fixed an issue with licenses that sometimes causes licenses not being correctly active.
+* **Improvements**
+* Fully reworked site visits listeners to make it track visits through ajax (instead of on every page load).
+* A huge number of queries has been improved reducing his time consumption to half or less when any event gets triggered.
+* Added current and last required upgrade info on System Info tool.
+* Added PHP and DB version check on System Info tool.
+* Make the GamiPress points field compatible with custom tables like logs.
+* All points output has been formatted with the new settings.
+* **Developer Notes**
+* PostToPost (P2P) library has been removed.
+* Added more indexes to logs table to make queries more faster.
+* Added new filters on gamipress_site_visit_listener() to customize the workflow of visits listener.
+* Added new functions to format points based on points type configuration (with new filters to customize their workflow).
+* The unused field description has been removed from logs.
+* Clean data tool has been removed since is not needle yet.
+
 ### 1.5.0 ###
 
 * **New Features**

@@ -9,6 +9,18 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Return 1.3.1 as last required upgrade
+ *
+ * @return string
+ */
+function gamipress_131_is_last_required_upgrade() {
+
+    return '1.3.1';
+
+}
+add_filter( 'gamipress_get_last_required_upgrade', 'gamipress_131_is_last_required_upgrade', 131 );
+
+/**
  * Process 1.3.1 upgrades
  *
  * @param string $stored_version

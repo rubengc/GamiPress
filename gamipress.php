@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.5.0
+ * Version:         	1.5.1
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -136,7 +136,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.5.0' );
+		define( 'GAMIPRESS_VER', '1.5.1' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -157,9 +157,6 @@ final class GamiPress {
      * @return      void
      */
     private function libraries() {
-
-		// P2P
-        require_once GAMIPRESS_DIR . 'libraries/p2p/load.php';
 
 		// Custom Tables
 		require_once GAMIPRESS_DIR . 'libraries/ct/ct.php';
@@ -199,6 +196,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.4.3.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.4.7.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.5.0.php';
+		require_once GAMIPRESS_DIR . 'includes/compatibility/1.5.1.php';
 
 	}
 
@@ -217,7 +215,6 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/functions/rank-types.php';
 
 		// The rest of files
-		require_once GAMIPRESS_DIR . 'includes/p2p.php';
 		require_once GAMIPRESS_DIR . 'includes/admin.php';
 		require_once GAMIPRESS_DIR . 'includes/custom-tables.php';
 		require_once GAMIPRESS_DIR . 'includes/post-types.php';
@@ -284,8 +281,6 @@ final class GamiPress {
 		$this->db->postmeta 			= $wpdb->postmeta;
 		$this->db->users 				= $wpdb->users;
 		$this->db->usermeta 			= $wpdb->usermeta;
-		$this->db->p2p 					= $wpdb->p2p;
-		$this->db->p2pmeta 				= $wpdb->p2pmeta;
 
 		// Setup GamiPress database tables
 		$this->db->logs 				= $wpdb->gamipress_logs;

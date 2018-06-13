@@ -203,15 +203,19 @@ function gamipress_points_shortcode( $atts = array () ) {
         $last_points_type = key( array_slice( $gamipress_template_args['points'], -1, 1, true ) );
 
         // Inline rendering
-        foreach( $gamipress_template_args['points'] as $points_type => $count ) {
+        foreach( $gamipress_template_args['points'] as $points_type => $amount ) {
+
+            $label_position = gamipress_get_points_type_label_position( $points_type );
 
             $output .=
                 // Thumbnail
                 ( $gamipress_template_args['thumbnail'] === 'yes' ? gamipress_get_points_type_thumbnail( $points_type ) . ' ' : '' )
+                // Points label (before)
+                . ( $gamipress_template_args['label'] === 'yes' && $label_position === 'before' ? gamipress_get_points_amount_label( $amount, $points_type ) . ' ' : '' )
                 // Points amount
-                . $count
-                // Points label
-                . ( $gamipress_template_args['label'] === 'yes' ? ' ' . gamipress_get_points_type_plural( $points_type ) : '' )
+                . gamipress_format_amount( $amount, $points_type )
+                // Points label (after)
+                . ( $gamipress_template_args['label'] === 'yes' && $label_position !== 'before' ? ' ' . gamipress_get_points_amount_label( $amount, $points_type ) : '' )
                 // Points separator
                 . ( $points_type !== $last_points_type ? ', ' : '' );
         }

@@ -29,8 +29,6 @@ function gamipress_init_multisite() {
             GamiPress()->db->postmeta               = $wpdb->base_prefix . 'postmeta';
             GamiPress()->db->users                  = $wpdb->base_prefix . 'users';
             GamiPress()->db->usermeta               = $wpdb->base_prefix . 'usermeta';
-            GamiPress()->db->p2p                    = $wpdb->base_prefix . 'p2p';
-            GamiPress()->db->p2pmeta                = $wpdb->base_prefix . 'p2pmeta';
 
             // Setup GamiPress database tables
             GamiPress()->db->logs 				    = $wpdb->base_prefix . 'gamipress_logs';
@@ -112,11 +110,6 @@ function gamipress_network_wide_post_request( $request, $wp_query ) {
             // Replace {prefix}{site}postmeta to {prefix}postmeta
             $request = str_replace( $wpdb->postmeta, "{$wpdb->base_prefix}postmeta", $request );
 
-            // Replace {prefix}{site}p2p to {prefix}p2p
-            $request = str_replace( $wpdb->p2p, "{$wpdb->base_prefix}p2p", $request );
-
-            // Replace {prefix}{site}p2pmeta to {prefix}p2pmeta
-            $request = str_replace( $wpdb->p2pmeta, "{$wpdb->base_prefix}p2pmeta", $request );
         }
 
     }

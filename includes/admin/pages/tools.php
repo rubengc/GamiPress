@@ -12,7 +12,6 @@ if( !defined( 'ABSPATH' ) ) exit;
 require_once GAMIPRESS_DIR . 'includes/admin/tools/bulk-awards.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/bulk-revokes.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/recount-activity.php';
-require_once GAMIPRESS_DIR . 'includes/admin/tools/clean-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/reset-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/system-info.php';

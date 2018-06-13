@@ -50,9 +50,9 @@ function gamipress_get_points_types_slugs() {
  *
  * @since  1.4.6
  *
- * @param string|int|WP_Post    $points_type
+ * @param string|int|WP_Post    $points_type    The points type
  *
- * @return array|false                              The points type object if is registered, if not return false
+ * @return array|false                          The points type object if is registered, if not return false
  */
 function gamipress_get_points_type( $points_type ) {
 
@@ -87,7 +87,7 @@ function gamipress_get_points_type( $points_type ) {
  *
  * @since  1.4.6
  *
- * @param int $points_type_id
+ * @param int $points_type_id       The points type ID
  *
  * @return array|false              The points type object if is registered, if not return false
  */
@@ -117,9 +117,9 @@ function gamipress_get_points_type_by_id( $points_type_id ) {
  *
  * @since  1.4.6
  *
- * @param string|int|WP_Post    $points_type
+ * @param string|int|WP_Post    $points_type    The points type
  *
- * @return array|false                              The points type ID if is registered, if not return false
+ * @return int|false                            The points type ID if is registered, if not return false
  */
 function gamipress_get_points_type_id( $points_type ) {
 
@@ -138,10 +138,10 @@ function gamipress_get_points_type_id( $points_type ) {
  *
  * @since  1.4.6
  *
- * @param string|int|WP_Post    $points_type
- * @param bool                  $force_return       If set to true, will return "Point" if points type is not registered or singular name is empty
+ * @param string|int|WP_Post    $points_type    The points type
+ * @param bool                  $force_return   If set to true, will return "Point" if points type is not registered or singular name is empty
  *
- * @return array|false                              The points type singular name if is registered, if not return false
+ * @return array|false                          The points type singular name if is registered, if not return false
  */
 function gamipress_get_points_type_singular( $points_type, $force_return = false ) {
 
@@ -167,10 +167,10 @@ function gamipress_get_points_type_singular( $points_type, $force_return = false
  *
  * @since  1.4.6
  *
- * @param string|int|WP_Post    $points_type
- * @param bool                  $force_return       If set to true, will return "Points" if points type is not registered or plural name is empty
+ * @param string|int|WP_Post    $points_type    The points type
+ * @param bool                  $force_return   If set to true, will return "Points" if points type is not registered or plural name is empty
  *
- * @return array|false                              The points type plural name if is registered, if not return false
+ * @return array|false                          The points type plural name if is registered, if not return false
  */
 function gamipress_get_points_type_plural( $points_type, $force_return = false ) {
 
@@ -188,5 +188,181 @@ function gamipress_get_points_type_plural( $points_type, $force_return = false )
     }
 
     return $force_return ? __( 'Points', 'gamipress' ) : false;
+
+}
+
+/**
+ * Return the singular or plural form based on the supplied amount
+ *
+ * @since  1.5.1
+ *
+ * @param int                   $amount         The desired amount
+ * @param string|int|WP_Post    $points_type    The points type
+ * @param bool                  $force_return   If set to true, will return "Point" or "Points" if points type is not registered or plural name is empty
+ *
+ * @return string                               The points type singular or plural based on the supplied amount
+ */
+function gamipress_get_points_amount_label( $amount, $points_type, $force_return = false ) {
+
+    // Get the singular or plural label based on points amount
+    $label = _n( gamipress_get_points_type_singular( $points_type, $force_return ), gamipress_get_points_type_plural( $points_type, $force_return ), $amount, 'gamipress' );
+
+    /**
+     * Points type label position (default after)
+     *
+     * @since  1.5.1
+     *
+     * @param string                $label          The points type singular or plural label
+     * @param int                   $amount         The desired amount
+     * @param string|int|WP_Post    $points_type    The points type
+     * @param bool                  $force_return   If set to true, will return "Point" or "Points" if points type is not registered or plural name is empty
+     */
+    return apply_filters( 'gamipress_get_points_amount_label', $label, $amount, $points_type, $force_return );
+
+}
+
+/**
+ * Get the desired points type label position
+ *
+ * @since  1.5.1
+ *
+ * @param string|int|WP_Post    $points_type
+ *
+ * @return string                              The points type plural name if is registered, if not return false
+ */
+function gamipress_get_points_type_label_position( $points_type ) {
+
+    $label_position = 'after';
+
+    $points_type_id = gamipress_get_points_type_id( $points_type );
+
+    if( $points_type_id ) {
+
+        // Get the points type label position (after or before)
+        $label_position = gamipress_get_post_meta( $points_type_id, '_gamipress_label_position' );
+    }
+
+    /**
+     * Points type label position (default after)
+     *
+     * @since  1.5.1
+     *
+     * @param string                $label_position The points type label position (after or before)
+     * @param string|int|WP_Post    $points_type    The points type given
+     */
+    return apply_filters( 'gamipress_get_points_type_label_position', $label_position, $points_type );
+
+}
+
+/**
+ * Get the desired points type thousands separator
+ *
+ * @since  1.5.1
+ *
+ * @param string|int|WP_Post    $points_type
+ *
+ * @return string                              The points type plural name if is registered, if not return false
+ */
+function gamipress_get_points_type_thousands_separator( $points_type ) {
+
+    $thousands_separator = '';
+
+    $points_type_id = gamipress_get_points_type_id( $points_type );
+
+    if( $points_type_id ) {
+
+        // Get the points type thousands separator
+        $thousands_separator = gamipress_get_post_meta( $points_type_id, '_gamipress_thousands_separator' );
+    }
+
+    /**
+     * Points type thousands separator
+     *
+     * @since  1.5.1
+     *
+     * @param string                $thousands_separator    The points type thousands separator
+     * @param string|int|WP_Post    $points_type            The points type given
+     */
+    return apply_filters( 'gamipress_get_points_type_thousands_separator', $thousands_separator, $points_type );
+
+}
+
+
+/**
+ * Format an amount based on a points type to append the points type label
+ *
+ * @since  1.5.1
+ *
+ * @param int                   $amount         The amount to be formatted
+ * @param string|int|WP_Post    $points_type    The points type
+ *
+ * @return string                               The amount of points formatted using the points type plural or singular
+ */
+function gamipress_format_points( $amount, $points_type ) {
+
+    $amount = intval( $amount );
+
+    // Get the singular or plural label based on points amount
+    $label = gamipress_get_points_amount_label( $amount, $points_type, true );
+
+    $formatted_amount = gamipress_format_amount( $amount, $points_type );
+
+    // Apply points type settings of label position (after or before)
+    $label_position =  gamipress_get_points_type_label_position( $points_type );
+
+    if( $label_position === 'before' ) {
+        $formatted_amount = $label . ' ' . $formatted_amount;
+    } else {
+        // Make default after the default label position
+        $formatted_amount .= ' ' . $label;
+    }
+
+    /**
+     * Format points filter
+     *
+     * @since  1.5.1
+     *
+     * @param string                $formatted_amount   The formatted amount (with label)
+     * @param int                   $amount             The original amount (without any format)
+     * @param string|int|WP_Post    $points_type        The points type given
+     * @param string                $label_position     The points type label position (after or before)
+     */
+    return apply_filters( 'gamipress_format_points', $formatted_amount, $amount, $points_type, $label_position );
+
+}
+
+/**
+ * Format an amount based on settings
+ *
+ * @since  1.5.1
+ *
+ * @param int       $amount The amount to be formatted
+ * @param string|int|WP_Post    $points_type    The points type
+ *
+ * @return string           The amount formatted
+ */
+function gamipress_format_amount( $amount, $points_type ) {
+
+    // Setup the formatting vars
+    $decimals = 0;
+    $decimals_sep = '';
+    $thousands_sep = gamipress_get_points_type_thousands_separator( $points_type );
+
+    // Format the amount
+    $formatted_amount = number_format( $amount, $decimals, $decimals_sep, $thousands_sep );
+
+    /**
+     * Format amount filter
+     *
+     * @since  1.5.1
+     *
+     * @param string                $formatted_amount   The formatted amount
+     * @param int                   $amount             The original amount (without any format)
+     * @param string|int|WP_Post    $points_type        The points type given
+     * @param int                   $decimals           Decimals to apply in format
+     * @param string                $decimals_sep       Decimals separator to apply in format
+     * @param string                $thousands_sep      Thousands separator to apply in format
+     */
+    return apply_filters( 'gamipress_format_amount', $formatted_amount, $amount, $points_type, $decimals, $decimals_sep, $thousands_sep );
 
 }

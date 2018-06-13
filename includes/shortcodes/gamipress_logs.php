@@ -76,14 +76,14 @@ function gamipress_register_logs_shortcode() {
                     'user_id'    => __( 'Log Author', 'gamipress' ),
                     'rand'       => __( 'Random', 'gamipress' ),
                 ),
-                'default_cb'     => 'gamipress_logs_order_by_default_cb',
+                'default_cb'     => 'gamipress_logs_order_by_default_cb', // Added this callback to avoid CMB2 warning about 'date' function
             ),
             'order' => array(
                 'name'        => __( 'Order', 'gamipress' ),
                 'description' => __( 'Sort order.', 'gamipress' ),
                 'type'        => 'select',
-                'options'      => array( 'ASC' => __( 'Ascending', 'gamipress' ), 'DESC' => __( 'Descending', 'gamipress' ) ),
-                'default'     => 'ASC',
+                'options'      => array( 'DESC' => __( 'Descending', 'gamipress' ), 'ASC' => __( 'Ascending', 'gamipress' ) ),
+                'default'     => 'DESC',
             ),
             'include' => array(
                 'name'        => __( 'Include', 'gamipress' ),

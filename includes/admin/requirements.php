@@ -54,6 +54,7 @@ add_filter( 'manage_posts_columns', 'gamipress_requirements_posts_columns', 10, 
  * @param $post_id
  */
 function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
+
     if( ! in_array( gamipress_get_post_type( $post_id ), gamipress_get_requirement_types_slugs() ) || $column_name !== 'connected_to' ) {
         return;
     }
@@ -68,7 +69,7 @@ function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
         $connected_object =  gamipress_get_points_deduct_points_type( $post_id );
     } else if( $post_type === 'step' ) {
         $connected_label = __( 'Achievement', 'gamipress' );
-        $connected_object = gamipress_get_parent_of_achievement( $post_id );
+        $connected_object = gamipress_get_step_achievement( $post_id );
     } else if( $post_type === 'rank-requirement' ) {
         $connected_label = __( 'Rank', 'gamipress' );
         $connected_object = gamipress_get_rank_requirement_rank( $post_id );
@@ -79,5 +80,6 @@ function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
     <?php else : ?>
         <span style="color: #a00;"><?php printf( __( 'Missed %s', 'gamipress' ), $connected_label ); ?></span>
     <?php endif;
+
 }
 add_action( 'manage_posts_custom_column', 'gamipress_requirements_posts_custom_columns', 10, 2 );

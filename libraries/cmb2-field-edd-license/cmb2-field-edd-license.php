@@ -14,6 +14,8 @@
  * License: GPLv2+
  */
 
+global $cmb2_field_edd_license;
+
 // TODO: Add support for themes
 
 if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
@@ -246,6 +248,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
             }
 
             if( $action === 'updated'  ) {
+
                 $args = wp_parse_args( $field->_data( 'args' ), array(
                     'server'          => '',
                     'license'         => $field->escaped_value(),
@@ -258,6 +261,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
                 ) );
 
                 $this->api_request( $args['server'], $args['license'], $args, 'activate_license' );
+
             }
 
         }

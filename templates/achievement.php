@@ -139,7 +139,7 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
         <?php endif; ?>
 
         <?php // Achievement Steps
-        if ( $a['steps'] === 'yes' && $steps = gamipress_get_required_achievements_for_achievement( get_the_ID() ) ) : ?>
+        if ( $a['steps'] === 'yes' && $steps = gamipress_get_achievement_steps( get_the_ID() ) ) : ?>
             <div class="gamipress-achievement-attached">
 
                 <?php if ( $a['toggle'] === 'yes' ) : ?>

@@ -340,7 +340,7 @@ function gamipress_get_required_achievements_for_achievement_list( $achievement_
 		$user_id = wp_get_current_user()->ID;
 
 	// Grab our achievement's required steps
-	$steps = gamipress_get_required_achievements_for_achievement( $achievement_id );
+	$steps = gamipress_get_achievement_steps( $achievement_id );
 
 	// Return our markup output
 	return gamipress_get_required_achievements_for_achievement_list_markup( $steps, $user_id );
@@ -445,6 +445,7 @@ function gamipress_format_requirement_title_with_post_link( $title = '', $requir
 		$title = '<a href="' . esc_url( $url ) . '">' . $title . '</a>';
 
 	return $title;
+
 }
 add_filter( 'gamipress_step_title_display', 'gamipress_format_requirement_title_with_post_link', 10, 2 );
 add_filter( 'gamipress_points_award_title_display', 'gamipress_format_requirement_title_with_post_link', 10, 2 );
@@ -475,19 +476,10 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 		return '';
 	}
 
-    $points_types = gamipress_get_points_types();
     $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
 
-    // Default points label
-    $points_label = $points . ' ' . _n( __( 'Point', 'gamipress' ), __( 'Points', 'gamipress' ), $points );
-
-    if( isset( $points_types[$points_type] ) ) {
-        // Points type label
-        $points_label = $points . ' ' . _n( $points_types[$points_type]['singular_name'], $points_types[$points_type]['plural_name'], $points );
-    }
-
 	// Return our markup
-	return '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . $points_label . '</div>';
+	return '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . gamipress_format_points( $points, $points_type  ) . '</div>';
 }
 
 /**
@@ -544,21 +536,12 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 	}
 
 	// Setup vars
-	$points_types = gamipress_get_points_types();
 	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock' );
-
-	// Default points label
-	$points_label = __( 'Points', 'gamipress' );
-
-	if( isset( $points_types[$points_type] ) ) {
-		// Points type label
-		$points_label = $points_types[$points_type]['plural_name'];
-	}
 
 	ob_start(); ?>
 		<div class="gamipress-achievement-unlock-with-points">
 			<div class="gamipress-spinner" style="display: none;"></div>
-			<button type="button" class="gamipress-achievement-unlock-with-points-button" data-id="<?php echo $achievement_id; ?>"><?php echo sprintf( __( 'Unlock using %d %s', 'gamipress' ), $points, $points_label ); ?></button>
+			<button type="button" class="gamipress-achievement-unlock-with-points-button" data-id="<?php echo $achievement_id; ?>"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), gamipress_format_points( $points, $points_type ) ); ?></button>
 		</div>
 	<?php $output = ob_get_clean();
 
@@ -627,21 +610,12 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 	}
 
 	// Setup vars
-	$points_types = gamipress_get_points_types();
 	$points_type = gamipress_get_post_meta( $rank_id, '_gamipress_points_type_to_unlock' );
-
-	// Default points label
-	$points_label = __( 'Points', 'gamipress' );
-
-	if( isset( $points_types[$points_type] ) ) {
-		// Points type label
-		$points_label = $points_types[$points_type]['plural_name'];
-	}
 
 	ob_start(); ?>
 	<div class="gamipress-rank-unlock-with-points">
 		<div class="gamipress-spinner" style="display: none;"></div>
-		<button type="button" class="gamipress-rank-unlock-with-points-button" data-id="<?php echo $rank_id; ?>"><?php echo sprintf( __( 'Unlock using %d %s', 'gamipress' ), $points, $points_label ); ?></button>
+		<button type="button" class="gamipress-rank-unlock-with-points-button" data-id="<?php echo $rank_id; ?>"><?php echo sprintf( __( 'Unlock using %d %s', 'gamipress' ), gamipress_format_points( $points, $points_type ) ); ?></button>
 	</div>
 	<?php $output = ob_get_clean();
 
@@ -1154,7 +1128,7 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 
 			if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
 
-				if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
+				if( $user_earning->post_type === 'step' && $achievement = gamipress_get_step_achievement( $user_earning->post_id ) )  {
 					// Step
 
 					// Get the achievement thumbnail and build a link to the achievement
@@ -1195,7 +1169,7 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 				$earning_title = gamipress_get_post_field( 'post_title', $user_earning->post_id );
 				$earning_description = '';
 
-				if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
+				if( $user_earning->post_type === 'step' && $achievement = gamipress_get_step_achievement( $user_earning->post_id ) )  {
 					// Step
 
 					// Build a link to the achievement
@@ -1263,11 +1237,12 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 			if( $points > 0 && isset( $points_types[$user_earning->points_type] ) ) {
 
 				// Setup the output as %d point(s)
-				$column_output = $points . ' ' . _n( $points_types[$user_earning->points_type]['singular_name'], $points_types[$user_earning->points_type]['plural_name'], $points );
+				$column_output = gamipress_format_points( $points, $user_earning->points_type );
 
-				// For points deducts prepend a "-" sign
-				if( $user_earning->post_type === 'points-deduct' ) {
-					$column_output = '-' . $column_output;
+				// For points deducts turn amount to negative
+				if( $user_earning->post_type === 'points-deduct' && $points > 0 ) {
+					$negative_points = $points * -1;
+					$column_output = gamipress_format_points( $negative_points, $user_earning->points_type );;
 				}
 
 			}

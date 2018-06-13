@@ -94,6 +94,7 @@ function gamipress_rank_posts_custom_columns( $column_name, $post_id ) {
 
     switch( $column_name ) {
         case 'thumbnail':
+
             $can_edit_post = current_user_can( 'edit_post', $post_id );
 
             if( $can_edit_post ) {
@@ -110,37 +111,26 @@ function gamipress_rank_posts_custom_columns( $column_name, $post_id ) {
 
             break;
         case 'priority':
+
             echo get_post_field( 'menu_order', $post_id );
+
             break;
         case 'unlock_with_points':
+
             $unlock_with_points = gamipress_get_post_meta( $post_id, $prefix . 'unlock_with_points' );
 
             if( ! (bool) $unlock_with_points ) {
                 break;
             }
 
+            // Setup points vars
             $points_type_to_unlock = gamipress_get_post_meta( $post_id, $prefix . 'points_type_to_unlock' );
-
-            $points_types = gamipress_get_points_types();
-
-            $points_types[''] = array(
-                'singular_name' => __( 'Point', 'gamipress' ),
-                'plural_name' => __( 'Points', 'gamipress' ),
-            );
-
-            if( ! isset( $points_types[$points_type_to_unlock] ) ) {
-                break;
-            }
-
-            $points_type = $points_types[$points_type_to_unlock];
-
             $points_to_unlock = absint( gamipress_get_post_meta( $post_id, $prefix . 'points_to_unlock' ) );
 
-            if( $points_to_unlock === 0 ) {
-                break;
+            if( $points_to_unlock !== 0 ) {
+                echo gamipress_format_points( $points_to_unlock, $points_type_to_unlock );
             }
 
-            echo $points_to_unlock . ' ' . _n( $points_type['singular_name'], $points_type['plural_name'], $points_to_unlock );
             break;
     }
 

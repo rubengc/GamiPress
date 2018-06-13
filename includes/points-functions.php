@@ -639,14 +639,20 @@ function gamipress_get_points_type_points_awards( $points_type = 0, $post_status
 		$points_type = $post->ID;
 	}
 
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        // gamipress_get_assigned_requirements() has backward compatibility and merge new and old results
+        return gamipress_get_assigned_requirements( $points_type, 'points-award', $post_status );
+    }
+
 	$points_awards = get_posts( array(
-		'post_type'           => 'points-award',
-		'post_status'         => $post_status,
-		'posts_per_page'      => -1,
-		'suppress_filters'    => false,
-		'connected_direction' => 'to',
-		'connected_type'      => 'points-award-to-points-type',
-		'connected_items'     => $points_type,
+		'post_type'         => 'points-award',
+		'post_parent'     	=> $points_type,
+		'post_status'       => $post_status,
+		'orderby'			=> 'menu_order',
+		'order'				=> 'ASC',
+		'posts_per_page'    => -1,
+		'suppress_filters'  => false,
 	) );
 
 	// If it has a points type, return it, otherwise return false
@@ -667,26 +673,27 @@ function gamipress_get_points_type_points_awards( $points_type = 0, $post_status
  */
 function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
 
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        return gamipress_get_points_award_points_type_old( $points_award_id );
+    }
+
 	// Grab the current post ID if no points_award_id was specified
 	if ( ! $points_award_id ) {
 		global $post;
 		$points_award_id = $post->ID;
 	}
 
-    $points_type = get_posts( array(
-        'post_type'             => 'points-type',
-        'posts_per_page'        => 1,
-        'connected_direction'   => 'from',
-        'connected_type'        => 'points-award-to-points-type',
-        'connected_items'       => $points_award_id,
-        'suppress_filters'      => false,
-    ) );
+	// The points award's points type is the post parent
+	$points_type_id = absint( gamipress_get_post_field( 'post_parent', $points_award_id ) );
 
-    // If it has a points type, return it, otherwise return false
-    if ( ! empty( $points_type ) )
-        return $points_type[0];
-    else
-        return false;
+	if( $points_type_id !== 0 ) {
+		// If has parent, return his post object
+		return get_post( $points_type_id );
+	} else {
+		return false;
+	}
+
 }
 
 /**
@@ -697,7 +704,7 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
  *
  * @param integer|string 	$points_type 	The points type's post ID or the points type slug
  * @param string 			$post_status 	The points deducts status (publish by default)
-
+ *
  *
  * @return array|bool                  		Array of WP_Post of the points deducts, or false if none
  */
@@ -718,14 +725,20 @@ function gamipress_get_points_type_points_deducts( $points_type = 0, $post_statu
 		$points_type = $post->ID;
 	}
 
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        // gamipress_get_assigned_requirements() has backward compatibility and merge new and old results
+        return gamipress_get_assigned_requirements( $points_type, 'points-deduct', $post_status );
+    }
+
 	$points_deducts = get_posts( array(
-		'post_type'           => 'points-deduct',
-		'post_status'         => $post_status,
-		'posts_per_page'      => -1,
-		'suppress_filters'    => false,
-		'connected_direction' => 'to',
-		'connected_type'      => 'points-deduct-to-points-type',
-		'connected_items'     => $points_type,
+		'post_type'         => 'points-deduct',
+		'post_parent'     	=> $points_type,
+		'post_status'       => $post_status,
+		'orderby'			=> 'menu_order',
+		'order'				=> 'ASC',
+		'posts_per_page'    => -1,
+		'suppress_filters'  => false,
 	) );
 
 	// If it has a points type, return it, otherwise return false
@@ -745,26 +758,28 @@ function gamipress_get_points_type_points_deducts( $points_type = 0, $post_statu
  * @return object|bool                 The post object of the points type, or false if none
  */
 function gamipress_get_points_deduct_points_type( $points_deduct_id = 0 ) {
-	// Grab the current post ID if no points_deduct_id was specified
-	if ( ! $points_deduct_id ) {
-		global $post;
-		$points_deduct_id = $post->ID;
-	}
 
-	$points_type = get_posts( array(
-		'post_type'             => 'points-type',
-		'posts_per_page'        => 1,
-		'connected_direction'   => 'from',
-		'connected_type'        => 'points-deduct-to-points-type',
-		'connected_items'       => $points_deduct_id,
-		'suppress_filters'      => false,
-	) );
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        return gamipress_get_points_deduct_points_type_old( $points_deduct_id );
+    }
 
-	// If it has a points type, return it, otherwise return false
-	if ( ! empty( $points_type ) )
-		return $points_type[0];
-	else
-		return false;
+    // Grab the current post ID if no points_award_id was specified
+    if ( ! $points_deduct_id ) {
+        global $post;
+        $points_deduct_id = $post->ID;
+    }
+
+    // The points award's points type is the post parent
+    $points_type_id = absint( gamipress_get_post_field( 'post_parent', $points_deduct_id ) );
+
+    if( $points_type_id !== 0 ) {
+        // If has parent, return his post object
+        return get_post( $points_type_id );
+    } else {
+        return false;
+    }
+
 }
 
 /**

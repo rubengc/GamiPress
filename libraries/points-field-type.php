@@ -18,13 +18,20 @@
  */
 function cmb2_render_gamipress_points_field_type( $field, $value, $object_id, $object_type, $field_type ) {
 
+    global $ct_cmb2_override;
+
     $post_type_meta_key = $field->args['id'] . '_type';
 
     if( isset( $field->args['points_type_key'] ) ) {
         $post_type_meta_key = $field->args['points_type_key'];
     }
 
-    $points_type = get_post_meta( $object_id, $post_type_meta_key, true );
+    // Support for CT objects
+    if( $ct_cmb2_override === true ) {
+        $points_type = ct_get_object_meta( $object_id, $post_type_meta_key, true );
+    } else {
+        $points_type = get_post_meta( $object_id, $post_type_meta_key, true );
+    }
 
     // Grab our points types as a html
     $points_types_options = '<option value="" class="points-type-placeholder">' . __( 'Choose the Points Type', 'gamipress' ) . '</option>';

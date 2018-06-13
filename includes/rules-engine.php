@@ -168,9 +168,9 @@ function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step
 		return $return;
 
 	// Prevent user from earning steps with no parents
-	$parent_achievement = gamipress_get_parent_of_achievement( $step_id );
+	$achievement = gamipress_get_step_achievement( $step_id );
 
-	if ( ! $parent_achievement ) {
+	if ( ! $achievement ) {
 		return false;
 	}
 
@@ -178,7 +178,7 @@ function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step
 	if ( $return && gamipress_get_user_achievements( array(
 			'user_id'        => absint( $user_id ),
 			'achievement_id' => absint( $step_id ),
-			'since'          => absint( gamipress_achievement_last_user_activity( $parent_achievement->ID, $user_id ) )
+			'since'          => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
 		) )
 	)
 		$return = false;
@@ -363,8 +363,8 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 		'since' => 1 + gamipress_achievement_last_user_activity( $achievement_id, $user_id )
 	) ) ) {
 
-		// Grab our required achievements for this achievement
-		$required_achievements = gamipress_get_required_achievements_for_achievement( $achievement_id );
+		// Grab published required achievements for this achievement
+		$required_achievements = gamipress_get_required_achievements_for_achievement( $achievement_id, 'publish' );
 
 		// If we have requirements, loop through each and make sure they've been completed
 		if ( is_array( $required_achievements ) && ! empty( $required_achievements ) ) {
@@ -600,10 +600,10 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 			case 'specific-achievement':
 				if( $post_type === 'step' && $since === 0 ) {
 					// Get our parent achievement
-					$parent_achievement = gamipress_get_parent_of_achievement( $achievement_id );
+					$achievement = gamipress_get_step_achievement( $achievement_id );
 
 					// If the user has any interaction with this achievement, only get activity since that date
-					if ( $parent_achievement && $date = gamipress_achievement_last_user_activity( $parent_achievement->ID, $user_id ) ) {
+					if ( $achievement && $date = gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) ) {
 						$since = $date;
 					}
 				}
@@ -923,8 +923,9 @@ function gamipress_maybe_award_points( $user_id = 0, $achievement_id = 0 ) {
 	// Grab our points from the provided post
 	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
 	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
+	$points_types = gamipress_get_points_types();
 
-	if ( ! empty( $points ) ) {
+	if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
 
 		$post_type = gamipress_get_post_type( $achievement_id );
 

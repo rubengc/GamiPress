@@ -21,9 +21,11 @@ function gamipress_register_scripts() {
 
     // Stylesheets
     wp_register_style( 'gamipress-css', GAMIPRESS_URL . 'assets/css/gamipress' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
+    wp_register_style( 'gamipress-admin-bar-css', GAMIPRESS_URL . 'assets/css/gamipress-admin-bar' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
 
     // Scripts
     wp_register_script( 'gamipress-js', GAMIPRESS_URL . 'assets/js/gamipress' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-events-js', GAMIPRESS_URL . 'assets/js/gamipress-events' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
 
 }
 add_action( 'init', 'gamipress_register_scripts' );
@@ -44,15 +46,25 @@ function gamipress_enqueue_scripts( $hook = null ) {
     // Scripts
     if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
         wp_localize_script( 'gamipress-js', 'gamipress', array(
-            'ajaxurl' => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
-            'achievement_fields' => array_keys( GamiPress()->shortcodes['gamipress_achievement']->fields )
+            'ajaxurl'               => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
+            'achievement_fields'    => array_keys( GamiPress()->shortcodes['gamipress_achievement']->fields )
         ) );
 
         wp_enqueue_script( 'gamipress-js' );
     }
 
+    // Events script can't be affected by the disable_js option
+    wp_localize_script( 'gamipress-events-js', 'gamipress_events', array(
+        'ajaxurl'       => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
+        'user_id'       => get_current_user_id(),
+        'post_id'       => get_the_ID(),
+        'debug_mode'    => gamipress_is_debug_mode()
+    ) );
+
+    wp_enqueue_script( 'gamipress-events-js' );
+
 }
-add_action( 'wp_enqueue_scripts', 'gamipress_enqueue_scripts', 100 );
+add_action( 'wp_enqueue_scripts', 'gamipress_enqueue_scripts' );
 
 /**
  * Register admin scripts
@@ -184,15 +196,28 @@ function gamipress_admin_enqueue_scripts( $hook ) {
 
         // Enqueue WordPress jQuery UI Dialog style
         wp_enqueue_style ( 'wp-jquery-ui-dialog' );
-    }
 
+}
     // If dark mode style is registered, then enqueue it as last style to override previous CSS rules
     if( wp_style_is( 'gamipress-dark-mode-css', 'registered' ) ) {
         wp_enqueue_style( 'gamipress-dark-mode-css' );
     }
 
 }
-add_action( 'admin_enqueue_scripts', 'gamipress_admin_enqueue_scripts', 100 );
+add_action( 'admin_enqueue_scripts', 'gamipress_admin_enqueue_scripts' );
+
+/**
+ * Register and enqueue admin bar scripts
+ *
+ * @since       1.5.1
+ * @return      void
+ */
+function gamipress_enqueue_admin_bar_scripts() {
+
+    wp_enqueue_style( 'gamipress-admin-bar-css' );
+
+}
+add_action( 'admin_bar_init', 'gamipress_enqueue_admin_bar_scripts' );
 
 /**
  * Register and enqueue dark mode scripts
@@ -208,4 +233,4 @@ function gamipress_admin_register_dark_mode_scripts() {
     // Stylesheets
     wp_register_style( 'gamipress-dark-mode-css', GAMIPRESS_URL . 'assets/css/gamipress-dark-mode' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
 }
-add_action( 'doing_dark_mode', 'gamipress_admin_register_dark_mode_scripts', 100 );
+add_action( 'doing_dark_mode', 'gamipress_admin_register_dark_mode_scripts' );

@@ -34,6 +34,7 @@ function gamipress_is_rank( $post = null ) {
 
     // If we pass both previous tests, this is a valid rank (with filter to override)
     return apply_filters( 'gamipress_is_rank', $return, $post, $post_type );
+
 }
 
 /**
@@ -44,6 +45,11 @@ function gamipress_is_rank( $post = null ) {
  * @return array Array of ranks as WP_Post
  */
 function gamipress_get_ranks( $args = array() ) {
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        return gamipress_get_ranks_old( $args );
+    }
 
     // Setup our defaults
     $defaults = array(
@@ -56,144 +62,24 @@ function gamipress_get_ranks( $args = array() ) {
 
     $args = wp_parse_args( $args, $defaults );
 
-    // Hook join functions for joining to P2P table to retrieve the parent of a rank
+    // Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
     if ( isset( $args['parent_of'] ) ) {
-        add_filter( 'posts_join', 'gamipress_get_ranks_parents_join' );
-        add_filter( 'posts_where', 'gamipress_get_ranks_parents_where', 10, 2 );
+        $args['post_in'] = gamipress_get_post_field( 'post_parent', $args['parent_of'] );
     }
 
-    // Hook join functions for joining to P2P table to retrieve the children of a rank
+    // Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
     if ( isset( $args['children_of'] ) ) {
-        add_filter( 'posts_join', 'gamipress_get_ranks_children_join', 10, 2 );
-        add_filter( 'posts_where', 'gamipress_get_ranks_children_where', 10, 2 );
-        add_filter( 'posts_orderby', 'gamipress_get_ranks_children_orderby' );
+        $args['post_parent']    = $args['children_of'];
+
+        // When looking to get rank requirements, order is important to sequential requirements
+        $args['orderby']        = 'menu_order';
+        $args['order']          = 'ASC';
     }
 
     // Get our ranks posts
     $ranks = get_posts( $args );
 
-    // Remove all our filters
-    remove_filter( 'posts_join', 'gamipress_get_ranks_parents_join' );
-    remove_filter( 'posts_where', 'gamipress_get_ranks_parents_where' );
-    remove_filter( 'posts_join', 'gamipress_get_ranks_children_join' );
-    remove_filter( 'posts_where', 'gamipress_get_ranks_children_where' );
-    remove_filter( 'posts_orderby', 'gamipress_get_ranks_children_orderby' );
-
     return $ranks;
-}
-
-/**
- * Modify the WP_Query Join filter for rank children
- *
- * @since  1.3.1
- *
- * @param  string $join         The query "join" string
- * @param  object $query_object The complete query object
- *
- * @return string 				The updated "join" string
- */
-function gamipress_get_ranks_children_join( $join = '', $query_object = null ) {
-
-    $posts      = GamiPress()->db->posts;
-    $p2p        = GamiPress()->db->p2p;
-    $p2pmeta    = GamiPress()->db->p2pmeta;
-
-    $join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_from = {$posts}.ID";
-
-    //if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] != 'any' )
-        //$join .= " LEFT JOIN {$p2pmeta} AS p2pm1 ON p2pm1.p2p_id = p2p.p2p_id";
-
-    $join .= " LEFT JOIN {$p2pmeta} AS p2pm2 ON p2pm2.p2p_id = p2p.p2p_id";
-
-    return $join;
-
-}
-
-/**
- * Modify the WP_Query Where filter for rank children
- *
- * @since  1.3.1
- *
- * @param  string $where        The query "where" string
- * @param  object $query_object The complete query object
- *
- * @return string 				The updated query "where" string
- */
-function gamipress_get_ranks_children_where( $where = '', $query_object ) {
-
-    global $wpdb;
-
-    // ^^ TODO, add required and optional. right now just returns all ranks.
-
-    // Check for required relationship
-    //if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'required' )
-        //$where .= " AND p2pm1.meta_key ='Required'";
-
-    // Check for optional relationship
-    //if ( isset( $query_object->query_vars['rank_relationship'] ) && $query_object->query_vars['rank_relationship'] == 'optional' )
-        //$where .= " AND p2pm1.meta_key ='Optional'";
-
-
-    // Filter by order meta
-    $where .= " AND p2pm2.meta_key ='order'";
-
-    $where .= $wpdb->prepare( ' AND p2p.p2p_to = %d', $query_object->query_vars['children_of'] );
-
-    return $where;
-
-}
-
-/**
- * Modify the WP_Query OrderBy filter for rank children
- *
- * @since  1.3.1
- *
- * @param  string $orderby The query "orderby" string
- *
- * @return string 		   The updated "orderby" string
- */
-function gamipress_get_ranks_children_orderby( $orderby = '' ) {
-
-    return $orderby = 'p2pm2.meta_value ASC';
-
-}
-
-/**
- * Modify the WP_Query Join filter for rank parents
- *
- * @since  1.3.1
- *
- * @param  string $join The query "join" string
- *
- * @return string 	    The updated "join" string
- */
-function gamipress_get_ranks_parents_join( $join = '' ) {
-
-    $posts  = GamiPress()->db->posts;
-    $p2p    = GamiPress()->db->p2p;
-
-    $join .= " LEFT JOIN {$p2p} AS p2p ON p2p.p2p_to = {$posts}.ID";
-
-    return $join;
-
-}
-
-/**
- * Modify the WP_Query Where filter for rank parents
- *
- * @since  1.3.1
- * @param  string $where The query "where" string
- * @param  object $query_object The complete query object
- *
- * @return string        appended sql where statement
- */
-function gamipress_get_ranks_parents_where( $where = '', $query_object = null ) {
-
-    global $wpdb;
-
-    $where .= $wpdb->prepare( ' AND p2p.p2p_from = %d', $query_object->query_vars['parent_of'] );
-
-    return $where;
 
 }
 
@@ -844,7 +730,7 @@ function gamipress_log_user_rank( $user_id, $new_rank, $old_rank, $admin_id = 0,
 add_action( 'gamipress_update_user_rank', 'gamipress_log_user_rank', 10, 5 );
 
 /**
- * Get Rank Requirement Rank
+ * Get rank requirement's rank
  *
  * @since  1.3.1
  *
@@ -853,20 +739,28 @@ add_action( 'gamipress_update_user_rank', 'gamipress_log_user_rank', 10, 5 );
  * @return object|bool                      The post object of the rank, or false if none
  */
 function gamipress_get_rank_requirement_rank( $rank_requirement_id = 0 ) {
-    // Grab the current post ID if no rank_requirement_id was specified
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        return gamipress_get_rank_requirement_rank_old( $rank_requirement_id );
+    }
+
+    // Grab the current post ID if no rank requirement ID was specified
     if ( ! $rank_requirement_id ) {
         global $post;
         $rank_requirement_id = $post->ID;
     }
 
-    // Grab our requirement's rank
-    $ranks = gamipress_get_ranks( array( 'parent_of' => $rank_requirement_id ) );
+    // The rank requirement's rank is the post parent
+    $rank_id = absint( gamipress_get_post_field( 'post_parent', $rank_requirement_id ) );
 
-    // If it has a rank, return it, otherwise return false
-    if ( ! empty( $ranks ) )
-        return $ranks[0];
-    else
+    if( $rank_id !== 0 ) {
+        // If has parent, return his post object
+        return get_post( $rank_id );
+    } else {
         return false;
+    }
+
 }
 
 /**
@@ -899,33 +793,43 @@ function gamipress_get_rank_earned_time( $user_id = 0, $rank_type = '' ) {
 }
 
 /**
- * Get Rank Requirements
+ * Get rank requirements
  *
- * @since  1.3.1
+ * @since   1.3.1
+ * @updated 1.5.1 Added $post_status parameter
  *
- * @param  integer     $rank_id The given rank requirement's post ID
- * @return array                An array of post objects with the rank requirements
+ * @param integer   $rank_id        The given rank requirement's post ID
+ * @param string 	$post_status 	The rank requirements status (publish by default)
+ *
+ * @return array                    An array of post objects with the rank requirements
  */
-function gamipress_get_rank_requirements( $rank_id = 0 ) {
+function gamipress_get_rank_requirements( $rank_id = 0, $post_status = 'publish' ) {
+
+    // If not properly upgrade to required version fallback to compatibility function
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+        // gamipress_get_assigned_requirements() has backward compatibility and merge new and old results
+        return gamipress_get_assigned_requirements( $rank_id, 'rank-requirement', $post_status );
+    }
+
     // Grab the current post ID if no rank_id was specified
     if ( ! $rank_id ) {
         global $post;
         $rank_id = $post->ID;
     }
 
-    $rank_type = gamipress_get_post_type( $rank_id );
-
     $requirements = get_posts( array(
-        'post_type'           => 'rank-requirement',
-        'posts_per_page'      => -1,
-        'suppress_filters'    => false,
-        'connected_direction' => 'to',
-        'connected_type'      => 'rank-requirement-to-' . $rank_type,
-        'connected_items'     => $rank_id,
+        'post_type'         => 'rank-requirement',
+        'post_parent'       => $rank_id,
+        'post_status'       => $post_status,
+        'orderby'			=> 'menu_order',
+        'order'				=> 'ASC',
+        'posts_per_page'    => -1,
+        'suppress_filters'  => false,
     ));
 
     // Return rank requirements array
     return $requirements;
+
 }
 
 /**
@@ -1221,8 +1125,18 @@ function gamipress_update_rank_types( $original_type = '', $new_type = '' ) {
     }
 
     gamipress_update_ranks_rank_types( $original_type, $new_type );
-    gamipress_update_p2p_rank_types( $original_type, $new_type );
     gamipress_update_earned_meta_rank_types( $original_type, $new_type );
+
+    /**
+     * Action triggered when a rank type gets updated (called before flush rewrite rules)
+     *
+     * @since  1.5.1
+     *
+     * @param  string 	$original_type 	The original type slug.
+     * @param  string 	$new_type 		The new type slug.
+     */
+    do_action( 'gamipress_update_rank_type', $original_type, $new_type );
+
     gamipress_flush_rewrite_rules();
 
     return $new_type;
@@ -1249,33 +1163,6 @@ function gamipress_update_ranks_rank_types( $original_type = '', $new_type = '' 
 
     foreach ( $items as $item ) {
         set_post_type( $item->ID, $new_type );
-    }
-
-}
-
-/**
- * Change all p2p connections of one rank type to a new type.
- *
- * @since 1.3.1
- *
- * @param string $original_type Original rank type.
- * @param string $new_type      New rank type.
- */
-function gamipress_update_p2p_rank_types( $original_type = '', $new_type = '' ) {
-
-    global $wpdb;
-
-    $p2p = GamiPress()->db->p2p;
-
-    $p2p_relationships = array(
-        "rank-requirement-to-{$original_type}" => "rank-requirement-to-{$new_type}",
-        "{$original_type}-to-rank-requirement" => "{$new_type}-to-rank-requirement",
-        "{$original_type}-to-points-award" => "{$new_type}-to-points-award",
-        "{$original_type}-to-points-deduct" => "{$new_type}-to-points-deduct",
-    );
-
-    foreach ( $p2p_relationships as $old => $new ) {
-        $wpdb->query( $wpdb->prepare( "UPDATE $p2p SET p2p_type = %s WHERE p2p_type = %s", $new, $old ) );
     }
 
 }

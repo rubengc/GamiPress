@@ -205,7 +205,9 @@ function gamipress_user_update_active_achievement_on_earnings( $user_id, $achiev
 
 	// If achievement is a step, update its parent activity
 	if ( 'step' === gamipress_get_post_type( $achievement_id ) ) {
-		$parent_achievement = gamipress_get_parent_of_achievement( $achievement_id );
+
+		$parent_achievement = gamipress_get_step_achievement( $achievement_id );
+
 		if ( $parent_achievement ) {
 			gamipress_user_update_active_achievement( $user_id, $parent_achievement->ID );
 		}

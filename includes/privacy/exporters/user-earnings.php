@@ -135,7 +135,7 @@ function gamipress_privacy_get_user_earning_data( $user_earning ) {
 
     if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
 
-        if( $user_earning->post_type === 'step' && $achievement = gamipress_get_parent_of_achievement( $user_earning->post_id ) )  {
+        if( $user_earning->post_type === 'step' && $achievement = gamipress_get_step_achievement( $user_earning->post_id ) )  {
             // Step
 
             $data['type'] = array(

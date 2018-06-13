@@ -30,6 +30,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 		parent::__construct( $types, $args );
 
 		$this->type = $type ? $type : $this->type;
+
 	}
 
 	/**
@@ -40,6 +41,9 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 	 * @return string       Form input element
 	 */
 	public function render( $args = array() ) {
+
+        global $cmb2_field_edd_license;
+
 		$args = empty( $args ) ? $this->args : $args;
 
         $args = $this->parse_args( $this->type, array(
@@ -79,6 +83,17 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
 		$license = cmb2_edd_license_data( $args['value'] );
 		$license_status = ( $license !== false ) ? $license->license : false;
+
+        // If user has input a license but there isn't any license object, then perform a new API request
+        // This lines fixes an issue with not properly activated keys
+        if( ! empty( $args['value'] ) && $license === false ) {
+
+            $cmb2_field_edd_license->api_request( $field_args['server'], $args['value'], $field_args, 'activate_license' );
+
+            $license = cmb2_edd_license_data( $args['value'] );
+            $license_status = ( $license !== false ) ? $license->license : false;
+
+        }
 
 		if( $license_status !== false) {
 			// Add the class license-{$license_status} (valid or invalid)
@@ -129,7 +144,6 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
 		// Renew notice
 		$renew_notice = '';
-
 
 		if( $field_args['renew_license'] !== false && $license_status === 'valid' ) {
 

@@ -163,10 +163,11 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
         } else {
 
             $index = count( $joins );
+            $meta_key = '_gamipress_' . sanitize_key( $key );
 
             // Setup query definitions
-            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id )";
-            $where[] = "lm{$index}.meta_key = %s AND lm{$index}.meta_value = %s";
+            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
+            $where[] = "lm{$index}.meta_value = %s";
 
             // Setup query vars
             $query_args[] = '_gamipress_' . sanitize_key( $key );
@@ -249,13 +250,13 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array(), $since
         } else {
 
             $index = count( $joins );
+            $meta_key = '_gamipress_' . sanitize_key( $key );
 
             // Setup query definitions
-            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id )";
-            $where[] = "lm{$index}.meta_key = %s AND lm{$index}.meta_value = %s";
+            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
+            $where[] = "lm{$index}.meta_value = %s";
 
             // Setup query vars
-            $query_args[] = '_gamipress_' . sanitize_key( $key );
             $query_args[] = $meta;
 
         }
@@ -340,10 +341,11 @@ function gamipress_get_user_last_log( $user_id = 0, $log_meta = array() ) {
         } else {
 
             $index = count( $joins );
+            $meta_key = '_gamipress_' . sanitize_key( $key );
 
             // Setup query definitions
-            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id )";
-            $where[] = "lm{$index}.meta_key = %s AND lm{$index}.meta_value = %s";
+            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
+            $where[] = "lm{$index}.meta_value = %s";
 
             // Setup query vars
             $query_args[] = '_gamipress_' . sanitize_key( $key );
@@ -414,7 +416,6 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
     // Post data
     $log_data = array(
         'title'	        => '',
-        'description'	=> '',
         'type' 	        => $type,
         'trigger_type' 	=> $trigger_type,
         'access'	    => $access,

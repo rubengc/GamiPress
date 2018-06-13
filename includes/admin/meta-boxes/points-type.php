@@ -49,5 +49,28 @@ function gamipress_points_type_meta_boxes() {
         array( 'priority' => 'high', )
     );
 
+    // Points Display Options
+    gamipress_add_meta_box(
+        'points-display-options',
+        __( 'Points Display Options', 'gamipress' ),
+        'points-type',
+        array(
+            $prefix . 'label_position' => array(
+                'name' => __( 'Label position', 'gamipress' ),
+                'desc' => __( 'Location of the points type label.', 'gamipress' ),
+                'type' => 'select',
+                'options_cb' => 'gamipress_options_cb_points_label_position',
+                'default' => 'after'
+            ),
+            $prefix . 'thousands_separator' => array(
+                'name' => __( 'Thousands separator', 'gamipress' ),
+                'desc' => __( 'The symbol (usually , or .) to separate thousands.', 'gamipress' ),
+                'type' => 'text_small',
+                'default' => ''
+            ),
+        ),
+        array( 'context'  => 'side', )
+    );
+
 }
 add_action( 'gamipress_init_points-type_meta_boxes', 'gamipress_points_type_meta_boxes' );

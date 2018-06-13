@@ -21,6 +21,9 @@
 
             });
 
+            // Trigger change on sequential input to update the requirements order display
+            $("#_gamipress_sequential").change();
+
         }
     });
 
@@ -370,6 +373,9 @@
         if( has_unsaved_changes && ! row.find('.requirement-header-title .requirement-unsaved-changes').length ) {
             row.find('.requirement-header-title').append('<span class="requirement-unsaved-changes dashicons dashicons-warning" title="Unsaved Changes"></span>');
         }
+
+        // Trigger change on sequential input to update the requirements order display
+        $("#_gamipress_sequential").change();
 
     });
 })(jQuery);

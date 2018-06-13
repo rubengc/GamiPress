@@ -395,7 +395,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
             $achievement_steps_html = '';
 
-            $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
+            $steps = gamipress_get_achievement_steps( $achievement->ID );
 
             if( is_array( $steps ) && count( $steps ) ) {
 
@@ -439,7 +439,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             $replacements['{label}'] = $step->post_title;
 
             // Get the step achievement to parse their tags
-            $achievement = gamipress_get_parent_of_achievement( $step->ID );
+            $achievement = gamipress_get_step_achievement( $step->ID );
 
             if( $achievement ) {
                 $gamipress_email_template_args['achievement_id'] = $achievement->ID;
@@ -1117,7 +1117,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
     } else if( $achievement_type === 'step' ) {
 
-        $achievement = gamipress_get_parent_of_achievement( $achievement_id );
+        $achievement = gamipress_get_step_achievement( $achievement_id );
 
         // Check if step was assigned to an achievement
         if( ! $achievement ) {
@@ -1129,7 +1129,7 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         }
 
         $all_steps_earned = true;
-        $steps = gamipress_get_required_achievements_for_achievement( $achievement->ID );
+        $steps = gamipress_get_achievement_steps( $achievement->ID );
 
         // Just loop if achievement has more than 1 step
         if( is_array( $steps ) && count( $steps ) > 1 ) {
