@@ -57,7 +57,15 @@ function gamipress_get_achievements( $args = array() ) {
 
     // Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
 	if ( isset( $args['parent_of'] ) ) {
-        $args['post_in'] = gamipress_get_post_field( 'post_parent', $args['parent_of'] );
+
+		$post_parent = gamipress_get_post_field( 'post_parent', $args['parent_of'] );
+
+		if( $post_parent === 0 ) {
+			return array();
+		}
+
+        $args['post_in'] = $post_parent;
+
 	}
 
 	// Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all

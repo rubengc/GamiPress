@@ -40,7 +40,9 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
 
 	// If the user has completed the achievement, award it
 	if ( gamipress_check_achievement_completion_for_user( $achievement_id, $user_id, $this_trigger, $site_id, $args ) ) {
+
 		gamipress_award_achievement_to_user( $achievement_id, $user_id, false, $this_trigger, $site_id, $args );
+
     }
 }
 

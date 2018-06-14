@@ -170,7 +170,6 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
             $where[] = "lm{$index}.meta_value = %s";
 
             // Setup query vars
-            $query_args[] = '_gamipress_' . sanitize_key( $key );
             $query_args[] = $meta;
 
         }
@@ -348,7 +347,6 @@ function gamipress_get_user_last_log( $user_id = 0, $log_meta = array() ) {
             $where[] = "lm{$index}.meta_value = %s";
 
             // Setup query vars
-            $query_args[] = '_gamipress_' . sanitize_key( $key );
             $query_args[] = $meta;
 
         }

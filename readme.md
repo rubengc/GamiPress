@@ -223,6 +223,12 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.5.2 ###
+
+* **Bug Fixes**
+* Fixed an issue on awards engine that sometimes provokes infinite loops determining the requirement parent.
+* Fixed wrong number of arguments passed to wpdb::prepare().
+
 ### 1.5.1 ###
 
 * **New Features**

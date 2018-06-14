@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.5.1
+Stable tag: 1.5.2
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -212,6 +212,12 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.2 =
+
+* **Bug Fixes**
+* Fixed an issue on awards engine that sometimes provokes infinite loops determining the requirement parent.
+* Fixed wrong number of arguments passed to wpdb::prepare().
 
 = 1.5.1 =
 
