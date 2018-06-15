@@ -679,7 +679,7 @@ function gamipress_get_dependent_achievements_old( $achievement_id = 0 ) {
 		SELECT *
 		FROM   {$posts} as posts,
 		       {$p2p} as p2p
-		WHERE  posts.ID = p2p.p2p_to
+            WHERE  posts.ID = p2p.p2p_to
 		       AND p2p.p2p_from = %d
 		",
         $achievement_id

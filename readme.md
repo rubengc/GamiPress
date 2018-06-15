@@ -223,6 +223,14 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.5.3 ###
+
+* **Bug Fixes**
+* Fixed an issue on awards engine that sometimes not recognizes the requirement parent.
+* **Improvements**
+* Sanity check when determining if requirement has a parent or not.
+* Improved the user earned achievements query.
+
 ### 1.5.2 ###
 
 * **Bug Fixes**

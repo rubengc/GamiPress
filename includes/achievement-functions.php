@@ -58,23 +58,26 @@ function gamipress_get_achievements( $args = array() ) {
     // Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
 	if ( isset( $args['parent_of'] ) ) {
 
-		$post_parent = gamipress_get_post_field( 'post_parent', $args['parent_of'] );
+		$post_parent = absint( gamipress_get_post_field( 'post_parent', $args['parent_of'] ) );
 
+        // Bail if achievement hasn't any parent
 		if( $post_parent === 0 ) {
 			return array();
 		}
 
-        $args['post_in'] = $post_parent;
+        $args['post__in'] = array( $post_parent );
 
 	}
 
 	// Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
 	if ( isset( $args['children_of'] ) ) {
+
         $args['post_parent']    = $args['children_of'];
 
         // When looking to get achievement steps, order is important to sequential steps
         $args['orderby']        = 'menu_order';
         $args['order']          = 'ASC';
+
 	}
 
 	// Get our achievement posts
@@ -476,6 +479,13 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 		  AND meta.meta_value = %d",
         $achievement_id
     ) );
+
+	// In addition, the post parent can be earned by unlocking the given achievement
+	$post_parent = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) );
+
+	if( $post_parent !== 0 ) {
+		$specific_achievements[] = get_post( $post_parent );
+	}
 
 	// Grab posts triggered by unlocking any/all of the given achievement's type
 	$type_achievements = $wpdb->get_results( $wpdb->prepare(

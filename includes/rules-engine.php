@@ -13,15 +13,15 @@ if( !defined( 'ABSPATH' ) ) exit;
  *
  * @since  1.0.0
  *
- * @param  integer $achievement_id The given achievement ID to possibly award
- * @param  integer $user_id        The given user's ID
- * @param  string $this_trigger    The trigger
- * @param  integer $site_id        The triggered site id
- * @param  array $args             The triggered args
+ * @param  integer  $achievement_id     The given achievement ID to possibly award
+ * @param  integer  $user_id            The given user's ID
+ * @param  string   $trigger            The trigger
+ * @param  integer  $site_id            The triggered site id
+ * @param  array    $args               The triggered args
  *
- * @return mixed                   False if user has no access, void otherwise
+ * @return mixed                        False if user has no access, void otherwise
  */
-function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
+function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
 	// Set to current site id
 	if ( ! $site_id ) {
@@ -34,15 +34,13 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
     }
 
 	// If the user does not have access to this achievement, bail here
-	if ( ! gamipress_user_has_access_to_achievement( $user_id, $achievement_id, $this_trigger, $site_id, $args ) ) {
+	if ( ! gamipress_user_has_access_to_achievement( $user_id, $achievement_id, $trigger, $site_id, $args ) ) {
 		return;
     }
 
 	// If the user has completed the achievement, award it
-	if ( gamipress_check_achievement_completion_for_user( $achievement_id, $user_id, $this_trigger, $site_id, $args ) ) {
-
-		gamipress_award_achievement_to_user( $achievement_id, $user_id, false, $this_trigger, $site_id, $args );
-
+	if ( gamipress_check_achievement_completion_for_user( $achievement_id, $user_id, $trigger, $site_id, $args ) ) {
+		gamipress_award_achievement_to_user( $achievement_id, $user_id, false, $trigger, $site_id, $args );
     }
 }
 
@@ -55,15 +53,15 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
  *
  * @since  1.0.0
  *
- * @param  integer $user_id        	The given user's ID
- * @param  integer $achievement_id 	The given achievement's post ID
- * @param  string $this_trigger    	The trigger
- * @param  integer $site_id        	The triggered site id
- * @param  array $args        		The triggered args
+ * @param  integer  $achievement_id     The given achievement ID to possibly award
+ * @param  integer  $user_id            The given user's ID
+ * @param  string   $trigger            The trigger
+ * @param  integer  $site_id            The triggered site id
+ * @param  array    $args               The triggered args
  *
- * @return bool                    	True if user has access, false otherwise
+ * @return bool                    	    True if user has access, false otherwise
  */
-function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id = 0, $this_trigger = '', $site_id = 0, $args = array() ) {
+function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
 	// Set to current site id
 	if ( ! $site_id ) {
@@ -87,7 +85,7 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
 	if ( $return && $parent_achievement = gamipress_get_parent_of_achievement( $achievement_id ) ) {
 
 		// If we don't have access to the parent, we do not have access to this
-		if ( ! gamipress_user_has_access_to_achievement( $user_id, $parent_achievement->ID, $this_trigger, $site_id, $args ) ) {
+		if ( ! gamipress_user_has_access_to_achievement( $user_id, $parent_achievement->ID, $trigger, $site_id, $args ) ) {
 			$return = false;
 		}
 
@@ -108,7 +106,7 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
 	}
 
 	// Available filter for custom overrides
-	return apply_filters( 'user_has_access_to_achievement', $return, $user_id, $achievement_id, $this_trigger, $site_id, $args );
+	return apply_filters( 'user_has_access_to_achievement', $return, $user_id, $achievement_id, $trigger, $site_id, $args );
 
 }
 
@@ -117,14 +115,14 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
  *
  * @since  1.0.8
  *
- * @param bool $return          The default return value
- * @param int $user_id          The given user's ID
- * @param int $requirement_id   The given requirement's post ID
- * @param string $trigger       The trigger triggered
- * @param int $site_id          The site id
- * @param array $args           Arguments of this trigger
+ * @param bool      $return             The default return value
+ * @param int       $user_id            The given user's ID
+ * @param int       $requirement_id     The given requirement's post ID
+ * @param string    $trigger            The trigger triggered
+ * @param int       $site_id            The site id
+ * @param array     $args               Arguments of this trigger
  *
- * @return bool True if user has access to the requirement, false otherwise
+ * @return bool                         True if user has access to the requirement, false otherwise
  */
 function gamipress_user_has_access_to_specific_requirement( $return = false, $user_id = 0, $requirement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
@@ -157,11 +155,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_spec
  *
  * @since  1.0.0
  *
- * @param  bool    $return   The default return value
- * @param  integer $user_id  The given user's ID
- * @param  integer $step_id  The given step's post ID
+ * @param  bool     $return     The default return value
+ * @param  int      $user_id    The given user's ID
+ * @param  int      $step_id    The given step's post ID
  *
- * @return bool              True if user has access to step, false otherwise
+ * @return bool                 True if user has access to step, false otherwise
  */
 function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step_id = 0 ) {
 
@@ -233,6 +231,7 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 
 	// Send back our eligibility
 	return $return;
+
 }
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_points_award', 10, 3 );
 
@@ -279,6 +278,7 @@ function gamipress_user_has_access_to_points_deduct( $return = false, $user_id =
 
 	// Send back our eligibility
 	return $return;
+
 }
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_points_deduct', 10, 3 );
 
@@ -744,7 +744,7 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 
 	// Patch for WordPress to support recursive actions, specifically for gamipress_award_achievement
 	// Because global iteration is fun, assuming we can get this fixed for WordPress 3.9
-	$is_recursed_filter = ( 'gamipress_award_achievement' == current_filter() );
+	$is_recursed_filter = ( current_filter() === 'gamipress_award_achievement');
 	$current_key = null;
 
 	// Get current position
@@ -805,11 +805,11 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_additional_ach
  */
 function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 ) {
 
-	// Grab our user's (presumably updated) earned achievements
-	$earned_achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id ) );
+    // Get the post type of the earned achievement
+    $post_type = gamipress_get_post_type( $achievement_id );
 
-	// Get the post type of the earned achievement
-	$post_type = gamipress_get_post_type( $achievement_id );
+	// Grab our user's (presumably updated) earned achievements
+	$earned_achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_type' => $post_type ) );
 
 	// Hook for unlocking all achievements of this achievement type
 	if ( $all_achievements_of_type = gamipress_get_achievements( array( 'post_type' => $post_type ) ) ) {
@@ -846,7 +846,7 @@ function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 )
 }
 
 /**
- * Award same achievement to the user based ohow many points has earn
+ * Award same achievement to the user based on how many points has earn
  *
  * @since  1.0.0
  *

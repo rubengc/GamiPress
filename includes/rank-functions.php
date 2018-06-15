@@ -65,23 +65,25 @@ function gamipress_get_ranks( $args = array() ) {
     // Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
     if ( isset( $args['parent_of'] ) ) {
 
-        $post_parent = gamipress_get_post_field( 'post_parent', $args['parent_of'] );
+        $post_parent = absint( gamipress_get_post_field( 'post_parent', $args['parent_of'] ) );
 
         if( $post_parent === 0 ) {
             return array();
         }
 
-        $args['post_in'] = $post_parent;
+        $args['post__in'] = array( $post_parent );
 
     }
 
     // Since 1.5.1, requirements has their parent stored in the post_parent field, so it isn't required at all
     if ( isset( $args['children_of'] ) ) {
+
         $args['post_parent']    = $args['children_of'];
 
         // When looking to get rank requirements, order is important to sequential requirements
         $args['orderby']        = 'menu_order';
         $args['order']          = 'ASC';
+
     }
 
     // Get our ranks posts
