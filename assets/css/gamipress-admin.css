@@ -1467,9 +1467,21 @@ label[for="_gamipress_sequential"] {
 }
 
 #download-system-info {
+
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+
+	z-index: 1;
+
+	background: #fafafa;
 	border: none;
-	box-shadow: none;
-	background: transparent;
+	border-top: 1px solid #e5e5e5;
+	box-shadow: 0 -1px 1px rgba(0,0,0,0.04);
+	padding: 10px 0;
+	margin: 0;
 }
 
 #download-system-info .handlediv,
@@ -1481,6 +1493,11 @@ label[for="_gamipress_sequential"] {
 #download-system-info .cmb-row,
 #download-system-info .cmb-td {
 	padding: 0;
+}
+
+#download-system-info .cmb-td {
+	text-align: right;
+	padding-right: 19px;
 }
 
 #download-system-info .cmb-row {

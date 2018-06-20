@@ -300,6 +300,7 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
         if( $args['deducts'] === 'yes' ) {
             $types[] = 'points-deduct';
         }
+
     }
 
     // Achievement types
@@ -317,6 +318,7 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
         if( $args['steps'] === 'yes' ) {
             $types[] = 'step';
         }
+
     }
 
     // Rank types
@@ -334,6 +336,7 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
         if( $args['rank_requirements'] === 'yes' ) {
             $types[] = 'rank-requirement';
         }
+
     }
 
     // Remove types that has 'all' value
@@ -356,6 +359,8 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
         // If looking to show achievements or ranks, some of them do not award any points so wee need to add the empty points type value
         if( $args['achievements'] === 'yes' || $args['ranks'] === 'yes' ) {
             $points_types[] = '';
+        } else if( $args['achievements'] === 'no' && $args['ranks'] === 'no' ) {
+            $query_args['force_types'] = true;
         }
     }
 

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.5.3
+Stable tag: 1.5.4
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -103,6 +103,8 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Points Exchanges](https://gamipress.com/add-ons/gamipress-points-exchanges/) - Let your users exchange points between different points types.
+* [Transfers](https://gamipress.com/add-ons/gamipress-transfers/) - Allow your users to transfer points, achievements or ranks between them.
 * [Daily Login Rewards](https://gamipress.com/add-ons/gamipress-daily-login-rewards/) - Add daily rewards to perform your site visits.
 * [Reports](https://gamipress.com/add-ons/gamipress-reports/) - Live reports for a quick view of points in circulation, achievements earned and user ranks.
 * [Purchases](https://gamipress.com/add-ons/gamipress-purchases/) - Allow your users purchase points, achievements or ranks access.
@@ -212,6 +214,17 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.4 =
+
+* **New Features**
+* Added logs menu at GamiPress admin bar.
+* **Bug Fixes**
+* Fixed results on [gamipress_earnings] shortcode and GamiPress: User earnings widget when trying to get earnings related just to a specific points type.
+* Fixed non array passed to array_merge() on gamipress_get_hidden_achievement_ids() function.
+* **Improvements**
+* The "Download System Info File" is now always visible.
+* Added extra sanity checks on points format functions.
 
 = 1.5.3 =
 

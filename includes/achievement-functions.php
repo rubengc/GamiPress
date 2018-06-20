@@ -330,7 +330,7 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 	// loop al given types looking if all has been cached
 	foreach( $achievement_type as $type ) {
 
-		if( isset( $cache[$type] ) ) {
+		if( isset( $cache[$type] ) && is_array( $cache[$type] ) ) {
 			$hidden_ids = array_merge( $hidden_ids, $cache[$type] );
 		} else {
 			$all_cached = false;
@@ -365,7 +365,7 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 			$cache[$achievement->post_type] = array();
 		}
 
-		$cache[$achievement->post_type] = $achievement->ID;
+		$cache[$achievement->post_type][] = $achievement->ID;
 
 	}
 

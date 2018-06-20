@@ -300,7 +300,7 @@ function gamipress_get_points_type_thousands_separator( $points_type ) {
  */
 function gamipress_format_points( $amount, $points_type ) {
 
-    $amount = intval( $amount );
+    $amount = floatval( $amount );
 
     // Get the singular or plural label based on points amount
     $label = gamipress_get_points_amount_label( $amount, $points_type, true );
@@ -342,6 +342,8 @@ function gamipress_format_points( $amount, $points_type ) {
  * @return string           The amount formatted
  */
 function gamipress_format_amount( $amount, $points_type ) {
+
+    $amount = floatval( $amount );
 
     // Setup the formatting vars
     $decimals = 0;

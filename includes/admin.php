@@ -108,9 +108,11 @@ function gamipress_admin_submenu() {
 add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
 
 /**
- * Add GamiPress admin bar menus to quickly access to menu items
+ * Add GamiPress admin bar menu
  *
  * @since 1.5.1
+ *
+ * @param WP_Admin_Bar $wp_admin_bar
  */
 function gamipress_admin_bar_menu( $wp_admin_bar ) {
 
@@ -234,7 +236,35 @@ function gamipress_admin_bar_menu( $wp_admin_bar ) {
 add_action( 'admin_bar_menu', 'gamipress_admin_bar_menu', 100 );
 
 /**
- * Add GamiPress admin bar submenus to quickly access to menu items
+ * Add GamiPress admin bar custom tables menu
+ *
+ * @since 1.5.4
+ */
+function gamipress_admin_bar_custom_tables_menu( $wp_admin_bar ) {
+
+    // Bail if GamiPress is active network wide and we are not in main site
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        return;
+    }
+
+    // Bail if current user can't manage GamiPress
+    if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    // Logs
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-logs',
+        'title'  => __( 'Logs', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_logs' )
+    ) );
+
+}
+add_action( 'admin_bar_menu', 'gamipress_admin_bar_custom_tables_menu', 150 );
+
+/**
+ * Add GamiPress admin bar menu
  *
  * @since 1.5.1
  */
@@ -291,7 +321,7 @@ function gamipress_admin_bar_submenu( $wp_admin_bar ) {
     ) );
 
 }
-add_action( 'admin_bar_menu', 'gamipress_admin_bar_submenu', 102 );
+add_action( 'admin_bar_menu', 'gamipress_admin_bar_submenu', 999 );
 
 /**
  * Register GamiPress dashboard widget.

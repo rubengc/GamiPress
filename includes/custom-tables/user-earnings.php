@@ -96,8 +96,12 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     if( ! empty( $post_type_where ) && ! empty( $points_type_where ) ) {
 
-        // If is querying by post and points type, then need to set this conditional as OR
-        $where .= " AND ( {$post_type_where} OR {$points_type_where} )";
+        if( isset( $qv['force_types'] ) && $qv['force_types'] === true ) {
+            $where .= " AND ( {$post_type_where} AND {$points_type_where} )";
+        } else {
+            // If is querying by post and points type, then need to set this conditional as OR
+            $where .= " AND ( {$post_type_where} OR {$points_type_where} )";
+        }
 
     } else if( ! empty( $post_type_where ) ) {
 
