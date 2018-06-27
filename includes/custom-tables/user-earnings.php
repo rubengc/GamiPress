@@ -9,12 +9,12 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Parse query args for user earnings
+ * Parse query args for user earnings to be applied on WHERE clause
  *
  * @since  1.2.8
  *
- * @param string $where
- * @param CT_Query $ct_query
+ * @param string    $where
+ * @param CT_Query  $ct_query
  *
  * @return string
  */
@@ -124,8 +124,42 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
     }
 
     return $where;
+
 }
 add_filter( 'ct_query_where', 'gamipress_user_earnings_query_where', 10, 2 );
+
+/**
+ * Parse query args for user earnings to be applied on GROUP BY clause
+ *
+ * @since  1.5.5
+ *
+ * @param string    $groupby
+ * @param CT_Query  $ct_query
+ *
+ * @return string
+ */
+function gamipress_user_earnings_query_group_by( $groupby, $ct_query ) {
+
+    global $ct_table;
+
+    if( $ct_table->name !== 'gamipress_user_earnings' ) {
+        return $groupby;
+    }
+
+    // Shorthand
+    $qv = $ct_query->query_vars;
+
+    // Check if 'groupby' has been passed to the query
+    if( isset( $qv['groupby'] ) && ! empty( $qv['groupby'] ) ) {
+
+        $groupby = $qv['groupby'];
+
+    }
+
+    return $groupby;
+
+}
+add_filter( 'ct_query_groupby', 'gamipress_user_earnings_query_group_by', 10, 2 );
 
 /**
  * Bulk actions for user earnings list view

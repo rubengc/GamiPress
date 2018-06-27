@@ -26,12 +26,13 @@ function gamipress_get_user_achievements( $args = array() ) {
 
 	// Setup our default args
 	$defaults = array(
-		'user_id'          => 0,     // The given user's ID
-		'site_id'          => get_current_blog_id(), // The given site's ID
-		'achievement_id'   => false, // A specific achievement's post ID
-		'achievement_type' => false, // A specific achievement type
-		'since'            => 0,     // A specific timestamp to use in place of $limit_in_days
-		'limit'            => -1,    // Limit of achievements to return
+		'user_id'          => 0,     					// The given user's ID
+		'site_id'          => get_current_blog_id(), 	// The given site's ID
+		'achievement_id'   => false, 					// A specific achievement's post ID
+		'achievement_type' => false, 					// A specific achievement type
+		'since'            => 0,     					// A specific timestamp to use in place of $limit_in_days
+		'limit'            => -1,    					// Limit of achievements to return
+		'groupby'          => false,    				// Group by clause, setting it to 'post_id' or 'achievement_id' will prevent duplicated achievements
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -45,9 +46,9 @@ function gamipress_get_user_achievements( $args = array() ) {
 
 	// Setup query args
 	$query_args = array(
-		'user_id' => $args['user_id'],
-		'nopaging' => true,
-		'items_per_page' => $args['limit']
+		'user_id' 			=> $args['user_id'],
+		'nopaging' 			=> true,
+		'items_per_page' 	=> $args['limit'],
 	);
 
 	if( $args['achievement_id'] !== false ) {
@@ -56,6 +57,15 @@ function gamipress_get_user_achievements( $args = array() ) {
 
 	if( $args['achievement_type'] !== false ) {
 		$query_args['post_type'] = $args['achievement_type'];
+	}
+
+	if( $args['groupby'] !== false ) {
+		$query_args['groupby'] = $args['groupby'];
+
+		// achievement_id is allowed
+		if( $args['groupby'] === 'achievement_id' ) {
+			$query_args['groupby'] = 'post_id';
+		}
 	}
 
 	if( $args['since'] !== 0 ) {

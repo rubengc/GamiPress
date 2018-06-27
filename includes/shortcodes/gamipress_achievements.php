@@ -129,13 +129,15 @@ function gamipress_register_achievements_shortcode() {
 				'description' => __( 'Parameter to use for sorting.', 'gamipress' ),
 				'type'        => 'select',
 				'options'      => array(
-					'menu_order' => __( 'Menu Order', 'gamipress' ),
-					'ID'         => __( 'Achievement', 'gamipress' ),
-					'title'      => __( 'Achievement Title', 'gamipress' ),
-					'date'       => __( 'Published Date', 'gamipress' ),
-					'modified'   => __( 'Last Modified Date', 'gamipress' ),
-					'author'     => __( 'Achievement Author', 'gamipress' ),
-					'rand'       => __( 'Random', 'gamipress' ),
+					'menu_order' 		=> __( 'Menu order', 'gamipress' ),
+					'ID'         		=> __( 'Achievement', 'gamipress' ),
+					'title'      		=> __( 'Title', 'gamipress' ),
+					'date'       		=> __( 'Published date', 'gamipress' ),
+					'modified'   		=> __( 'Last modified date', 'gamipress' ),
+					'author'     		=> __( 'Author', 'gamipress' ),
+					'rand'       		=> __( 'Random', 'gamipress' ),
+					'points_awarded'    => __( 'Points awarded', 'gamipress' ),
+					'points_to_unlock'  => __( 'Points to unlock', 'gamipress' ),
 				),
 				'default'     => 'menu_order',
 			),
@@ -437,6 +439,12 @@ function gamipress_achievements_shortcode_query( $args ) {
             if( $search ) {
                 $args[ 's' ] = $search;
             }
+
+			// Order By
+			if( in_array( $orderby, array( 'points_awarded', 'points_to_unlock' ) ) ) {
+				$args['meta_key'] = ( $orderby === 'points_awarded' ? '_gamipress_points' : '_gamipress_points_to_unlock' );
+				$args['orderby'] = 'meta_value_num';
+			}
 
             // Loop Achievements
             $achievement_posts = new WP_Query( $args );

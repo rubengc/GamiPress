@@ -80,12 +80,13 @@ function gamipress_register_ranks_shortcode() {
 				'description' => __( 'Parameter to use for sorting.', 'gamipress' ),
 				'type'        => 'select',
 				'options'      => array(
-					'priority' 	 => __( 'Priority', 'gamipress' ),
-					'ID'         => __( 'Rank ID', 'gamipress' ),
-					'title'      => __( 'Rank Title', 'gamipress' ),
-					'date'       => __( 'Published Date', 'gamipress' ),
-					'modified'   => __( 'Last Modified Date', 'gamipress' ),
-					'rand'       => __( 'Random', 'gamipress' ),
+					'priority' 	 		=> __( 'Priority', 'gamipress' ),
+					'ID'         		=> __( 'Rank ID', 'gamipress' ),
+					'title'      		=> __( 'Title', 'gamipress' ),
+					'date'       		=> __( 'Published date', 'gamipress' ),
+					'modified'   		=> __( 'Last modified date', 'gamipress' ),
+					'rand'       		=> __( 'Random', 'gamipress' ),
+					'points_to_unlock'  => __( 'Points to unlock', 'gamipress' ),
 				),
 				'default'     => 'priority',
 			),
@@ -262,6 +263,12 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		// Exclude certain ranks
 		if ( ! empty( $exclude ) ) {
 			$query_args[ 'post__not_in' ] = $exclude;
+		}
+
+		// Order By
+		if( $atts['orderby'] === 'points_to_unlock' ) {
+			$query_args['meta_key'] = '_gamipress_points_to_unlock';
+			$query_args['orderby'] = 'meta_value_num';
 		}
 
 	}

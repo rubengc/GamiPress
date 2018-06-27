@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.5.4
+Stable tag: 1.5.5
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -84,6 +84,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
+* [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
 * [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
@@ -214,6 +215,16 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.5 =
+
+* **New Features**
+* Added support to order achievements on [gamipress_achievements] shortcode and GamiPress: Achievements widget by points awarded and points to unlock.
+* Added support to order ranks on [gamipress_ranks] shortcode and GamiPress: Ranks widget by points to unlock.
+* **Bug Fixes**
+* Fixed wrong string format on rank's unlock using points button text.
+* **Developer Notes**
+* Added support to the GROUP BY clause when retrieving user achievements.
 
 = 1.5.4 =
 

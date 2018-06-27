@@ -615,7 +615,7 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 	ob_start(); ?>
 	<div class="gamipress-rank-unlock-with-points">
 		<div class="gamipress-spinner" style="display: none;"></div>
-		<button type="button" class="gamipress-rank-unlock-with-points-button" data-id="<?php echo $rank_id; ?>"><?php echo sprintf( __( 'Unlock using %d %s', 'gamipress' ), gamipress_format_points( $points, $points_type ) ); ?></button>
+		<button type="button" class="gamipress-rank-unlock-with-points-button" data-id="<?php echo $rank_id; ?>"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), gamipress_format_points( $points, $points_type ) ); ?></button>
 	</div>
 	<?php $output = ob_get_clean();
 
