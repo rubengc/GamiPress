@@ -175,7 +175,7 @@ function gamipress_ajax_bulk_awards_tool() {
     $bulk_award = $_POST['bulk_award'];
     $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
     $limit = 100;
-    $offset = ( $loop !== 0 ? $limit * ( $loop + 1 ) : 0 );
+    $offset = $limit * $loop;
     $run_again = false;
 
     ignore_user_abort( true );

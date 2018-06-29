@@ -53,7 +53,7 @@ function gamipress_privacy_user_earnings_exporter( $email_address, $page = 1 ) {
     // Setup vars
     $export_items   = array();
     $limit = 500;
-    $offset = $page - 1;
+    $offset = $limit * ( $page - 1 );
     $done = false;
 
     $user = get_user_by( 'email', $email_address );

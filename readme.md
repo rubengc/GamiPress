@@ -87,6 +87,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [Points CSV Tool](https://wordpress.org/plugins/gamipress-points-csv-tool/) - Tool to import/export points through CSV files.
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
 * [Block Users](https://wordpress.org/plugins/gamipress-block-users/) - Block users and roles from getting awarded through the GamiPress awards engine.
 * [Notifications By Type](https://wordpress.org/plugins/gamipress-notifications-by-type/) - Set different notifications settings by type.
@@ -225,6 +226,16 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.5.6 ###
+
+* **Bug Fixes**
+* Fixed wrong offset on bulk awards and revokes tools.
+* Fixed wrong offset on recount activity tool.
+* Fixed wrong offset on logs personal data exporter.
+* Fixed wrong offset on user earnings personal data exporter.
+* **Developer Notes**
+* Added support to the icon attribute on GamiPress multi buttons field.
 
 ### 1.5.5 ###
 

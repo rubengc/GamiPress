@@ -89,9 +89,15 @@ function cmb2_render_multi_buttons( $field, $value, $object_id, $object_type, $f
             $button_pattern = '<a href="' . $href . '" %s>%s</a>';
         }
 
+        $icon_html = '';
+
+        if( isset( $button['icon'] ) && ! empty( $button['icon'] ) ) {
+            $icon_html = '<i class="dashicons ' . $button['icon'] . '"></i>';
+        }
+
         echo sprintf( $button_pattern,
             $field_type->concat_attrs( $attrs ),
-            ( isset( $button['label'] ) && ! empty( $button['label'] ) ? $button['label'] : '' )
+            $icon_html . ( isset( $button['label'] ) && ! empty( $button['label'] ) ? $button['label'] : '' )
         );
     }
 
