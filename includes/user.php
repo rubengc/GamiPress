@@ -220,7 +220,7 @@ function gamipress_save_user_profile_fields( $user_id = 0 ) {
 	}
 
 	// Update our user's points total, but only if edited
-	if ( isset( $_POST['user_points'] ) && $_POST['user_points'] !== gamipress_get_user_points( $user_id ) ) {
+	if ( isset( $_POST['user_points'] ) &&  absint( $_POST['user_points'] ) !== gamipress_get_user_points( $user_id ) ) {
 		gamipress_update_user_points( $user_id, absint( $_POST['user_points'] ), get_current_user_id() );
 	}
 
@@ -228,7 +228,7 @@ function gamipress_save_user_profile_fields( $user_id = 0 ) {
 
     foreach( $points_types as $points_type => $data ) {
         // Update each user's points type total, but only if edited
-        if ( isset( $_POST['user_' . $points_type . '_points'] ) && $_POST['user_' . $points_type . '_points'] !== gamipress_get_user_points( $user_id, $points_type ) ) {
+        if ( isset( $_POST['user_' . $points_type . '_points'] ) && absint( $_POST['user_' . $points_type . '_points'] ) !== gamipress_get_user_points( $user_id, $points_type ) ) {
             gamipress_update_user_points( $user_id, absint( $_POST['user_' . $points_type . '_points'] ), get_current_user_id(), null, $points_type );
         }
     }

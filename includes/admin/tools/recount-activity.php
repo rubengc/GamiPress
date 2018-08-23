@@ -40,7 +40,8 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
         'fields' => apply_filters( 'gamipress_recount_activity_tool_fields', array(
             'recount_activity_desc' => array(
                 'content' => __( 'This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and deducts and achievements will be awarded or deducted too.', 'gamipress' )
-                    . '<br>' . __( '<strong>Note:</strong> Some activity may not be possible to recount (like user log in or daily visits) because there are not registries stored in the database.', 'gamipress' ),
+                    . '<br>' . __( '<strong>Note:</strong> Some activity may not be possible to recount (like user log in or daily visits) because there are not registries stored in the database.', 'gamipress' )
+                    . '<br>' . __( '<strong>Important:</strong> If emails to notify users about new earnings are enabled is possible that users will receive a lot of emails so is recommendable to deactivate them temporally.', 'gamipress' ),
                 'type' => 'html',
             ),
             'activity_to_recount' => array(

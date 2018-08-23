@@ -277,7 +277,7 @@ function gamipress_achievements_shortcode( $atts = array () ) {
  *
  * @return array
  */
-function gamipress_achievements_shortcode_query( $args ) {
+function gamipress_achievements_shortcode_query( $args = array() ) {
 
 	// Setup our AJAX query vars
 	$type       	= isset( $args['type'] )       		? $args['type']       	: false;

@@ -227,6 +227,18 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.5.7 ###
+
+* **Bug Fixes**
+* Fixed wrong CSS selector on achievements template layout.
+* Fixed wrong "Admin revoked 0 points" log entry caused from update an user without change his points balance.
+* Fixed subsite post saving when GamiPress is network wide active.
+* Fixed wrong rank type check on achievements earned by reaching a specific rank.
+* **Improvements**
+* Improved CSS selector to change achievement's image opacity when user has earned it.
+* Improved CSS selector to change rank's image opacity when user has reached it.
+* Added a notice about emails on recount activity tool.
+
 ### 1.5.6 ###
 
 * **Bug Fixes**

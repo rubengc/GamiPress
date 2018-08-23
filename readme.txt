@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.5.6
+Stable tag: 1.5.7
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -216,6 +216,18 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.7 =
+
+* **Bug Fixes**
+* Fixed wrong CSS selector on achievements template layout.
+* Fixed wrong "Admin revoked 0 points" log entry caused from update an user without change his points balance.
+* Fixed subsite post saving when GamiPress is network wide active.
+* Fixed wrong rank type check on achievements earned by reaching a specific rank.
+* **Improvements**
+* Improved CSS selector to change achievement's image opacity when user has earned it.
+* Improved CSS selector to change rank's image opacity when user has reached it.
+* Added a notice about emails on recount activity tool.
 
 = 1.5.6 =
 

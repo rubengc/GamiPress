@@ -58,8 +58,8 @@
 
 .gamipress-achievement:not(.gamipress-layout-none),
 .gamipress-rank:not(.gamipress-layout-none),
-.single-achievement:not(.gamipress-layout-none),
-.single-rank:not(.gamipress-layout-none),
+.single-achievement.achievement-wrap:not(.gamipress-layout-none),
+.single-rank.rank-wrap:not(.gamipress-layout-none),
 .gamipress-user-points:not(.gamipress-layout-none) {
 	display: -webkit-box;
 	display: -webkit-flex;
@@ -293,7 +293,9 @@
 .gamipress-achievement.user-has-earned .gamipress-achievement-image,
 .gamipress-rank.user-has-earned .gamipress-rank-image,
 .user-has-earned .achievement-wrap .gamipress-achievement-image,
-.user-has-earned .rank-wrap .gamipress-rank-image {
+.achievement-wrap.user-has-earned .gamipress-achievement-image,
+.user-has-earned .rank-wrap .gamipress-rank-image,
+.rank-wrap.user-has-earned .gamipress-rank-image {
 	opacity: 1;
 }
 

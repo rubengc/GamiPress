@@ -482,7 +482,7 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 	) {
 		// Grab our user's rank and compared it with the required one
 		$rank_required   = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_rank_required' ) );
-		$user_rank_id    = gamipress_get_user_rank_id( $user_id );
+		$user_rank_id    = gamipress_get_user_rank_id( $user_id, gamipress_get_post_type( $rank_required ) );
 
 		if ( $user_rank_id === $rank_required )
 			$return = true;

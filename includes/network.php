@@ -323,3 +323,18 @@ function gamipress_network_can_save_meta_boxes( $can_save, $cmb ) {
 
 }
 add_filter( 'cmb2_can_save', 'gamipress_network_can_save_meta_boxes', 10, 2 );
+
+/**
+ * Force to clean switched sites global to avoid issues with other plugins (since wp_restore_blog() doesn't cleans it)
+ *
+ * @since 1.5.7
+ */
+function gamipress_fix_network_wp_insert_post() {
+
+    if ( is_multisite() && ms_is_switched() ) {
+        // Force to clean switched sites global
+        $GLOBALS['_wp_switched_stack'] = array();
+    }
+
+}
+add_action( 'wp_insert_post', 'gamipress_fix_network_wp_insert_post', 9 );

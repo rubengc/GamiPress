@@ -622,7 +622,7 @@ function gamipress_bust_points_based_achievements_cache( $post_id ) {
 	$post = get_post( $post_id );
 
 	if ( gamipress_is_achievement( $post )
-		&& ( 'points' == gamipress_get_post_meta( $post_id, '_gamipress_earned_by' )
+		&& ( 'points' === gamipress_get_post_meta( $post_id, '_gamipress_earned_by' )
             || ( isset( $_POST['_gamipress_earned_by'] ) && 'points' === $_POST['_gamipress_earned_by'] ) ) ) {
 
 		$points_type = gamipress_get_post_meta( $post_id, '_gamipress_points_type_required' );
@@ -701,8 +701,8 @@ function gamipress_bust_rank_based_achievements_cache( $post_id ) {
 	if (
 		gamipress_is_achievement( $post )
 		&& (
-			'rank' == gamipress_get_post_meta( $post_id, '_gamipress_earned_by' )
-			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'rank' == $_POST['_gamipress_earned_by'] )
+			'rank' === gamipress_get_post_meta( $post_id, '_gamipress_earned_by' )
+			|| ( isset( $_POST['_gamipress_earned_by'] ) && 'rank' === $_POST['_gamipress_earned_by'] )
 		)
 	) {
 
