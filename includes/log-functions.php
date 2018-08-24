@@ -160,6 +160,17 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
                 $query_args[] = $meta;
             }
 
+        } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
+
+            // Backward compatibility for _gamipress_trigger_type meta
+            if( is_array( $meta ) ) {
+                $meta = "'" . implode( "', '", $meta ) . "'";
+                $where[] = "l.trigger_type IN ({$meta})";
+            } else {
+                $where[] = "l.trigger_type = %s";
+                $query_args[] = $meta;
+            }
+
         } else {
 
             $index = count( $joins );
@@ -243,6 +254,17 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array(), $since
                 $where[] = "l.type IN ({$meta})";
             } else {
                 $where[] = "l.type = %s";
+                $query_args[] = $meta;
+            }
+
+        } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
+
+            // Backward compatibility for _gamipress_trigger_type meta
+            if( is_array( $meta ) ) {
+                $meta = "'" . implode( "', '", $meta ) . "'";
+                $where[] = "l.trigger_type IN ({$meta})";
+            } else {
+                $where[] = "l.trigger_type = %s";
                 $query_args[] = $meta;
             }
 

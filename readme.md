@@ -227,6 +227,11 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.5.7.1 ###
+
+* **Bug Fixes**
+* Fixed log query function to keep backward compatibility with older database versions.
+
 ### 1.5.7 ###
 
 * **Bug Fixes**
