@@ -219,7 +219,34 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
         case 'type':
             $log_types = gamipress_get_log_types();
 
-            echo isset( $log_types[$log->type] ) ? $log_types[$log->type] : $log->type;
+            $post_id = ct_get_object_meta( $object_id, '_gamipress_achievement_id', true );
+            $post_type = gamipress_get_post_type( $post_id );
+
+            if( $log->type === 'achievement_earn' || $log->type === 'achievement_award' && in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
+
+                switch( $post_type ) {
+                    case 'step':
+                        if( $log->type === 'achievement_earn' ) {
+                            echo __( 'Achievement Step Earn', 'gamipress' );
+                        } else {
+                            echo __( 'Achievement Step Award', 'gamipress' );
+                        }
+                        break;
+                    case 'rank-requirement':
+                        if( $log->type === 'achievement_earn' ) {
+                            echo __( 'Rank Requirement Earn', 'gamipress' );
+                        } else {
+                            echo __( 'Rank Requirement Award', 'gamipress' );
+                        }
+                        break;
+                    default:
+                        echo isset( $log_types[$log->type] ) ? $log_types[$log->type] : $log->type;
+                        break;
+                }
+
+            } else {
+                echo isset( $log_types[$log->type] ) ? $log_types[$log->type] : $log->type;
+            }
 
             break;
         case 'user_id':

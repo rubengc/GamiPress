@@ -17,7 +17,7 @@ if ( ! class_exists( 'CT_View' ) ) :
         protected $name = '';
 
         /**
-         * @var string View args
+         * @var array View args
          */
         protected $args = array();
 
@@ -41,6 +41,8 @@ if ( ! class_exists( 'CT_View' ) ) :
         }
 
         public function add_hooks() {
+
+            add_action( 'admin_init', array( $this, 'admin_init' ) );
 
             // Note: sub-menus need to be registered after parent
             add_action( 'admin_menu', array( $this, 'admin_menu' ), empty( $this->args['parent_slug'] ) ? 10 : 11 );
@@ -131,8 +133,44 @@ if ( ! class_exists( 'CT_View' ) ) :
 
         }
 
+        public function get_slug() {
+            return $this->args['menu_slug'];
+        }
+
         public function get_link() {
             return admin_url( "admin.php?page=" . $this->args['menu_slug'] );
+        }
+
+        public function admin_init() {
+
+            global $ct_registered_tables, $ct_table, $pagenow;
+
+            if( $pagenow !== 'admin.php' ) {
+                return;
+            }
+
+            if( isset( $_GET['page'] ) && $_GET['page'] !== $this->args['menu_slug'] ) {
+                return;
+            }
+
+            if( ! isset( $ct_registered_tables[$this->name] ) ) {
+                return;
+            }
+
+            // Setup the global CT_Table object for this screen
+            $ct_table = $ct_registered_tables[$this->name];
+
+            // Run the init function
+            $this->init();
+
+        }
+
+        public function init() {
+
+            // Run redirects here to avoid "headers already sent" error
+
+            do_action( "ct_init_{$this->name}_view", $this );
+
         }
 
         public function render() {

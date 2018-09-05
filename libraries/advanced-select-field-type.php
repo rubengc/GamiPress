@@ -80,7 +80,7 @@ add_action( 'cmb2_render_advanced_select', 'cmb2_render_advanced_select_field_ty
  */
 function cmb2_sanitize_advanced_select_callback( $override_value, $value ) {
 
-    // Sanitize multimple value
+    // Sanitize multiple value
     if ( is_array( $value ) ) {
 
         foreach ( $value as $key => $saved_value ) {

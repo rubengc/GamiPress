@@ -17,7 +17,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
         protected $message = false;
         protected $columns = 2;
 
-        public function __construct($name, $args) {
+        public function __construct( $name, $args ) {
 
             parent::__construct( $name, $args );
 
@@ -75,6 +75,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                 }
 
             } else {
+                // See filter "ct_{$ct_table->name}_default_data"
                 $this->object_id = ct_insert_object( array() );
 
                 // If not id, return to list
@@ -90,81 +91,14 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                     wp_die( __( 'Unable to create the draft item.' ) );
 
                 // If not current user can create, die
-                if ( ! current_user_can( 'create_item', $this->object_id ) ) {
+                if ( ! current_user_can( 'create_item', $this->object_id ) && ! current_user_can( 'edit_item', $this->object_id ) ) {
                     wp_die( __( 'Sorry, you are not allowed to create items of this type.' ) );
                 }
+
+                // Redirect to edit screen to prevent add a draft item multiples times
+                wp_redirect( ct_get_edit_link( $ct_table->name, $this->object_id ) );
             }
 
-            $messages = array(
-                0 => __( '%s could not be updated.' ),
-                1 => __( '%s updated successfully.' ),
-            );
-
-            /**
-             * Filters the table updated messages (string keys allowed!).
-             *
-             * @since 1.0.0
-             *
-             * @param array $messages Post updated messages. For defaults @see $messages declarations above.
-             */
-            $messages = apply_filters( 'ct_table_updated_messages', $messages );
-
-            // Setup screen message
-            if ( isset($_GET['message']) ) {
-
-                if ( isset($messages[$_GET['message']]) )
-                    $this->message = sprintf( $messages[$_GET['message']], $ct_table->labels->singular_name );
-
-            }
-
-            wp_enqueue_script( 'post' );
-
-            if ( wp_is_mobile() ) {
-                wp_enqueue_script( 'jquery-touch-punch' );
-            }
-
-            // Register submitdiv metabox
-            add_meta_box( 'submitdiv', __( 'Save Changes' ), array( $this, 'submit_meta_box' ), $ct_table->name, 'side', 'core' );
-
-            /**
-             * Fires after all built-in meta boxes have been added.
-             *
-             * @since 1.0.0
-             *
-             * @param string  $post_type Post type.
-             * @param WP_Post $post      Post object.
-             */
-            do_action( 'add_meta_boxes', $ct_table->name, $this->object );
-
-            /**
-             * Fires after all built-in meta boxes have been added, contextually for the given post type.
-             *
-             * The dynamic portion of the hook, `$post_type`, refers to the post type of the post.
-             *
-             * @since 1.0.0
-             *
-             * @param WP_Post $post Post object.
-             */
-            do_action( "add_meta_boxes_{$ct_table->name}", $this->object );
-
-            /**
-             * Fires after meta boxes have been added.
-             *
-             * Fires once for each of the default meta box contexts: normal, advanced, and side.
-             *
-             * @since 1.0.0
-             *
-             * @param string  $post_type Type of the object.
-             * @param string  $context   string  Meta box context.
-             * @param WP_Post $object    The object.
-             */
-            do_action( 'do_meta_boxes', $ct_table->name, 'normal', $this->object );
-            /** This action is documented in wp-admin/edit-form-advanced.php */
-            do_action( 'do_meta_boxes', $ct_table->name, 'advanced', $this->object );
-            /** This action is documented in wp-admin/edit-form-advanced.php */
-            do_action( 'do_meta_boxes', $ct_table->name, 'side', $this->object );
-
-            //add_screen_option( 'layout_columns', array( 'max' => $this->columns, 'default' => $this->columns ) );
         }
 
         /**
@@ -353,15 +287,93 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
 
         }
 
+        public function pre_render() {
+
+            global $ct_registered_tables, $ct_table;
+
+            $messages = array(
+                0 => __( '%s could not be updated.' ),
+                1 => __( '%s updated successfully.' ),
+            );
+
+            /**
+             * Filters the table updated messages (string keys allowed!).
+             *
+             * @since 1.0.0
+             *
+             * @param array $messages Post updated messages. For defaults @see $messages declarations above.
+             */
+            $messages = apply_filters( 'ct_table_updated_messages', $messages );
+
+            // Setup screen message
+            if ( isset($_GET['message']) ) {
+
+                if ( isset($messages[$_GET['message']]) )
+                    $this->message = sprintf( $messages[$_GET['message']], $ct_table->labels->singular_name );
+
+            }
+
+            wp_enqueue_script( 'post' );
+
+            if ( wp_is_mobile() ) {
+                wp_enqueue_script( 'jquery-touch-punch' );
+            }
+
+            // Register submitdiv metabox
+            add_meta_box( 'submitdiv', __( 'Save Changes' ), array( $this, 'submit_meta_box' ), $ct_table->name, 'side', 'core' );
+
+            /**
+             * Fires after all built-in meta boxes have been added.
+             *
+             * @since 1.0.0
+             *
+             * @param string  $post_type Post type.
+             * @param WP_Post $post      Post object.
+             */
+            do_action( 'add_meta_boxes', $ct_table->name, $this->object );
+
+            /**
+             * Fires after all built-in meta boxes have been added, contextually for the given post type.
+             *
+             * The dynamic portion of the hook, `$post_type`, refers to the post type of the post.
+             *
+             * @since 1.0.0
+             *
+             * @param WP_Post $post Post object.
+             */
+            do_action( "add_meta_boxes_{$ct_table->name}", $this->object );
+
+            /**
+             * Fires after meta boxes have been added.
+             *
+             * Fires once for each of the default meta box contexts: normal, advanced, and side.
+             *
+             * @since 1.0.0
+             *
+             * @param string  $post_type Type of the object.
+             * @param string  $context   string  Meta box context.
+             * @param WP_Post $object    The object.
+             */
+            do_action( 'do_meta_boxes', $ct_table->name, 'normal', $this->object );
+            /** This action is documented in wp-admin/edit-form-advanced.php */
+            do_action( 'do_meta_boxes', $ct_table->name, 'advanced', $this->object );
+            /** This action is documented in wp-admin/edit-form-advanced.php */
+            do_action( 'do_meta_boxes', $ct_table->name, 'side', $this->object );
+
+            // TODO: Need to add it manually through screen_settings() function
+            //add_screen_option( 'layout_columns', array( 'max' => $this->columns, 'default' => $this->columns ) );
+
+        }
+
         public function render() {
 
             global $ct_registered_tables, $ct_table;
 
-            $this->init();
+            $this->pre_render();
 
             if( $this->editing ) {
                 $title = $ct_table->labels->edit_item;
-                $new_url = $ct_table->views->add->get_link();
+                $new_url = ( $ct_table->views->add ? $ct_table->views->add->get_link() : false );
             } else {
                 $title = $ct_table->labels->add_new_item;
             }
@@ -372,11 +384,9 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
 
                 <h1 class="wp-heading-inline"><?php echo $title; ?></h1>
 
-                <?php
-                if ( isset( $new_url ) && current_user_can( $ct_table->cap->create_items ) ) {
+                <?php if ( isset( $new_url ) && $new_url && current_user_can( $ct_table->cap->create_items ) ) :
                     echo ' <a href="' . esc_url( $new_url ) . '" class="page-title-action">' . esc_html( $ct_table->labels->add_new_item ) . '</a>';
-                }
-                ?>
+                endif; ?>
 
                 <hr class="wp-header-end">
 

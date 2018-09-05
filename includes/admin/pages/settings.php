@@ -130,18 +130,21 @@ function gamipress_register_settings_page() {
 
     }
 
+    $minimum_role = gamipress_get_manager_capability();
+
     // Create the options page
     new Cmb2_Metatabs_Options( array(
         'key'      => 'gamipress_settings',
         'class'    => 'gamipress-page',
         'title'    => __( 'Settings', 'gamipress' ),
         'topmenu'  => 'gamipress',
-        'view_capability' => gamipress_get_manager_capability(),
         'cols'     => 1,
         'boxes'    => $boxes,
         'tabs'     => $tabs,
         'menuargs' => array(
             'menu_title' => __( 'Settings', 'gamipress' ),
+            'capability'        => $minimum_role,
+            'view_capability'   => $minimum_role,
         ),
         'savetxt' => __( 'Save Settings', 'gamipress' ),
         'resettxt' => __( 'Reset Settings', 'gamipress' ),

@@ -292,6 +292,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 	$wpms       	= isset( $args['wpms'] )       		? $args['wpms']       	: false;
 	$include    	= isset( $args['include'] )    		? $args['include']    	: array();
 	$exclude    	= isset( $args['exclude'] )    		? $args['exclude']    	: array();
+	$showed_ids    	= isset( $args['showed_ids'] )    	? $args['showed_ids']   : array();
 
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
 	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
@@ -435,6 +436,12 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
                 $args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $exclude );
             }
 
+			if( ! empty( $showed_ids ) ) {
+				// Exclude already shown achievements
+				$args[ 'post__in' ] = array_diff( $args[ 'post__in' ], $showed_ids  );
+				$args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $showed_ids );
+			}
+
             // Search
             if( $search ) {
                 $args[ 's' ] = $search;
@@ -461,7 +468,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
         }
 
 		// Display a message for no results
-		if( empty( $achievements ) ) {
+		if( empty( $achievements ) && $offset === 0 ) {
 
 			$current = current( $type );
 

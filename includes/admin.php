@@ -252,6 +252,14 @@ function gamipress_admin_bar_custom_tables_menu( $wp_admin_bar ) {
         return;
     }
 
+    // User Earnings
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-user-earnings',
+        'title'  => __( 'User Earnings', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_user_earnings' )
+    ) );
+
     // Logs
     $wp_admin_bar->add_node( array(
         'id'     => 'gamipress-logs',

@@ -107,18 +107,21 @@ function gamipress_register_tools_page() {
 
     }
 
+    $minimum_role = gamipress_get_manager_capability();
+
     // Create the options page
     new Cmb2_Metatabs_Options( array(
         'key'      => 'gamipress_tools',
         'class'    => 'gamipress-page',
         'title'    => __( 'Tools', 'gamipress' ),
         'topmenu'  => 'gamipress',
-        'view_capability' => gamipress_get_manager_capability(),
         'cols'     => 1,
         'boxes'    => $boxes,
         'tabs'     => $tabs,
         'menuargs' => array(
-            'menu_title' => __( 'Tools', 'gamipress' ),
+            'menu_title'        => __( 'Tools', 'gamipress' ),
+            'capability'        => $minimum_role,
+            'view_capability'   => $minimum_role,
         ),
         'savetxt' => false,
         'resettxt' => false,

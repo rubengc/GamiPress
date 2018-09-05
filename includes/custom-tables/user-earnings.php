@@ -188,7 +188,14 @@ add_filter( 'gamipress_user_earnings_bulk_actions', 'custom_gamipress_user_earni
  */
 function gamipress_manage_user_earnings_columns( $columns = array() ) {
 
+    global $pagenow;
+
     $columns['name']    = __( 'Name', 'gamipress' );
+
+    if( $pagenow === 'admin.php' ) {
+        $columns['user_id']    = __( 'User', 'gamipress' );
+    }
+
     $columns['date']    = __( 'Date', 'gamipress' );
 
     if( current_user_can( gamipress_get_manager_capability() ) ) {
@@ -338,6 +345,23 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
                 switch_to_blog( $blog_id );
             }
 
+            break;
+        case 'user_id':
+            $user = get_userdata( $user_earning->user_id );
+
+            if( $user ) :
+
+                if( current_user_can( 'edit_users' ) ) {
+                    ?>
+
+                    <a href="<?php echo get_edit_user_link( $user_earning->user_id ); ?>"><?php echo $user->display_name . ' (' . $user->user_login . ')'; ?></a>
+
+                    <?php
+                } else {
+                    echo $user->display_name;
+                }
+
+            endif;
             break;
         case 'date':
             $time = strtotime( $user_earning->date );

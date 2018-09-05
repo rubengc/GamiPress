@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.5.7.1
+Stable tag: 1.5.8
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -87,6 +87,8 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
+* [Events Manager](https://wordpress.org/plugins/gamipress-events-manager-integration/)
+* [WP Ulike](https://wordpress.org/plugins/gamipress-wp-ulike-integration/)
 * [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
 * [WP PostRatings](https://wordpress.org/plugins/gamipress-wp-postratings-integration/)
 
@@ -216,6 +218,23 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.8 =
+
+* **New Features**
+* Added the user earnings menu at backend.
+* **Bug Fixes**
+* Fixed duplicated achievements on [gamipress_achievements] and GamiPress: Achievements when filter is set to completed achievements.
+* Fixed capability check on Settings and Tools menu to match setting "Minimum role to administer GamiPress".
+* Fixed issues with meta data remove on Custom Tables library.
+* Fixed issues with multiple fields on Custom Tables library.
+* Fixed capability check on Custom Tables library.
+* Fixed "Headers already sent" error on Custom Tables library.
+* **Improvements**
+* More precise type column text on logs list at backend.
+* Improved CSS rules on admin area.
+* **Developer Notes**
+* Added better checks on  Custom Tables add view.
 
 = 1.5.7.1 =
 

@@ -21,6 +21,39 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
         }
 
+        public function init() {
+
+            global $ct_registered_tables, $ct_table;
+
+            if( ! isset( $ct_registered_tables[$this->name] ) ) {
+                return;
+            }
+
+            // Setup CT_Table
+            $ct_table = $ct_registered_tables[$this->name];
+
+            // Check for bulk delete
+            if( isset( $_GET['action'] ) ) {
+
+                if( $_GET['action'] === 'delete' ) {
+                    // Deleting
+                    $this->bulk_delete();
+                }
+
+            }
+
+            // Check for delete action
+            if( isset( $_GET['ct-action'] ) ) {
+
+                if( $_GET['ct-action'] === 'delete' ) {
+                    // Deleting
+                    $this->delete();
+                }
+
+            }
+
+        }
+
         /**
          * Screen settings text displayed in the Screen Options tab.
          *
@@ -211,26 +244,6 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             // Setup CT_Table
             $ct_table = $ct_registered_tables[$this->name];
 
-            // Check for bulk delete
-            if( isset( $_GET['action'] ) ) {
-
-                if( $_GET['action'] === 'delete' ) {
-                    // Deleting
-                    $this->bulk_delete();
-                }
-
-            }
-
-            // Check for delete action
-            if( isset( $_GET['ct-action'] ) ) {
-
-                if( $_GET['ct-action'] === 'delete' ) {
-                    // Deleting
-                    $this->delete();
-                }
-
-            }
-
             // Setup the query and the list table objects
             $ct_query = new CT_Query( $_GET );
             $ct_list_table = new CT_List_Table();
@@ -273,6 +286,10 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             <div class="wrap">
 
                 <h1 class="wp-heading-inline"><?php echo $ct_table->labels->plural_name; ?></h1>
+
+                <?php if ( property_exists( $ct_table->views, 'add' ) && $ct_table->views->add && current_user_can( $ct_table->cap->create_items ) ) :
+                    echo ' <a href="' . esc_url( $ct_table->views->add->get_link() ) . '" class="page-title-action">' . esc_html( $ct_table->labels->add_new_item ) . '</a>';
+                endif; ?>
 
                 <hr class="wp-header-end">
 

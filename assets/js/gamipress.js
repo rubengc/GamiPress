@@ -29,6 +29,7 @@
 			order: achievement_list.find('input[type="hidden"][name="order"]').val(),
 			include: achievement_list.find('input[type="hidden"][name="include"]').val(),
 			exclude: achievement_list.find('input[type="hidden"][name="exclude"]').val(),
+			showed_ids: []
 		};
 
 		// Single achievement atts
@@ -37,6 +38,12 @@
 
 			data[achievement_field] = achievement_list.find('input[type="hidden"][name="' + achievement_field + '"]').val()
 		}
+
+		achievement_list.find('.gamipress-achievement').each(function() {
+			var achievement_id = $(this).attr('id').replace('gamipress-achievement-', '');
+
+			data.showed_ids.push( achievement_id );
+		});
 
 		$.ajax( {
 			url: gamipress.ajaxurl,

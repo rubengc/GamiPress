@@ -223,7 +223,7 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
  * @param int       $user_id
  * @param array     $log_meta
  *
- * @return bool
+ * @return int
  */
 function gamipress_get_user_log_count( $user_id = 0, $log_meta = array(), $since = 0 ) {
 

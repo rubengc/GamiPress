@@ -30,10 +30,20 @@ function gamipress_register_custom_tables() {
         'labels' => array(
             'not_found' => __( 'This user has not earned anything', 'gamipress' )
         ),
-        'show_ui' => false,
+        'show_ui' => true,
         'version' => 2,
         'global' => gamipress_is_network_wide_active(),
         'supports' => array( 'meta' ),
+        'views' => array(
+            'list' => array(
+                'menu_title' => __( 'User Earnings', 'gamipress' ),
+                'parent_slug' => 'gamipress'
+            ),
+            'add' => false,
+            'edit' => array(
+                'show_in_menu' => false,
+            ),
+        ),
         'schema' => array(
             'user_earning_id' => array(
                 'type' => 'bigint',
@@ -85,9 +95,7 @@ function gamipress_register_custom_tables() {
                 'menu_title' => __( 'Logs', 'gamipress' ),
                 'parent_slug' => 'gamipress'
             ),
-            'add' => array(
-                'show_in_menu' => false,
-            ),
+            'add' => false,
             'edit' => array(
                 'show_in_menu' => false,
             ),
