@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
 Tested up to: 4.9
-Stable tag: 1.5.8
+Stable tag: 1.5.8.1
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -107,6 +107,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Coupons](https://gamipress.com/add-ons/gamipress-coupons/) - Create coupons that users can redeem for points, achievements and/or ranks.
 * [Points Exchanges](https://gamipress.com/add-ons/gamipress-points-exchanges/) - Let your users exchange points between different points types.
 * [Transfers](https://gamipress.com/add-ons/gamipress-transfers/) - Allow your users to transfer points, achievements or ranks between them.
 * [Daily Login Rewards](https://gamipress.com/add-ons/gamipress-daily-login-rewards/) - Add daily rewards to perform your site visits.
@@ -218,6 +219,11 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.8.1 =
+
+* **Bug Fixes**
+* Fixed redirection issue with third party plugins (like Duplicate Post).
 
 = 1.5.8 =
 

@@ -149,7 +149,15 @@ if ( ! class_exists( 'CT_View' ) ) :
                 return;
             }
 
-            if( isset( $_GET['page'] ) && $_GET['page'] !== $this->args['menu_slug'] ) {
+            if( ! isset( $_GET['page'] ) ) {
+                return;
+            }
+
+            if( empty( $_GET['page'] ) ) {
+                return;
+            }
+
+            if( $_GET['page'] !== $this->args['menu_slug'] ) {
                 return;
             }
 
