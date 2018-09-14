@@ -81,6 +81,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
 * [Events Manager](https://wordpress.org/plugins/gamipress-events-manager-integration/)
+* [AnsPress](https://wordpress.org/plugins/gamipress-anspress-integration/)
 * [WP Ulike](https://wordpress.org/plugins/gamipress-wp-ulike-integration/)
 * [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
 * [WP PostRatings](https://wordpress.org/plugins/gamipress-wp-postratings-integration/)
@@ -229,6 +230,11 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.5.8.2 ###
+
+* **Bug Fixes**
+* Removed widget cache functionality for incompatibility with Elementor.
 
 ### 1.5.8.1 ###
 

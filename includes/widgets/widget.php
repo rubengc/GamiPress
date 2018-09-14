@@ -53,10 +53,6 @@ class GamiPress_Widget extends WP_Widget {
             )
         );
 
-        add_action( 'save_post',    array( $this, 'flush_widget_cache' ) );
-        add_action( 'deleted_post', array( $this, 'flush_widget_cache' ) );
-        add_action( 'switch_theme', array( $this, 'flush_widget_cache' ) );
-        add_shortcode( $this->widget_slug, array( __CLASS__, 'get_widget' ) );
     }
 
     /**
@@ -70,7 +66,6 @@ class GamiPress_Widget extends WP_Widget {
         $atts = array(
             'args'     => $args,
             'instance' => $instance,
-            'cache_id' => $this->id, // whatever the widget id is
         );
 
         if( ! isset( $atts['args'] ) ) {
@@ -86,8 +81,6 @@ class GamiPress_Widget extends WP_Widget {
                 'after_widget'  => '',
                 'before_title'  => '',
                 'after_title'   => '',
-                'cache_id'      => '',
-                'flush_cache'   => isset( $_GET['delete-trans'] ), // Check for cache-buster
             ),
             $args,
             $this->widget_slug
@@ -101,48 +94,30 @@ class GamiPress_Widget extends WP_Widget {
             $this->widget_slug
         );
 
-        /*
-         * If cache_id is not passed, we're not using the widget (but the shortcode),
-         * so generate a hash cache id from the shortcode arguments
-         */
-        if ( empty( $atts['cache_id'] ) ) {
-            $atts['cache_id'] = md5( serialize( $atts ) );
-        }
+        // Let's render the widget
+        $widget = '';
 
-        // Get from cache unless being requested not to
-        $widget = ! $atts['flush_cache']
-            ? wp_cache_get( $atts['cache_id'], 'widget' )
-            : '';
+        // Before widget hook
+        $widget .= $atts['before_widget'];
 
-        // If $widget is empty, rebuild our cache
-        if ( empty( $widget ) ) {
-            $widget = '';
+        // Title
+        $widget .= ( $instance['title'] ) ? $atts['before_title'] . esc_html( $instance['title'] ) . $atts['after_title'] : '';
 
-            // Before widget hook
-            $widget .= $atts['before_widget'];
+        ob_start();
 
-            // Title
-            $widget .= ( $instance['title'] ) ? $atts['before_title'] . esc_html( $instance['title'] ) . $atts['after_title'] : '';
+        // {$widget_slug}_before
+        do_action( $this->widget_slug . '_before' );
 
-            ob_start();
+        // Widget content
+        $this->get_widget( $args, $instance );
 
-            // {$widget_slug}_before
-            do_action( $this->widget_slug . '_before' );
+        // {$widget_slug}_after
+        do_action( $this->widget_slug . '_after' );
 
-            // Widget content
-            $this->get_widget( $args, $instance );
+        $widget .= ob_get_clean();
 
-            // {$widget_slug}_after
-            do_action( $this->widget_slug . '_after' );
-
-            $widget .= ob_get_clean();
-
-            // After widget hook
-            $widget .= $atts['after_widget'];
-
-            wp_cache_set( $atts['cache_id'], $widget, 'widget', WEEK_IN_SECONDS );
-
-        }
+        // After widget hook
+        $widget .= $atts['after_widget'];
 
         echo $widget;
     }
@@ -232,20 +207,11 @@ class GamiPress_Widget extends WP_Widget {
      * @return array  Settings to save or bool false to cancel saving.
      */
     public function update( $new_instance, $old_instance ) {
-        $this->flush_widget_cache();
-
         $this->setup_fields();
 
         $sanitized = $this->cmb2( true )->get_sanitized_values( $new_instance );
 
         return $sanitized;
-    }
-
-    /**
-     * Delete this widget's cache.
-     */
-    public function flush_widget_cache() {
-        wp_cache_delete( $this->id, 'widget' );
     }
 
     /**
