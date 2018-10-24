@@ -238,7 +238,7 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
-### 1.5.0 ###
+### 1.5.9 ###
 
 * **New Features**
 * Added support to all user on [gamipress_earnings] shortcode and GamiPress: User Earnings widget.
