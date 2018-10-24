@@ -63,22 +63,15 @@ $user_earnings = $a['query']->get_results();
     <?php if( $a['query']->found_results > 0 ) : ?>
 
         <?php
-        $earnings_columns = array(
-            'thumbnail'     => __( 'Thumbnail', 'gamipress' ),
-            'description'   => __( 'Description', 'gamipress' ),
-            'date'          => __( 'Date', 'gamipress' ),
-            'points'        => __( 'Points', 'gamipress' ),
-        );
-
         /**
          * Earnings columns
          *
          * @since 1.0.0
          *
-         * @param array $earnings_columns   Earnings columns to be rendered
+         * @param array $columns            Earnings table columns to be rendered
          * @param array $template_args      Template received arguments
          */
-        $earnings_columns = apply_filters( 'gamipress_earnings_columns', $earnings_columns, $a );
+        $columns = apply_filters( 'gamipress_earnings_columns', $a['columns'], $a );
         ?>
 
         <table id="gamipress-earnings-table" class="gamipress-earnings-table">
@@ -87,7 +80,7 @@ $user_earnings = $a['query']->get_results();
 
                 <tr>
 
-                    <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>
+                    <?php foreach( $columns as $column_name => $column_label ) : ?>
                         <th class="gamipress-earnings-col gamipress-earnings-col-<?php echo $column_name; ?>"><?php echo $column_label; ?></th>
                     <?php endforeach ?>
 
@@ -104,7 +97,7 @@ $user_earnings = $a['query']->get_results();
 
                 <tr>
 
-                    <?php foreach( $earnings_columns as $column_name => $column_label ) : ?>
+                    <?php foreach( $columns as $column_name => $column_label ) : ?>
 
                         <?php
                         /**

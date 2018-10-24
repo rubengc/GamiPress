@@ -31,6 +31,22 @@ function gamipress_install() {
         }
     }
 
+    // Setup default GamiPress installation date
+    if( gamipress_is_network_wide_active() ) {
+        $gamipress_install_date = ( $exists = get_site_option( 'gamipress_install_date' ) ) ? $exists : '';
+    } else {
+        $gamipress_install_date = ( $exists = get_option( 'gamipress_install_date' ) ) ? $exists : '';
+    }
+
+    if ( empty( $gamipress_install_date ) ) {
+
+        if( gamipress_is_network_wide_active() ) {
+            update_site_option( 'gamipress_install_date', date( 'Y-m-d H:i:s' ) );
+        } else {
+            update_option( 'gamipress_install_date', date( 'Y-m-d H:i:s' ) );
+        }
+    }
+
     // Register GamiPress custom DB tables
     gamipress_register_custom_tables();
 

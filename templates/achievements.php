@@ -8,15 +8,7 @@
 global $gamipress_template_args;
 
 // Shorthand
-$a = $gamipress_template_args;
-
-// If we're dealing with multiple achievement types
-if ( 'all' === $a['type'] ) {
-    $post_type_plural = __( 'achievements', 'gamipress' );
-} else {
-    $types = explode( ',', $a['type'] );
-    $post_type_plural = ( 1 == count( $types ) && ! empty( $types[0] ) ) ? get_post_type_object( $types[0] )->labels->name : __( 'achievements', 'gamipress' );
-} ?>
+$a = $gamipress_template_args; ?>
 
 <div id="gamipress-achievements-list" class="gamipress-achievements-list">
 
@@ -49,7 +41,7 @@ if ( 'all' === $a['type'] ) {
             if( in_array( $arg, array( 'filter', 'search', 'query' ) ) ) {
                 continue;
             } ?>
-            <input type="hidden" name="<?php echo $arg; ?>" value="<?php echo $arg_value; ?>">
+            <input type="hidden" name="<?php echo $arg; ?>" value="<?php echo ( is_array( $arg_value ) ? implode( ',', $arg_value ) : $arg_value ); ?>">
         <?php endforeach; ?>
 
         <?php // Filter
@@ -62,10 +54,34 @@ if ( 'all' === $a['type'] ) {
             <div id="gamipress-achievements-filter">
 
                 <label for="achievements_list_filter"><?php _e( 'Filter:', 'gamipress' ); ?></label>
+
+                <?php
+                $filter_options = array(
+                    'all' => sprintf( __( 'All %s', 'gamipress' ), $a['plural_label'] ),
+                    'completed' => sprintf( __( 'Completed %s', 'gamipress' ), $a['plural_label'] ),
+                    'not-completed' => sprintf( __( 'Not Completed %s', 'gamipress' ), $a['plural_label'] ),
+                );
+
+                /**
+                 * Achievements list filter options
+                 *
+                 * @since 1.5.9
+                 *
+                 * @param array $filter_options Filter options
+                 * @param array $template_args  Template received arguments
+                 *
+                 * @return array
+                 */
+                $filter_options = apply_filters( 'gamipress_achievements_list_filter_options', $filter_options, $a );
+                ?>
+
                 <select name="achievements_list_filter" id="achievements_list_filter">
-                    <option value="all" <?php selected( $a['filter_value'], 'all' ); ?>><?php echo sprintf( __( 'All %s', 'gamipress' ), $post_type_plural ); ?></option>
-                    <option value="completed" <?php selected( $a['filter_value'], 'completed' ); ?>><?php echo sprintf( __( 'Completed %s', 'gamipress' ), $post_type_plural ); ?></option>
-                    <option value="not-completed" <?php selected( $a['filter_value'], 'not-completed' ); ?>><?php echo sprintf( __( 'Not Completed %s', 'gamipress' ), $post_type_plural ); ?></option>
+
+                    <?php // Loop all filter options
+                    foreach( $filter_options as $value => $label ) :?>
+                        <option value="<?php echo $value; ?>" <?php selected( $a['filter_value'], $value ); ?>><?php echo $label; ?></option>
+                    <?php endforeach; ?>
+
                 </select>
 
             </div>

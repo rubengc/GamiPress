@@ -704,8 +704,8 @@ add_action( 'gamipress_update_user_rank', 'gamipress_register_user_rank_earning'
 function gamipress_log_user_rank( $user_id, $new_rank, $old_rank, $admin_id = 0, $achievement_id = null ) {
 
     $log_meta = array(
-        'rank_id' => $new_rank->ID,
-        'old_rank_id' => $old_rank->ID,
+        'rank_id' => ( $new_rank ? $new_rank->ID : 0 ),
+        'old_rank_id' => ( $old_rank ? $old_rank->ID : 0 ),
     );
 
     $access = 'public';
@@ -847,9 +847,11 @@ function gamipress_get_rank_requirements( $rank_id = 0, $post_status = 'publish'
  *
  * @since  1.3.1
  *
- * @param  integer $post_id    The rank's post ID
- * @param  string  $image_size The name of a registered custom image size
- * @param  string  $class      A custom class to use for the image tag
+ * @param  integer      $post_id    The rank's post ID
+ * @param  string|array $image_size Image size to use. Accepts any valid image size, or
+ *                                  an array of width and height values in pixels (in that order).
+ *                                  Default 'gamipress-rank'.
+ * @param  string       $class      A custom class to use for the image tag
  *
  * @return string              Our formatted image tag
  */

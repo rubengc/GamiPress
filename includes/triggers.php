@@ -21,6 +21,7 @@ function gamipress_get_activity_triggers() {
 		array(
 			// WordPress
 			__( 'WordPress', 'gamipress' ) => array(
+				'gamipress_register'             	    => __( 'Register to website', 'gamipress' ),
 				'gamipress_login'             	    	=> __( 'Log in to website', 'gamipress' ),
 				'gamipress_new_comment'  				=> __( 'Comment on a post', 'gamipress' ),
 				'gamipress_specific_new_comment' 		=> __( 'Comment on a specific post', 'gamipress' ),
@@ -335,11 +336,31 @@ add_action( 'init', 'gamipress_load_activity_triggers' );
  * Get activity triggers excluded to be loaded automatically from gamipress_load_activity_triggers()
  *
  * @since 1.0.0
+ *
+ * @return array
  */
 function gamipress_get_activity_triggers_excluded_to_load() {
 
     return apply_filters( 'gamipress_activity_triggers_excluded_to_load', array(
-        'gamipress_login'
+        'gamipress_login',
+        'gamipress_register'
+    ) );
+
+}
+
+/**
+ * Get activity triggers excluded from activity time limits
+ *
+ * @since 1.5.9
+ *
+ * @return array
+ */
+function gamipress_get_activity_triggers_excluded_from_activity_limit() {
+
+    return apply_filters( 'gamipress_activity_triggers_excluded_from_activity_limit', array(
+        'gamipress_register',
+        'earn-points',
+        'earn-rank'
     ) );
 
 }
@@ -432,9 +453,9 @@ function gamipress_trigger_event() {
 	// Mark the count in the log entry
 	gamipress_insert_log( 'event_trigger', $user_id, 'private', $trigger, $log_meta );
 
-	$posts 		= GamiPress()->db->posts;
-	$postmeta 	= GamiPress()->db->postmeta;
-	$requirement_types = gamipress_get_requirement_types_slugs();
+	$posts 		        = GamiPress()->db->posts;
+	$postmeta 	        = GamiPress()->db->postmeta;
+	$requirement_types  = gamipress_get_requirement_types_slugs();
 
 	// Now determine if any achievements are earned based on this trigger event
 	$triggered_achievements = $wpdb->get_results( $wpdb->prepare(
@@ -501,6 +522,7 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 			$log_meta['points_type'] = $args[3];
 			break;
 		case 'gamipress_login':
+		case 'gamipress_register':
 		case 'gamipress_site_visit':
 		case 'gamipress_unlock_' === substr( $trigger, 0, 15 ):
 		default :
@@ -586,6 +608,7 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 
 	switch ( $trigger ) {
 		case 'gamipress_login':
+		case 'gamipress_register':
 		case 'gamipress_site_visit':
 		case 'gamipress_unlock_' == substr( $trigger, 0, 15 ):
 			$user_id = $args[0];

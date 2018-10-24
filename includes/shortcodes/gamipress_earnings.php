@@ -70,7 +70,7 @@ function gamipress_register_earnings_shortcode() {
             ),
             'user_id' => array(
                 'name'        => __( 'User', 'gamipress' ),
-                'description' => __( 'Show only earned items by a specific user.', 'gamipress' ),
+                'description' => __( 'Show only earned items by a specific user. Leave blank to show earned items of all users.', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'
@@ -232,20 +232,29 @@ function gamipress_earnings_shortcode( $atts = array () ) {
         $atts['user_id'] = get_current_user_id();
     }
 
-    // Return if not user ID provided or current user is a guest
-    if( absint( $atts['user_id'] ) === 0 ) {
-        return '';
-    }
-
     // GamiPress template args global
     $gamipress_template_args = $atts;
 
+    // Earnings query
     $gamipress_template_args['query'] = gamipress_earnings_shortcode_query( $atts );
 
     if( ! $gamipress_template_args['query'] ) {
         return '';
     }
 
+    // Earnings columns
+    $gamipress_template_args['columns'] = array();
+
+    if( absint( $atts['user_id'] ) === 0 ) {
+        $gamipress_template_args['columns']['user']     = __( 'User', 'gamipress' );
+    }
+
+    $gamipress_template_args['columns']['thumbnail']    = __( 'Thumbnail', 'gamipress' );
+    $gamipress_template_args['columns']['description']  = __( 'Description', 'gamipress' );
+    $gamipress_template_args['columns']['date']         = __( 'Date', 'gamipress' );
+    $gamipress_template_args['columns']['points']       = __( 'Points', 'gamipress' );
+
+    // Render the earnings template
     ob_start();
     gamipress_get_template_part( 'earnings' );
     $output = ob_get_clean();
@@ -272,7 +281,6 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
 
     // Query args
     $query_args = array(
-        'user_id'           => $args['user_id'],
         'orderby'           => 'date',
         'order'             => $args['order'],
         'items_per_page'    => $args['limit'],
@@ -281,6 +289,11 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
 
     $types = array();
     $points_types = array();
+
+    // User
+    if( isset( $args['user_id'] ) && absint( $args['user_id'] ) !== 0 ) {
+        $query_args['user_id'] = $args['user_id'];
+    }
 
     // Points types
     if( $args['points'] === 'yes' ) {

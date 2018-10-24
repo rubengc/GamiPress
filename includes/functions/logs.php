@@ -1,8 +1,8 @@
 <?php
 /**
- * Log Functions
+ * Logs Functions
  *
- * @package     GamiPress\Log_Functions
+ * @package     GamiPress\Logs_Functions
  * @since       1.0.0
  */
 // Exit if accessed directly

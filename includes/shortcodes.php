@@ -29,10 +29,15 @@ require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_user_rank.php';
  * @since  1.0.0
  *
  * @param  array  $args Shortcode Args.
+ *
  * @return object       Shortcode Object.
  */
 function gamipress_register_shortcode( $shortcode, $args ) {
+
 	GamiPress()->shortcodes[ $shortcode ] = new GamiPress_Shortcode( $shortcode, $args );
+
+	return GamiPress()->shortcodes[ $shortcode ];
+
 }
 
 /**
@@ -71,16 +76,14 @@ add_action( 'gamipress_help_support_page_shortcodes', 'gamipress_help_support_pa
  */
 function gamipress_shortcode_help_render_help( $shortcode ) {
 	printf(
-		'
-		<hr/>
+		'<hr/>
 		<h3>%1$s &ndash; [%2$s]</h3>
 		<p>%3$s</p>
 		<ul style="margin:1em 2em; padding:1em;">
 		<li><strong>%4$s</strong></li>
 		%5$s
 		</ul>
-		<p>%6$s</p>
-		',
+		<p>%6$s</p>',
 		$shortcode->name,
 		$shortcode->slug,
 		$shortcode->description,
@@ -193,8 +196,41 @@ function gamipress_shortcodes_remove_multisite_fields( $fields ) {
 	}
 
 	return $fields;
+
 }
 add_filter( 'gamipress_gamipress_achievements_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
 add_filter( 'gamipress_gamipress_points_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
 add_filter( 'gamipress_gamipress_points_types_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
 add_filter( 'gamipress_gamipress_ranks_shortcode_fields', 'gamipress_shortcodes_remove_multisite_fields' );
+
+/**
+ * Function to report form error just if logged in user has permissions to manage GamiPress
+ *
+ * @since 	1.5.9
+ *
+ * @param string $error_message
+ * @param string $shortcode
+ *
+ * @return string
+ */
+function gamipress_shortcode_error( $error_message, $shortcode ) {
+
+    if( current_user_can( gamipress_get_manager_capability() ) ) {
+        // Notify to admins about the error
+        return '<div class="gamipress-shortcode-error">'
+                . '<div class="gamipress-shortcode-error-content">'
+                    . $error_message
+                . '</div>'
+                . '<div class="gamipress-shortcode-error-shortcode">'
+                    . __( 'Shortcode:', 'gamipress' ) . ' &#91;' . $shortcode . '&#93;'
+                . '</div>'
+                . '<div class="gamipress-shortcode-error-reminder">'
+                    . __( 'Message visible only to administrators.', 'gamipress' )
+                . '</div>'
+            . '</div>';
+    } else {
+        // Do not output anything for non admins
+        return '';
+    }
+
+}

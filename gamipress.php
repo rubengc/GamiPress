@@ -3,13 +3,13 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.5.8.2
+ * Version:         	1.5.9
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
  * Domain Path: 		/languages/
  * Requires at least: 	4.4
- * Tested up to: 		4.9
+ * Tested up to: 		5.0
  * License:         	GNU AGPL v3.0 (http://www.gnu.org/licenses/agpl.txt)
  *
  * @package         	GamiPress
@@ -136,7 +136,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.5.8.2' );
+		define( 'GAMIPRESS_VER', '1.5.9' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -211,8 +211,14 @@ final class GamiPress {
 
 		// GamiPress functions
 		require_once GAMIPRESS_DIR . 'includes/functions/achievement-types.php';
-		require_once GAMIPRESS_DIR . 'includes/functions/points-types.php';
-		require_once GAMIPRESS_DIR . 'includes/functions/rank-types.php';
+        require_once GAMIPRESS_DIR . 'includes/functions/points-types.php';
+        require_once GAMIPRESS_DIR . 'includes/functions/rank-types.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/achievements.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/points.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/ranks.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/requirements.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/logs.php';
+		require_once GAMIPRESS_DIR . 'includes/functions/user-earnings.php';
 
 		// The rest of files
 		require_once GAMIPRESS_DIR . 'includes/admin.php';
@@ -220,17 +226,12 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/post-types.php';
 		require_once GAMIPRESS_DIR . 'includes/privacy.php';
 		require_once GAMIPRESS_DIR . 'includes/emails.php';
-		require_once GAMIPRESS_DIR . 'includes/achievement-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/activity-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/ajax-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/cache.php';
 		require_once GAMIPRESS_DIR . 'includes/functions.php';
 		require_once GAMIPRESS_DIR . 'includes/listeners.php';
-		require_once GAMIPRESS_DIR . 'includes/log-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/network.php';
-		require_once GAMIPRESS_DIR . 'includes/points-functions.php';
-		require_once GAMIPRESS_DIR . 'includes/rank-functions.php';
-		require_once GAMIPRESS_DIR . 'includes/requirement-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/scripts.php';
 		require_once GAMIPRESS_DIR . 'includes/shortcodes.php';
 		require_once GAMIPRESS_DIR . 'includes/content-filters.php';
@@ -238,7 +239,6 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/template-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/triggers.php';
 		require_once GAMIPRESS_DIR . 'includes/user.php';
-		require_once GAMIPRESS_DIR . 'includes/user-earnings-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/widgets.php';
 
 	}

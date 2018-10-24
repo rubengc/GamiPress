@@ -2,8 +2,8 @@
 Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, gamify, point, achievement, rank, badge, award, reward, credit, engagement, email, notification, progress
 Requires at least: 4.4
-Tested up to: 4.9
-Stable tag: 1.5.8.2
+Tested up to: 5.0
+Stable tag: 1.5.9
 License: GNU AGPLv3
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -84,6 +84,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
+* [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
@@ -91,6 +92,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [AnsPress](https://wordpress.org/plugins/gamipress-anspress-integration/)
 * [WP Ulike](https://wordpress.org/plugins/gamipress-wp-ulike-integration/)
 * [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
+* [WP Polls](https://wordpress.org/plugins/gamipress-wp-polls-integration/)
 * [WP PostRatings](https://wordpress.org/plugins/gamipress-wp-postratings-integration/)
 
 = Powerful add-ons to extend GamiPress =
@@ -125,6 +127,7 @@ If you’re looking for something endorsed and maintained by the developers who 
 
 * [GamiPress.com](https://gamipress.com/ "GamiPress") - GamiPress Official Website
 * [Add-ons](https://gamipress.com/add-ons "GamiPress Add-ons") - GamiPress Official Add-ons
+* [Assets](https://gamipress.com/assets "GamiPress Assets") - GamiPress Official Assets
 * [Documentation](https://gamipress.com/docs "GamiPress Documentation") - GamiPress Official Documentation
 * [Code Snippets](https://gamipress.com/customize "GamiPress Code Snippets") - GamiPress Official Code Snippets
 * [Contact](https://gamipress.com/contact-us "GamiPress Contact") - GamiPress Contact
@@ -183,6 +186,10 @@ Also, we have the [tutorials](https://gamipress.com/docs/tutorials/) sections wh
 
 Check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress.
 
+= Where can I find images to customize the GamiPress elements? =
+
+Check [our assets section](https://gamipress.com/assets/) where you can find a huge number of resources to decorate your gamification elements to take the design of them to the next level.
+
 = Which shortcodes come bundled with GamiPress? =
 
 GamiPress comes with the following shortcodes:
@@ -220,6 +227,28 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.5.9 =
+
+* **New Features**
+* Added support to all user on [gamipress_earnings] shortcode and GamiPress: User Earnings widget.
+* Added the user column to the earnings table when is rendered for all users.
+* Added the "Register to website" event.
+* Added the attribute "times_earned" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
+* Added the field "Show times earned" to GamiPress: Achievement and GamiPress: Achievements widgets.
+* Added shortcodes and widgets errors notices when a shortcode or widget is not well setup (missing attribute, invalid values, etc).
+* Added the ability to [gamipress_points] shortcode and GamiPress: User Points widget to display the site points by setting current_user to "no" and not providing the user_id attribute.
+* **Bug Fixes**
+* Fixed wrong earned status for non logged in users.
+* Fixed issue where sometimes points award that requires earn an amount of another type of points doesn't works properly.
+* **Improvements**
+* Improved user profile controls to view and edit the current user ranks and points.
+* Avoid duplicated functions declarations on not prefixed methods.
+* Improvements on project's files distribution.
+* **Developer Notes**
+* Default points balance, there are new a set of new filters to re-enable it again if needed.
+* Added a bunch of filter and actions on the achievements template (used on [gamipress_achievements] shortcode and GamiPress: Achievements widget).
+* CMB2 library updated to latest stable release (v2.4.2).
 
 = 1.5.8.2 =
 

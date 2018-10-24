@@ -11,7 +11,7 @@ global $gamipress_template_args;
 $a = $gamipress_template_args;
 
 // Check if user has earned this Achievement, and add an 'earned' class
-$earned = gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) );
+$earned = is_user_logged_in() && gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) );
 
 // Setup achievement classes
 $classes = array(
@@ -66,7 +66,7 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
     <div class="gamipress-achievement-description">
 
         <?php // Points of the achievement
-        echo gamipress_achievement_points_markup(); ?>
+        echo gamipress_achievement_points_markup( get_the_ID(), $a ); ?>
 
         <?php
         /**
@@ -83,6 +83,20 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
         if( isset( $a['original_content'] ) ) :
             echo wpautop( $a['original_content'] );
         endif; ?>
+
+        <?php // Times earned
+        echo gamipress_achievement_times_earned_markup( get_the_ID(), $a ); ?>
+
+        <?php
+        /**
+         * After achievement times earned
+         *
+         * @since 1.5.9
+         *
+         * @param integer $achievement_id   The Achievement ID
+         * @param array   $template_args    Template received arguments
+         */
+        do_action( 'gamipress_after_single_achievement_times_earned', get_the_ID(), $a ); ?>
 
         <?php
         /**

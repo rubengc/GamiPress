@@ -118,7 +118,7 @@
         var limit = $(this).siblings('.limit');
         var limit_type = $(this).siblings('.limit-type');
 
-        if ( trigger_type === 'earn-points' || trigger_type === 'earn-rank' ) {
+        if ( trigger_type === 'gamipress_register' || trigger_type === 'earn-points' || trigger_type === 'earn-rank' ) {
             // Hide limit fields
             count.hide();
             count_text.hide();
@@ -598,8 +598,30 @@ function gamipress_update_requirements( element, loop ) {
             requirement_details.maximum_earnings = requirement.find( '.maximum-earnings' ).val();
         }
 
-        // Allow external functions to add their own data to the array
+        /**
+         * Allow external functions to add their own data to the array
+         *
+         * @deprecated use gamipress_update_requirement_data event instead
+         *
+         * @since 1.0.0
+         *
+         * @selector    .requirements-list .requirement
+         * @event       update_requirement_data
+         */
         requirement.trigger( 'update_requirement_data', [ requirement_details, requirement ] );
+
+        /**
+         * Allow external functions to add their own data to the array
+         *
+         * @since 1.5.9
+         *
+         * @selector    .requirements-list .requirement
+         * @event       gamipress_update_requirement_data
+         *
+         * @param Object    requirement_details
+         * @param Node      requirement
+         */
+        requirement.trigger( 'gamipress_update_requirement_data', [ requirement_details, requirement ] );
 
         // Add our relevant data to the array
         requirement_data.requirements.push( requirement_details );

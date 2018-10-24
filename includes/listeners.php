@@ -11,6 +11,29 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Listener for user log in
  *
+ * Triggers: gamipress_register
+ *
+ * @since   1.5.9
+ *
+ * @param int $user_id New registered user ID.
+ */
+function gamipress_register_listener( $user_id ) {
+
+    // Sometimes this event is triggered before gamipress_load_activity_triggers()
+    // so to avoid issues, method has changed to trigger the event directly
+    do_action( 'gamipress_register', $user_id );
+
+    gamipress_trigger_event( array(
+        'event' => 'gamipress_register',
+        'user_id' => $user_id,
+    ) );
+
+}
+add_action( 'user_register', 'gamipress_register_listener' );
+
+/**
+ * Listener for user log in
+ *
  * Triggers: gamipress_login
  *
  * @since   1.1.0

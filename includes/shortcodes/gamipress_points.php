@@ -50,7 +50,7 @@ function gamipress_register_points_shortcode() {
             ),
             'user_id' => array(
                 'name'        => __( 'User', 'gamipress' ),
-                'description' => __( 'Show only points earned by a specific user. Leave blank to show points of logged in user.', 'gamipress' ),
+                'description' => __( 'Show only points earned by a specific user. Leave blank to show the site points (points sum of all users).', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'
@@ -131,14 +131,6 @@ function gamipress_points_shortcode( $atts = array () ) {
         'wpms'          => 'no',
     ), $atts, 'gamipress_points' );
 
-    gamipress_enqueue_scripts();
-
-    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-        $blog_id = get_current_blog_id();
-        switch_to_blog( get_main_site_id() );
-    }
-
     // Single type check to use dynamic template
     $is_single_type = false;
     $types = explode( ',', $atts['type'] );
@@ -149,14 +141,53 @@ function gamipress_points_shortcode( $atts = array () ) {
         $is_single_type = true;
     }
 
+    // ---------------------------
+    // Shortcode Errors
+    // ---------------------------
+
+    if( $is_single_type ) {
+
+        // Check if points type is valid
+        if ( ! in_array( $atts['type'], gamipress_get_points_types_slugs() ) )
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered points type.', 'gamipress' ), 'gamipress_points' );
+
+    } else if( $atts['type'] !== 'all' ) {
+
+        // let's check if all types provided are wrong
+        $all_types_wrong = true;
+
+        foreach( $types as $type ) {
+            if ( ! in_array( $type, gamipress_get_points_types_slugs() ) )
+                $all_types_wrong = true;
+        }
+
+        // just notify error if all types are wrong
+        if( $all_types_wrong )
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered points types.', 'gamipress' ), 'gamipress_points' );
+
+    }
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
+    gamipress_enqueue_scripts();
+
+    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        $blog_id = get_current_blog_id();
+        switch_to_blog( get_main_site_id() );
+    }
+
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' ) {
         $atts['user_id'] = get_current_user_id();
     }
 
     // Get the current user if one wasn't specified
-    if( absint( $atts['user_id'] ) === 0 )
-        $atts['user_id'] = get_current_user_id();
+    //if( absint( $atts['user_id'] ) === 0 )
+        //$atts['user_id'] = get_current_user_id();
 
     // If we're polling all sites, grab an array of site IDs
     if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() ) {
@@ -185,7 +216,15 @@ function gamipress_points_shortcode( $atts = array () ) {
                 $gamipress_template_args['points'][$points_type] = 0;
             }
 
-            $gamipress_template_args['points'][$points_type] += gamipress_get_user_points( $atts['user_id'], $points_type );
+            if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 ) {
+                // Site points
+                $gamipress_template_args['points'][$points_type] += gamipress_get_site_points( $points_type );
+            } else {
+                // User points
+                $gamipress_template_args['points'][$points_type] += gamipress_get_user_points( $atts['user_id'], $points_type );
+            }
+
+
         }
 
         if ( get_current_blog_id() != $site_blog_id ) {

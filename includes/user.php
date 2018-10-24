@@ -238,6 +238,85 @@ add_action( 'personal_options_update', 'gamipress_save_user_profile_fields' );
 add_action( 'edit_user_profile_update', 'gamipress_save_user_profile_fields' );
 
 /**
+ * Update user rank ajax handler
+ *
+ * @since 1.5.9
+ */
+function gamipress_ajax_profile_update_user_rank() {
+
+    $rank_id = $_POST['rank_id'];
+    $user_id = absint( $_POST['user_id'] );
+
+    // Check if user has permissions
+    if ( ! current_user_can( 'edit_user', $user_id ) )
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+
+    // Check if valid user ID
+    if( $user_id === 0 )
+        wp_send_json_error( __( 'Invalid user ID.', 'gamipress' ) );
+
+    $rank = gamipress_get_post( $rank_id );
+
+    // Check if is a valid rank
+    if ( ! $rank )
+        wp_send_json_error( __( 'Invalid post ID.', 'gamipress' ) );
+
+    if ( ! gamipress_is_rank( $rank ) )
+        wp_send_json_error( __( 'Invalid rank ID.', 'gamipress' ) );
+
+    // Update the user rank
+    gamipress_update_user_rank( $user_id, absint( $rank_id ), get_current_user_id() );
+
+    wp_send_json_success( array(
+        'message' => __( 'Rank updated successfully.', 'gamipress' ),
+        'rank' => array(
+            'post_title' => $rank->post_title,
+            'thumbnail' => gamipress_get_rank_post_thumbnail( $rank->ID, array( 32, 32 ) ),
+        )
+    ) );
+
+}
+add_action( 'wp_ajax_gamipress_profile_update_user_rank', 'gamipress_ajax_profile_update_user_rank' );
+
+/**
+ * Update user points ajax handler
+ *
+ * @since 1.5.9
+ */
+function gamipress_ajax_profile_update_user_points() {
+
+    $points = $_POST['points'];
+    $points_type = $_POST['points_type'];
+    $user_id = absint( $_POST['user_id'] );
+
+    // Check if user has permissions
+    if ( ! current_user_can( 'edit_user', $user_id ) )
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+
+    // Check if valid user ID
+    if( $user_id === 0 )
+        wp_send_json_error( __( 'Invalid user ID.', 'gamipress' ) );
+
+    // Check if valid amount
+    if( ! is_numeric( $points ) )
+        wp_send_json_error( __( 'Invalid points amount.', 'gamipress' ) );
+
+    // Check if is valid points type
+    if( $points_type !== '' && ! in_array( $points_type, gamipress_get_points_types_slugs() ) )
+        wp_send_json_error( __( 'Invalid points type.', 'gamipress' ) );
+
+    // Update the user points
+    gamipress_update_user_points( $user_id, absint( $points ), get_current_user_id(), null, $points_type );
+
+    wp_send_json_success( array(
+        'message' => __( 'Points updated successfully.', 'gamipress' ),
+        'points' => gamipress_format_amount( $points, $points_type )
+    ) );
+
+}
+add_action( 'wp_ajax_gamipress_profile_update_user_points', 'gamipress_ajax_profile_update_user_points' );
+
+/**
  * Generate markup to show user rank
  *
  * @since  1.0.0
@@ -258,84 +337,103 @@ function gamipress_profile_user_rank( $user = null ) {
 	}
 	?>
 
-	<h2><?php echo $can_manage ? __( 'Ranks', 'gamipress' ) : __( 'Your Ranks', 'gamipress' ); ?></h2>
-
 	<table class="form-table">
+        <tr>
+            <th>
+                <label><?php echo $can_manage ? __( 'Ranks', 'gamipress' ) : __( 'Your Ranks', 'gamipress' ); ?></label>
+            </th>
+            <td>
 
-		<?php if( empty( $rank_types ) && $can_manage ) : ?>
-			<tr>
-				<th><label for="user_rank"><?php _e( 'User Ranks', 'gamipress' ); ?></label></th>
-				<td>
-					<span class="description">
-						<?php echo sprintf( __( 'No rank types configured, visit %s to configure some rank types.', 'gamipress' ), '<a href="' . admin_url( 'edit.php?post_type=rank-type' ) . '">' . __( 'this page', 'gamipress' ) . '</a>' ); ?>
-					</span>
-				</td>
-			</tr>
-		<?php else : ?>
+                <?php if( empty( $rank_types ) && $can_manage ) : ?>
 
-			<?php foreach( $rank_types as $rank_type => $data ) :
+                    <?php // No rank types configured yet ?>
+                    <span class="description">
+                        <?php echo sprintf( __( 'No rank types configured, visit %s to configure some rank types.', 'gamipress' ), '<a href="' . admin_url( 'edit.php?post_type=rank-type' ) . '">' . __( 'this page', 'gamipress' ) . '</a>' ); ?>
+                    </span>
 
-				if( $can_manage ) :
-					// Show an editable form of ranks
+                <?php else : ?>
 
-					// Get all published ranks of this type
-					$ranks = gamipress_get_ranks( array(
-						'post_type' => $rank_type,
-						'posts_per_page' => -1
-					) );
+                    <div class="profile-ranks gamipress-profile-cards">
 
-					$user_rank_id = gamipress_get_user_rank_id( $user->ID, $rank_type ); ?>
+                        <?php // Show the information of each user rank ?>
+                        <?php foreach( $rank_types as $rank_type => $data ) : ?>
 
-					<tr>
-						<th><label for="user_<?php echo $rank_type; ?>_rank"><?php echo sprintf( __( 'User %s', 'gamipress' ), $data['singular_name'] ); ?></label></th>
-						<td>
+                            <div class="profile-rank-wrapper gamipress-profile-card-wrapper">
+                                <div class="profile-rank profile-rank-<?php echo $rank_type; ?> gamipress-profile-card">
 
-							<?php if( empty( $ranks ) ) : ?>
+                                    <span class="profile-rank-type-name"><?php echo $data['singular_name']; ?></span>
 
-								<span class="description">
-									<?php echo sprintf( __( 'No %1$s configured, visit %2$s to configure some %1$s.', 'gamipress' ),
-										strtolower( $data['plural_name'] ),
-										'<a href="' . admin_url( 'edit.php?post_type=' . $rank_type ) . '">' . __( 'this page', 'gamipress' ) . '</a>'
-									); ?>
-								</span>
+                                    <?php // Get and display the current user rank
+                                    $user_rank = gamipress_get_user_rank( $user->ID, $rank_type );
 
-							<?php else : ?>
+                                    if( $user_rank ) : ?>
 
-								<select name="user_<?php echo $rank_type; ?>_rank" id="user_<?php echo $rank_type; ?>_rank" style="min-width: 15em;">
-									<?php foreach( $ranks as $rank ) : ?>
-										<option value="<?php echo $rank->ID; ?>" <?php selected( $user_rank_id, $rank->ID ); ?>><?php echo $rank->post_title; ?></option>
-									<?php endforeach; ?>
-								</select>
-								<span class="description"><?php echo sprintf( __( "The user's %s rank. %s listed are ordered by priority.", 'gamipress' ), strtolower( $data['singular_name'] ), $data['plural_name'] ); ?></span>
+                                        <div class="profile-rank-thumbnail"><?php echo gamipress_get_rank_post_thumbnail( $user_rank->ID, array( 32, 32 ) ); ?></div>
 
-							<?php endif; ?>
+                                        <span class="profile-rank-title"><?php echo $user_rank->post_title; ?></span>
 
-						</td>
-					</tr>
+                                    <?php endif; ?>
 
-				<?php else :
-					// Show the information of each user rank
 
-					$user_rank = gamipress_get_user_rank( $user->ID, $rank_type ); ?>
+                                    <?php if( $can_manage ) :
+                                        // Show an editable form of ranks
 
-					<tr>
-						<th><label for="user_<?php echo $rank_type; ?>_rank"><?php echo $data['singular_name']; ?></label></th>
-						<td>
+                                        // Get all published ranks of this type
+                                        $ranks = gamipress_get_ranks( array(
+                                            'post_type' => $rank_type,
+                                            'posts_per_page' => -1
+                                        ) ); ?>
 
-							<?php if( $user_rank ) : ?>
-								<?php echo $user_rank->post_title; ?>
-							<?php endif; ?>
+                                        <?php if( empty( $ranks ) ) : ?>
 
-						</td>
-					</tr>
+                                            <?php // No ranks of this type configured yet ?>
+                                            <span class="description">
+                                                <?php echo sprintf( __( 'No %1$s configured, visit %2$s to configure some %1$s.', 'gamipress' ),
+                                                    strtolower( $data['plural_name'] ),
+                                                    '<a href="' . admin_url( 'edit.php?post_type=' . $rank_type ) . '">' . __( 'this page', 'gamipress' ) . '</a>'
+                                                ); ?>
+                                            </span>
 
-				<?php endif; ?>
+                                        <?php else : ?>
 
-			<?php endforeach; ?>
+                                            <a href="#" class="profile-rank-toggle"><?php echo __( 'Edit', 'gamipress' ); ?></a>
 
-		<?php endif; ?>
+                                            <div class="profile-rank-form-wrapper">
 
+                                                <select name="user_<?php echo $rank_type; ?>_rank" id="user_<?php echo $rank_type; ?>_rank" style="min-width: 15em;">
+                                                    <?php foreach( $ranks as $rank ) : ?>
+                                                        <option value="<?php echo $rank->ID; ?>" <?php selected( $user_rank->ID, $rank->ID ); ?>><?php echo $rank->post_title; ?></option>
+                                                    <?php endforeach; ?>
+                                                </select>
+
+                                                <span class="description"><?php echo sprintf( __( '%s listed are ordered by priority.', 'gamipress' ), $data['plural_name'] ); ?></span>
+
+                                                <div class="profile-rank-form-buttons">
+                                                    <a href="#" class="button button-primary profile-rank-save"><?php echo __( 'Save', 'gamipress' ); ?></a>
+                                                    <a href="#" class="button profile-rank-cancel"><?php echo __( 'Cancel', 'gamipress' ); ?></a>
+                                                    <span class="spinner"></span>
+                                                </div>
+
+                                            </div>
+
+                                        <?php endif; ?>
+
+                                    <?php endif; ?>
+
+                                </div>
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                <?php endif; ?>
+
+            </td>
+        </tr>
 	</table>
+
+    <hr>
 	<?php
 }
 
@@ -360,64 +458,112 @@ function gamipress_profile_user_points( $user = null ) {
 	}
 	?>
 
-    <h2><?php _e( 'Points Balance', 'gamipress' ); ?></h2>
-
     <table class="form-table">
+        <tr>
+            <th>
+                <label><?php echo $can_manage ? __( 'Points Balances', 'gamipress' ) : __( 'Your Balances', 'gamipress' ); ?></label>
+            </th>
+            <td>
 
-		<?php if( empty( $points_types ) && $can_manage ) : ?>
+                <?php if( empty( $points_types ) && $can_manage ) : ?>
 
-			<tr>
-				<th><label for="user_points"><?php _e( 'User Points', 'gamipress' ); ?></label></th>
-				<td>
-					<span class="description">
-						<?php echo sprintf( __( 'No points types configured, visit %s to configure some points types.', 'gamipress' ), '<a href="' . admin_url( 'edit.php?post_type=points-type' ) . '">' . __( 'this page', 'gamipress' ) . '</a>' ); ?>
-					</span>
-				</td>
-			</tr>
+                    <span class="description">
+                        <?php echo sprintf( __( 'No points types configured, visit %s to configure some points types.', 'gamipress' ), '<a href="' . admin_url( 'edit.php?post_type=points-type' ) . '">' . __( 'this page', 'gamipress' ) . '</a>' ); ?>
+                    </span>
 
-		<?php else : ?>
+                <?php else : ?>
 
-			<?php if( $can_manage ) :
-				// Show an editable form of points ?>
+                    <div class="profile-points gamipress-profile-cards">
 
-				<tr>
-					<th><label for="user_points"><?php _e( 'Earned Default Points', 'gamipress' ); ?></label></th>
-					<td>
-						<input type="text" name="user_points" id="user_points" value="<?php echo gamipress_get_user_points( $user->ID ); ?>" class="regular-text" /><br />
-						<span class="description"><?php _e( "The user's points total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ); ?></span>
-					</td>
-				</tr>
+                        <?php // Filter available to re-enable the default points
+                        if( apply_filters( 'gamipress_user_points_backward_compatibility', false ) ) :
+                            $user_points = gamipress_get_user_points( $user->ID ); ?>
 
-				<?php foreach( $points_types as $points_type => $data ) : ?>
+                            <div class="profile-points-wrapper gamipress-profile-card-wrapper">
 
-					<tr>
-						<th><label for="user_<?php echo $points_type; ?>_points"><?php echo sprintf( __( 'Earned %s', 'gamipress' ), $data['plural_name'] ); ?></label></th>
-						<td>
-							<input type="text" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo gamipress_get_user_points( $user->ID, $points_type ); ?>" class="regular-text" /><br />
-							<span class="description"><?php echo sprintf( __( "The user's %s total. Entering a new total will automatically log the change and difference between totals.", 'gamipress' ), strtolower( $data['plural_name'] ) ); ?></span>
-						</td>
-					</tr>
+                                <div class="profile-points profile-points-default gamipress-profile-card">
 
-				<?php endforeach; ?>
+                                    <span class="profile-points-type-name"><?php _e( 'Default Points', 'gamipress' ); ?></span>
 
-			<?php else :
-				// Show the information of each user points balance ?>
+                                    <div class="profile-points-thumbnail"></div>
 
-				<?php foreach( $points_types as $points_type => $data ) : ?>
+                                    <span class="profile-points-amount"><?php echo $user_points; ?></span>
 
-					<tr>
-						<th><label for="user_<?php echo $points_type; ?>_points"><?php echo $data['plural_name']; ?></label></th>
-						<td>
-							<?php echo gamipress_get_user_points( $user->ID, $points_type ); ?>
-						</td>
-					</tr>
+                                    <?php if( $can_manage ) :
+                                        // Show an editable form of points ?>
 
-				<?php endforeach; ?>
+                                        <a href="#" class="profile-points-toggle"><?php echo __( 'Edit', 'gamipress' ); ?></a>
 
-			<?php endif; ?>
-		<?php endif; ?>
+                                        <div class="profile-points-form-wrapper">
 
+                                            <input type="number" name="user_points" id="user_points" value="<?php echo $user_points; ?>" class="regular-text" data-points-type="" />
+
+                                            <span class="description"><?php echo __( 'Enter a new total will automatically log the change and difference between totals.', 'gamipress' ); ?></span>
+
+                                            <div class="profile-points-form-buttons">
+                                                <a href="#" class="button button-primary profile-points-save"><?php echo __( 'Save', 'gamipress' ); ?></a>
+                                                <a href="#" class="button profile-points-cancel"><?php echo __( 'Cancel', 'gamipress' ); ?></a>
+                                                <span class="spinner"></span>
+                                            </div>
+
+                                        </div>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+                            </div>
+
+                        <?php endif; ?>
+
+                        <?php foreach( $points_types as $points_type => $data ) :
+                            $user_points = gamipress_get_user_points( $user->ID, $points_type ); ?>
+
+                            <div class="profile-points-wrapper gamipress-profile-card-wrapper">
+
+                                <div class="profile-points profile-points-<?php echo $points_type; ?> gamipress-profile-card">
+
+                                    <span class="profile-points-type-name"><?php echo $data['plural_name']; ?></span>
+
+                                    <div class="profile-points-thumbnail"><?php echo gamipress_get_points_type_thumbnail( $points_type, array( 32, 32 ) ); ?></div>
+
+                                    <span class="profile-points-amount"><?php echo gamipress_format_amount( $user_points, $points_type ); ?></span>
+
+                                    <?php if( $can_manage ) :
+                                        // Show an editable form of points ?>
+
+                                        <a href="#" class="profile-points-toggle"><?php echo __( 'Edit', 'gamipress' ); ?></a>
+
+                                        <div class="profile-points-form-wrapper">
+
+                                            <input type="number" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo $user_points; ?>" class="regular-text" data-points-type="<?php echo $points_type; ?>" />
+
+                                            <span class="description"><?php echo __( 'Enter a new total will automatically log the change and difference between totals.', 'gamipress' ); ?></span>
+
+                                            <div class="profile-points-form-buttons">
+                                                <a href="#" class="button button-primary profile-points-save"><?php echo __( 'Save', 'gamipress' ); ?></a>
+                                                <a href="#" class="button profile-points-cancel"><?php echo __( 'Cancel', 'gamipress' ); ?></a>
+                                                <span class="spinner"></span>
+                                            </div>
+
+                                        </div>
+
+                                    <?php endif; ?>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
+
+                    </div>
+
+                <?php endif; ?>
+            </td>
+        </tr>
     </table>
+
+    <hr>
 	<?php
 }
 
@@ -690,6 +836,7 @@ add_action( 'init', 'gamipress_process_user_data' );
  * @return array             An array of post types
  */
 function gamipress_get_network_achievement_types_for_user( $user_id ) {
+
 	global $blog_id;
 
 	// Store a copy of the original ID for later
@@ -725,4 +872,5 @@ function gamipress_get_network_achievement_types_for_user( $user_id ) {
 
 	// Return all found achievements
 	return $achievement_types;
+
 }

@@ -48,6 +48,7 @@ class GamiPress_Achievement_Widget extends GamiPress_Widget {
             'title'             => ( $instance['show_title'] === 'on' ? 'yes' : 'no' ),
             'link'              => ( $instance['link'] === 'on' ? 'yes' : 'no' ),
             'thumbnail'         => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
+            'times_earned'      => ( $instance['times_earned'] === 'on' ? 'yes' : 'no' ),
             'points_awarded'    => ( $instance['points_awarded'] === 'on' ? 'yes' : 'no' ),
             'excerpt'           => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
             'steps'             => ( $instance['steps'] === 'on' ? 'yes' : 'no' ),

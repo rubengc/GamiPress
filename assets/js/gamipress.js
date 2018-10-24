@@ -45,6 +45,18 @@
 			data.showed_ids.push( achievement_id );
 		});
 
+        /**
+         * Allow external functions to add their own data to the array
+         *
+         * @since 1.5.9
+         *
+         * @selector    .gamipress-achievements-list
+         * @event       gamipress_achievements_list_data
+		 *
+		 * @param Object data
+         */
+        achievement_list.trigger( 'gamipress_achievements_list_request_data', [ data ] );
+
 		$.ajax( {
 			url: gamipress.ajaxurl,
 			data: data,
@@ -78,6 +90,18 @@
 					}
 
 				}
+
+                /**
+                 * Allow external functions to add their own functionality
+                 *
+                 * @since 1.5.9
+                 *
+                 * @selector    .gamipress-achievements-list
+                 * @event       gamipress_achievements_list_data
+                 *
+                 * @param Object response
+                 */
+                achievement_list.trigger( 'gamipress_achievements_list_request_success', [ response ] );
 			}
 		} );
 	}

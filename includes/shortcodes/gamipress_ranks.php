@@ -167,14 +167,6 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 		'exclude'     	=> '',
 	), gamipress_rank_shortcode_defaults() ), $atts, 'gamipress_ranks' );
 
-	gamipress_enqueue_scripts();
-
-	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-		$blog_id = get_current_blog_id();
-		switch_to_blog( get_main_site_id() );
-	}
-
 	// Single type check to use dynamic template
 	$is_single_type = false;
 	$types = explode( ',', $atts['type'] );
@@ -184,6 +176,45 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 	} else if ( count( $types ) === 1 ) {
 		$is_single_type = true;
 	}
+
+    // ---------------------------
+    // Shortcode Errors
+    // ---------------------------
+
+    if( $is_single_type ) {
+
+        // Check if rank type is valid
+        if ( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) )
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), 'gamipress_ranks' );
+
+    } else if( $atts['type'] !== 'all' ) {
+
+        // let's check if all types provided are wrong
+        $all_types_wrong = true;
+
+        foreach( $types as $type ) {
+            if ( ! in_array( $type, gamipress_get_rank_types_slugs() ) )
+                $all_types_wrong = true;
+        }
+
+        // just notify error if all types are wrong
+        if( $all_types_wrong )
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered rank types.', 'gamipress' ), 'gamipress_ranks' );
+
+    }
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
+    gamipress_enqueue_scripts();
+
+    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+        $blog_id = get_current_blog_id();
+        switch_to_blog( get_main_site_id() );
+    }
 
 	// If we're polling all sites, grab an array of site IDs
 	if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() )

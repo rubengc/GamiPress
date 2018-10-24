@@ -411,3 +411,29 @@ ul.gamipress-rank-earners-list li {
 .gamipress-rank-unlock-with-points {
 	display: inline-block;
 }
+
+/* --------------------------------------
+	Shortcode errors
+   -------------------------------------- */
+.gamipress-shortcode-error {
+	color: #a00;
+	background-color: #fdd;
+	padding: 0.5em 1em;
+	margin-bottom: 1em;
+	border-radius: 6px;
+}
+
+.gamipress-shortcode-error .gamipress-shortcode-error-shortcode,
+.gamipress-shortcode-error .gamipress-shortcode-error-reminder {
+	font-size: 75%;
+}
+
+.gamipress-shortcode-error .gamipress-shortcode-error-reminder {
+    text-align: right;
+}
+
+@media screen and (min-width: 768px) {
+    .gamipress-shortcode-error .gamipress-shortcode-error-shortcode {
+        float: left;
+    }
+}

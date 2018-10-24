@@ -142,6 +142,162 @@
 
 	$('.gamipress-form input#post_name').trigger( 'keyup' );
 
+	var current_user_rank = 0;
+
+	// Edit user rank
+    $('body').on('click', '.profile-rank .profile-rank-toggle', function(e) {
+        e.preventDefault();
+
+        $(this).slideUp();
+        $(this).next('.profile-rank-form-wrapper').slideDown();
+
+        current_user_rank = $(this).next('.profile-rank-form-wrapper').find('select').val();
+
+    });
+
+	// Cancel user rank edit
+    $('body').on('click', '.profile-rank .profile-rank-cancel', function(e) {
+        e.preventDefault();
+
+        var parent = $(this).parent().parent();
+
+        parent.slideUp();
+        parent.prev('.profile-rank-toggle').slideDown();
+
+        parent.find('select').val( current_user_rank );
+
+    });
+
+	// Save user rank edit
+    $('body').on('click', '.profile-rank .profile-rank-save', function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var parent = $this.closest('.profile-rank-form-wrapper');
+        var rank_id = parent.find('select').val();
+        var user_id = $this.closest('form').find('input[name="user_id"]').val();
+
+        // If no changes made, then toggle form visibility
+        if( current_user_rank === rank_id ) {
+            parent.slideUp();
+            parent.prev('.profile-rank-toggle').slideDown();
+
+            return false;
+        }
+
+        // Show loader
+        parent.find('.spinner').addClass('is-active');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            data: {
+                action: 'gamipress_profile_update_user_rank',
+                rank_id: rank_id,
+                user_id: user_id
+            },
+            success: function( response ) {
+                // Hide loader
+                parent.find('.spinner').removeClass('is-active');
+
+                // Toggle form visibility
+                parent.slideUp();
+                parent.prev('.profile-rank-toggle').slideDown();
+
+                // update the rank preview
+                if( response.data !== undefined && response.data.rank !== undefined ) {
+                    var rank_wrapper = $this.closest('.profile-rank');
+
+                    rank_wrapper.find('.profile-rank-thumbnail').html( response.data.rank.thumbnail );
+                    rank_wrapper.find('.profile-rank-title').html( response.data.rank.post_title );
+                }
+
+                // Force user earnings table to refresh
+                var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+
+                ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+            }
+        });
+    });
+
+    var current_user_points = 0;
+
+    // Edit user points
+    $('body').on('click', '.profile-points .profile-points-toggle', function(e) {
+        e.preventDefault();
+
+        $(this).slideUp();
+        $(this).next('.profile-points-form-wrapper').slideDown();
+
+        current_user_points = $(this).next('.profile-points-form-wrapper').find('input').val();
+
+    });
+
+    // Cancel user points edit
+    $('body').on('click', '.profile-points .profile-points-cancel', function(e) {
+        e.preventDefault();
+
+        var parent = $(this).parent().parent();
+
+        parent.slideUp();
+        parent.prev('.profile-points-toggle').slideDown();
+
+        parent.find('input').val( current_user_points );
+
+    });
+
+    // Save user points edit
+    $('body').on('click', '.profile-points .profile-points-save', function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var parent = $this.closest('.profile-points-form-wrapper');
+        var points_input = parent.find('input');
+        var points = points_input.val();
+        var points_type = points_input.data('points-type');
+        var user_id = $this.closest('form').find('input[name="user_id"]').val();
+
+        // If no changes made, then toggle form visibility
+        if( current_user_points === points ) {
+            parent.slideUp();
+            parent.prev('.profile-rank-toggle').slideDown();
+
+            return false;
+        }
+
+        // Show loader
+        parent.find('.spinner').addClass('is-active');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'POST',
+            data: {
+                action: 'gamipress_profile_update_user_points',
+                points: points,
+                points_type: points_type,
+                user_id: user_id
+            },
+            success: function( response ) {
+                // Hide loader
+                parent.find('.spinner').removeClass('is-active');
+
+                // Toggle form visibility
+                parent.slideUp();
+                parent.prev('.profile-points-toggle').slideDown();
+
+                // Update the points preview
+                if( response.data !== undefined && response.data.points !== undefined ) {
+                    $this.closest('.profile-points').find('.profile-points-amount').html( response.data.points );
+                }
+
+                // Force user earnings table to refresh
+                var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+
+                ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+            }
+        });
+    });
+
     // Award type select
     if( $("#gamipress-award-type-select").length ) {
 
@@ -251,6 +407,22 @@
 		$('.gamipress_page_gamipress_add_ons .wp-filter a.current').trigger('click');
 
 	}
+
+	// Hide review notice
+    $('body').on('click', '.gamipress-hide-review-notice', function(e) {
+
+        e.preventDefault();
+
+        $.ajax({
+			url: ajaxurl,
+			data: { action: 'gamipress_hide_review_notice' },
+			success: function(response) {
+				// Hide the notice on success
+				$('.gamipress-review-notice').slideUp('fast');
+			}
+		});
+
+    });
 
 	// Auto initialize upgrade if user reloads the page during an upgrade
 	if( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').length ) {

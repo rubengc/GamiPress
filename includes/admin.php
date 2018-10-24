@@ -8,22 +8,26 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+// Admin includes
 require_once GAMIPRESS_DIR . 'includes/admin/auto-update.php';
 require_once GAMIPRESS_DIR . 'includes/admin/contextual-help.php';
 require_once GAMIPRESS_DIR . 'includes/admin/debug.php';
 require_once GAMIPRESS_DIR . 'includes/admin/meta-boxes.php';
+require_once GAMIPRESS_DIR . 'includes/admin/notices.php';
 require_once GAMIPRESS_DIR . 'includes/admin/plugins.php';
 require_once GAMIPRESS_DIR . 'includes/admin/achievements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
+
+// Admin pages
 require_once GAMIPRESS_DIR . 'includes/admin/pages/support.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/licenses.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
-require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
 /**
  * Add custom GamiPress body classes
@@ -688,7 +692,7 @@ add_action( 'admin_init', 'gamipress_process_actions' );
  * @param $placeholder
  * @param $post
  *
- * @return string|void
+ * @return string
  */
 function gamipress_admin_enter_title_here( $placeholder, $post ) {
 
@@ -711,12 +715,13 @@ add_filter( 'enter_title_here', 'gamipress_admin_enter_title_here', 10, 2 );
  * @return      string
  */
 function gamipress_admin_footer_text( $footer_text ) {
+
     global $typenow;
 
     if (
-        $typenow == 'points-type'
-        || $typenow == 'achievement-type'
-        || $typenow == 'rank-type'
+        $typenow === 'points-type'
+        || $typenow === 'achievement-type'
+        || $typenow === 'rank-type'
         || in_array( $typenow, gamipress_get_achievement_types_slugs() )
         || in_array( $typenow, gamipress_get_rank_types_slugs() )
         || ( isset( $_GET['page'] ) && (

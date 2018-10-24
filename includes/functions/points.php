@@ -219,6 +219,98 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
 }
 
 /**
+ * Return site's points (sum of all user points)
+ *
+ * @since 1.5.9
+ *
+ * @param  string   $points_type   The points type
+ *
+ * @return int      $site_points  The site's current points
+ */
+function gamipress_get_site_points( $points_type = '' ) {
+
+    // Default points
+    $user_meta = '_gamipress_points';
+
+    if( ! empty( $points_type ) ) {
+        $user_meta = "_gamipress_{$points_type}_points";
+    }
+
+    // Return site's points as an integer (sanely falls back to 0 if empty)
+    return absint( gamipress_get_user_meta_sum( $user_meta ) );
+
+}
+
+/**
+ * Return site's points awarded (sum of all user points awarded)
+ *
+ * @since 1.5.9
+ *
+ * @param  string   $points_type   The points type
+ *
+ * @return int      $site_points  The site's points awarded
+ */
+function gamipress_get_site_points_awarded( $points_type = '' ) {
+
+    // Default points
+    $user_meta = '_gamipress_points_awarded';
+
+    if( ! empty( $points_type ) ) {
+        $user_meta = "_gamipress_{$points_type}_points_awarded";
+    }
+
+    // Return site's points awarded as an integer (sanely falls back to 0 if empty)
+    return absint( gamipress_get_user_meta_sum( $user_meta ) );
+
+}
+
+/**
+ * Return site's points deducted (sum of all user points deducted)
+ *
+ * @since 1.5.9
+ *
+ * @param  string   $points_type   The points type
+ *
+ * @return int      $site_points  The site's points deducted
+ */
+function gamipress_get_site_points_deducted( $points_type = '' ) {
+
+    // Default points
+    $user_meta = '_gamipress_points_deducted';
+
+    if( ! empty( $points_type ) ) {
+        $user_meta = "_gamipress_{$points_type}_points_deducted";
+    }
+
+    // Return site's points deducted as an integer (sanely falls back to 0 if empty)
+    return absint( gamipress_get_user_meta_sum( $user_meta ) );
+
+}
+
+/**
+ * Return site's points expended (sum of all user points expended)
+ *
+ * @since 1.5.9
+ *
+ * @param  string   $points_type   The points type
+ *
+ * @return int      $site_points  The site's points expended
+ */
+function gamipress_get_site_points_expended( $points_type = '' ) {
+
+    // Default points
+    $user_meta = '_gamipress_points_expended';
+
+    if( ! empty( $points_type ) ) {
+        $user_meta = "_gamipress_{$points_type}_points_expended";
+    }
+
+    // Return site's points expended as an integer (sanely falls back to 0 if empty)
+    return absint( gamipress_get_user_meta_sum( $user_meta ) );
+
+}
+
+/**
  * Award points to an user
  *
  * @since 1.3.6

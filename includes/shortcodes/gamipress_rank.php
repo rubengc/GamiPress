@@ -113,12 +113,35 @@ add_action( 'init', 'gamipress_register_rank_shortcode' );
  */
 function gamipress_rank_shortcode( $atts = array() ) {
 
+    $original_atts = $atts;
+
 	$atts = shortcode_atts( gamipress_rank_shortcode_defaults(), $atts, 'gamipress_rank' );
+
+    // ---------------------------
+    // Shortcode Errors
+    // ---------------------------
 
 	// return if post id not specified
 	if ( empty($atts['id']) )
 	  return '';
 
+    // Get the rank post
+    $rank = gamipress_get_post( $atts['id'] );
+    $is_rank = gamipress_is_rank( $rank );
+
+    // Return if rank id not specified
+    if ( empty( $original_atts['id'] ) && ! $is_rank )
+        return gamipress_shortcode_error( __( 'Please, provide the id attribute.', 'gamipress' ), 'gamipress_rank' );
+
+    // Check if we're dealing with a rank post
+    if ( ! $is_rank )
+        return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid rank.', 'gamipress' ), 'gamipress_rank' );
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
 	gamipress_enqueue_scripts();
 
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
@@ -127,19 +150,12 @@ function gamipress_rank_shortcode( $atts = array() ) {
 		switch_to_blog( get_main_site_id() );
 	}
 
-	// Get the post content and format the rank display
-	$rank = gamipress_get_post( $atts['id'] );
-
-	// Get the current user if one wasn't specified
+	// Get the current user if none wasn't specified
 	if( absint( $atts['user_id'] ) === 0 )
 		$atts['user_id'] = get_current_user_id();
 
-	$output = '';
-
 	// If we're dealing with an rank post
-	if ( gamipress_is_rank( $rank ) ) {
-		$output .= gamipress_render_rank( $rank, $atts );
-	}
+    $output = gamipress_render_rank( $rank, $atts );
 
 	// If switched to blog, return back to que current blog
 	if( isset( $blog_id ) ) {

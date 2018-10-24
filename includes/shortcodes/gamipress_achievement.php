@@ -62,6 +62,13 @@ function gamipress_register_achievement_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'times_earned' => array(
+                'name'        => __( 'Show Times Earned', 'gamipress' ),
+                'description' => __( 'Display the times user has earned this achievement (on achievements allowed to be earned more that 1 time).', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
 			'steps' => array(
 				'name'        => __( 'Show Steps', 'gamipress' ),
 				'description' => __( 'Display the achievement steps.', 'gamipress' ),
@@ -120,12 +127,31 @@ add_action( 'init', 'gamipress_register_achievement_shortcode' );
  */
 function gamipress_achievement_shortcode( $atts = array() ) {
 
+    $original_atts = $atts;
+
 	$atts = shortcode_atts( gamipress_achievement_shortcode_defaults(), $atts, 'gamipress_achievement' );
 
-	// Return if achievement id not specified
-	if ( empty( $atts['id'] ) )
-	  return '';
+    // ---------------------------
+	// Shortcode Errors
+    // ---------------------------
 
+    // Get the achievement post
+    $achievement = gamipress_get_post( $atts['id'] );
+    $is_achievement = gamipress_is_achievement( $achievement );
+
+    // Return if achievement id not specified
+    if ( empty( $original_atts['id'] ) && ! $is_achievement )
+        return gamipress_shortcode_error( __( 'Please, provide the id attribute.', 'gamipress' ), 'gamipress_achievement' );
+
+    // Check if we're dealing with an achievement post
+    if ( ! $is_achievement )
+        return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid achievement.', 'gamipress' ), 'gamipress_achievement' );
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
 	gamipress_enqueue_scripts();
 
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
@@ -134,14 +160,12 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 		switch_to_blog( get_main_site_id() );
 	}
 
-	// Get the post content and format the achievement display
-	$achievement = gamipress_get_post( $atts['id'] );
-	$output = '';
+    // Get the current user if none wasn't specified
+    if( absint( $atts['user_id'] ) === 0 )
+        $atts['user_id'] = get_current_user_id();
 
-	// If we're dealing with an achievement post
-	if ( gamipress_is_achievement( $achievement ) ) {
-		$output .= gamipress_render_achievement( $achievement, $atts );
-	}
+	// Get the post content and format the achievement display
+	$output = gamipress_render_achievement( $achievement, $atts );
 
 	// If switched to blog, return back to que current blog
 	if( isset( $blog_id ) ) {
@@ -169,6 +193,7 @@ function gamipress_achievement_shortcode_defaults() {
 		'thumbnail' 		=> 'yes',
 		'points_awarded' 	=> 'yes',
 		'excerpt'	  		=> 'yes',
+        'times_earned' 	    => 'yes',
 		'steps'	  			=> 'yes',
 		'toggle' 			=> 'yes',
 		'unlock_button' 	=> 'yes',

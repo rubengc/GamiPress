@@ -1,8 +1,8 @@
 <?php
 /**
- * Achievement Functions
+ * Achievements Functions
  *
- * @package     GamiPress\Achievement_Functions
+ * @package     GamiPress\Achievements_Functions
  * @since       1.0.0
  */
 // Exit if accessed directly

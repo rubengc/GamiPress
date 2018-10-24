@@ -106,6 +106,7 @@ add_action( 'init', 'gamipress_register_points_types_shortcode' );
  * @return string 	   HTML markup
  */
 function gamipress_points_types_shortcode( $atts = array () ) {
+
     global $gamipress_template_args, $blog_id;
 
     // Initialize GamiPress template args global
@@ -123,8 +124,6 @@ function gamipress_points_types_shortcode( $atts = array () ) {
         'wpms'      => 'no',
     ), $atts, 'gamipress_points' );
 
-    gamipress_enqueue_scripts();
-
     // Single type check to use dynamic template
     $is_single_type = false;
     $types = explode( ',', $atts['type'] );
@@ -134,6 +133,39 @@ function gamipress_points_types_shortcode( $atts = array () ) {
     } else if ( count( $types ) === 1 ) {
         $is_single_type = true;
     }
+
+    // ---------------------------
+    // Shortcode Errors
+    // ---------------------------
+
+    if( $is_single_type ) {
+
+        // Check if points type is valid
+        if ( ! in_array( $atts['type'], gamipress_get_points_types_slugs() ) )
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered points type.', 'gamipress' ), 'gamipress_points_types' );
+
+    } else if( $atts['type'] !== 'all' ) {
+
+        // let's check if all types provided are wrong
+        $all_types_wrong = true;
+
+        foreach( $types as $type ) {
+            if ( ! in_array( $type, gamipress_get_points_types_slugs() ) )
+                $all_types_wrong = true;
+        }
+
+        // just notify error if all types are wrong
+        if( $all_types_wrong )
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered points types.', 'gamipress' ), 'gamipress_points_types' );
+
+    }
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
+    gamipress_enqueue_scripts();
 
     // If we're polling all sites, grab an array of site IDs
     if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() )

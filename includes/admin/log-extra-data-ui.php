@@ -251,6 +251,15 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
         );
     }
 
+    /**
+     * Log extra data fields
+     *
+     * @since 1.0.0
+     *
+     * @param array     $fields
+     * @param int       $log_id
+     * @param string    $type       See gamipress_get_log_types()
+     */
     $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $object_id, $type );
 
     if( ! empty( $fields ) ) {

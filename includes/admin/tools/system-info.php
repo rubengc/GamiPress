@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Register System Info Tool meta boxes
  *
- * @since  1.1.7
+ * @since   1.1.7
+ * @updated 1.5.9 Added the GamiPress installation date on GamiPress info box
  *
  * @param array $meta_boxes
  *
@@ -20,6 +21,10 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     global $wpdb;
+
+    //--------------------------
+    // Server Info
+    //--------------------------
 
     $meta_boxes['server-info'] = array(
         'title' => __( 'Server Info', 'gamipress' ),
@@ -83,6 +88,10 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
             ),
         ) )
     );
+
+    //--------------------------
+    // WordPress Info
+    //--------------------------
 
     $locale = get_locale();
 
@@ -185,6 +194,10 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         ) )
     );
 
+    //--------------------------
+    // GamiPress Info
+    //--------------------------
+
     // Get all points types
     $points_types = gamipress_get_points_types();
     $points_types_output = '';
@@ -246,6 +259,13 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $last_upgrade = get_option( 'gamipress_version', '1.0.0' );
     $last_required_upgrade = gamipress_get_last_required_upgrade();
 
+    // Get the installation date
+    if( gamipress_is_network_wide_active() ) {
+        $gamipress_install_date = ( $exists = get_site_option( 'gamipress_install_date' ) ) ? $exists : '';
+    } else {
+        $gamipress_install_date = ( $exists = get_option( 'gamipress_install_date' ) ) ? $exists : '';
+    }
+
     $meta_boxes['gamipress-info'] = array(
         'title' => __( 'GamiPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
@@ -294,6 +314,11 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'type' => 'display',
                 'value' => ( $user_earnings_meta_exists ? 'Yes' : 'No' ),
                 'classes' => ( $user_earnings_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_install_date' => array(
+                'name' => __( 'Installation Date', 'gamipress' ),
+                'type' => 'display',
+                'value' => $gamipress_install_date,
             ),
             'gamipress_settings' => array(
                 'name' => __( 'Settings', 'gamipress' ),

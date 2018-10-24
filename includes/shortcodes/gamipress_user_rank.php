@@ -132,37 +132,45 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
 
     ), gamipress_rank_shortcode_defaults() ), $atts, 'gamipress_user_rank' );
 
+    // ---------------------------
+    // Shortcode Errors
+    // ---------------------------
+
+    // Not type provided
+    if( $atts['type'] === '')
+        return gamipress_shortcode_error( __( 'Please, provide the type attribute.', 'gamipress' ), 'gamipress_user_rank' );
+
+    // Wrong rank
+    if( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) )
+        return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), 'gamipress_user_rank' );
+
+    // Nothing to show
+    if( $atts['prev_rank'] === 'no' && $atts['current_rank'] === 'no' && $atts['next_rank'] === 'no' )
+        return gamipress_shortcode_error( __( 'None of the options to be displayed have been selected (previous, current or next). Please, select one.', 'gamipress' ), 'gamipress_user_rank' );
+
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' )
+        $atts['user_id'] = get_current_user_id();
+
+    // Not user ID provided
+    if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 )
+        return gamipress_shortcode_error( __( 'Please, provide the user_id attribute.', 'gamipress' ), 'gamipress_user_rank' );
+
+    // Guests not supported
+    if( absint( $atts['user_id'] ) === 0 )
+        return '';
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
     gamipress_enqueue_scripts();
 
     // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
         $blog_id = get_current_blog_id();
         switch_to_blog( get_main_site_id() );
-    }
-
-    // Not type provided
-    if( $atts['type'] === '') {
-        return '';
-    }
-
-    // Wrong rank
-    if( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) ) {
-        return '';
-    }
-
-    // Nothing to show
-    if( $atts['prev_rank'] === 'no' && $atts['current_rank'] === 'no' && $atts['next_rank'] === 'no' ) {
-        return '';
-    }
-
-    // Force to set current user as user ID
-    if( $atts['current_user'] === 'yes' ) {
-        $atts['user_id'] = get_current_user_id();
-    }
-
-    // Guests not supported
-    if( absint( $atts['user_id'] ) === 0 ) {
-        return '';
     }
 
     // GamiPress template args global

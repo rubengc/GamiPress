@@ -397,7 +397,7 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	foreach ( $steps as $step ) {
 
 		// Check if user has earned this step, and add an 'earned' class
-		$earned_status = gamipress_get_user_achievements( array(
+		$earned_status = is_user_logged_in() && gamipress_get_user_achievements( array(
 			'user_id' => absint( $user_id ),
 			'achievement_id' => absint( $step->ID ),
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
@@ -453,15 +453,104 @@ add_filter( 'gamipress_points_deduct_title_display', 'gamipress_format_requireme
 add_filter( 'gamipress_rank_requirement_title_display', 'gamipress_format_requirement_title_with_post_link', 10, 2 );
 
 /**
+ * Generate markup for an achievement's times earned output
+ *
+ * @since  1.5.9
+ *
+ * @param  integer 	$achievement_id The given achievement's ID
+ * @param  array 	$template_args 	Achievement template args
+ *
+ * @return string                  The HTML markup for our times earned output
+ */
+function gamipress_achievement_times_earned_markup( $achievement_id = 0, $template_args = array() ) {
+
+    // Grab the current post ID if no achievement_id was specified
+    if ( ! $achievement_id ) {
+        global $post;
+        $achievement_id = $post->ID;
+    }
+
+    if( ! isset( $template_args['user_id'] ) ) {
+        $template_args['user_id'] = get_current_user_id();
+    }
+
+    $user_id = absint( $template_args['user_id'] );
+
+    // Guest not supported yet (basically because they has not earned this achievement)
+    if( $user_id === 0 ) {
+        return '';
+    }
+
+    $maximum_earnings = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_maximum_earnings' ) );
+
+    // Return if maximum earnings configured is 1
+    if( $maximum_earnings === 1 ) {
+        return '';
+    }
+
+    $earned_times = count( gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id ) ) );
+
+    // Return if user hasn't earned it or just earned it 1 time
+    if( $earned_times <= 1 ) {
+        return '';
+    }
+
+    // Setup the times earned text based on if achievements has unlimited times to be earned
+    if( $maximum_earnings === 0 ) {
+        $times_earned_pattern = __( '%d times earned', 'gamipress' );
+
+        $times_earned_text = sprintf( $times_earned_pattern, $earned_times );
+    } else {
+        $times_earned_pattern = __( '%d of %d times earned', 'gamipress' );
+
+        $times_earned_text = sprintf( $times_earned_pattern, $earned_times, $maximum_earnings );
+    }
+
+    /**
+     * Filter to override the achievement times earned text
+     *
+     * @since  1.5.9
+     *
+     * @param  string 	$times_earned_text  Times earned text, by default "X times earned"
+     * @param  integer 	$achievement_id     The given achievement's ID
+     * @param  integer 	$user_id            The user's ID
+     * @param  integer 	$earned_times       The user's times earned this achievement
+     * @param  integer 	$maximum_earnings   The achievement's maximum times to be earned
+     * @param  array 	$template_args 	    Achievement template args
+     */
+    $times_earned_text = apply_filters( 'gamipress_achievement_times_earned_text', $times_earned_text, $achievement_id, $user_id, $earned_times, $maximum_earnings, $template_args );
+
+    // The time earned markup
+    $output = '<div class="gamipress-achievement-times-earned">' . $times_earned_text . '</div>';
+
+    /**
+     * Filter to override the achievement times earned markup
+     *
+     * @since  1.5.9
+     *
+     * @param  string 	$output             Times earned markup
+     * @param  integer 	$achievement_id     The given achievement's ID
+     * @param  integer 	$user_id            The user's ID
+     * @param  integer 	$earned_times       The user's times earned this achievement
+     * @param  integer 	$maximum_earnings   The achievement's maximum times to be earned
+     * @param  array 	$template_args 	    Achievement template args
+     */
+    return apply_filters( 'gamipress_achievement_times_earned_markup', $output, $achievement_id, $user_id, $earned_times, $maximum_earnings, $template_args );
+
+}
+
+/**
  * Generate markup for an achievement's points output
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.5.9  Added $template_args parameter
  *
- * @param  integer $achievement_id The given achievement's ID
+ * @param  integer  $achievement_id The given achievement's ID
+ * @param  array    $template_args 	Achievement template args
  *
- * @return string                  The HTML markup for our points
+ * @return string                   The HTML markup for our points
  */
-function gamipress_achievement_points_markup( $achievement_id = 0 ) {
+function gamipress_achievement_points_markup( $achievement_id = 0, $template_args = array() ) {
 
 	// Grab the current post ID if no achievement_id was specified
 	if ( ! $achievement_id ) {
@@ -478,8 +567,12 @@ function gamipress_achievement_points_markup( $achievement_id = 0 ) {
 
     $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
 
-	// Return our markup
-	return '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . gamipress_format_points( $points, $points_type  ) . '</div>';
+
+	$output = '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . gamipress_format_points( $points, $points_type  ) . '</div>';
+
+    // Return the points awarded output
+	return apply_filters( 'gamipress_achievement_points_markup', $output, $achievement_id, $points, $points_type, $template_args );
+
 }
 
 /**
@@ -545,8 +638,9 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 		</div>
 	<?php $output = ob_get_clean();
 
-	// Return our markup
+	// Return the unlock with points output
 	return apply_filters( 'gamipress_achievement_unlock_with_points_markup', $output, $achievement_id, $user_id, $template_args );
+
 }
 
 /**
@@ -952,7 +1046,7 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	foreach ( $requirements as $requirement ) {
 
 		// Check if user has earned this requirement, and add an 'earned' class
-		$earned_status = gamipress_get_user_achievements( array(
+		$earned_status = is_user_logged_in() && gamipress_get_user_achievements( array(
 			'user_id' => absint( $user_id ),
 			'achievement_id' => absint( $requirement->ID ),
 		) ) ? 'user-has-earned' : 'user-has-not-earned';
@@ -1124,6 +1218,15 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 	$rank_types = gamipress_get_rank_types();
 
 	switch( $column_name ) {
+		case 'user':
+
+		    $user = get_userdata( $user_earning->user_id );
+
+		    if( $user ) {
+                $column_output = get_avatar( $user_earning->user_id ) . $user->display_name;
+            }
+
+            break;
 		case 'thumbnail':
 
 			if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {

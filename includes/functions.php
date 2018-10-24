@@ -591,3 +591,27 @@ function gamipress_has_filters( $filter ) {
     return (bool) ( isset( $wp_filter[$filter] ) && count( $wp_filter[$filter] ) > 0 );
 
 }
+
+/**
+ * Sum all user meta values of a given meta key
+ *
+ * @since 1.5.9
+ *
+ * @param string $meta_key
+ *
+ * @return integer
+ */
+function gamipress_get_user_meta_sum( $meta_key ) {
+
+    global $wpdb;
+
+    $sum = $wpdb->get_var( $wpdb->prepare(
+        "SELECT SUM( meta_value )
+         FROM {$wpdb->usermeta}
+         WHERE meta_key = %s",
+        $meta_key
+    ) );
+
+    return absint( $sum );
+
+}

@@ -224,15 +224,46 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 		'wpms'        	    => 'no',
 	), gamipress_achievement_shortcode_defaults() ), $atts, 'gamipress_achievements' );
 
-	gamipress_enqueue_scripts();
-
 	// Single type check to use dynamic template
 	$is_single_type = false;
 	$types = explode( ',', $atts['type'] );
 
-	if ( 'all' !== $atts['type'] && count( $types ) === 1 ) {
+	if ( $atts['type'] !== 'all' && count( $types ) === 1 ) {
 		$is_single_type = true;
 	}
+
+    // ---------------------------
+    // Shortcode Errors
+    // ---------------------------
+
+    if( $is_single_type ) {
+
+        // Check if achievement type is valid
+        if ( ! in_array( $atts['type'], gamipress_get_achievement_types_slugs() ) )
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered achievement type.', 'gamipress' ), 'gamipress_achievements' );
+
+    } else if( $atts['type'] !== 'all' ) {
+
+        // let's check if all types provided are wrong
+        $all_types_wrong = true;
+
+        foreach( $types as $type ) {
+            if ( ! in_array( $type, gamipress_get_achievement_types_slugs() ) )
+                $all_types_wrong = true;
+        }
+
+        // just notify error if all types are wrong
+        if( $all_types_wrong )
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered achievement types.', 'gamipress' ), 'gamipress_achievements' );
+
+    }
+
+    // ---------------------------
+    // Shortcode Processing
+    // ---------------------------
+
+    // Enqueue assets
+    gamipress_enqueue_scripts();
 
 	// Force to set current user as user ID
 	if( $atts['current_user'] === 'yes' ) {
@@ -255,6 +286,14 @@ function gamipress_achievements_shortcode( $atts = array () ) {
     // by gamipress_render_achievement() used on gamipress_achievements_shortcode_query()
     $gamipress_template_args = $atts;
     $gamipress_template_args['query'] = $query;
+    $gamipress_template_args['types'] = $types;
+
+    // If we're dealing with multiple achievement types
+    if ( 'all' === $gamipress_template_args['type'] ) {
+        $gamipress_template_args['plural_label'] = __( 'achievements', 'gamipress' );
+    } else {
+        $gamipress_template_args['plural_label'] = ( 1 == count( $types ) && ! empty( $types[0] ) ) ? get_post_type_object( $types[0] )->labels->name : __( 'achievements', 'gamipress' );
+    }
 
 	ob_start();
 	if( $is_single_type ) {
@@ -405,7 +444,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
         if( ! ( $filter === 'completed' && empty( $earned_ids ) ) ) {
 
             // Query Achievements
-            $args = array(
+            $query_args = array(
                 'post_type'      	=> $type,
                 'orderby'        	=> $orderby,
                 'order'          	=> $order,
@@ -419,42 +458,54 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
             // Filter - query completed or non completed achievements
             if( $filter === 'completed' && ! empty( $earned_ids ) ) {
                 // Include earned achievements
-                $args[ 'post__in' ] = $earned_ids;
+                $query_args[ 'post__in' ] = $earned_ids;
             } else if( $filter === 'not-completed' && ! empty( $earned_ids ) ) {
                 // Exclude earned achievements
-                $args[ 'post__not_in' ] = array_merge( $hidden, $earned_ids );
+                $query_args[ 'post__not_in' ] = array_merge( $hidden, $earned_ids );
             }
 
             // Include certain achievements
             if( ! empty( $include ) ) {
-                $args[ 'post__not_in' ] = array_diff( $args[ 'post__not_in' ], $include );
-                $args[ 'post__in' ] = array_merge( $args[ 'post__in' ], $include  );
+                $query_args[ 'post__not_in' ] = array_diff( $query_args[ 'post__not_in' ], $include );
+                $query_args[ 'post__in' ] = array_merge( $query_args[ 'post__in' ], $include  );
             }
 
             // Exclude certain achievements
             if( ! empty( $exclude ) ) {
-                $args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $exclude );
+                $query_args[ 'post__not_in' ] = array_merge( $query_args[ 'post__not_in' ], $exclude );
             }
 
 			if( ! empty( $showed_ids ) ) {
 				// Exclude already shown achievements
-				$args[ 'post__in' ] = array_diff( $args[ 'post__in' ], $showed_ids  );
-				$args[ 'post__not_in' ] = array_merge( $args[ 'post__not_in' ], $showed_ids );
+                $query_args[ 'post__in' ] = array_diff( $query_args[ 'post__in' ], $showed_ids  );
+                $query_args[ 'post__not_in' ] = array_merge( $query_args[ 'post__not_in' ], $showed_ids );
 			}
 
             // Search
             if( $search ) {
-                $args[ 's' ] = $search;
+                $query_args[ 's' ] = $search;
             }
 
 			// Order By
 			if( in_array( $orderby, array( 'points_awarded', 'points_to_unlock' ) ) ) {
-				$args['meta_key'] = ( $orderby === 'points_awarded' ? '_gamipress_points' : '_gamipress_points_to_unlock' );
-				$args['orderby'] = 'meta_value_num';
+                $query_args['meta_key'] = ( $orderby === 'points_awarded' ? '_gamipress_points' : '_gamipress_points_to_unlock' );
+                $query_args['orderby'] = 'meta_value_num';
 			}
 
+            /**
+             * Filters achievements list query args
+             *
+             * @since 1.5.9
+             *
+             * @param array $query_args Query args to be passed to WP_Query
+             * @param array $args       Function received args (Note: to pass your own args on achievements list request, check JS event 'gamipress_achievements_list_request_data')
+             *
+             * @return array
+             */
+            $query_args = apply_filters( 'gamipress_achievements_shortcode_query_args', $query_args, $args );
+
             // Loop Achievements
-            $achievement_posts = new WP_Query( $args );
+            $achievement_posts = new WP_Query( $query_args );
             $query_count = absint( $achievement_posts->found_posts );
 
             while( $achievement_posts->have_posts() ) : $achievement_posts->the_post();
@@ -489,7 +540,11 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 			/**
 			 * Filter achievements no results text
 			 *
+             * @since 1.0.0
+             *
 			 * @param string $no_results_text
+             *
+             * @return string
 			 */
 			$no_results_text = apply_filters( 'gamipress_achievements_no_results_text', $no_results_text );
 

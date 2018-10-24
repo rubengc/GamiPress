@@ -459,6 +459,90 @@ li.requirement-row.requirement-disabled {
 	width: 10%;
 }
 
+.gamipress-profile-cards {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+}
+
+.gamipress-profile-cards .gamipress-profile-card-wrapper {
+    width: 100%;
+    display: flex;
+}
+
+.gamipress-profile-cards .gamipress-profile-card-wrapper .gamipress-profile-card {
+    width: 100%;
+	border: 1px solid #e5e5e5;
+	box-shadow: 0 1px 1px rgba(0,0,0,0.04);
+	background: #fff;
+	padding: 6px 12px 12px 12px;
+	margin-right: 8px;
+	margin-bottom: 8px;
+}
+
+@media screen and (min-width: 782px) {
+    .gamipress-profile-cards .gamipress-profile-card-wrapper {
+        width: 25%;
+    }
+}
+
+.profile-rank select,
+.profile-rank .description,
+.profile-points .description {
+	display: block;
+	margin-top: 5px;
+}
+
+.profile-points input {
+    width:  100%;
+    margin-top: 5px;
+}
+
+.profile-rank .profile-rank-type-name,
+.profile-points .profile-points-type-name {
+	display: block;
+	margin-bottom: 5px;
+}
+
+.profile-rank .profile-rank-thumbnail,
+.profile-points .profile-points-thumbnail {
+	display: inline-block;
+	vertical-align: middle;
+    margin-right: 5px;
+}
+
+.profile-rank .profile-rank-thumbnail:empty,
+.profile-points .profile-points-thumbnail:empty {
+    display: none;
+}
+
+.profile-rank-title,
+.profile-points-amount {
+	vertical-align: middle;
+	font-size: 18px;
+}
+
+.profile-rank .profile-rank-toggle,
+.profile-points .profile-points-toggle {
+	display: block;
+	text-align: right;
+	box-shadow: none !important;
+}
+
+.profile-rank .profile-rank-form-buttons,
+.profile-points .profile-points-form-buttons {
+	margin-top: 5px;
+}
+
+.profile-rank-form-wrapper,
+.profile-points-form-wrapper {
+	display: none;
+}
+
 /* -------------------------------------------
 	Shortcode Editor
    ------------------------------------------- */
@@ -1561,4 +1645,77 @@ label[for="_gamipress_sequential"] {
 .gamipress-upgrade-progress .gamipress-upgrade-progress-bar {
 	min-height: 8px;
 	margin-bottom: 8px;
+}
+
+/* -------------------------------------------
+	Review Notice
+   ------------------------------------------- */
+.gamipress-review-notice {
+	position: relative;
+	color: #fff;
+	background: #0098d7;
+	border-color: #0098d7;
+}
+
+.gamipress-review-notice a {
+	color: #fff;
+}
+
+.gamipress-review-notice p span {
+	opacity: 0.7;
+}
+
+.gamipress-review-notice ul li {
+	display: inline-block;
+	margin-right: 10px;
+}
+
+.gamipress-review-notice .dashicons-gamipress {
+	position: absolute;
+	right: 10px;
+	bottom: -10px;
+	opacity: 0.3;
+}
+
+.gamipress-review-notice .dashicons-gamipress:before {
+	font-size: 200px;
+	width: 200px;
+	height: 200px;
+}
+
+.gamipress-review-notice .button-primary {
+	background: #46b450;
+	border-color: #3b9243 #37863e #37863e;
+	box-shadow: 0 1px 0 #37863e;
+	color: #fff;
+	text-decoration: none;
+	text-shadow: 0 -1px 1px #37863e,
+	1px 0 1px #37863e,
+	0 1px 1px #37863e,
+	-1px 0 1px #37863e;
+}
+
+.gamipress-review-notice .button-primary.hover,
+.gamipress-review-notice .button-primary:hover,
+.gamipress-review-notice .button-primary.focus,
+.gamipress-review-notice .button-primary:focus {
+	background: #47b952;
+	border-color: #37863e;
+	color: #fff;
+}
+
+.gamipress-review-notice .button-primary.focus,
+.gamipress-review-notice .button-primary:focus {
+	box-shadow: 0 1px 0 #3c9244,
+	0 0 2px 1px #53d25f;
+}
+
+.gamipress-review-notice .button-primary.active,
+.gamipress-review-notice .button-primary.active:hover,
+.gamipress-review-notice .button-primary.active:focus,
+.gamipress-review-notice .button-primary:active {
+	background: #409247;
+	border-color: #37863e;
+	box-shadow: inset 0 2px 0 #37863e;
+	vertical-align: top;
 }
