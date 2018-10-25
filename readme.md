@@ -238,6 +238,11 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.5.9.1 ###
+
+* **Bug Fixes**
+* Fixed wrong types check on shortcodes with support to multiples types.
+
 ### 1.5.9 ###
 
 * **New Features**

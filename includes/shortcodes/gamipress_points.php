@@ -153,12 +153,12 @@ function gamipress_points_shortcode( $atts = array () ) {
 
     } else if( $atts['type'] !== 'all' ) {
 
-        // let's check if all types provided are wrong
+        // Let's check if all types provided are wrong
         $all_types_wrong = true;
 
         foreach( $types as $type ) {
-            if ( ! in_array( $type, gamipress_get_points_types_slugs() ) )
-                $all_types_wrong = true;
+            if ( in_array( $type, gamipress_get_points_types_slugs() ) )
+                $all_types_wrong = false;
         }
 
         // just notify error if all types are wrong
