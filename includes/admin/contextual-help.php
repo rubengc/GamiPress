@@ -64,7 +64,7 @@ function gamipress_edit_screen_contextual_help() {
             ) );
 
             $screen->add_help_tab( array(
-                'id'	    => 'gamipress-points-awards',
+                'id'	    => 'gamipress-points-deducts',
                 'title'	    => __( 'Points Deducts', 'gamipress' ),
                 'content'	=>
                     '<p>' . __( 'Points deduct are automatic ways an user could lose an amount of a points type.', 'gamipress' ) . '</p>' .

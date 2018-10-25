@@ -232,6 +232,7 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 * **Bug Fixes**
 * Fixed wrong types check on shortcodes with support to multiples types.
+* Fixed wrong id for points awards contextual help.
 
 = 1.5.9 =
 
