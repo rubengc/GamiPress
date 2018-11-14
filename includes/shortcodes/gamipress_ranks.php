@@ -21,9 +21,10 @@ function gamipress_register_ranks_shortcode() {
 	unset( $rank_fields['id'] );
 
 	gamipress_register_shortcode( 'gamipress_ranks', array(
-		'name'            => __( 'Rank List', 'gamipress' ),
-		'description'     => __( 'Output a list of ranks.', 'gamipress' ),
-		'output_callback' => 'gamipress_ranks_shortcode',
+		'name'              => __( 'Rank List', 'gamipress' ),
+		'description'       => __( 'Output a list of ranks.', 'gamipress' ),
+        'icon' 	            => 'rank',
+		'output_callback'   => 'gamipress_ranks_shortcode',
 		'tabs' => array(
 			'general' => array(
 				'icon' => 'dashicons-admin-generic',

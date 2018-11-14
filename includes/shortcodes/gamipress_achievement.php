@@ -18,6 +18,7 @@ function gamipress_register_achievement_shortcode() {
 	gamipress_register_shortcode( 'gamipress_achievement', array(
 		'name'            	=> __( 'Single Achievement', 'gamipress' ),
 		'description'     	=> __( 'Render a single achievement.', 'gamipress' ),
+		'icon' 	            => 'awards',
 		'output_callback' 	=> 'gamipress_achievement_shortcode',
 		'fields'      		=> array(
 			'id' => array(
@@ -159,6 +160,10 @@ function gamipress_achievement_shortcode( $atts = array() ) {
 		$blog_id = get_current_blog_id();
 		switch_to_blog( get_main_site_id() );
 	}
+
+    // Initialize user ID to avoid undefined index errors
+	if( ! isset( $atts['user_id'] ) )
+        $atts['user_id'] = get_current_user_id();
 
     // Get the current user if none wasn't specified
     if( absint( $atts['user_id'] ) === 0 )

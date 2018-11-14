@@ -142,8 +142,6 @@
 
 	$('.gamipress-form input#post_name').trigger( 'keyup' );
 
-	var current_user_rank = 0;
-
 	// Edit user rank
     $('body').on('click', '.profile-rank .profile-rank-toggle', function(e) {
         e.preventDefault();
@@ -151,7 +149,10 @@
         $(this).slideUp();
         $(this).next('.profile-rank-form-wrapper').slideDown();
 
-        current_user_rank = $(this).next('.profile-rank-form-wrapper').find('select').val();
+        var select = $(this).next('.profile-rank-form-wrapper').find('select');
+
+        // Save current value in a element's data
+        select.data( 'current', select.val() );
 
     });
 
@@ -160,11 +161,13 @@
         e.preventDefault();
 
         var parent = $(this).parent().parent();
+        var select = parent.find('select');
 
         parent.slideUp();
         parent.prev('.profile-rank-toggle').slideDown();
 
-        parent.find('select').val( current_user_rank );
+        // Restore current value (if user changed the input but won't save it)
+        select.val( select.data( 'current' ) );
 
     });
 
@@ -174,11 +177,13 @@
 
         var $this = $(this);
         var parent = $this.closest('.profile-rank-form-wrapper');
-        var rank_id = parent.find('select').val();
+        var select = parent.find('select');
+        var rank_id = select.val();
+        var current_rank_id = select.data('current');
         var user_id = $this.closest('form').find('input[name="user_id"]').val();
 
         // If no changes made, then toggle form visibility
-        if( current_user_rank === rank_id ) {
+        if( current_rank_id === rank_id ) {
             parent.slideUp();
             parent.prev('.profile-rank-toggle').slideDown();
 
@@ -204,7 +209,7 @@
                 parent.slideUp();
                 parent.prev('.profile-rank-toggle').slideDown();
 
-                // update the rank preview
+                // Update the rank preview
                 if( response.data !== undefined && response.data.rank !== undefined ) {
                     var rank_wrapper = $this.closest('.profile-rank');
 
@@ -212,15 +217,14 @@
                     rank_wrapper.find('.profile-rank-title').html( response.data.rank.post_title );
                 }
 
-                // Force user earnings table to refresh
-                var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+                // Save current value in a element's data
+                select.data( 'current', rank_id );
 
-                ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+                // Force user earnings table to refresh
+                gamipress_refresh_user_earnings_table();
             }
         });
     });
-
-    var current_user_points = 0;
 
     // Edit user points
     $('body').on('click', '.profile-points .profile-points-toggle', function(e) {
@@ -229,7 +233,10 @@
         $(this).slideUp();
         $(this).next('.profile-points-form-wrapper').slideDown();
 
-        current_user_points = $(this).next('.profile-points-form-wrapper').find('input').val();
+        var input = $(this).next('.profile-points-form-wrapper').find('input');
+
+        // Save current value in a element's data
+        input.data( 'current', input.val() );
 
     });
 
@@ -238,11 +245,13 @@
         e.preventDefault();
 
         var parent = $(this).parent().parent();
+        var input = parent.find('input');
 
         parent.slideUp();
         parent.prev('.profile-points-toggle').slideDown();
 
-        parent.find('input').val( current_user_points );
+        // Restore current value (if user changed the input but won't save it)
+        input.val( input.data('current') );
 
     });
 
@@ -252,15 +261,16 @@
 
         var $this = $(this);
         var parent = $this.closest('.profile-points-form-wrapper');
-        var points_input = parent.find('input');
-        var points = points_input.val();
-        var points_type = points_input.data('points-type');
+        var input = parent.find('input');
+        var points = input.val();
+        var current_points = input.data('current');
+        var points_type = input.data('points-type');
         var user_id = $this.closest('form').find('input[name="user_id"]').val();
 
         // If no changes made, then toggle form visibility
-        if( current_user_points === points ) {
+        if( current_points === points ) {
             parent.slideUp();
-            parent.prev('.profile-rank-toggle').slideDown();
+            parent.prev('.profile-points-toggle').slideDown();
 
             return false;
         }
@@ -288,12 +298,37 @@
                 // Update the points preview
                 if( response.data !== undefined && response.data.points !== undefined ) {
                     $this.closest('.profile-points').find('.profile-points-amount').html( response.data.points );
+
+                    // Update the ranks preview
+                    if( response.data.ranks !== undefined && response.data.ranks.length ) {
+
+                        // Loop each rank to update their respective preview
+                        response.data.ranks.forEach(function(rank) {
+                            var rank_wrapper = $('.profile-rank-' + rank.post_type );
+
+                            if( rank_wrapper.length ) {
+
+                                var select = rank_wrapper.find('select');
+
+                                // Update the preview elements
+                                rank_wrapper.find('.profile-rank-thumbnail').html( rank.thumbnail );
+                                rank_wrapper.find('.profile-rank-title').html( rank.post_title );
+
+                                // Update the input element value
+                                select.val( rank.ID );
+                                select.data( 'current', rank.ID );
+
+                            }
+                        });
+
+                    }
                 }
 
-                // Force user earnings table to refresh
-                var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+                // Save current value in a element's data
+                input.data( 'current', points );
 
-                ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+                // Force user earnings table to refresh
+                gamipress_refresh_user_earnings_table();
             }
         });
     });
@@ -339,9 +374,7 @@
             $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
 
             // Force user earnings table to refresh
-            var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
-
-            ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+            gamipress_refresh_user_earnings_table();
 		} );
 	});
 
@@ -370,9 +403,7 @@
             $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
 
             // Force user earnings table to refresh
-            var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
-
-            ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
+            gamipress_refresh_user_earnings_table();
         } );
 
     });
@@ -492,6 +523,17 @@ function gamipress_start_upgrade( version ) {
 			$('#gamipress-upgrade-notice').html('<p class="error">Upgrading process failed.</p>');
 		}
 	});
+
+}
+
+// refresh the user earnings table (located in profile screen)
+function gamipress_refresh_user_earnings_table() {
+
+    // Check if table exists
+    var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
+
+    if( table.length )
+        ct_ajax_list_table_paginate_table( table, table.find('input#current-page-selector').val() );
 
 }
 

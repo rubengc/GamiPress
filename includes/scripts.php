@@ -106,10 +106,10 @@ function gamipress_admin_enqueue_scripts( $hook ) {
 
     global $post_type;
 
-    //Stylesheets
+    // Stylesheets
     wp_enqueue_style( 'gamipress-admin-css' );
 
-    //Scripts
+    // Scripts
     wp_enqueue_script( 'gamipress-admin-js' );
 
     if(
@@ -218,6 +218,69 @@ function gamipress_enqueue_admin_bar_scripts() {
 
 }
 add_action( 'admin_bar_init', 'gamipress_enqueue_admin_bar_scripts' );
+
+/**
+ * Enqueue Gutenberg block assets for backend editor
+ *
+ * @since 1.6.0
+ */
+function gamipress_blocks_editor_assets() {
+
+    // Scripts
+    wp_enqueue_script( 'gamipress-blocks-js', GAMIPRESS_URL . 'assets/js/gamipress-blocks.js', array( 'wp-blocks', 'wp-i18n', 'wp-element' ), GAMIPRESS_VER, true );
+
+    // Styles
+    wp_enqueue_style( 'gamipress-blocks-editor-css', GAMIPRESS_URL . 'assets/css/gamipress-blocks-editor.css', array( 'wp-edit-blocks' ), GAMIPRESS_VER );
+}
+add_action( 'enqueue_block_editor_assets', 'gamipress_blocks_editor_assets' );
+
+/**
+ * Enqueue Gutenberg block assets for both frontend + backend.
+ *
+ * @since 1.6.0
+ */
+function gamipress_blocks_assets() {
+
+    // Styles
+    wp_enqueue_style( 'gamipress-blocks-style-css', GAMIPRESS_URL . 'assets/css/gamipress-blocks-style.css', array( 'wp-blocks' ), GAMIPRESS_VER );
+
+}
+add_action( 'enqueue_block_assets', 'gamipress_blocks_assets' );
+
+function gamipress_localize_blocks_editor_assets() {
+
+    // Setup shortcode to be converted as gutenberg block
+    $shortcodes = array();
+
+    foreach( GamiPress()->shortcodes as $shortcode ) {
+
+        $shortcodes[$shortcode->slug] = array(
+            'name'          => $shortcode->name,
+            'slug'          => $shortcode->slug,
+            'icon'          => $shortcode->icon,
+            'fields'        => gamipress_get_block_fields( $shortcode ),
+            'tabs'          => $shortcode->tabs,
+            'attributes'    => gamipress_get_block_attributes( $shortcode ),
+        );
+
+    }
+
+    // Setup an array of post type labels to use on post selector field
+    $post_types = get_post_types( array(), 'objects' );
+    $post_type_labels = array();
+
+    foreach( $post_types as $key => $obj ) {
+        $post_type_labels[$key] = $obj->labels->singular_name;
+    }
+
+    // Localize gamipress-blocks-js script
+    wp_localize_script( 'gamipress-blocks-js', 'gamipress_blocks', array(
+        'shortcodes' => $shortcodes,
+        'post_type_labels' => $post_type_labels,
+    ) );
+
+}
+add_action( 'enqueue_block_editor_assets', 'gamipress_localize_blocks_editor_assets', 11 );
 
 /**
  * Register and enqueue dark mode scripts

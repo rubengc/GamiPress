@@ -121,11 +121,144 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context
 }
 
 /**
+ * Helper function to easily query logs and centralize code of multiples log query functions
+ *
+ * @since 1.6.0
+ *
+ * @param array $args
+ *
+ * @return mixed
+ */
+function gamipress_query_logs( $args ) {
+
+    global $wpdb;
+
+    $logs 		= GamiPress()->db->logs;
+    $logs_meta 	= GamiPress()->db->logs_meta;
+
+    $args = wp_parse_args( $args, array(
+        'select'            => 'l.id', // You can pass 'l.*', 'l.{field}' or 'COUNT(*)' as select
+        'meta'      	    => array(),
+        'user_id'           => 0,
+        'order_by'          => 'l.date',
+        'order'             => 'DESC',
+        'limit'             => 0,
+        'since'             => 0,
+    ) );
+
+    // Initialize query definitions
+    $joins      = array();
+    $where      = array();
+    $query_args = array();
+
+    // User ID
+    if( absint( $args['user_id'] ) !== 0 ) {
+
+        $where[] = "l.user_id = %s";
+
+        $query_args[] = $args['user_id'];
+
+    }
+
+    // Log meta
+
+    if( isset( $args['meta'] ) && is_array( $args['meta'] ) ) {
+
+        // Loop all log meta to build the where clause
+        foreach ( $args['meta'] as $key => $meta ) {
+
+            if( $key === 'type' ) {
+
+                if( is_array( $meta ) ) {
+                    $meta = "'" . implode( "', '", $meta ) . "'";
+                    $where[] = "l.type IN ({$meta})";
+                } else {
+                    $where[] = "l.type = %s";
+                    $query_args[] = $meta;
+                }
+
+            } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
+
+                // Backward compatibility for _gamipress_trigger_type meta
+                if( is_array( $meta ) ) {
+                    $meta = "'" . implode( "', '", $meta ) . "'";
+                    $where[] = "l.trigger_type IN ({$meta})";
+                } else {
+                    $where[] = "l.trigger_type = %s";
+                    $query_args[] = $meta;
+                }
+
+            } else {
+
+                $index = count( $joins );
+                $meta_key = '_gamipress_' . sanitize_key( $key );
+
+                // Setup query definitions
+                $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
+                $where[] = "lm{$index}.meta_value = %s";
+
+                // Setup query vars
+                $query_args[] = $meta;
+
+            }
+
+        }
+
+    }
+
+    // Since
+    if( absint( $args['since'] ) !== 0 ) {
+
+        $date = date( 'Y-m-d H:i:s', $args['since'] );
+
+        $where[] = "l.date >= %s";
+        $query_args[] = $date;
+
+    }
+
+    // Order By
+    $order_by = '';
+
+    if( ! empty( $args['order_by'] ) && ! empty( $args['order'] ) ) {
+        $order_by = 'ORDER BY ' . $args['order_by'] . ' ' . $args['order'];
+    }
+
+    // Turn arrays into strings
+    $select = $args['select'];
+    $joins = implode( ' ', $joins );
+    $where = ( ! empty( $where ) ? 'WHERE ( ' . implode( ' ) AND ( ', $where ) . ' ) ' : '' );
+    $limit = ( absint( $args['limit'] ) !== 0 ? 'LIMIT ' . absint( $args['limit'] ) : '' );
+
+    // Prepare the query SQL
+    $sql = $wpdb->prepare(
+        "SELECT {$select}
+         FROM {$logs} AS l
+         {$joins}
+         {$where}
+         {$order_by}
+         {$limit}",
+        $query_args
+    );
+
+    if( strtoupper( $select ) === 'COUNT(*)' ) {
+        // If is a count, ensure return an integer
+        $logs = absint( $wpdb->get_var( $sql ) );
+    } else {
+        $logs = $wpdb->get_results( $sql );
+    }
+
+
+    return $logs;
+
+}
+
+/**
  * Return user logs with the specified meta data
  *
  * @since  1.3.7
  * @updated 1.3.9.6 Added $since parameter
  * @updated 1.3.9.8 Improvements on since checks
+ * @updated 1.6.0   Code moved to gamipress_query_logs() function
  *
  * @param int       $user_id
  * @param array     $log_meta
@@ -135,81 +268,12 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context
  */
 function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 ) {
 
-    global $wpdb;
-
-    $logs 		= GamiPress()->db->logs;
-    $logs_meta 	= GamiPress()->db->logs_meta;
-
-    // Initialize query definitions
-    $joins = array();
-    $where = array();
-
-    // Initialize query args
-    $query_args = array( absint( $user_id ) );
-
-    // Loop all log meta to build the where clause
-    foreach ( (array) $log_meta as $key => $meta ) {
-
-        if( $key === 'type' ) {
-
-            if( is_array( $meta ) ) {
-                $meta = "'" . implode( "', '", $meta ) . "'";
-                $where[] = "l.type IN ({$meta})";
-            } else {
-                $where[] = "l.type = %s";
-                $query_args[] = $meta;
-            }
-
-        } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
-
-            // Backward compatibility for _gamipress_trigger_type meta
-            if( is_array( $meta ) ) {
-                $meta = "'" . implode( "', '", $meta ) . "'";
-                $where[] = "l.trigger_type IN ({$meta})";
-            } else {
-                $where[] = "l.trigger_type = %s";
-                $query_args[] = $meta;
-            }
-
-        } else {
-
-            $index = count( $joins );
-            $meta_key = '_gamipress_' . sanitize_key( $key );
-
-            // Setup query definitions
-            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
-            $where[] = "lm{$index}.meta_value = %s";
-
-            // Setup query vars
-            $query_args[] = $meta;
-
-        }
-
-    }
-
-    // Setup since clause
-    if( $since !== 0 ) {
-
-        $date = date( 'Y-m-d H:i:s', $since );
-
-        $where[] = "l.date >= '$date'";
-
-    }
-
-    // Turn arrays into strings
-    $joins = implode( ' ', $joins );
-    $where = (  ! empty( $where ) ? '( '. implode( ' ) AND ( ', $where ) . ' ) ' : '' );
-
-    $user_logs = $wpdb->get_results( $wpdb->prepare(
-        "SELECT l.*
-         FROM   {$logs} AS l
-         {$joins}
-         WHERE l.user_id = %s
-          AND ( {$where} )",
-        $query_args
+    return gamipress_query_logs( array(
+        'select' => 'l.*',
+        'user_id' => $user_id,
+        'meta' => $log_meta,
+        'since' => $since
     ) );
-
-    return $user_logs;
 
 }
 
@@ -219,6 +283,7 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
  * @since   1.1.8
  * @updated 1.3.7 Added support for multiples types
  * @updated 1.4.2 Added $since parameter
+ * @updated 1.6.0 Code moved to gamipress_query_logs() function
  *
  * @param int       $user_id
  * @param array     $log_meta
@@ -227,86 +292,17 @@ function gamipress_get_user_logs( $user_id = 0, $log_meta = array(), $since = 0 
  */
 function gamipress_get_user_log_count( $user_id = 0, $log_meta = array(), $since = 0 ) {
 
-    global $wpdb;
-
-    $logs 		= GamiPress()->db->logs;
-    $logs_meta 	= GamiPress()->db->logs_meta;
-
     // If not properly upgrade to required version fallback to compatibility function
     if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
         return gamipress_get_user_log_count_old( $user_id, $log_meta );
     }
 
-    // Initialize query definitions
-    $joins = array();
-    $where = array();
-
-    // Initialize query args
-    $query_args = array( absint( $user_id ) );
-
-    foreach ( (array) $log_meta as $key => $meta ) {
-
-        if( $key === 'type' ) {
-
-            // Since 1.2.8 _gamipress_type meta was moved to gamipress_logs DB table
-            if( is_array( $meta ) ) {
-                $meta = "'" . implode( "', '", $meta ) . "'";
-                $where[] = "l.type IN ({$meta})";
-            } else {
-                $where[] = "l.type = %s";
-                $query_args[] = $meta;
-            }
-
-        } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
-
-            // Backward compatibility for _gamipress_trigger_type meta
-            if( is_array( $meta ) ) {
-                $meta = "'" . implode( "', '", $meta ) . "'";
-                $where[] = "l.trigger_type IN ({$meta})";
-            } else {
-                $where[] = "l.trigger_type = %s";
-                $query_args[] = $meta;
-            }
-
-        } else {
-
-            $index = count( $joins );
-            $meta_key = '_gamipress_' . sanitize_key( $key );
-
-            // Setup query definitions
-            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
-            $where[] = "lm{$index}.meta_value = %s";
-
-            // Setup query vars
-            $query_args[] = $meta;
-
-        }
-
-    }
-
-    // Setup since clause
-    if( $since !== 0 ) {
-
-        $date = date( 'Y-m-d H:i:s', $since );
-
-        $where[] = "l.date >= '$date'";
-
-    }
-
-    // Turn arrays into strings
-    $joins = implode( ' ', $joins );
-    $where = (  ! empty( $where ) ? '( '. implode( ' ) AND ( ', $where ) . ' ) ' : '' );
-
-    $user_triggers = $wpdb->get_var( $wpdb->prepare(
-        "SELECT COUNT(*)
-         FROM   {$logs} AS l
-         {$joins}
-         WHERE l.user_id = %s
-          AND ( {$where} )",
-        $query_args
+    return gamipress_query_logs( array(
+        'select' => 'COUNT(*)',
+        'user_id' => $user_id,
+        'meta' => $log_meta,
+        'since' => $since
     ) );
-
-    return absint( $user_triggers );
 
 }
 
@@ -322,75 +318,14 @@ function gamipress_get_user_log_count( $user_id = 0, $log_meta = array(), $since
  */
 function gamipress_get_user_last_log( $user_id = 0, $log_meta = array() ) {
 
-    global $wpdb;
-
-    $logs 		= GamiPress()->db->logs;
-    $logs_meta 	= GamiPress()->db->logs_meta;
-
-    // Initialize query definitions
-    $joins = array();
-    $where = array();
-
-    // Initialize query args
-    $query_args = array( absint( $user_id ) );
-
-    // Loop all log meta to build the where clause
-    foreach ( (array) $log_meta as $key => $meta ) {
-
-        if( $key === 'type' ) {
-
-            // Backward compatibility for _gamipress_type meta
-            if( is_array( $meta ) ) {
-                $meta = "'" . implode( "', '", $meta ) . "'";
-                $where[] = "l.type IN ({$meta})";
-            } else {
-                $where[] = "l.type = %s";
-                $query_args[] = $meta;
-            }
-
-        } else if( $key === 'trigger_type' && is_gamipress_upgraded_to( '1.4.7' ) ) {
-
-            // Backward compatibility for _gamipress_trigger_type meta
-            if( is_array( $meta ) ) {
-                $meta = "'" . implode( "', '", $meta ) . "'";
-                $where[] = "l.trigger_type IN ({$meta})";
-            } else {
-                $where[] = "l.trigger_type = %s";
-                $query_args[] = $meta;
-            }
-
-        } else {
-
-            $index = count( $joins );
-            $meta_key = '_gamipress_' . sanitize_key( $key );
-
-            // Setup query definitions
-            $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
-            $where[] = "lm{$index}.meta_value = %s";
-
-            // Setup query vars
-            $query_args[] = $meta;
-
-        }
-
-    }
-
-    // Turn arrays into strings
-    $joins = implode( ' ', $joins );
-    $where = (  ! empty( $where ) ? '( '. implode( ' ) AND ( ', $where ) . ' ) ' : '' );
-
-    $user_logs = $wpdb->get_row( $wpdb->prepare(
-        "SELECT l.*
-         FROM   {$logs} AS l
-         {$joins}
-         WHERE l.user_id = %s
-          AND ( {$where} )
-         ORDER BY l.date DESC
-         LIMIT 1",
-        $query_args
+    $user_logs = gamipress_query_logs( array(
+        'select' => 'l.*',
+        'user_id' => $user_id,
+        'meta' => $log_meta,
+        'limit' => 1
     ) );
 
-    return is_object( $user_logs ) ? $user_logs : false;
+    return ( is_array( $user_logs ) && isset( $user_logs[0] ) ? $user_logs[0] : false );
 
 }
 

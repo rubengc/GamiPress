@@ -1391,7 +1391,8 @@ label[for="_gamipress_sequential"] {
     vertical-align: bottom;
 }
 
-.gamipress-add-ons {
+.gamipress-add-ons,
+.gamipress-assets {
 	display: -webkit-box;
 	display: -webkit-flex;
 	display: -ms-flexbox;
@@ -1484,6 +1485,10 @@ label[for="_gamipress_sequential"] {
 	float: left;
 }
 
+.is-gamipress-plugin#plugin-information #plugin-information-content .notice {
+    display: none;
+}
+
 @media screen and (min-width: 1600px) {
 	.gamipress-plugin-card {
 		width: 25%;
@@ -1501,7 +1506,8 @@ label[for="_gamipress_sequential"] {
 }
 
 @media screen and (min-width: 1200px) {
-	.gamipress-add-ons {
+	.gamipress-add-ons,
+	.gamipress-assets {
 		margin-left: -8px;
 		margin-right: -8px;
 	}
@@ -1513,7 +1519,67 @@ label[for="_gamipress_sequential"] {
 }
 
 /* -------------------------------------------
-    Tools Page
+	Assets
+   ------------------------------------------- */
+
+.is-gamipress-asset#plugin-information #plugin-information-tabs,
+.is-gamipress-asset#plugin-information #plugin-information-content .fyi {
+	display: none;
+}
+
+.is-gamipress-asset#plugin-information #plugin-information-content {
+    border-top: 1px solid #ddd;
+}
+
+.is-gamipress-asset#plugin-information #plugin-information-content #section-holder {
+    margin-right: 0;
+}
+
+.is-gamipress-asset#plugin-information #plugin-information-content #section-description ul {
+    list-style: none;
+    margin: 0;
+}
+
+.is-gamipress-asset#plugin-information #plugin-information-content #section-description ul li a {
+    margin-bottom: 10px;
+}
+
+.is-gamipress-asset#plugin-information #plugin-information-content #section-description ul li img {
+    width: 100%;
+    box-shadow: 0 1px 2px rgba( 0, 0, 0, 0.3 );
+}
+
+.is-gamipress-asset#plugin-information #plugin-information-content #section-description p:last-child a {
+    display: inline-block;
+    padding: 6px 14px;
+    line-height: normal;
+    font-size: 14px;
+    vertical-align: middle;
+    height: auto;
+    margin-bottom: 4px;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-appearance: none;
+    border-radius: 3px;
+    white-space: nowrap;
+    box-sizing: border-box;
+
+    background: #0085ba;
+    border-color: #0073aa #006799 #006799;
+    box-shadow: 0 1px 0 #006799;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799, 0 1px 1px #006799, -1px 0 1px #006799;
+
+    position: fixed;
+    z-index: 100;
+    right: 14px;
+    bottom: 10px;
+}
+
+/* -------------------------------------------
+	Tools Page
    ------------------------------------------- */
 
 .gamipress_tools .cmb-td {

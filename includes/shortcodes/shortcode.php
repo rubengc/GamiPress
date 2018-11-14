@@ -13,6 +13,7 @@ class GamiPress_Shortcode {
 	public $name            = '';
 	public $description     = '';
 	public $slug            = '';
+	public $icon            = '';
 	public $output_callback = '';
 	public $tabs 			= array();
 	public $fields      	= array();
@@ -99,25 +100,25 @@ class GamiPress_Shortcode {
 
 	private function _set_properties( $args = array() ) {
 
-		$defaults = array(
-			'name'            => '',
-			'description'     => '',
-			'output_callback' => '',
-			'tabs' 			  => array(),
-			'fields'      	  => array(),
-		);
+		$args = wp_parse_args( $args, array(
+            'name'              => '',
+            'description'       => '',
+            'icon'              => 'gamipress',
+            'output_callback'   => '',
+            'tabs' 			    => array(),
+            'fields'      	    => array(),
+        ) );
 
-		$args = wp_parse_args( $args, $defaults );
-
-		$this->name            = $args['name'];
-		$this->description     = $args['description'];
-		$this->output_callback = $args['output_callback'];
+		$this->name             = $args['name'];
+		$this->description      = $args['description'];
+		$this->icon             = $args['icon'];
+		$this->output_callback  = $args['output_callback'];
 
 		// Filter to register custom shortcode tabs
-		$this->tabs 		   = apply_filters( "gamipress_{$this->slug}_shortcode_tabs", $args['tabs'] );
+		$this->tabs 		    = apply_filters( "gamipress_{$this->slug}_shortcode_tabs", $args['tabs'] );
 
 		// Filter to register custom shortcode fields
-		$this->fields      	   = apply_filters( "gamipress_{$this->slug}_shortcode_fields", $args['fields'] );
+		$this->fields      	    = apply_filters( "gamipress_{$this->slug}_shortcode_fields", $args['fields'] );
 	}
 
 	public function register_shortcode( $shortcodes = array() ) {

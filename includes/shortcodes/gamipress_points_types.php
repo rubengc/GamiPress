@@ -16,9 +16,10 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_register_points_types_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_points_types', array(
-        'name'            => __( 'Points Types', 'gamipress' ),
-        'description'     => __( 'Output a list of points types with their points awards.', 'gamipress' ),
-        'output_callback' => 'gamipress_points_types_shortcode',
+        'name'              => __( 'Points Types', 'gamipress' ),
+        'description'       => __( 'Output a list of points types with their points awards.', 'gamipress' ),
+        'icon' 	            => 'star-filled',
+        'output_callback'   => 'gamipress_points_types_shortcode',
         'fields'      => array(
             'type' => array(
                 'name'        => __( 'Points Type(s)', 'gamipress' ),

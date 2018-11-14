@@ -255,7 +255,13 @@ add_filter( 'cmb2_override_menu_order_meta_save', '__return_true' );
 function gamipress_options_cb_achievement_types( $field ) {
 
 	// Setup a custom array of achievement types
-	$options = array( 'all' => __( 'All', 'gamipress' ) );
+
+    // Check if option_all is set to false (by default option_all is set to true)
+    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
+        $options = array();
+    } else {
+        $options = array( 'all' => __( 'All', 'gamipress' ) );
+    }
 
 	foreach ( gamipress_get_achievement_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
@@ -269,7 +275,13 @@ function gamipress_options_cb_achievement_types( $field ) {
 function gamipress_options_cb_points_types( $field ) {
 
 	// Setup a custom array of points types
-	$options = array( 'all' => __( 'All', 'gamipress' ) );
+
+    // Check if option_all is set to false (by default option_all is set to true)
+    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
+        $options = array();
+    } else {
+        $options = array( 'all' => __( 'All', 'gamipress' ) );
+    }
 
 	foreach ( gamipress_get_points_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
@@ -282,8 +294,15 @@ function gamipress_options_cb_points_types( $field ) {
 // Options callback to return rank types as options
 function gamipress_options_cb_rank_types( $field ) {
 
-	// Setup a custom array of achievement types
-	$options = array( 'all' => __( 'All', 'gamipress' ) );
+	// Setup a custom array of rank types
+
+    // Check if option_all is set to false (by default option_all is set to true)
+    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
+        $options = array();
+    } else {
+        $options = array( 'all' => __( 'All', 'gamipress' ) );
+    }
+
 
 	foreach ( gamipress_get_rank_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
@@ -297,7 +316,13 @@ function gamipress_options_cb_rank_types( $field ) {
 function gamipress_options_cb_log_types( $field ) {
 
 	// Setup a custom array of log types
-	$options = array_merge( array( 'all' => __( 'All', 'gamipress' ) ), gamipress_get_log_types() );
+
+    // Check if option_all is set to false (by default option_all is set to true)
+    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
+        $options = gamipress_get_log_types();
+    } else {
+        $options = array_merge( array( 'all' => __( 'All', 'gamipress' ) ), gamipress_get_log_types() );
+    }
 
 	return $options;
 

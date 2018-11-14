@@ -25,6 +25,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 // Admin pages
 require_once GAMIPRESS_DIR . 'includes/admin/pages/support.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
+require_once GAMIPRESS_DIR . 'includes/admin/pages/assets.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/licenses.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/settings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/tools.php';
@@ -107,6 +108,7 @@ function gamipress_admin_submenu() {
     // GamiPress sub menus
     add_submenu_page( 'gamipress', __( 'Help / Support', 'gamipress' ), __( 'Help / Support', 'gamipress' ), $minimum_role, 'gamipress_help_support', 'gamipress_help_support_page' );
     add_submenu_page( 'gamipress', __( 'Add-ons', 'gamipress' ), __( 'Add-ons', 'gamipress' ), $minimum_role, 'gamipress_add_ons', 'gamipress_add_ons_page' );
+    add_submenu_page( 'gamipress', __( 'Assets', 'gamipress' ), __( 'Assets', 'gamipress' ), $minimum_role, 'gamipress_assets', 'gamipress_assets_page' );
 
 }
 add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
@@ -306,6 +308,14 @@ function gamipress_admin_bar_submenu( $wp_admin_bar ) {
         'title'  => __( 'Add-ons', 'gamipress' ),
         'parent' => 'gamipress',
         'href'   => admin_url( 'admin.php?page=gamipress_add_ons' )
+    ) );
+
+    // Assets
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-assets',
+        'title'  => __( 'Assets', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => admin_url( 'admin.php?page=gamipress_assets' )
     ) );
 
     // Licenses
@@ -729,6 +739,7 @@ function gamipress_admin_footer_text( $footer_text ) {
                 || $_GET['page'] === 'gamipress_logs'
                 || $_GET['page'] === 'edit_gamipress_logs'
                 || $_GET['page'] === 'gamipress_add_ons'
+                || $_GET['page'] === 'gamipress_assets'
                 || $_GET['page'] === 'gamipress_help_support'
                 || $_GET['page'] === 'gamipress_tools'
             )

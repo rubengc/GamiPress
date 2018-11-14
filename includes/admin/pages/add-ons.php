@@ -56,6 +56,10 @@ function gamipress_add_ons_page() {
 
             foreach ( $plugins as $plugin ) {
 
+                // Skip if is an asset
+                if( gamipress_is_plugin_asset( $plugin ) )
+                    continue;
+
                 gamipress_render_plugin_card( $plugin );
 
             }
@@ -79,6 +83,7 @@ function gamipress_get_installed_plugins_slugs() {
     $slugs = array();
 
     $plugin_info = get_site_transient( 'update_plugins' );
+
     if ( isset( $plugin_info->no_update ) ) {
         foreach ( $plugin_info->no_update as $plugin ) {
             $slugs[] = $plugin->slug;
@@ -245,10 +250,15 @@ function gamipress_render_plugin_card( $plugin ) {
             // "Get All Access Pass" action
             $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get All Access Pass', 'gamipress' ) . '</a>';
 
+        } else if( gamipress_is_plugin_asset( $plugin ) ) {
+
+            // "Get this asset" action
+            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get this asset', 'gamipress' ) . '</a>';
+
         } else {
 
-            // "Get this Add-on" action
-            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get this Add-on', 'gamipress' ) . '</a>';
+            // "Get this add-on" action
+            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get this add-on', 'gamipress' ) . '</a>';
 
         }
     }
@@ -525,3 +535,55 @@ function gamipress_esc_plugin_excerpt( $excerpt ) {
     return $excerpt;
 
 }
+
+/**
+ * Append custom body classes to plugin information iframe
+ *
+ * @since 1.6.0
+ *
+ * @param string $classes
+ *
+ * @return string
+ */
+function gamipress_plugin_information_admin_body_class( $classes ) {
+
+    $body_id = ( isset( $GLOBALS['body_id'] )  ? $GLOBALS['body_id'] : '' );
+
+    if( $body_id === 'plugin-information' && isset( $_REQUEST['plugin'] ) ) {
+
+        // Get the plugin queried
+        $plugin_slug = wp_unslash( $_REQUEST['plugin'] );
+
+        // Check if is a gamipress plugin
+        $plugins = gamipress_plugins_api();
+
+        $override_plugin = false;
+
+        foreach( $plugins as $plugin ) {
+
+            // Just override if is a plugin we own
+            if ( $plugin_slug === $plugin->info->slug ) {
+
+                $override_plugin = $plugin;
+
+                // Plugin to override found, so exit loop
+                break;
+
+            }
+        }
+
+        // if not plugin to override, return
+        if ( $override_plugin === false ) {
+            return $classes;
+        }
+
+        $classes .= ' is-gamipress-plugin';
+
+        if( gamipress_is_plugin_asset( $override_plugin ) ) {
+            $classes .= ' is-gamipress-asset';
+        }
+    }
+
+    return $classes;
+}
+add_filter( 'admin_body_class', 'gamipress_plugin_information_admin_body_class' );

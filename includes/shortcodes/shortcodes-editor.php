@@ -95,7 +95,9 @@ class GamiPress_Shortcodes_Editor {
 
 		$this->button_rendered = true;
 
-		echo '<a id="insert_gamipress_shortcodes" href="#TB_inline?width=660&height=800&inlineId=select_gamipress_shortcode" class="thickbox button gamipress_media_link" data-width="800"><span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'Add GamiPress Shortcode', 'gamipress' ) . '</a>';
+		echo '<a id="insert_gamipress_shortcodes" href="#TB_inline?width=660&height=800&inlineId=select_gamipress_shortcode" class="thickbox button gamipress_media_link" data-width="800">'
+                . '<span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'GamiPress Shortcode', 'gamipress' )
+            . '</a>';
 	}
 
 	/**
@@ -114,7 +116,7 @@ class GamiPress_Shortcodes_Editor {
 
 		<div id="select_gamipress_shortcode" style="display:none;">
 			<div class="wrap">
-				<h3><?php _e( 'Insert a GamiPress shortcode', 'gamipress' ); ?></h3>
+				<h3><?php _e( 'GamiPress shortcode', 'gamipress' ); ?></h3>
 				<p><?php printf( __( 'See the %s page for more information', 'gamipress' ), '<a target="_blank" href="' . admin_url( 'admin.php?page=gamipress_help_support' ) . '">' . __( 'Help/Support', 'gamipress' ) . '</a>' ); ?></p>
 				<div class="alignleft">
 					<select id="select_shortcode"><?php echo $this->get_shortcode_selector(); ?></select>

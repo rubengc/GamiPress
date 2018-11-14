@@ -18,7 +18,7 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Achievements** to award users for completing all the requirements, sequentially or otherwise.
 * **Ranks** to let your users climb through the ranks by completing all the rank requirements.
 
-### Many ways to define how to award the different points, achievements and ranks ###
+### Unlimited ways to define how to award the different points, achievements and ranks ###
 
 * Site activity (triggers based on publishing posts and pages, commenting, daily visits or logging in to your site).
 * Completing specific other achievements, once or a specified number of times.
@@ -30,9 +30,9 @@ GamiPress combines three of the most powerful award systems you could add to you
 
 ### Features ###
 
-* **Unlimited Points Types:** Configure as many types of points as you like (Credits, Gems, Coins, etc).
-* **Unlimited Achievement Types:** Configure as many types of achievement as you like (Quests, Badges, etc).
-* **Unlimited Rank Types:** Configure as many types of rank as you like (Level, Grade, etc).
+* **Points Types:** Configure as many types of points as you like (Credits, Gems, Coins, etc).
+* **Achievement Types:** Configure as many types of achievement as you like (Quests, Badges, etc).
+* **Rank Types:** Configure as many types of rank as you like (Level, Grade, etc).
 * **Automatic points awards and deductions:** Easily configure automatic ways to award or deduct points to your users.
 * **Achievement steps:** Define conditional steps, thresholds and more.
 * **Rank requirements:** Define conditional requirements to reach any rank.
@@ -40,12 +40,15 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Drag and drop controls:** Powerful controls to setup your gamification environment in minutes.
 * **Emails:** Your users will get notified automatically about new awards.
 * **Logs:** Flexible log system with support for public and private logs.
+* **Unlock achievements and ranks using points:** Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
+* **Gutenberg blocks:** Built-in support for Gutenberg including a great number of blocks to place them anywhere.
 * **Shortcodes & Widgets:** WordPress-friendly shortcodes and widgets to show the user points wallet, earned achievements, latest logs, and more.
-* **Live shortcode embedder:** Missing a shortcode parameter? Just press the “Insert GamiPress Shortcode" button and set up any shortcode without a worry.
+* **Live shortcode embedder:** Missing a shortcode parameter? Just press the "GamiPress Shortcode" button and set up any shortcode without a worry.
+* **GDPR Support:** Support for WordPress personal data exports and deletions.
 * **Theme Agnostic:** GamiPress works with just about any standard WordPress theme. No special hooks or theme updates are needed.
 * **Templates System:** Overwritable templates system to allow you customize everything you want through your GamiPress theme folder.
-* **GDPR Support:** Support for WordPress personal data exports and deletions.
 * **Data centralization on Multisite:** Centralize all the data on multisite installs and show anything you want on any sub-site.
+* **Developer-friendly:** GamiPress is extremely flexible with plenty of hooks to add custom features and functionalities.
 
 ### Integrated with your favorites WordPress plugins ###
 
@@ -56,16 +59,18 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [LearnDash](https://wordpress.org/plugins/gamipress-learndash-integration/)
 * [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
 * [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
+* [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
 * [LifterLMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
 * [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
+* [WPEP](https://wordpress.org/plugins/gamipress-wpep-integration/)
 * [WP Courseware](https://wordpress.org/plugins/gamipress-wp-courseware-integration/)
-* [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
 
 ### Forms integrations ###
 
 * [Ninja Forms](https://wordpress.org/plugins/gamipress-ninja-forms-integration/)
 * [WP Forms](https://wordpress.org/plugins/gamipress-wp-forms-integration/)
 * [Formidable Forms](https://wordpress.org/plugins/gamipress-formidable-forms-integration/)
+* [Forminator](https://wordpress.org/plugins/gamipress-forminator-integration/)
 * [Contact Form 7](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
 * [Gravity Forms](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
 * [Caldera Forms](https://wordpress.org/plugins/gamipress-caldera-forms-integration/)
@@ -103,6 +108,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Referrals](https://gamipress.com/add-ons/gamipress-referrals/) - Add a complete referral system to award users who refer visitors and sign ups.
 * [Coupons](https://gamipress.com/add-ons/gamipress-coupons/) - Create coupons that users can redeem for points, achievements and/or ranks.
 * [Points Exchanges](https://gamipress.com/add-ons/gamipress-points-exchanges/) - Let your users exchange points between different points types.
 * [Transfers](https://gamipress.com/add-ons/gamipress-transfers/) - Allow your users to transfer points, achievements or ranks between them.
@@ -238,162 +244,22 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
-### 1.5.9.1 ###
-
-* **Bug Fixes**
-* Fixed wrong types check on shortcodes with support to multiples types.
-* Fixed wrong id for points awards contextual help.
-
-### 1.5.9 ###
+### 1.6.0 ###
 
 * **New Features**
-* Added support to all user on [gamipress_earnings] shortcode and GamiPress: User Earnings widget.
-* Added the user column to the earnings table when is rendered for all users.
-* Added the "Register to website" event.
-* Added the attribute "times_earned" to [gamipress_achievement] and [gamipress_achievements] shortcodes.
-* Added the field "Show times earned" to GamiPress: Achievement and GamiPress: Achievements widgets.
-* Added shortcodes and widgets errors notices when a shortcode or widget is not well setup (missing attribute, invalid values, etc).
-* Added the ability to [gamipress_points] shortcode and GamiPress: User Points widget to display the site points by setting current_user to "no" and not providing the user_id attribute.
+* Full support to Gutenberg.
+* Added a Gutenberg block version of each shortcode.
+* Added assets submenu on GamiPress menu and admin bar links.
 * **Bug Fixes**
-* Fixed wrong earned status for non logged in users.
-* Fixed issue where sometimes points award that requires earn an amount of another type of points doesn't works properly.
+* Removed incorrect option 'all' from [gamipress_user_rank] shortcode and GamiPress: User Rank widget.
+* Fixed edit link visibility after save user points from user profile screen.
+* Automatically update user rank preview when user points balanced is updated manually.
 * **Improvements**
-* Improved user profile controls to view and edit the current user ranks and points.
-* Avoid duplicated functions declarations on not prefixed methods.
-* Improvements on project's files distribution.
+* Improvements on add-ons and assets screens styles.
+* "Add GamiPress Shortcode" button renamed to "GamiPress Shortcode".
 * **Developer Notes**
-* Default points balance, there are new a set of new filters to re-enable it again if needed.
-* Added a bunch of filter and actions on the achievements template (used on [gamipress_achievements] shortcode and GamiPress: Achievements widget).
-* CMB2 library updated to latest stable release (v2.4.2).
-
-### 1.5.8.2 ###
-
-* **Bug Fixes**
-* Removed widget cache functionality for incompatibility with Elementor.
-
-### 1.5.8.1 ###
-
-* **Bug Fixes**
-* Fixed redirection issue with third party plugins (like Duplicate Post).
-
-### 1.5.8 ###
-
-* **New Features**
-* Added the user earnings menu at backend.
-* **Bug Fixes**
-* Fixed duplicated achievements on [gamipress_achievements] and GamiPress: Achievements when filter is set to completed achievements.
-* Fixed capability check on Settings and Tools menu to match setting "Minimum role to administer GamiPress".
-* Fixed issues with meta data remove on Custom Tables library.
-* Fixed issues with multiple fields on Custom Tables library.
-* Fixed capability check on Custom Tables library.
-* Fixed "Headers already sent" error on Custom Tables library.
-* **Improvements**
-* More precise type column text on logs list at backend.
-* Improved CSS rules on admin area.
-* **Developer Notes**
-* Added better checks on  Custom Tables add view.
-
-### 1.5.7.1 ###
-
-* **Bug Fixes**
-* Fixed log query function to keep backward compatibility with older database versions.
-
-### 1.5.7 ###
-
-* **Bug Fixes**
-* Fixed wrong CSS selector on achievements template layout.
-* Fixed wrong "Admin revoked 0 points" log entry caused from update an user without change his points balance.
-* Fixed subsite post saving when GamiPress is network wide active.
-* Fixed wrong rank type check on achievements earned by reaching a specific rank.
-* **Improvements**
-* Improved CSS selector to change achievement's image opacity when user has earned it.
-* Improved CSS selector to change rank's image opacity when user has reached it.
-* Added a notice about emails on recount activity tool.
-
-### 1.5.6 ###
-
-* **Bug Fixes**
-* Fixed wrong offset on bulk awards and revokes tools.
-* Fixed wrong offset on recount activity tool.
-* Fixed wrong offset on logs personal data exporter.
-* Fixed wrong offset on user earnings personal data exporter.
-* **Developer Notes**
-* Added support to the icon attribute on GamiPress multi buttons field.
-
-### 1.5.5 ###
-
-* **New Features**
-* Added support to order achievements on [gamipress_achievements] shortcode and GamiPress: Achievements widget by points awarded and points to unlock.
-* Added support to order ranks on [gamipress_ranks] shortcode and GamiPress: Ranks widget by points to unlock.
-* **Bug Fixes**
-* Fixed wrong string format on rank's unlock using points button text.
-* **Developer Notes**
-* Added support to the GROUP BY clause when retrieving user achievements.
-
-### 1.5.4 ###
-
-* **New Features**
-* Added logs menu at GamiPress admin bar.
-* **Bug Fixes**
-* Fixed results on [gamipress_earnings] shortcode and GamiPress: User earnings widget when trying to get earnings related just to a specific points type.
-* Fixed non array passed to array_merge() on gamipress_get_hidden_achievement_ids() function.
-* **Improvements**
-* The "Download System Info File" is now always visible.
-* Added extra sanity checks on points format functions.
-
-### 1.5.3 ###
-
-* **Bug Fixes**
-* Fixed an issue on awards engine that sometimes not recognizes the requirement parent.
-* **Improvements**
-* Sanity check when determining if requirement has a parent or not.
-* Improved the user earned achievements query.
-
-### 1.5.2 ###
-
-* **Bug Fixes**
-* Fixed an issue on awards engine that sometimes provokes infinite loops determining the requirement parent.
-* Fixed wrong number of arguments passed to wpdb::prepare().
-
-### 1.5.1 ###
-
-* **New Features**
-* Added a quick menu at WordPress admin bar to access to the different GamiPress admin screens.
-* Added settings to customize the points output per points type (through the points type edit screen).
-* Added extra information about achievement setup with "Earned by" is setup to a minimum of points or by reach a rank (on admin area).
-* **Bug Fixes**
-* Order display doesn't gets updated after drop the requirement on a different position when sequential requirements is enabled.
-* Added extra check on the awards engine to prevent award removed points types.
-* Fixed an issue with licenses that sometimes causes licenses not being correctly active.
-* **Improvements**
-* Fully reworked site visits listeners to make it track visits through ajax (instead of on every page load).
-* A huge number of queries has been improved reducing his time consumption to half or less when any event gets triggered.
-* Added current and last required upgrade info on System Info tool.
-* Added PHP and DB version check on System Info tool.
-* Make the GamiPress points field compatible with custom tables like logs.
-* All points output has been formatted with the new settings.
-* **Developer Notes**
-* PostToPost (P2P) library has been removed.
-* Added more indexes to logs table to make queries more faster.
-* Added new filters on gamipress_site_visit_listener() to customize the workflow of visits listener.
-* Added new functions to format points based on points type configuration (with new filters to customize their workflow).
-* The unused field description has been removed from logs.
-* Clean data tool has been removed since is not needle yet.
-
-### 1.5.0 ###
-
-* **New Features**
-* Support for WordPress personal data exporters.
-* Support for WordPress personal data erasers.
-* **Bug Fixes**
-* Requirements links at fronted when assigned post is not public.
-* Assets enqueuing on logs edit screen.
-* **Improvements**
-* Make changelog notes more clear.
-* **Developer Notes**
-* New filter - gamipress_specific_activity_trigger_permalink.
-* New filter - gamipress_specific_activity_trigger_is_post_type_public.
-* Added new filters for new privacy functions.
-* Added 1.5.0 backward compatibility for GamiPress deprecated methods.
+* Achievements and ranks are now visible on Rest API (required for Gutenberg post selectors).
+* Added the gamipress_query_logs() function.
+* Reformatted some functions that query logs to use the new gamipress_query_logs() function.
 * Reset public changelog (moved old changelog to changelog.txt file).
-* Set GamiPress 1.5.0 as new stable release! :)
+* Set GamiPress 1.6.0 as new stable release! :)

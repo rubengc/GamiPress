@@ -532,6 +532,7 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 		$since = gamipress_get_achievement_limit_timestamp( $achievement_id );
 
 		if( $since > 0 ) {
+
 			// Activity count limit over time
 			$activity_count_limit = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_limit' ) );
 
@@ -542,6 +543,7 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 			if( $activity_count > $activity_count_limit ) {
 				return false;
 			}
+
 		}
 
 		// Get the required number of checkins
@@ -591,7 +593,9 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 		// Determine which type of trigger we're using and return the corresponding activities
 		switch( $requirements['trigger_type'] ) {
 			case 'specific-achievement':
+
 				if( $post_type === 'step' && $since === 0 ) {
+
 					// Get our parent achievement
 					$achievement = gamipress_get_step_achievement( $achievement_id );
 
@@ -599,6 +603,7 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 					if ( $achievement && $date = gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) ) {
 						$since = $date;
 					}
+
 				}
 
 				// Get our achievement activity
@@ -624,9 +629,7 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 		// Just continue if trigger is set
 		if( isset( $trigger ) ) {
 
-			if( $since !== 0 ) {
-				$activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirements );
-			} else {
+			if( $since === 0 ) {
 
 				if( gamipress_get_post_type( $achievement_id ) === 'rank-requirement' ) {
 					// If since is not defined and is a rank requirement, we need to get the last time user earned the latest rank of type
@@ -638,8 +641,9 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 					$since = strtotime( gamipress_get_post_date( $achievement_id ) );
 				}
 
-				$activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirements );
 			}
+
+            $activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirements );
 
 		}
 

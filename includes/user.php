@@ -270,6 +270,7 @@ function gamipress_ajax_profile_update_user_rank() {
     wp_send_json_success( array(
         'message' => __( 'Rank updated successfully.', 'gamipress' ),
         'rank' => array(
+            'ID' => $rank->ID,
             'post_title' => $rank->post_title,
             'thumbnail' => gamipress_get_rank_post_thumbnail( $rank->ID, array( 32, 32 ) ),
         )
@@ -281,7 +282,8 @@ add_action( 'wp_ajax_gamipress_profile_update_user_rank', 'gamipress_ajax_profil
 /**
  * Update user points ajax handler
  *
- * @since 1.5.9
+ * @since   1.5.9
+ * @updated 1.6.0 Now also return the current user ranks in order to see any rank change through the points earned
  */
 function gamipress_ajax_profile_update_user_points() {
 
@@ -308,9 +310,27 @@ function gamipress_ajax_profile_update_user_points() {
     // Update the user points
     gamipress_update_user_points( $user_id, absint( $points ), get_current_user_id(), null, $points_type );
 
+    // After update the user points balance, is possible that user unlocks a rank
+    // For that, we need to return the current user ranks again and check for differences
+    $ranks = array();
+
+    foreach( gamipress_get_rank_types_slugs() as $rank_type ) {
+
+        // Get the rank object to build the same response as gamipress_ajax_profile_update_user_rank() function
+        $rank = gamipress_get_user_rank( $user_id, $rank_type );
+
+        $ranks[] = array(
+            'ID' => $rank->ID,
+            'post_title' => $rank->post_title,
+            'post_type' => $rank->post_type, // Included to meet the rank type
+            'thumbnail' => gamipress_get_rank_post_thumbnail( $rank->ID, array( 32, 32 ) ),
+        );
+    }
+
     wp_send_json_success( array(
         'message' => __( 'Points updated successfully.', 'gamipress' ),
-        'points' => gamipress_format_amount( $points, $points_type )
+        'points' => gamipress_format_amount( $points, $points_type ),
+        'ranks' => $ranks
     ) );
 
 }

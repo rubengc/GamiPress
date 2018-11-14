@@ -21,9 +21,10 @@ function gamipress_register_user_rank_shortcode() {
     unset( $rank_fields['id'] );
 
     gamipress_register_shortcode( 'gamipress_user_rank', array(
-        'name'            => __( 'User Rank', 'gamipress' ),
-        'description'     => __( 'Output previous, current and/or next rank of an user.', 'gamipress' ),
-        'output_callback' => 'gamipress_user_rank_shortcode',
+        'name'              => __( 'User Rank', 'gamipress' ),
+        'description'       => __( 'Output previous, current and/or next rank of an user.', 'gamipress' ),
+        'icon' 	            => 'rank',
+        'output_callback'   => 'gamipress_user_rank_shortcode',
         'tabs' => array(
             'general' => array(
                 'icon' => 'dashicons-admin-generic',
@@ -49,6 +50,7 @@ function gamipress_register_user_rank_shortcode() {
                 'name'        => __( 'Rank Type', 'gamipress' ),
                 'description' => __( 'Choose the rank type to display.', 'gamipress' ),
                 'type'        => 'select',
+                'option_all'  => false,
                 'options_cb'  => 'gamipress_options_cb_rank_types',
             ),
             'prev_rank' => array(

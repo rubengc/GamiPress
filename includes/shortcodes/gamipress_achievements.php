@@ -20,9 +20,10 @@ function gamipress_register_achievements_shortcode() {
 	unset( $achievement_fields['id'] );
 
 	gamipress_register_shortcode( 'gamipress_achievements', array(
-		'name'            => __( 'Achievement List', 'gamipress' ),
-		'description'     => __( 'Output a list of achievements.', 'gamipress' ),
-		'output_callback' => 'gamipress_achievements_shortcode',
+		'name'              => __( 'Achievement List', 'gamipress' ),
+		'description'       => __( 'Output a list of achievements.', 'gamipress' ),
+        'icon' 	            => 'awards',
+		'output_callback'   => 'gamipress_achievements_shortcode',
 		'tabs' => array(
 			'general' => array(
 				'icon' => 'dashicons-admin-generic',
@@ -367,7 +368,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 
 	unset( $achievement_fields['id'] );
 
-	// Loop achievement shortcode fields to pass to the rank template
+	// Loop achievement shortcode fields to pass to the achievement template
 	foreach( $achievement_fields as $field_id => $field_args ) {
 
 		if( isset( $args[$field_id] ) ) {
