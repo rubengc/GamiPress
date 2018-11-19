@@ -169,7 +169,7 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
             $fields['exclude']['post_type'] = gamipress_get_achievement_types_slugs();
             break;
         case 'gamipress_rank':
-            // Achievement ID
+            // Rank ID
             $fields['id']['type'] = 'post';
             $fields['id']['post_type'] = gamipress_get_rank_types_slugs();
             break;
