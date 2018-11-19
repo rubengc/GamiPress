@@ -28,6 +28,39 @@ function gamipress_register_block_categories( $categories, $post ) {
 add_filter( 'block_categories', 'gamipress_register_block_categories', 10, 2 );
 
 /**
+ * GamiPress block icons
+ *
+ * @since 1.6.1
+ */
+function gamipress_get_block_icons() {
+
+    $icons = array(
+        'gamipress' =>
+            '<svg width="24" height="24" viewBox="0 0 167.548 167.548" xmlns="http://www.w3.org/2000/svg" >
+                <path d="M 131.973,136.242 H 35.596 L 8.108,57.111 42.507,82.363 c -0.172,0.873 -0.264,1.727 -0.264,2.584 0,7.815 6.359,14.175 14.175,14.175 7.812,0 14.175,-6.359 14.175,-14.175 0,-6.091 -3.797,-11.274 -9.273,-13.255 l 22.465,-47.363 22.396,47.239 c -5.627,1.898 -9.629,7.193 -9.629,13.384 0,7.815 6.359,14.175 14.175,14.175 7.81,0 14.175,-6.359 14.175,-14.175 0,-1.036 -0.121,-2.077 -0.364,-3.103 l 34.984,-24.922 z"/>
+            </svg>',
+        'rank' =>
+            '<svg width="24" height="24" viewBox="0 0 92.275001 92.275002" xmlns="http://www.w3.org/2000/svg" >
+                <polygon points="50.1,96.2 76.2,81.3 76.2,66.5 50.1,81.3 24.1,66.5 24.1,81.3" transform="translate(-4.1,-3.9250045)"/>
+                <polygon points="50.1,74.5 76.2,59.7 76.2,44.8 50.1,59.7 24.1,44.8 24.1,59.7" transform="translate(-4.1,-3.9250045)"/>
+                <path d="M 47,0.67499541 52.6,11.974994 c 0.2,0.3 0.5,0.5 0.8,0.6 l 12.5,1.8 c 0.9,0.1 1.3,1.2 0.6,1.9 l -9,8.8 c -0.3,0.3 -0.4,0.6 -0.3,1 l 2.1,12.5 c 0.2,0.9 -0.8,1.6 -1.6,1.2 l -11.2,-5.9 c -0.3,-0.2 -0.7,-0.2 -1,0 l -11.2,5.9 c -0.8,0.4 -1.7,-0.3 -1.6,-1.2 l 2.2,-12.5 c 0.1,-0.4 -0.1,-0.7 -0.3,-1 l -9.1,-8.8 c -0.7,-0.6 -0.3,-1.7 0.6,-1.9 l 12.5,-1.8 c 0.4,-0.1 0.7,-0.3 0.8,-0.6 L 45,0.67499541 c 0.5,-0.9 1.6,-0.9 2,0 z"/>
+            </svg>',
+    );
+
+    /**
+     * Filter to register custom GamiPress block icons
+     *
+     * @since 1.6.1
+     *
+     * @param array $icons Icons already registered
+     *
+     * @return array
+     */
+    return apply_filters( 'gamipress_block_icons', $icons );
+
+}
+
+/**
  * Register GamiPress blocks
  *
  * Important: Priority is set to 20 to let every add-on register their shortcodes first

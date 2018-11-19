@@ -333,6 +333,18 @@
         });
     });
 
+    $('body').on('keypress', '.profile-points input', function(e) {
+        var keycode = ( e.keyCode ? e.keyCode : e.which );
+
+        // check if key pressed is enter/intro
+        if ( keycode === 13 ) {
+            e.preventDefault();
+
+            // Trigger click on save button
+			$(this).closest('.profile-points').find('.profile-points-save').trigger('click');
+        }
+    });
+
     // Award type select
     if( $("#gamipress-award-type-select").length ) {
 

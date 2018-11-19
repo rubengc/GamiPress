@@ -298,9 +298,9 @@ function gamipress_build_achievement_object( $achievement_id = 0, $context = 'ea
 
 	// Store the current timestamp differently based on context
 	if ( 'earned' == $context ) {
-		$achievement_object->date_earned = time();
+		$achievement_object->date_earned = current_time( 'timestamp' );
 	} elseif ( 'started' == $context ) {
-		$achievement_object->date_started = $achievement_object->last_activity_date = time();
+		$achievement_object->date_started = $achievement_object->last_activity_date = current_time( 'timestamp' );
 	}
 
 	// Return our achievement object, available filter so we can extend it elsewhere

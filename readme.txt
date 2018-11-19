@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.0
+Stable tag: 1.6.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -233,6 +233,19 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.1 =
+
+* **Bug Fixes**
+* Fixed wrong requirements order when element has a huge number of requirements.
+* **Improvements**
+* Pressing enter on user profile points will trigger the ajax save instead of submit the complete user profile form.
+* Avoid perform any extra check when not required on awards engine.
+* Cache query functions to speed up the awards engine when searching event's listeners.
+* **Developer Notes**
+* Added server side way to register custom Gutenberg blocks icons.
+* Improvements on GamiPress cache utility adding management from cache directly from options.
+* Replaced time() function usages by the WordPress localized function current_time( 'timestamp' ).
 
 = 1.6.0 =
 

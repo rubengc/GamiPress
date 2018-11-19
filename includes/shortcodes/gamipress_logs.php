@@ -16,9 +16,10 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_register_logs_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_logs', array(
-        'name'            => __( 'Logs', 'gamipress' ),
-        'description'     => __( 'Output a list of logs.', 'gamipress' ),
-        'output_callback' => 'gamipress_logs_shortcode',
+        'name'              => __( 'Logs', 'gamipress' ),
+        'description'       => __( 'Output a list of logs.', 'gamipress' ),
+        'output_callback'   => 'gamipress_logs_shortcode',
+        'icon' 	            => 'editor-ul',
         'fields'      => array(
             'type' => array(
                 'name'        => __( 'Log Type(s)', 'gamipress' ),

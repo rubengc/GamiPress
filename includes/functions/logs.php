@@ -207,7 +207,7 @@ function gamipress_query_logs( $args ) {
     }
 
     // Since
-    if( absint( $args['since'] ) !== 0 ) {
+    if( absint( $args['since'] ) > 0 ) {
 
         $date = date( 'Y-m-d H:i:s', $args['since'] );
 

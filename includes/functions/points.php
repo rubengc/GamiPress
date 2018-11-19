@@ -63,7 +63,7 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '', $si
 	$points_awarded = gamipress_get_user_meta( $user_id, $user_meta );
 
 	// If user meta not exists or since parameter is defined, recalculate it
-	if( empty( $points_awarded ) || $since !== 0 ) {
+	if( empty( $points_awarded ) || $since > 0 ) {
 
 		$points_awarded = 0;
 
@@ -83,7 +83,7 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '', $si
 		ct_reset_setup_table();
 
 		// If since parameter has been set, return the points awarded since this date without update it
-		if( $since !== 0 ) {
+		if( $since > 0 ) {
 			return $points_awarded;
 		}
 
@@ -124,7 +124,7 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '', $s
 	$points_deducted = gamipress_get_user_meta( $user_id, $user_meta );
 
 	// If user meta not exists or since parameter is defined, recalculate it
-	if( empty( $points_deducted ) || $since !== 0 ) {
+	if( empty( $points_deducted ) || $since > 0 ) {
 
 		$points_deducted = 0;
 
@@ -144,7 +144,7 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '', $s
 		ct_reset_setup_table();
 
 		// If since parameter has been set, return the points deducted since this date without update it
-		if( $since !== 0 ) {
+		if( $since > 0 ) {
 			return $points_deducted;
 		}
 
@@ -185,7 +185,7 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
 	$points_expended = gamipress_get_user_meta( $user_id, $user_meta );
 
 	// If user meta not exists or since parameter is defined, recalculate it
-	if( empty( $points_expended ) || $since !== 0 ) {
+	if( empty( $points_expended ) || $since > 0 ) {
 
 		$points_expended = 0;
 
@@ -205,7 +205,7 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
 		ct_reset_setup_table();
 
 		// If since parameter has been set, return the points expended since this date without update it
-		if( $since !== 0 ) {
+		if( $since > 0 ) {
 			return $points_expended;
 		}
 

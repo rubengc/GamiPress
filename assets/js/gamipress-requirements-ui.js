@@ -546,14 +546,6 @@ function gamipress_update_requirements( element, loop ) {
     var requirements_list = $(element).siblings('.requirements-list');
     requirements_list.siblings( '.requirements-spinner' ).addClass('is-active');
 
-    var requirement_data = {
-        action: 'gamipress_update_requirements',
-        post_id: $('input#post_ID').val(),
-        loop: loop,
-        _gamipress_sequential: ( $('input#_gamipress_sequential').prop('checked') ? 'on' : '' ),
-        requirements: []
-    };
-
     // On large requirements list, we need to store them in groups
     var requirements = requirements_list.find( '.requirement-row' );
 
@@ -561,6 +553,15 @@ function gamipress_update_requirements( element, loop ) {
     var requirements_limit = 20;
     var current_offset = ( loop * requirements_limit );
     var current_limit = ( ( loop + 1 ) * requirements_limit );
+
+    // Setup the data to be send
+    var requirement_data = {
+        action: 'gamipress_update_requirements',
+        post_id: $('input#post_ID').val(),
+        loop: loop,
+        _gamipress_sequential: ( $('input#_gamipress_sequential').prop('checked') ? 'on' : '' ),
+        requirements: []
+    };
 
     // To set smaller groups of requirements to being stored
     var current_requirements = requirements.slice( current_offset, current_limit );

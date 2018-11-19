@@ -25,6 +25,27 @@ function gamipress_load_ranks_admin_hooks() {
 add_action( 'admin_init', 'gamipress_load_ranks_admin_hooks' );
 
 /**
+ * Overrides the enter title here on rank edit screen
+ *
+ * @since 1.3.1
+ *
+ * @param $placeholder
+ * @param $post
+ *
+ * @return string
+ */
+function gamipress_admin_enter_title_here( $placeholder, $post ) {
+
+    if( gamipress_is_rank( $post->post_type ) ) {
+        return __( 'Rank name', 'gamipress' );
+    }
+
+    return $placeholder;
+
+}
+add_filter( 'enter_title_here', 'gamipress_admin_enter_title_here', 10, 2 );
+
+/**
  * Register our custom ranks columns
  *
  * @since   1.3.1
@@ -169,6 +190,7 @@ function gamipress_rank_pre_get_posts( $query ) {
 }
 add_action( 'pre_get_posts', 'gamipress_rank_pre_get_posts' );
 
+// Function callback to render next rank on rank details box
 function gamipress_next_rank_content_cb( $field, $object_id, $object_type ) {
 
     // Bail if is an auto-draft rank
@@ -191,6 +213,7 @@ function gamipress_next_rank_content_cb( $field, $object_id, $object_type ) {
 
 }
 
+// Function callback to render previous rank on rank details box
 function gamipress_prev_rank_content_cb( $field, $object_id, $object_type ) {
 
     // Bail if is an auto-draft rank

@@ -11,9 +11,10 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Helper function to get a cached element.
+ * Get a cached element.
  *
- * @since 1.4.7
+ * @since   1.4.7
+ * @updated 1.6.1 Added support to return cached value stored in options table
  *
  * @param string    $key
  * @param mixed     $default
@@ -24,6 +25,24 @@ function gamipress_get_cache( $key = '', $default = null ) {
 
     if( isset( GamiPress()->cache[$key] ) ) {
         return GamiPress()->cache[$key];
+    } else {
+
+        // If GamiPress is installed network wide, get cache from network options
+        if( gamipress_is_network_wide_active() ) {
+            $cached = get_site_option( 'gamipress_cache_' . $key );
+        } else {
+            $cached = get_option( 'gamipress_cache_' . $key );
+        }
+
+        // If has been cached on options, then return the cached value
+        if( $cached !== false ) {
+
+            GamiPress()->cache[$key] = $cached;
+
+            return GamiPress()->cache[$key];
+
+        }
+
     }
 
     return $default;
@@ -31,15 +50,76 @@ function gamipress_get_cache( $key = '', $default = null ) {
 }
 
 /**
- * Helper function to set a cached element.
+ * Set a cached element.
  *
- * @since 1.4.7
+ * @since   1.4.7
+ * @updated 1.6.1 Added $save parameter
  *
  * @param string    $key
  * @param mixed     $value
+ * @param bool      $save
+ *
+ * @return bool
  */
-function gamipress_set_cache( $key = '', $value = '' ) {
+function gamipress_set_cache( $key = '', $value = '', $save = false ) {
 
+    // Just keep value on a floating cache
+    // To make it persistent pass $save as true or use gamipress_save_cache() function
     GamiPress()->cache[$key] = $value;
+
+    if( $save === true ) {
+        return gamipress_save_cache( $key, $value );
+    }
+
+    return true;
+
+}
+
+/**
+ * Save a cached element.
+ *
+ * @since 1.6.1
+ *
+ * @param string    $key
+ * @param mixed     $value
+ *
+ * @return bool
+ */
+function gamipress_save_cache( $key = '', $value = '' ) {
+
+    // Allow to make value optional but just if element has been already cached
+    if( empty( $value ) && isset( GamiPress()->cache[$key] ) ) {
+        $value = GamiPress()->cache[$key];
+    }
+
+    // Update the floating cache
+    GamiPress()->cache[$key] = $value;
+
+    // If GamiPress is installed network wide, save cache on network options
+    if( gamipress_is_network_wide_active() ) {
+        return update_site_option( 'gamipress_cache_' . $key, $value );
+    } else {
+        return update_option( 'gamipress_cache_' . $key, $value );
+    }
+
+}
+
+/**
+ * Delete a cached element.
+ *
+ * @since 1.6.1
+ *
+ * @param string    $key
+ *
+ * @return bool
+ */
+function gamipress_delete_cache( $key = '' ) {
+
+    // If GamiPress is installed network wide, delete cache on network options
+    if( gamipress_is_network_wide_active() ) {
+        return delete_site_option( 'gamipress_cache_' . $key );
+    } else {
+        return delete_option( 'gamipress_cache_' . $key );
+    }
 
 }

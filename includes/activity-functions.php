@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Get the UNIX timestamp for the last activity on an achievement for a given user
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.6.1 Added special support to rank requirements getting last activity from previous earned rank
  *
  * @param  integer $achievement_id  The given achievements post ID
  * @param  integer $user_id  		The given user's ID
@@ -24,16 +25,35 @@ function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id
 
 	// Attempt to grab the last activity date from active achievement meta
 	if ( $achievement = gamipress_user_get_active_achievement( $user_id, $achievement_id ) ) {
+
 		$since = $achievement->date_started - 1;
 
-	// Otherwise, attempt to grab the achievement date from earned achievement meta
-	} elseif ( $achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id, 'limit' => 1 ) ) ) {
+	// Attempt to grab the achievement earned date
+	} else if ( $achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id, 'limit' => 1 ) ) ) {
 
 		$achievement = $achievements[0];
 
+		// Return the achievement date earned
 		if ( is_object( $achievement ) )
 			$since = $achievement->date_earned + 1;
-	}
+
+    // If hasn't earned it and is a rank requirement, then grab the rank earned date
+	} else if( gamipress_get_post_type( $achievement_id ) === 'rank-requirement' ) {
+
+	    $rank = gamipress_get_rank_requirement_rank( $achievement_id );
+
+	    if( $rank ) {
+
+	        // Just get rank earned time if rank is not the lowest priority one (aka default rank)
+	        if( ! gamipress_is_lowest_priority_rank( gamipress_get_user_rank_id( $user_id, $rank->post_type ) ) ) {
+
+	            // Set since from previous earned time rank
+                $since = gamipress_get_rank_earned_time( $user_id, $rank->post_type ) - 1;
+            }
+        }
+
+
+    }
 
 	// Finally, return our time
 	return $since;
@@ -158,7 +178,7 @@ function gamipress_user_update_active_achievement( $user_id = 0, $achievement_id
 		$achievement = gamipress_build_achievement_object( $achievement_id, 'started' );
 
 	// Update our last activity date
-	$achievement->last_activity_date = time();
+	$achievement->last_activity_date = current_time( 'timestamp' );
 
 	// Available filter for manipulating the achievement object
 	$achievement = apply_filters( 'gamipress_user_update_active_achievement', $achievement, $user_id, $achievement_id );

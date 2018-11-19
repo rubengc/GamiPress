@@ -276,6 +276,7 @@ function gamipress_localize_blocks_editor_assets() {
     // Localize gamipress-blocks-js script
     wp_localize_script( 'gamipress-blocks-js', 'gamipress_blocks', array(
         'shortcodes' => $shortcodes,
+        'icons' => gamipress_get_block_icons(),
         'post_type_labels' => $post_type_labels,
     ) );
 

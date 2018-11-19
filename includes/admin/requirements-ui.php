@@ -657,6 +657,9 @@ function gamipress_duplicate_requirement_ajax_handler() {
 
     gamipress_update_requirement( $requirement );
 
+    // Reset the trigger cache
+    gamipress_delete_trigger_cache( $requirement['trigger_type'] );
+
     // Output the edit requirement html to insert into the requirements meta box
     gamipress_requirement_ui_html( $clone_requirement_id, $post->ID );
 
@@ -677,6 +680,12 @@ function gamipress_delete_requirement_ajax_handler() {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
     }
 
+    // Reset the trigger cache
+    $trigger = gamipress_get_post_meta( $_POST['requirement_id'], '_gamipress_trigger_type' );
+
+    gamipress_delete_trigger_cache( $trigger );
+
+    // Delete the requirement post
     wp_delete_post( $_POST['requirement_id'] );
 
     die;
@@ -696,7 +705,8 @@ function gamipress_update_requirements_ajax_handler() {
     }
 
     $post_id = $_POST['post_id'];
-    $order = absint( $_POST['loop'] );
+    $requirements_limit = 20;
+    $order = absint( $_POST['loop'] ) * $requirements_limit;
 
     // Save sequential steps (now placed on requirements UI)
     if( isset( $_POST['_gamipress_sequential'] ) && ! empty( $_POST['_gamipress_sequential'] ) ) {
@@ -711,6 +721,7 @@ function gamipress_update_requirements_ajax_handler() {
         // Setup an array for storing all our requirement titles
         // This lets us dynamically update the Label field when requirements are saved
         $new_titles = array();
+        $triggers = array();
 
         // Loop through each of the created requirements
         foreach ( $_POST['requirements'] as $requirement ) {
@@ -723,9 +734,20 @@ function gamipress_update_requirements_ajax_handler() {
             // Add the title to our AJAX return
             $new_titles[$requirement_id] = stripslashes( $requirement_updated['title'] );
 
+            // Add the trigger to the triggers array if not added yet
+            if( ! in_array( $requirement['trigger_type'], $triggers ) ) {
+                $triggers[] = $requirement['trigger_type'];
+            }
+
             // Update order
             $order++;
 
+        }
+
+        // Loop all saved triggers to reset their caches
+        foreach( $triggers as $trigger ) {
+            // Reset the trigger cache
+            gamipress_delete_trigger_cache( $trigger );
         }
 
         // Send back all our requirement titles

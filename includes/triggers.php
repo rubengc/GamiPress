@@ -383,7 +383,7 @@ function gamipress_get_activity_triggers_excluded_from_activity_limit() {
 function gamipress_trigger_event() {
 
 	// Setup all our globals
-	global $blog_id, $wpdb;
+	global $blog_id;
 
 	$site_id = $blog_id;
 
@@ -453,20 +453,8 @@ function gamipress_trigger_event() {
 	// Mark the count in the log entry
 	gamipress_insert_log( 'event_trigger', $user_id, 'private', $trigger, $log_meta );
 
-	$posts 		        = GamiPress()->db->posts;
-	$postmeta 	        = GamiPress()->db->postmeta;
-	$requirement_types  = gamipress_get_requirement_types_slugs();
-
-	// Now determine if any achievements are earned based on this trigger event
-	$triggered_achievements = $wpdb->get_results( $wpdb->prepare(
-		"SELECT p.ID
-		 FROM {$posts} AS p
-		 LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
-		 WHERE p.post_status = 'publish'
-		 	AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
-			AND pm.meta_value = %s",
-		$trigger
-	) );
+	// Check if any achievements are earned based on this trigger event
+	$triggered_achievements = gamipress_get_triggered_requirements( $trigger );
 
 	foreach ( $triggered_achievements as $achievement ) {
 		gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id, $trigger, $site_id, $args );
@@ -703,45 +691,198 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 		// If there is a specific id, then try to find the count
 		if( $specific_id !== 0 ) {
 
-			$listeners_count = $wpdb->get_var( $wpdb->prepare(
-				"SELECT COUNT(*)
-				FROM   {$posts} AS p
-				LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = %s )
-				LEFT JOIN {$postmeta} AS pm2 ON ( p.ID = pm2.post_id AND pm2.meta_key = %s )
-				WHERE p.post_status = %s
+            $cache = gamipress_get_cache( "{$trigger}_{$specific_id}_listeners_count", false );
+
+            // If result already cached, return it
+            if( $cache !== false ) {
+
+                $listeners_count = absint( $cache );
+
+            } else {
+
+                $listeners_count = $wpdb->get_var( $wpdb->prepare(
+                    "SELECT COUNT(*)
+                    FROM   {$posts} AS p
+                    LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = %s )
+                    LEFT JOIN {$postmeta} AS pm2 ON ( p.ID = pm2.post_id AND pm2.meta_key = %s )
+                    WHERE p.post_status = %s
 					AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
 					AND pm.meta_value = %s
 					AND pm2.meta_value = %s",
-				'_gamipress_trigger_type',
-				'_gamipress_achievement_post',
-				'publish',
-				 $trigger,
-				 $specific_id
-			) );
+                    '_gamipress_trigger_type',
+                    '_gamipress_achievement_post',
+                    'publish',
+                    $trigger,
+                    $specific_id
+                ) );
+
+                // Cache listeners count
+                gamipress_save_cache( "{$trigger}_{$specific_id}_listeners_count", $listeners_count );
+
+            }
+
+
 
 		}
 
 	} else {
 
-		$listeners_count = $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*)
-			FROM   {$posts} AS p
-			LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = %s )
-			WHERE p.post_status = %s
-				AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
-				AND pm.meta_value = %s",
-			'_gamipress_trigger_type',
-			'publish',
-			$trigger
-		) );
+        $cache = gamipress_get_cache( "{$trigger}_listeners_count", false );
+
+        // If result already cached, return it
+        if( $cache !== false ) {
+
+            $listeners_count = absint( $cache );
+
+        } else {
+
+            $listeners_count = $wpdb->get_var( $wpdb->prepare(
+                "SELECT COUNT(*)
+                FROM   {$posts} AS p
+                LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = %s )
+                WHERE p.post_status = %s
+                    AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
+                    AND pm.meta_value = %s",
+                '_gamipress_trigger_type',
+                'publish',
+                $trigger
+            ) );
+
+            // Cache listeners count
+            gamipress_save_cache( "{$trigger}_listeners_count", $listeners_count );
+
+        }
 
 	}
 
-
-
 	$has_listeners = ( absint( $listeners_count ) > 0 );
 
+    /**
+     * Filter to override if trigger has listeners
+     *
+     * @since 1.0.8
+     *
+     * @param bool 	    $has_listeners
+     * @param string 	$trigger
+     * @param integer 	$site_id
+     * @param array 	$args
+     *
+     * @return bool
+     */
 	return apply_filters( 'gamipress_trigger_has_listeners', $has_listeners, $trigger, $site_id, $args );
+}
+
+/**
+ * Return triggered requirements by a specific trigger
+ *
+ * @since 1.6.1
+ *
+ * @param string 	$trigger
+ *
+ * @return array
+ */
+function gamipress_get_triggered_requirements( $trigger ) {
+
+    $cache = gamipress_get_cache( "{$trigger}_triggered_requirements", false );
+
+    // If result already cached, return it
+    if( is_array( $cache ) ) {
+        return $cache;
+    }
+
+    global $wpdb;
+
+    $posts 		        = GamiPress()->db->posts;
+    $postmeta 	        = GamiPress()->db->postmeta;
+    $requirement_types  = gamipress_get_requirement_types_slugs();
+
+    $triggered_requirements = $wpdb->get_results( $wpdb->prepare(
+        "SELECT p.ID
+		 FROM {$posts} AS p
+		 LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
+		 WHERE p.post_status = 'publish'
+		 	AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
+			AND pm.meta_value = %s",
+        $trigger
+    ) );
+
+    /**
+     * Filter to modify triggered requirements by a specific trigger
+     *
+     * @since 1.6.1
+     *
+     * @param array 	$triggered_requirements
+     * @param string 	$trigger
+     *
+     * @return array
+     */
+    $triggered_requirements = apply_filters( 'gamipress_get_triggered_requirements', $triggered_requirements, $trigger );
+
+    // Cache function result
+    gamipress_save_cache( "{$trigger}_triggered_requirements", $triggered_requirements );
+
+    return $triggered_requirements;
+
+}
+
+/**
+ * Delete cache of a specific trigger
+ *
+ * @since 1.6.1
+ *
+ * @param string $trigger
+ *
+ * @return bool
+ */
+function gamipress_delete_trigger_cache( $trigger ) {
+
+    if( empty( $trigger ) )
+        return false;
+
+    // Delete triggered requirements cache
+    gamipress_delete_cache( "{$trigger}_triggered_requirements" );
+
+    // Listeners count cache varies if is specific trigger
+    if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+
+        global $wpdb;
+
+        // Cache prefix and suffix
+        $prefix = "gamipress_cache_{$trigger}_";
+        $suffix = '_listeners_count';
+
+        // Delete listeners count cache for specific trigger
+
+        if( gamipress_is_network_wide_active() ) {
+
+            // Multi site installs
+            $wpdb->query( "
+                DELETE
+                FROM {$wpdb->sitemeta}
+                WHERE meta_key LIKE '{$prefix}%'
+                AND meta_key LIKE '%{$suffix}'
+            " );
+
+        } else {
+
+            // Single site installs
+            $wpdb->query( "
+                DELETE
+                FROM {$wpdb->options}
+                WHERE option_name LIKE '{$prefix}%'
+                AND option_name LIKE '%{$suffix}'
+            " );
+
+        }
+
+    } else {
+
+        // Delete listeners count cache for not specific trigger
+        gamipress_delete_cache( "{$trigger}_listeners_count" );
+    }
+
+    return true;
+
 }
 
 /**
