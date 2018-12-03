@@ -33,9 +33,10 @@ function gamipress_add_ons_page() {
 
         <div class="wp-filter">
             <ul class="filter-links">
-                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><span class="dashicons dashicons-star-filled"></span> <?php _e( 'Premium', 'gamipress' ); ?></a></li>
+                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><span class="dashicons dashicons-gamipress"></span> <?php _e( 'Premium', 'gamipress' ); ?></a></li>
                 <li class="plugins-free"><a href="#" data-target="gamipress-free-add-on"><span class="dashicons dashicons-heart"></span> <?php _e( 'Free', 'gamipress' ); ?></a></li>
                 <li class="plugins-integrations"><a href="#" data-target="gamipress-integration-add-on"><span class="dashicons dashicons-admin-plugins"></span> <?php _e( 'Integrations', 'gamipress' ); ?></a></li>
+                <li class="plugins-third-party"><a href="#" data-target="gamipress-third-party-add-on"><span class="dashicons dashicons-star-filled"></span> <?php _e( '3rd Party', 'gamipress' ); ?></a></li>
                 <li class="plugins-tools"><a href="#" data-target="gamipress-tool-add-on"><span class="dashicons dashicons-admin-tools"></span> <?php _e( 'Tools', 'gamipress' ); ?></a></li>
             </ul>
         </div>
@@ -125,9 +126,9 @@ function gamipress_render_plugin_card( $plugin ) {
     if( $plugin->wp_info ) {
         // Free add-ons
 
-        if( ( strtolower( substr( $name, -11 ) ) === 'integration' ) ) {
+        if( gamipress_plugin_has_category( $plugin, 'integrations' ) ) {
             $class = 'gamipress-integration-add-on';
-        } else if( ( strtolower( substr( $name, -8 ) ) === 'importer' ) ) {
+        } else if( gamipress_plugin_has_category( $plugin, 'tools' ) ) {
             $class = 'gamipress-tool-add-on';
         } else {
             $class = 'gamipress-free-add-on';
@@ -181,6 +182,15 @@ function gamipress_render_plugin_card( $plugin ) {
                     break;
             }
         }
+    } else if( gamipress_plugin_has_category( $plugin, '3rd-party' ) ) {
+
+        $class = 'gamipress-third-party-add-on';
+
+        $details_link = '';
+
+        // "More Information" action
+        $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button" target="_blank">' . __( 'More Information', 'gamipress' ) . '</a>';
+
     } else {
         // Premium add-ons
 
@@ -263,10 +273,11 @@ function gamipress_render_plugin_card( $plugin ) {
         }
     }
 
-    // "More Details" action
-    $action_links[] = '<a href="' . esc_url( $details_link ) . '" class="more-details thickbox open-plugin-details-modal" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '">' . __( 'More Details' ) . '</a>';
+    if( ! empty( $details_link ) ) {
+        // "More Details" action
+        $action_links[] = '<a href="' . esc_url( $details_link ) . '" class="more-details thickbox open-plugin-details-modal" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '">' . __( 'More Details' ) . '</a>';
+    } ?>
 
-    ?>
     <div class="gamipress-plugin-card plugin-card plugin-card-<?php echo sanitize_html_class( $slug ); ?> <?php echo $class; ?>">
 
         <div class="plugin-card-top">
@@ -300,6 +311,7 @@ function gamipress_render_plugin_card( $plugin ) {
         </div>
 
     </div>
+
     <?php
 }
 
@@ -587,3 +599,32 @@ function gamipress_plugin_information_admin_body_class( $classes ) {
     return $classes;
 }
 add_filter( 'admin_body_class', 'gamipress_plugin_information_admin_body_class' );
+
+/**
+ * Append custom body classes to plugin information iframe
+ *
+ * @since 1.6.3
+ *
+ * @param stdClass  $plugin     Plugin API object
+ * @param string    $category   Category slug
+ *
+ * @return string
+ */
+function gamipress_plugin_has_category( $plugin, $category ) {
+
+    if( is_array( $plugin->info->category ) ) {
+
+        // Loop plugin categories objects
+        foreach( $plugin->info->category as $plugin_cat ) {
+
+            // Check if category slug is equal that category given
+            if( $plugin_cat->slug === $category ) {
+                return true;
+            }
+        }
+
+    }
+
+    return false;
+
+}

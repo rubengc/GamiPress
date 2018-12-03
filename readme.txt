@@ -252,6 +252,7 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 * HTML improvements following the Gutenberg structure of PanelBody > PanelRow.
 * Improvements on Gutenberg blocks tabs fields loop.
 * Added GamiPress front-end styles to Gutenberg blocks editor styles.
+* Added the 3rd Party section on add-ons page.
 
 = 1.6.1 =
 
