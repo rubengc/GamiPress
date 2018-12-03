@@ -105,7 +105,7 @@
 
         // Initialize select 2 on select trigger type
         if( ! $(this).hasClass('select2-hidden-accessible') ) {
-            $(this).select2({ theme: 'default gamipress-select2' });
+            $(this).select2({ theme: 'default gamipress-select2 gamipress-trigger-type-selector' });
         }
 
         // Grab our selected trigger type and achievement selector

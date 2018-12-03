@@ -18,8 +18,6 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @param  string   $trigger            The trigger
  * @param  integer  $site_id            The triggered site id
  * @param  array    $args               The triggered args
- *
- * @return mixed                        False if user has no access, void otherwise
  */
 function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
@@ -42,6 +40,7 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
 	if ( gamipress_check_achievement_completion_for_user( $achievement_id, $user_id, $trigger, $site_id, $args ) ) {
 		gamipress_award_achievement_to_user( $achievement_id, $user_id, false, $trigger, $site_id, $args );
     }
+
 }
 
 /* --------------------------------------------------

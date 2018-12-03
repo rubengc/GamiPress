@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.1
+Stable tag: 1.6.2
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -50,7 +50,7 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Unlock achievements and ranks using points:** Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
 * **Gutenberg blocks:** Built-in support for Gutenberg including a great number of blocks to place them anywhere.
 * **Shortcodes & Widgets:** WordPress-friendly shortcodes and widgets to show the user points wallet, earned achievements, latest logs, and more.
-* **Live shortcode embedder:** Missing a shortcode parameter? Just press the "GamiPress Shortcode" button and set up any shortcode without a worry.
+* **Live shortcode editor:** Missing a shortcode parameter? Just press the "GamiPress Shortcode" button and set up any shortcode without a worry.
 * **GDPR Support:** Support for WordPress personal data exports and deletions.
 * **Theme Agnostic:** GamiPress works with just about any standard WordPress theme. No special hooks or theme updates are needed.
 * **Templates System:** Overwritable templates system to allow you customize everything you want through your GamiPress theme folder.
@@ -89,6 +89,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
+* [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
 * [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
@@ -160,11 +161,14 @@ If you’re looking for something endorsed and maintained by the developers who 
 2. Configure as many points types as you like: Credits, Gems, Coins, etc.
 3. Configure as many achievement types as you like: Badges, Quests, etc.
 4. Configure as many rank types as you like: Grade, Level, etc.
-5. Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank.
-6. Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes.
-7. WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more.
-8. Configurable email templates to let your users get notified automatically about new awards.
-9. Flexible log system with support for public and private logs.
+5. Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
+6. Simple yet powerful admin interface to manage your gamification elements.
+7. Drag and drop control to define the requirements for any achievement, points type or rank.
+8. Built-in support for Gutenberg including a great number of blocks to place them anywhere.
+9. Live shortcode editor appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes.
+10. WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more.
+11. Configurable email templates to let your users get notified automatically about new awards.
+12. Flexible log system with support for public and private logs.
 
 == Frequently Asked Questions ==
 
@@ -180,7 +184,7 @@ Yes, GamiPress is stored in the official WordPress plugins repository where you 
 
 Yes. You can use GamiPress on a WordPress multisite network.
 
-In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/getting-started/multisite/).
+In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/advanced/multisite/).
 
 = Where can I find documentation about GamiPress? =
 
@@ -233,6 +237,21 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.2 =
+
+* **Bug Fixes**
+* Fixed unescaped HTML for shortcode attributes on gamipress_do_shortcode() function.
+* Fixed "Log Type(s)" field look of GamiPress: Logs widget.
+* Included private posts on requirements post selectors.
+* Fixed repeated fields rendering on Gutenberg blocks tabs.
+* **Improvements**
+* Improvements on Gutenberg meta boxes forms styles.
+* Improvements on user trigger count function using cached counts.
+* Make requirements being triggered in order, this specially intended for ranks in order to check requirements of lower priority ranks first.
+* HTML improvements following the Gutenberg structure of PanelBody > PanelRow.
+* Improvements on Gutenberg blocks tabs fields loop.
+* Added GamiPress front-end styles to Gutenberg blocks editor styles.
 
 = 1.6.1 =
 

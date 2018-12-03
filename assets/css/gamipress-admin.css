@@ -709,6 +709,7 @@ li.requirement-row.requirement-disabled {
 /* -------------------------------------------
 	Meta Boxes Forms
    ------------------------------------------- */
+
 @media screen and (max-width: 782px) {
 	.gamipress-box-form .cmb-th {
 		width: 100%;
@@ -1099,6 +1100,14 @@ label[for="_gamipress_sequential"] {
 
 .widget-content .cmb-tabs-wrap .cmb-tabs .cmb-tab .cmb-tab-icon {
 	margin-right: 0;
+}
+
+/* -------------------------------------------
+	Meta Boxes Forms on Gutenberg
+   ------------------------------------------- */
+
+.components-panel #postbox-container-2 .cmb-row:not(.cmb-repeat-group-field) > .cmb-th + .cmb-td {
+	max-width: 100%;
 }
 
 /* -------------------------------------------

@@ -43,7 +43,7 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Unlock achievements and ranks using points:** Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
 * **Gutenberg blocks:** Built-in support for Gutenberg including a great number of blocks to place them anywhere.
 * **Shortcodes & Widgets:** WordPress-friendly shortcodes and widgets to show the user points wallet, earned achievements, latest logs, and more.
-* **Live shortcode embedder:** Missing a shortcode parameter? Just press the "GamiPress Shortcode" button and set up any shortcode without a worry.
+* **Live shortcode editor:** Missing a shortcode parameter? Just press the "GamiPress Shortcode" button and set up any shortcode without a worry.
 * **GDPR Support:** Support for WordPress personal data exports and deletions.
 * **Theme Agnostic:** GamiPress works with just about any standard WordPress theme. No special hooks or theme updates are needed.
 * **Templates System:** Overwritable templates system to allow you customize everything you want through your GamiPress theme folder.
@@ -82,6 +82,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
+* [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
 * [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
@@ -161,20 +162,29 @@ If you’re looking for something endorsed and maintained by the developers who 
 **Configure as many rank types as you like: Grade, Level, etc**
 ![Configure as many rank types as you like: Grade, Level, etc](https://ps.w.org/gamipress/assets/screenshot-4.png "Configure as many rank types as you like: Grade, Level, etc")
 
-**Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank**
-![Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank](https://ps.w.org/gamipress/assets/screenshot-5.png "Simple yet powerful admin interface for defining the requirements for any achievement, points type or rank")
+**Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.**
+![Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.](https://ps.w.org/gamipress/assets/screenshot-5.png "Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.")
 
-**Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes**
-![Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes](https://ps.w.org/gamipress/assets/screenshot-6.png "Live shortcode embedder appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes")
+**Simple yet powerful admin interface to manage your gamification elements.**
+![Simple yet powerful admin interface to manage your gamification elements.](https://ps.w.org/gamipress/assets/screenshot-6.png "Simple yet powerful admin interface to manage your gamification elements.")
+
+**Drag and drop control to define the requirements for any achievement, points type or rank.**
+![Drag and drop control to define the requirements for any achievement, points type or rank.](https://ps.w.org/gamipress/assets/screenshot-7.png "Drag and drop control to define the requirements for any achievement, points type or rank.")
+
+**Built-in support for Gutenberg including a great number of blocks to place them anywhere.**
+![Built-in support for Gutenberg including a great number of blocks to place them anywhere.](https://ps.w.org/gamipress/assets/screenshot-8.png "Built-in support for Gutenberg including a great number of blocks to place them anywhere.")
+
+**Live shortcode editor appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes**
+![Live shortcode editor appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes](https://ps.w.org/gamipress/assets/screenshot-9.png "Live shortcode editor appears in the toolbar of all WordPress content editor areas, allowing you to transform any page or post into part of your gamification system without referencing any of the shortcodes")
 
 **WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more**
-![WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more](https://ps.w.org/gamipress/assets/screenshot-7.png "WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more")
+![WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more](https://ps.w.org/gamipress/assets/screenshot-10.png "WordPress-friendly widgets to show the user points wallet, earned achievements, latest logs, and more")
 
 **Configurable email templates to let your users get notified automatically about new awards**
-![Configurable email templates to let your users get notified automatically about new awards](https://ps.w.org/gamipress/assets/screenshot-8.png "Configurable email templates to let your users get notified automatically about new awards")
+![Configurable email templates to let your users get notified automatically about new awards](https://ps.w.org/gamipress/assets/screenshot-11.png "Configurable email templates to let your users get notified automatically about new awards")
 
 **Flexible log system with support for public and private logs**
-![Flexible log system with support for public and private logs](https://ps.w.org/gamipress/assets/screenshot-9.png "Flexible log system with support for public and private logs")
+![Flexible log system with support for public and private logs](https://ps.w.org/gamipress/assets/screenshot-12.png "Flexible log system with support for public and private logs")
 
 ## Frequently Asked Questions ##
 
@@ -190,7 +200,7 @@ Yes, GamiPress is stored in the official WordPress plugins repository where you 
 
 Yes. You can use GamiPress on a WordPress multisite network.
 
-In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/getting-started/multisite/).
+In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/advanced/multisite/).
 
 #### Where can I find documentation about GamiPress? ####
 
@@ -243,6 +253,21 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.6.2 ###
+
+* **Bug Fixes**
+* Fixed unescaped HTML for shortcode attributes on gamipress_do_shortcode() function.
+* Fixed "Log Type(s)" field look of GamiPress: Logs widget.
+* Included private posts on requirements post selectors.
+* Fixed repeated fields rendering on Gutenberg blocks tabs.
+* **Improvements**
+* Improvements on Gutenberg meta boxes forms styles.
+* Improvements on user trigger count function using cached counts.
+* Make requirements being triggered in order, this specially intended for ranks in order to check requirements of lower priority ranks first.
+* HTML improvements following the Gutenberg structure of PanelBody > PanelRow.
+* Improvements on Gutenberg blocks tabs fields loop.
+* Added GamiPress front-end styles to Gutenberg blocks editor styles.
 
 ### 1.6.1 ###
 

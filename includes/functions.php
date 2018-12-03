@@ -448,6 +448,7 @@ function gamipress_flush_rewrite_rules() {
  *
  * @since   1.0.0
  * @updated 1.4.6 Added $content parameter
+ * @updated 1.6.2 Sanitize attribute's value to avoid double quotes
  *
  * @param string    $shortcode The shortcode to execute
  * @param array     $args      The args to pass to the shortcode
@@ -493,6 +494,9 @@ function gamipress_do_shortcode( $shortcode, $args, $content = '' ) {
 
             }
         }
+
+        // Prevent attribute's value to have double quotes
+        $value = str_replace( '"', '\'', $value );
 
         $shortcode_args .= sprintf( ' %s="%s"', $arg, $value);
     }

@@ -85,8 +85,8 @@ class WP_REST_GamiPress_Posts_Controller extends WP_REST_Controller {
         }
 
         // Ensure array of post_types
-        if (!is_array($args['post_type'])) {
-            $args['post_type'] = explode(',', $args['post_type']);
+        if ( ! is_array( $args['post_type'] ) ) {
+            $args['post_type'] = explode( ',', $args['post_type'] );
         }
 
         /**

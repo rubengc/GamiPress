@@ -427,31 +427,10 @@ function gamipress_trigger_event() {
 	}
 
 	// Update hook count for this user
-	$new_count = gamipress_update_user_trigger_count( $user_id, $trigger, $site_id, $args );
+	gamipress_update_user_trigger_count( $user_id, $trigger, $site_id, $args );
 
-	// Log meta data
-	$log_meta = array(
-		'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
-		'count' => $new_count,
-		//'trigger_type' => $trigger, // Removed since 1.4.7
-	);
-
-	// If is specific trigger then try to get the attached id
-	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
-		$specific_id = ( isset( $args['specific_id'] ) ? $args['specific_id'] : gamipress_specific_trigger_get_id( $trigger, $args ) );
-
-		// If there is a specific id, then add it to the log meta data
-		if( $specific_id !== 0 ) {
-			$log_meta['achievement_post'] = $specific_id;
-			$log_meta['achievement_post_site_id'] = $site_id;
-		}
-	}
-
-	// Available filter to insert custom meta data
-	$log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $trigger, $site_id, $args );
-
-	// Mark the count in the log entry
-	gamipress_insert_log( 'event_trigger', $user_id, 'private', $trigger, $log_meta );
+	// Register event triggered in logs
+    gamipress_log_event_triggered( $user_id, $trigger, $site_id, $args );
 
 	// Check if any achievements are earned based on this trigger event
 	$triggered_achievements = gamipress_get_triggered_requirements( $trigger );
@@ -461,6 +440,46 @@ function gamipress_trigger_event() {
 	}
 
 	return true;
+
+}
+
+/**
+ * Logs the event triggered ono gamipress_trigger_event() function
+ *
+ * @since 1.6.2
+ *
+ * @param integer 	$user_id
+ * @param string 	$trigger
+ * @param integer 	$site_id
+ * @param array 	$args
+ */
+function gamipress_log_event_triggered( $user_id, $trigger, $site_id, $args ) {
+
+    // Log meta data
+    $log_meta = array(
+        'pattern' => gamipress_get_option( 'trigger_log_pattern', __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ) ),
+        'count' => gamipress_get_user_trigger_count( $user_id, $trigger, 0, $site_id, $args ),
+        //'trigger_type' => $trigger, // Removed since 1.4.7
+    );
+
+    // If is specific trigger then try to get the attached id
+    if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+
+        $specific_id = ( isset( $args['specific_id'] ) ? $args['specific_id'] : gamipress_specific_trigger_get_id( $trigger, $args ) );
+
+        // If there is a specific id, then add it to the log meta data
+        if( $specific_id !== 0 ) {
+            $log_meta['achievement_post'] = $specific_id;
+            $log_meta['achievement_post_site_id'] = $site_id;
+        }
+
+    }
+
+    // Available filter to insert custom meta data
+    $log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $trigger, $site_id, $args );
+
+    // Mark the count in the log entry
+    gamipress_insert_log( 'event_trigger', $user_id, 'private', $trigger, $log_meta );
 
 }
 
@@ -802,7 +821,8 @@ function gamipress_get_triggered_requirements( $trigger ) {
 		 LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
 		 WHERE p.post_status = 'publish'
 		 	AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
-			AND pm.meta_value = %s",
+			AND pm.meta_value = %s
+         ORDER BY p.menu_order ASC",
         $trigger
     ) );
 
@@ -824,6 +844,58 @@ function gamipress_get_triggered_requirements( $trigger ) {
     return $triggered_requirements;
 
 }
+
+/**
+ * Sort triggered requirements by rank priority in order to send them ordered to the awards engine
+ *
+ * @since 1.6.2
+ *
+ * @param array 	$triggered_requirements
+ * @param string 	$trigger
+ *
+ * @return array
+ */
+function gamipress_sort_triggered_rank_requirements( $triggered_requirements, $trigger ) {
+
+    $reordered_requirements = array();
+
+    // Loop all triggered requirements
+    foreach( $triggered_requirements as $index => $requirement ) {
+
+        // If is rank requirement, add it to the reordered requirements array
+        if( gamipress_get_post_type( $requirement->ID ) === 'rank-requirement' ) {
+
+            // Get the requirement's rank ID
+            $rank_id = absint( gamipress_get_post_field( 'post_parent', $requirement->ID ) );
+
+            if( $rank_id !== 0 ) {
+
+                // Get the rank's priority and add the requirement to reordered requirements array
+                $priority = gamipress_get_rank_priority( $rank_id );
+
+                if( ! isset( $reordered_requirements[$priority] ) )
+                    $reordered_requirements[$priority] = array();
+
+                $reordered_requirements[$priority][] = $requirement;
+
+                // Remove requirement from triggered requirements (will be added after again)
+                unset( $triggered_requirements[$index] );
+
+            }
+
+        }
+
+    }
+
+    // Append rank requirements reordered to the triggered requirements array
+    foreach( $reordered_requirements as $requirements ) {
+        $triggered_requirements = array_merge( $triggered_requirements, $requirements );
+    }
+
+    return $triggered_requirements;
+
+}
+add_filter( 'gamipress_get_triggered_requirements', 'gamipress_sort_triggered_rank_requirements', 10, 2 );
 
 /**
  * Delete cache of a specific trigger
@@ -898,7 +970,7 @@ function gamipress_delete_trigger_cache( $trigger ) {
 function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
 
 	// Grab all of the user's triggers
-	$user_triggers = ( $array_exists = gamipress_get_user_meta( $user_id, '_gamipress_triggered_triggers' ) ) ? $array_exists : array( $site_id => array() );
+	$user_triggers = ( $exists = gamipress_get_user_meta( $user_id, '_gamipress_triggered_triggers' ) ) ? $exists : array( $site_id => array() );
 
 	// Use current site ID if site ID is not set, AND not explicitly set to false
 	if ( ! $site_id && false !== $site_id ) {
@@ -918,7 +990,8 @@ function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
 /**
  * Get the count for the number of times is logged a user has triggered a particular trigger
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.6.2 Added use of gamipress_get_user_triggers() function when $since is 0
  *
  * @param  integer $user_id The given user's ID
  * @param  string  $trigger The given trigger we're checking
@@ -944,64 +1017,78 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 	if ( ! $site_id )
 		$site_id = get_current_blog_id();
 
-	// Setup date conditional
-	$date = '';
+    // Get the user triggered triggers
+    $user_triggers = gamipress_get_user_triggers( $user_id, $site_id );
 
-	if( $since !== 0 ) {
-		$since = date( 'Y-m-d H:i:s', $since );
+    if( isset( $user_triggers[$site_id][$trigger] ) && $since === 0 ) {
 
-		$date = "AND l.date >= '$since'";
-	}
+        // If already have this count, just retrieve it
+        $trigger_count = absint( $user_triggers[$site_id][$trigger] );
 
-	// If is specific trigger then try to get the attached id
-	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+    } else {
+        // Grab the current count directly from the database
 
-		$specific_id = 0;
+        // Setup date conditional
+        $date = '';
 
-		// if isset this key it means $args is a requirement object
-		if( isset( $args['achievement_post'] ) ) {
-			$specific_id = absint( $args['achievement_post'] );
-		} else if( ! empty( $args ) ) {
-			$specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
-		}
+        if( $since !== 0 ) {
+            $since = date( 'Y-m-d H:i:s', $since );
 
-		// If there is a specific id, then try to find the count
-		if( $specific_id !== 0 ) {
-			$user_triggers = $wpdb->get_var( $wpdb->prepare(
-				"SELECT COUNT(*)
-				 FROM {$logs} AS l
-				 LEFT JOIN {$logs_meta} AS lm1 ON ( l.log_id = lm1.log_id AND lm1.meta_key = %s )
-				 WHERE l.user_id = %d
-					AND l.type = %s
-					AND l.trigger_type = %s
-					{$date}
-					AND lm1.meta_value = %s",
-				'_gamipress_achievement_post',
-				absint( $user_id ),
-				'event_trigger',
-				$trigger,
-				$specific_id
-			) );
-		} else {
-			return 0;
-		}
-	} else {
-		// Single trigger count
-		$user_triggers = $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*)
-			 FROM {$logs} AS l
-			 WHERE l.user_id = %d
-				AND l.type = %s
-				AND l.trigger_type = %s
-				{$date}",
-			absint( $user_id ),
-			'event_trigger',
-			$trigger
-		) );
-	}
+            $date = "AND l.date >= '{$since}'";
+        }
+
+        // If is specific trigger then try to get the attached id
+        if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+
+            $specific_id = 0;
+
+            // if isset this key it means $args is a requirement object
+            if( isset( $args['achievement_post'] ) ) {
+                $specific_id = absint( $args['achievement_post'] );
+            } else if( ! empty( $args ) ) {
+                $specific_id = gamipress_specific_trigger_get_id( $trigger, $args );
+            }
+
+            // If there is a specific id, then try to find the count
+            if( $specific_id !== 0 ) {
+                $trigger_count = $wpdb->get_var( $wpdb->prepare(
+                    "SELECT COUNT(*)
+                     FROM {$logs} AS l
+                     LEFT JOIN {$logs_meta} AS lm1 ON ( l.log_id = lm1.log_id AND lm1.meta_key = %s )
+                     WHERE l.user_id = %d
+                        AND l.type = %s
+                        AND l.trigger_type = %s
+                        {$date}
+                        AND lm1.meta_value = %s",
+                    '_gamipress_achievement_post',
+                    absint( $user_id ),
+                    'event_trigger',
+                    $trigger,
+                    $specific_id
+                ) );
+            } else {
+                $trigger_count = 0;
+            }
+
+        } else {
+            // Single trigger count
+            $trigger_count = $wpdb->get_var( $wpdb->prepare(
+                "SELECT COUNT(*)
+                 FROM {$logs} AS l
+                 WHERE l.user_id = %d
+                    AND l.type = %s
+                    AND l.trigger_type = %s
+                    {$date}",
+                absint( $user_id ),
+                'event_trigger',
+                $trigger
+            ) );
+        }
+
+    }
 
 	// If we have any triggers, return the current count for the given trigger
-	return absint( $user_triggers );
+	return absint( $trigger_count );
 
 }
 

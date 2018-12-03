@@ -201,7 +201,7 @@ function gamipress_ajax_get_posts() {
 					   {$post_type}
 					   {$where}
 					   AND p.post_title LIKE %s
-					   AND p.post_status IN( 'publish', 'inherit' )
+					   AND p.post_status IN( 'publish', 'private', 'inherit' )
 				 LIMIT {$offset}, {$limit}",
 				"%%{$search}%%"
 			) );
@@ -225,7 +225,7 @@ function gamipress_ajax_get_posts() {
 					   {$post_type}
 					   {$where}
 					   AND p.post_title LIKE %s
-					   AND p.post_status IN( 'publish', 'inherit' )",
+					   AND p.post_status IN( 'publish', 'private', 'inherit' )",
 				"%%{$search}%%"
 			) ) );
 
@@ -241,7 +241,7 @@ function gamipress_ajax_get_posts() {
                    {$post_type}
                    {$where}
                    AND p.post_title LIKE %s
-                   AND p.post_status IN( 'publish', 'inherit' )
+                   AND p.post_status IN( 'publish', 'private', 'inherit' )
              LIMIT {$offset}, {$limit}",
 			"%%{$search}%%"
 		) );
@@ -253,7 +253,7 @@ function gamipress_ajax_get_posts() {
 			   {$post_type}
 		       {$where}
 			   AND p.post_title LIKE %s
-		       AND p.post_status IN( 'publish', 'inherit' )",
+		       AND p.post_status IN( 'publish', 'private', 'inherit' )",
 			"%%{$search}%%"
 		) ) );
 
@@ -303,7 +303,7 @@ function gamipress_ajax_get_achievements_options() {
 		ON p.ID = pm.post_id
 		WHERE  p.post_title LIKE %s
 		       {$post_type}
-		       AND p.post_status = 'publish'
+		       AND p.post_status IN( 'publish', 'private', 'inherit' )
 		       AND pm.meta_key = %s
 		       AND pm.meta_value = %s",
 		"%%{$search}%%",
@@ -412,14 +412,13 @@ function gamipress_ajax_get_ranks_options_html() {
 
 	$posts    	= GamiPress()->db->posts;
 
-	$ranks = $wpdb->get_results( $wpdb->prepare(
-		"SELECT p.ID, p.post_title
+	$ranks = $wpdb->get_results(
+	    "SELECT p.ID, p.post_title
 		FROM {$posts} AS p
-		WHERE p.post_status = %s
-			{$post_type}
-		ORDER BY p.post_type ASC, p.menu_order DESC",
-		'publish'
-	) );
+		WHERE p.post_status IN( 'publish', 'private', 'inherit' )
+        {$post_type}
+		ORDER BY p.post_type ASC, p.menu_order DESC"
+    );
 
 	// Setup our output
 	$output = '<option value="">' . sprintf( __( 'Choose the %s', 'gamipress' ), $singular_name ) . '</option>';
@@ -463,11 +462,10 @@ function gamipress_ajax_get_ranks_options() {
 	$ranks = $wpdb->get_results( $wpdb->prepare(
 		"SELECT {$select}
 		FROM {$posts} AS p
-		WHERE p.post_status = %s
-			{$post_type}
+		WHERE p.post_status IN( 'publish', 'private', 'inherit' )
+        {$post_type}
 		 AND p.post_title LIKE %s
 		ORDER BY p.post_type ASC, p.menu_order DESC",
-		'publish',
 		"%%{$search}%%"
 	) );
 

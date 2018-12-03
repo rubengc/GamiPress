@@ -719,7 +719,7 @@ function gamipress_update_requirements_ajax_handler() {
     if ( isset( $_POST['requirements'] ) ) {
 
         // Setup an array for storing all our requirement titles
-        // This lets us dynamically update the Label field when requirements are saved
+        // This let's us dynamically update the Label field when requirements are saved
         $new_titles = array();
         $triggers = array();
 

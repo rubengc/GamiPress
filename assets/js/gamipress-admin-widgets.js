@@ -100,6 +100,7 @@
         + '#widgets-right ' + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
         + '#widgets-right ' + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
         + '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'type' ) + ', '
+        + '#widgets-right ' + gamipress_widget_select2_selector( 'logs', 'type' ) + ', '
         + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'points_types' ) + ', '
         + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'achievement_types' ) + ', '
         + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'rank_types' )
@@ -205,6 +206,7 @@
             + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
             + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
             + gamipress_widget_select2_selector( 'ranks', 'type' ) + ', '
+            + gamipress_widget_select2_selector( 'logs', 'type' ) + ', '
             + gamipress_widget_select2_selector( 'earnings', 'points_types' ) + ', '
             + gamipress_widget_select2_selector( 'earnings', 'achievement_types' ) + ', '
             + gamipress_widget_select2_selector( 'earnings', 'rank_types' )
