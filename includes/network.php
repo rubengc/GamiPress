@@ -158,7 +158,7 @@ function gamipress_is_network_wide_active() {
  *
  * @param string $plugin Path to the main plugin file from plugins directory.
  *
- * @return array
+ * @return bool
  */
 function gamipress_is_plugin_active_on_network( $plugin ) {
 
@@ -189,12 +189,10 @@ function gamipress_get_plugin_active_sites( $plugin ) {
         return gamipress_get_network_site_ids();
     }
 
-    global $blog_id;
-
     $sites_active = array();
 
     // Store a copy of the original ID for later
-    $cached_id = $blog_id;
+    $blog_id = get_current_blog_id();
 
     // Loop through all sites
     foreach( gamipress_get_network_site_ids() as $site_blog_id ) {
@@ -208,10 +206,17 @@ function gamipress_get_plugin_active_sites( $plugin ) {
             $sites_active[] = $site_blog_id;
         }
 
+        // Restore the original blog
+        if ( $blog_id != $site_blog_id && is_multisite() ) {
+            restore_current_blog();
+        }
+
     }
 
     // Restore the original blog so the sky doesn't fall
-    switch_to_blog( $cached_id );
+    if ( $blog_id != get_current_blog_id() && is_multisite() ) {
+        restore_current_blog();
+    }
 
     return $sites_active;
 
@@ -338,3 +343,41 @@ function gamipress_fix_network_wp_insert_post() {
 
 }
 add_action( 'wp_insert_post', 'gamipress_fix_network_wp_insert_post', 9 );
+
+/**
+ * Switch to main site
+ *
+ * @since 1.6.3
+ *
+ * @return int The blog ID before switch to main site
+ */
+function gamipress_switch_to_main_site() {
+
+    $blog_id = get_current_blog_id();
+
+    // Switch to main site if not already on main site
+    if( ! is_main_site() ) {
+        switch_to_blog( get_main_site_id() );
+    }
+
+    return $blog_id;
+
+}
+
+/**
+ * Switch to main site just if GamiPress is network wide active
+ *
+ * @since 1.6.3
+ *
+ * @return int The blog ID before switch to main site
+ */
+function gamipress_switch_to_main_site_if_network_wide_active() {
+
+    // Switch to main site if GamiPress is network wide active
+    if( gamipress_is_network_wide_active() ) {
+        return gamipress_switch_to_main_site();
+    }
+
+    return get_current_blog_id();
+
+}

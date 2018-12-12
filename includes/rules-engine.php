@@ -173,6 +173,11 @@ function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step
 		return false;
 	}
 
+	// Prevent user from earning steps if achievement is not setup to be earned through steps
+    if( 'triggers' !== gamipress_get_post_meta( $achievement->ID, '_gamipress_earned_by' ) ) {
+        return false;
+    }
+
 	// Prevent user from repeatedly earning the same step
 	if ( $return && gamipress_get_user_achievements( array(
 			'user_id'        => absint( $user_id ),

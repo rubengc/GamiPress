@@ -242,7 +242,7 @@ add_action( 'enqueue_block_editor_assets', 'gamipress_blocks_editor_assets' );
 function gamipress_blocks_assets() {
 
     // Styles
-    wp_enqueue_style( 'gamipress-blocks-style-css', GAMIPRESS_URL . 'assets/css/gamipress-blocks-style.css', array( 'wp-blocks' ), GAMIPRESS_VER );
+    wp_enqueue_style( 'gamipress-blocks-style-css', GAMIPRESS_URL . 'assets/css/gamipress-blocks-style.css', array(), GAMIPRESS_VER );
 
 }
 add_action( 'enqueue_block_assets', 'gamipress_blocks_assets' );

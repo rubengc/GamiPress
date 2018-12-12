@@ -83,6 +83,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
 * [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
+* [wpForo](https://wordpress.org/plugins/gamipress-wpforo-integration/)
 * [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
@@ -253,6 +254,23 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.6.3 ###
+
+* **New Features**
+* On event dropdown from requirements, searches that matches a group name will show all events inside (eg: searching "word" will show all events inside the "WordPress" group).
+* **Bug Fixes**
+* Prevent to earn achievements through steps if achievement has been setup to be earned by another way (points, rank or admin).
+* Remove wrong wp-blocks dependency for front end assets.
+* Prevent to render any achievement on achievements list if filter is set to completed and user is not logged in.
+* **Improvements**
+* Added more filters to trigger count function in order to make them more customizable.
+* Added the log object to the 'gamipress_log_extra_data_fields' filter.
+* Revert back 1.6.2 changes on user trigger count function since now this function provides a more complex logs counts query for complex events.
+* **Developer Notes**
+* Make use of restore_current_blog() instead of switch_to_blog().
+* Replaced usages of $blog_id global with get_current_blog_id() function.
+* Updated CMB2 library to 2.5.1 version.
 
 ### 1.6.2 ###
 

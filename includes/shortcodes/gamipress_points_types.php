@@ -221,7 +221,7 @@ function gamipress_points_types_shortcode( $atts = array () ) {
 
 
 
-        if ( $blog_id != $site_blog_id ) {
+        if ( $blog_id != $site_blog_id && is_multisite() ) {
             // Come back to current blog
             restore_current_blog();
         }

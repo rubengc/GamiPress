@@ -409,9 +409,9 @@ function gamipress_get_user_earned_achievement_ids( $user_id = 0, $achievement_t
 
 	// Grab our earned achievements
 	$earned_achievements = gamipress_get_user_achievements( array(
-		'user_id'          => $user_id,
-		'achievement_type' => $achievement_type,
-		'display' => true
+		'user_id'           => $user_id,
+		'achievement_type'  => $achievement_type,
+		'display'           => true
 	) );
 
 	foreach ( $earned_achievements as $achievement )

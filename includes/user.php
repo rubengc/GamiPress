@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Get a user's gamipress achievements
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.6.3 Return an empty array if not user provided or current user is not logged in
  *
  * @param  array $args An array of all our relevant arguments
  *
@@ -40,6 +41,10 @@ function gamipress_get_user_achievements( $args = array() ) {
 	// Use current user's ID if none specified
 	if ( ! $args['user_id'] )
 		$args['user_id'] = get_current_user_id();
+
+	// Bail if not user provided or current user is not logged in
+	if( absint( $args['user_id'] ) === 0 )
+	    return array();
 
 	// Setup CT object
 	ct_setup_table( 'gamipress_user_earnings' );
@@ -647,10 +652,8 @@ function gamipress_profile_award_achievement( $user = null ) {
 	$achievement_types = array_merge( $achievement_types, $requirement_types );
 
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-		$blog_id = get_current_blog_id();
-		switch_to_blog( get_main_site_id() );
-	}
+    $current_blog_id    = get_current_blog_id();
+    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
 	?>
 
 	<h2><?php _e( 'Award an Achievement', 'gamipress' ); ?></h2>
@@ -797,9 +800,9 @@ function gamipress_profile_award_achievement( $user = null ) {
 	<?php
 
 	// If switched to blog, return back to que current blog
-	if( isset( $blog_id ) ) {
-		switch_to_blog( $blog_id );
-	}
+    if( $current_blog_id !== $blog_id && is_multisite() ) {
+        restore_current_blog();
+    }
 }
 
 /**
@@ -857,16 +860,14 @@ add_action( 'init', 'gamipress_process_user_data' );
  */
 function gamipress_get_network_achievement_types_for_user( $user_id ) {
 
-	global $blog_id;
-
-	// Store a copy of the original ID for later
-	$cached_id = $blog_id;
+    $blog_id = get_current_blog_id();
 
 	// Assume we have no achievement types
 	$all_achievement_types = array();
 
 	// Loop through all active sites
 	$sites = gamipress_get_network_site_ids();
+
 	foreach( $sites as $site_blog_id ) {
 
 		// If we're polling a different blog, switch to it
@@ -880,11 +881,16 @@ function gamipress_get_network_achievement_types_for_user( $user_id ) {
 		if ( is_array( $achievement_types ) ) {
 			$all_achievement_types = array_merge( $achievement_types, $all_achievement_types );
 		}
+
+        // If switched to blog, return back to que current blog
+        if ( $blog_id != $site_blog_id && is_multisite() ) {
+            restore_current_blog();
+        }
 	}
 
-	if ( is_multisite() ) {
-		// Restore the original blog so the sky doesn't fall
-		switch_to_blog( $cached_id );
+    // Restore the original blog so the sky doesn't fall
+	if ( $blog_id != get_current_blog_id() && is_multisite() ) {
+        restore_current_blog();
 	}
 
 	// Pare down achievement type list so we return no duplicates

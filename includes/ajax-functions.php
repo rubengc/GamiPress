@@ -189,8 +189,10 @@ function gamipress_ajax_get_posts() {
 
 		foreach( gamipress_get_network_site_ids() as $site_id ) {
 
+		    // Switch to site
 			switch_to_blog( $site_id );
 
+			// Get the current site name to append it to results
 			$site_name = get_bloginfo( 'name' );
 
 			// On this query, keep $wpdb->posts to get sub site posts
@@ -228,6 +230,9 @@ function gamipress_ajax_get_posts() {
 					   AND p.post_status IN( 'publish', 'private', 'inherit' )",
 				"%%{$search}%%"
 			) ) );
+
+            // Restore current site
+            restore_current_blog();
 
 		}
 

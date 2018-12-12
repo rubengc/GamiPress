@@ -170,10 +170,8 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
     gamipress_enqueue_scripts();
 
     // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-        $blog_id = get_current_blog_id();
-        switch_to_blog( get_main_site_id() );
-    }
+    $current_blog_id    = get_current_blog_id();
+    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
 
     // GamiPress template args global
     $gamipress_template_args = $atts;
@@ -204,8 +202,8 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
     $output = ob_get_clean();
 
     // If switched to blog, return back to que current blog
-    if( isset( $blog_id ) ) {
-        switch_to_blog( $blog_id );
+    if( $current_blog_id !== $blog_id && is_multisite() ) {
+        restore_current_blog();
     }
 
     return $output;

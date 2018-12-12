@@ -176,16 +176,14 @@ function gamipress_get_post_meta( $post_id, $meta_key = '', $single = true ) {
 
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
 
-        $site_id = get_current_blog_id();
-
         // Switch to main site
         switch_to_blog( get_main_site_id() );
 
         // Get the post meta
         $value = get_post_meta( $post_id, $meta_key, $single );
 
-        // Switch again to current site
-        switch_to_blog( $site_id );
+        // Restore current site
+        restore_current_blog();
 
         return $value;
 
@@ -215,15 +213,13 @@ function gamipress_update_post_meta( $post_id, $meta_key, $meta_value, $prev_val
 
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
 
-        $site_id = get_current_blog_id();
-
         // Switch to main site
         switch_to_blog( get_main_site_id() );
 
         $result = update_post_meta( $post_id, $meta_key, $meta_value, $prev_value );
 
-        // Switch again to current site
-        switch_to_blog( $site_id );
+        // Restore current site
+        restore_current_blog();
 
         return $result;
 
@@ -252,15 +248,13 @@ function gamipress_delete_post_meta( $post_id, $meta_key, $meta_value = '' ) {
 
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
 
-        $site_id = get_current_blog_id();
-
         // Switch to main site
         switch_to_blog( get_main_site_id() );
 
         $result = delete_post_meta( $post_id, $meta_key, $meta_value );
 
-        // Switch again to current site
-        switch_to_blog( $site_id );
+        // Restore current site
+        restore_current_blog();
 
         return $result;
 
@@ -291,6 +285,7 @@ function gamipress_get_post( $post_id ) {
     global $wpdb;
 
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
+
         // GamiPress post are stored on main site, so if we are not on main site, then we need to get their fields from global table
         $posts = GamiPress()->db->posts;
 
@@ -298,6 +293,7 @@ function gamipress_get_post( $post_id ) {
             "SELECT * FROM {$posts} WHERE ID = %d",
             absint( $post_id )
         ) );
+
     } else {
         return get_post( $post_id );
     }

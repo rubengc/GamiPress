@@ -130,6 +130,7 @@ function gamipress_log_extra_data_ui_meta_box( $object  = null ) {
  * @param  string   $type       Type to render form
  */
 function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
+
     // Start with an underscore to hide fields from custom fields list
     $prefix = '_gamipress_';
     $fields = array();
@@ -254,13 +255,17 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
     /**
      * Log extra data fields
      *
-     * @since 1.0.0
+     * @since   1.0.0
+     * @updated 1.6.3 Added $object parameter
      *
-     * @param array     $fields
-     * @param int       $log_id
-     * @param string    $type       See gamipress_get_log_types()
+     * @param array     $fields     Log extra fields.
+     * @param int       $log_id     The log ID.
+     * @param string    $type       The log type. See gamipress_get_log_types().
+     * @param stdClass  $object     The log object.
+     *
+     * @return array
      */
-    $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $object_id, $type );
+    $fields = apply_filters( 'gamipress_log_extra_data_fields', $fields, $object_id, $type, $object );
 
     if( ! empty( $fields ) ) {
 
@@ -285,6 +290,7 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
         _e( 'No extra data registered', 'gamipress' );
 
     }
+
 }
 
 /**
@@ -301,13 +307,15 @@ function gamipress_get_log_extra_data_ui_ajax_handler() {
 
     gamipress_log_extra_data_ui_html( $ct_object, $ct_object->log_id, $_REQUEST['type'] );
     die;
+
 }
 add_action( 'wp_ajax_get_log_extra_data_ui', 'gamipress_get_log_extra_data_ui_ajax_handler' );
 
 function gamipress_array_search_key( $needle_key, $array ) {
-    foreach($array as $key => $value) {
 
-        if($key == $needle_key)
+    foreach( $array as $key => $value ) {
+
+        if( $key == $needle_key )
             return $value;
 
         if( is_array( $value ) ) {
@@ -315,5 +323,7 @@ function gamipress_array_search_key( $needle_key, $array ) {
                 return $result;
         }
     }
+
     return false;
+
 }

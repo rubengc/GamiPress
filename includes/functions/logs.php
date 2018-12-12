@@ -195,10 +195,15 @@ function gamipress_query_logs( $args ) {
 
                 // Setup query definitions
                 $joins[] = "LEFT JOIN {$logs_meta} AS lm{$index} ON ( l.log_id = lm{$index}.log_id AND lm{$index}.meta_key = '{$meta_key}' )";
-                $where[] = "lm{$index}.meta_value = %s";
 
-                // Setup query vars
-                $query_args[] = $meta;
+                // If meta value is an array then need to compare using IN operator
+                if( is_array( $meta ) ) {
+                    $meta = "'" . implode( "', '", $meta ) . "'";
+                    $where[] = "lm{$index}.meta_value IN ({$meta})";
+                } else {
+                    $where[] = "lm{$index}.meta_value = %s";
+                    $query_args[] = $meta;
+                }
 
             }
 
@@ -262,7 +267,7 @@ function gamipress_query_logs( $args ) {
  *
  * @param int       $user_id
  * @param array     $log_meta
- * @param integer   $since
+ * @param int       $since
  *
  * @return array
  */
@@ -450,8 +455,14 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
     }
 
     foreach( $log_meta as $log_meta_key => $log_meta_value ) {
+
         if( in_array( $log_meta_key, array( 'pattern', 'type' ) ) ) {
             continue;
+        }
+
+        // Implode meta value if is an array of values
+        if( is_array( $log_meta_value ) ) {
+            $log_meta_value = implode( ', ', $log_meta_value );
         }
 
         $gamipress_pattern_replacements['{' . $log_meta_key . '}'] = $log_meta_value;

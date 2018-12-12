@@ -335,10 +335,8 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 	$showed_ids    	= isset( $args['showed_ids'] )    	? $args['showed_ids']   : array();
 
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-	if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-		$blog_id = get_current_blog_id();
-		switch_to_blog( get_main_site_id() );
-	}
+    $current_blog_id    = get_current_blog_id();
+    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
 
     // Turn no attributes to false
     if( $current_user === 'no' ) {
@@ -434,7 +432,9 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 	foreach( $sites as $site_blog_id ) {
 
 		// If we're not polling the current site, switch to the site we're polling
-		if ( get_current_blog_id() != $site_blog_id ) {
+        $current_site_blog_id = get_current_blog_id();
+
+		if ( $current_site_blog_id != $site_blog_id ) {
 			switch_to_blog( $site_blog_id );
 		}
 
@@ -554,7 +554,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 			$achievements .= '</div><!-- .gamipress-no-results -->';
 		}
 
-		if( get_current_blog_id() != $site_blog_id ) {
+		if( $current_site_blog_id != $site_blog_id && is_multisite() ) {
 			// Come back to current blog
 			restore_current_blog();
 		}
@@ -562,8 +562,8 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 	}
 
 	// If switched to blog, return back to que current blog
-	if( isset( $blog_id ) ) {
-		switch_to_blog( $blog_id );
+	if( $current_blog_id !== $blog_id && is_multisite() ) {
+        restore_current_blog();
 	}
 
 	return array(
