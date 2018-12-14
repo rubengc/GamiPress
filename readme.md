@@ -255,6 +255,11 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.3.1 ###
+
+* **Bug Fixes**
+* Fixed a wrong method call on the requirements event's dropdown search function.
+
 ### 1.6.3 ###
 
 * **New Features**

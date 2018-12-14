@@ -161,7 +161,7 @@ function gamipress_select2_optgroup_matcher(params, data) {
             var child = data.children[c];
             child.parentText += data.parentText + " " + data.text;
 
-            var matches = modelMatcher(params, child);
+            var matches = gamipress_select2_optgroup_matcher( params, child );
 
             // If there wasn't a match, remove the object in the array
             if (matches == null) {
@@ -175,7 +175,7 @@ function gamipress_select2_optgroup_matcher(params, data) {
         }
 
         // If there were no matching children, check just the plain object
-        return modelMatcher(params, match);
+        return gamipress_select2_optgroup_matcher( params, match );
     }
 
     // If the typed-in term matches the text of this term, or the text from any
