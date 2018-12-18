@@ -141,23 +141,26 @@ function gamipress_select2_users_process_results( response, params ) {
  *
  * @return mixed
  */
-function gamipress_select2_optgroup_matcher(params, data) {
+function gamipress_select2_optgroup_matcher( params, data ) {
 
-    data.parentText = data.parentText || "";
+    // initialize required vars
+    data.parentText = data.parentText   || '';
+    params.term     = params.term       || '';
 
     // Always return the object if there is nothing to compare
-    if ($.trim(params.term) === '') {
+    if ( $.trim( params.term ) === '' ) {
         return data;
     }
 
     // Do a recursive check for options with children
-    if (data.children && data.children.length > 0) {
+    if ( data.children && data.children.length > 0 ) {
         // Clone the data object if there are children
         // This is required as we modify the object to remove any non-matches
-        var match = $.extend(true, {}, data);
+        var match = $.extend( true, {}, data );
 
         // Check each child of the option
         for ( var c = data.children.length - 1; c >= 0; c-- ) {
+
             var child = data.children[c];
             child.parentText += data.parentText + " " + data.text;
 
@@ -165,12 +168,13 @@ function gamipress_select2_optgroup_matcher(params, data) {
 
             // If there wasn't a match, remove the object in the array
             if (matches == null) {
-                match.children.splice(c, 1);
+                match.children.splice( c, 1 );
             }
+
         }
 
         // If any children matched, return the new object
-        if (match.children.length > 0) {
+        if ( match.children.length > 0 ) {
             return match;
         }
 
@@ -180,15 +184,56 @@ function gamipress_select2_optgroup_matcher(params, data) {
 
     // If the typed-in term matches the text of this term, or the text from any
     // parent term, then it's a match.
-    var original = (data.parentText + ' ' + data.text).toUpperCase();
+    var original = ( data.parentText + ' ' + data.text ).toUpperCase();
     var term = params.term.toUpperCase();
 
 
     // Check if the text contains the term
-    if ( original.indexOf(term) > -1 ) {
+    if ( original.indexOf( term ) > -1 ) {
         return data;
     }
 
     // If it doesn't contain the term, don't return anything
     return null;
+}
+
+/**
+ * Function to check if select2 is correctly updated to latest release
+ *
+ * @since 1.6.3
+ *
+ * @param show_in_console
+ *
+ * @return boolean
+ */
+function gamipress_is_select2_updated( show_in_console ) {
+
+    if( show_in_console === undefined )
+        show_in_console = false;
+
+    // Select2 version check
+    try {
+        // Select2 ver >= 4.x
+
+        // Let's to create a hidden select element to turn it into a select2 element and check that everything works correctly
+        $('<select id="gamipress-select2-version-check" style="display: none;"><option value=""></option></select>').insertAfter('body');
+
+        $("#gamipress-select2-version-check").select2({ theme: 'gamipress-select2-hidden' });
+
+        // If this function doesn't triggers any error, then Select2 is correctly up to date
+        $("#gamipress-select2-version-check").select2('isOpen');
+
+        if( show_in_console )
+            console.log('Select2 is up to date!');
+
+        return true;
+
+    } catch(e) {
+        // Select2 ver <= 3.x
+
+        if( show_in_console )
+            console.log('Select2 is outdated!');
+
+        return false;
+    }
 }

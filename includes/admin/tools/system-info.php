@@ -315,6 +315,12 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'value' => ( $user_earnings_meta_exists ? 'Yes' : 'No' ),
                 'classes' => ( $user_earnings_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
+            'gamipress_select2' => array(
+                'name' => __( 'Select2 Library', 'gamipress' ),
+                'type' => 'display',
+                'value' => __( 'Outdated', 'gamipress' ),
+                'classes' => 'gamipress-label-danger',
+            ),
             'gamipress_install_date' => array(
                 'name' => __( 'Installation Date', 'gamipress' ),
                 'type' => 'display',

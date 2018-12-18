@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.3.1
+Stable tag: 1.6.3.2
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -108,6 +108,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 * [Points CSV Tool](https://wordpress.org/plugins/gamipress-points-csv-tool/) - Tool to import/export points through CSV files.
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
+* [PeepSo Group Leaderboard](https://wordpress.org/plugins/gamipress-peepso-group-leaderboard/) - Add a new tab on PeepSo groups with a GamiPress leaderboard of group members.
 * [Block Users](https://wordpress.org/plugins/gamipress-block-users/) - Block users and roles from getting awarded through the GamiPress awards engine.
 * [Notifications By Type](https://wordpress.org/plugins/gamipress-notifications-by-type/) - Set different notifications settings by type.
 * [Emails By Type](https://wordpress.org/plugins/gamipress-emails-by-type/) - Set different emails settings by type.
@@ -238,6 +239,13 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.3.2 =
+
+* **New Features**
+* Added Select2 version check on System Info tool.
+* **Improvements**
+* Added extra checks to the search term received on the requirements event's dropdown search function.
 
 = 1.6.3.1 =
 

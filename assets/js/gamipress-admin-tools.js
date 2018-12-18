@@ -478,4 +478,23 @@
         gamipress_run_bulk_tool( $(this) );
     });
 
+    // ----------------------------------
+    // System Info
+    // ----------------------------------
+
+    // Select2 version check
+    if( gamipress_is_select2_updated() ) {
+
+        var field_row = $('.cmb-type-display.cmb2-id-gamipress-select2');
+        var field = field_row.find('.cmb-td span');
+
+        // Update field and row classes
+        field_row.addClass('gamipress-label-success').removeClass('gamipress-label-danger');
+        field.addClass('gamipress-label-success').removeClass('gamipress-label-danger');
+
+        // Update field text
+        field.text('Updated');
+
+    }
+
 })( jQuery );
