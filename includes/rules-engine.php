@@ -401,7 +401,8 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 /**
  * Check if user meets the points requirement for a given achievement
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.6.4 Added checks for 'points-balance' event
  *
  * @param  bool 	$return 		The current status of whether or not the user deserves this achievement
  * @param  integer	$user_id 		The given user's ID
@@ -441,6 +442,30 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 			}
 
 		} else {
+            $return = false;
+        }
+
+	} else if( 'points-balance' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' ) ) {
+
+        // Grab our user's points and see if they at least as many as required
+        $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
+        $points_type_required   = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_required' );
+
+        // Get user points balance
+        $points_balance    		= gamipress_get_user_points( $user_id, $points_type_required );
+
+        if( $points_balance >= $points_required ) {
+
+            // If the user just earned the achievement, though, don't let them earn it again
+            // This prevents an infinite loop if the achievement has no maximum earnings limit
+            $minimum_time  	= current_time( 'timestamp' ) - 1;
+            $last_activity  = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
+
+            if ( $last_activity > $minimum_time ) {
+                $return = false;
+            }
+
+        } else {
             $return = false;
         }
 

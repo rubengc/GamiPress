@@ -123,6 +123,359 @@
     });
 
     // ----------------------------------
+    // Export Achievements, Points and Ranks Tool
+    // ----------------------------------
+
+    var to_export = [];
+
+    // Function to handle the export process
+    function gamipress_run_export_tool( type, loop ) {
+
+        var button_element = $('#export_' + type );
+        var response_element = $('#export-' + type + '-response');
+        var data;
+
+        if( loop === undefined ) {
+            loop = 0;
+        }
+
+        // Disable the export button
+        button_element.prop('disabled', true);
+
+        // Check if response element exists
+        if( ! response_element.length ) {
+            button_element.parent().append('<span id="export-' + type + '-response" style="display: inline-block; padding: 5px 0 0 8px;"></span>');
+
+            response_element = $('#export-' + type + '-response');
+        }
+
+        if( ! response_element.find('.spinner').length ) {
+            // Show the spinner
+            response_element.html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
+        }
+
+        // Setup request data per type
+        switch( type ) {
+            case 'achievements':
+                // Achievements data
+                var achievement_types = [];
+
+                $('input[name="export_achievements_achievement_types[]"]:checked').each(function() {
+                    achievement_types.push( $(this).val() );
+                });
+
+                data = {
+                    action: 'gamipress_import_export_achievements_tool_export',
+                    achievement_types: achievement_types,
+                    user_field: $('#export_achievements_user_field').val(),
+                    achievement_field: $('#export_achievements_achievement_field').val(),
+                    loop: loop
+                };
+                break;
+            case 'points':
+                // Points data
+                var points_types = [];
+
+                $('input[name="export_points_points_types[]"]:checked').each(function() {
+                    points_types.push( $(this).val() );
+                });
+
+                data = {
+                    action: 'gamipress_import_export_points_tool_export',
+                    points_types: points_types,
+                    user_field: $('#export_points_user_field').val(),
+                    loop: loop
+                };
+                break;
+            case 'ranks':
+                // Ranks data
+                var rank_types = [];
+
+                $('input[name="export_ranks_rank_types[]"]:checked').each(function() {
+                    rank_types.push( $(this).val() );
+                });
+
+                data = {
+                    action: 'gamipress_import_export_ranks_tool_export',
+                    rank_types: rank_types,
+                    user_field: $('#export_ranks_user_field').val(),
+                    rank_field: $('#export_ranks_rank_field').val(),
+                    loop: loop
+                };
+                break;
+        }
+
+        $.post(
+            ajaxurl,
+            data,
+            function( response ) {
+
+                if( response.data.items !== undefined ) {
+                    // Concat received items
+                    to_export = to_export.concat( response.data.items );
+                }
+
+                // Run again utility
+                if( response.data.run_again !== undefined && response.data.run_again && response.success === true ) {
+
+                    if( ! response_element.find('#export-' + type + '-response-message').length ) {
+                        response_element.append('<span id="export-' + type + '-response-message" style="padding-left: 5px;"></span>');
+                    }
+
+                    response_element.find('#export-' + type + '-response-message').html( response.data.message );
+
+                    loop++;
+
+                    // Run again passing the next loop index
+                    gamipress_run_export_tool( type, loop );
+
+                    return;
+                }
+
+                if( response.success === false ) {
+                    response_element.css({color:'#a00'});
+                }
+
+                response_element.html(( response.data.message !== undefined ? response.data.message : response.data ) );
+
+                // Enable the export button
+                button_element.prop('disabled', false);
+
+                if( to_export.length ) {
+                    // Download the CSV with the data
+                    gamipress_download_csv( to_export, 'gamipress-user-' + type + '-export' );
+                }
+            }
+        ).fail(function() {
+
+            response_element.html('The server has returned an internal error.');
+
+            // Enable the export button
+            button_element.prop('disabled', false);
+        });
+
+    }
+
+    $('#export_achievements, #export_points, #export_ranks').click(function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var type;
+        var error = '';
+
+        switch( $this.attr('id') ) {
+            case 'export_achievements':
+                // Achievements export
+                type = 'achievements';
+
+                // Check achievement types
+                if( ! $('input[name="export_achievements_achievement_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 achievement type to export.';
+                }
+                break;
+            case 'export_points':
+                // Points export
+                type = 'points';
+
+                // Check points types
+                if( ! $('input[name="export_points_points_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 points type to export.';
+                }
+                break;
+            case 'export_ranks':
+                // Ranks export
+                type = 'ranks';
+
+                // Check rank types
+                if( ! $('input[name="export_ranks_rank_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 rank type to export.';
+                }
+                break;
+        }
+
+        // Remove error messages
+        $('#export-' + type + '-warning').remove();
+
+        // If there is any error, show it to the user
+        if( error !== '' ) {
+            $this.parent().prepend('<p id="export-' + type + '-warning" class="cmb2-metabox-description" style="color: #a00;">' + error + '</p>');
+            return false;
+        }
+
+        // Reset the data to export
+        to_export = [];
+
+        gamipress_run_export_tool( type );
+
+    });
+
+    // ----------------------------------
+    // Import Achievements, Points and Ranks Tool
+    // ----------------------------------
+
+    $('#import_achievements, #import_points, #import_ranks').click(function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var type;
+
+        switch( $this.attr('id') ) {
+            case 'import_achievements':
+                // Achievements import
+                type = 'achievements';
+                break;
+            case 'import_points':
+                // Points import
+                type = 'points';
+                break;
+            case 'import_ranks':
+                // Ranks import
+                type = 'ranks';
+                break;
+        }
+
+        // Remove error messages
+        $('#import-' + type + '-warning').remove();
+
+        // Check if CSV file has been chosen
+        if( $('#import_' + type + '_file')[0].files[0] === undefined ) {
+            $this.parent().prepend('<p id="import-' + type + '-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose a CSV file to import.</p>');
+            return false;
+        }
+
+        // Setup the form data to send
+        var form_data = new FormData();
+        form_data.append( 'action', 'gamipress_import_export_' + type + '_tool_import' );
+        form_data.append( 'file', $('#import_' + type + '_file')[0].files[0] );
+
+        // Disable the button
+        $this.prop('disabled', true);
+
+        // Show the spinner
+        $this.parent().prepend('<p id="import-' + type + '-response" class="cmb2-metabox-description"><span class="spinner is-active" style="float: none;"></span></p>');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'post',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response) {
+
+                if( response.success === false ) {
+                    // Set a red color to the response to let user known that something is going wrong
+                    $('#import-' + type + '-response').css({color:'#a00'});
+                }
+
+                // Update the response content
+                $('#import-' + type + '-response').html( response.data );
+
+                // Re-enable the button
+                $this.prop('disabled', false);
+
+            }
+        });
+
+    });
+
+    // ----------------------------------
+    // Download Achievements, Points and Ranks CSV Template
+    // ----------------------------------
+
+    $('#download_achievements_csv_template, #download_points_csv_template, #download_ranks_csv_template').click(function(e) {
+        e.preventDefault();
+
+        var type, sample_data;
+
+        switch( $(this).attr('id') ) {
+            case 'download_achievements_csv_template':
+                // Achievements sample data
+                type = 'achievements';
+                sample_data = [
+                    {
+                        user: 'User (ID, username or email)',
+                        achievements: 'Achievements (Comma-separated list of IDs, titles and/or slugs)',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_id,
+                        achievements: '1,2,3',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_name,
+                        achievements: 'Test Badge,Custom Quest,Super Achievement',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_email,
+                        achievements: 'test-badge,custom-quest,super-achievement',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_id,
+                        achievements: '1,Test Badge,test-badge',
+                    },
+                ];
+                break;
+            case 'download_points_csv_template':
+                // Points sample data
+                type = 'points';
+                sample_data = [
+                    {
+                        user: 'User (ID, username or email)',
+                        points: 'Points',
+                        points_type: 'Points Type (slug)',
+                        log: 'Log Description (Optional)'
+                    },
+                    {
+                        user: gamipress_admin_tools.user_id,
+                        points: '100',
+                        points_type: 'credits',
+                        log: '100 credits awarded through the user\'s ID'
+                    },
+                    {
+                        user: gamipress_admin_tools.user_name,
+                        points: '1000',
+                        points_type: 'coins',
+                        log: '1,000 coins awarded through the user\'s username'
+                    },
+                    {
+                        user: gamipress_admin_tools.user_email,
+                        points: '50',
+                        points_type: 'gems',
+                        log: '50 gems awarded through the user\'s email'
+                    },
+                ];
+                break;
+            case 'download_ranks_csv_template':
+                // Ranks sample data
+                type = 'ranks';
+                sample_data = [
+                    {
+                        user: 'User (ID, username or email)',
+                        rank: 'Rank (ID, title or slug of rank to assign to the user)',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_id,
+                        rank: '1',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_name,
+                        rank: 'Test Rank',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_email,
+                        rank: 'test-rank',
+                    },
+                ];
+                break;
+        }
+
+        if( Array.isArray( sample_data ) ) {
+            gamipress_download_csv( sample_data, 'gamipress-' + type + '-csv-template' );
+        }
+
+    });
+
+    // ----------------------------------
     // Import Settings Tool
     // ----------------------------------
 
@@ -280,7 +633,9 @@
         gamipress_run_recount_activity_tool();
     });
 
+    // ----------------------------------
     // Bulk Awards/Revokes Tool
+    // ----------------------------------
 
     // Award to all users
     $('#bulk-awards, #bulk-revokes').on('change',

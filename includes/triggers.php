@@ -46,6 +46,7 @@ function gamipress_get_activity_triggers() {
 				'any-achievement'      					=> __( 'Unlock any achievement of type', 'gamipress' ),
 				'all-achievements'     					=> __( 'Unlock all Achievements of type', 'gamipress' ),
 				'earn-points' 							=> __( 'Earn an amount of points', 'gamipress' ),
+				'points-balance' 					    => __( 'Reach a points balance', 'gamipress' ),
 				'gamipress_expend_points' 				=> __( 'Expend an amount of points', 'gamipress' ),
 				'earn-rank' 							=> __( 'Reach a rank', 'gamipress' ),
 			),
@@ -354,6 +355,7 @@ function gamipress_get_activity_triggers_excluded_from_activity_limit() {
     return apply_filters( 'gamipress_activity_triggers_excluded_from_activity_limit', array(
         'gamipress_register',
         'earn-points',
+        'points-balance',
         'earn-rank'
     ) );
 

@@ -594,13 +594,14 @@ function gamipress_get_points_based_achievements( $points_type = '' ) {
 			LEFT JOIN {$postmeta} AS m2 ON ( p.ID = m2.post_id AND m2.meta_key = %s )
 			LEFT JOIN {$postmeta} AS m3 ON ( p.ID = m3.post_id AND m3.meta_key = %s )
 			WHERE m1.meta_value = %s
-				AND ( m2.meta_value = %s OR m3.meta_value = %s )
+				AND ( m2.meta_value = %s OR m2.meta_value = %s OR m3.meta_value = %s )
 			GROUP BY p.ID",
 			'_gamipress_points_type_required',	// (m1.meta_key) Of this post type
 			'_gamipress_trigger_type',			// (m2.meta_key) Requirements based on earn points
 			'_gamipress_earned_by',				// (m3.meta_key) Achievements earned by points
 			$points_type,						// (m1.meta_value) Of this post type
 			'earn-points',						// (m2.meta_value) Requirements based on earn points
+			'points-balance',					// (m2.meta_value) Requirements based on points balance
 			'points'							// (m3.meta_value) Achievements earned by points
 		) );
 
@@ -631,7 +632,7 @@ function gamipress_bust_points_based_achievements_cache( $post_id ) {
 		gamipress_delete_transient( "gamipress_{$points_type}_based_achievements" );
 
 	} else if( in_array( gamipress_get_post_type( $post_id ), gamipress_get_requirement_types_slugs() )
-		&& 'earn-points' == gamipress_get_post_meta( $post_id, '_gamipress_trigger_type' ) ) {
+		&& in_array( gamipress_get_post_meta( $post_id, '_gamipress_trigger_type' ), array( 'earn-points', 'points-balance' ) ) ) {
 
 		$points_type = gamipress_get_post_meta( $post_id, '_gamipress_points_type_required' );
 

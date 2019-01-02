@@ -924,6 +924,9 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         case 'earn-points':
             $title = sprintf( __( 'Earn %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
             break;
+        case 'points-balance':
+            $title = sprintf( __( 'Reach a balance of %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
+            break;
         case 'gamipress_expend_points':
             $title = sprintf( __( 'Expend %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
             break;

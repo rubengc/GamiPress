@@ -9,7 +9,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register Clean Data Tool meta boxes
+ * Register Import/Export Settings Tool meta boxes
  *
  * @since  1.1.7
  *
@@ -23,22 +23,22 @@ function gamipress_import_export_settings_tool_meta_boxes( $meta_boxes ) {
         'title' => __( 'Import/Export Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_settings_tool_fields', array(
             'export_settings' => array(
-                'label' => __( 'Export Settings', 'gamipress' ),
-                'desc' => __( 'Export settings from this site as a file to easily import this configuration to another site.', 'gamipress' ),
-                'type' => 'button',
-                'icon' => 'dashicons-download',
-                'action' => 'export_settings'
+                'label'     => __( 'Export Settings', 'gamipress' ),
+                'desc'      => __( 'Export settings from this site as a file to easily import this configuration to another site.', 'gamipress' ),
+                'type'      => 'button',
+                'button'    => 'primary',
+                'icon'      => 'dashicons-download',
+                'action'    => 'export_settings'
             ),
             'import_settings_file' => array(
-                'type' => 'text',
-                'attributes' => array(
-                    'type' => 'file'
-                )
+                'type'          => 'text',
+                'attributes'    => array( 'type' => 'file' )
             ),
             'import_settings' => array(
-                'label' => __( 'Import Settings', 'gamipress' ),
-                'type' => 'button',
-                'icon' => 'dashicons-upload',
+                'label'     => __( 'Import Settings', 'gamipress' ),
+                'type'      => 'button',
+                'button'    => 'primary',
+                'icon'      => 'dashicons-upload',
             ),
         ) )
     );

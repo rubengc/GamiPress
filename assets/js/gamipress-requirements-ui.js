@@ -120,8 +120,14 @@
         var limit_text = $(this).siblings('.limit-text');
         var limit = $(this).siblings('.limit');
         var limit_type = $(this).siblings('.limit-type');
+        var limit_excluded_triggers = [
+            'gamipress_register',
+            'earn-points',
+            'points-balance',
+            'earn-rank',
+        ];
 
-        if ( trigger_type === 'gamipress_register' || trigger_type === 'earn-points' || trigger_type === 'earn-rank' ) {
+        if ( limit_excluded_triggers.indexOf( trigger_type ) !== -1 ) {
             // Hide limit fields
             count.hide();
             count_text.hide();
@@ -140,8 +146,13 @@
         // Required points
         var points_selector_required = $(this).siblings('.points-required');
         var points_type_selector_required = $(this).siblings('.select-points-type-required');
+        var required_points_triggers = [
+            'earn-points',
+            'points-balance',
+            'gamipress_expend_points',
+        ];
 
-        if ( trigger_type === 'earn-points' || trigger_type === 'gamipress_expend_points' ) {
+        if (required_points_triggers.indexOf( trigger_type ) !== -1 ) {
             // Show required points fields
             points_selector_required.show();
             points_type_selector_required.show();

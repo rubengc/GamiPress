@@ -185,11 +185,19 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     // Tools page
     if( $hook === 'gamipress_page_gamipress_tools' ) {
 
+        $user = get_userdata( get_current_user_id() );
+
         wp_localize_script( 'gamipress-admin-tools-js', 'gamipress_admin_tools', array(
+            // Notices
             'recount_activity_notice'   => __( 'Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed.', 'gamipress' ),
+            // Field placeholders
             'achievements_placeholder'  => __( 'Select Achievements', 'gamipress' ),
             'rank_placeholder'          => __( 'Select a Rank', 'gamipress' ),
             'users_placeholder'         => __( 'Select Users', 'gamipress' ),
+            // User data (to be used as sample or on CSV templates)
+            'user_id'                   => $user->ID,
+            'user_name'                 => $user->user_login,
+            'user_email'                => $user->user_email,
         ) );
 
         wp_enqueue_script( 'gamipress-admin-tools-js' );

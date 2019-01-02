@@ -9,11 +9,17 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 // GamiPress Tools
+// General
 require_once GAMIPRESS_DIR . 'includes/admin/tools/bulk-awards.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/bulk-revokes.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/recount-activity.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/reset-data.php';
+// Import/Export
+require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-achievements.php';
+require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-points.php';
+require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-settings.php';
+// System Info
 require_once GAMIPRESS_DIR . 'includes/admin/tools/system-info.php';
 
 /**

@@ -99,7 +99,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
-* [Points CSV Tool](https://wordpress.org/plugins/gamipress-points-csv-tool/) - Tool to import/export points through CSV files.
+* [LearnDash Group Leaderboard](https://wordpress.org/plugins/gamipress-learndash-group-leaderboard/) - Automatically create a GamiPress leaderboard of LearnDash group members.
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
 * [PeepSo Group Leaderboard](https://wordpress.org/plugins/gamipress-peepso-group-leaderboard/) - Add a new tab on PeepSo groups with a GamiPress leaderboard of group members.
 * [Block Users](https://wordpress.org/plugins/gamipress-block-users/) - Block users and roles from getting awarded through the GamiPress awards engine.
@@ -255,6 +255,13 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.6.4 ###
+
+* **New Features**
+* Added the event "Reach a points balance".
+* Added new tools to import and export user points, achievements and ranks.
+* GamiPress - Points CSV Tool add-on has been added as a built-in tool.
 
 ### 1.6.3.2 ###
 
