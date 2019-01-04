@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.4
+Stable tag: 1.6.4.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -239,6 +239,17 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.4.1 =
+
+* **Bug Fixes**
+* Fixed incorrect site switches from shortcodes on multisite installs.
+* **Improvements**
+* Make GamiPress post types visible in rest API.
+* Added more responsive CSS rules to the columns feature making them full width on small screens.
+* Force box sizing to box's border to keep layout and columns features working on any theme.
+* **Developer Notes**
+* Added hooks to hide any GamiPress post type from rest API.
 
 = 1.6.4 =
 

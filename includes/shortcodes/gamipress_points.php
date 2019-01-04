@@ -176,24 +176,19 @@ function gamipress_points_shortcode( $atts = array () ) {
     gamipress_enqueue_scripts();
 
     // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    $current_blog_id    = get_current_blog_id();
-    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
+    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' ) {
         $atts['user_id'] = get_current_user_id();
     }
 
-    // Get the current user if one wasn't specified
-    //if( absint( $atts['user_id'] ) === 0 )
-        //$atts['user_id'] = get_current_user_id();
-
-    // If we're polling all sites, grab an array of site IDs
     if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() ) {
+        // If we're polling all sites, grab an array of site IDs
         $sites = gamipress_get_network_site_ids();
-    // Otherwise, use only the current site
     } else {
-        $sites = array( get_current_blog_id() );
+        // Otherwise, use only the current site
+        $sites = array( $blog_id );
     }
 
     // GamiPress template args global
@@ -274,7 +269,7 @@ function gamipress_points_shortcode( $atts = array () ) {
     }
 
     // If switched to blog, return back to que current blog
-    if( $current_blog_id !== $blog_id && is_multisite() ) {
+    if( $blog_id !== get_current_blog_id() && is_multisite() ) {
         restore_current_blog();
     }
 

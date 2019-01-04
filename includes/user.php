@@ -652,8 +652,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 	$achievement_types = array_merge( $achievement_types, $requirement_types );
 
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    $current_blog_id    = get_current_blog_id();
-    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
+    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 	?>
 
 	<h2><?php _e( 'Award an Achievement', 'gamipress' ); ?></h2>
@@ -800,7 +799,7 @@ function gamipress_profile_award_achievement( $user = null ) {
 	<?php
 
 	// If switched to blog, return back to que current blog
-    if( $current_blog_id !== $blog_id && is_multisite() ) {
+    if( $blog_id !== get_current_blog_id() && is_multisite() ) {
         restore_current_blog();
     }
 }

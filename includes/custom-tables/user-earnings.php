@@ -228,8 +228,7 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
         case 'name':
 
             // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-            $current_blog_id    = get_current_blog_id();
-            $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
+            $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
             // Check if assigned post exists to modify the output
             if( gamipress_post_exists( $user_earning->post_id ) && gamipress_get_post_status( $user_earning->post_id ) === 'publish' ) : ?>
@@ -339,7 +338,7 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
             <?php
 
             // If switched to blog, return back to que current blog
-            if( $current_blog_id !== $blog_id && is_multisite() ) {
+            if( $blog_id !== get_current_blog_id() && is_multisite() ) {
                 restore_current_blog();
             }
 

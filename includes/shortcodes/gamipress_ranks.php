@@ -212,8 +212,7 @@ function gamipress_ranks_shortcode( $atts = array () ) {
     gamipress_enqueue_scripts();
 
     // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    $current_blog_id    = get_current_blog_id();
-    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
+    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
 	// If we're polling all sites, grab an array of site IDs
 	if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() )
@@ -363,7 +362,7 @@ function gamipress_ranks_shortcode( $atts = array () ) {
 	$output = ob_get_clean();
 
 	// If switched to blog, return back to que current blog
-    if( $current_blog_id !== $blog_id && is_multisite() ) {
+    if( $blog_id !== get_current_blog_id() && is_multisite() ) {
         restore_current_blog();
     }
 

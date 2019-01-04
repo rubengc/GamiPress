@@ -88,6 +88,16 @@
 	align-self: flex-start;
 }
 
+/* Force box sizing to box's border instead of box's content */
+.gamipress-achievement:not(.gamipress-layout-none) *,
+.gamipress-rank:not(.gamipress-layout-none) *,
+.single-achievement.achievement-wrap:not(.gamipress-layout-none) *,
+.single-rank.rank-wrap:not(.gamipress-layout-none) *,
+.gamipress-user-points:not(.gamipress-layout-none) *,
+.gamipress-points-types:not(.gamipress-layout-none) * {
+	box-sizing: border-box;
+}
+
 /* Left and Right */
 .gamipress-achievement.gamipress-layout-left .gamipress-achievement-image,
 .gamipress-achievement.gamipress-layout-right .gamipress-achievement-image,
@@ -232,6 +242,18 @@
 	flex-wrap: wrap;
 
 	width: 100%;
+}
+
+[class*="gamipress-columns"] > .gamipress-achievement,
+[class*="gamipress-columns"] > .gamipress-points,
+[class*="gamipress-columns"] > .gamipress-points-type,
+[class*="gamipress-columns"] .gamipress-rank {
+	width: 100%;
+}
+
+/* Force box sizing to box's border instead of box's content */
+[class*="gamipress-columns"] * {
+	box-sizing: border-box;
 }
 
 @media screen and (min-width: 768px) {

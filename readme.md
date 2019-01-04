@@ -256,6 +256,17 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.4.1 ###
+
+* **Bug Fixes**
+* Fixed incorrect site switches from shortcodes on multisite installs.
+* **Improvements**
+* Make GamiPress post types visible in rest API.
+* Added more responsive CSS rules to the columns feature making them full width on small screens.
+* Force box sizing to box's border to keep layout and columns features working on any theme.
+* **Developer Notes**
+* Added hooks to hide any GamiPress post type from rest API.
+
 ### 1.6.4 ###
 
 * **New Features**

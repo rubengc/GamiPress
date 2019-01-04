@@ -222,8 +222,7 @@ function gamipress_earnings_shortcode( $atts = array () ) {
     gamipress_enqueue_scripts();
 
     // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    $current_blog_id    = get_current_blog_id();
-    $blog_id            = gamipress_switch_to_main_site_if_network_wide_active();
+    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' ) {
@@ -258,7 +257,7 @@ function gamipress_earnings_shortcode( $atts = array () ) {
     $output = ob_get_clean();
 
     // If switched to blog, return back to que current blog
-    if( $current_blog_id !== $blog_id && is_multisite() ) {
+    if( $blog_id !== get_current_blog_id() && is_multisite() ) {
         restore_current_blog();
     }
 
