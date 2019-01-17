@@ -4,6 +4,8 @@
  *
  * Based on WP_Post_Type class
  *
+ * @author GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
+ *
  * @since 1.0.0
  */
 // Exit if accessed directly

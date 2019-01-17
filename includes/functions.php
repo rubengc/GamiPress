@@ -615,3 +615,36 @@ function gamipress_get_user_meta_sum( $meta_key ) {
     return absint( $sum );
 
 }
+
+/**
+ * Turn an array into a HTML list of hidden inputs
+ *
+ * @since 1.6.5
+ *
+ * @param array $array      Array of elements to render
+ * @param array $excluded   Optional, elements excluded for being rendered
+ *
+ * @return string
+ */
+function gamipress_array_as_hidden_inputs( $array, $excluded = array() ) {
+
+    $html = '';
+
+    foreach( $array as $key => $value ) {
+
+        // Skip excluded keys
+        if( in_array( $key, $excluded ) ) {
+            continue;
+        }
+
+        // Sanitize value
+        $value = is_array( $value ) ? implode(',', $value ) : $value;
+
+
+        $html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
+
+    }
+
+    return $html;
+
+}

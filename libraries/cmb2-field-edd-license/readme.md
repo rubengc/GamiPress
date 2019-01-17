@@ -43,18 +43,31 @@ function cmb2_edd_license_metabox() {
 		'desc'                      => __( 'Field description (optional)', 'cmb2' ),
 		'id'                        => $prefix . 'license',
 		'type'                      => 'edd_license',
+		
+		// Field specific settings
 		'server'                    => 'http://your-site.com/edd-sl-api',
-        'file'                      => __DIR__,
-        'item_id'                   => 123,
-        'item_name'                 => 'my-plugin/my-plugin.php',
-        'version'                   => '1.0.0',
-        'author'                    => 'rubengc',
-        'wp_override'               => true,
-        //'deactivate_button'         => false,
-        //'license_expiration'        => false,
-        //'renew_license'             => false,
-        'renew_license_link'        => 'http://your-site.com/renew-your-license',
-        'renew_license_timestamp'   => false, // Setting it to false will show the notice always (if license is valid)
+		'file'                      => __DIR__,
+		'item_id'                   => 123,
+		'item_name'                 => 'my-plugin/my-plugin.php',
+		'version'                   => '1.0.0',
+		'author'                    => 'rubengc',
+		'wp_override'               => true,
+		
+		// Extra settings
+		'deactivate_button'                 => __( 'Deactivate License', 'cmb2-edd-license' ),      // string|false String to set the button text, false to remove it
+		'license_expiration'                => true,                                                // bool         True to enable license expiration notice, false to deactivate it
+		'renew_license'                     => __( 'Renew your license key.', 'cmb2-edd-license' ), // string|false String to set the renew license text, false to remove it
+		'renew_license_timestamp'           => ( DAY_IN_SECONDS * 30 ),                             // int          Minimum time to show the license renewal text, by default 30 days
+		
+		// Links, used for license errors as a shortcut to business website
+		'renew_license_link' 		        => false,                                               // string|false Link where users can renew their licenses, false to remove it
+		'license_management_link' 	        => false,                                               // string|false Link where users can manage their licenses, false to remove it
+		'contact_link' 				        => false,                                               // string|false Link where users can contact with your team, false to remove it
+		
+		// Hide license settings
+		'hide_license'                      => true,                                                // bool         True to hide the license (just if license is valid), with default settings license will be displayed as: **********1234
+		'hide_license_character'            => '*',                                                 // string       Character to hide the license
+		'hide_license_visible_characters'   => 4,                                                   // int          Number of visible license characters
 	) );
 
 }
@@ -66,6 +79,11 @@ You can use the function `cmb2_edd_license_data( $license_key )` to see the data
 In Addition, you can use the function `cmb2_edd_license_status( $license_key )` to see the status of this license (valid, invalid or false if not license key or license not checked)
 
 ## Changelog
+
+### 1.0.3
+
+* Added the ability to hide license.
+* Update example with new field attributes.
 
 ### 1.0.2
 

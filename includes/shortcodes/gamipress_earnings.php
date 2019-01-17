@@ -106,12 +106,13 @@ function gamipress_register_earnings_shortcode() {
                 'default' 	  => 'yes',
             ),
             'points_types' => array(
-                'name'        => __( 'Points Type(s)', 'gamipress' ),
-                'description' => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'options_cb'  => 'gamipress_options_cb_points_types',
-                'default' 	  => 'all',
+                'name'              => __( 'Points Type(s)', 'gamipress' ),
+                'description'       => __( 'Points type(s) to display.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'options_cb'        => 'gamipress_options_cb_points_types',
+                'default' 	        => 'all',
             ),
             'awards' => array(
                 'name'        => __( 'Show Points Awards', 'gamipress' ),
@@ -138,12 +139,13 @@ function gamipress_register_earnings_shortcode() {
                 'default' 	  => 'yes',
             ),
             'achievement_types' => array(
-                'name'        => __( 'Achievement Type(s)', 'gamipress' ),
-                'description' => __( 'Single or comma-separated list of achievements type(s) to display.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'options_cb'  => 'gamipress_options_cb_achievement_types',
-                'default' 	  => 'all',
+                'name'              => __( 'Achievement Type(s)', 'gamipress' ),
+                'description'       => __( 'Achievements type(s) to display.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Single or comma-separated list of achievements type(s) to display.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'options_cb'        => 'gamipress_options_cb_achievement_types',
+                'default' 	        => 'all',
             ),
             'steps' => array(
                 'name'        => __( 'Show Steps', 'gamipress' ),
@@ -163,12 +165,13 @@ function gamipress_register_earnings_shortcode() {
                 'default' 	  => 'yes',
             ),
             'rank_types' => array(
-                'name'        => __( 'Rank Type(s)', 'gamipress' ),
-                'description' => __( 'Single or comma-separated list of ranks type(s) to display.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'options_cb'  => 'gamipress_options_cb_rank_types',
-                'default' 	  => 'all',
+                'name'              => __( 'Rank Type(s)', 'gamipress' ),
+                'description'       => __( 'Ranks type(s) to display.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Single or comma-separated list of ranks type(s) to display.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'options_cb'        => 'gamipress_options_cb_rank_types',
+                'default' 	        => 'all',
             ),
             'rank_requirements' => array(
                 'name'        => __( 'Show Rank Requirements', 'gamipress' ),
@@ -188,11 +191,12 @@ add_action( 'init', 'gamipress_register_earnings_shortcode' );
  *
  * @since  1.3.9
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts       Shortcode attributes
+ * @param  string   $content    Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_earnings_shortcode( $atts = array () ) {
+function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
 
     global $gamipress_template_args;
 
@@ -261,7 +265,16 @@ function gamipress_earnings_shortcode( $atts = array () ) {
         restore_current_blog();
     }
 
-    return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_earnings_shortcode_output', $output, $atts, $content );
 
 }
 

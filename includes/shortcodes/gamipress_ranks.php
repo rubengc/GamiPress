@@ -55,12 +55,13 @@ function gamipress_register_ranks_shortcode() {
 		),
 		'fields'      => array_merge( array(
 			'type' => array(
-				'name'        => __( 'Rank Type(s)', 'gamipress' ),
-				'description' => __( 'Single or comma-separated list of rank type(s) to display.', 'gamipress' ),
-				'type'        => 'advanced_select',
-				'multiple'    => true,
-				'options_cb'  => 'gamipress_options_cb_rank_types',
-				'default'     => 'all',
+				'name'              => __( 'Rank Type(s)', 'gamipress' ),
+				'description'       => __( 'Rank type(s) to display.', 'gamipress' ),
+				'shortcode_desc'    => __( 'Single or comma-separated list of rank type(s) to display.', 'gamipress' ),
+				'type'              => 'advanced_select',
+				'multiple'          => true,
+				'options_cb'        => 'gamipress_options_cb_rank_types',
+				'default'           => 'all',
 			),
 			'columns' => array(
 				'name'        => __( 'Columns', 'gamipress' ),
@@ -112,20 +113,22 @@ function gamipress_register_ranks_shortcode() {
 				'options_cb'  => 'gamipress_options_cb_users'
 			),
 			'include' => array(
-				'name'        => __( 'Include', 'gamipress' ),
-				'description' => __( 'Comma-separated list of specific rank IDs to include.', 'gamipress' ),
-				'type'        => 'advanced_select',
-				'multiple'    => true,
-				'default'     => '',
-				'options_cb'  => 'gamipress_options_cb_posts'
+				'name'              => __( 'Include', 'gamipress' ),
+				'description'       => __( 'Ranks to include.', 'gamipress' ),
+				'shortcode_desc'    => __( 'Comma-separated list of specific rank IDs to include.', 'gamipress' ),
+				'type'              => 'advanced_select',
+				'multiple'          => true,
+				'default'           => '',
+				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'exclude' => array(
-				'name'        => __( 'Exclude', 'gamipress' ),
-				'description' => __( 'Comma-separated list of specific rank IDs to exclude.', 'gamipress' ),
-				'type'        => 'advanced_select',
-				'multiple'    => true,
-				'default'     => '',
-				'options_cb'  => 'gamipress_options_cb_posts'
+				'name'              => __( 'Exclude', 'gamipress' ),
+				'description'       => __( 'Ranks to exclude.', 'gamipress' ),
+				'shortcode_desc'    => __( 'Comma-separated list of specific rank IDs to exclude.', 'gamipress' ),
+				'type'              => 'advanced_select',
+				'multiple'          => true,
+				'default'           => '',
+				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'wpms' => array(
 				'name'        => __( 'Include Multisite Ranks', 'gamipress' ),
@@ -144,11 +147,12 @@ add_action( 'init', 'gamipress_register_ranks_shortcode' );
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts       Shortcode attributes
+ * @param  string   $content    Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_ranks_shortcode( $atts = array () ) {
+function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 
 	global $gamipress_template_args;
 
@@ -366,6 +370,15 @@ function gamipress_ranks_shortcode( $atts = array () ) {
         restore_current_blog();
     }
 
-	return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_ranks_shortcode_output', $output, $atts, $content );
 
 }

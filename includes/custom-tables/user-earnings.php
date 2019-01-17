@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Parse query args for user earnings to be applied on WHERE clause
  *
- * @since  1.2.8
+ * @since   1.2.8
+ * @updated 1.6.5 Added support to before and after query vars
  *
  * @param string    $where
  * @param CT_Query  $ct_query
@@ -115,18 +116,155 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     }
 
+    // Include
+    if( isset( $qv['user_earning__in'] ) && ! empty( $qv['user_earning__in'] ) ) {
+
+        if( is_array( $qv['user_earning__in'] ) ) {
+            $include = implode( ", ", $qv['user_earning__in'] );
+        } else {
+            $include = $qv['user_earning__in'];
+        }
+
+        if( ! empty( $include ) ) {
+            $where .= " AND {$table_name}.user_earning_id IN ( {$include} )";
+        }
+    }
+
+    // Exclude
+    if( isset( $qv['user_earning__not_in'] ) && ! empty( $qv['user_earning__not_in'] ) ) {
+
+        if( is_array( $qv['user_earning__not_in'] ) ) {
+            $exclude = implode( ", ", $qv['user_earning__not_in'] );
+        } else {
+            $exclude = $qv['user_earning__not_in'];
+        }
+
+        if( ! empty( $exclude ) ) {
+            $where .= " AND {$table_name}.user_earning_id NOT IN ( {$exclude} )";
+        }
+    }
+
     // Since
-    if( isset( $qv['since'] ) && absint( $qv['since'] ) > 0 ) {
+    if( isset( $qv['since'] ) ) {
 
-        $since = date( 'Y-m-d H:i:s', $qv['since'] );
+        $since = $qv['since'];
 
-        $where .= " AND {$table_name}.date > '{$since}'";
+        // Turn a string date into time
+        if( gettype( $qv['since'] ) === 'string' ) {
+            $since = strtotime( $qv['since'] );
+        }
+
+        if( $since > 0 ) {
+            $since = date( 'Y-m-d H:i:s', $since );
+            $where .= " AND {$table_name}.date > '{$since}'";
+        }
+    }
+
+    // Before
+    if( isset( $qv['before'] ) ) {
+
+        $before = $qv['before'];
+
+        // Turn a string date into time
+        if( gettype( $qv['before'] ) === 'string' ) {
+            $before = strtotime( $qv['before'] );
+        }
+
+        if( $before > 0 ) {
+            $before = date( 'Y-m-d H:i:s', $before );
+            $where .= " AND {$table_name}.date < '{$before}'";
+        }
+
+    }
+
+    // After
+    if( isset( $qv['after'] ) ) {
+
+        $after = $qv['after'];
+
+        // Turn a string date into time
+        if( gettype( $qv['after'] ) === 'string' ) {
+            $after = strtotime( $qv['after'] );
+        }
+
+        if( $after > 0 ) {
+            $after = date( 'Y-m-d H:i:s', $after );
+            $where .= " AND {$table_name}.date > '{$after}'";
+        }
+
     }
 
     return $where;
 
 }
 add_filter( 'ct_query_where', 'gamipress_user_earnings_query_where', 10, 2 );
+
+/**
+ * Define the search fields for user earnings
+ *
+ * @since 1.6.4.2
+ *
+ * @param array $search_fields
+ *
+ * @return array
+ */
+function gamipress_user_earnings_search_fields( $search_fields ) {
+
+    $search_fields[] = 'title';
+
+    return $search_fields;
+
+}
+add_filter( 'ct_query_gamipress_user_earnings_search_fields', 'gamipress_user_earnings_search_fields' );
+
+/**
+ * Parse search query args for user earnings
+ *
+ * @since 1.6.4.2
+ *
+ * @param string $search
+ * @param CT_Query $ct_query
+ *
+ * @return string
+ */
+function gamipress_user_earnings_query_search( $search, $ct_query ) {
+
+    global $ct_table, $wpdb;
+
+    if( $ct_table->name !== 'gamipress_user_earnings' ) {
+        return $search;
+    }
+
+    $table_name = $ct_table->db->table_name;
+
+    // Shorthand
+    $qv = $ct_query->query_vars;
+
+    // Check if is search and query is not filtered by an specific user
+    if( isset( $qv['s'] ) && ! empty( $qv['s'] ) && ! isset( $qv['user_id'] ) ) {
+
+        // Made an user sub-search to retrieve them
+        $users = get_users( array(
+            'count_total' => false,
+            'search' => sprintf( '*%s*', $qv['s'] ),
+            'search_columns' => array(
+                'user_login',
+                'user_email',
+                'display_name',
+            ),
+            'fields' => 'ID',
+        ) );
+
+        if( ! empty( $users ) ) {
+            $search .= " AND ( {$table_name}.user_id IN (" . implode( ',', array_map( 'absint', $users ) ) . ") )";
+        }
+
+    }
+
+    return $search;
+
+}
+add_filter( 'ct_query_search', 'gamipress_user_earnings_query_search', 10, 2 );
 
 /**
  * Parse query args for user earnings to be applied on GROUP BY clause
@@ -392,7 +530,16 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
 }
 add_action( 'manage_gamipress_user_earnings_custom_column', 'gamipress_manage_user_earnings_custom_column', 10, 2 );
 
-// Remove row actions on user earnings table
+/**
+ * Remove row actions on user earnings table
+ *
+ * @since  1.2.8
+ *
+ * @param array $row_actions
+ * @param stdClass $object
+ *
+ * @return array
+ */
 function gamipress_user_earnings_row_actions( $row_actions, $object ) {
     return array();
 }

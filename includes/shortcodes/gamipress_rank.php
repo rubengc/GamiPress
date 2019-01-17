@@ -22,11 +22,12 @@ function gamipress_register_rank_shortcode() {
 		'output_callback'   => 'gamipress_rank_shortcode',
 		'fields'      	  => array(
 			'id' => array(
-				'name'        => __( 'Rank', 'gamipress' ),
-				'description' => __( 'The ID of the rank to render.', 'gamipress' ),
-				'type'        => 'select',
-				'default'     => '',
-				'options_cb'  => 'gamipress_options_cb_posts'
+				'name'              => __( 'Rank', 'gamipress' ),
+				'description'       => __( 'Rank to render.', 'gamipress' ),
+				'shortcode_desc'    => __( 'The ID of the rank to render.', 'gamipress' ),
+				'type'              => 'select',
+				'default'           => '',
+				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'title' => array(
 				'name'        => __( 'Show Title', 'gamipress' ),
@@ -108,11 +109,12 @@ add_action( 'init', 'gamipress_register_rank_shortcode' );
  *
  * @since  1.3.1
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts       Shortcode attributes
+ * @param  string   $content    Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_rank_shortcode( $atts = array() ) {
+function gamipress_rank_shortcode( $atts = array(), $content = '' ) {
 
     $original_atts = $atts;
 
@@ -160,8 +162,16 @@ function gamipress_rank_shortcode( $atts = array() ) {
         restore_current_blog();
     }
 
-	// Return our rendered rank
-	return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_rank_shortcode_output', $output, $atts, $content );
 }
 
 /**

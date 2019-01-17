@@ -34,15 +34,8 @@ $a = $gamipress_template_args; ?>
          */
         do_action( 'gamipress_before_render_achievements_list_filters', $a ); ?>
 
-        <?php // Hidden fields for AJAX request
-        foreach( $a as $arg => $arg_value ) :
-
-            // Skip excluded args
-            if( in_array( $arg, array( 'filter', 'search', 'query' ) ) ) {
-                continue;
-            } ?>
-            <input type="hidden" name="<?php echo $arg; ?>" value="<?php echo ( is_array( $arg_value ) ? implode( ',', $arg_value ) : $arg_value ); ?>">
-        <?php endforeach; ?>
+        <?php // Hidden fields for ajax request
+        echo gamipress_array_as_hidden_inputs( $a, array( 'filter', 'search', 'query' ) ); ?>
 
         <?php // Filter
         if ( $a['filter'] === 'no' ) : ?>

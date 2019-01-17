@@ -22,23 +22,24 @@ function gamipress_register_achievement_shortcode() {
 		'output_callback' 	=> 'gamipress_achievement_shortcode',
 		'fields'      		=> array(
 			'id' => array(
-				'name'        => __( 'Achievement ID', 'gamipress' ),
-				'description' => __( 'The ID of the achievement to render.', 'gamipress' ),
-				'type'        => 'select',
-				'default'     => '',
-				'options_cb'  => 'gamipress_options_cb_posts'
+				'name'              => __( 'Achievement', 'gamipress' ),
+				'description'       => __( 'The achievement to render.', 'gamipress' ),
+				'shortcode_desc'    => __( 'The ID of the achievement to render.', 'gamipress' ),
+				'type'              => 'select',
+				'default'           => '',
+				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'title' => array(
-				'name'        => __( 'Show Title', 'gamipress' ),
-				'description' => __( 'Display the achievement title.', 'gamipress' ),
-				'type' 		  => 'checkbox',
-				'classes' 	  => 'gamipress-switch',
-				'default' => 'yes'
+				'name'              => __( 'Show Title', 'gamipress' ),
+				'description'       => __( 'Display the achievement title.', 'gamipress' ),
+				'type' 		        => 'checkbox',
+				'classes' 	        => 'gamipress-switch',
+				'default'           => 'yes'
 			),
 			'link' => array(
 				'name'        => __( 'Show Link', 'gamipress' ),
 				'description' => __( 'Add a link on achievement title to the achievement page.', 'gamipress' ),
-				'type' 	=> 'checkbox',
+				'type' 	        => 'checkbox',
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
@@ -122,11 +123,12 @@ add_action( 'init', 'gamipress_register_achievement_shortcode' );
  *
  * @since 1.0.0
  *
- * @param  array $atts Shortcode attributes
+ * @param  array $atts      Shortcode attributes
+ * @param  string $content  Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_achievement_shortcode( $atts = array() ) {
+function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
 
     $original_atts = $atts;
 
@@ -174,8 +176,16 @@ function gamipress_achievement_shortcode( $atts = array() ) {
         restore_current_blog();
     }
 
-    // Return our rendered achievement
-	return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_achievement_shortcode_output', $output, $atts, $content );
 
 }
 

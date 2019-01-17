@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Parse query args for logs
  *
- * @since 1.2.8
+ * @since   1.2.8
+ * @updated 1.6.5 Added support to before and after query vars
  *
  * @param string $where
  * @param CT_Query $ct_query
@@ -118,9 +119,61 @@ function gamipress_logs_query_where( $where, $ct_query ) {
         }
     }
 
+    // Before
+    if( isset( $qv['before'] ) ) {
+
+        $before = $qv['before'];
+
+        // Turn a string date into time
+        if( gettype( $qv['before'] ) === 'string' ) {
+            $before = strtotime( $qv['before'] );
+        }
+
+        if( $before > 0 ) {
+            $before = date( 'Y-m-d H:i:s', $before );
+            $where .= " AND {$table_name}.date < '{$before}'";
+        }
+
+    }
+
+    // After
+    if( isset( $qv['after'] ) ) {
+
+        $after = $qv['after'];
+
+        // Turn a string date into time
+        if( gettype( $qv['after'] ) === 'string' ) {
+            $after = strtotime( $qv['after'] );
+        }
+
+        if( $after > 0 ) {
+            $after = date( 'Y-m-d H:i:s', $after );
+            $where .= " AND {$table_name}.date > '{$after}'";
+        }
+
+    }
+
     return $where;
 }
 add_filter( 'ct_query_where', 'gamipress_logs_query_where', 10, 2 );
+
+/**
+ * Define the search fields for logs
+ *
+ * @since 1.6.4.2
+ *
+ * @param array $search_fields
+ *
+ * @return array
+ */
+function gamipress_logs_search_fields( $search_fields ) {
+
+    $search_fields[] = 'title';
+
+    return $search_fields;
+
+}
+add_filter( 'ct_query_gamipress_logs_search_fields', 'gamipress_logs_search_fields' );
 
 /**
  * Parse search query args for logs
@@ -134,7 +187,7 @@ add_filter( 'ct_query_where', 'gamipress_logs_query_where', 10, 2 );
  */
 function gamipress_logs_query_search( $search, $ct_query ) {
 
-    global $ct_table;
+    global $ct_table, $wpdb;
 
     if( $ct_table->name !== 'gamipress_logs' ) {
         return $search;
@@ -351,6 +404,13 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
 }
 add_action( 'manage_gamipress_logs_custom_column', 'gamipress_manage_logs_custom_column', 10, 2 );
 
+/**
+ * Place the title at top of edit log screen
+ *
+ * @since  1.2.8
+ *
+ * @param stdClass $object
+ */
 function gamipress_logs_edit_form_top( $object ) {
 
     global $ct_table;
@@ -367,7 +427,11 @@ function gamipress_logs_edit_form_top( $object ) {
 }
 add_action( 'ct_edit_form_top', 'gamipress_logs_edit_form_top' );
 
-// Remove submit div for logs
+/**
+ * Remove submit div box on logs
+ *
+ * @since  1.2.8
+ */
 function gamipress_add_logs_meta_boxes() {
     remove_meta_box( 'submitdiv', 'gamipress_logs', 'side' );
 

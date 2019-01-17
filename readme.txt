@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.4.1
+Stable tag: 1.6.5
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -239,6 +239,25 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.5 =
+
+* **New Features**
+* Added CRUD rest API endpoints for logs and user earnings.
+* Added support for single type logs template rendering allowing override logs template when rendering a single type.
+* **Bug Fixes**
+* Fixed fields to apply searches on logs and user earnings on admin area.
+* **Improvements**
+* Now, GamiPress will log just activities in use (with a setting to enable logging all) instead on log all of them by default.
+* "Only log activities in use" setting has been replaced by "Log all activities" setting.
+* Stop saving user points balances and ranks on profile when clicking the "Save User" button since user profile changes are completely handled through ajax.
+* Added the ability to define shortcode-only field description to avoid confusions with blocks and widgets fields.
+* Active licenses will be hidden in order to prevent non license holders see it (eg: external support accounts with administration privileges).
+* Moved templates/logs-old.php template to templates/old/logs.php.
+* On points/achievement/rank types edit screen now user gets notices if setups the same slug as an already existent post type (eg: post, page, product, course, etc).
+* **Developer Notes**
+* Added filters to all shortcode outputs.
+* Added support to before and after query vars to logs and user earnings tables
 
 = 1.6.4.1 =
 

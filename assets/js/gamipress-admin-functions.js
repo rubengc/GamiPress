@@ -3,9 +3,9 @@
  *
  * @since 1.4.1
  *
- * @param item
+ * @param {Object} item
  *
- * @return string
+ * @return {string}
  */
 function gamipress_select2_posts_template_result( item ) {
 
@@ -13,8 +13,8 @@ function gamipress_select2_posts_template_result( item ) {
 
         var post_type_label = item.post_type;
 
-        if( gamipress_admin_functions.post_type_labels[item.post_type] !== undefined ) {
-            post_type_label = gamipress_admin_functions.post_type_labels[item.post_type];
+        if( gamipress_post_type_exists( item.post_type ) ) {
+            post_type_label = gamipress_get_post_type_label( item.post_type );
         }
 
         return '<strong>' + item.post_title + '</strong>'
@@ -33,10 +33,10 @@ function gamipress_select2_posts_template_result( item ) {
  *
  * @since 1.4.1
  *
- * @param response
- * @param params
+ * @param {Object} response
+ * @param {Object} params
  *
- * @return string
+ * @return {string}
  */
 function gamipress_select2_posts_process_results( response, params ) {
 
@@ -73,9 +73,9 @@ function gamipress_select2_posts_process_results( response, params ) {
  *
  * @since 1.4.1
  *
- * @param item
+ * @param {Object} item
  *
- * @return string
+ * @return {string}
  */
 function gamipress_select2_users_template_result( item ) {
 
@@ -96,10 +96,10 @@ function gamipress_select2_users_template_result( item ) {
  *
  * @since 1.4.1
  *
- * @param response
- * @param params
+ * @param {Object} response
+ * @param {Object} params
  *
- * @return string
+ * @return {string}
  */
 function gamipress_select2_users_process_results( response, params ) {
 
@@ -136,10 +136,10 @@ function gamipress_select2_users_process_results( response, params ) {
  *
  * @since 1.6.3
  *
- * @param params
- * @param data
+ * @param {Object} params
+ * @param {Object} data
  *
- * @return mixed
+ * @return {mixed}
  */
 function gamipress_select2_optgroup_matcher( params, data ) {
 
@@ -207,9 +207,9 @@ function gamipress_select2_optgroup_matcher( params, data ) {
  *
  * @since 1.6.3
  *
- * @param show_in_console
+ * @param {boolean} show_in_console
  *
- * @return boolean
+ * @return {boolean}
  */
 function gamipress_is_select2_updated( show_in_console ) {
 
@@ -244,12 +244,45 @@ function gamipress_is_select2_updated( show_in_console ) {
 }
 
 /**
+ * Check if post type has been registered
+ *
+ * @since 1.6.5
+ *
+ * @param {string} post_type
+ *
+ * @return {boolean}
+ */
+function gamipress_post_type_exists( post_type ) {
+    return ( gamipress_admin_functions.post_type_labels[post_type] !== undefined )
+}
+
+/**
+ * Get the post type label (singular name)
+ *
+ * @since 1.6.5
+ *
+ * @param {string} post_type
+ *
+ * @return {string}
+ */
+function gamipress_get_post_type_label( post_type ) {
+
+    var label = '';
+
+    if( gamipress_post_type_exists( post_type ) ) {
+        label = gamipress_admin_functions.post_type_labels[post_type];
+    }
+
+    return label;
+}
+
+/**
  * Function to turn an object or a JSON object to a CSV file and force the download (Used on import/export tools)
  *
  * @since 1.6.4
  *
- * @param data
- * @param filename
+ * @param {Object} data
+ * @param {string} filename
  */
 function gamipress_download_csv( data, filename ) {
 
@@ -299,8 +332,9 @@ function gamipress_download_csv( data, filename ) {
  *
  * @since 1.6.4
  *
- * @param obj
- * @returns {string}
+ * @param {Object} obj
+ *
+ * @return {string}
  */
 function gamipress_object_to_csv( obj ) {
 

@@ -61,6 +61,8 @@ function ct_setup_table( $object ) {
 /**
  * Setup the global table
  *
+ * @since 1.0.0
+ *
  * @return CT_Table $ct_table
  */
 function ct_reset_setup_table() {
@@ -76,6 +78,32 @@ function ct_reset_setup_table() {
 }
 
 /**
+ * get the CT_Table object of given table name
+ *
+ * @param CT_Table|string $name CT_Table object or CT_Table name
+ *
+ * @since 1.0.0
+ *
+ * @return CT_Table
+ */
+function ct_get_table_object( $name ) {
+
+    global $ct_registered_tables, $ct_table;
+
+    if( is_object( $name ) ) {
+        $ct_table = $name;
+    } else if( gettype( $name ) === 'string' && isset( $ct_registered_tables[$name] ) ) {
+        $ct_table = $ct_registered_tables[$name];
+    }
+
+    return $ct_table;
+}
+
+/**
+ * Get the table labels
+ *
+ * @since 1.0.0
+ *
  * @param CT_Table $ct_table
  *
  * @return array
@@ -119,6 +147,21 @@ function ct_get_table_labels( $ct_table ) {
 }
 
 /**
+ * Get the table fields
+ *
+ * @since 1.0.0
+ *
+ * @param CT_Table $ct_table
+ *
+ * @return array
+ */
+function ct_get_table_fields( $ct_table ) {
+
+    return $ct_table->db->schema->fields;
+
+}
+
+/**
  * Execute CT role creation.
  *
  * @since 1.0.0
@@ -126,7 +169,7 @@ function ct_get_table_labels( $ct_table ) {
 function ct_populate_roles() {
 
     // Add caps for Administrator role
-    $role = get_role('administrator');
+    $role = get_role( 'administrator' );
 
     $args = (object) array(
         'capabilities' => array(),
@@ -367,7 +410,7 @@ function ct_clean_object_cache( $object ) {
     /**
      * Fires immediately after the given object's cache is cleaned.
      *
-     * @since 2.5.0
+     * @since 1.0.0
      *
      * @param int     $post_id Post ID.
      * @param WP_Post $post    Post object.
@@ -497,7 +540,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
         /**
          * Fires immediately before an existing object is updated in the database.
          *
-         * @since 2.5.0
+         * @since 1.0.0
          *
          * @param int   $object_id  Object ID.
          * @param array $data       Array of unslashed object data.
@@ -600,7 +643,7 @@ function ct_insert_object( $object_data, $wp_error = false ) {
     /**
      * Fires once a post has been saved.
      *
-     * @since 2.0.0
+     * @since 1.0.0
      *
      * @param int     $post_ID Post ID.
      * @param WP_Post $post    Post object.
@@ -648,6 +691,7 @@ function ct_delete_object( $object_id = 0, $force_delete = false ) {
 
     $ct_object = ct_get_object( $ct_object );
 
+    // TODO: Add support for trash functionality
     //if ( ! $force_delete && ( 'post' === $post->post_type || 'page' === $post->post_type ) && 'trash' !== get_post_status( $postid ) && EMPTY_TRASH_DAYS ) {
         //return ct_trash_object( $object_id );
     //}
@@ -973,7 +1017,7 @@ function ct_delete_object_meta( $object_id, $meta_key, $meta_value = '' ) {
 }
 
 /**
- * Retrieve post meta field for a post.
+ * Retrieve object meta field for an object.
  *
  * @since 1.0.0
  *
@@ -1039,7 +1083,7 @@ function ct_get_object_meta( $object_id, $meta_key = '', $single = false ) {
             return array_map('maybe_unserialize', $meta_cache[$meta_key]);
     }
 
-    if ($single)
+    if ( $single )
         return '';
     else
         return array();
@@ -1499,9 +1543,9 @@ function ct_meta_form( $object = null ) {
 
 }
 
-//
-// Helpers functions
-//
+// ---------------------------------------
+// Helpers
+// ---------------------------------------
 
 /**
  * Helper function to get the list link of an given object type name

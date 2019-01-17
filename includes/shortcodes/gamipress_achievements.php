@@ -60,12 +60,13 @@ function gamipress_register_achievements_shortcode() {
 		),
 		'fields'      => array_merge( array(
 			'type' => array(
-				'name'        => __( 'Achievement Type(s)', 'gamipress' ),
-				'description' => __( 'Single or comma-separated list of achievement type(s) to display.', 'gamipress' ),
-				'type'        => 'advanced_select',
-				'multiple'    => true,
-				'options_cb'  => 'gamipress_options_cb_achievement_types',
-				'default'     => 'all',
+				'name'              => __( 'Achievement Type(s)', 'gamipress' ),
+				'description'       => __( 'Achievement type(s) to display.', 'gamipress' ),
+				'shortcode_desc'    => __( 'Single or comma-separated list of achievement type(s) to display.', 'gamipress' ),
+				'type'              => 'advanced_select',
+				'multiple'          => true,
+				'options_cb'        => 'gamipress_options_cb_achievement_types',
+				'default'           => 'all',
 			),
 			'columns' => array(
 				'name'        => __( 'Columns', 'gamipress' ),
@@ -163,20 +164,22 @@ function gamipress_register_achievements_shortcode() {
                 'options_cb'  => 'gamipress_options_cb_users'
 			),
 			'include' => array(
-				'name'        => __( 'Include', 'gamipress' ),
-				'description' => __( 'Comma-separated list of specific achievement IDs to include.', 'gamipress' ),
-				'type'        => 'advanced_select',
-				'multiple'    => true,
-				'default'     => '',
-				'options_cb'  => 'gamipress_options_cb_posts'
+				'name'              => __( 'Include', 'gamipress' ),
+				'description'       => __( 'Achievements to include.', 'gamipress' ),
+				'shortcode_desc'    => __( 'Comma-separated list of specific achievement IDs to include.', 'gamipress' ),
+				'type'              => 'advanced_select',
+				'multiple'          => true,
+				'default'           => '',
+				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'exclude' => array(
-				'name'        => __( 'Exclude', 'gamipress' ),
-				'description' => __( 'Comma-separated list of specific achievement IDs to exclude.', 'gamipress' ),
-				'type'        => 'advanced_select',
-				'multiple'    => true,
-				'default'     => '',
-				'options_cb'  => 'gamipress_options_cb_posts'
+				'name'              => __( 'Exclude', 'gamipress' ),
+				'description'       => __( 'Achievements to exclude.', 'gamipress' ),
+				'shortcode_desc'    => __( 'Comma-separated list of specific achievement IDs to exclude.', 'gamipress' ),
+				'type'              => 'advanced_select',
+				'multiple'          => true,
+				'default'           => '',
+				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'wpms' => array(
 				'name'        => __( 'Include Multisite Achievements', 'gamipress' ),
@@ -195,11 +198,12 @@ add_action( 'init', 'gamipress_register_achievements_shortcode' );
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts      Shortcode attributes
+ * @param  string   $content   Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_achievements_shortcode( $atts = array () ) {
+function gamipress_achievements_shortcode( $atts = array(), $content = '' ) {
 
 	global $gamipress_template_args;
 
@@ -304,7 +308,16 @@ function gamipress_achievements_shortcode( $atts = array () ) {
 	}
 	$output = ob_get_clean();
 
-	return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_achievements_shortcode_output', $output, $atts, $content );
 
 }
 
@@ -387,7 +400,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 	}
 
 	// Build $exclude array
-	if ( ! is_array( $exclude )  && empty( $exclude ) ) {
+	if ( ! is_array( $exclude ) && empty( $exclude ) ) {
 		$exclude = array();
 	}
 
@@ -565,11 +578,23 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
         restore_current_blog();
 	}
 
-	return array(
-		'achievements'      => $achievements,
-		'offset'            => $offset + $limit,
-		'query_count'       => $query_count,
-		'achievement_count' => $achievement_count,
-	);
+	$query = array(
+        'achievements'      => $achievements,
+        'offset'            => $offset + $limit,
+        'query_count'       => $query_count,
+        'achievement_count' => $achievement_count,
+    );
+
+    /**
+     * Filter the achievements query
+     *
+     * @since 1.6.5
+     *
+     * @param array $response
+     * @param array $args
+     *
+     * @return array
+     */
+	return apply_filters( 'gamipress_achievements_shortcode_query', $query, $args );
 
 }

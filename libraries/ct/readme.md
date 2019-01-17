@@ -1,24 +1,26 @@
-# CT: Custom Tables #
-CT is a WordPress developers toolkit to handle custom database table workflow similar to WordPress CPT.
+# About Custom Tables #
+Custom Tables (CT) is a WordPress developers toolkit to handle custom database table workflow similar to WordPress CPT.
 
-Important: CT is in development phase, this means current version is unstable and much of the current features will change, to use this library on live project be sure you know you are doing!
+Check [example.php](./example.php) file included on this project to see a few examples to get it working.
 
-Contributions are really appreciate!
+Important: CT is in development phase, this means current version is unstable and much of the current features will change. To use this library on live project be sure you know you are doing!
+
+Contributions are really appreciated! Looking for help to standarize functions and hooks as well as for documentation.
 
 ## Features (work in progress) ##
 
 Custom table registration:
 
+- [x] Custom table registration (like registering a WordPress post type)
 - [x] Automatic table creation if not exists
 - [x] Easy field definition
 - [x] Schema parser
-- [x] Automatic schema updater
-- [x] Ability to show or hide from menu
+- [x] Automatic schema updater (yay!)
+- [x] Ability to show or hide from admin (aka disable UI for a desired table)
 - [x] Custom Capabilities (with support for administrators)
-- [ ] Find a way to add easy capability options
-- [x] Ability to easily add meta data functionality
-- [ ] WP rest API support
-- [ ] Frontend support?
+- [x] Meta data functionality
+- [x] Query class to handled cached queries (like WP_Query but for custom tables)
+- [x] WP rest API support (custom table and meta data)
 
 List view with support similar to WP tables:
 
@@ -42,3 +44,5 @@ Edit View similar to WP edit screen:
 Other features
 
 - [x] CMB2 support
+- [ ] Documentation (help wanted!)
+- [ ] Add WP Lib Loader to always load the newest version (http://jtsternberg.github.io/wp-lib-loader/)

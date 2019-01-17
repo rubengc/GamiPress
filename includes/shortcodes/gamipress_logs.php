@@ -22,12 +22,13 @@ function gamipress_register_logs_shortcode() {
         'icon' 	            => 'editor-ul',
         'fields'      => array(
             'type' => array(
-                'name'        => __( 'Log Type(s)', 'gamipress' ),
-                'description' => __( 'Single or comma-separated list of log type(s) to display.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'options_cb'  => 'gamipress_options_cb_log_types',
-                'default'     => 'all',
+                'name'              => __( 'Log Type(s)', 'gamipress' ),
+                'description'       => __( 'Log type(s) to display.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Single or comma-separated list of log type(s) to display.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'options_cb'        => 'gamipress_options_cb_log_types',
+                'default'           => 'all',
             ),
             'current_user' => array(
                 'name'        => __( 'Current User', 'gamipress' ),
@@ -87,20 +88,22 @@ function gamipress_register_logs_shortcode() {
                 'default'     => 'DESC',
             ),
             'include' => array(
-                'name'        => __( 'Include', 'gamipress' ),
-                'description' => __( 'Comma-separated list of specific log entries IDs to include.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'default'     => '',
-                'options_cb'  => 'gamipress_options_cb_posts'
+                'name'              => __( 'Include', 'gamipress' ),
+                'description'       => __( 'Log entries to include.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Comma-separated list of specific log entries IDs to include.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'default'           => '',
+                'options_cb'        => 'gamipress_options_cb_posts'
             ),
             'exclude' => array(
-                'name'        => __( 'Exclude', 'gamipress' ),
-                'description' => __( 'Comma-separated list of specific log entries IDs to exclude.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'default'     => '',
-                'options_cb'  => 'gamipress_options_cb_posts'
+                'name'              => __( 'Exclude', 'gamipress' ),
+                'description'       => __( 'Log entries to exclude.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Comma-separated list of specific log entries IDs to exclude.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'default'           => '',
+                'options_cb'        => 'gamipress_options_cb_posts'
             ),
         ),
     ) );
@@ -113,11 +116,12 @@ add_action( 'init', 'gamipress_register_logs_shortcode' );
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts       Shortcode attributes
+ * @param  string   $content    Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_logs_shortcode( $atts = array () ) {
+function gamipress_logs_shortcode( $atts = array(), $content = '' ) {
 
     // If not properly upgrade to required version fallback to compatibility function
     if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
@@ -155,6 +159,15 @@ function gamipress_logs_shortcode( $atts = array () ) {
             break;
     }
 
+    // Single type check
+    $is_single_type = false;
+    $types = explode( ',', $atts['type'] );
+
+    if( $atts['type'] !== 'all' && count( $types ) === 1 ) {
+        $is_single_type = true;
+    }
+
+    // Enqueue assets
     gamipress_enqueue_scripts();
 
     // Force to set current user as user ID
@@ -182,7 +195,11 @@ function gamipress_logs_shortcode( $atts = array () ) {
     }
 
     ob_start();
-        gamipress_get_template_part( 'logs' );
+        if( $is_single_type ) {
+            gamipress_get_template_part( 'logs', $atts['type'] );
+        } else {
+            gamipress_get_template_part( 'logs' );
+        }
     $output = ob_get_clean();
 
     // If switched to blog, return back to que current blog
@@ -190,7 +207,16 @@ function gamipress_logs_shortcode( $atts = array () ) {
         restore_current_blog();
     }
 
-    return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_logs_shortcode_output', $output, $atts, $content );
 
 }
 

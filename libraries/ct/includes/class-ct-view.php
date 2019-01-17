@@ -2,6 +2,8 @@
 /**
  * View class
  *
+ * @author GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
+ *
  * @since 1.0.0
  */
 // Exit if accessed directly
@@ -153,11 +155,7 @@ if ( ! class_exists( 'CT_View' ) ) :
                 return;
             }
 
-            if( empty( $_GET['page'] ) ) {
-                return;
-            }
-
-            if( $_GET['page'] !== $this->args['menu_slug'] ) {
+            if( empty( $_GET['page'] ) || $_GET['page'] !== $this->args['menu_slug'] ) {
                 return;
             }
 

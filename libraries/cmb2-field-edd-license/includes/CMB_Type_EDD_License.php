@@ -58,23 +58,26 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
 		$field_args = $this->parse_args( $this->type, array(
 			// License
-			'server'          => '',
-			'item_id'         => '',
-			'item_name'       => '',
-			'file'            => '',
-			'version'         => '',
-			'author'          => '',
-			'wp_override'     => false,
+			'server'                            => '',
+			'item_id'                           => '',
+			'item_name'                         => '',
+			'file'                              => '',
+			'version'                           => '',
+			'author'                            => '',
+			'wp_override'                       => false,
 			// Extra settings
-			'deactivate_button' => __( 'Deactivate License', 'cmb2-edd-license' ),
-			'license_expiration' => true,
-			'renew_license' => __( 'Renew your license key.', 'cmb2-edd-license' ),
-			'renew_license_timestamp' => ( DAY_IN_SECONDS * 30 ),
-
+			'deactivate_button'                 => __( 'Deactivate License', 'cmb2-edd-license' ),      // string|false String to set the button text, false to remove it
+			'license_expiration'                => true,                                                // bool         True to enable license expiration notice, false to deactivate it
+			'renew_license'                     => __( 'Renew your license key.', 'cmb2-edd-license' ), // string|false String to set the renew license text, false to remove it
+			'renew_license_timestamp'           => ( DAY_IN_SECONDS * 30 ),                             // int          Minimum time to show the license renewal text, by default 30 days
 			// Links, used for license errors as a shortcut to business website
-			'renew_license_link' 		=> false, // Link where users can renew their licenses
-			'license_management_link' 	=> false, // Link where users can manage their licenses
-			'contact_link' 				=> false, // Link where users can contact with your team
+			'renew_license_link' 		        => false,                                               // string|false Link where users can renew their licenses, false to remove it
+			'license_management_link' 	        => false,                                               // string|false Link where users can manage their licenses, false to remove it
+			'contact_link' 				        => false,                                               // string|false Link where users can contact with your team, false to remove it
+            // Hide license settings
+            'hide_license'                      => true,                                                // bool         True to hide the license (just if license is valid), with default settings license will be displayed as: **********1234
+            'hide_license_character'            => '*',                                                 // string       Character to hide the license
+            'hide_license_visible_characters'   => 4,                                                   // int          Number of visible license characters
 		), $this->field->_data( 'args' ) );
 
 		$this->field->add_js_dependencies( array(
@@ -169,6 +172,24 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 				}
 			}
 		}
+
+		// Hide license
+        if( $field_args['hide_license'] !== false && $license_status === 'valid' ) {
+
+            $character = $field_args['hide_license_character'];
+            $visible_characters = absint( $field_args['hide_license_visible_characters'] );
+
+            if( $visible_characters > 0 ) {
+                // hide a portion of the license
+                $hidden_license = str_repeat( $character, strlen( $args['value'] ) - $visible_characters ) . substr( $args['value'] , -$visible_characters );
+            } else {
+                // Completely hide the license
+                $hidden_license = str_repeat( $character, strlen( $args['value'] ) );
+            }
+
+            $args['value'] = $hidden_license;
+            $args['readonly'] = true;
+        }
 
 
 		return $this->rendered(

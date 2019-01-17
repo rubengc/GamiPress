@@ -1,12 +1,11 @@
 <?php
 
 /**
- * Custom endpoint for querying for multiple post-types.
+ * Custom endpoint for querying multiple post-types.
  * Mimics `WP_REST_Posts_Controller` as closely as possible.
  *
  * New filters:
- *  - `rest_gamipress_posts_query` Filters the query arguments as generated
- *    from the request parameters.
+ *  - `rest_gamipress_posts_query` Filters the query arguments as generated from the request parameters.
  *
  * @author Ruben Vreeken
  */
@@ -21,14 +20,14 @@ class WP_REST_GamiPress_Posts_Controller extends WP_REST_Controller {
      * Register the routes for the objects of the controller.
      */
     public function register_routes() {
-        register_rest_route($this->namespace, '/' . $this->rest_base, array(
+        register_rest_route( $this->namespace, '/' . $this->rest_base, array(
             array(
                 'methods'             => WP_REST_Server::READABLE,
                 'callback'            => array($this, 'get_items'),
                 'permission_callback' => array($this, 'get_items_permissions_check'),
                 'args'                => $this->get_collection_params(),
             ),
-        ));
+        ) );
     }
 
     /**

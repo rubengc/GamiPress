@@ -120,10 +120,16 @@ function gamipress_shortcode_help_render_fields( $fields ) {
 			$accepts = ! empty( $field['options'] ) ? sprintf( __( 'Accepts: %s', 'gamipress' ), '<code>' . implode( '</code>, <code>', array_keys( $field['options'] ) ) . '</code>' ) : '';
 			$default = ! empty( $field['default'] ) ? sprintf( __( 'Default: %s', 'gamipress' ), '<code>' . $field['default'] . '</code>' ) : '';
 
+			// Setup the description (allowing provide it from description, desc and shortcode_desc
+            $description = '';
+            $description = isset( $field['description'] )       ? $field['description']     : $description;
+            $description = isset( $field['desc'] )              ? $field['desc']            : $description;
+            $description = isset( $field['shortcode_desc'] )    ? $field['shortcode_desc']  : $description;
+
 			$output .= sprintf(
 				'<li><strong>%1$s</strong> – %2$s <em>%3$s %4$s</em></li>',
 				esc_attr( $field_id ),
-				isset( $field['description'] ) ? $field['description'] : '',
+                $description,
 				$accepts,
 				$default
 			);

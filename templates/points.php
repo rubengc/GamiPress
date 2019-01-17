@@ -3,7 +3,7 @@
  * User Points template
  *
  * This template can be overridden by copying it to yourtheme/gamipress/points.php
- * To override a specific achievement type just copy it as yourtheme/gamipress/points-{points-type}.php
+ * To override a specific points type just copy it as yourtheme/gamipress/points-{points-type}.php
  */
 global $gamipress_template_args;
 

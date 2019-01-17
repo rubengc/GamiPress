@@ -778,7 +778,7 @@ function gamipress_logs_shortcode_old( $atts = array () ) {
     $gamipress_template_args['query'] = new WP_Query( $args );
 
     ob_start();
-    gamipress_get_template_part( 'logs-old' );
+    gamipress_get_template_part( 'old/logs' );
     $output = ob_get_clean();
 
     return $output;

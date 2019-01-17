@@ -648,7 +648,15 @@ function gamipress_maybe_apply_log_pattern( $object_data = array(), $original_ob
     }
 
     if ( isset( $original_object_data['log_id'] ) && $original_object_data['log_id'] !== 0 ) {
-        $object_data['title'] = gamipress_get_parsed_log( $original_object_data['log_id'] );
+
+        $log_id = $original_object_data['log_id'];
+
+        $pattern = ct_get_object_meta( $log_id, '_gamipress_pattern', true );
+
+        // Just parse pattern if not empty
+        if( ! empty( $pattern ) ) {
+            $object_data['title'] = gamipress_get_parsed_log( $log_id );
+        }
     }
 
     return $object_data;

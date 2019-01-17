@@ -22,12 +22,13 @@ function gamipress_register_points_types_shortcode() {
         'output_callback'   => 'gamipress_points_types_shortcode',
         'fields'      => array(
             'type' => array(
-                'name'        => __( 'Points Type(s)', 'gamipress' ),
-                'description' => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
-                'type'        => 'advanced_select',
-                'multiple'    => true,
-                'options_cb'  => 'gamipress_options_cb_points_types',
-                'default'     => 'all',
+                'name'              => __( 'Points Type(s)', 'gamipress' ),
+                'description'       => __( 'Points type(s) to display.', 'gamipress' ),
+                'shortcode_desc'    => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
+                'type'              => 'advanced_select',
+                'multiple'          => true,
+                'options_cb'        => 'gamipress_options_cb_points_types',
+                'default'           => 'all',
             ),
             'columns' => array(
                 'name'        => __( 'Columns', 'gamipress' ),
@@ -102,11 +103,12 @@ add_action( 'init', 'gamipress_register_points_types_shortcode' );
  *
  * @since  1.0.0
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts       Shortcode attributes
+ * @param  string   $content    Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_points_types_shortcode( $atts = array () ) {
+function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
 
     global $gamipress_template_args, $blog_id;
 
@@ -236,6 +238,15 @@ function gamipress_points_types_shortcode( $atts = array () ) {
     }
     $output = ob_get_clean();
 
-    return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_points_types_shortcode_output', $output, $atts, $content );
 
 }

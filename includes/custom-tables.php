@@ -8,8 +8,13 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+// Custom Tables
 require_once GAMIPRESS_DIR . 'includes/custom-tables/logs.php';
 require_once GAMIPRESS_DIR . 'includes/custom-tables/user-earnings.php';
+// Rest API
+require_once GAMIPRESS_DIR . 'includes/api/logs.php';
+require_once GAMIPRESS_DIR . 'includes/api/user-earnings.php';
+
 
 /**
  * Register all GamiPress Custom DB Tables
@@ -31,6 +36,8 @@ function gamipress_register_custom_tables() {
             'not_found' => __( 'This user has not earned anything', 'gamipress' )
         ),
         'show_ui' => true,
+        'show_in_rest' => true,
+        'rest_base' => 'gamipress-user-earnings',
         'version' => 2,
         'global' => gamipress_is_network_wide_active(),
         'supports' => array( 'meta' ),
@@ -87,6 +94,8 @@ function gamipress_register_custom_tables() {
         'singular' => __( 'Log', 'gamipress' ),
         'plural' => __( 'Logs', 'gamipress' ),
         'show_ui' => true,
+        'show_in_rest' => true,
+        'rest_base' => 'gamipress-logs',
         'version' => 3,
         'global' => gamipress_is_network_wide_active(),
         'supports' => array( 'meta' ),

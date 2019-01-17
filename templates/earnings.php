@@ -29,14 +29,7 @@ $user_earnings = $a['query']->get_results();
         do_action( 'gamipress_before_render_earnings_atts', $a ); ?>
 
         <?php // Hidden fields for ajax request
-        foreach( $a as $arg => $arg_value ) :
-
-            // Skip excluded args
-            if( in_array( $arg, array( 'query' ) ) ) {
-                continue;
-            } ?>
-            <input type="hidden" name="<?php echo $arg; ?>" value="<?php echo ( is_array( $arg_value ) ? implode(',', $arg_value ) : $arg_value ); ?>">
-        <?php endforeach; ?>
+        echo gamipress_array_as_hidden_inputs( $a, array( 'query' ) ); ?>
 
         <?php
         /**

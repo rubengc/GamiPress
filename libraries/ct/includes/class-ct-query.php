@@ -4,6 +4,8 @@
  *
  * Based on WP_Query class
  *
+ * @author GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
+ *
  * @since 1.0.0
  */
 // Exit if accessed directly
@@ -1007,6 +1009,20 @@ if ( ! class_exists( 'CT_Query' ) ) :
 
             if ( ! empty( $limits ) )
                 $this->max_num_pages = ceil( $this->found_results / $q['items_per_page'] );
+        }
+
+        /**
+         * Sets up the query by parsing query string.
+         *
+         * @since 1.0.0
+         *
+         * @param string|array $query URL query string or array of query arguments.
+         * @return array List of results.
+         */
+        public function query( $query ) {
+            $this->init();
+            $this->query = $this->query_vars = wp_parse_args( $query );
+            return $this->get_results();
         }
 
     }

@@ -48,7 +48,7 @@ function gamipress_register_user_rank_shortcode() {
         'fields'      => array_merge( array(
             'type' => array(
                 'name'        => __( 'Rank Type', 'gamipress' ),
-                'description' => __( 'Choose the rank type to display.', 'gamipress' ),
+                'description' => __( 'Rank type to display.', 'gamipress' ),
                 'type'        => 'select',
                 'option_all'  => false,
                 'options_cb'  => 'gamipress_options_cb_rank_types',
@@ -110,11 +110,12 @@ add_action( 'init', 'gamipress_register_user_rank_shortcode' );
  *
  * @since  1.3.9.3
  *
- * @param  array $atts Shortcode attributes
+ * @param  array    $atts       Shortcode attributes
+ * @param  string   $content    Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_user_rank_shortcode( $atts = array () ) {
+function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
 
     global $gamipress_template_args;
 
@@ -205,6 +206,15 @@ function gamipress_user_rank_shortcode( $atts = array () ) {
         restore_current_blog();
     }
 
-    return $output;
+    /**
+     * Filter to override shortcode output
+     *
+     * @since 1.6.5
+     *
+     * @param string    $output     Final output
+     * @param array     $atts       Shortcode attributes
+     * @param string    $content    Shortcode content
+     */
+    return apply_filters( 'gamipress_user_rank_shortcode_output', $output, $atts, $content );
 
 }

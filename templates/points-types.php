@@ -54,17 +54,8 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
                 continue;
             endif;
 
-            if( $a['awards'] === 'yes' ) :
-                $points_awards = $points_type_args['awards'];
-            else :
-                $points_awards = array();
-            endif;
-
-            if( $a['deducts'] === 'yes' ) :
-                $points_deducts = $points_type_args['deducts'];
-            else :
-                $points_deducts = array();
-            endif;
+            $points_awards = ( $a['awards'] === 'yes' ) ? $points_type_args['awards'] : array();
+            $points_deducts = ( $a['deducts'] === 'yes' ) ? $points_type_args['deducts'] : array();
         ?>
 
         <div id="gamipress-points-type-<?php echo $points_type; ?>" class="gamipress-points-type gamipress-points-type-<?php echo $points_type; ?>">

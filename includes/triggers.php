@@ -394,12 +394,12 @@ function gamipress_trigger_event() {
 	// gamipress_unlock_all_{achievement_type} and gamipress_unlock_{achievement_type} are excluded from this check
 	if( strpos( $trigger, 'gamipress_unlock_' ) !== 0 ) {
 
-		// if only log events with listeners is enabled, the check if has listeners
-		if( (bool) gamipress_get_option( 'only_log_events_with_listeners', false ) ) {
+		// Check if log all events is enabled, if checked then function won't
+		if( ! (bool) gamipress_get_option( 'log_all_events', false ) ) {
 
 			// If not achievements listening it, then return
 			if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
-				return $args[0];
+				return false;
 			}
 
 		}

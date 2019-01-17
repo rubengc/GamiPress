@@ -82,61 +82,75 @@
 		$('.cmb2-id--gamipress-points-to-unlock').hide();
 	}
 
+	// Get the current slug for slugs checks
+	var current_slug = $('input#post_name').val();
+
 	$('.gamipress-form').on( 'keyup', 'input#post_name', function() {
 		var field = $(this);
 		var slug = $(this).val();
 		var preview = $(this).next('.cmb2-metabox-description').find('.gamipress-post-name');
+		var has_error = false;
+		var error_message = '';
 
 		if( preview.length ) {
 			preview.text(slug);
 		}
 
-		var label = '';
+		var label = 'Points Type';
 
-		if(  $('#post_type').val() === 'achievement-type' ) {
-			label = 'Achievement Type';
-		} else if(  $('#post_type').val() === 'rank-type' ) {
-			label = 'Rank Type';
-		} else {
-			label = 'Points Type';
+		switch ( $('#post_type').val() ) {
+			case 'achievement-type':
+				label = 'Achievement Type';
+				break;
+			case 'rank-type':
+				label = 'Rank Type';
+				break;
+		}
+
+		// Only allow alphanumeric characters, "-" adn "_"
+		if( /[^a-zA-Z0-9\-_]/.test( slug ) ) {
+			// TODO: Localization here
+			error_message = label + '\'s slug can\'t contain special characters. Only alphanumeric characters are allowed.';
+			has_error = true;
+		}
+
+		// Check if slug is greater than 20 characters (maximum allowed for a post type)
+		if ( slug.length > 20 ) {
+			// TODO: Localization here
+			error_message = label + '\'s slug supports a maximum of 20 characters.';
+			has_error = true;
+		}
+
+		// Check if slug has been already registered
+		if( gamipress_post_type_exists( slug ) && slug !== current_slug ) {
+			// TODO: Localization here
+			error_message = 'The ' + gamipress_get_post_type_label( slug ) + ' post type already uses this slug.';
+			has_error = true;
+
 		}
 
 		// Delete any existing version of this warning
 		$('#slug-warning').remove();
 
-		// Only allow alphanumeric characters, "-" adn "_"
-		if( /[^a-zA-Z0-9\-_]/.test( slug ) ) {
-			field.css({'background':'#faa', 'color':'#a00', 'border-color':'#a55' });
-
-			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + label + '\'s slug can\'t contain special characters. Only alphanumeric characters are allowed.</span>');
-
-			// Disable the save button
-			$('input#publish').prop( 'disabled', true );
-
-			return false;
-		}
-
-		// Throw a warning on Points/Achievement Type editor if slig is > 20 characters
-		if ( slug.length > 20 ) {
+		if( has_error ) {
 			// Set input to look like danger
 			field.css({'background':'#faa', 'color':'#a00', 'border-color':'#a55' });
 
 			// Output a custom warning
-			// TODO: Localization here
-			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + label + '\'s slug supports a maximum of 20 characters.</span>');
+			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + error_message + '</span>');
 
 			// Disable the save button
 			$('input#publish').prop( 'disabled', true );
 
 			return false;
-		}
+		} else {
+			// Restore the input style if there is no error
+			field.css({'background':'', 'color':'', 'border-color':''});
 
-		// Restore the input style if there is no error
-		field.css({'background':'', 'color':'', 'border-color':''});
-
-		// Re-enable the save button
-		if( $('input#publish').prop( 'disabled' ) ) {
-			$('input#publish').prop( 'disabled', false );
+			// Re-enable the save button
+			if( $('input#publish').prop( 'disabled' ) ) {
+				$('input#publish').prop( 'disabled', false );
+			}
 		}
 	});
 

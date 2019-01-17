@@ -5,11 +5,27 @@
  * @since 1.0.0
  *
  * @package      Custom_Tables
- * @author       GamiPress <contact@gamipress.com>, rubengc <rubengcdev@gamil.com>
+ * @author       GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
  * @copyright    Copyright (c) GamiPress
  */
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
+
+/*
+ * Copyright (c) GamiPress (contact@gamipress.com), Ruben Garcia (rubengcdev@gmail.com)
+ *
+ * This program is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU Affero General Public License, version 3,
+ * as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Affero General
+ * Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 
 if ( ! class_exists( 'CT' ) ) :
 
@@ -94,18 +110,26 @@ if ( ! class_exists( 'CT' ) ) :
                 require_once ABSPATH . 'wp-admin/includes/class-wp-list-table.php';
             }
 
+            // CT_Table and CT_Table_Meta classes
             require_once CT_DIR . 'includes/class-ct-table.php';
             require_once CT_DIR . 'includes/class-ct-table-meta.php';
+            // Database and schema related classes
             require_once CT_DIR . 'includes/class-ct-database.php';
             require_once CT_DIR . 'includes/class-ct-database-schema.php';
             require_once CT_DIR . 'includes/class-ct-database-schema-updater.php';
+            // Rest API
+            require_once CT_DIR . 'includes/class-ct-rest-controller.php';
+            require_once CT_DIR . 'includes/class-ct-rest-meta-fields.php';
+            // CT_Query and CT_List_Table classes
             require_once CT_DIR . 'includes/class-ct-query.php';
             require_once CT_DIR . 'includes/class-ct-list-table.php';
+            // Views (List and edit)
             require_once CT_DIR . 'includes/class-ct-view.php';
             require_once CT_DIR . 'includes/class-ct-list-view.php';
             require_once CT_DIR . 'includes/class-ct-edit-view.php';
-
+            // Rest of includes
             require_once CT_DIR . 'includes/functions.php';
+            require_once CT_DIR . 'includes/hooks.php';
 
         }
 

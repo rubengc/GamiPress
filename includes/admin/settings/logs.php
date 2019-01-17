@@ -11,7 +11,8 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Logs Settings meta boxes
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.6.5 Added log_all_events setting and only_log_events_with_listeners setting has been removed
  *
  * @param array $meta_boxes
  *
@@ -22,10 +23,10 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
     $meta_boxes['logs-patterns-settings'] = array(
         'title' => __( 'Logs', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_logs_patterns_settings_fields', array(
-            'only_log_events_with_listeners' => array(
-                'name' => __( 'Only log activities in use', 'gamipress' ),
-                'desc' => __( 'Check this option to just log triggered activities that has a points awards or steps looking for it.', 'gamipress' )
-                    . '<br>' . __( 'GamiPress will stop storing unused activities logs like user daily visits.', 'gamipress' ),
+            'log_all_events' => array(
+                'name' => __( 'Log all activities', 'gamipress' ),
+                'desc' => __( 'Check this option to log all activities triggered.', 'gamipress' )
+                    . '<br>' . __( 'By default, GamiPress just logs activities that has a requirement (points awards, steps, etc) looking for it.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
