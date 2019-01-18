@@ -3,6 +3,7 @@
  * Admin Help and Support Page
  *
  * @package     GamiPress\Admin\Help_Support
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly

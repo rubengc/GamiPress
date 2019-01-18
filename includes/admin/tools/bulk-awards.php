@@ -3,6 +3,7 @@
  * Bulk Awards Tool
  *
  * @package     GamiPress\Admin\Tools\Bulk_Awards
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.1
  */
 // Exit if accessed directly

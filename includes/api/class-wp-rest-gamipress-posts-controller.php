@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Custom endpoint for querying multiple post-types.
  * Mimics `WP_REST_Posts_Controller` as closely as possible.

@@ -3,6 +3,7 @@
  * Admin Licenses Page
  *
  * @package     GamiPress\Admin\Licenses
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.3.9.3
  */
 // Exit if accessed directly

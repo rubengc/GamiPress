@@ -3,6 +3,7 @@
  * Achievement Type Meta Boxes
  *
  * @package     GamiPress\Admin\Meta_Boxes\Achievement_Type
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.7
  */
 // Exit if accessed directly

@@ -3,6 +3,7 @@
  * Recount Activity Tool
  *
  * @package     GamiPress\Admin\Tools\Recount_Activity
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.8
  */
 // Exit if accessed directly

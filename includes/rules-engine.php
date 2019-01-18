@@ -3,6 +3,7 @@
  * Rules Engine: The brains behind this whole operation
  *
  * @package     GamiPress\Rules_Engine
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly

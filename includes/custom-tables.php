@@ -3,6 +3,7 @@
  * Custom Tables
  *
  * @package     GamiPress\Custom_Tables
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.2.8
  */
 // Exit if accessed directly

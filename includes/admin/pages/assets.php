@@ -3,6 +3,7 @@
  * Admin Assets Pages
  *
  * @package     GamiPress\Admin\Assets
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.6.0
  */
 // Exit if accessed directly

@@ -2,22 +2,27 @@
 /**
  * Functions
  *
+ * @author GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
+ *
  * @since 1.0.0
  */
 // Exit if accessed directly
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Setup the global table
+ * Render an ajax list table
  *
- * @param CT_Table|string $object CT_Table object or CT_Table name
- * @return CT_Table $ct_table
+ * @since 1.0.0
+ *
+ * @param CT_Table|string   $table      CT_Table object or CT_Table name
+ * @param array             $query_args Query parameters
+ * @param array             $view_args  View parameters
  */
-function ct_render_ajax_list_table( $object, $query_args = array(), $view_args = array() ) {
+function ct_render_ajax_list_table( $table, $query_args = array(), $view_args = array() ) {
 
     global $ct_table, $ct_query, $ct_list_table;
 
-    $ct_table = ct_setup_table( $object );
+    $ct_table = ct_setup_table( $table );
 
     if( is_object( $ct_table ) ) {
 
@@ -27,11 +32,13 @@ function ct_render_ajax_list_table( $object, $query_args = array(), $view_args =
         // Enqueue assets
         ct_ajax_list_table_enqueue_scripts();
 
+        // Setup query args
         $query_args = wp_parse_args( $query_args, array(
             'paged' => 1,
             'items_per_page' => 20,
         ) );
 
+        // setup view args
         $view_args = wp_parse_args( $view_args, array(
             'views' => true,
             'search_box' => true,
@@ -105,7 +112,7 @@ function ct_render_ajax_list_table( $object, $query_args = array(), $view_args =
  * Custom table nav function
  *
  * @param CT_List_Table $ct_list_table
- * @param $which
+ * @param string        $which
  */
 function ct_render_ajax_list_tablenav( $ct_list_table, $which ) {
     ?>

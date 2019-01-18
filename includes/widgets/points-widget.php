@@ -3,6 +3,7 @@
  * User Points Widget
  *
  * @package     GamiPress\Widgets\Widget\Points
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly

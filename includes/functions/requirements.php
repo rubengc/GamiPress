@@ -3,6 +3,7 @@
  * Requirement Functions
  *
  * @package     GamiPress\Requirement_Functions
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.5
  */
 // Exit if accessed directly

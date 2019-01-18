@@ -3,6 +3,7 @@
  * GamiPress User Rank Shortcode
  *
  * @package     GamiPress\Shortcodes\Shortcode\GamiPress_User_Rank
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.3.9.3
  */
 // Exit if accessed directly

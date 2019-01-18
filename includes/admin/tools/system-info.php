@@ -3,6 +3,7 @@
  * System Info Tool
  *
  * @package     GamiPress\Admin\Tools\System_Info
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.7
  */
 // Exit if accessed directly

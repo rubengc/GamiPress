@@ -3,6 +3,7 @@
  * Post Types
  *
  * @package     GamiPress\Post_Types
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly
@@ -79,7 +80,7 @@ function gamipress_register_post_types() {
         'rewrite'            => false,
         'capability_type'    => 'post',
         'has_archive'        => $public_points_awards,
-        'hierarchical'       => false,
+        'hierarchical'       => true,
         'menu_position'      => null,
         'supports'           => array( 'title' ),
 
@@ -115,7 +116,7 @@ function gamipress_register_post_types() {
 		'rewrite'            => false,
 		'capability_type'    => 'post',
 		'has_archive'        => $public_points_deducts,
-		'hierarchical'       => false,
+		'hierarchical'       => true,
 		'menu_position'      => null,
 		'supports'           => array( 'title' ),
 
@@ -186,7 +187,7 @@ function gamipress_register_post_types() {
 		'rewrite'            => false,
 		'capability_type'    => 'post',
 		'has_archive'        => $public_steps,
-		'hierarchical'       => false,
+		'hierarchical'       => true,
 		'menu_position'      => null,
 		'supports'           => array( 'title' ),
 
@@ -256,7 +257,7 @@ function gamipress_register_post_types() {
 		'rewrite'            => false,
 		'capability_type'    => 'post',
 		'has_archive'        => $public_rank_requirements,
-		'hierarchical'       => false,
+		'hierarchical'       => true,
 		'menu_position'      => null,
 		'supports'           => array( 'title' ),
 

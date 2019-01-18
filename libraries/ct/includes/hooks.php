@@ -40,5 +40,8 @@ function ct_rest_api_init() {
         $controller->register_routes();
 
     }
+
+    // Trigger CT rest API init hook
+    do_action( 'ct_rest_api_init' );
 }
-add_action( 'rest_api_init', 'ct_rest_api_init' );
+add_action( 'rest_api_init', 'ct_rest_api_init', 9 );

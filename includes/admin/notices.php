@@ -3,6 +3,7 @@
  * Admin Notices
  *
  * @package     GamiPress\Admin\Notices
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.5.9
  */
 // Exit if accessed directly

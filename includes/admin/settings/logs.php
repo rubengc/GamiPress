@@ -3,6 +3,7 @@
  * Admin Logs Settings
  *
  * @package     GamiPress\Admin\Settings\Logs
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.3.7
  */
 // Exit if accessed directly

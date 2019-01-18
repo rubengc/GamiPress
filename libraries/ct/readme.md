@@ -1,9 +1,12 @@
 # About Custom Tables #
+
 Custom Tables (CT) is a WordPress developers toolkit to handle custom database table workflow similar to WordPress CPT.
 
 Check [example.php](./example.php) file included on this project to see a few examples to get it working.
 
-Important: CT is in development phase, this means current version is unstable and much of the current features will change. To use this library on live project be sure you know you are doing!
+CT has been developed as internal library for [GamiPress](https://gamipress.com) plugin in order to bring to GamiPress's logs and user earnings tables the same features as WordPress post types (admin UI, cached query, rest API endpoints, etc).
+
+Important: CT public API is in development phase, this means current version is unstable and much of the current features will change. To use this library on live project be sure you know you are doing!
 
 Contributions are really appreciated! Looking for help to standarize functions and hooks as well as for documentation.
 
@@ -46,3 +49,7 @@ Other features
 - [x] CMB2 support
 - [ ] Documentation (help wanted!)
 - [ ] Add WP Lib Loader to always load the newest version (http://jtsternberg.github.io/wp-lib-loader/)
+
+## Plugins ##
+
+[CT - Ajax List Table](https://github.com/rubengc/ct-ajax-list-table)

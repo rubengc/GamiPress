@@ -13,7 +13,7 @@
  * License:         	GNU AGPL v3.0 (http://www.gnu.org/licenses/agpl.txt)
  *
  * @package         	GamiPress
- * @author          	GamiPress <contact@gamipress.com>
+ * @author          	GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @copyright       	Copyright (c) GamiPress
 */
 

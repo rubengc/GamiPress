@@ -3,6 +3,7 @@
  * GamiPress compatibility with newest WordPress functions
  *
  * @package     GamiPress\Compatibility\WordPress
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.9
  */
 // Exit if accessed directly

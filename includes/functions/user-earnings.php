@@ -3,6 +3,7 @@
  * User Earnings Functions
  *
  * @package     GamiPress\User_Earnings_Functions
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.3
  */
 // Exit if accessed directly

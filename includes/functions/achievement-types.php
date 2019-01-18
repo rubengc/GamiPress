@@ -3,6 +3,7 @@
  * Achievement Types Functions
  *
  * @package     GamiPress\Achievement_Types_Functions
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.6
  */
 // Exit if accessed directly

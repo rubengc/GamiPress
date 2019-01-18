@@ -3,6 +3,7 @@
  * Upgrades
  *
  * @package     GamiPress\Admin\Upgrades
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.2.7
  */
 // Exit if accessed directly

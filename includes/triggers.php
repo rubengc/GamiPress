@@ -3,6 +3,7 @@
  * Activity Triggers, used for triggering achievement earning
  *
  * @package     GamiPress\Triggers
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly

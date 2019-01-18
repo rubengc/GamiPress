@@ -3,6 +3,7 @@
  * Rest API Logs
  *
  * @package     GamiPress\Rest_API\Logs
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.6.5
  */
 // Exit if accessed directly

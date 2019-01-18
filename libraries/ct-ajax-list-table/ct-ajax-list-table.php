@@ -3,8 +3,8 @@
  * Custom Tables - Ajax List Table
  *
  * @package      Custom_Tables\Leaderboards
- * @author       Tsunoa <contact@tsunoa.com>, rubengc <rubengcdev@gamil.com>
- * @copyright    Copyright (c) Tsunoa
+ * @author       GamiPress <contact@gamipress.com>, rubengc <rubengcdev@gamil.com>
+ * @copyright    Copyright (c) GamiPress
  */
 
 if ( ! class_exists( 'CT_Ajax_List_Table' ) ) :

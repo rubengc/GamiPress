@@ -1,8 +1,9 @@
 <?php
 /**
- * User Points Types Widget
+ * Points Types Widget
  *
  * @package     GamiPress\Widgets\Widget\Points_Types
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly

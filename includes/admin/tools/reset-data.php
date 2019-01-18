@@ -3,6 +3,7 @@
  * Reset Data Tool
  *
  * @package     GamiPress\Admin\Tools\Reset_Data
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.7
  */
 // Exit if accessed directly

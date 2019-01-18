@@ -206,7 +206,7 @@ function yourprefix_demo_logs_search_fields( $search_fields = array() ) {
 add_filter( 'ct_query_demo_logs_search_fields', 'yourprefix_demo_logs_search_fields' );
 
 // Custom where, example adding support to 'log__in' and 'log__not_in' query vars
-function demo_logs_query_where( $where, $ct_query ) {
+function yourprefix_demo_logs_query_where( $where, $ct_query ) {
 
     global $ct_table;
 
@@ -249,14 +249,14 @@ function demo_logs_query_where( $where, $ct_query ) {
 
     return $where;
 }
-add_filter( 'ct_query_where', 'demo_logs_query_where', 10, 2 );
+add_filter( 'ct_query_where', 'yourprefix_demo_logs_query_where', 10, 2 );
 
 /* ----------------------------------
  * REST API - Examples about some interesting hooks to use on rest API
    ---------------------------------- */
 
 // Register the item schema properties (used on create and update endpoints)
-function demo_logs_rest_item_schema( $schema ) {
+function yourprefix_demo_logs_rest_item_schema( $schema ) {
 
     // Properties
     $schema['properties'] = array_merge( array(
@@ -287,12 +287,12 @@ function demo_logs_rest_item_schema( $schema ) {
     return $schema;
 
 }
-add_filter( 'ct_rest_demo_logs_schema', 'demo_logs_rest_item_schema' );
+add_filter( 'ct_rest_demo_logs_schema', 'yourprefix_demo_logs_rest_item_schema' );
 
 // Custom collection params, to make them work check the demo_logs_query_where() example function
 // Note: On this example, collection params are 'exclude' and 'include'
 // On demo_logs_rest_parameter_mappings() example function will be map them to the real query vars
-function demo_logs_rest_collection_params( $query_params, $ct_table ) {
+function yourprefix_demo_logs_rest_collection_params( $query_params, $ct_table ) {
 
     // Exclude
     $query_params['exclude'] = array(
@@ -317,20 +317,20 @@ function demo_logs_rest_collection_params( $query_params, $ct_table ) {
 
     return $query_params;
 }
-add_filter( 'ct_rest_demo_logs_collection_params', 'demo_logs_rest_collection_params', 10, 2 );
+add_filter( 'ct_rest_demo_logs_collection_params', 'yourprefix_demo_logs_rest_collection_params', 10, 2 );
 
 // Map custom parameters to real query var parameters (check the demo_logs_query_where() example function)
-function demo_logs_rest_parameter_mappings( $parameter_mappings, $ct_table, $request ) {
+function yourprefix_demo_logs_rest_parameter_mappings( $parameter_mappings, $ct_table, $request ) {
 
     $parameter_mappings['exclude'] = 'log__not_in';
     $parameter_mappings['include'] = 'log__in';
 
     return $parameter_mappings;
 }
-add_filter( 'ct_rest_demo_logs_parameter_mappings', 'demo_logs_rest_parameter_mappings', 10, 3 );
+add_filter( 'ct_rest_demo_logs_parameter_mappings', 'yourprefix_demo_logs_rest_parameter_mappings', 10, 3 );
 
 // Custom field sanitization on rest API updates
-function demo_logs_rest_sanitize_field_value( $value, $field, $request ) {
+function yourprefix_demo_logs_rest_sanitize_field_value( $value, $field, $request ) {
 
     switch( $field ) {
         case 'date':
@@ -348,4 +348,40 @@ function demo_logs_rest_sanitize_field_value( $value, $field, $request ) {
 
     return $value;
 }
-add_filter( 'ct_rest_demo_logs_sanitize_field_value', 'demo_logs_rest_sanitize_field_value', 10, 3 );
+add_filter( 'ct_rest_demo_logs_sanitize_field_value', 'yourprefix_demo_logs_rest_sanitize_field_value', 10, 3 );
+
+// Register rest field
+function yourprefix_demo_logs_register_rest_field() {
+
+    register_rest_field(
+        'demo_logs',
+        'yourprefix_meta_field',
+        array(
+            'get_callback'    => 'yourprefix_common_get_object_meta',
+            'update_callback' => 'yourprefix_common_update_object_meta',
+            'schema'          => null,
+        )
+    );
+
+    register_rest_field(
+        'demo_logs',
+        'yourprefix_meta_field_2',
+        array(
+            'get_callback'    => 'yourprefix_common_get_object_meta',
+            'update_callback' => 'yourprefix_common_update_object_meta',
+            'schema'          => null,
+        )
+    );
+
+}
+add_action( 'ct_rest_api_init', 'yourprefix_demo_logs_register_rest_field' );
+
+// Get object meta callback
+function yourprefix_common_get_object_meta( $object, $field_name, $request ) {
+    return ct_get_object_meta( $object[ 'id' ], $field_name, true );
+}
+
+// Update object meta callback
+function yourprefix_common_update_object_meta( $value, $object, $field_name ) {
+    return ct_update_object_meta( $object[ 'id' ], $field_name, $value );
+}

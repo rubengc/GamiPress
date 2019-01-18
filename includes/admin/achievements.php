@@ -3,6 +3,7 @@
  * Admin Achievements
  *
  * @package     GamiPress\Admin\Achievements
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.3.9.5
  */
 // Exit if accessed directly

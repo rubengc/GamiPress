@@ -5,6 +5,7 @@
  * Used to store commonly used query results
  *
  * @package     GamiPress\Cache
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.7
  */
 // Exit if accessed directly

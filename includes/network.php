@@ -3,6 +3,7 @@
  * Network
  *
  * @package     GamiPress\Network
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.0
  */
 // Exit if accessed directly

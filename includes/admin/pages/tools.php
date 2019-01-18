@@ -3,6 +3,7 @@
  * Admin Tools Page
  *
  * @package     GamiPress\Admin\Tools
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.5
  */
 // Exit if accessed directly

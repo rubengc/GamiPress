@@ -3,6 +3,7 @@
  * Admin Plugins
  *
  * @package     GamiPress\Admin\Plugins
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.0
  */
 // Exit if accessed directly

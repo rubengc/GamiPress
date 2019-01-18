@@ -3,6 +3,7 @@
  * Import/Export Points Tool
  *
  * @package     GamiPress\Admin\Tools\Import_Export_Points
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.6.4
  */
 // Exit if accessed directly

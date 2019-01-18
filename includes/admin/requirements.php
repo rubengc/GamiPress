@@ -3,6 +3,7 @@
  * Admin Requirements
  *
  * @package     GamiPress\Admin\Requirements
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly

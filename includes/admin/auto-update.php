@@ -3,6 +3,7 @@
  * Auto Update
  *
  * @package     GamiPress\Admin\Auto_Update
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.2
  */
 // Exit if accessed directly

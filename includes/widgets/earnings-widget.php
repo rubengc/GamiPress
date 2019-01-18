@@ -3,6 +3,7 @@
  * User Earnings Widget
  *
  * @package     GamiPress\Widgets\Widget\Earnings
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.3.9
  */
 // Exit if accessed directly

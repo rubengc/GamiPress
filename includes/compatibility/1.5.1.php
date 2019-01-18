@@ -3,6 +3,7 @@
  * GamiPress 1.5.1 compatibility functions
  *
  * @package     GamiPress\1.5.1
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.5.1
  */
 // Exit if accessed directly

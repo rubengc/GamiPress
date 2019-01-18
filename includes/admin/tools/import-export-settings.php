@@ -3,6 +3,7 @@
  * Import/Export Settings Tool
  *
  * @package     GamiPress\Admin\Tools\Import_Export_Settings
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.1.7
  */
 // Exit if accessed directly

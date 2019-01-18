@@ -3,6 +3,7 @@
  * Debug
  *
  * @package     GamiPress\Admin\Debug
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.6
  */
 // Exit if accessed directly

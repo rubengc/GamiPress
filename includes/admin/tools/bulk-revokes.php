@@ -3,6 +3,7 @@
  * Bulk Revokes Tool
  *
  * @package     GamiPress\Admin\Tools\Bulk_Revokes
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.4.3
  */
 // Exit if accessed directly

@@ -257,7 +257,8 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 * On points/achievement/rank types edit screen now user gets notices if setups the same slug as an already existent post type (eg: post, page, product, course, etc).
 * **Developer Notes**
 * Added filters to all shortcode outputs.
-* Added support to before and after query vars to logs and user earnings tables
+* Added support to before and after query vars to logs and user earnings tables.
+* Added script files authorship.
 
 = 1.6.4.1 =
 

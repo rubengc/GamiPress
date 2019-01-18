@@ -3,6 +3,7 @@
  * User Earnings
  *
  * @package     GamiPress\Custom_Tables\User_Earnings
+ * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.2.8
  */
 // Exit if accessed directly
