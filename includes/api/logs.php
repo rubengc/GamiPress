@@ -21,12 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_logs_rest_item_schema( $schema ) {
 
     // Properties
-    $schema['properties'] = array_merge( array(
-        'log_id'              => array(
-            'description' => __( 'Unique identifier for the object.', 'gamipress' ),
-            'type'        => 'integer',
-            'context'     => array( 'view', 'edit', 'embed' ),
-        ),
+    $schema['properties'] = array_merge( $schema['properties'], array(
         'title' => array(
             'description' => __( 'The title for the object.', 'gamipress' ),
             'type'        => 'string',
@@ -58,7 +53,7 @@ function gamipress_logs_rest_item_schema( $schema ) {
             'format'      => 'date-time',
             'context'     => array( 'view', 'edit', 'embed' ),
         ),
-    ), $schema['properties'] );
+    ) );
 
     return $schema;
 

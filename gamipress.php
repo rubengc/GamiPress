@@ -106,7 +106,7 @@ final class GamiPress {
 	 *
 	 * @access      public
 	 * @since       1.0.0
-	 * @return      object self::$instance The one true GamiPress
+	 * @return      GamiPress self::$instance The one true GamiPress
 	 */
 	public static function instance() {
 

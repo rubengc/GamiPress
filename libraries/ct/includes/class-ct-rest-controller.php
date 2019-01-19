@@ -989,7 +989,14 @@ class CT_REST_Controller extends WP_REST_Controller {
             'title'      => $this->name,
             'type'       => 'object',
             // Properties are the fields that will be returned through rest request.
-            'properties' => array(),
+            'properties' => array(
+                // id is common to all registered tables
+                'id' => array(
+                    'description' => __( 'Unique identifier for the object.' ),
+                    'type'        => 'integer',
+                    'context'     => array( 'view', 'edit', 'embed' ),
+                ),
+            ),
         );
 
         // Add meta property if table has support for it

@@ -52,4 +52,5 @@ Other features
 
 ## Plugins ##
 
-[CT - Ajax List Table](https://github.com/rubengc/ct-ajax-list-table)
+- [Ajax List Table](https://github.com/rubengc/ct-ajax-list-table): Utility to render a Custom Tables (CT) List Table with ajax searching and pagination.
+- [Rest API Docs](https://github.com/rubengc/ct-rest-api-docs): Rest API docs generator for Custom Tables (CT).
