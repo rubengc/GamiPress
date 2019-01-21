@@ -266,6 +266,8 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 * Added filters to all shortcode outputs.
 * Added support to before and after query vars to logs and user earnings tables.
 * Added script files authorship.
+* Updated CMB2 library.
+* Updated CT library.
 
 = 1.6.4.1 =
 
