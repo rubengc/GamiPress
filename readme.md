@@ -48,6 +48,7 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Theme Agnostic:** GamiPress works with just about any standard WordPress theme. No special hooks or theme updates are needed.
 * **Templates System:** Overwritable templates system to allow you customize everything you want through your GamiPress theme folder.
 * **Data centralization on Multisite:** Centralize all the data on multisite installs and show anything you want on any sub-site.
+* **Rest API:** Full support to WordPress rest API brings you new ways to connect GamiPress with external applications.
 * **Developer-friendly:** GamiPress is extremely flexible with plenty of hooks to add custom features and functionalities.
 
 ### Integrated with your favorites WordPress plugins ###
@@ -203,6 +204,12 @@ Yes, GamiPress is stored in the official WordPress plugins repository where you 
 Yes. You can use GamiPress on a WordPress multisite network.
 
 In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/advanced/multisite/).
+
+= Does GamiPress work with WordPress rest API? =
+
+Yes. GamiPress includes full built-in support to the WordPress rest API.
+
+You can find all information about rest API [on this page](https://gamipress.com/docs/advanced/rest-api/).
 
 #### Where can I find documentation about GamiPress? ####
 
