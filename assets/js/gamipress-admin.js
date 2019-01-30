@@ -1,5 +1,34 @@
 (function ( $ ) {
 
+	// Selector Control
+	$('.gamipress-selector select').each(function() { gamipress_selector( $(this) ); });
+
+	// Post Selector Control
+	$('.gamipress-post-selector select').each(function() { gamipress_post_selector( $(this) ); });
+
+	// User Selector Control
+	$('.gamipress-user-selector select').each(function() { gamipress_user_selector( $(this) ); });
+
+	// Initialize on widgets area
+	$(document).on('widget-updated widget-added', function(e, widget) {
+
+		// Selector Control
+		widget.find( '.gamipress-selector select:not(.select2-hidden-accessible)' ).each(function() {
+			gamipress_selector( $(this) );
+		});
+
+		// Post Selector Control
+		widget.find( '.gamipress-post-selector select:not(.select2-hidden-accessible)' ).each(function() {
+			gamipress_post_selector( $(this) );
+		});
+
+		// User Selector Control
+		widget.find( '.gamipress-user-selector select:not(.select2-hidden-accessible)' ).each(function() {
+			gamipress_user_selector( $(this) );
+		});
+
+	});
+
 	// Dynamically show/hide achievement meta inputs based on "Earned By" selection
 	$("#_gamipress_earned_by").change( function() {
 
@@ -555,6 +584,8 @@ function gamipress_start_upgrade( version ) {
 // refresh the user earnings table (located in profile screen)
 function gamipress_refresh_user_earnings_table() {
 
+	var $ = $ || jQuery;
+
     // Check if table exists
     var table = $('.ct-ajax-list-table[data-object="gamipress_user_earnings"]');
 
@@ -566,11 +597,12 @@ function gamipress_refresh_user_earnings_table() {
 // Run upgrade
 function gamipress_run_upgrade( version ) {
 
+	var $ = $ || jQuery;
+
     if( gamipress_current_upgrade_cancelled ) {
         return;
     }
 
-	var $ = $ || jQuery;
 	version = version.replace('.', '').replace('.', '').replace('.', '');
 
 	$.ajax({

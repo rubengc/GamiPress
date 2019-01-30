@@ -1,43 +1,5 @@
 (function($) {
 
-    // Helper function to build a widget field selector
-    function gamipress_widget_select2_selector( shortcode, field ) {
-
-        return 'select[id^="widget-gamipress_' + shortcode + '"][id$="[' + field + ']"]:not(.select2-hidden-accessible)';
-
-    }
-
-    var gamipress_widget_select2_achievements = {
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    action: 'gamipress_get_achievements_options'
-                };
-            },
-            processResults: gamipress_select2_posts_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_posts_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_admin_widgets.id_placeholder,
-        allowClear: true,
-        multiple: false
-    };
-
-    var gamipress_widget_select2_achievements_multiple = $.extend( true, {}, gamipress_widget_select2_achievements, { multiple: true } );
-
-    var gamipress_widget_select2_multiple = {
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_admin_widgets.post_type_placeholder,
-        allowClear: true,
-        multiple: true
-    };
-
     var gamipress_widget_select2_users = {
         ajax: {
             url: ajaxurl,
@@ -60,59 +22,6 @@
         allowClear: true,
         multiple: false
     };
-
-    var gamipress_widget_select2_ranks = {
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    action: 'gamipress_get_ranks_options'
-                };
-            },
-            processResults: gamipress_select2_posts_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_posts_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_admin_widgets.rank_placeholder,
-        allowClear: true,
-        multiple: false
-    };
-
-    var gamipress_widget_select2_ranks_multiple = $.extend( true, {}, gamipress_widget_select2_ranks, { multiple: true } );
-
-    // Achievement ajax
-    $( '#widgets-right ' + gamipress_widget_select2_selector( 'achievement', 'id' ) ).select2( gamipress_widget_select2_achievements );
-
-    // Achievement ajax multiple
-    $(  '#widgets-right ' + gamipress_widget_select2_selector( 'achievements', 'include' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'achievements', 'exclude' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'logs', 'include' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'logs', 'exclude' )
-    ).select2( gamipress_widget_select2_achievements_multiple );
-
-    // Select2 multiple
-    $(  '#widgets-right ' + gamipress_widget_select2_selector( 'achievements', 'type' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'type' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'logs', 'type' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'points_types' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'achievement_types' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'earnings', 'rank_types' )
-    ).select2( gamipress_widget_select2_multiple );
-
-    // Rank ajax
-    $( '#widgets-right ' + gamipress_widget_select2_selector( 'rank', 'id' ) ).select2( gamipress_widget_select2_ranks );
-
-    // Rank ajax multiple
-    $(  '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'include' ) + ', '
-        + '#widgets-right ' + gamipress_widget_select2_selector( 'ranks', 'exclude' )
-    ).select2( gamipress_widget_select2_ranks_multiple );
 
     // User ajax
     $( '#widgets-right select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
@@ -188,38 +97,6 @@
 
     // Initialize on widgets area
     $(document).on('widget-updated widget-added', function(e, widget) {
-
-        // Achievement ajax
-        widget.find( gamipress_widget_select2_selector( 'achievement', 'id' ) ).select2( gamipress_widget_select2_achievements );
-
-        // Achievement ajax multiple
-        widget.find(
-            gamipress_widget_select2_selector( 'achievements', 'include' ) + ', '
-            + gamipress_widget_select2_selector( 'achievements', 'exclude' ) + ', '
-            + gamipress_widget_select2_selector( 'logs', 'include' ) + ', '
-            + gamipress_widget_select2_selector( 'logs', 'exclude' )
-        ).select2( gamipress_widget_select2_achievements_multiple );
-
-        // Select2 multiple
-        widget.find(
-            gamipress_widget_select2_selector( 'achievements', 'type' ) + ', '
-            + gamipress_widget_select2_selector( 'points', 'type' ) + ', '
-            + gamipress_widget_select2_selector( 'points_types', 'type' ) + ', '
-            + gamipress_widget_select2_selector( 'ranks', 'type' ) + ', '
-            + gamipress_widget_select2_selector( 'logs', 'type' ) + ', '
-            + gamipress_widget_select2_selector( 'earnings', 'points_types' ) + ', '
-            + gamipress_widget_select2_selector( 'earnings', 'achievement_types' ) + ', '
-            + gamipress_widget_select2_selector( 'earnings', 'rank_types' )
-        ).select2( gamipress_widget_select2_multiple );
-
-        // Rank ajax
-        widget.find( gamipress_widget_select2_selector( 'rank', 'id' ) ).select2( gamipress_widget_select2_ranks );
-
-        // Rank ajax multiple
-        widget.find(
-            gamipress_widget_select2_selector( 'ranks', 'include' ) + ', '
-            + gamipress_widget_select2_selector( 'ranks', 'exclude' )
-        ).select2( gamipress_widget_select2_ranks_multiple );
 
         // User ajax
         widget.find( 'select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );

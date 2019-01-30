@@ -143,43 +143,6 @@
         tb_remove();
     });
 
-    var select2_achievements = {
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    action: 'gamipress_get_achievements_options'
-                };
-            },
-            processResults: gamipress_select2_posts_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_posts_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_shortcodes_editor.id_placeholder,
-        allowClear: true,
-        multiple: false
-    };
-    var select2_achievements_multiple = $.extend( true, {}, select2_achievements, { multiple: true } );
-
-    // Achievement ajax
-    $( '#gamipress_achievement_id' ).select2( select2_achievements );
-
-    // Achievement ajax multiple
-    $( '#gamipress_achievements_include, #gamipress_achievements_exclude, #gamipress_logs_include, #gamipress_logs_exclude' ).select2( select2_achievements_multiple );
-
-    // Select2 multiple
-    $( '#gamipress_achievements_type, #gamipress_points_types_type, #gamipress_points_type, #gamipress_ranks_type, #gamipress_logs_type, #gamipress_earnings_points_types, #gamipress_earnings_achievement_types, #gamipress_earnings_rank_types' ).select2({
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_shortcodes_editor.post_type_placeholder,
-        allowClear: true,
-        multiple: true
-    });
-
     // User ajax
     $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_user_rank_user_id, #gamipress_earnings_user_id' ).select2({
         ajax: {
@@ -248,35 +211,6 @@
         }
 
     });
-
-    var select2_ranks = {
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    action: 'gamipress_get_ranks_options'
-                };
-            },
-            processResults: gamipress_select2_posts_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_posts_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_shortcodes_editor.rank_placeholder,
-        allowClear: true,
-        multiple: false
-    };
-    var select2_ranks_multiple = $.extend( true, {}, select2_ranks, { multiple: true } );
-
-    // Rank ajax
-    $( '#gamipress_rank_id' ).select2( select2_ranks );
-
-    // Rank ajax multiple
-    $( '#gamipress_ranks_include, #gamipress_ranks_exclude' ).select2( select2_ranks_multiple );
 
     // User earnings
     $( '#gamipress_earnings_points, #gamipress_earnings_achievements, #gamipress_earnings_ranks' ).change(function() {

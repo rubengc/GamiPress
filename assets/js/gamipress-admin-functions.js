@@ -1,4 +1,112 @@
 /**
+ * Helper function to initialize select2 on fields
+ *
+ * @since 1.6.6
+ *
+ * @param {Object} $this
+ */
+function gamipress_selector( $this ) {
+
+    // Prevent load select2 on widgets lists
+    if( $this.closest('#available-widgets').length ) {
+        return;
+    }
+
+    var select2_args = {
+        theme: 'default gamipress-select2',
+        placeholder: ( $this.data('placeholder') ? $this.data('placeholder') : gamipress_admin_functions.selector_placeholder ),
+        allowClear: true,
+        multiple: ( $this[0].hasAttribute('multiple') )
+    };
+
+    $this.select2( select2_args );
+
+}
+
+/**
+ * Helper function to initialize select2 post selector on fields
+ *
+ * @since 1.6.6
+ *
+ * @param {Object} $this
+ */
+function gamipress_post_selector( $this ) {
+
+    // Prevent load select2 on widgets lists
+    if( $this.closest('#available-widgets').length ) {
+        return;
+    }
+
+    var select2_args = {
+        ajax: {
+            url: ajaxurl,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            data: function( params ) {
+                return {
+                    q: params.term,
+                    page: params.page || 1,
+                    action: 'gamipress_get_posts',
+                    post_type: $this.data('post-type').split(','),
+                };
+            },
+            processResults: gamipress_select2_posts_process_results
+        },
+        escapeMarkup: function ( markup ) { return markup; },
+        templateResult: gamipress_select2_posts_template_result,
+        theme: 'default gamipress-select2',
+        placeholder: ( $this.data('placeholder') ? $this.data('placeholder') : gamipress_admin_functions.post_selector_placeholder ),
+        allowClear: true,
+        multiple: ( $this[0].hasAttribute('multiple') )
+    };
+
+    $this.select2( select2_args );
+
+}
+
+/**
+ * Helper function to initialize select2 user selector on fields
+ *
+ * @since 1.6.6
+ *
+ * @param {Object} $this
+ */
+function gamipress_user_selector( $this ) {
+
+    // Prevent load select2 on widgets lists
+    if( $this.closest('#available-widgets').length ) {
+        return;
+    }
+
+    var select2_args = {
+        ajax: {
+            url: ajaxurl,
+            dataType: 'json',
+            delay: 250,
+            type: 'POST',
+            data: function( params ) {
+                return {
+                    q: params.term,
+                    page: params.page || 1,
+                    action: 'gamipress_get_users',
+                };
+            },
+            processResults: gamipress_select2_users_process_results
+        },
+        escapeMarkup: function ( markup ) { return markup; },
+        templateResult: gamipress_select2_users_template_result,
+        theme: 'default gamipress-select2',
+        placeholder: ( $this.data('placeholder') ? $this.data('placeholder') : gamipress_admin_functions.user_selector_placeholder ),
+        allowClear: true,
+        multiple: ( $this[0].hasAttribute('multiple') )
+    };
+
+    $this.select2( select2_args );
+
+}
+
+/**
  * Custom formatting for posts on select2
  *
  * @since 1.4.1

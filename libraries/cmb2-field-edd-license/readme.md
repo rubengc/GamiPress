@@ -80,6 +80,10 @@ In Addition, you can use the function `cmb2_edd_license_status( $license_key )` 
 
 ## Changelog
 
+### 1.0.4
+
+* Prevent to store hidden license value when license is valid.
+
 ### 1.0.3
 
 * Added the ability to hide license.

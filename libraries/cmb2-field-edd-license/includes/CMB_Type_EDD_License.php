@@ -108,9 +108,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
 		if( $license !== false && $license_status !== 'valid' ) {
 
-			$error_notice = '<p class="license-error">'
-				. $this->get_license_error( $license, $field_args )
-			. '</p>';
+			$error_notice = '<p class="license-error">' . $this->get_license_error( $license, $field_args ) . '</p>';
 
 		}
 
@@ -136,12 +134,14 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 			if( 'lifetime' === $license->expires ) {
 
 				$expiration_notice = '<p class="license-expiration-notice license-lifetime-notice">' . __( 'Your license never expires.', 'cmb2-edd-license' ) . '</p>';
+
 			} else {
 
 				$expiration_notice = '<p class="license-expiration-notice license-expiration-date-notice">' . sprintf(
 					__( 'Your license expires on %s.', 'cmb2-edd-license' ),
 					date_i18n( get_option( 'date_format' ), strtotime( $license->expires, current_time( 'timestamp' ) ) )
 				) . '</p>';
+
 			}
 		}
 
@@ -154,14 +154,17 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
 			// Renew link
 			if( $field_args['renew_license_link'] !== false && ! empty( $field_args['renew_license_link'] ) ) {
+
 				$renew_notice = sprintf( '<p class="renew-license-notice"><a href="%s" target="_blank">%s</a></p>',
 					$field_args['renew_license_link'],
 					$field_args['renew_license']
 				);
+
 			}
 
 			// if license timestamp, then need to check if renew text should be removed
 			if( $field_args['renew_license_timestamp'] !== false ) {
+
 				$now = current_time( 'timestamp' );
 				$expiration = strtotime( $license->expires, current_time( 'timestamp' ) );
 
@@ -170,25 +173,43 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 					$renew_notice = '';
 
 				}
+
 			}
+
 		}
 
 		// Hide license
+        $hidden_field = '';
+
         if( $field_args['hide_license'] !== false && $license_status === 'valid' ) {
 
             $character = $field_args['hide_license_character'];
             $visible_characters = absint( $field_args['hide_license_visible_characters'] );
 
             if( $visible_characters > 0 ) {
-                // hide a portion of the license
+
+                // Hide a portion of the license
                 $hidden_license = str_repeat( $character, strlen( $args['value'] ) - $visible_characters ) . substr( $args['value'] , -$visible_characters );
+
             } else {
+
                 // Completely hide the license
                 $hidden_license = str_repeat( $character, strlen( $args['value'] ) );
+
             }
 
+            // Setup a hidden field to keep license value
+            $hidden_field_args = $args;
+            $hidden_field_args['type'] = 'hidden';
+
+            $hidden_field = sprintf( '<input%s/>', $this->concat_attrs( $hidden_field_args, array( 'desc', 'js_dependencies' ) ) );
+
+            // Update field value with the hidden license and set the readonly attribute
             $args['value'] = $hidden_license;
             $args['readonly'] = true;
+
+            // Unset the field name to prevent getting updated with hidden characters
+            unset( $args['name'] );
         }
 
 
@@ -199,7 +220,8 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 				$error_notice .
 				$deactivation_button .
 				$expiration_notice .
-				$renew_notice
+				$renew_notice .
+                $hidden_field
 			)
 		);
 	}

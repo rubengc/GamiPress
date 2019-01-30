@@ -28,6 +28,10 @@ function gamipress_register_logs_shortcode() {
                 'shortcode_desc'    => __( 'Single or comma-separated list of log type(s) to display.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
                 'options_cb'        => 'gamipress_options_cb_log_types',
                 'default'           => 'all',
             ),
@@ -94,6 +98,11 @@ function gamipress_register_logs_shortcode() {
                 'shortcode_desc'    => __( 'Comma-separated list of specific log entries IDs to include.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => 'gamipress_logs',
+                    'data-placeholder' => __( 'Select logs', 'gamipress' ),
+                ),
                 'default'           => '',
                 'options_cb'        => 'gamipress_options_cb_posts'
             ),
@@ -103,6 +112,11 @@ function gamipress_register_logs_shortcode() {
                 'shortcode_desc'    => __( 'Comma-separated list of specific log entries IDs to exclude.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => 'gamipress_logs',
+                    'data-placeholder' => __( 'Select logs', 'gamipress' ),
+                ),
                 'default'           => '',
                 'options_cb'        => 'gamipress_options_cb_posts'
             ),

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.5
+Stable tag: 1.6.6
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -246,6 +246,18 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.6 =
+
+* **Bug Fixes**
+* Prevent to save valid licenses with hidden value.
+* Fixed user earnings table refresh after award or revoke any element.
+* **Improvements**
+* Style improvements of GamiPress controls on Gutenberg UI.
+* **Developer Notes**
+* Added a huge number of filters to the ajax get posts query to make it more extensible.
+* Introduction of the selector, post selector and user selector utility.
+* Centralized all Javascript code related to the post selector (reducing considerably the number of lines of code).
 
 = 1.6.5 =
 

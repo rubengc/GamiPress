@@ -27,6 +27,11 @@ function gamipress_register_achievement_shortcode() {
 				'description'       => __( 'The achievement to render.', 'gamipress' ),
 				'shortcode_desc'    => __( 'The ID of the achievement to render.', 'gamipress' ),
 				'type'              => 'select',
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_achievement_types_slugs() ),
+                    'data-placeholder' => __( 'Select an achievement', 'gamipress' ),
+                ),
 				'default'           => '',
 				'options_cb'        => 'gamipress_options_cb_posts'
 			),

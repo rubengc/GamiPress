@@ -263,6 +263,18 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.6 ###
+
+* **Bug Fixes**
+* Prevent to save valid licenses with hidden value.
+* Fixed user earnings table refresh after award or revoke any element.
+* **Improvements**
+* Style improvements of GamiPress controls on Gutenberg UI.
+* **Developer Notes**
+* Added a huge number of filters to the ajax get posts query to make it more extensible.
+* Introduction of the selector, post selector and user selector utility.
+* Centralized all Javascript code related to the post selector (reducing considerably the number of lines of code).
+
 ### 1.6.5 ###
 
 * **New Features**

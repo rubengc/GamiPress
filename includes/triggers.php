@@ -99,17 +99,30 @@ function gamipress_get_specific_activity_triggers() {
 }
 
 /**
- * GamiPress specific activity triggers query args (used on requirements UI)
+ * GamiPress specific activity triggers query args (used on requirements UI and on ajax get posts)
  *
  * @since  1.3.6
  *
  * @param array|string 	$query_args
  * @param string 		$activity_trigger
  *
- * @return array
+ * @return array|string
  */
 function gamipress_get_specific_activity_triggers_query_args( $query_args, $activity_trigger ) {
 
+    /**
+     * Specific activity triggers query args (used on requirements UI and on ajax get posts)
+     *
+     * Note: Use $_REQUEST for all given parameters
+     * @see gamipress_ajax_get_posts()
+     *
+     * @since  1.3.6
+     *
+     * @param array|string 	$query_args
+     * @param string 		$activity_trigger
+     *
+     * @return array|string
+     */
 	return apply_filters( 'gamipress_specific_activity_triggers_query_args', $query_args, $activity_trigger );
 
 }

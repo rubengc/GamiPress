@@ -61,6 +61,10 @@ function gamipress_register_ranks_shortcode() {
 				'shortcode_desc'    => __( 'Single or comma-separated list of rank type(s) to display.', 'gamipress' ),
 				'type'              => 'advanced_select',
 				'multiple'          => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
 				'options_cb'        => 'gamipress_options_cb_rank_types',
 				'default'           => 'all',
 			),
@@ -120,6 +124,11 @@ function gamipress_register_ranks_shortcode() {
 				'type'              => 'advanced_select',
 				'multiple'          => true,
 				'default'           => '',
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_rank_types_slugs() ),
+                    'data-placeholder' => __( 'Select ranks', 'gamipress' ),
+                ),
 				'options_cb'        => 'gamipress_options_cb_posts'
 			),
 			'exclude' => array(
@@ -128,6 +137,11 @@ function gamipress_register_ranks_shortcode() {
 				'shortcode_desc'    => __( 'Comma-separated list of specific rank IDs to exclude.', 'gamipress' ),
 				'type'              => 'advanced_select',
 				'multiple'          => true,
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_rank_types_slugs() ),
+                    'data-placeholder' => __( 'Select ranks', 'gamipress' ),
+                ),
 				'default'           => '',
 				'options_cb'        => 'gamipress_options_cb_posts'
 			),

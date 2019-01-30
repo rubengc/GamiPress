@@ -112,6 +112,10 @@ function gamipress_register_earnings_shortcode() {
                 'shortcode_desc'    => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
                 'options_cb'        => 'gamipress_options_cb_points_types',
                 'default' 	        => 'all',
             ),
@@ -145,6 +149,10 @@ function gamipress_register_earnings_shortcode() {
                 'shortcode_desc'    => __( 'Single or comma-separated list of achievements type(s) to display.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
                 'options_cb'        => 'gamipress_options_cb_achievement_types',
                 'default' 	        => 'all',
             ),
@@ -171,6 +179,10 @@ function gamipress_register_earnings_shortcode() {
                 'shortcode_desc'    => __( 'Single or comma-separated list of ranks type(s) to display.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
                 'options_cb'        => 'gamipress_options_cb_rank_types',
                 'default' 	        => 'all',
             ),

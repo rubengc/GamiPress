@@ -950,6 +950,11 @@ body > .gamipress-select2,
 	height: 45px;
 }
 
+.block-editor #side-sortables .gamipress-box-form .gamipress-switch .cmb2-metabox-description {
+	display: inline-block;
+	padding-top: 0;
+}
+
 .gamipress-switch .cmb2-list li {
 	position: relative;
 }
@@ -1112,6 +1117,11 @@ label[for="_gamipress_sequential"] {
 
 .components-panel #postbox-container-2 .cmb-row:not(.cmb-repeat-group-field) > .cmb-th + .cmb-td {
 	max-width: 100%;
+}
+
+.block-editor #side-sortables .gamipress-box-form .cmb-th label {
+	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
 /* -------------------------------------------

@@ -28,6 +28,10 @@ function gamipress_register_points_shortcode() {
                 'shortcode_desc'    => __( 'Single or comma-separated list of points type(s) to display.', 'gamipress' ),
                 'type'              => 'advanced_select',
                 'multiple'          => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
                 'options_cb'        => 'gamipress_options_cb_points_types',
                 'default'           => 'all',
             ),

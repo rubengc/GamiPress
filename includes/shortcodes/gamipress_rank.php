@@ -27,6 +27,11 @@ function gamipress_register_rank_shortcode() {
 				'description'       => __( 'Rank to render.', 'gamipress' ),
 				'shortcode_desc'    => __( 'The ID of the rank to render.', 'gamipress' ),
 				'type'              => 'select',
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_rank_types_slugs() ),
+                    'data-placeholder' => __( 'Select a rank', 'gamipress' ),
+                ),
 				'default'           => '',
 				'options_cb'        => 'gamipress_options_cb_posts'
 			),

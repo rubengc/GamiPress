@@ -65,6 +65,10 @@ function gamipress_register_achievements_shortcode() {
 				'description'       => __( 'Achievement type(s) to display.', 'gamipress' ),
 				'shortcode_desc'    => __( 'Single or comma-separated list of achievement type(s) to display.', 'gamipress' ),
 				'type'              => 'advanced_select',
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Default: All', 'gamipress' ),
+                ),
 				'multiple'          => true,
 				'options_cb'        => 'gamipress_options_cb_achievement_types',
 				'default'           => 'all',
@@ -170,6 +174,11 @@ function gamipress_register_achievements_shortcode() {
 				'shortcode_desc'    => __( 'Comma-separated list of specific achievement IDs to include.', 'gamipress' ),
 				'type'              => 'advanced_select',
 				'multiple'          => true,
+				'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_achievement_types_slugs() ),
+                    'data-placeholder' => __( 'Select achievements', 'gamipress' ),
+                ),
 				'default'           => '',
 				'options_cb'        => 'gamipress_options_cb_posts'
 			),
@@ -179,6 +188,11 @@ function gamipress_register_achievements_shortcode() {
 				'shortcode_desc'    => __( 'Comma-separated list of specific achievement IDs to exclude.', 'gamipress' ),
 				'type'              => 'advanced_select',
 				'multiple'          => true,
+				'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_achievement_types_slugs() ),
+                    'data-placeholder' => __( 'Select achievements', 'gamipress' ),
+                ),
 				'default'           => '',
 				'options_cb'        => 'gamipress_options_cb_posts'
 			),

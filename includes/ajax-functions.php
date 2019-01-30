@@ -145,26 +145,36 @@ function gamipress_ajax_get_posts() {
 	// Pull back the search string
 	$search = isset( $_REQUEST['q'] ) ? $wpdb->esc_like( $_REQUEST['q'] ) : '';
 
+	// Setup where conditions (initialized with 1=1)
+    $where = '1=1';
+
 	// Post type conditional
 	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] :  array( 'post', 'page' ) );
 
 	if ( is_array( $post_type ) ) {
-		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
+		$post_type = sprintf( ' AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
 	} else {
-		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
+		$post_type = sprintf( ' AND p.post_type = \'%s\'', $post_type );
 	}
 
-	// Check for extra conditionals
-	$where = '';
+    $where .= $post_type;
 
+	// Post title conditional
+    $where .= " AND p.post_title LIKE %s";
+
+	// Post status conditional
+    $where .= " AND p.post_status IN( 'publish', 'private', 'inherit' )";
+
+	// Check for trigger type extra conditionals
 	if( isset( $_REQUEST['trigger_type'] ) ) {
 
 		$query_args = array();
 		$trigger_type = $_REQUEST['trigger_type'];
 
+		// Get trigger type query args (This function is filtered!)
 		$query_args = gamipress_get_specific_activity_triggers_query_args( $query_args, $trigger_type );
 
-		if( isset( $query_args ) ) {
+		if( ! empty( $query_args ) ) {
 
 			if( is_array( $query_args ) ) {
 				// If is an array of conditionals, then build the new conditionals
@@ -172,11 +182,85 @@ function gamipress_ajax_get_posts() {
 					$where .= " AND p.{$field} = '$value'";
 				}
 			} else {
-				$where = $query_args;
+			    // Leave an extra space if query args doesn't have one
+				$where .= ' ' . $query_args;
 			}
 
 		}
 	}
+
+    // Check for extra conditionals
+    /**
+     * Ajax posts query args (used on almost every post selector)
+     *
+     * Note: Use $_REQUEST for all given parameters
+     *
+     * @since  1.6.6
+     *
+     * @param string $query_args
+     *
+     * @return array|string
+     */
+    $extra_query_args = apply_filters( 'gamipress_ajax_get_posts_query_args', '' );
+
+    if( ! empty( $extra_query_args ) ) {
+
+        if( is_array( $extra_query_args ) ) {
+            // If is an array of conditionals, then build the new conditionals
+            foreach( $extra_query_args as $field => $value ) {
+                $where .= " AND p.{$field} = '$value'";
+            }
+        } else {
+            // Leave an extra space if extra query args doesn't have one
+            $where .= ' ' . $extra_query_args;
+        }
+
+    }
+
+    // Setup from (from is filtered to allow joins)
+    $from = "{$wpdb->posts} AS p";
+
+    /**
+     * Ajax posts from (used on almost every post selector)
+     *
+     * Note: Use $_REQUEST for all given parameters
+     *
+     * @since  1.6.6
+     *
+     * @param string $from By default '{$wpdb->posts} AS p'
+     *
+     * @return string
+     */
+    $from = apply_filters( 'gamipress_ajax_get_posts_from', $from );
+
+    /**
+     * Ajax posts where (used on almost every post selector)
+     *
+     * Note: Use $_REQUEST for all given parameters
+     *
+     * @since  1.6.6
+     *
+     * @param string $where Contains all wheres
+     *
+     * @return string
+     */
+    $where = apply_filters( 'gamipress_ajax_get_posts_where', $where );
+
+    // Setup order by
+    $order_by = "p.post_type ASC, p.menu_order DESC";
+
+    /**
+     * Ajax posts order by (used on almost every post selector)
+     *
+     * Note: Use $_REQUEST for all given parameters
+     *
+     * @since  1.6.6
+     *
+     * @param string $order_by By default 'p.post_type ASC, p.menu_order DESC'
+     *
+     * @return string
+     */
+    $order_by = apply_filters( 'gamipress_ajax_get_posts_order_by', $order_by );
 
 	// Pagination args
 	$page = isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1;
@@ -199,12 +283,9 @@ function gamipress_ajax_get_posts() {
 			// On this query, keep $wpdb->posts to get sub site posts
 			$site_results = $wpdb->get_results( $wpdb->prepare(
 				"SELECT p.ID, p.post_title, p.post_type
-				 FROM   {$wpdb->posts} AS p
-				 WHERE  1=1
-					   {$post_type}
-					   {$where}
-					   AND p.post_title LIKE %s
-					   AND p.post_status IN( 'publish', 'private', 'inherit' )
+				 FROM {$from}
+				 WHERE {$where}
+                 ORDER BY {$order_by}
 				 LIMIT {$offset}, {$limit}",
 				"%%{$search}%%"
 			) );
@@ -222,13 +303,7 @@ function gamipress_ajax_get_posts() {
 			$results = array_merge( $results, $site_results );
 
 			$count += absint( $wpdb->get_var( $wpdb->prepare(
-				"SELECT COUNT(*)
-				 FROM   {$wpdb->posts} AS p
-				 WHERE  1=1
-					   {$post_type}
-					   {$where}
-					   AND p.post_title LIKE %s
-					   AND p.post_status IN( 'publish', 'private', 'inherit' )",
+				"SELECT COUNT(*) FROM {$from} WHERE {$where}",
 				"%%{$search}%%"
 			) ) );
 
@@ -242,24 +317,15 @@ function gamipress_ajax_get_posts() {
 		// On this query, keep $wpdb->posts to get current site posts
 		$results = $wpdb->get_results( $wpdb->prepare(
 			"SELECT p.ID, p.post_title, p.post_type
-             FROM   {$wpdb->posts} AS p
-             WHERE  1=1
-                   {$post_type}
-                   {$where}
-                   AND p.post_title LIKE %s
-                   AND p.post_status IN( 'publish', 'private', 'inherit' )
+             FROM {$from}
+             WHERE {$where}
+             ORDER BY {$order_by}
              LIMIT {$offset}, {$limit}",
 			"%%{$search}%%"
 		) );
 
 		$count = absint( $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*)
-            FROM   {$wpdb->posts} AS p
-            WHERE  1=1
-			   {$post_type}
-		       {$where}
-			   AND p.post_title LIKE %s
-		       AND p.post_status IN( 'publish', 'private', 'inherit' )",
+			"SELECT COUNT(*) FROM {$from} WHERE {$where}",
 			"%%{$search}%%"
 		) ) );
 
