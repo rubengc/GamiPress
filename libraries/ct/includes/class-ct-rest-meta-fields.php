@@ -46,6 +46,8 @@ class CT_REST_Meta_Fields extends WP_REST_Meta_Fields {
      */
     public function __construct( $name ) {
         $this->name = $name;
+        $this->table = ct_get_table_object( $name );
+
     }
 
     /**

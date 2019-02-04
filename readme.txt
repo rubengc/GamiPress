@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.6
+Stable tag: 1.6.7
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -107,6 +107,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [Leaderboards Include/Exclude Users](https://wordpress.org/plugins/gamipress-leaderboards-include-exclude-users/) - Include or exclude specific users or roles on any GamiPress leaderboard.
 * [LearnDash Group Leaderboard](https://wordpress.org/plugins/gamipress-learndash-group-leaderboard/) - Automatically create a GamiPress leaderboard of LearnDash group members.
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
 * [PeepSo Group Leaderboard](https://wordpress.org/plugins/gamipress-peepso-group-leaderboard/) - Add a new tab on PeepSo groups with a GamiPress leaderboard of group members.
@@ -119,6 +120,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Rest API Extended](https://gamipress.com/add-ons/gamipress-rest-api-extended/) - New rest API endpoints to extend interaction between your gamification environment and external applications.
 * [Referrals](https://gamipress.com/add-ons/gamipress-referrals/) - Add a complete referral system to award users who refer visitors and sign ups.
 * [Coupons](https://gamipress.com/add-ons/gamipress-coupons/) - Create coupons that users can redeem for points, achievements and/or ranks.
 * [Points Exchanges](https://gamipress.com/add-ons/gamipress-points-exchanges/) - Let your users exchange points between different points types.
@@ -246,6 +248,18 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.7 =
+
+* **New Features**
+* Added the ability to sort columns on logs and user earnings list views.
+* **Bug Fixes**
+* Fixed wrong thumbnail reformat on single achievement and single rank templates.
+* Fixed warning notices on rest API.
+* **Improvements**
+* Make the achievement and rank earners list more flexible.
+* **Developer Notes**
+* Added multiples filters on achievements and ranks earners list and earners query functions.
 
 = 1.6.6 =
 

@@ -23,9 +23,10 @@ function gamipress_do_single_filters() {
 		// add_filter( 'the_title', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
 
 		// and filter out the post image
-		add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
+		add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_thumbnail', 10, 2 );
 
 	}
+
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
 
@@ -42,11 +43,45 @@ add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
 function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
 
 	// Remove, but only on the main loop!
-	if ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) )
+	if ( ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) ) && empty( $GLOBALS['gamipress_reformat_title'] ) ) {
+
+        // Now that we're where we want to be, tell the filters to stop removing
+        $GLOBALS['gamipress_reformat_title'] = true;
+
 		return '';
+    }
 
 	// Nothing to see here... move along
 	return $html;
+
+}
+
+/**
+ * Filter out the post title/post image and add back (later) how we want it
+ *
+ * @since 1.0.0
+ *
+ * @param  string  $html The page content prior to filtering
+ * @param  integer $id   The page id
+ *
+ * @return string        The page content after being filtered
+ */
+function gamipress_remove_to_reformat_entries_thumbnail( $html = '', $id = 0 ) {
+
+    // Remove, but only on the main loop!
+    if ( ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) ) && empty( $GLOBALS['gamipress_reformat_thumbnail'] ) ) {
+
+        // Now that we're where we want to be, tell the filters to stop removing
+        $GLOBALS['gamipress_reformat_thumbnail'] = true;
+
+        return '';
+
+    }
+
+
+    // Nothing to see here... move along
+    return $html;
+
 }
 
 /**

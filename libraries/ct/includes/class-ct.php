@@ -49,7 +49,7 @@ if ( ! class_exists( 'CT' ) ) :
             if( ! self::$instance ) {
 
                 self::$instance = new CT();
-                self::$instance->constants();
+                //self::$instance->constants();
                 self::$instance->includes();
                 self::$instance->compatibility();
                 self::$instance->hooks();

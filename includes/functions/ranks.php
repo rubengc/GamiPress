@@ -907,18 +907,114 @@ function gamipress_get_rank_post_thumbnail( $post_id = 0, $image_size = 'gamipre
 }
 
 /**
+ * Get an array of all users who have currently on a given rank
+ *
+ * @since   1.3.1
+ * @updated 1.6.7 Added $args parameter
+ *
+ * @param  int      $rank_id    The given rank's post ID
+ * @param  array    $args       Array of arguments that modifies the earners list result
+ *
+ * @return array                Array of user objects
+ */
+function gamipress_get_rank_earners( $rank_id = 0, $args = array() ) {
+
+    global $wpdb;
+
+    // Setup the meta_key
+    $rank_type = gamipress_get_post_type( $rank_id );
+
+    $meta = '_gamipress_rank';
+
+    if( ! empty( $rank_type ) ) {
+        $meta = "_gamipress_{$rank_type}_rank";
+    }
+
+    // Setup vars
+    $from = "{$wpdb->usermeta} AS u ";
+    $where = "meta_key = '{$meta}' AND meta_value = '{$rank_id}' ";
+    $group_by = "u.user_id";
+    $order_by = '';
+    $limit = '';
+
+    // Setup default args
+    $defaults = array(
+        'limit'     => -1,
+        'orderby'   => 'u.user_id',
+        'order'     => 'DESC',
+    );
+
+    /**
+     * Filters the earners args
+     *
+     * @since 1.6.7
+     *
+     * @param array     $args       Array of given arguments
+     * @param int       $rank_id    The given rank's post ID
+     *
+     * @return array
+     */
+    $args = apply_filters( 'gamipress_get_rank_earners_args', $args, $rank_id );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    // Setup limit
+    if( $args['limit'] > 0 ) {
+        $limit = '0, ' . $args['limit'];
+    }
+
+    // Setup order by
+    if( ! empty( $args['orderby'] ) ) {
+        $order_by = $args['orderby'] . ' ' .  $args['order'];
+    }
+
+    $earners = $wpdb->get_col(
+        "SELECT u.user_id
+		FROM {$from}
+		WHERE {$where}
+		GROUP BY {$group_by} "
+        . ( ! empty( $order_by ) ? "ORDER BY {$order_by} " : '' )
+        . ( ! empty( $limit ) ? "LIMIT {$limit} " : '' )
+    );
+
+    // Build an array of wp users based of IDs found
+    $earned_users = array();
+
+    foreach( $earners as $earner_id ) {
+        $earned_users[] = new WP_User( $earner_id );
+    }
+
+    return $earned_users;
+
+}
+
+/**
  * Build an unordered list of users who have earned a given rank
  *
- * @since  1.3.1
+ * @since   1.3.1
+ * @updated 1.6.7 Added $args parameter
  *
- * @param  integer $rank_id The given rank's post ID
+ * @param  int      $rank_id    The given rank's post ID
+ * @param  array    $args       Array of arguments that modifies the earners list result
  *
- * @return string                  Concatenated markup
+ * @return string               Concatenated markup
  */
-function gamipress_get_rank_earners_list( $rank_id = 0 ) {
+function gamipress_get_rank_earners_list( $rank_id = 0, $args = array() ) {
+
+    /**
+     * Filters the earners list args
+     *
+     * @since 1.6.7
+     *
+     * @param array     $args       Array of given arguments
+     * @param int       $rank_id    The given rank's post ID
+     *
+     * @return array
+     */
+    $args = apply_filters( 'gamipress_get_rank_earners_list_args', $args, $rank_id );
 
     // Grab our users
-    $earners = gamipress_get_rank_earners( $rank_id );
+    $earners = gamipress_get_rank_earners( $rank_id, $args );
     $output = '';
 
     // Only generate output if we have earners
@@ -932,58 +1028,39 @@ function gamipress_get_rank_earners_list( $rank_id = 0 ) {
         foreach ( $earners as $user ) {
             $user_content = '<li><a href="' . get_author_posts_url( $user->ID ) . '">' . get_avatar( $user->ID ) . '</a></li>';
 
-            $output .= apply_filters( 'gamipress_get_rank_earners_list_user', $user_content, $user->ID );
+            /**
+             * Filters the earners list user output
+             *
+             * @since 1.0.0
+             * @updated 1.6.7 Added $rank_id and $args arguments
+             *
+             * @param string    $user_content   User output
+             * @param int       $user_id        The rendered user ID
+             * @param int       $rank_id        The given rank's post ID
+             * @param array     $args           Array of given arguments
+             *
+             * @return string
+             */
+            $output .= apply_filters( 'gamipress_get_rank_earners_list_user', $user_content, $user->ID, $rank_id, $args );
         }
 
         $output .= '</ul>';
 
     }
 
-    // Return our concatenated output
-    return apply_filters( 'gamipress_get_rank_earners_list', $output, $rank_id, $earners );
-}
-
-/**
- * Get an array of all users who have currently on a given rank
- *
- * @since  1.3.1
- *
- * @param  integer $rank_id The given rank's post ID
- *
- * @return array            Array of user objects
- */
-function gamipress_get_rank_earners( $rank_id = 0 ) {
-
-    global $wpdb;
-
-    $rank_type = gamipress_get_post_type( $rank_id );
-
-    $meta = '_gamipress_rank';
-
-    if( ! empty( $rank_type ) ) {
-        $meta = "_gamipress_{$rank_type}_rank";
-    }
-
-    $earners = $wpdb->get_col( $wpdb->prepare( "
-		SELECT u.user_id
-		FROM {$wpdb->usermeta} AS u
-		WHERE  meta_key = %s
-		       AND meta_value LIKE %s
-		GROUP BY u.user_id
-	",
-        $meta,
-        $rank_id
-    ) );
-
-    // Build an array of wp users based of IDs found
-    $earned_users = array();
-
-    foreach( $earners as $earner_id ) {
-        $earned_users[] = new WP_User( $earner_id );
-    }
-
-    return $earned_users;
-
+    /**
+     * Filters the rank earners list output
+     *
+     * @since 1.0.0
+     *
+     * @param string    $output         Achievement earners list output
+     * @param int       $rank_id        The given rank's post ID
+     * @param array     $args           Array of given arguments
+     * @param array     $earners        Array of rank earners
+     *
+     * @return string
+     */
+    return apply_filters( 'gamipress_get_rank_earners_list', $output, $rank_id, $args, $earners );
 }
 
 /**

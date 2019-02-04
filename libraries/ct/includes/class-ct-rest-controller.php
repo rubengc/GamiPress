@@ -58,7 +58,9 @@ class CT_REST_Controller extends WP_REST_Controller {
         $this->table = ct_get_table_object( $name );
         $this->rest_base = ! empty( $this->table->rest_base ) ? $this->table->rest_base : $this->name;
 
-        $this->meta = new CT_REST_Meta_Fields( $this->name );
+        if( in_array( 'meta', $this->table->supports ) ) {
+            $this->meta = new CT_REST_Meta_Fields( $name );
+        }
     }
 
     /**
@@ -433,11 +435,13 @@ class CT_REST_Controller extends WP_REST_Controller {
         $schema = $this->get_item_schema();
 
         if ( in_array( 'meta', $this->table->supports ) && ! empty( $schema['properties']['meta'] ) && isset( $request['meta'] ) ) {
+
             $meta_update = $this->meta->update_value( $request['meta'], $object_id );
 
             if ( is_wp_error( $meta_update ) ) {
                 return $meta_update;
             }
+
         }
 
         $object = ct_get_object( $object_id );
@@ -552,6 +556,7 @@ class CT_REST_Controller extends WP_REST_Controller {
             if ( is_wp_error( $meta_update ) ) {
                 return $meta_update;
             }
+
         }
 
         $object = ct_get_object( $object_id );

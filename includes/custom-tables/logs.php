@@ -248,6 +248,29 @@ function gamipress_manage_logs_columns( $columns = array() ) {
 add_filter( 'manage_gamipress_logs_columns', 'gamipress_manage_logs_columns' );
 
 /**
+ * Sortable columns for logs list view
+ *
+ * @since 1.6.7
+ *
+ * @param array $sortable_columns
+ *
+ * @return array
+ */
+function gamipress_manage_logs_sortable_columns( $sortable_columns ) {
+
+    $sortable_columns['title']      = array( 'title', false );
+    $sortable_columns['type']       = array( 'type', false );
+    $sortable_columns['user_id']    = array( 'user_id', false );
+    $sortable_columns['post_id']    = array( 'post_id', false );
+    $sortable_columns['admin_id']   = array( 'admin_id', false );
+    $sortable_columns['date']       = array( 'date', true );
+
+    return $sortable_columns;
+
+}
+add_filter( 'manage_gamipress_logs_sortable_columns', 'gamipress_manage_logs_sortable_columns' );
+
+/**
  * Columns rendering for logs list view
  *
  * @since  1.2.8

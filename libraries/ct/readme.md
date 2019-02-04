@@ -29,7 +29,7 @@ List view with support similar to WP tables:
 
 - [x] Pagination
 - [x] Search
-- [ ] Sortable Columns
+- [x] Sortable Columns
 - [x] Bulk actions
 - [ ] List view views
 - [ ] Trash functionality
@@ -48,7 +48,7 @@ Other features
 
 - [x] CMB2 support
 - [ ] Documentation (help wanted!)
-- [ ] Add WP Lib Loader to always load the newest version (http://jtsternberg.github.io/wp-lib-loader/)
+- [x] Add WP Lib Loader to always load the newest version (http://jtsternberg.github.io/wp-lib-loader/)
 
 ## Plugins ##
 

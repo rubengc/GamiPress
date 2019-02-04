@@ -346,6 +346,30 @@ function gamipress_manage_user_earnings_columns( $columns = array() ) {
 add_filter( 'manage_gamipress_user_earnings_columns', 'gamipress_manage_user_earnings_columns' );
 
 /**
+ * Sortable columns for user earnings list view
+ *
+ * @since 1.6.7
+ *
+ * @param array $sortable_columns
+ *
+ * @return array
+ */
+function gamipress_manage_user_earnings_sortable_columns( $sortable_columns ) {
+
+    global $pagenow;
+
+    if( $pagenow === 'admin.php' ) {
+        $sortable_columns['name']       = array( 'title', false );
+        $sortable_columns['date']       = array( 'date', true );
+        $sortable_columns['user_id']    = array( 'user_id', false );
+    }
+
+    return $sortable_columns;
+
+}
+add_filter( 'manage_gamipress_user_earnings_sortable_columns', 'gamipress_manage_user_earnings_sortable_columns' );
+
+/**
  * Columns rendering for user earnings list view
  *
  * @since  1.2.8

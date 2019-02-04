@@ -8,11 +8,13 @@
  * @author GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
  */
 
-// Include the Custom Table (CT) lib
-require_once __DIR__ . '/ct.php';
+// Include the Custom Table (CT) library
+require_once __DIR__ . '/init.php';
 
 /* ----------------------------------
- * INITIALIZATION - Main example about how to add a custom table through CT
+ * INITIALIZATION
+ * Main example about how to add a custom table through CT
+ * Safest way to start everything is through ct_init action
    ---------------------------------- */
 
 function yourprefix_init() {
@@ -24,7 +26,7 @@ function yourprefix_init() {
         'show_in_rest'  => true,        // Make custom table visible on rest API
         //'rest_base'  => 'demo-logs',  // Rest base URL, if not defined will user the table name
         'version'       => 1,           // Change the version on schema changes to run the schema auto-updater
-        //'primary_key' => 'log_id',    // If not defined will come from schema arg
+        //'primary_key' => 'log_id',    // If not defined will be checked on the field that hsa primary_key as true on schema
         'schema'        => array(
             'log_id' => array(
                 'type' => 'bigint',
@@ -59,7 +61,7 @@ function yourprefix_init() {
             )
         ),
         'supports' => array(
-            'meta',         // This support automatically generates a new DB table with {table_name}_meta with a similar structure like WP post meta
+            'meta', // This support automatically generates a new DB table with {table_name}_meta with a similar structure like WP post meta
         )
     ) );
 
@@ -72,7 +74,8 @@ function yourprefix_init() {
 add_action( 'ct_init', 'yourprefix_init' );
 
 /* ----------------------------------
- * LIST VIEW -  Examples about some interesting hooks to use on list view
+ * LIST VIEW
+ * Examples about some interesting hooks to use on list view
    ---------------------------------- */
 
 // Columns on list view
@@ -86,8 +89,20 @@ function yourprefix_manage_demo_logs_columns( $columns = array() ) {
 }
 add_filter( 'manage_demo_logs_columns', 'yourprefix_manage_demo_logs_columns' );
 
+// Sortable columns on list view
+function yourprefix_manage_demo_logs_sortable_columns( $sortable_columns = array() ) {
+
+    $sortable_columns['title']   = 'title';                     // ORDER BY title ASC
+    $sortable_columns['status']  = array( 'status', false );    // ORDER BY status ASC
+    $sortable_columns['date']    = array( 'date', true );       // ORDER BY date DESC
+
+    return $sortable_columns;
+}
+add_filter( 'manage_demo_logs_sortable_columns', 'yourprefix_manage_demo_logs_sortable_columns' );
+
 /* ----------------------------------
- * ADD/EDIT VIEW - Examples about some interesting hooks to use on add/edit views
+ * ADD/EDIT VIEW
+ * Examples about some interesting hooks to use on add/edit views
    ---------------------------------- */
 
 // Default data when creating a new item (similar to WP auto draft) see ct_insert_object()
@@ -146,7 +161,8 @@ function yourprefix_demo_meta_box_callback( $object ) {
 }
 
 /* ----------------------------------
- * CMB2 - Examples about CMB2 compatibility
+ * CMB2
+ * Examples about CMB2 compatibility
    ---------------------------------- */
 
 // CMB2 meta box initialization
@@ -191,7 +207,8 @@ function yourprefix_cmb2_meta_boxes() {
 add_action( 'cmb2_admin_init', 'yourprefix_cmb2_meta_boxes' );
 
 /* ----------------------------------
- * QUERY - As WP_Query, CT has a query class named CT_Query to apply (cached) searches on custom tables
+ * QUERY
+ * As WP_Query, CT has a query class named CT_Query to apply (cached) searches on custom tables
    ---------------------------------- */
 
 //  Fields to apply a search, used on searches ('s' query var)
@@ -252,7 +269,8 @@ function yourprefix_demo_logs_query_where( $where, $ct_query ) {
 add_filter( 'ct_query_where', 'yourprefix_demo_logs_query_where', 10, 2 );
 
 /* ----------------------------------
- * REST API - Examples about some interesting hooks to use on rest API
+ * REST API
+ * Examples about some interesting hooks to use on rest API
    ---------------------------------- */
 
 // Register the item schema properties (used on create and update endpoints)

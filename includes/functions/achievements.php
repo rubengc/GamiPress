@@ -791,34 +791,70 @@ function gamipress_get_achievement_post_thumbnail( $post_id = 0, $image_size = '
 /**
  * Get an array of all users who have earned a given achievement
  *
- * @since  1.0.0
- * @param  integer $achievement_id The given achievement's post ID
- * @return array                   Array of user objects
+ * @since   1.0.0
+ * @updated 1.6.7 Added $args parameter and removed check to meet if user has earned the achievement, also removed 1.2.8 compatibility
+ *
+ * @param  int      $achievement_id The given achievement's post ID
+ * @param  array    $args           Array of arguments that modifies the query result
+ *
+ * @return array                    Array of user objects
  */
-function gamipress_get_achievement_earners( $achievement_id = 0 ) {
+function gamipress_get_achievement_earners( $achievement_id = 0, $args = array() ) {
 
 	global $wpdb;
 
-	// If not properly upgrade to required version fallback to compatibility function
-	if( ! is_gamipress_upgraded_to( '1.2.8' ) ) {
-		return gamipress_get_achievement_earners_old( $achievement_id );
-	}
-
+	// Setup vars
 	$user_earnings = GamiPress()->db->user_earnings;
+	$from = "{$user_earnings} AS u ";
+	$where = "u.post_id = {$achievement_id} ";
+    $group_by = "u.user_id";
+    $order_by = '';
+	$limit = '';
 
-	$earners = $wpdb->get_col( "
-		SELECT u.user_id
-		FROM {$user_earnings} AS u
-		WHERE u.post_id = {$achievement_id}
-		GROUP BY u.user_id
-	" );
+    // Setup default args
+    $defaults = array(
+        'limit'     => -1,
+        'orderby'   => 'u.date',
+        'order'     => 'DESC',
+    );
+
+    /**
+     * Filters the earners args
+     *
+     * @since 1.6.7
+     *
+     * @param array     $args           Array of given arguments
+     * @param int       $achievement_id The given achievement's post ID
+     *
+     * @return array
+     */
+    $args = apply_filters( 'gamipress_get_achievement_earners_args', $args, $achievement_id );
+
+    $args = wp_parse_args( $args, $defaults );
+
+    // Setup limit
+    if( $args['limit'] > 0 ) {
+        $limit = '0, ' . $args['limit'];
+    }
+
+    // Setup order by
+    if( ! empty( $args['orderby'] ) ) {
+        $order_by = $args['orderby'] . ' ' .  $args['order'];
+    }
+
+	$earners = $wpdb->get_col(
+	    "SELECT u.user_id
+		FROM {$from}
+		WHERE {$where}
+		GROUP BY {$group_by} "
+        . ( ! empty( $order_by ) ? "ORDER BY {$order_by} " : '' )
+        . ( ! empty( $limit ) ? "LIMIT {$limit} " : '' )
+    );
 
 	$earned_users = array();
 
 	foreach( $earners as $earner_id ) {
-		if ( gamipress_has_user_earned_achievement( $achievement_id, $earner_id ) ) {
-			$earned_users[] = new WP_User( $earner_id );
-		}
+	    $earned_users[] = new WP_User( $earner_id );
 	}
 
 	return $earned_users;
@@ -828,14 +864,30 @@ function gamipress_get_achievement_earners( $achievement_id = 0 ) {
 /**
  * Build an unordered list of users who have earned a given achievement
  *
- * @since  1.0.0
- * @param  integer $achievement_id The given achievement's post ID
- * @return string                  Concatenated markup
+ * @since   1.0.0
+ * @updated 1.6.7 Added $args parameter
+ *
+ * @param  int      $achievement_id The given achievement's post ID
+ * @param  array    $args           Array of arguments that modifies the earners list result
+ *
+ * @return string                   Concatenated markup
  */
-function gamipress_get_achievement_earners_list( $achievement_id = 0 ) {
+function gamipress_get_achievement_earners_list( $achievement_id = 0, $args = array() ) {
+
+    /**
+     * Filters the earners list args
+     *
+     * @since 1.6.7
+     *
+     * @param array     $args           Array of given arguments
+     * @param int       $achievement_id The given achievement's post ID
+     *
+     * @return array
+     */
+    $args = apply_filters( 'gamipress_get_achievement_earners_list_args', $args, $achievement_id );
 
 	// Grab our users
-	$earners = gamipress_get_achievement_earners( $achievement_id );
+	$earners = gamipress_get_achievement_earners( $achievement_id, $args );
 	$output = '';
 
 	// Only generate output if we have earners
@@ -849,15 +901,39 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0 ) {
 
 			$user_content = '<li><a href="' . get_author_posts_url( $user->ID ) . '">' . get_avatar( $user->ID ) . '</a></li>';
 
-			$output .= apply_filters( 'gamipress_get_achievement_earners_list_user', $user_content, $user->ID );
+            /**
+             * Filters the earners list user output
+             *
+             * @since 1.0.0
+             * @updated 1.6.7 Added $achievement_id and $args arguments
+             *
+             * @param string    $user_content   User output
+             * @param int       $user_id        The rendered user ID
+             * @param int       $achievement_id The given achievement's post ID
+             * @param array     $args           Array of given arguments
+             *
+             * @return string
+             */
+			$output .= apply_filters( 'gamipress_get_achievement_earners_list_user', $user_content, $user->ID, $achievement_id, $args );
 
 		}
 
 		$output .= '</ul>';
 	}
 
-	// Return our concatenated output
-	return apply_filters( 'gamipress_get_achievement_earners_list', $output, $achievement_id, $earners );
+    /**
+     * Filters the achievement earners list output
+     *
+     * @since 1.0.0
+     *
+     * @param string    $output         Achievement earners list output
+     * @param int       $achievement_id The given achievement's post ID
+     * @param array     $args           Array of given arguments
+     * @param array     $earners        Array of achievement earners
+     *
+     * @return string
+     */
+	return apply_filters( 'gamipress_get_achievement_earners_list', $output, $achievement_id, $args, $earners );
 }
 
 /**

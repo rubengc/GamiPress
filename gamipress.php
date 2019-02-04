@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.6.6
+ * Version:         	1.6.7
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -136,7 +136,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.6.6' );
+		define( 'GAMIPRESS_VER', '1.6.7' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -159,7 +159,7 @@ final class GamiPress {
     private function libraries() {
 
 		// Custom Tables
-		require_once GAMIPRESS_DIR . 'libraries/ct/ct.php';
+		require_once GAMIPRESS_DIR . 'libraries/ct/init.php';
 		require_once GAMIPRESS_DIR . 'libraries/ct-ajax-list-table/ct-ajax-list-table.php';
 
 		// CMB2

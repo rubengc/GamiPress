@@ -161,7 +161,13 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
             $sortable_columns = array();
 
             /**
-             * Filters the columns displayed in the Posts list table.
+             * Filters the sortable columns in the Posts list table.
+             *
+             * Format:
+             * 'internal-name' => 'orderby'
+             * or
+             * 'internal-name' => array( 'orderby', true )
+             * The second format will make the initial sorting order be descending
              *
              * @since 1.5.0
              *
