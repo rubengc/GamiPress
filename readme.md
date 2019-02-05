@@ -265,6 +265,11 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.7.1 ###
+
+* **Bug Fixes**
+* Fixed required libraries loading on activation.
+
 ### 1.6.7 ###
 
 * **New Features**

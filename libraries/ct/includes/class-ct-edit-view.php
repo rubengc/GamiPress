@@ -195,7 +195,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
             global $ct_table;
 
             /**
-             * Fires inside the submit meta box.
+             * Fires at top of the submit meta box.
              *
              * @since 1.0.0
              *
@@ -204,7 +204,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
              * @param bool          $editing        True if edit screen, false if is adding a new one.
              * @param CT_Edit_View  $view           Edit view object.
              */
-            do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box", $object, $ct_table, $this->editing, $this );
+            do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_top", $object, $ct_table, $this->editing, $this );
 
             $submit_label = __( 'Add' );
 
@@ -230,28 +230,98 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
 
             ?>
 
-            <div style="padding: 10px;">
+            <div class="submitbox" id="submitpost">
 
                 <?php
-                if ( current_user_can( $ct_table->cap->delete_item, $object_id ) ) {
+                /**
+                 * Fires at top of submit meta box submit post element.
+                 *
+                 * @since 1.0.0
+                 *
+                 * @param object        $object         Object.
+                 * @param CT_Table      $ct_table       CT Table object.
+                 * @param bool          $editing        True if edit screen, false if is adding a new one.
+                 * @param CT_Edit_View  $view           Edit view object.
+                 */
+                do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_submit_post_top", $object, $ct_table, $this->editing, $this ); ?>
 
-                    printf(
-                        '<a href="%s" class="submitdelete deletion" onclick="%s" aria-label="%s">%s</a>',
-                        ct_get_delete_link( $ct_table->name, $object_id ),
-                        "return confirm('" .
-                        esc_attr( __( "Are you sure you want to delete this item?\\n\\nClick \\'Cancel\\' to go back, \\'OK\\' to confirm the delete." ) ) .
-                        "');",
-                        esc_attr( __( 'Delete permanently' ) ),
-                        __( 'Delete Permanently' )
-                    );
+                <div id="minor-publishing">
 
-                } ?>
+                    <?php ob_start();
+                    /**
+                     * Fires inside minor publishing actions from submit meta box.
+                     *
+                     * @since 1.0.0
+                     *
+                     * @param object        $object         Object.
+                     * @param CT_Table      $ct_table       CT Table object.
+                     * @param bool          $editing        True if edit screen, false if is adding a new one.
+                     * @param CT_Edit_View  $view           Edit view object.
+                     */
+                    do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_minor_publishing_actions", $object, $ct_table, $this->editing, $this );
+                    $publishing_actions = ob_get_clean(); ?>
 
-                <?php submit_button( $submit_label, 'primary large', 'ct-save', false ); ?>
+                    <?php // Since minor-publishing-actions has a margin, check if minor publishing actions has any content to render it or not
+                    if( ! empty( $publishing_actions ) ) : ?>
+                        <div id="minor-publishing-actions"><?php echo $publishing_actions; ?></div>
+                    <?php endif; ?>
+
+                </div>
+
+                <div id="major-publishing-actions">
+
+                    <?php
+                    if ( current_user_can( $ct_table->cap->delete_item, $object_id ) ) {
+
+                        printf(
+                            '<a href="%s" class="submitdelete deletion" onclick="%s" aria-label="%s">%s</a>',
+                            ct_get_delete_link( $ct_table->name, $object_id ),
+                            "return confirm('" .
+                            esc_attr( __( "Are you sure you want to delete this item?\\n\\nClick \\'Cancel\\' to go back, \\'OK\\' to confirm the delete." ) ) .
+                            "');",
+                            esc_attr( __( 'Delete permanently' ) ),
+                            __( 'Delete Permanently' )
+                        );
+
+                    } ?>
+
+                    <div id="publishing-action">
+                        <span class="spinner"></span>
+                        <?php submit_button( $submit_label, 'primary large', 'ct-save', false ); ?>
+                    </div>
+
+                    <div class="clear"></div>
+
+                </div>
+
+                <?php
+                /**
+                 * Fires at bottom of submit meta box submit post element.
+                 *
+                 * @since 1.0.0
+                 *
+                 * @param object        $object         Object.
+                 * @param CT_Table      $ct_table       CT Table object.
+                 * @param bool          $editing        True if edit screen, false if is adding a new one.
+                 * @param CT_Edit_View  $view           Edit view object.
+                 */
+                do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_submit_post_bottom", $object, $ct_table, $this->editing, $this ); ?>
 
             </div>
 
             <?php
+
+            /**
+             * Fires at bottom the submit meta box.
+             *
+             * @since 1.0.0
+             *
+             * @param object        $object         Object.
+             * @param CT_Table      $ct_table       CT Table object.
+             * @param bool          $editing        True if edit screen, false if is adding a new one.
+             * @param CT_Edit_View  $view           Edit view object.
+             */
+            do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_bottom", $object, $ct_table, $this->editing, $this );
         }
 
         public function save() {

@@ -49,7 +49,6 @@ if ( ! class_exists( 'CT' ) ) :
             if( ! self::$instance ) {
 
                 self::$instance = new CT();
-                //self::$instance->constants();
                 self::$instance->includes();
                 self::$instance->compatibility();
                 self::$instance->hooks();
@@ -58,32 +57,6 @@ if ( ! class_exists( 'CT' ) ) :
             }
 
             return self::$instance;
-
-        }
-
-        /**
-         * Setup CT constants
-         *
-         * @access      private
-         * @since       1.0.0
-         * @return      void
-         */
-        private function constants() {
-
-            // Version
-            define( 'CT_VER', '1.0.0' );
-
-            // File
-            define( 'CT_FILE', __FILE__ );
-
-            // Path
-            define( 'CT_DIR', plugin_dir_path( __FILE__ ) );
-
-            // URL
-            define( 'CT_URL', plugin_dir_url( __FILE__ ) );
-
-            // Debug
-            define( 'CT_DEBUG', false );
 
         }
 

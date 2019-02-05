@@ -111,10 +111,10 @@ if ( ! class_exists( 'CT_Loader_100', false ) ) {
             // Use the hook system to ensure only the newest version is loaded.
             add_action( 'ct_loader_load', array( $this, 'include_lib' ), CT_LOADER_PRIORITY );
 
-            /*
-             * Hook in to the first hook we have available and
-             * fire our `ct_loader_load' hook.
-             */
+            // Try to fire our hook as soon as possible,including right now (required for activation hooks).
+            self::fire_hook();
+
+            // Hook in to the first hook we have available and fire our `ct_loader_load' hook.
             add_action( 'muplugins_loaded', array( __CLASS__, 'fire_hook' ), 9 );
             add_action( 'plugins_loaded', array( __CLASS__, 'fire_hook' ), 9 );
             add_action( 'after_setup_theme', array( __CLASS__, 'fire_hook' ), 9 );

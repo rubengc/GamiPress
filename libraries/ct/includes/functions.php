@@ -8,8 +8,13 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
+ * Register a custom table
+ *
+ * @since 1.0.0
+ *
  * @param string    $name
  * @param array     $args
+ *
  * @return CT_Table
  */
 function ct_register_table( $name, $args ) {
@@ -37,7 +42,10 @@ function ct_register_table( $name, $args ) {
 /**
  * Setup the global table
  *
+ * @since 1.0.0
+ *
  * @param CT_Table|string $object CT_Table object or CT_Table name
+ *
  * @return CT_Table $ct_table
  */
 function ct_setup_table( $object ) {
