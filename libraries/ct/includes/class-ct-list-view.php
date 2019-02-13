@@ -15,17 +15,80 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
         protected $per_page = 20;
 
-        public function __construct($name, $args) {
+        protected $columns = array();
 
-            parent::__construct($name, $args);
+        public function __construct( $name, $args ) {
+
+            parent::__construct( $name, $args );
 
             $this->per_page = isset( $args['per_page'] ) ? $args['per_page'] : 20;
+            $this->columns  = isset( $args['columns'] ) ? $args['columns'] : array();
+
+        }
+
+        public function add_hooks() {
+
+            parent::add_hooks();
+
+            add_filter( "manage_{$this->name}_columns", array( $this, 'get_columns' ) );
+            add_filter( "manage_{$this->name}_sortable_columns", array( $this, 'get_sortable_columns' ) );
+
+        }
+
+        /**
+         * Set columns passed from view columns arg.
+         *
+         * @since 1.0.0
+         *
+         * @param array $columns
+         *
+         * @return array
+         */
+        public function get_columns( $columns ) {
+
+            foreach( $this->columns as $column => $column_args ) {
+
+                if( is_array( $column_args ) && isset( $column_args['label'] ) ) {
+                    // 'column_name' => array( 'label' => 'Column Label' )
+                    $columns[$column] = $column_args['label'];
+                } else if( gettype( $column_args ) === 'string' ) {
+                    // 'column_name' => 'Column Label'
+                    $columns[$column] = $column_args;
+                }
+
+            }
+
+            return $columns;
+
+        }
+
+        /**
+         * Set columns passed from view columns arg.
+         *
+         * @since 1.0.0
+         *
+         * @param array $sortable_columns
+         *
+         * @return array
+         */
+        public function get_sortable_columns( $sortable_columns ) {
+
+            foreach( $this->columns as $column => $column_args ) {
+
+                if( is_array( $column_args ) && isset( $column_args['sortable'] ) ) {
+                    // 'column_name' => array( 'sortable' => 'sortable_setup' )
+                    $sortable_columns[$column] = $column_args['sortable'];
+                }
+
+            }
+
+            return $sortable_columns;
 
         }
 
         public function init() {
 
-            global $ct_registered_tables, $ct_table;
+            global $ct_registered_tables, $ct_table, $ct_query, $ct_list_table;
 
             if( ! isset( $ct_registered_tables[$this->name] ) ) {
                 return;
@@ -54,10 +117,16 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
             }
 
+            // Setup the query and the list table objects
+            $ct_query = new CT_Query( $_GET );
+            $ct_list_table = new CT_List_Table();
+
         }
 
         /**
          * Screen settings text displayed in the Screen Options tab.
+         *
+         * @since 1.0.0
          *
          * @param string    $screen_settings    Screen settings.
          * @param WP_Screen $screen             WP_Screen object.
@@ -76,15 +145,14 @@ if ( ! class_exists( 'CT_List_View' ) ) :
          */
         public function render_list_table_columns_preferences() {
 
-            global $ct_table;
+            global $ct_table, $ct_list_table;
 
             // Set up vars
-            $columns = apply_filters( "manage_{$ct_table->name}_columns", array() );
+            $columns = $ct_list_table->get_columns();
             $hidden  = get_hidden_columns( $ct_table->name );
 
-            if ( ! $columns ) {
+            if ( ! $columns )
                 return;
-            }
 
             $legend = ! empty( $columns['_title'] ) ? $columns['_title'] : __( 'Columns' );
             ?>
@@ -95,11 +163,7 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
                 foreach ( $columns as $column => $title ) {
                     // Can't hide these for they are special
-                    if ( in_array( $column, $special ) ) {
-                        continue;
-                    }
-
-                    if ( empty( $title ) ) {
+                    if ( in_array( $column, $special ) || empty( $title ) ) {
                         continue;
                     }
 
@@ -116,26 +180,24 @@ if ( ! class_exists( 'CT_List_View' ) ) :
         /**
          * Render the items per page option
          *
-         * @since 3.3.0
+         * @since 1.0.0
          */
         public function render_per_page_options() {
 
             global $ct_table;
 
-            if ( ! $this->per_page ) {
+            if ( ! $this->per_page )
                 return;
-            }
 
             // Set up vars
             $per_page_label = __( 'Number of items per page:' );
 
-            $option = str_replace( '-', '_', "{$ct_table->name}_per_page" );
+            $option = str_replace( '-', '_', "edit_{$ct_table->name}_per_page" );
 
             $per_page = (int) get_user_option( $option );
 
-            if ( empty( $per_page ) || $per_page < 1 ) {
+            if ( empty( $per_page ) || $per_page < 1 )
                 $per_page = $this->per_page;
-            }
 
             $per_page = apply_filters( "{$option}", $per_page );
 
@@ -156,9 +218,49 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             <?php
         }
 
+        /**
+         * Screen option value before it is set.
+         *
+         * @since 1.0.0
+         *
+         * @param bool|int $value_to_set    Screen option value to set. Default false to skip.
+         * @param string   $option          The option name.
+         * @param int      $value           The option value.
+         *
+         * @return bool|mixed               False to skip or any other value to set as option value
+         */
+        public function set_screen_settings( $value_to_set, $option, $value ) {
+
+            global $ct_table, $ct_list_table;
+
+            $view_settings = array(
+                str_replace( '-', '_', "edit_{$ct_table->name}_per_page" ) // Per page
+            );
+
+            // Columns hidden setting
+            $columns = $ct_list_table->get_columns();
+            $special = array( '_title', 'cb' );
+
+            foreach ( $columns as $column => $title ) {
+                // Can't hide these for they are special
+                if ( in_array( $column, $special ) || empty( $title ) )
+                    continue;
+
+                $view_settings[] = "$column-hide";
+            }
+
+            // If option is on this view settings list, then save it
+            if( in_array( $option, $view_settings ) ) {
+                $value_to_set = $value;
+            }
+
+            return $value_to_set;
+
+        }
+
         public function bulk_delete() {
 
-            global $ct_registered_tables, $ct_table;
+            global $ct_table;
 
             // If not CT object, die
             if ( ! $ct_table )
@@ -199,7 +301,7 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
         public function delete() {
 
-            global $ct_registered_tables, $ct_table;
+            global $ct_table;
 
             // If not CT object, die
             if ( ! $ct_table )
@@ -232,26 +334,16 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             wp_redirect( $location );
             exit;
 
-
         }
 
+        /**
+         * View content.
+         *
+         * @since 1.0.0
+         */
         public function render() {
 
-            global $ct_registered_tables, $ct_table, $ct_query, $ct_list_table;
-
-            if( ! isset( $ct_registered_tables[$this->name] ) ) {
-                return;
-            }
-
-            // Setup CT_Table
-            $ct_table = $ct_registered_tables[$this->name];
-
-            // Setup the query and the list table objects
-            $ct_query = new CT_Query( $_GET );
-            $ct_list_table = new CT_List_Table();
-
-            // Setup screen options
-            //add_screen_option( 'per_page', array( 'default' => 20, 'option' => 'edit_' . $ct_table->name . '_per_page' ) );
+            global $ct_table, $ct_list_table;
 
             $ct_list_table->prepare_items();
 

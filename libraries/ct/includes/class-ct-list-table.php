@@ -19,13 +19,13 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
          * Get things started
          *
          * @access public
-         * @since  1.0
+         * @since  1.0.0
          *
          * @param array $args Optional. Arbitrary display and query arguments to pass through
          *                    the list table. Default empty array.
          */
         public function __construct( $args = array() ) {
-            global $ct_table, $ct_query;
+            global $ct_table;
 
             parent::__construct( array(
                 'singular' => $ct_table->labels->singular_name,
@@ -124,7 +124,7 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
          * Retrieve the table columns
          *
          * @access public
-         * @since 1.0
+         * @since 1.0.0
          * @return array $columns Array of all the list table columns
          */
         public function get_columns() {
@@ -138,21 +138,21 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
             }
 
             /**
-             * Filters the columns displayed in the Posts list table.
+             * Filters the columns displayed in the list table of a specific CT table.
              *
              * @since 1.0.0
              *
              * @param array  $posts_columns An array of column names.
-             * @param string $post_type     The post type slug.
+             * @param CT_Table $ct_table    The table object.
              */
-            return apply_filters( "manage_{$ct_table->name}_columns", $columns );
+            return apply_filters( "manage_{$ct_table->name}_columns", $columns, $ct_table );
         }
 
         /**
          * Retrieve the table's sortable columns
          *
          * @access public
-         * @since 1.0
+         * @since 1.0.0
          * @return array Array of all the sortable columns
          */
         public function get_sortable_columns() {
@@ -161,7 +161,7 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
             $sortable_columns = array();
 
             /**
-             * Filters the sortable columns in the Posts list table.
+             * Filters the sortable columns in the list table of a specific CT table.
              *
              * Format:
              * 'internal-name' => 'orderby'
@@ -169,19 +169,19 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
              * 'internal-name' => array( 'orderby', true )
              * The second format will make the initial sorting order be descending
              *
-             * @since 1.5.0
+             * @since 1.0.0
              *
-             * @param array  $posts_columns An array of column names.
-             * @param string $post_type     The post type slug.
+             * @param array     $sortable_columns   An array of column names.
+             * @param CT_Table  $ct_table           The table object.
              */
-            return apply_filters( "manage_{$ct_table->name}_sortable_columns", $sortable_columns );
+            return apply_filters( "manage_{$ct_table->name}_sortable_columns", $sortable_columns, $ct_table );
         }
 
         /**
          * This function renders most of the columns in the list table.
          *
          * @access public
-         * @since 1.0
+         * @since 1.0.0
          *
          * @param stdClass  $item           The current object.
          * @param string    $column_name    The name of the column
@@ -194,18 +194,20 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
 
             $primary_key = $ct_table->db->primary_key;
 
-            /**
-             * Fires for each custom column of a specific post type in the Posts list table.
-             *
-             * The dynamic portion of the hook name, `$post->post_type`, refers to the post type.
-             *
-             * @since 3.1.0
-             *
-             * @param string $column_name The name of the column to display.
-             * @param int    $post_id     The current post ID.
-             */
             ob_start();
-            do_action( "manage_{$ct_table->name}_custom_column", $column_name, $item->$primary_key );
+            /**
+             * Fires for each custom column of a specific CT table in the list table.
+             *
+             * The dynamic portion of the hook name, `$ct_table->name`, refers to the CT table name.
+             *
+             * @since 1.0.0
+             *
+             * @param string    $column_name The name of the column to display.
+             * @param int       $object_id   The current object ID.
+             * @param stdClass  $object      The current object.
+             * @param CT_Table  $ct_table    The CT table object.
+             */
+            do_action( "manage_{$ct_table->name}_custom_column", $column_name, $item->$primary_key, $item, $ct_table );
             $custom_output = ob_get_clean();
 
             if( ! empty( $custom_output ) ) {
@@ -342,11 +344,18 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
 
             global $ct_table, $ct_query;
 
+            // Get per page setting
+            $per_page = $this->get_items_per_page( 'edit_' . $ct_table->name . '_per_page' );
+
+            // Update query vars based on settings
+            $ct_query->query_vars['items_per_page'] = $per_page;
+
+            // Get query results
             $this->items = $ct_query->get_results();
 
             $total_items = $ct_query->found_results;
-            $per_page = $this->get_items_per_page( 'edit_' . $ct_table->name . '_per_page' );
 
+            // Setup pagination args based on items found and per page settings
             $this->set_pagination_args( array(
                 'total_items' => $total_items,
                 'per_page'    => $per_page,

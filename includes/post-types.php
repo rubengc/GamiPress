@@ -357,7 +357,7 @@ function gamipress_register_achievement_type( $achievement_type_id = 0, $achieve
 }
 
 /**
- * Register each of our Achivement Types as WordPress post type
+ * Register each of our Achievement Types as WordPress post type
  *
  * @since  1.0.0
  *

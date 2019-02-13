@@ -19,23 +19,24 @@ Custom table registration:
 - [x] Easy field definition
 - [x] Schema parser
 - [x] Automatic schema updater (yay!)
-- [x] Ability to show or hide from admin (aka disable UI for a desired table)
+- [x] Ability to show or hide from admin UI (disable UI for a desired table)
 - [x] Custom Capabilities (with support for administrators)
 - [x] Meta data functionality
 - [x] Query class to handled cached queries (like WP_Query but for custom tables)
-- [x] WP rest API support (custom table and meta data)
+- [x] Rest API support (custom table and meta data)
 
-List view with support similar to WP tables:
+List view (with features similar to WP tables):
 
 - [x] Pagination
 - [x] Search
 - [x] Sortable Columns
 - [x] Bulk actions
+- [x] User screen settings
 - [ ] List view views
-- [ ] Trash functionality
+- [ ] Trash functionality?
 - [x] Delete Permanently action
 
-Edit View similar to WP edit screen:
+Edit View (similar to WP edit screen):
 
 - [x] Meta boxes
 - [x] Screen options

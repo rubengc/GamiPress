@@ -589,6 +589,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
 
                     // Specific view args
                     'per_page'      => 20,
+                    'columns'       => array(),
                 ),
                 'add' => array(
                     'page_title'    => $this->labels->add_new,

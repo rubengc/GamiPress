@@ -43,10 +43,22 @@ add_action( 'user_register', 'gamipress_register_listener' );
  * @param string  $user_login Username.
  * @param WP_User $user       WP_User object of the logged-in user.
  */
-function gamipress_login_listener( $user_login, $user ) {
+function gamipress_login_listener( $user_login, $user = null ) {
+
+    // Some login form plugins call this hook just passing the user ID so let's check if user is registered
+    if( ! $user ) {
+        $user = get_user_by( 'email', $user_login );
+
+        // Bail if user can't be found through email
+        if( ! $user ) {
+            return;
+        }
+    }
 
     // Sometimes this event is triggered before gamipress_load_activity_triggers()
     // so to avoid issues, method has changed to trigger the event directly
+
+    // Action is maintained for backward compatibility
     do_action( 'gamipress_login', $user->ID, $user );
 
     gamipress_trigger_event( array(

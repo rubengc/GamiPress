@@ -34,13 +34,27 @@ function gamipress_get_email_templates() {
  */
 function gamipress_get_email_pattern_tags() {
 
-    return apply_filters( 'gamipress_email_pattern_tags', array(
+    $pattern_tags = array();
+
+    // Site tags
+    $pattern_tags[] = '<strong>' . __( 'Site Tags', 'gamipress' ) . '</strong>';
+
+    $pattern_tags = array_merge( $pattern_tags, apply_filters( 'gamipress_email_site_pattern_tags', array(
         '{site_title}'          =>  __( 'Site name.', 'gamipress' ),
         '{site_link}'           =>  __( 'Link to the site with site name as text.', 'gamipress' ),
+    ) ) );
+
+    // User Tags
+    $pattern_tags[] = '<strong>' . __( 'User Tags', 'gamipress' ) . '</strong>';
+
+    $pattern_tags = array_merge( $pattern_tags, apply_filters( 'gamipress_email_user_pattern_tags', array(
+        '{user_id}'             =>  __( 'User ID (useful for shortcodes that user ID can be passed as attribute).', 'gamipress' ),
         '{user}'                =>  __( 'User display name.', 'gamipress' ),
         '{user_first}'          =>  __( 'User first name.', 'gamipress' ),
         '{user_last}'           =>  __( 'User last name.', 'gamipress' ),
-    ) );
+    ) ) );
+
+    return apply_filters( 'gamipress_email_pattern_tags', $pattern_tags );
 
 }
 
@@ -53,17 +67,20 @@ function gamipress_get_email_pattern_tags() {
  */
 function gamipress_get_achievement_earned_email_pattern_tags() {
 
-    $email_pattern_tags = gamipress_get_email_pattern_tags();
+    $pattern_tags = gamipress_get_email_pattern_tags();
 
-    return apply_filters( 'gamipress_achievement_earned_email_pattern_tags', array_merge( $email_pattern_tags, array(
+    $pattern_tags[] = '<strong>' . __( 'Achievement Tags', 'gamipress' ) . '</strong>';
+
+    return apply_filters( 'gamipress_achievement_earned_email_pattern_tags', array_merge( $pattern_tags, array(
+        '{achievement_id}'              =>  __(  'Achievement ID (useful for shortcodes that achievement ID can be passed as attribute).', 'gamipress' ),
         '{achievement_title}'           =>  __(  'Achievement title.', 'gamipress' ),
         '{achievement_url}'             =>  __(  'URL to the achievement.', 'gamipress' ),
         '{achievement_link}'            =>  __(  'Link to the achievement with the achievement title as text.', 'gamipress' ),
         '{achievement_excerpt}'         =>  __(  'Achievement excerpt.', 'gamipress' ),
         '{achievement_image}'           =>  __(  'Achievement featured image.', 'gamipress' ),
         '{achievement_steps}'           =>  __(  'Achievement steps.', 'gamipress' ),
-        '{achievement_type}'            =>  __(  'Type of the achievement.', 'gamipress' ),
         '{achievement_congratulations}' =>  __(  'Achievement congratulations text.', 'gamipress' ),
+        '{achievement_type}'            =>  __(  'Type of the achievement.', 'gamipress' ),
     ) ) );
 
 }
@@ -77,18 +94,21 @@ function gamipress_get_achievement_earned_email_pattern_tags() {
  */
 function gamipress_get_step_completed_email_pattern_tags() {
 
-    $email_pattern_tags = gamipress_get_email_pattern_tags();
+    $pattern_tags = gamipress_get_email_pattern_tags();
 
-    return apply_filters( 'gamipress_step_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
+    $pattern_tags[] = '<strong>' . __( 'Step Tags', 'gamipress' ) . '</strong>';
+
+    return apply_filters( 'gamipress_step_completed_email_pattern_tags', array_merge( $pattern_tags, array(
         '{label}'                       =>  __(  'Step label.', 'gamipress' ),
+        '{achievement_id}'              =>  __(  'Step achievement ID (useful for shortcodes that achievement ID can be passed as attribute).', 'gamipress' ),
         '{achievement_title}'           =>  __(  'Step achievement title.', 'gamipress' ),
         '{achievement_url}'             =>  __(  'URL to the step achievement.', 'gamipress' ),
         '{achievement_link}'            =>  __(  'Link to the step achievement with the achievement title as text.', 'gamipress' ),
         '{achievement_excerpt}'         =>  __(  'Step achievement excerpt.', 'gamipress' ),
         '{achievement_image}'           =>  __(  'Step achievement featured image.', 'gamipress' ),
         '{achievement_steps}'           =>  __(  'Step achievement steps.', 'gamipress' ),
-        '{achievement_type}'            =>  __(  'Type of the step achievement.', 'gamipress' ),
         '{achievement_congratulations}' =>  __(  'Step achievement congratulations text.', 'gamipress' ),
+        '{achievement_type}'            =>  __(  'Type of the step achievement.', 'gamipress' ),
     ) ) );
 
 }
@@ -102,9 +122,11 @@ function gamipress_get_step_completed_email_pattern_tags() {
  */
 function gamipress_get_points_award_completed_email_pattern_tags() {
 
-    $email_pattern_tags = gamipress_get_email_pattern_tags();
+    $pattern_tags = gamipress_get_email_pattern_tags();
 
-    return apply_filters( 'gamipress_points_award_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
+    $pattern_tags[] = '<strong>' . __( 'Points Award Tags', 'gamipress' ) . '</strong>';
+
+    return apply_filters( 'gamipress_points_award_completed_email_pattern_tags', array_merge( $pattern_tags, array(
         '{label}'           =>  __( 'Points award label.', 'gamipress' ),
         '{points}'          =>  __( 'The amount of points earned.', 'gamipress' ),
         '{points_balance}'  =>  __( 'The full amount of points user has earned until this date.', 'gamipress' ),
@@ -122,9 +144,11 @@ function gamipress_get_points_award_completed_email_pattern_tags() {
  */
 function gamipress_get_points_deduct_completed_email_pattern_tags() {
 
-    $email_pattern_tags = gamipress_get_email_pattern_tags();
+    $pattern_tags = gamipress_get_email_pattern_tags();
 
-    return apply_filters( 'gamipress_points_deduct_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
+    $pattern_tags[] = '<strong>' . __( 'Points Deduct Tags', 'gamipress' ) . '</strong>';
+
+    return apply_filters( 'gamipress_points_deduct_completed_email_pattern_tags', array_merge( $pattern_tags, array(
         '{label}'           =>  __( 'Points deduct label.', 'gamipress' ),
         '{points}'          =>  __( 'The amount of points deducted.', 'gamipress' ),
         '{points_balance}'  =>  __( 'The full amount of points user has earned until this date.', 'gamipress' ),
@@ -142,17 +166,20 @@ function gamipress_get_points_deduct_completed_email_pattern_tags() {
  */
 function gamipress_get_rank_earned_email_pattern_tags() {
 
-    $email_pattern_tags = gamipress_get_email_pattern_tags();
+    $pattern_tags = gamipress_get_email_pattern_tags();
 
-    return apply_filters( 'gamipress_rank_earned_email_pattern_tags', array_merge( $email_pattern_tags, array(
+    $pattern_tags[] = '<strong>' . __( 'Rank Tags', 'gamipress' ) . '</strong>';
+
+    return apply_filters( 'gamipress_rank_earned_email_pattern_tags', array_merge( $pattern_tags, array(
+        '{rank_id}'                 =>  __(  'Rank ID (useful for shortcodes that rank ID can be passed as attribute).', 'gamipress' ),
         '{rank_title}'              =>  __(  'Rank title.', 'gamipress' ),
         '{rank_url}'                =>  __(  'URL to the rank.', 'gamipress' ),
         '{rank_link}'               =>  __(  'Link to the rank with the rank title as text.', 'gamipress' ),
         '{rank_excerpt}'            =>  __(  'Rank excerpt.', 'gamipress' ),
         '{rank_image}'              =>  __(  'Rank featured image.', 'gamipress' ),
         '{rank_requirements}'       =>  __(  'Rank requirements.', 'gamipress' ),
-        '{rank_type}'               =>  __(  'Type of the rank.', 'gamipress' ),
         '{rank_congratulations}'    =>  __(  'Rank congratulations text.', 'gamipress' ),
+        '{rank_type}'               =>  __(  'Type of the rank.', 'gamipress' ),
     ) ) );
 
 }
@@ -166,18 +193,21 @@ function gamipress_get_rank_earned_email_pattern_tags() {
  */
 function gamipress_get_rank_requirement_completed_email_pattern_tags() {
 
-    $email_pattern_tags = gamipress_get_email_pattern_tags();
+    $pattern_tags = gamipress_get_email_pattern_tags();
 
-    return apply_filters( 'gamipress_step_completed_email_pattern_tags', array_merge( $email_pattern_tags, array(
+    $pattern_tags[] = '<strong>' . __( 'Rank Requirement Tags', 'gamipress' ) . '</strong>';
+
+    return apply_filters( 'gamipress_rank_requirement_completed_email_pattern_tags', array_merge( $pattern_tags, array(
         '{label}'                   =>  __(  'Requirement label.', 'gamipress' ),
+        '{rank_id}'                 =>  __(  'Requirement rank ID (useful for shortcodes that rank ID can be passed as attribute).', 'gamipress' ),
         '{rank_title}'              =>  __(  'Requirement rank title.', 'gamipress' ),
         '{rank_url}'                =>  __(  'URL to the requirement rank.', 'gamipress' ),
         '{rank_link}'               =>  __(  'Link to the requirement rank with the rank title as text.', 'gamipress' ),
         '{rank_excerpt}'            =>  __(  'Requirement rank excerpt.', 'gamipress' ),
         '{rank_image}'              =>  __(  'Requirement rank featured image.', 'gamipress' ),
         '{rank_requirements}'       =>  __(  'Requirement rank requirements.', 'gamipress' ),
-        '{rank_type}'               =>  __(  'Type of the rank.', 'gamipress' ),
         '{rank_congratulations}'    =>  __(  'Requirement rank congratulations text.', 'gamipress' ),
+        '{rank_type}'               =>  __(  'Type of the rank.', 'gamipress' ),
     ) ) );
 
 }
@@ -194,28 +224,32 @@ function gamipress_get_rank_requirement_completed_email_pattern_tags() {
 function gamipress_get_email_pattern_tags_html( $email = '' ) {
 
     if( $email === 'achievement_earned' ) {
-        $email_pattern_tags = gamipress_get_achievement_earned_email_pattern_tags();
+        $pattern_tags = gamipress_get_achievement_earned_email_pattern_tags();
     } else if( $email === 'step_completed' ) {
-        $email_pattern_tags = gamipress_get_step_completed_email_pattern_tags();
+        $pattern_tags = gamipress_get_step_completed_email_pattern_tags();
     } else if( $email === 'points_award_completed' ) {
-        $email_pattern_tags = gamipress_get_points_award_completed_email_pattern_tags();
+        $pattern_tags = gamipress_get_points_award_completed_email_pattern_tags();
     } else if( $email === 'points_deduct_completed' ) {
-        $email_pattern_tags = gamipress_get_points_deduct_completed_email_pattern_tags();
+        $pattern_tags = gamipress_get_points_deduct_completed_email_pattern_tags();
     } else if( $email === 'rank_earned' ) {
-        $email_pattern_tags = gamipress_get_rank_earned_email_pattern_tags();
+        $pattern_tags = gamipress_get_rank_earned_email_pattern_tags();
     } else if( $email === 'rank_requirement_completed' ) {
-        $email_pattern_tags = gamipress_get_rank_requirement_completed_email_pattern_tags();
+        $pattern_tags = gamipress_get_rank_requirement_completed_email_pattern_tags();
     } else {
-        $email_pattern_tags = gamipress_get_email_pattern_tags();
+        $pattern_tags = gamipress_get_email_pattern_tags();
     }
 
     $output = '<ul class="gamipress-pattern-tags-list">';
 
-    foreach( $email_pattern_tags as $tag => $description ) {
+    foreach( $pattern_tags as $tag => $description ) {
 
-        $attr_id = 'tag-' . str_replace( array( '{', '}', '_' ), array( '', '', '-' ), $tag );
+        if( is_numeric( $tag ) ) {
+            $output .= "<li id='{$tag}'>{$description}</li>";
+        } else {
+            $attr_id = 'tag-' . str_replace( array( '{', '}', '_' ), array( '', '', '-' ), $tag );
 
-        $output .= "<li id='{$attr_id}'><code>{$tag}</code> - {$description}</li>";
+            $output .= "<li id='{$attr_id}'><code>{$tag}</code> - {$description}</li>";
+        }
     }
 
     $output .= '</ul>';
@@ -370,19 +404,10 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
     // Setup user replacements
     $user = get_userdata( $gamipress_email_template_args['user_id'] );
 
-    if( $user ) {
-
-        $replacements['{user}']         =  $user->display_name;
-        $replacements['{user_first}']   =  $user->first_name;
-        $replacements['{user_last}']    =  $user->last_name;
-
-    } else {
-
-        $replacements['{user}']         =  '';
-        $replacements['{user_first}']   =  '';
-        $replacements['{user_last}']    =  '';
-
-    }
+    $replacements['{user_id}']      =  ( $user ? $user->ID : '' );
+    $replacements['{user}']         =  ( $user ? $user->display_name : '' );
+    $replacements['{user_first}']   =  ( $user ? $user->first_name : '' );
+    $replacements['{user_last}']    =  ( $user ? $user->last_name : '' );
 
     if( $gamipress_email_template_args['type'] === 'achievement_earned' && isset( $gamipress_email_template_args['achievement_id'] ) ) {
 
@@ -420,6 +445,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 $achievement_steps_html .= "</{$list_tag}>";
             }
 
+            $replacements['{achievement_id}'] = $achievement->ID;
             $replacements['{achievement_title}'] = $achievement->post_title;
             $replacements['{achievement_url}'] = get_the_permalink( $achievement->ID );
             $replacements['{achievement_link}'] = sprintf( '<a href="%s" title="%s">%s</a>', $replacements['{achievement_url}'], $replacements['{achievement_title}'], $replacements['{achievement_title}'] );
@@ -540,6 +566,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 $rank_requirements_html .= "</{$list_tag}>";
             }
 
+            $replacements['{rank_id}'] = $rank->ID;
             $replacements['{rank_title}'] = $rank->post_title;
             $replacements['{rank_url}'] = get_the_permalink( $rank->ID );
             $replacements['{rank_link}'] = sprintf( '<a href="%s" title="%s">%s</a>', $replacements['{rank_url}'], $replacements['{rank_title}'], $replacements['{rank_title}'] );
@@ -612,6 +639,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
     $user = wp_get_current_user();
 
     $replacements = array(
+        '{user_id}'             =>  $user->ID,
         '{user}'                =>  $user->display_name,
         '{user_first}'          =>  $user->first_name,
         '{user_last}'           =>  $user->last_name,
@@ -631,6 +659,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
 
     if( $gamipress_email_template_args['type'] === 'achievement_earned' ) {
 
+        $replacements['{achievement_id}'] = 1;
         $replacements['{achievement_title}'] = __( 'Sample Achievement', 'gamipress' );
         $replacements['{achievement_url}'] = '#';
         $replacements['{achievement_link}'] = '<a href="#" title="' . $replacements['{achievement_title}'] . '">' . $replacements['{achievement_title}'] . '</a>';
@@ -671,6 +700,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
 
     } else if( $gamipress_email_template_args['type'] === 'rank_earned' ) {
 
+        $replacements['{rank_id}'] = 1;
         $replacements['{rank_title}'] = __( 'Sample Rank', 'gamipress' );
         $replacements['{rank_url}'] = '#';
         $replacements['{rank_link}'] = '<a href="#" title="' . $replacements['{rank_title}'] . '">' . $replacements['{rank_title}'] . '</a>';

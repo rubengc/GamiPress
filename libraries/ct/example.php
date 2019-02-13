@@ -54,10 +54,28 @@ function yourprefix_init() {
 //            date datetime NOT NULL,
 //            PRIMARY KEY  (log_id)
 //        ',
+        // View args
         'views' => array(
             'add' => array(
-                // This will force to the add view just to one column, default is 2
-                //'columns' => 1
+                //'columns' => 1 // This will force to the add view just to one column, default is 2
+            ),
+            'list' => array(
+                // 'per_page' => 40 // This will force the per page initial value
+                // The columns arg is a shortcut of the manage_columns and manage_sortable_columns commonly required hooks
+                'columns' => array(
+                    'title'   => array(
+                        'label'     => __( 'Title' ),
+                        'sortable'  => 'title', // ORDER BY title ASC
+                    ),
+                    'status'  => array(
+                        'label' => __( 'Status' ),
+                        'sortable' => array( 'status', false ), // ORDER BY status ASC
+                    ),
+                    'date'    => array(
+                        'label' => __( 'Date' ),
+                        'sortable' => array( 'date', true ), // ORDER BY date DESC
+                    ),
+                )
             )
         ),
         'supports' => array(
@@ -85,6 +103,25 @@ function yourprefix_manage_demo_logs_columns( $columns = array() ) {
     $columns['status']  = __( 'Status' );
     $columns['date']    = __( 'Date' );
 
+    // You can avoid to use this function and use an alternative way through ct_register_table() views argument like:
+    // ct_register_table( 'demo_logs', array(
+    //      'views' => array(
+    //          'list' => array(
+    //              'columns' => array(
+    //                  'title' => array(
+    //                      'label' => __( 'Title' ),
+    //                  ),
+    //                  'status' => array(
+    //                      'label' => __( 'Status' ),
+    //                  ),
+    //                  'date' => array(
+    //                      'label' => __( 'Date' ),
+    //                  ),
+    //              )
+    //          )
+    //      ),
+    // ) );
+
     return $columns;
 }
 add_filter( 'manage_demo_logs_columns', 'yourprefix_manage_demo_logs_columns' );
@@ -95,6 +132,25 @@ function yourprefix_manage_demo_logs_sortable_columns( $sortable_columns = array
     $sortable_columns['title']   = 'title';                     // ORDER BY title ASC
     $sortable_columns['status']  = array( 'status', false );    // ORDER BY status ASC
     $sortable_columns['date']    = array( 'date', true );       // ORDER BY date DESC
+
+    // You can avoid to use this function and use an alternative way through ct_register_table() views argument like:
+    // ct_register_table( 'demo_logs', array(
+    //      'views' => array(
+    //          'list' => array(
+    //              'columns' => array(
+    //                  'title' => array(
+    //                      'sortable' => 'title',
+    //                  ),
+    //                  'status' => array(
+    //                      'sortable' => array( 'status', false ),
+    //                  ),
+    //                  'date' => array(
+    //                      'sortable' => array( 'date', true ),
+    //                  ),
+    //              )
+    //          )
+    //      ),
+    // ) );
 
     return $sortable_columns;
 }

@@ -2,7 +2,7 @@
 /**
  * Achievement Widget
  *
- * @package     GamiPress\Widgets\Widget\Achivement
+ * @package     GamiPress\Widgets\Widget\Achievement
  * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */

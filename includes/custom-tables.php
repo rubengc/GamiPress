@@ -45,7 +45,7 @@ function gamipress_register_custom_tables() {
         'views' => array(
             'list' => array(
                 'menu_title' => __( 'User Earnings', 'gamipress' ),
-                'parent_slug' => 'gamipress'
+                'parent_slug' => 'gamipress',
             ),
             'add' => false,
             'edit' => array(
@@ -103,7 +103,7 @@ function gamipress_register_custom_tables() {
         'views' => array(
             'list' => array(
                 'menu_title' => __( 'Logs', 'gamipress' ),
-                'parent_slug' => 'gamipress'
+                'parent_slug' => 'gamipress',
             ),
             'add' => false,
             'edit' => array(

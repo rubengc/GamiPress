@@ -259,12 +259,33 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                      * @param CT_Edit_View  $view           Edit view object.
                      */
                     do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_minor_publishing_actions", $object, $ct_table, $this->editing, $this );
-                    $publishing_actions = ob_get_clean(); ?>
+                    $minor_publishing_actions = ob_get_clean(); ?>
 
                     <?php // Since minor-publishing-actions has a margin, check if minor publishing actions has any content to render it or not
-                    if( ! empty( $publishing_actions ) ) : ?>
-                        <div id="minor-publishing-actions"><?php echo $publishing_actions; ?></div>
+                    if( ! empty( $minor_publishing_actions ) ) : ?>
+                        <div id="minor-publishing-actions"><?php echo $minor_publishing_actions; ?></div>
                     <?php endif; ?>
+
+                    <?php ob_start();
+                    /**
+                     * Fires inside misc publishing actions from submit meta box.
+                     *
+                     * @since 1.0.0
+                     *
+                     * @param object        $object         Object.
+                     * @param CT_Table      $ct_table       CT Table object.
+                     * @param bool          $editing        True if edit screen, false if is adding a new one.
+                     * @param CT_Edit_View  $view           Edit view object.
+                     */
+                    do_action( "ct_{$ct_table->name}_edit_screen_submit_meta_box_misc_publishing_actions", $object, $ct_table, $this->editing, $this );
+                    $misc_publishing_actions = ob_get_clean(); ?>
+
+                    <?php // Since misc-publishing-actions has a margin, check if misc publishing actions has any content to render it or not
+                    if( ! empty( $misc_publishing_actions ) ) : ?>
+                        <div id="misc-publishing-actions"><?php echo $misc_publishing_actions; ?></div>
+                    <?php endif; ?>
+
+                    <div class="clear"></div>
 
                 </div>
 

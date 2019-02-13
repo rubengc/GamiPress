@@ -389,13 +389,17 @@
     });
 
     // Award type select
-    if( $("#gamipress-award-type-select").length ) {
+    if( $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").length ) {
 
-        $("#gamipress-award-type-select").change(function(){
-            if ( 'all' == this.value )
-                $("#gamipress-awards-options").children().show();
-            else
-                $("#" + this.value).show().siblings().hide();
+        $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").change(function() {
+        	var award_options_wrapper = $(this).closest('.form-table').next();
+
+            if ( 'all' == this.value ) {
+				award_options_wrapper.children().show();
+			} else {
+				award_options_wrapper.children().hide();
+                $("#" + this.value).show();
+			}
         }).change();
 
     }

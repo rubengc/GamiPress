@@ -401,7 +401,7 @@ function gamipress_is_achievement_hidden( $achievement_id ) {
  * @since  1.0.0
  * @param  integer $user_id          The given user's ID
  * @param  string  $achievement_type Limit the array to a specific type of achievement
- * @return array                     Our user's array of earned achivement post IDs
+ * @return array                     Our user's array of earned achievement post IDs
  */
 function gamipress_get_user_earned_achievement_ids( $user_id = 0, $achievement_type = '' ) {
 
@@ -1273,7 +1273,7 @@ function gamipress_achievement_type_update_messages( $messages ) {
 add_filter( 'post_updated_messages', 'gamipress_achievement_type_update_messages' );
 
 /**
- * Log a user's achivements earns/awards
+ * Log a user's achievements earns/awards
  *
  * @since   1.0.0
  * @updated 1.4.7 Added $trigger parameter

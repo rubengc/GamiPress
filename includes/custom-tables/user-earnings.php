@@ -246,7 +246,6 @@ function gamipress_user_earnings_query_search( $search, $ct_query ) {
 
         // Made an user sub-search to retrieve them
         $users = get_users( array(
-            'count_total' => false,
             'search' => sprintf( '*%s*', $qv['s'] ),
             'search_columns' => array(
                 'user_login',
@@ -257,7 +256,7 @@ function gamipress_user_earnings_query_search( $search, $ct_query ) {
         ) );
 
         if( ! empty( $users ) ) {
-            $search .= " AND ( {$table_name}.user_id IN (" . implode( ',', array_map( 'absint', $users ) ) . ") )";
+            $search .= " OR ( {$table_name}.user_id IN (" . implode( ',', array_map( 'absint', $users ) ) . ") )";
         }
 
     }

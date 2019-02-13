@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.0
-Stable tag: 1.6.7.1
+Stable tag: 1.6.8
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -90,18 +90,22 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
-* [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
-* [wpForo](https://wordpress.org/plugins/gamipress-wpforo-integration/)
 * [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
+* [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/)
+* [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
 * [Events Manager](https://wordpress.org/plugins/gamipress-events-manager-integration/)
+* [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
+* [wpForo](https://wordpress.org/plugins/gamipress-wpforo-integration/)
 * [AnsPress](https://wordpress.org/plugins/gamipress-anspress-integration/)
 * [WP Ulike](https://wordpress.org/plugins/gamipress-wp-ulike-integration/)
 * [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
 * [WP Polls](https://wordpress.org/plugins/gamipress-wp-polls-integration/)
 * [WP PostRatings](https://wordpress.org/plugins/gamipress-wp-postratings-integration/)
+
+[View all integrations](https://gamipress.com/integrations/)
 
 = Powerful add-ons to extend GamiPress =
 
@@ -120,6 +124,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Email Digests](https://gamipress.com/add-ons/gamipress-email-digests/) - Send email digests periodically to keep in touch with your users.
 * [Rest API Extended](https://gamipress.com/add-ons/gamipress-rest-api-extended/) - New rest API endpoints to extend interaction between your gamification environment and external applications.
 * [Referrals](https://gamipress.com/add-ons/gamipress-referrals/) - Add a complete referral system to award users who refer visitors and sign ups.
 * [Coupons](https://gamipress.com/add-ons/gamipress-coupons/) - Create coupons that users can redeem for points, achievements and/or ranks.
@@ -134,6 +139,8 @@ If you’re looking for something endorsed and maintained by the developers who 
 * [Progress](https://gamipress.com/add-ons/gamipress-progress/) - Attractively show to your users their progress of completion of any achievement.
 * [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/) - Add leaderboards to intensify the gamification of your site.
 * [Social Share](https://gamipress.com/add-ons/gamipress-social-share/) - Award your users for sharing your website content on social networks.
+
+[View all add-ons](https://gamipress.com/add-ons/)
 
 = Helpful Links =
 
@@ -248,6 +255,22 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.8 =
+
+* **New Features**
+* Added the {user_id} tag on all email templates (useful for shortcodes that supports the user ID as attribute).
+* Added the {achievement_id} tag on achievement and step email templates (useful for shortcodes that supports the achievement ID as attribute).
+* Added the {rank_id} tag on rank and rank requirement email templates (useful for shortcodes that supports the rank ID as attribute).
+* Added the section "Award Requirement" on user profile (instead of get it inside the "Award Achievement" section).
+* **Bug Fixes**
+* Fix per page setting on logs and user earnings.
+* **Improvements**
+* Added separators between email tags to get tags list better organized.
+* Make login listener support those plugins that triggers the wp_login event with just the user email address.
+* **Developer Notes**
+* Updated Custom Tables library to latest release.
+
 
 = 1.6.7.1 =
 

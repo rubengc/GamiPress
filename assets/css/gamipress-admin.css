@@ -400,6 +400,17 @@ li.requirement-row.requirement-disabled {
 	padding: 3px 2px 2px 2px;
 }
 
+.gamipress-pattern-tags-list li strong,
+.gamipress-log-pattern-tags-list li strong {
+	color: #444;
+}
+
+.gamipress-pattern-tags-list li span,
+.gamipress-log-pattern-tags-list li span {
+	color: #444;
+	font-style: normal;
+}
+
 @media screen and (max-width: 782px) {
 	#log-extra-data-ui .cmb-td {
 		padding-left: 0;

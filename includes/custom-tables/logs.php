@@ -204,7 +204,6 @@ function gamipress_logs_query_search( $search, $ct_query ) {
 
         // Made an user sub-search to retrieve them
         $users = get_users( array(
-            'count_total' => false,
             'search' => sprintf( '*%s*', $qv['s'] ),
             'search_columns' => array(
                 'user_login',

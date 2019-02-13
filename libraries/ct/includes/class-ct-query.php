@@ -183,7 +183,7 @@ if ( ! class_exists( 'CT_Query' ) ) :
             $q = $this->fill_query_vars($q);
 
             // Suppress filters
-            if ( !isset($q['suppress_filters']) )
+            if ( ! isset($q['suppress_filters']) )
                 $q['suppress_filters'] = false;
 
             if ( empty( $q['items_per_page'] ) ) {
