@@ -36,43 +36,61 @@ function gamipress_register_points_shortcode() {
                 'default'           => 'all',
             ),
             'thumbnail' => array(
-                'name'        => __( 'Show Thumbnail', 'gamipress' ),
-                'description' => __( 'Display the points type featured image.', 'gamipress' ),
-                'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
-                'default' => 'yes'
+                'name'          => __( 'Show Thumbnail', 'gamipress' ),
+                'description'   => __( 'Display the points type featured image.', 'gamipress' ),
+                'type' 	        => 'checkbox',
+                'classes'       => 'gamipress-switch',
+                'default'       => 'yes'
             ),
             'label' => array(
-                'name'        => __( 'Show Points Type Label', 'gamipress' ),
-                'description' => __( 'Display the points type label (singular or plural name, based on the amount of points).', 'gamipress' ),
-                'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
-                'default' => 'yes'
+                'name'          => __( 'Show Points Type Label', 'gamipress' ),
+                'description'   => __( 'Display the points type label (singular or plural name, based on the amount of points).', 'gamipress' ),
+                'type' 	        => 'checkbox',
+                'classes'       => 'gamipress-switch',
+                'default'       => 'yes'
             ),
             'current_user' => array(
-                'name'        => __( 'Current User', 'gamipress' ),
-                'description' => __( 'Show only points earned by the current logged in user.', 'gamipress' ),
-                'type' 		  => 'checkbox',
-                'classes' 	  => 'gamipress-switch',
+                'name'          => __( 'Current User', 'gamipress' ),
+                'description'   => __( 'Show only points earned by the current logged in user.', 'gamipress' ),
+                'type' 		    => 'checkbox',
+                'classes' 	    => 'gamipress-switch',
             ),
             'user_id' => array(
-                'name'        => __( 'User', 'gamipress' ),
-                'description' => __( 'Show only points earned by a specific user. Leave blank to show the site points (points sum of all users).', 'gamipress' ),
-                'type'        => 'select',
-                'default'     => '',
-                'options_cb'  => 'gamipress_options_cb_users'
+                'name'          => __( 'User', 'gamipress' ),
+                'description'   => __( 'Show only points earned by a specific user. Leave blank to show the site points (points sum of all users).', 'gamipress' ),
+                'type'          => 'select',
+                'default'       => '',
+                'options_cb'    => 'gamipress_options_cb_users'
+            ),
+            'period' => array(
+                'name'          => __( 'Period', 'gamipress' ),
+                'desc' 	        => __( 'Filter points balance based on a specific period selected. By default "None" that will display user or site current points balance.', 'gamipress' ),
+                'type' 	        => 'select',
+                'options_cb' 	=> 'gamipress_get_time_periods',
+            ),
+            'period_start' => array(
+                'name' 	        => __( 'Start Date', 'gamipress' ),
+                'desc' 	        => __( 'Period start date. Leave blank to no filter by a start date (points balance will be filtered only to the end date).', 'gamipress' )
+                                . '<br>' . __( 'Accepts any valid PHP date format.', 'gamipress' ) . ' (<a href="https://gamipress.com/docs/advanced/date-fields" target="_blank">' .  __( 'More information', 'gamipress' ) .  '</a>)',
+                'type'          => 'text',
+            ),
+            'period_end' => array(
+                'name' 	        => __( 'End Date', 'gamipress' ),
+                'desc' 	        => __( 'Period end date. Leave blank to no filter by an end date (points balance will be filtered from the start date to today).', 'gamipress' )
+                                . '<br>' . __( 'Accepts any valid PHP date format.', 'gamipress' ) . ' (<a href="https://gamipress.com/docs/advanced/date-fields" target="_blank">' .  __( 'More information', 'gamipress' ) .  '</a>)',
+                'type'          => 'text',
             ),
             'inline' => array(
-                'name'        => __( 'Inline', 'gamipress' ),
-                'description' => __( 'Show points balance inline (as text).', 'gamipress' ),
-                'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
+                'name'          => __( 'Inline', 'gamipress' ),
+                'description'   => __( 'Show points balance inline (as text).', 'gamipress' ),
+                'type' 	        => 'checkbox',
+                'classes'       => 'gamipress-switch',
             ),
             'columns' => array(
-                'name'        => __( 'Columns', 'gamipress' ),
-                'description' => __( 'Columns to divide each points balance.', 'gamipress' ),
-                'type' 	=> 'select',
-                'options' => array(
+                'name'          => __( 'Columns', 'gamipress' ),
+                'description'   => __( 'Columns to divide each points balance.', 'gamipress' ),
+                'type' 	        => 'select',
+                'options'       => array(
                     '1' => __( '1 Column', 'gamipress' ),
                     '2' => __( '2 Columns', 'gamipress' ),
                     '3' => __( '3 Columns', 'gamipress' ),
@@ -80,28 +98,28 @@ function gamipress_register_points_shortcode() {
                     '5' => __( '5 Columns', 'gamipress' ),
                     '6' => __( '6 Columns', 'gamipress' ),
                 ),
-                'default' => '1'
+                'default'       => '1'
             ),
             'layout' => array(
-                'name'        => __( 'Layout', 'gamipress' ),
-                'description' => __( 'Layout to show the points.', 'gamipress' ),
-                'type' 		  => 'radio',
-                'options' 	  => array(
+                'name'          => __( 'Layout', 'gamipress' ),
+                'description'   => __( 'Layout to show the points.', 'gamipress' ),
+                'type' 		    => 'radio',
+                'options' 	    => array(
                     'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
                     'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
                     'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
                     'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
                     'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
                 ),
-                'default' 	  => 'left',
-                'inline' 	  => true,
-                'classes' 	  => 'gamipress-image-options'
+                'default' 	    => 'left',
+                'inline' 	    => true,
+                'classes' 	    => 'gamipress-image-options'
             ),
             'wpms' => array(
-                'name'        => __( 'Include Multisite Points', 'gamipress' ),
-                'description' => __( 'Show points from all network sites.', 'gamipress' ),
-                'type' 	=> 'checkbox',
-                'classes' => 'gamipress-switch',
+                'name'          => __( 'Include Multisite Points', 'gamipress' ),
+                'description'   => __( 'Show points from all network sites.', 'gamipress' ),
+                'type' 	        => 'checkbox',
+                'classes'       => 'gamipress-switch',
             ),
         ),
     ) );
@@ -133,6 +151,9 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
         'label'         => 'yes',
         'current_user'  => 'no',
         'user_id'       => '0',
+        'period'        => '',
+        'period_start'  => '',
+        'period_end'    => '',
         'inline'        => 'no',
         'columns'       => '1',
         'layout'        => 'left',
@@ -147,6 +168,18 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
         $types = gamipress_get_points_types_slugs();
     } else if ( count( $types ) === 1 ) {
         $is_single_type = true;
+    }
+
+    // Date range (based on period given)
+    if( $atts['period'] === 'custom' ) {
+
+        $date_range = array(
+            'start' => gamipress_date( 'Y-m-d', $atts['period_start'] ),
+            'end' => gamipress_date( 'Y-m-d', $atts['period_end'] ),
+        );
+
+    } else {
+        $date_range = gamipress_get_period_range( $atts['period'] );
     }
 
     // ---------------------------
@@ -215,17 +248,29 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
         }
 
         foreach( $types as $points_type ) {
+
+            // Initialize points type var
             if( ! isset( $gamipress_template_args['points'][$points_type] ) ) {
                 $gamipress_template_args['points'][$points_type] = 0;
             }
 
+            // Setup extra arguments to pass to the get points functions
+            $args = array(
+                'date_query' => array(
+                    'after' => $date_range['start'],    // After start date
+                    'before' => $date_range['end'],     // Before end date
+                )
+            );
+
             if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 ) {
                 // Site points
-                $gamipress_template_args['points'][$points_type] += gamipress_get_site_points( $points_type );
+                $points = gamipress_get_site_points( $points_type, $args );
             } else {
                 // User points
-                $gamipress_template_args['points'][$points_type] += gamipress_get_user_points( $atts['user_id'], $points_type );
+                $points = gamipress_get_user_points( $atts['user_id'], $points_type, $args );
             }
+
+            $gamipress_template_args['points'][$points_type] += $points;
 
 
         }

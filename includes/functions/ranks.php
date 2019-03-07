@@ -911,6 +911,7 @@ function gamipress_get_rank_post_thumbnail( $post_id = 0, $image_size = 'gamipre
  *
  * @since   1.3.1
  * @updated 1.6.7 Added $args parameter
+ * @updated 1.6.9 Make earner list work on default ranks
  *
  * @param  int      $rank_id    The given rank's post ID
  * @param  array    $args       Array of arguments that modifies the earners list result
@@ -933,6 +934,19 @@ function gamipress_get_rank_earners( $rank_id = 0, $args = array() ) {
     // Setup vars
     $from = "{$wpdb->usermeta} AS u ";
     $where = "meta_key = '{$meta}' AND meta_value = '{$rank_id}' ";
+
+    // If is lowest priority rank then requires an extra check to get users that doesn't have the rank meta
+    if( gamipress_is_lowest_priority_rank( $rank_id ) ) {
+
+        $where .= "OR NOT EXISTS (
+            SELECT meta.*
+            FROM {$wpdb->usermeta} as meta
+            WHERE meta.meta_key = '{$meta}'
+            AND meta.user_id = u.user_id
+        ) ";
+
+    }
+
     $group_by = "u.user_id";
     $order_by = '';
     $limit = '';

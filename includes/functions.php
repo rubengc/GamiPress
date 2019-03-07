@@ -649,3 +649,188 @@ function gamipress_array_as_hidden_inputs( $array, $excluded = array() ) {
     return $html;
 
 }
+
+/**
+ * Gets registered time periods
+ *
+ * @since 1.6.9
+ *
+ * @return array
+ */
+function gamipress_get_time_periods() {
+
+    /**
+     * Filter registered time periods
+     *
+     * @since 1.6.9
+     *
+     * @param array $time_periods
+     *
+     * @return array
+     */
+    return apply_filters( 'gamipress_get_time_periods', array(
+        ''              => __( 'None', 'gamipress' ),
+        'today'         => __( 'Today', 'gamipress' ),
+        'yesterday'     => __( 'Yesterday', 'gamipress' ),
+        'this-week'     => __( 'Current Week', 'gamipress' ),
+        'past-week'     => __( 'Past Week', 'gamipress' ),
+        'this-month'    => __( 'Current Month', 'gamipress' ),
+        'past-month'    => __( 'Past Month', 'gamipress' ),
+        'this-year'     => __( 'Current Year', 'gamipress' ),
+        'past-year'     => __( 'Past Year', 'gamipress' ),
+        'custom'        => __( 'Custom', 'gamipress' ),
+    ) );
+
+}
+
+/**
+ * Get a specific period date range
+ *
+ * @see gamipress_get_time_periods()
+ *
+ * @since 1.6.9
+ *
+ * @param string $period
+ *
+ * @return array
+ */
+function gamipress_get_period_range( $period = '' ) {
+
+    // Setup date range var
+    $date_range = array(
+        'start' => '',
+        'end'   => '',
+    );
+
+    if( $period !== '' ) {
+
+        switch( $period ) {
+            case 'today':
+                $date_range = array(
+                    'start' => date( 'Y-m-d' ),
+                    'end' => '',
+                );
+                break;
+            case 'yesterday':
+                $date_range = array(
+                    'start' => date( 'Y-m-d', strtotime( '-1 day' ) ),
+                    'end' => '',
+                );
+                break;
+            case 'this-week':
+                $date_range = gamipress_get_date_range( 'week' );
+                break;
+            case 'past-week':
+                $previous_week = strtotime( '-1 week +1 day' );
+                $date_range = gamipress_get_date_range( 'week', $previous_week );
+                break;
+            case 'this-month':
+                $date_range = gamipress_get_date_range( 'month' );
+                break;
+            case 'past-month':
+                $previous_month = strtotime( '-1 month +1 day' );
+                $date_range = gamipress_get_date_range( 'month', $previous_month );
+                break;
+            case 'this-year':
+                $date_range = gamipress_get_date_range( 'year' );
+                break;
+            case 'past-year':
+                $previous_year = strtotime( '-1 year +1 day' );
+                $date_range = gamipress_get_date_range( 'year', $previous_year );
+                break;
+            default:
+                // For custom ranges use 'gamipress_get_period_range' filter
+                break;
+        }
+    }
+
+    /**
+     * Filter the period date range
+     *
+     * @since 1.6.9
+     *
+     * @param array     $date_range An array with period date range
+     * @param string    $period     Given period, see gamipress_get_time_periods()
+     */
+    return $date_range = apply_filters( 'gamipress_get_period_range', $date_range, $period );
+}
+
+/**
+ * Helper function to get a range date based on a given date
+ *
+ * @since 1.6.9
+ *
+ * @param string            $range (week|month|year)
+ * @param integer|string    $date
+ *
+ * @return array
+ */
+function gamipress_get_date_range( $range = '', $date = 0 ) {
+
+    if( gettype( $date ) === 'string' ) {
+        $date = strtotime( $date );
+    }
+
+    if( ! $date ) {
+        $date = current_time( 'timestamp' );
+    }
+
+    $start_date = 0;
+    $end_date = 0;
+
+    switch( $range ) {
+        case 'week':
+
+            // Weekly range
+            $start_date    = strtotime( 'last monday', $date );
+            $end_date      = strtotime( 'midnight', strtotime( 'next sunday', $date ) );
+
+            break;
+        case 'month':
+
+            // Monthly range
+            $start_date    = strtotime( date( 'Y-m-01', $date ) );
+            $end_date      = strtotime( 'midnight', strtotime( 'last day of this month', $date ) );
+
+            break;
+        case 'year':
+
+            // Yearly range
+            $start_date    = strtotime( date( 'Y-01-01', $date ) );
+            $end_date      = strtotime( date( 'Y-12-31', $date ) );
+
+            break;
+    }
+
+    return array(
+        'start'    => date( 'Y-m-d', $start_date ),
+        'end'      => date( 'Y-m-d', $end_date )
+    );
+
+}
+
+/**
+ * Helper function to format a given date or timestamp
+ *
+ * @since 1.6.9
+ *
+ * @param string    $format Date format
+ * @param mixed     $date
+ *
+ * @return string|false
+ */
+function gamipress_date( $format, $date = '' ) {
+
+    $date_formatted = false;
+
+    if( strtotime( $date ) ) {
+        // Ensure date given is correct
+        $date_formatted = date( $format, strtotime( $date ) );
+    } else if( absint( $date ) > 0 ) {
+        // Support for timestamp value
+        $date_formatted = date( $format, absint( $date ) );
+    }
+
+    return $date_formatted;
+
+}

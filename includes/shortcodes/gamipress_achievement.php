@@ -103,6 +103,16 @@ function gamipress_register_achievement_shortcode() {
 				'type' 	=> 'checkbox',
 				'classes' => 'gamipress-switch'
 			),
+            'earners_limit' => array(
+                'name'        => __( 'Maximum Earners', 'gamipress' ),
+                'description' => __( 'Set the maximum number of earners to show (0 for no maximum).', 'gamipress' ),
+                'type' => 'text',
+                'attributes' => array(
+                    'type' => 'number',
+                    'step' => '1',
+                ),
+                'default' => '0'
+            ),
 			'layout' => array(
 				'name'        => __( 'Layout', 'gamipress' ),
 				'description' => __( 'Layout to show the achievement.', 'gamipress' ),
@@ -216,6 +226,7 @@ function gamipress_achievement_shortcode_defaults() {
 		'toggle' 			=> 'yes',
 		'unlock_button' 	=> 'yes',
 		'earners'	  		=> 'no',
+		'earners_limit'	    => '0',
 		'layout'	  		=> 'left',
 	) );
 

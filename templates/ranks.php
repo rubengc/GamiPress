@@ -12,12 +12,7 @@ $a = $gamipress_template_args;
 
 $rank_types = gamipress_get_rank_types();
 
-if( isset( $a['user_id'] ) ) {
-    $user_id = $a['user_id'];
-} else {
-    $user_id = get_current_user_id();
-}
-?>
+$user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_id(); ?>
 
 <div id="gamipress-ranks-list" class="gamipress-ranks-list <?php echo ( $a['is_user_ranks'] ? 'gamipress-user-ranks' : '' ); ?>">
 

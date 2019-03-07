@@ -31,6 +31,7 @@
         var target = $(this).closest('.cmb-row').next(); // User ID field
 
         if( $(this).prop('checked') ) {
+            // Hide the target
             target.slideUp().addClass('cmb2-tab-ignore');
         } else {
             if( target.closest('.cmb-tabs-wrap').length ) {
@@ -45,6 +46,50 @@
             target.removeClass('cmb2-tab-ignore');
         }
     });
+
+    $('input[id^="widget-gamipress"][id$="[current_user]"]').change();
+
+    // Earners user field
+    $('body').on('change', 'input[id^="widget-gamipress"][id$="[earners]"]', function() {
+        var target = $(this).closest('.cmb-row').next(); // Earners limit field
+
+        if( ! $(this).prop('checked') ) {
+            // Hide the target
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            if( target.closest('.cmb-tabs-wrap').length ) {
+                // Just show if item tab is active
+                if( target.hasClass('cmb-tab-active-item') ) {
+                    target.slideDown();
+                }
+            } else {
+                target.slideDown();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
+        }
+    });
+
+    $('input[id^="widget-gamipress"][id$="[earners]"]').change();
+
+    // Period field
+    $('body').on('change', 'select[id^="widget-gamipress_points"][id$="[period]"]', function() {
+        // Get the period start and end fields
+        var target = $(this).closest('.cmb2-wrap').find(
+            '.cmb-row[class*="period-start"], '
+            + '.cmb-row[class*="period-end"]'
+        );
+
+        if( $(this).val() !== 'custom' ) {
+            // Hide the target
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            // Show the target
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    });
+
+    $('select[id^="widget-gamipress_points"][id$="[period]"]').change();
 
     // Inline field
     $('body').on('change', 'input[id^="widget-gamipress_points"][id$="[inline]"]', function() {
@@ -119,6 +164,41 @@
 
             current_user_target.removeClass('cmb2-tab-ignore');
         }
+
+        // Earners field
+        var earners = widget.find( 'input[id^="widget-gamipress"][id$="[earners]"]');
+        var earners_target = earners.closest('.cmb-row').next(); // Earners limit field
+
+        if( ! earners.prop('checked') ) {
+            earners_target.hide().addClass('cmb2-tab-ignore');
+        } else {
+            if( earners_target.closest('.cmb-tabs-wrap').length ) {
+                // Just show if item tab is active
+                if( earners_target.hasClass('cmb-tab-active-item') ) {
+                    earners_target.show();
+                }
+            } else {
+                earners_target.show();
+            }
+
+            earners_target.removeClass('cmb2-tab-ignore');
+        }
+
+        // Period field
+        var period = widget.find( 'input[id^="widget-gamipress_points"][id$="[period]"]');
+
+        // Get the period start and end fields
+        var period_target = period.closest('.cmb2-wrap').find(
+            '.cmb-row[class*="period-start"], '
+            + '.cmb-row[class*="period-end"]'
+        );
+
+        if( period.val() !== 'custom' ) {
+            period_target.hide().addClass('cmb2-tab-ignore');
+        } else {
+            period_target.show().removeClass('cmb2-tab-ignore');
+        }
+
 
         // Inline field
         var inline = widget.find( 'input[id^="widget-gamipress_points"][id$="[inline]"]');

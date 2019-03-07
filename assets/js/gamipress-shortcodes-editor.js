@@ -168,10 +168,16 @@
     });
 
     // Current user field
-    $( '#gamipress_achievements_current_user, #gamipress_points_current_user, #gamipress_logs_current_user, #gamipress_ranks_current_user, #gamipress_user_rank_current_user, #gamipress_earnings_current_user').change(function() {
+    $( '#gamipress_achievements_current_user, '
+        + '#gamipress_points_current_user, '
+        + '#gamipress_logs_current_user, '
+        + '#gamipress_ranks_current_user, #gamipress_user_rank_current_user, '
+        + '#gamipress_earnings_current_user'
+    ).change(function() {
         var target = $(this).closest('.cmb-row').next(); // User ID field
 
         if( $(this).prop('checked') ) {
+            // Hide the target
             target.slideUp().addClass('cmb2-tab-ignore');
         } else {
             if( target.closest('.cmb-tabs-wrap').length ) {
@@ -185,7 +191,47 @@
 
             target.removeClass('cmb2-tab-ignore');
         }
-    });
+    }).change();
+
+    // Earners field
+    $( '#gamipress_achievement_earners, #gamipress_achievements_earners, '
+        + '#gamipress_rank_earners, #gamipress_ranks_earners, #gamipress_user_rank_earners'
+    ).change(function() {
+        var target = $(this).closest('.cmb-row').next(); // Earners limit field
+
+        if( ! $(this).prop('checked') ) {
+            // Hide the target
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            if( target.closest('.cmb-tabs-wrap').length ) {
+                // Just show if item tab is active
+                if( target.hasClass('cmb-tab-active-item') ) {
+                    target.slideDown();
+                }
+            } else {
+                target.slideDown();
+            }
+
+            target.removeClass('cmb2-tab-ignore');
+        }
+    }).change();
+
+    // Period field
+    $( '#gamipress_points_period').change(function() {
+        // Get the period start and end fields
+        var target = $(this).closest('.cmb2-wrap').find(
+            '.cmb2-id-gamipress-points-period-start, '
+            + '.cmb2-id-gamipress-points-period-end'
+        );
+
+        if( $(this).val() !== 'custom' ) {
+            // Hide the target
+            target.slideUp().addClass('cmb2-tab-ignore');
+        } else {
+            // Show the target
+            target.slideDown().removeClass('cmb2-tab-ignore');
+        }
+    }).change();
 
     // Inline field
     $( '#gamipress_points_inline').change(function() {

@@ -10,10 +10,10 @@ global $gamipress_template_args;
 // Shorthand
 $a = $gamipress_template_args;
 
-$user_id = isset( $a['user_id'] ) ? $a['user_id'] : get_current_user_id();
+$user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_id();
 
 // Check if user has earned this achievement
-$earned = ( is_user_logged_in() && gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => get_the_ID() ) ) );
+$earned = ( $user_id !== 0 && gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => get_the_ID() ) ) );
 
 // Setup achievement classes
 $classes = array(
@@ -200,7 +200,7 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
 
         <?php // Achievement Earners
         if ( $a['earners'] === 'yes' ) :
-            echo gamipress_get_achievement_earners_list( get_the_ID() );
+            echo gamipress_get_achievement_earners_list( get_the_ID(), array( 'limit' => $a['earners_limit'] ) );
 
             /**
              * After achievement earners

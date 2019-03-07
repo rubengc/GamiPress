@@ -131,6 +131,16 @@ function gamipress_achievements_meta_boxes( $post_type ) {
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch'
             ),
+            $prefix . 'maximum_earners' => array(
+                'name' => __( 'Maximum Earners', 'gamipress' ),
+                'desc' => __( 'Set the maximum number of earners to show (0 for no maximum).', 'gamipress' ),
+                'type' => 'text',
+                'attributes' => array(
+                    'type' => 'number',
+                    'step' => '1',
+                ),
+                'default' => '0'
+            ),
             $prefix . 'layout' => array(
                 'name'        => __( 'Layout', 'gamipress' ),
                 'description' => __( 'Layout to show the achievement.', 'gamipress' ),

@@ -12,18 +12,48 @@ if( !defined( 'ABSPATH' ) ) exit;
 /**
  * Return an user's points
  *
- * @since 1.0.0
+ * @since   1.0.0
+ * @updated 1.6.9 Added $args argument
  *
- * @param  integer $user_id      The given user's ID
- * @param  string $points_type   The points type
+ * @param  integer  $user_id        The given user's ID
+ * @param  string   $points_type    The points type
+ * @param  array    $args           Extra arguments
  *
- * @return integer $user_points  The user's current points
+ * @return integer  $user_points    The user's current points
  */
-function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
+function gamipress_get_user_points( $user_id = 0, $points_type = '', $args = array() ) {
 
 	// Use current user's ID if none specified
 	if ( ! $user_id )
 		$user_id = wp_get_current_user()->ID;
+
+    $args = wp_parse_args( $args, array(
+        'date_query' => array(), // Limit user points balance on a specific date query, accepts before and after params
+    ) );
+
+    // Shorthand
+    $date_query = $args['date_query'];
+
+    // Retrieve the user points balance from logs based on date query given
+    if( ( isset( $date_query['before'] ) && ! empty( $date_query['before'] ) )
+        || ( isset( $date_query['after'] ) && ! empty( $date_query['after'] ) ) ) {
+
+        return absint( gamipress_query_logs( array(
+            'select' => 'GREATEST( IFNULL( SUM( lm0.meta_value ), 0 ), 0 )',
+            'get_var' => true,
+            'user_id' => $user_id,
+            'where' => array(
+                array(
+                    'key'       => 'points',
+                    'value'     => '0',
+                    'compare'   => '!=',
+                ),
+                'points_type'   => $points_type
+            ),
+            'date_query' => $date_query
+        ) ) );
+
+    }
 
     // Default points
     $user_meta = '_gamipress_points';
@@ -34,6 +64,7 @@ function gamipress_get_user_points( $user_id = 0, $points_type = '' ) {
 
 	// Return our user's points as an integer (sanely falls back to 0 if empty)
 	return absint( gamipress_get_user_meta( $user_id, $user_meta ) );
+
 }
 
 /**
@@ -217,18 +248,48 @@ function gamipress_get_user_points_expended( $user_id = 0, $points_type = '', $s
 
 	// Return our user's points expended as an integer (sanely falls back to 0 if empty)
 	return absint( $points_expended );
+
 }
 
 /**
  * Return site's points (sum of all user points)
  *
- * @since 1.5.9
+ * @since   1.5.9
+ * @updated 1.6.9 Added $args argument
  *
  * @param  string   $points_type   The points type
+ * @param  array    $args           Extra arguments
  *
  * @return int      $site_points  The site's current points
  */
-function gamipress_get_site_points( $points_type = '' ) {
+function gamipress_get_site_points( $points_type = '', $args = array() ) {
+
+    $args = wp_parse_args( $args, array(
+        'date_query' => array(), // Limit user points balance on a specific date query, accepts before and after params
+    ) );
+
+    // Shorthand
+    $date_query = $args['date_query'];
+
+    // Retrieve the site points from logs based on date query given
+    if( ( isset( $date_query['before'] ) && ! empty( $date_query['before'] ) )
+        || ( isset( $date_query['after'] ) && ! empty( $date_query['after'] ) ) ) {
+
+        return absint( gamipress_query_logs( array(
+            'select' => 'GREATEST( IFNULL( SUM( lm0.meta_value ), 0 ), 0 )',
+            'get_var' => true,
+            'where' => array(
+                array(
+                    'key'       => 'points',
+                    'value'     => '0',
+                    'compare'   => '!=',
+                ),
+                'points_type'   => $points_type
+            ),
+            'date_query' => $date_query
+        ) ) );
+
+    }
 
     // Default points
     $user_meta = '_gamipress_points';

@@ -192,6 +192,7 @@ function gamipress_register_post_types() {
 		'supports'           => array( 'title' ),
 
 	) );
+
 	gamipress_register_requirement_type( 'Step', 'Steps' );
 
 	// Register Rank Type
@@ -262,6 +263,7 @@ function gamipress_register_post_types() {
 		'supports'           => array( 'title' ),
 
 	) );
+
 	gamipress_register_requirement_type( 'Rank Requirement', 'Rank Requirements' );
 
 }

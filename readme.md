@@ -61,6 +61,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
 * [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
+* [CoursePress](https://wordpress.org/plugins/gamipress-coursepress-integration/)
 * [LifterLMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
 * [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
 * [WPEP](https://wordpress.org/plugins/gamipress-wpep-integration/)
@@ -271,6 +272,22 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.6.9 ###
+
+* **New Features**
+* Added the fields "Period", "Period Start" and "Period End" to the User Points Balance block and widget.
+* Added the attributes "period", "period_start" and "period_end" to the [gamipress_points] shortcodes.
+* Added the field "Maximum Earners" to the achievement and rank template options (located on their edit screens).
+* Added the field "Maximum Earners" to achievement-related and rank-related blocks and widgets.
+* Added the attributes "earners_limit" to achievement-related and rank-related shortcodes.
+* **Bug Fixes**
+* Fixed user earned check on achievement and rank templates.
+* Fixed earner list result on ranks with lowest priority.
+* **Improvements**
+* Changed points awards and deducts maximum earnings default value to 0 (unlimited) instead of 1.
+* **Developer Notes**
+* Added new hooks on meta boxes fields registration.
 
 ### 1.6.8 ###
 

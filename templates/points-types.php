@@ -12,11 +12,7 @@ $a = $gamipress_template_args;
 
 $points_types = gamipress_get_points_types();
 
-if( isset( $a['user_id'] ) ) {
-    $user_id = $a['user_id'];
-} else {
-    $user_id = get_current_user_id();
-}
+$user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_id();
 
 // Setup points classes
 $classes = array(

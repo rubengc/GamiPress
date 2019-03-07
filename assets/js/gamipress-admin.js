@@ -111,6 +111,21 @@
 		$('.cmb2-id--gamipress-points-to-unlock').hide();
 	}
 
+	// Toggle visibility of maximum earners based on show earners checked status
+	$('#_gamipress_show_earners').change(function() {
+		var target = $('.cmb2-id--gamipress-maximum-earners');
+
+		if( $(this).prop('checked') ) {
+			target.slideDown(250);
+		} else {
+			target.slideUp(250);
+		}
+	});
+
+	if( ! $('#_gamipress_show_earners').prop('checked') ) {
+		$('.cmb2-id--gamipress-maximum-earners').hide();
+	}
+
 	// Get the current slug for slugs checks
 	var current_slug = $('input#post_name').val();
 

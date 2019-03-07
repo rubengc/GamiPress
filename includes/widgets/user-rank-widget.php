@@ -81,6 +81,7 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
             'toggle'        => ( $instance['toggle'] === 'on' ? 'yes' : 'no' ),
             'unlock_button' => ( $instance['unlock_button'] === 'on' ? 'yes' : 'no' ),
             'earners'       => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
+            'earners_limit' => $instance['earners_limit'],
             'layout'        => $instance['layout'],
         ) );
 

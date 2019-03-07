@@ -128,7 +128,10 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
 
         <?php // Include achievement earners, if this achievement supports it
         if ( $show_earners = gamipress_get_post_meta( get_the_ID(), '_gamipress_show_earners' ) ) {
-            echo gamipress_get_achievement_earners_list( get_the_ID() );
+
+            $maximum_earners = absint( gamipress_get_post_meta( get_the_ID(), '_gamipress_maximum_earners' ) );
+
+            echo gamipress_get_achievement_earners_list( get_the_ID(), array( 'limit' => $maximum_earners ) );
 
             /**
              * After single achievement earners

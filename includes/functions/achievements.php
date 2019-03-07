@@ -833,7 +833,7 @@ function gamipress_get_achievement_earners( $achievement_id = 0, $args = array()
     $args = wp_parse_args( $args, $defaults );
 
     // Setup limit
-    if( $args['limit'] > 0 ) {
+    if( absint( $args['limit'] ) > 0 ) {
         $limit = '0, ' . $args['limit'];
     }
 

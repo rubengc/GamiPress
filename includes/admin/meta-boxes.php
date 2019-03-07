@@ -33,7 +33,16 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 	// ID for hooks
 	$hook_id = str_replace( '-', '_', $id );
 
-	// First, filter fields to allow extend it
+    /**
+     * Filter box fields to allow extend it
+     *
+     * @since  1.0.8
+     *
+     * @param array $fields Box fields
+     * @param array $args   Box args
+     *
+     * @return array
+     */
 	$fields = apply_filters( "gamipress_{$hook_id}_fields", $fields, $args );
 
 	foreach( $fields as $field_id => $field ) {
@@ -60,7 +69,17 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 		'priority'     	=> 'default',
 	) );
 
-	// Filter tabs to allow extend it
+    /**
+     * Filter box tabs to allow extend it
+     *
+     * @since  1.0.8
+     *
+     * @param array $tabs   Box tabs
+     * @param array $fields Box fields
+     * @param array $args   Box args
+     *
+     * @return array
+     */
 	$tabs = apply_filters( "gamipress_{$hook_id}_tabs", $args['tabs'], $fields, $args );
 
 	// Parse tabs
@@ -70,17 +89,36 @@ function gamipress_add_meta_box( $id, $title, $object_types, $fields, $args = ar
 
 	}
 
-	new_cmb2_box( array(
-		'id'           	=> $id,
-		'title'        	=> $title,
-		'object_types' 	=> ! is_array( $object_types) ? array( $object_types ) : $object_types,
-		'tabs'      	=> $tabs,
-		'vertical_tabs' => $args['vertical_tabs'],
-		'context'      	=> $args['context'],
-		'priority'     	=> $args['priority'],
-		'classes'		=> 'gamipress-form gamipress-box-form',
-		'fields' 		=> $fields
-	) );
+	// Setup the final box arguments
+	$box = array(
+        'id'           	=> $id,
+        'title'        	=> $title,
+        'object_types' 	=> ! is_array( $object_types) ? array( $object_types ) : $object_types,
+        'tabs'      	=> $tabs,
+        'vertical_tabs' => $args['vertical_tabs'],
+        'context'      	=> $args['context'],
+        'priority'     	=> $args['priority'],
+        'classes'		=> 'gamipress-form gamipress-box-form',
+        'fields' 		=> $fields
+    );
+
+    /**
+     * Filter the final box args that will be passed to CMB2
+     *
+     * @since  1.6.9
+     *
+     * @param array 		$box            Final box args
+     * @param string 		$id             Box id
+     * @param string 		$title          Box title
+     * @param string|array 	$object_types   Object types where box will appear
+     * @param array 		$fields         Box fields
+     * @param array 		$tabs           Box tabs
+     * @param array 		$args           Box args
+     */
+    apply_filters( "gamipress_{$hook_id}_box", $box, $id, $title, $object_types, $fields, $tabs, $args );
+
+    // Instance the CMB2 box
+	new_cmb2_box( $box );
 }
 
 /**
@@ -163,7 +201,7 @@ function gamipress_options_cb_posts( $field ) {
 		}
 
 		foreach( $value as $post_id ) {
-			$options[$post_id] = get_post_field( 'post_title', $post_id );
+			$options[$post_id] = get_post_field( 'post_title', $post_id ) . ' (#' . $post_id . ')';
 		}
 	}
 

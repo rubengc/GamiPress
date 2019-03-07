@@ -111,7 +111,7 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         $requirement['maximum_earnings']    = gamipress_get_post_meta( $requirement_id, '_gamipress_maximum_earnings' );
 
         if( $requirement['maximum_earnings'] === '' ) {
-            $requirement['maximum_earnings'] = 1;
+            $requirement['maximum_earnings'] = 0;
         } else {
             $requirement['maximum_earnings'] = absint( $requirement['maximum_earnings'] );
         }

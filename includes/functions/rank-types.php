@@ -120,7 +120,7 @@ function gamipress_get_rank_type_by_id( $rank_type_id ) {
  *
  * @param string|int|WP_Post    $rank_type
  *
- * @return array|false                              The rank type ID if is registered, if not return false
+ * @return int|false                                The rank type ID if is registered, if not return false
  */
 function gamipress_get_rank_type_id( $rank_type ) {
 

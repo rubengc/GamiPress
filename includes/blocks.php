@@ -182,9 +182,19 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
             $fields['exclude']['type'] = 'post';
             $fields['exclude']['post_type'] = gamipress_get_rank_types_slugs();
             break;
+        case 'gamipress_points':
+            // Period start and end visibility
+            $fields['period_start']['conditions'] = array(
+                'period' => 'custom',
+            );
+
+            $fields['period_end']['conditions'] = array(
+                'period' => 'custom',
+            );
+            break;
     }
 
-    // TODO: [gamipress_logs] include and exclude (just posible when CT includes WP Rest API endpoints)
+    // TODO: [gamipress_logs] include and exclude (just possible when CT includes WP Rest API endpoints)
 
     // Common fields to all shortcodes
 
