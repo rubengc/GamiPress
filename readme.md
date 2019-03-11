@@ -286,6 +286,7 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 * Fixed earner list result on ranks with lowest priority.
 * **Improvements**
 * Changed points awards and deducts maximum earnings default value to 0 (unlimited) instead of 1.
+* Improvements on events detection for "Unlock specific achievement" and "Reach a specific rank" events.
 * **Developer Notes**
 * Added new hooks on meta boxes fields registration.
 

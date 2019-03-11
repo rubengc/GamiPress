@@ -587,13 +587,13 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 
 		}
 
-		// Get the required number of checkins
+		// Get the required number of check-ins
 		$required_activity_count = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_count' ) );
 
 		// Grab the relevant activity count
 		$activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id ) );
 
-		// If we meet or exceed the required number of checkins, then deserve the achievement
+		// If we meet or exceed the required number of check-ins, then deserve the achievement
 		if ( $activity_count >= $required_activity_count ) {
 			$return = true;
 		} else {
@@ -804,7 +804,8 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 /**
  * Award additional achievements to user
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @update  1.6.9 Correctly add the trigger type to the maybe award function call
  *
  * @param  integer $user_id        The given user's ID
  * @param  integer $achievement_id The given achievement's post ID
@@ -812,6 +813,12 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
  * @return void
  */
 function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $achievement_id = 0 ) {
+
+    // Get the achievement post type
+    $post_type = gamipress_get_post_type( $achievement_id );
+    $achievement_types = gamipress_get_achievement_types_slugs();
+    $rank_types = gamipress_get_achievement_types_slugs();
+
 
 	// Get achievements that can be earned from completing this achievement
 	$dependent_achievements = gamipress_get_dependent_achievements( $achievement_id );
@@ -821,7 +828,16 @@ function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $a
 
 	// Loop through each dependent achievement and see if it can be awarded
 	foreach ( $dependent_achievements as $achievement ) {
-		gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id );
+
+	    $trigger = '';
+
+	    if( in_array( $post_type, $achievement_types ) ) {
+            $trigger = 'specific-achievement';
+        } else if( in_array( $post_type, $rank_types ) ) {
+            $trigger = 'earn-rank';
+        }
+
+		gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id, $trigger );
 	}
 
 }
