@@ -299,7 +299,7 @@ function gamipress_import_export_ranks_tool_ajax_import() {
 
         $columns = str_getcsv( $line );
 
-        if( count( $columns ) >= 3 ) {
+        if( count( $columns ) >= 2 ) {
 
             $user = false;
             $rank = '';

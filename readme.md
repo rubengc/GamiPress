@@ -273,6 +273,14 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.9.1 ###
+
+* **Bug Fixes**
+* Fixed bug on achievements import/export tool that prevents to correctly process imported CSV file.
+* Fixed bug on ranks import/export tool that prevents to correctly process imported CSV file.
+* Fixed Custom Tables roles population adding extra checks to meet if roles are correctly populated.
+* Fix page reload on user earnings screen when revoking a specific requirement.
+
 ### 1.6.9 ###
 
 * **New Features**

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, point, achievement, rank, badge, award, reward, credit, engagement, leaderboard, email, notification, progress
 Requires at least: 4.4
 Tested up to: 5.1
-Stable tag: 1.6.9
+Stable tag: 1.6.9.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -256,6 +256,14 @@ No, We're unable to provide custom development services, as our focus is develop
 Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.6.9.1 =
+
+* **Bug Fixes**
+* Fixed bug on achievements import/export tool that prevents to correctly process imported CSV file.
+* Fixed bug on ranks import/export tool that prevents to correctly process imported CSV file.
+* Fixed Custom Tables roles population adding extra checks to meet if roles are correctly populated.
+* Fix page reload on user earnings screen when revoking a specific requirement.
 
 = 1.6.9 =
 

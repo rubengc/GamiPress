@@ -473,6 +473,12 @@
         // Make the request
         $.get( $this.attr('href'), function( response ) {
 
+			// If currently on user earnings view, refresh current page and return
+			if( $('body').hasClass('gamipress_page_gamipress_user_earnings') ) {
+				location.reload();
+				return;
+			}
+
             // Update this awards table (so do not neet to remove the loader and enable the links again)
             $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
 

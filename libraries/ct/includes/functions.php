@@ -179,6 +179,11 @@ function ct_populate_roles() {
     // Add caps for Administrator role
     $role = get_role( 'administrator' );
 
+    // Bail if administrator role is not setup
+    if( ! $role ) {
+        return;
+    }
+
     $args = (object) array(
         'capabilities' => array(),
         'capability_type' => 'item',

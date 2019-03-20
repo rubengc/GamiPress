@@ -922,6 +922,11 @@ function gamipress_process_user_data() {
 			// Revoke the achievement
 			gamipress_revoke_achievement_to_user( absint( $_GET['achievement_id'] ), absint( $_GET['user_id'] ), $earning_id );
 
+			// If revoking from user earnings screen return directly without redirect
+			if( isset( $_GET['page'] ) && $_GET['page'] === 'gamipress_user_earnings' ) {
+                exit();
+            }
+
 			// Redirect back to the user editor
 			wp_redirect( add_query_arg( 'user_id', absint( $_GET['user_id'] ), admin_url( 'user-edit.php' ) ) );
 			exit();
