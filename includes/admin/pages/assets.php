@@ -64,6 +64,34 @@ function gamipress_assets_page() {
 }
 
 /**
+ * Helper function to determine if give plugin has the passes category
+ *
+ * @since   1.6.9.2
+ *
+ * @param stdClass $plugin
+ *
+ * @return bool
+ */
+function gamipress_is_plugin_pass( $plugin ) {
+
+    // Check if plugin has categories
+    if( is_array( $plugin->info->category ) && count( $plugin->info->category ) ) {
+
+        // Loop plugin categories
+        foreach( $plugin->info->category as $category ) {
+
+            // Passes category found
+            if( $category->slug === 'passes' ) {
+                return true;
+            }
+        }
+
+    }
+
+    return false;
+}
+
+/**
  * Helper function to determine if give plugin has the asset tag
  *
  * @since  1.6.0

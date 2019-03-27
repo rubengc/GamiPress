@@ -265,6 +265,7 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 * Removed some CSS rules to make GamiPress styling more neutral.
 * Improvements on GamiPress blocks adding support for the ColorPalette control.
 * Make GamiPress blocks select controls full width.
+* On add-ons page, added support for new passes.
 
 = 1.6.9.1 =
 

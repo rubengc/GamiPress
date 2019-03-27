@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-03-27 12:16+0100\n"
+"POT-Creation-Date: 2019-03-27 12:26+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1141,7 +1141,7 @@ msgid "Active"
 msgstr ""
 
 #: includes/admin/pages/add-ons.php:262
-msgid "Get All Access Pass"
+msgid "Get this pass"
 msgstr ""
 
 #: includes/admin/pages/add-ons.php:267

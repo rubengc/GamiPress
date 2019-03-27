@@ -256,10 +256,10 @@ function gamipress_render_plugin_card( $plugin ) {
                     $button_text
                 );
             }
-        } else if( $slug === 'all-access-pass' ) {
+        } else if( gamipress_is_plugin_pass( $plugin ) ) {
 
-            // "Get All Access Pass" action
-            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get All Access Pass', 'gamipress' ) . '</a>';
+            // "Get this pass" action
+            $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button button-primary" target="_blank">' . __( 'Get this pass', 'gamipress' ) . '</a>';
 
         } else if( gamipress_is_plugin_asset( $plugin ) ) {
 
