@@ -52,6 +52,7 @@ function gamipress_register_user_rank_shortcode() {
                 'description' => __( 'Rank type to display.', 'gamipress' ),
                 'type'        => 'select',
                 'option_all'  => false,
+                'option_none' => true,
                 'options_cb'  => 'gamipress_options_cb_rank_types',
             ),
             'prev_rank' => array(

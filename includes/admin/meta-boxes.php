@@ -295,12 +295,10 @@ function gamipress_options_cb_achievement_types( $field ) {
 
 	// Setup a custom array of achievement types
 
-    // Check if option_all is set to false (by default option_all is set to true)
-    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
-        $options = array();
-    } else {
-        $options = array( 'all' => __( 'All', 'gamipress' ) );
-    }
+    // Custom option none label
+    $field->args['option_none_label'] = ( isset( $field->args['option_none_label'] ) ? $field->args['option_none_label'] : __( 'Choose an achievement type', 'gamipress' ) );
+
+    $options = gamipress_options_cb_init_options( $field );
 
 	foreach ( gamipress_get_achievement_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
@@ -315,12 +313,10 @@ function gamipress_options_cb_points_types( $field ) {
 
 	// Setup a custom array of points types
 
-    // Check if option_all is set to false (by default option_all is set to true)
-    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
-        $options = array();
-    } else {
-        $options = array( 'all' => __( 'All', 'gamipress' ) );
-    }
+    // Custom option none label
+    $field->args['option_none_label'] = ( isset( $field->args['option_none_label'] ) ? $field->args['option_none_label'] : __( 'Choose a points type', 'gamipress' ) );
+
+    $options = gamipress_options_cb_init_options( $field );
 
 	foreach ( gamipress_get_points_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
@@ -335,13 +331,10 @@ function gamipress_options_cb_rank_types( $field ) {
 
 	// Setup a custom array of rank types
 
-    // Check if option_all is set to false (by default option_all is set to true)
-    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
-        $options = array();
-    } else {
-        $options = array( 'all' => __( 'All', 'gamipress' ) );
-    }
+    // Custom option none label
+    $field->args['option_none_label'] = ( isset( $field->args['option_none_label'] ) ? $field->args['option_none_label'] : __( 'Choose a rank type', 'gamipress' ) );
 
+    $options = gamipress_options_cb_init_options( $field );
 
 	foreach ( gamipress_get_rank_types() as $slug => $data ) {
 		$options[$slug] = $data['plural_name'];
@@ -356,12 +349,13 @@ function gamipress_options_cb_log_types( $field ) {
 
 	// Setup a custom array of log types
 
-    // Check if option_all is set to false (by default option_all is set to true)
-    if( isset( $field->args['option_all'] ) && $field->args['option_all'] === false ) {
-        $options = gamipress_get_log_types();
-    } else {
-        $options = array_merge( array( 'all' => __( 'All', 'gamipress' ) ), gamipress_get_log_types() );
-    }
+    // Custom option none label
+    $field->args['option_none_label'] = ( isset( $field->args['option_none_label'] ) ? $field->args['option_none_label'] : __( 'Choose a log type', 'gamipress' ) );
+
+    $options = gamipress_options_cb_init_options( $field );
+
+    // Prepend the log types as options
+    $options = array_merge( $options, gamipress_get_log_types() );
 
 	return $options;
 
@@ -376,5 +370,32 @@ function gamipress_options_cb_points_label_position( $field ) {
 		'after' => sprintf( __( 'After (10 %s)', 'gamipress' ), $plural ),
 		'before' => sprintf( __( 'Before (%s 10)', 'gamipress' ), $plural ),
 	);
+
+}
+
+// Common callback for options_cb functions that support custom args
+function gamipress_options_cb_init_options( $field ) {
+
+    $options = array();
+
+    // Default args
+
+    // option_none = false
+    $field->args['option_none'] = ( isset( $field->args['option_none'] ) ? $field->args['option_none'] : false );
+    // option_none_label = __( 'Choose an option', 'gamipress' )
+    $field->args['option_none_label'] = ( isset( $field->args['option_none_label'] ) ? $field->args['option_none_label'] : __( 'Choose an option', 'gamipress' ) );
+
+    // option_all = true
+    $field->args['option_all'] = ( isset( $field->args['option_all'] ) ? $field->args['option_all'] : true );
+    // option_all_label = __( 'All', 'gamipress' )
+    $field->args['option_all_label'] = ( isset( $field->args['option_all_label'] ) ? $field->args['option_all_label'] : __( 'All', 'gamipress' ) );
+
+    // Check if option_none is set to true (by default option_none is set to false)
+    if( $field->args['option_none'] ) $options[''] = $field->args['option_none_label'];
+
+    // Check if option_all is set to true (by default option_all is set to true)
+    if( $field->args['option_all'] ) $options['all'] = $field->args['option_all_label'];
+
+    return $options;
 
 }

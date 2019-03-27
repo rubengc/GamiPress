@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-03-20 12:03+0100\n"
+"POT-Creation-Date: 2019-03-27 12:16+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -622,19 +622,40 @@ msgstr ""
 msgid "No extra data registered"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:302 includes/admin/meta-boxes.php:322
-#: includes/admin/meta-boxes.php:342 includes/admin/meta-boxes.php:363
-msgid "All"
+#: includes/admin/meta-boxes.php:299 includes/admin/requirements-ui.php:370
+#: includes/user.php:622
+msgid "Choose an achievement type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:376
+#: includes/admin/meta-boxes.php:317 includes/admin/tools/bulk-awards.php:25
+#: includes/admin/tools/bulk-revokes.php:25
+msgid "Choose a points type"
+msgstr ""
+
+#: includes/admin/meta-boxes.php:335
+msgid "Choose a rank type"
+msgstr ""
+
+#: includes/admin/meta-boxes.php:353
+msgid "Choose a log type"
+msgstr ""
+
+#: includes/admin/meta-boxes.php:370
 #, php-format
 msgid "After (10 %s)"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:377
+#: includes/admin/meta-boxes.php:371
 #, php-format
 msgid "Before (%s 10)"
+msgstr ""
+
+#: includes/admin/meta-boxes.php:386
+msgid "Choose an option"
+msgstr ""
+
+#: includes/admin/meta-boxes.php:391
+msgid "All"
 msgstr ""
 
 #: includes/admin/meta-boxes/achievement-type.php:25
@@ -840,7 +861,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_logs.php:45
 #: includes/shortcodes/gamipress_points.php:59
 #: includes/shortcodes/gamipress_ranks.php:114
-#: includes/shortcodes/gamipress_user_rank.php:86
+#: includes/shortcodes/gamipress_user_rank.php:87
 msgid "User"
 msgstr ""
 
@@ -1359,10 +1380,6 @@ msgstr ""
 
 #: includes/admin/requirements-ui.php:355
 msgid "Choose a rank"
-msgstr ""
-
-#: includes/admin/requirements-ui.php:370 includes/user.php:622
-msgid "Choose an achievement type"
 msgstr ""
 
 #: includes/admin/requirements-ui.php:390
@@ -2006,11 +2023,6 @@ msgstr ""
 
 #: includes/admin/settings/style.php:34
 msgid "Check this option to stop enqueue frontend Javascript resources."
-msgstr ""
-
-#: includes/admin/tools/bulk-awards.php:25
-#: includes/admin/tools/bulk-revokes.php:25
-msgid "Choose a points type"
 msgstr ""
 
 #: includes/admin/tools/bulk-awards.php:33
@@ -4301,7 +4313,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_points.php:90
 #: includes/shortcodes/gamipress_points_types.php:39
 #: includes/shortcodes/gamipress_ranks.php:72
-#: includes/shortcodes/gamipress_user_rank.php:93
+#: includes/shortcodes/gamipress_user_rank.php:94
 msgid "Columns"
 msgstr ""
 
@@ -4313,7 +4325,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_points.php:94
 #: includes/shortcodes/gamipress_points_types.php:43
 #: includes/shortcodes/gamipress_ranks.php:76
-#: includes/shortcodes/gamipress_user_rank.php:97
+#: includes/shortcodes/gamipress_user_rank.php:98
 msgid "1 Column"
 msgstr ""
 
@@ -4321,7 +4333,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_points.php:95
 #: includes/shortcodes/gamipress_points_types.php:44
 #: includes/shortcodes/gamipress_ranks.php:77
-#: includes/shortcodes/gamipress_user_rank.php:98
+#: includes/shortcodes/gamipress_user_rank.php:99
 msgid "2 Columns"
 msgstr ""
 
@@ -4329,7 +4341,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_points.php:96
 #: includes/shortcodes/gamipress_points_types.php:45
 #: includes/shortcodes/gamipress_ranks.php:78
-#: includes/shortcodes/gamipress_user_rank.php:99
+#: includes/shortcodes/gamipress_user_rank.php:100
 msgid "3 Columns"
 msgstr ""
 
@@ -4478,7 +4490,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_logs.php:39
 #: includes/shortcodes/gamipress_points.php:53
 #: includes/shortcodes/gamipress_ranks.php:108
-#: includes/shortcodes/gamipress_user_rank.php:79
+#: includes/shortcodes/gamipress_user_rank.php:80
 msgid "Current User"
 msgstr ""
 
@@ -4988,7 +5000,7 @@ msgid "Single or comma-separated list of rank type(s) to display."
 msgstr ""
 
 #: includes/shortcodes/gamipress_ranks.php:73
-#: includes/shortcodes/gamipress_user_rank.php:94
+#: includes/shortcodes/gamipress_user_rank.php:95
 msgid "Columns to divide ranks."
 msgstr ""
 
@@ -4997,12 +5009,12 @@ msgid "Rank ID"
 msgstr ""
 
 #: includes/shortcodes/gamipress_ranks.php:109
-#: includes/shortcodes/gamipress_user_rank.php:80
+#: includes/shortcodes/gamipress_user_rank.php:81
 msgid "Show the current logged in user ranks."
 msgstr ""
 
 #: includes/shortcodes/gamipress_ranks.php:115
-#: includes/shortcodes/gamipress_user_rank.php:87
+#: includes/shortcodes/gamipress_user_rank.php:88
 msgid "Show a specific user ranks."
 msgstr ""
 
@@ -5036,7 +5048,7 @@ msgid "Show ranks from all network sites."
 msgstr ""
 
 #: includes/shortcodes/gamipress_ranks.php:208
-#: includes/shortcodes/gamipress_user_rank.php:149
+#: includes/shortcodes/gamipress_user_rank.php:150
 msgid "The type provided isn't a valid registered rank type."
 msgstr ""
 
@@ -5056,39 +5068,39 @@ msgstr ""
 msgid "Rank type to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:58
+#: includes/shortcodes/gamipress_user_rank.php:59
 msgid "Show Previous Rank"
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:59
+#: includes/shortcodes/gamipress_user_rank.php:60
 msgid "Show the previous user rank."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:65
+#: includes/shortcodes/gamipress_user_rank.php:66
 msgid "Show Current Rank"
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:66
+#: includes/shortcodes/gamipress_user_rank.php:67
 msgid "Show the current user rank."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:72
+#: includes/shortcodes/gamipress_user_rank.php:73
 msgid "Show Next Rank"
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:73
+#: includes/shortcodes/gamipress_user_rank.php:74
 msgid "Show the next user rank."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:145
+#: includes/shortcodes/gamipress_user_rank.php:146
 msgid "Please, provide the type attribute."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:153
+#: includes/shortcodes/gamipress_user_rank.php:154
 msgid "None of the options to be displayed have been selected (previous, current or next). Please, select one."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:161
+#: includes/shortcodes/gamipress_user_rank.php:162
 msgid "Please, provide the user_id attribute."
 msgstr ""
 

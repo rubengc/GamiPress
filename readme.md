@@ -273,6 +273,15 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.9.2 ###
+
+* **Bug Fixes**
+* Fixed User Rank block type detection when just one rank type is registered.
+* **Improvements**
+* Removed some CSS rules to make GamiPress styling more neutral.
+* Improvements on GamiPress blocks adding support for the ColorPalette control.
+* Make GamiPress blocks select controls full width.
+
 ### 1.6.9.1 ###
 
 * **Bug Fixes**
