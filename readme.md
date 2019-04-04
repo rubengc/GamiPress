@@ -273,6 +273,13 @@ Anyway, check [our customize section](https://gamipress.com/customize/) where yo
 
 ## Changelog ##
 
+### 1.6.9.3 ###
+
+* **Bug Fixes**
+* Fixed GamiPress points field type saving on custom tables.
+* **Improvements**
+* Correctly reset custom table setup on some queries.
+
 ### 1.6.9.2 ###
 
 * **Bug Fixes**

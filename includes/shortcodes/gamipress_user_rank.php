@@ -142,7 +142,7 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
     // ---------------------------
 
     // Not type provided
-    if( $atts['type'] === '')
+    if( $atts['type'] === '' )
         return gamipress_shortcode_error( __( 'Please, provide the type attribute.', 'gamipress' ), 'gamipress_user_rank' );
 
     // Wrong rank

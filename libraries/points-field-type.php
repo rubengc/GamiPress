@@ -86,6 +86,8 @@ if( ! function_exists( 'cmb2_render_gamipress_points_field_type' ) ) :
      */
     function cmb2_save_gamipress_points_field_type( $field_id, $updated, $action, $field ) {
 
+        global $ct_cmb2_override;
+
         if( $field->args['type'] !== 'gamipress_points' ) {
             return;
         }
@@ -96,7 +98,11 @@ if( ! function_exists( 'cmb2_render_gamipress_points_field_type' ) ) :
             $post_type_meta_key = $field->args['points_type_key'];
         }
 
-        update_metadata( $field->object_type, $field->object_id, $post_type_meta_key, $_REQUEST[$post_type_meta_key] );
+        if( $ct_cmb2_override === true ) {
+            ct_update_object_meta( $field->object_id, $post_type_meta_key, $_REQUEST[$post_type_meta_key] );
+        } else {
+            update_metadata( $field->object_type, $field->object_id, $post_type_meta_key, $_REQUEST[$post_type_meta_key] );
+        }
 
     }
     add_action( 'cmb2_save_field', 'cmb2_save_gamipress_points_field_type', 10, 4 );

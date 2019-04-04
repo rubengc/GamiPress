@@ -100,6 +100,8 @@ function gamipress_get_user_achievements( $args = array() ) {
 
 	}
 
+	ct_reset_setup_table();
+
 	return $achievements;
 
 }
