@@ -904,7 +904,7 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0, $args = ar
             /**
              * Filters the earners list user output
              *
-             * @since 1.0.0
+             * @since   1.0.0
              * @updated 1.6.7 Added $achievement_id and $args arguments
              *
              * @param string    $user_content   User output

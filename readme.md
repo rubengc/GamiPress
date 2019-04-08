@@ -267,9 +267,9 @@ GamiPress comes with the following widgets:
 
 #### Do you offer custom development services? ####
 
-No, We're unable to provide custom development services, as our focus is developing the core GamiPress plugin, and the official GamiPress add-ons.
+No, We're unable to provide custom development services, as our focus is developing the core GamiPress plugin, and the official GamiPress add-ons. If you need customization services check our [customizations page}(https://gamipress.com/customizations/).
 
-Anyway, check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
+Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
 
