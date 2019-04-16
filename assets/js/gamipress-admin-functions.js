@@ -397,9 +397,33 @@ function gamipress_download_csv( data, filename ) {
     // Convert JSON to CSV
     var csv = gamipress_object_to_csv( data );
 
-    var file = ( filename.length ? filename + '.csv' : 'export.csv' );
+    gamipress_download_file( csv, filename, 'csv' );
 
-    var blob = new Blob( [csv], { type: 'text/csv;charset=utf-8;' } );
+}
+
+/**
+ * Function to force the download of the given content (Used on import/export tools)
+ *
+ * @since 1.7.0
+ *
+ * @param {string} content
+ * @param {string} filename
+ * @param {string} extension
+ * @param {string} mime_type
+ * @param {string} charset
+ */
+function gamipress_download_file( content, filename, extension, mime_type = '', charset = '' ) {
+
+    if( mime_type === undefined || mime_type === '' )
+        mime_type = 'text/' + extension;
+
+    if( charset === undefined || charset === '' )
+        charset = 'utf-8';
+
+    // Setup the file name
+    var file = ( filename.length ? filename + '.' + extension : 'file.' + extension );
+
+    var blob = new Blob( [content], { type: mime_type + ';charset=' + charset + ';' } );
 
     if (navigator.msSaveBlob) {
 

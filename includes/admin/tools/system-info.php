@@ -28,7 +28,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     //--------------------------
 
     $meta_boxes['server-info'] = array(
-        'title' => __( 'Server Info', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-cloud"></i>' . __( 'Server Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_server_info_tool_fields', array(
             'hosting_provider' => array(
@@ -46,7 +46,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'MySQL Version', 'gamipress' ),
                 'type' => 'display',
                 'value' => $wpdb->db_version(),
-                'classes' => ( version_compare( $wpdb->db_version(), '5.6', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+                'classes' => ( version_compare( $wpdb->db_version(), '5.0', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'server_software' => array(
                 'name' => __( 'Webserver Info', 'gamipress' ),
@@ -96,6 +96,10 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     $locale = get_locale();
 
+    $timezone = get_option( 'timezone_string' );
+    if ( ! $timezone )
+        $timezone = get_option( 'gmt_offset' );
+
     // Get WordPress Theme info
     $theme_data   = wp_get_theme();
     $theme        = $theme_data->Name . ' (' . $theme_data->Version . ')';
@@ -124,7 +128,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['wordpress-info'] = array(
-        'title' => __( 'WordPress Info', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-wordpress"></i>' . __( 'WordPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_wordpress_info_tool_fields', array(
             'site_url' => array(
@@ -151,6 +155,11 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Language', 'gamipress' ),
                 'type' => 'display',
                 'value' => ( ! empty( $locale ) ? $locale : 'en_US' ),
+            ),
+            'wp_timezone' => array(
+                'name' => __( 'Timezone', 'gamipress' ),
+                'type' => 'display',
+                'value' => $timezone,
             ),
             'wp_permalink' => array(
                 'name' => __( 'Permalink Structure', 'gamipress' ),
@@ -268,7 +277,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['gamipress-info'] = array(
-        'title' => __( 'GamiPress Info', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-gamipress"></i>' . __( 'GamiPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_gamipress_info_tool_fields', array(
             'points_types' => array(
@@ -404,7 +413,7 @@ function gamipress_get_hosting_provider() {
         $host = 'Flywheel';
     } else {
         // Adding a general fallback for data gathering
-        $host = 'DBH: ' . DB_HOST . ', SRV: ' . $_SERVER['SERVER_NAME'];
+        $host = 'DBH: ' . DB_HOST . ', SRV: ' . $_SERVER['SERVER_NAME'] . ', OS:' . PHP_OS;
     }
 
     return $host;

@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_achievements_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-achievements'] = array(
-        'title' => __( 'Import/Export Achievements', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-awards"></i>' . __( 'User Achievements', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_achievements_tool_fields', array(
 
             // Export
@@ -344,6 +344,14 @@ function gamipress_import_export_achievements_tool_ajax_import() {
                 // Loop all achievements that will be awarded
                 foreach( $achievements as $achievement ) {
 
+                    $revoke = false;
+
+                    // If achievement has a negative sign, then user is looking to revoke
+                    if ( substr( $achievement, 0, 1 ) === '-') {
+                        $revoke = true;
+                        $achievement = substr( $achievement, 1); // Remove the negative sign
+                    }
+
                     if( is_numeric( $achievement ) ) {
 
                         // Search by ID
@@ -370,8 +378,16 @@ function gamipress_import_export_achievements_tool_ajax_import() {
 
                     // Check if post object is an achievement
                     if( $achievement_post && gamipress_is_achievement( $achievement_post ) ) {
-                        // Award the achievement to the user
-                        gamipress_award_achievement_to_user( $achievement_post->ID, $user->ID, get_current_user_id() );
+
+                        if( $revoke ) {
+                            // Revoke the achievement to the user
+                            gamipress_revoke_achievement_to_user( $achievement_post->ID, $user->ID );
+                        } else {
+                            // Award the achievement to the user
+                            gamipress_award_achievement_to_user( $achievement_post->ID, $user->ID, get_current_user_id() );
+                        }
+
+
                     }
                 }
 

@@ -52,7 +52,7 @@
                                     $('#reset-data-response').remove();
 
                                     reset_data_dialog.dialog( "close" );
-                                }, 2000);
+                                }, 5000);
                             }
 
                             $('.reset-data-button').prop('disabled', false);
@@ -236,7 +236,7 @@
                     response_element.css({color:'#a00'});
                 }
 
-                response_element.html(( response.data.message !== undefined ? response.data.message : response.data ) );
+                response_element.html( ( response.data.message !== undefined ? response.data.message : response.data ) );
 
                 // Enable the export button
                 button_element.prop('disabled', false);
@@ -337,6 +337,9 @@
         // Remove error messages
         $('#import-' + type + '-warning').remove();
 
+        // Remove old responses
+        $('#import-' + type + '-response').remove();
+
         // Check if CSV file has been chosen
         if( $('#import_' + type + '_file')[0].files[0] === undefined ) {
             $this.parent().prepend('<p id="import-' + type + '-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose a CSV file to import.</p>');
@@ -396,22 +399,27 @@
                     {
                         user: 'User (ID, username or email)',
                         achievements: 'Achievements (Comma-separated list of IDs, titles and/or slugs)',
+                        notes: 'Notes (This column won\'t be processed by the tool)',
                     },
                     {
                         user: gamipress_admin_tools.user_id,
                         achievements: '1,2,3',
+                        notes: 'Awarding by user ID and passing the achievements IDs',
                     },
                     {
                         user: gamipress_admin_tools.user_name,
                         achievements: 'Test Badge,Custom Quest,Super Achievement',
+                        notes: 'Awarding by username and passing the achievements titles',
                     },
                     {
                         user: gamipress_admin_tools.user_email,
                         achievements: 'test-badge,custom-quest,super-achievement',
+                        notes: 'Awarding by email and passing the achievements slugs',
                     },
                     {
                         user: gamipress_admin_tools.user_id,
-                        achievements: '1,Test Badge,test-badge',
+                        achievements: '-1,-Test Badge,-test-badge',
+                        notes: 'Adding a negative sign will revoke the achievements',
                     },
                 ];
                 break;
@@ -423,25 +431,36 @@
                         user: 'User (ID, username or email)',
                         points: 'Points',
                         points_type: 'Points Type (slug)',
-                        log: 'Log Description (Optional)'
+                        log: 'Log Description (Optional)',
+                        notes: 'Notes (This column won\'t be processed by the tool)',
                     },
                     {
                         user: gamipress_admin_tools.user_id,
                         points: '100',
                         points_type: 'credits',
-                        log: '100 credits awarded through the user\'s ID'
+                        log: '100 credits awarded through the user\'s ID',
+                        notes: 'Awarding points by user ID',
                     },
                     {
                         user: gamipress_admin_tools.user_name,
                         points: '1000',
                         points_type: 'coins',
-                        log: '1,000 coins awarded through the user\'s username'
+                        log: '1,000 coins awarded through the user\'s username',
+                        notes: 'Awarding points by username',
                     },
                     {
                         user: gamipress_admin_tools.user_email,
                         points: '50',
                         points_type: 'gems',
-                        log: '50 gems awarded through the user\'s email'
+                        log: '50 gems awarded through the user\'s email',
+                        notes: 'Awarding points by email',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_email,
+                        points: '-50',
+                        points_type: 'gems',
+                        log: '50 gems deducted through the user\'s email',
+                        notes: 'Adding a negative sign will deduct the points',
                     },
                 ];
                 break;
@@ -452,18 +471,27 @@
                     {
                         user: 'User (ID, username or email)',
                         rank: 'Rank (ID, title or slug of rank to assign to the user)',
+                        notes: 'Notes (This column won\'t be processed by the tool)',
                     },
                     {
                         user: gamipress_admin_tools.user_id,
                         rank: '1',
+                        notes: 'Setting rank by user ID and passing the rank ID',
                     },
                     {
                         user: gamipress_admin_tools.user_name,
                         rank: 'Test Rank',
+                        notes: 'Setting rank by username and passing the rank title',
                     },
                     {
                         user: gamipress_admin_tools.user_email,
                         rank: 'test-rank',
+                        notes: 'Setting rank by email and passing the rank slug',
+                    },
+                    {
+                        user: gamipress_admin_tools.user_id,
+                        rank: '-1',
+                        notes: 'Adding a negative sign will revoke the rank to the user and will try to assign the previous one (following the priority order)',
                     },
                 ];
                 break;
@@ -473,6 +501,170 @@
             gamipress_download_csv( sample_data, 'gamipress-' + type + '-csv-template' );
         }
 
+    });
+
+    // ----------------------------------
+    // Export Setup Tool
+    // ----------------------------------
+
+    $('.cmb2-id-export-setup-options').on('change', 'input', function() {
+
+        $('#export-setup-warning').remove();
+
+        var checked_option = $(this).val();
+        var type = '';
+
+        if( checked_option === 'all-points-types' ) {
+
+            $('.cmb2-id-export-setup-options input[value$="-points-type"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value$="-points-awards"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value$="-points-deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option.endsWith( '-points-type' ) ) {
+
+            type = checked_option.replace( '-points-type', '' );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-points-awards"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-points-deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option === 'all-achievement-types' ) {
+
+            $('.cmb2-id-export-setup-options input[value$="-achievement-type"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value$="-achievements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value$="-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option.endsWith( '-achievement-type' ) ) {
+
+            type = checked_option.replace( '-achievement-type', '' );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-achievements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option.endsWith( '-achievements' ) ) {
+
+            type = checked_option.replace( '-achievements', '' );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option === 'all-rank-types' ) {
+
+            $('.cmb2-id-export-setup-options input[value$="-rank-type"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value$="-ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value$="-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option.endsWith( '-rank-type' ) ) {
+
+            type = checked_option.replace( '-rank-type', '' );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+
+        } else if( checked_option.endsWith( '-ranks' ) ) {
+
+            type = checked_option.replace( '-ranks', '' );
+            $('.cmb2-id-export-setup-options input[value="' + type + '-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+        }
+
+    });
+
+    $("#export_setup").click(function(e) {
+        e.preventDefault();
+
+        $('#export-setup-warning').remove();
+
+        var checked_options = $('.cmb2-id-export-setup-options input:checked');
+
+        if( checked_options.length === 0 ) {
+            $(this).parent().prepend('<p id="export-setup-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose at least one option to export.</p>');
+            return;
+        }
+
+        $('.export-setup-button').prop('disabled', true);
+
+        $('.export-setup-button').parent().parent().prepend('<span id="export-setup-response"><span class="spinner is-active" style="float: none;"></span></span>');
+
+        var items = [];
+
+        $('.cmb2-id-export-setup-options input:checked').each(function() {
+            items.push($(this).val());
+        });
+
+        $.post(
+            ajaxurl,
+            {
+                action: 'gamipress_export_setup_tool',
+                items: items
+            },
+            function( response ) {
+
+                if( response.success === false ) {
+                    $('#export-setup-response').css({color:'#a00'});
+                }
+
+                $('#export-setup-response').html( ( response.data.message !== undefined ? response.data.message : response.data ) );
+
+                if( response.success === true ) {
+
+                    gamipress_download_file( response.data.setup, 'setup-export', 'txt', 'text/plain' );
+
+                    setTimeout(function() {
+                        $('#export-setup-response').remove();
+                    }, 5000);
+                }
+
+                $('.export-setup-button').prop('disabled', false);
+            }
+        );
+
+    });
+
+    // ----------------------------------
+    // Import Setup Tool
+    // ----------------------------------
+
+    $('#import_setup').click(function(e) {
+        e.preventDefault();
+
+        $('#import-setup-warning').remove();
+
+        if( $('#import_setup_file')[0].files[0] === undefined ) {
+            $(this).parent().prepend('<p id="import-setup-warning" class="cmb2-metabox-description" style="color: #a00;">You need to choose a configuration file to import.</p>');
+            return false;
+        }
+
+        var $this = $(this);
+        var form_data = new FormData();
+        form_data.append( 'action', 'gamipress_import_setup_tool' );
+        form_data.append( 'file', $('#import_setup_file')[0].files[0] );
+
+        // Disable the button
+        $this.prop('disabled', true);
+
+        // Show the spinner
+        $this.parent().append('<span id="import-setup-response"><span class="spinner is-active" style="float: none;"></span></span>');
+
+        $.ajax({
+            url: ajaxurl,
+            method: 'post',
+            cache: false,
+            contentType: false,
+            processData: false,
+            data: form_data,
+            success: function(response) {
+
+                if( response.success === false ) {
+                    $('#import-setup-response').css({color:'#a00'});
+                }
+
+                $('#import-setup-response').html(response.data);
+
+                if( response.success === true ) {
+
+                    setTimeout(function() {
+                        $('#import-setup-response').remove();
+                    }, 5000);
+                }
+
+                $this.prop('disabled', false);
+
+            }
+        });
     });
 
     // ----------------------------------
@@ -519,13 +711,14 @@
 
                     setTimeout(function() {
                         $('#import-settings-response').remove();
-                    }, 2000);
+                    }, 5000);
                 }
 
                 $this.prop('disabled', false);
 
             }
         });
+
     });
 
     // ----------------------------------
@@ -581,7 +774,7 @@
 
                     setTimeout(function() {
                         $('#recount-activity-response').remove();
-                    }, 2000);
+                    }, 5000);
                 }
 
                 // Enable the button and the activity select

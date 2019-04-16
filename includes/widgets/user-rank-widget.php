@@ -11,10 +11,17 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 class GamiPress_User_Rank_Widget extends GamiPress_Widget {
 
+    /**
+     * Shortcode for this widget.
+     *
+     * @var string
+     */
+    protected $shortcode = 'gamipress_user_rank';
+
     public function __construct() {
 
         parent::__construct(
-            'gamipress_user_rank_widget',
+            $this->shortcode . '_widget',
             __( 'GamiPress: User Rank', 'gamipress' ),
             __( 'Display previous, current and/or next rank of an user.', 'gamipress' )
         );
@@ -23,7 +30,7 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
 
     public function get_tabs() {
 
-        $tabs = GamiPress()->shortcodes['gamipress_user_rank']->tabs;
+        $tabs = GamiPress()->shortcodes[$this->shortcode]->tabs;
 
         // Add the widget title field to the general tab
         $tabs['general']['fields'][] = 'title';
@@ -44,7 +51,7 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
     public function get_fields() {
 
         // Need to change field title to show_title to avoid problems with widget title field
-        $fields = GamiPress()->shortcodes['gamipress_user_rank']->fields;
+        $fields = GamiPress()->shortcodes[$this->shortcode]->fields;
 
         // Get the fields keys
         $keys = array_keys( $fields );
@@ -64,26 +71,13 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
 
     public function get_widget( $args, $instance ) {
 
-        echo gamipress_do_shortcode( 'gamipress_user_rank', array(
-            'type'          => $instance['type'],
-            'prev_rank'     => ( $instance['prev_rank'] === 'on' ? 'yes' : 'no' ),
-            'current_rank'  => ( $instance['current_rank'] === 'on' ? 'yes' : 'no' ),
-            'next_rank' 	=> ( $instance['next_rank'] === 'on' ? 'yes' : 'no' ),
-            'current_user'  => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
-            'user_id'       => $instance['user_id'],
-            'columns'       => $instance['columns'],
+        // Get back replaced fields
+        $instance['title'] = $instance['show_title'];
 
-            'title'         => ( $instance['show_title'] === 'on' ? 'yes' : 'no' ),
-            'link'          => ( $instance['link'] === 'on' ? 'yes' : 'no' ),
-            'thumbnail'     => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
-            'excerpt'       => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
-            'requirements'  => ( $instance['requirements'] === 'on' ? 'yes' : 'no' ),
-            'toggle'        => ( $instance['toggle'] === 'on' ? 'yes' : 'no' ),
-            'unlock_button' => ( $instance['unlock_button'] === 'on' ? 'yes' : 'no' ),
-            'earners'       => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
-            'earners_limit' => $instance['earners_limit'],
-            'layout'        => $instance['layout'],
-        ) );
+        // Build shortcode attributes from widget instance
+        $atts = gamipress_build_shortcode_atts( $this->shortcode, $instance );
+
+        echo gamipress_do_shortcode( $this->shortcode, $atts );
 
     }
 

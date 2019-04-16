@@ -19,6 +19,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/tools/reset-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-achievements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-points.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-ranks.php';
+require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-setup.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-settings.php';
 // System Info
 require_once GAMIPRESS_DIR . 'includes/admin/tools/system-info.php';
@@ -116,23 +117,27 @@ function gamipress_register_tools_page() {
 
     $minimum_role = gamipress_get_manager_capability();
 
-    // Create the options page
-    new Cmb2_Metatabs_Options( array(
-        'key'      => 'gamipress_tools',
-        'class'    => 'gamipress-page',
-        'title'    => __( 'Tools', 'gamipress' ),
-        'topmenu'  => 'gamipress',
-        'cols'     => 1,
-        'boxes'    => $boxes,
-        'tabs'     => $tabs,
-        'menuargs' => array(
-            'menu_title'        => __( 'Tools', 'gamipress' ),
-            'capability'        => $minimum_role,
-            'view_capability'   => $minimum_role,
-        ),
-        'savetxt' => false,
-        'resettxt' => false,
-    ) );
+    try {
+        // Create the options page
+        new Cmb2_Metatabs_Options( array(
+            'key'      => 'gamipress_tools',
+            'class'    => 'gamipress-page',
+            'title'    => __( 'Tools', 'gamipress' ),
+            'topmenu'  => 'gamipress',
+            'cols'     => 1,
+            'boxes'    => $boxes,
+            'tabs'     => $tabs,
+            'menuargs' => array(
+                'menu_title'        => __( 'Tools', 'gamipress' ),
+                'capability'        => $minimum_role,
+                'view_capability'   => $minimum_role,
+            ),
+            'savetxt' => false,
+            'resettxt' => false,
+        ) );
+    } catch ( Exception $e ) {
+
+    }
 
 }
 add_action( 'cmb2_admin_init', 'gamipress_register_tools_page', 11 );

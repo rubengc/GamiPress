@@ -1240,6 +1240,21 @@ label[for="_gamipress_sequential"] {
     font-weight: 600 !important;
 }
 
+.gamipress-page .postbox .hndle .dashicons {
+	height: 18px;
+	line-height: 18px;
+	margin-right: 5px;
+}
+
+.gamipress-page .cmb-tabs-wrap .cmb-tabs .cmb-tab .cmb-tab-icon {
+	margin-right: 2px;
+	opacity: 0.4;
+}
+
+.gamipress-page .cmb-tabs-wrap .cmb-tabs .cmb-tab.active .cmb-tab-icon {
+	opacity: 0.8;
+}
+
 @media screen and (max-width: 782px) {
 	.gamipress-page .cmb-th {
 		width: 100%;
@@ -1631,6 +1646,7 @@ label[for="_gamipress_sequential"] {
 	min-width: 150px;
 }
 
+/* Reset data options */
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(2),
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(5),
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(6),
@@ -1644,6 +1660,59 @@ label[for="_gamipress_sequential"] {
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(3),
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(9) {
 	margin-left: 40px;
+}
+
+/* Export setup options */
+.cmb2-id-export-setup-options input[value="all-points-types"] + label,
+.cmb2-id-export-setup-options input[value="all-achievement-types"] + label,
+.cmb2-id-export-setup-options input[value="all-rank-types"] + label {
+	font-weight: bold;
+}
+
+
+.cmb2-id-export-setup-options input[value$="-points-type"] + label,
+.cmb2-id-export-setup-options input[value$="-achievement-type"] + label,
+.cmb2-id-export-setup-options input[value$="-rank-type"] + label {
+	margin-left: 72px;
+}
+
+.cmb2-id-export-setup-options input[value$="-points-type"] + label:before,
+.cmb2-id-export-setup-options input[value$="-points-type"] + label:after,
+.cmb2-id-export-setup-options input[value$="-achievement-type"] + label:before,
+.cmb2-id-export-setup-options input[value$="-achievement-type"] + label:after,
+.cmb2-id-export-setup-options input[value$="-rank-type"] + label:before,
+.cmb2-id-export-setup-options input[value$="-rank-type"] + label:after {
+	left: 20px !important;
+}
+
+.cmb2-id-export-setup-options input[value$="-points-awards"] + label,
+.cmb2-id-export-setup-options input[value$="-points-deducts"] + label,
+.cmb2-id-export-setup-options input[value$="-achievements"] + label,
+.cmb2-id-export-setup-options input[value$="-ranks"] + label {
+	margin-left: 92px;
+}
+
+.cmb2-id-export-setup-options input[value$="-points-awards"] + label:before,
+.cmb2-id-export-setup-options input[value$="-points-awards"] + label:after,
+.cmb2-id-export-setup-options input[value$="-points-deducts"] + label:before,
+.cmb2-id-export-setup-options input[value$="-points-deducts"] + label:after,
+.cmb2-id-export-setup-options input[value$="-achievements"] + label:before,
+.cmb2-id-export-setup-options input[value$="-achievements"] + label:after,
+.cmb2-id-export-setup-options input[value$="-ranks"] + label:before,
+.cmb2-id-export-setup-options input[value$="-ranks"] + label:after {
+	left: 40px !important;
+}
+
+.cmb2-id-export-setup-options input[value$="-steps"] + label,
+.cmb2-id-export-setup-options input[value$="-rank-requirements"] + label {
+	margin-left: 112px;
+}
+
+.cmb2-id-export-setup-options input[value$="-steps"] + label:before,
+.cmb2-id-export-setup-options input[value$="-steps"] + label:after,
+.cmb2-id-export-setup-options input[value$="-rank-requirements"] + label:before,
+.cmb2-id-export-setup-options input[value$="-rank-requirements"] + label:after {
+	left: 60px !important;
 }
 
 #download-system-info {

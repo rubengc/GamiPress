@@ -24,13 +24,17 @@
             if( $(el).closest('.cmb-row').hasClass('cmb-repeat-row') ) {
                 // Repeatable
 
-                var field_name = el.name.split('[')[0];
                 key = el.name.replace( shortcode + '_', '').replace('[]', '');
 
                 key = key.split('[')[0];
 
+                // Skip empty shortcode keys
+                if( key === '' ) return true;
+
                 // Just continue if element has not set
                 if( attrs[key] === undefined ) {
+
+                    var field_name = el.name.split('[')[0];
 
                    // Look at all fields
                     var fields = $(el).closest('.cmb-tbody').find('[name^="' + field_name + '"]');
@@ -52,6 +56,12 @@
             } else {
                 // Single
 
+                // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
+                key = el.name.replace( shortcode + '_', '').replace('[]', '');
+
+                // Skip empty shortcode keys
+                if( key === '' ) return true;
+
                 // Select2 values are only accessible through jQuery val()
                 value = $(el).val();
 
@@ -71,9 +81,6 @@
                 }
 
                 if (value !== '' && value !== undefined && value !== null ) {
-
-                    // CMB2 adds a prefix on each field, so we need to remove it, also, wee need to remove array brace for multiple fields
-                    key = el.name.replace( shortcode + '_', '').replace('[]', '');
 
                     attrs[key] = value;
                 }
@@ -262,7 +269,7 @@
     $( '#gamipress_earnings_points, #gamipress_earnings_achievements, #gamipress_earnings_ranks' ).change(function() {
 
         var id = $(this).attr('id');
-        var target = undefined;
+        var target;
 
         if( id === 'gamipress_earnings_points' ) {
             target = $('.cmb2-id-gamipress-earnings-points-types, .cmb2-id-gamipress-earnings-awards, .cmb2-id-gamipress-earnings-deducts');

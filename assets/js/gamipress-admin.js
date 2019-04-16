@@ -426,9 +426,7 @@
 		var $this = $(this);
 
 		// Bail if already running an ajax request
-		if( $this.hasClass('disabled') ) {
-			return;
-		}
+		if( $this.hasClass('disabled') ) return;
 
 		var sibling_selector = ( $this.hasClass('gamipress-award-achievement') ? '.gamipress-revoke-achievement' : '.gamipress-award-achievement' );
 
@@ -444,8 +442,14 @@
         // Make the request
 		$.get( $this.attr('href'), function( response ) {
 
-            // Update this awards table (so do not neet to remove the loader and enable the links again)
-            $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
+			var $response = $(response);
+
+            // Update this awards table (don't need to remove the loader and enable the links again since the whole content gets replaced)
+            $this.closest('.gamipress-table').html( $response.find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
+
+            // Update user ranks and points
+            $('.profile-ranks').html( $response.find('.profile-ranks').html() );
+            $('.profile-points').html( $response.find('.profile-points').html() );
 
             // Force user earnings table to refresh
             gamipress_refresh_user_earnings_table();
@@ -460,9 +464,7 @@
         var $this = $(this);
 
         // Bail if already running an ajax request
-        if( $this.hasClass('disabled') ) {
-            return;
-        }
+        if( $this.hasClass('disabled') ) return;
 
         // Add a custom class to avoid multiples clicks
         $this.addClass('disabled');
@@ -473,17 +475,25 @@
         // Make the request
         $.get( $this.attr('href'), function( response ) {
 
-			// If currently on user earnings view, refresh current page and return
+			// If currently on user earnings screen, refresh current page and return
 			if( $('body').hasClass('gamipress_page_gamipress_user_earnings') ) {
+
+				// Remove the loader
+				$this.next('.spinner').remove();
+
+				// Remove class disabled and add a confirmation text
+				$this.removeClass('disabled').text('Revoked successfully!');
+
+				// Refresh current screen
 				location.reload();
+
+				// Bail to not refresh component that aren't on user earnings screen
 				return;
 			}
 
-            // Update this awards table (so do not neet to remove the loader and enable the links again)
-            $this.closest('.gamipress-table').html( $(response).find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
+			// Force user earnings table to refresh
+			gamipress_refresh_user_earnings_table();
 
-            // Force user earnings table to refresh
-            gamipress_refresh_user_earnings_table();
         } );
 
     });
@@ -606,7 +616,7 @@ function gamipress_start_upgrade( version ) {
 
 }
 
-// refresh the user earnings table (located in profile screen)
+// Refresh the user earnings table (located in user profile screen)
 function gamipress_refresh_user_earnings_table() {
 
 	var $ = $ || jQuery;

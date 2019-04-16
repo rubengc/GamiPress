@@ -30,7 +30,7 @@ function gamipress_bulk_revokes_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['bulk-revokes'] = array(
-        'title' => __( 'Bulk Revokes', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-no-alt"></i>' . __( 'Bulk Revokes', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_bulk_revokes_tool_fields', array(
 
             // Points

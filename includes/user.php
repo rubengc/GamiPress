@@ -90,12 +90,20 @@ function gamipress_get_user_achievements( $args = array() ) {
 
 		$achievements[$key] = $achievement;
 
+        // If achievements earned will be displayed, then need to pass some filters
 		if( isset( $args['display'] ) && $args['display'] ) {
 
+		    // Unset not existent achievements
+		    if( ! gamipress_post_exists( $achievement->post_id ) )
+                unset( $achievements[$key] );
+
+		    // Unset not published achievements
+            if( gamipress_get_post_field( 'post_status', $achievement->post_id ) !== 'publish' )
+                unset( $achievements[$key] );
+
 			// Unset hidden achievements on display context
-			if( gamipress_is_achievement_hidden( $achievement->post_id ) ) {
+			if( gamipress_is_achievement_hidden( $achievement->post_id ) )
 				unset( $achievements[$key] );
-			}
 		}
 
 	}

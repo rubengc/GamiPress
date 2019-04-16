@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_settings_email_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['email-settings'] = array(
-        'title' => __( 'Emails Settings', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-email-alt"></i>' . __( 'Emails Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_email_settings_fields', array(
             'email_template' => array(
                 'name' => __( 'Template', 'gamipress' ),
@@ -56,7 +56,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
     );
 
     $meta_boxes['email-templates'] = array(
-        'title' => __( 'Emails Templates', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-editor-table"></i>' . __( 'Emails Templates', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_email_templates_fields', array(
 
             // Achievement Earned

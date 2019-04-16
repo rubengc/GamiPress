@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_points_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-points'] = array(
-        'title' => __( 'Import/Export Points', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-star-filled"></i>' . __( 'User Points', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_points_tool_fields', array(
 
             // Export
@@ -271,6 +271,7 @@ function gamipress_import_export_points_tool_ajax_import() {
             $points = 0;
             $points_type = '';
             $log_description = '';
+            $deduct = false;
 
             // User
             if( isset( $columns[0] ) && ! empty( $columns[0] ) ) {
@@ -289,6 +290,12 @@ function gamipress_import_export_points_tool_ajax_import() {
 
             // Points
             if( isset( $columns[1] ) && is_numeric( $columns[1] ) ) {
+
+                // If points amount has a negative sign, then user is looking for deduct
+                if ( substr( $columns[1], 0, 1 ) === '-') {
+                    $deduct = true;
+                    $columns[1] = substr( $columns[1], 1); // Remove the negative sign
+                }
 
                 $points = absint( $columns[1] );
 
@@ -325,8 +332,13 @@ function gamipress_import_export_points_tool_ajax_import() {
                     $args = array( 'admin_id'  => get_current_user_id() );
                 }
 
-                // Award the points to the user
-                gamipress_award_points_to_user( $user->ID, $points + $current_points, $points_type, $args );
+                if( $deduct ) {
+                    // Deduct points to the user
+                    gamipress_deduct_points_to_user( $user->ID, $current_points - $points, $points_type, $args );
+                } else {
+                    // Award points to the user
+                    gamipress_award_points_to_user( $user->ID, $points + $current_points, $points_type, $args );
+                }
 
             }
 

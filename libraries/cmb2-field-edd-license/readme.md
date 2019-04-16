@@ -80,6 +80,10 @@ In Addition, you can use the function `cmb2_edd_license_status( $license_key )` 
 
 ## Changelog
 
+### 1.0.5
+
+* Updated EDD SL Plugin Updater class to version 1.6.18.
+
 ### 1.0.4
 
 * Prevent to store hidden license value when license is valid.

@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_reset_data_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['reset-data'] = array(
-        'title' => __( 'Reset Data', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-trash"></i>' . __( 'Reset Data', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_reset_data_tool_fields', array(
             'data_to_reset' => array(
                 'desc' => __( 'Choose the stored data you want to reset.', 'gamipress' ),

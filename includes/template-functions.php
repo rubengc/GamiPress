@@ -110,9 +110,9 @@ function gamipress_render_rank( $rank = 0, $template_args = array() ) {
 /**
  * Retrieves a template part
  *
- * @since 1.0.0
- *
  * Taken from Easy Digital Downloads
+ *
+ * @since 1.0.0
  *
  * @param string $slug
  * @param string $name Optional. Default null

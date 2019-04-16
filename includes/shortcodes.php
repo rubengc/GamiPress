@@ -241,3 +241,46 @@ function gamipress_shortcode_error( $error_message, $shortcode ) {
     }
 
 }
+
+/**
+ * Helper function to build an array of shortcode attributes from the values given
+ *
+ * @since 	1.7.0
+ *
+ * @param string    $shortcode
+ * @param array     $values
+ *
+ * @return array
+ */
+function gamipress_build_shortcode_atts( $shortcode, $values ) {
+
+    $atts = array();
+
+    // Bail if shortcode is not registered
+    if( ! isset( GamiPress()->shortcodes[$shortcode] ) ) return $atts;
+
+    // Loop all shortcode fields to pass their value
+    foreach( GamiPress()->shortcodes[$shortcode]->fields as $field_id => $field ) {
+
+        // If attribute exists on array of values given then process it
+        if( isset( $values[$field_id] ) ) {
+            $value = $values[$field_id];
+
+            // If is a checkbox field, then turn value into yes or no
+            if( $field['type'] === 'checkbox' ) {
+                $value = ( $values[$field_id] === 'on' ? 'yes' : 'no' );
+            }
+
+            // If value is an array, setup a comma separated list of it's values
+            if( is_array( $value ) ) {
+                $value = implode( ',', $value );
+            }
+
+            $atts[$field_id] = $value;
+        }
+    }
+
+    return $atts;
+
+
+}

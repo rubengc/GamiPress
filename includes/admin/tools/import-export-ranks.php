@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_ranks_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-ranks'] = array(
-        'title' => __( 'Import/Export Ranks', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-rank"></i>' . __( 'User Ranks', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_ranks_tool_fields', array(
 
             // Export
@@ -329,6 +329,14 @@ function gamipress_import_export_ranks_tool_ajax_import() {
             // Check if everything is done
             if( $user && ! empty( $rank ) ) {
 
+                $revoke = false;
+
+                // If rank has a negative sign, then user is looking to revoke
+                if ( substr( $rank, 0, 1 ) === '-') {
+                    $revoke = true;
+                    $rank = substr( $rank, 1); // Remove the negative sign
+                }
+
                 if( is_numeric( $rank ) ) {
 
                     // Search by ID
@@ -355,8 +363,16 @@ function gamipress_import_export_ranks_tool_ajax_import() {
 
                 // Check if post object is a rank
                 if( $rank_post && gamipress_is_rank( $rank_post ) ) {
-                    // Award the rank to the user
-                    gamipress_award_rank_to_user( $rank_post->ID, $user->ID, array( 'admin_id' => get_current_user_id() ) );
+
+                    if( $revoke ) {
+                        $new_rank_id = gamipress_get_prev_user_rank_id( $user->ID, $rank_post->post_type );
+
+                        // Revoke the rank to the user
+                        gamipress_revoke_rank_to_user( $user->ID, $rank_post->ID, $new_rank_id, array( 'admin_id' => get_current_user_id() ) );
+                    } else {
+                        // Award the rank to the user
+                        gamipress_award_rank_to_user( $rank_post->ID, $user->ID, array( 'admin_id' => get_current_user_id() ) );
+                    }
                 }
 
             }
@@ -366,6 +382,6 @@ function gamipress_import_export_ranks_tool_ajax_import() {
     }
 
     // Return a success message
-    wp_send_json_success( __( 'Achievements has been awarded successfully to all users.', 'gamipress' ) );
+    wp_send_json_success( __( 'Ranks has been awarded successfully to all users.', 'gamipress' ) );
 }
 add_action( 'wp_ajax_gamipress_import_export_ranks_tool_import', 'gamipress_import_export_ranks_tool_ajax_import' );

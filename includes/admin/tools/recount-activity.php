@@ -37,7 +37,7 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
     );
 
     $meta_boxes['recount-activity'] = array(
-        'title' => __( 'Recount Activity', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-backup"></i>' . __( 'Recount Activity', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_recount_activity_tool_fields', array(
             'recount_activity_desc' => array(
                 'content' => __( 'This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and deducts and achievements will be awarded or deducted too.', 'gamipress' )

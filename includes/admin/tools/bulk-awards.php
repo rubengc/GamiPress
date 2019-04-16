@@ -30,7 +30,7 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['bulk-awards'] = array(
-        'title' => __( 'Bulk Awards', 'gamipress' ),
+        'title' => '<i class="dashicons dashicons-yes"></i>' . __( 'Bulk Awards', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_bulk_awards_tool_fields', array(
 
             // Points

@@ -188,23 +188,27 @@ function gamipress_register_licenses_page() {
         }
     }
 
-    // Create the options page
-    new Cmb2_Metatabs_Options( array(
-        'key'      => 'gamipress_settings',
-        'class'    => 'gamipress-page',
-        'title'    => __( 'Licenses', 'gamipress' ),
-        'topmenu'  => 'gamipress',
-        'view_capability' => gamipress_get_manager_capability(),
-        'cols'     => 1,
-        'boxes'    => $boxes,
-        //'tabs'     => $tabs,
-        'menuargs' => array(
-            'menu_title' => __( 'Licenses', 'gamipress' ),
-            'menu_slug'  => 'gamipress_licenses',
-        ),
-        'savetxt' => __( 'Save Changes', 'gamipress' ),
-        'resettxt' => false,
-    ) );
+    try {
+        // Create the options page
+        new Cmb2_Metatabs_Options( array(
+            'key'      => 'gamipress_settings',
+            'class'    => 'gamipress-page',
+            'title'    => __( 'Licenses', 'gamipress' ),
+            'topmenu'  => 'gamipress',
+            'view_capability' => gamipress_get_manager_capability(),
+            'cols'     => 1,
+            'boxes'    => $boxes,
+            //'tabs'     => $tabs,
+            'menuargs' => array(
+                'menu_title' => __( 'Licenses', 'gamipress' ),
+                'menu_slug'  => 'gamipress_licenses',
+            ),
+            'savetxt' => __( 'Save Changes', 'gamipress' ),
+            'resettxt' => false,
+        ) );
+    } catch ( Exception $e ) {
+
+    }
 
 }
 add_action( 'cmb2_admin_init', 'gamipress_register_licenses_page' );

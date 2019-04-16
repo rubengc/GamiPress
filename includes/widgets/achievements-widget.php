@@ -11,10 +11,17 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 class GamiPress_Achievements_Widget extends GamiPress_Widget {
 
+    /**
+     * Shortcode for this widget.
+     *
+     * @var string
+     */
+    protected $shortcode = 'gamipress_achievements';
+
     public function __construct() {
 
         parent::__construct(
-            'gamipress_achievements_widget',
+            $this->shortcode . '_widget',
             __( 'GamiPress: Achievements', 'gamipress' ),
             __( 'Display a list of achievements.', 'gamipress' )
         );
@@ -23,7 +30,7 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
 
     public function get_tabs() {
 
-        $tabs = GamiPress()->shortcodes['gamipress_achievements']->tabs;
+        $tabs = GamiPress()->shortcodes[$this->shortcode]->tabs;
 
         // Add the widget title field to the general tab
         $tabs['general']['fields'][] = 'title';
@@ -44,7 +51,7 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
     public function get_fields() {
 
         // Need to change field title to show_title to avoid problems with widget title field
-        $fields = GamiPress()->shortcodes['gamipress_achievements']->fields;
+        $fields = GamiPress()->shortcodes[$this->shortcode]->fields;
 
         // Get the fields keys
         $keys = array_keys( $fields );
@@ -64,36 +71,13 @@ class GamiPress_Achievements_Widget extends GamiPress_Widget {
 
     public function get_widget( $args, $instance ) {
 
-        echo gamipress_do_shortcode( 'gamipress_achievements', array(
-            'type'              => is_array( $instance['type'] ) ? implode( ',', $instance['type'] ) : $instance['type'],
-            'columns'           => $instance['columns'],
-            'filter'            => ( $instance['filter'] === 'on' ? 'yes' : 'no' ),
-            'filter_value'      => $instance['filter_value'],
-            'search'            => ( $instance['search'] === 'on' ? 'yes' : 'no' ),
-            'search_value'      => $instance['search_value'],
-            'load_more'         => ( $instance['load_more'] === 'on' ? 'yes' : 'no' ),
-            'limit'             => $instance['limit'],
-            'orderby'           => $instance['orderby'],
-            'order'             => $instance['order'],
-            'current_user'      => ( $instance['current_user'] === 'on' ? 'yes' : 'no' ),
-            'user_id'           => $instance['user_id'],
-            'include'           => is_array( $instance['include'] ) ? implode( ',', $instance['include'] ) : $instance['include'],
-            'exclude'           => is_array( $instance['exclude'] ) ? implode( ',', $instance['exclude'] ) : $instance['exclude'],
-            'wpms'              => ( isset( $instance['wpms'] ) && $instance['wpms'] === 'on' ? 'yes' : 'no' ),
+        // Get back replaced fields
+        $instance['title'] = $instance['show_title'];
 
-            'title'             => ( $instance['show_title'] === 'on' ? 'yes' : 'no' ),
-            'link'              => ( $instance['link'] === 'on' ? 'yes' : 'no' ),
-            'thumbnail'         => ( $instance['thumbnail'] === 'on' ? 'yes' : 'no' ),
-            'times_earned'      => ( $instance['times_earned'] === 'on' ? 'yes' : 'no' ),
-            'points_awarded'    => ( $instance['points_awarded'] === 'on' ? 'yes' : 'no' ),
-            'excerpt'           => ( $instance['excerpt'] === 'on' ? 'yes' : 'no' ),
-            'steps'             => ( $instance['steps'] === 'on' ? 'yes' : 'no' ),
-            'toggle'            => ( $instance['toggle'] === 'on' ? 'yes' : 'no' ),
-            'unlock_button'     => ( $instance['unlock_button'] === 'on' ? 'yes' : 'no' ),
-            'earners'           => ( $instance['earners'] === 'on' ? 'yes' : 'no' ),
-            'earners_limit'     => $instance['earners_limit'],
-            'layout'            => $instance['layout'],
-        ) );
+        // Build shortcode attributes from widget instance
+        $atts = gamipress_build_shortcode_atts( $this->shortcode, $instance );
+
+        echo gamipress_do_shortcode( $this->shortcode, $atts );
 
     }
 
