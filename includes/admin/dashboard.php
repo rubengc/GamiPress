@@ -47,7 +47,7 @@ function gamipress_dashboard_widget() {
 
     <h3>
         <a href="<?php echo admin_url( 'edit.php?post_type=achievement-type' ); ?>" id="achievement-types">
-            <i class="dashicons dashicons-awards"></i>
+            <?php echo gamipress_dashicon( 'awards' ); ?>
             <?php printf( _n( '%d Achievement Type', '%d Achievement Types', count( $achievement_types ) ), count( $achievement_types ) ); ?>
         </a>
     </h3>
@@ -67,7 +67,7 @@ function gamipress_dashboard_widget() {
 
     <h3>
         <a href="<?php echo admin_url( 'edit.php?post_type=points-type' ); ?>" id="points-types">
-            <i class="dashicons dashicons-star-filled"></i>
+            <?php echo gamipress_dashicon( 'star-filled' ); ?>
             <?php printf( _n( '%d Points Type', '%d Points Types', count( $points_types ) ), count( $points_types ) ); ?>
         </a>
     </h3>
@@ -86,7 +86,7 @@ function gamipress_dashboard_widget() {
 
     <h3>
         <a href="<?php echo admin_url( 'edit.php?post_type=rank-type' ); ?>" id="achievement-types">
-            <i class="dashicons dashicons-rank"></i>
+            <?php echo gamipress_dashicon( 'rank' ); ?>
             <?php printf( _n( '%d Rank Type', '%d Rank Types', count( $rank_types ) ), count( $rank_types ) ); ?>
         </a>
     </h3>

@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_achievements_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-achievements'] = array(
-        'title' => '<i class="dashicons dashicons-awards"></i>' . __( 'User Achievements', 'gamipress' ),
+        'title' => gamipress_dashicon( 'awards' ) . __( 'User Achievements', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_achievements_tool_fields', array(
 
             // Export

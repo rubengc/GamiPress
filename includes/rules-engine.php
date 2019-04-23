@@ -670,6 +670,9 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 		// Just continue if trigger is set
 		if( isset( $trigger ) ) {
 
+            // Get activity count from last time earned
+            $since = gamipress_achievement_last_user_activity( $achievement_id, $user_id );
+
 			if( $since === 0 ) {
 
 				if( gamipress_get_post_type( $achievement_id ) === 'rank-requirement' ) {
@@ -678,8 +681,8 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 
 					$since = gamipress_get_rank_earned_time( $user_id, $rank->post_type );
 				} else {
-					// If since is not defined, then get activity count since achievement publish date
-					$since = strtotime( gamipress_get_post_date( $achievement_id ) );
+                    // If user hasn't earned this yet, then get activity count from publish date
+                    $since = strtotime( gamipress_get_post_date( $achievement_id ) );
 				}
 
 			}

@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_settings_network_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['network-settings'] = array(
-        'title' => __( 'Network Settings', 'gamipress' ),
+        'title' => gamipress_dashicon( 'admin-multisite' ) . __( 'Network Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_network_settings_fields', array(
             'ms_show_all_achievements' => array(
                 'name' => __( 'Show achievements earned across all sites on the network', 'gamipress' ),

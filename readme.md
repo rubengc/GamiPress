@@ -273,6 +273,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.1 ###
+
+* **Bug Fixes**
+* Fixed required times check on steps that achievement can be earned multiples times.
+* Fixed requirements connected to column (just visible if debug mode is enabled).
+* **Developer Notes**
+* Added new helper functions.
+* Moved functions on new files to improve project organization.
+
 ### 1.7.0 ###
 
 * **New Features**

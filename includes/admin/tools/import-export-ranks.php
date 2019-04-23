@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_ranks_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-ranks'] = array(
-        'title' => '<i class="dashicons dashicons-rank"></i>' . __( 'User Ranks', 'gamipress' ),
+        'title' => gamipress_dashicon( 'rank' ) . __( 'User Ranks', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_ranks_tool_fields', array(
 
             // Export

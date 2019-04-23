@@ -28,7 +28,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     //--------------------------
 
     $meta_boxes['server-info'] = array(
-        'title' => '<i class="dashicons dashicons-cloud"></i>' . __( 'Server Info', 'gamipress' ),
+        'title' => gamipress_dashicon( 'cloud' ) . __( 'Server Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_server_info_tool_fields', array(
             'hosting_provider' => array(
@@ -128,7 +128,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['wordpress-info'] = array(
-        'title' => '<i class="dashicons dashicons-wordpress"></i>' . __( 'WordPress Info', 'gamipress' ),
+        'title' => gamipress_dashicon( 'wordpress' ) . __( 'WordPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_wordpress_info_tool_fields', array(
             'site_url' => array(
@@ -277,7 +277,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['gamipress-info'] = array(
-        'title' => '<i class="dashicons dashicons-gamipress"></i>' . __( 'GamiPress Info', 'gamipress' ),
+        'title' => gamipress_dashicon( 'gamipress' ) . __( 'GamiPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_gamipress_info_tool_fields', array(
             'points_types' => array(

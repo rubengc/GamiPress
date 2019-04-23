@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_settings_general_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['general-settings'] = array(
-        'title' => '<i class="dashicons dashicons-admin-generic"></i>' . __( 'General Settings', 'gamipress' ),
+        'title' => gamipress_dashicon( 'admin-generic' ) . __( 'General Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_general_settings_fields', array(
             'minimum_role' => array(
                 'name' => __( 'Minimum role to administer GamiPress', 'gamipress' ),
@@ -80,7 +80,7 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
     $automatic_updates_plugins = apply_filters( 'gamipress_automatic_updates_plugins', $automatic_updates_plugins );
 
     $meta_boxes['automatic-updates-settings'] = array(
-        'title' => '<i class="dashicons dashicons-update"></i>' . __( 'Automatic Updates', 'gamipress' ),
+        'title' => gamipress_dashicon( 'update' ) . __( 'Automatic Updates', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_general_settings_fields', array(
             'automatic_updates' => array(
                 'name' => __( 'Automatic Updates', 'gamipress' ),

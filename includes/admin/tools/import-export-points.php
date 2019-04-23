@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_points_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-points'] = array(
-        'title' => '<i class="dashicons dashicons-star-filled"></i>' . __( 'User Points', 'gamipress' ),
+        'title' => gamipress_dashicon( 'star-filled' ) . __( 'User Points', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_points_tool_fields', array(
 
             // Export

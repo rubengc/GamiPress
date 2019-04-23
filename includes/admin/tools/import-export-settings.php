@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_import_export_settings_tool_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['import-export-settings'] = array(
-        'title' => '<i class="dashicons dashicons-admin-settings"></i>' . __( 'Settings', 'gamipress' ),
+        'title' => gamipress_dashicon( 'admin-settings' ) . __( 'Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_settings_tool_fields', array(
             'export_settings' => array(
                 'label'     => __( 'Export Settings', 'gamipress' ),

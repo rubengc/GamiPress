@@ -9,6 +9,21 @@
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
+// Functions includes
+require_once GAMIPRESS_DIR . 'includes/functions/achievement-types.php';
+require_once GAMIPRESS_DIR . 'includes/functions/points-types.php';
+require_once GAMIPRESS_DIR . 'includes/functions/rank-types.php';
+require_once GAMIPRESS_DIR . 'includes/functions/achievements.php';
+require_once GAMIPRESS_DIR . 'includes/functions/points.php';
+require_once GAMIPRESS_DIR . 'includes/functions/ranks.php';
+require_once GAMIPRESS_DIR . 'includes/functions/requirements.php';
+require_once GAMIPRESS_DIR . 'includes/functions/logs.php';
+require_once GAMIPRESS_DIR . 'includes/functions/user-earnings.php';
+require_once GAMIPRESS_DIR . 'includes/functions/attachments.php';
+require_once GAMIPRESS_DIR . 'includes/functions/date.php';
+require_once GAMIPRESS_DIR . 'includes/functions/html.php';
+require_once GAMIPRESS_DIR . 'includes/functions/helpers.php';
+
 /**
  * Helper function to get an option value.
  *
@@ -515,20 +530,6 @@ function gamipress_do_shortcode( $shortcode, $args, $content = '' ) {
 }
 
 /**
- * Utility to check whether function is disabled.
- *
- * @since 1.3.7
- *
- * @param string $function  Name of the function.
- * @return bool             Whether or not function is disabled.
- */
-function gamipress_is_function_disabled( $function ) {
-    $disabled = explode( ',',  ini_get( 'disable_functions' ) );
-
-    return in_array( $function, $disabled );
-}
-
-/**
  * Sanitize given slug.
  *
  * @since 1.3.9.8
@@ -549,31 +550,6 @@ function gamipress_sanitize_slug( $slug ) {
 
     return $slug;
 
-}
-
-/**
- * Helper function to recursively check if something is in a multidimensional array
- *
- * @since 1.4.1
- *
- * @param mixed $needle
- * @param array $haystack
- * @param bool  $strict
- *
- * @return bool
- */
-function gamipress_in_array( $needle, $haystack, $strict = false ) {
-
-    foreach( $haystack as $item ) {
-        if (
-            ( $strict ? $item === $needle : $item == $needle )
-            || ( is_array( $item ) && gamipress_in_array( $needle, $item, $strict ) )
-        ) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 /**
@@ -618,39 +594,6 @@ function gamipress_get_user_meta_sum( $meta_key ) {
 }
 
 /**
- * Turn an array into a HTML list of hidden inputs
- *
- * @since 1.6.5
- *
- * @param array $array      Array of elements to render
- * @param array $excluded   Optional, elements excluded for being rendered
- *
- * @return string
- */
-function gamipress_array_as_hidden_inputs( $array, $excluded = array() ) {
-
-    $html = '';
-
-    foreach( $array as $key => $value ) {
-
-        // Skip excluded keys
-        if( in_array( $key, $excluded ) ) {
-            continue;
-        }
-
-        // Sanitize value
-        $value = is_array( $value ) ? implode(',', $value ) : $value;
-
-
-        $html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
-
-    }
-
-    return $html;
-
-}
-
-/**
  * Gets registered time periods
  *
  * @since 1.6.9
@@ -683,332 +626,3 @@ function gamipress_get_time_periods() {
 
 }
 
-/**
- * Get a specific period date range
- *
- * @see gamipress_get_time_periods()
- *
- * @since 1.6.9
- *
- * @param string $period
- *
- * @return array
- */
-function gamipress_get_period_range( $period = '' ) {
-
-    // Setup date range var
-    $date_range = array(
-        'start' => '',
-        'end'   => '',
-    );
-
-    if( $period !== '' ) {
-
-        switch( $period ) {
-            case 'today':
-                $date_range = array(
-                    'start' => date( 'Y-m-d' ),
-                    'end' => '',
-                );
-                break;
-            case 'yesterday':
-                $date_range = array(
-                    'start' => date( 'Y-m-d', strtotime( '-1 day' ) ),
-                    'end' => '',
-                );
-                break;
-            case 'this-week':
-                $date_range = gamipress_get_date_range( 'week' );
-                break;
-            case 'past-week':
-                $previous_week = strtotime( '-1 week +1 day' );
-                $date_range = gamipress_get_date_range( 'week', $previous_week );
-                break;
-            case 'this-month':
-                $date_range = gamipress_get_date_range( 'month' );
-                break;
-            case 'past-month':
-                $previous_month = strtotime( '-1 month +1 day' );
-                $date_range = gamipress_get_date_range( 'month', $previous_month );
-                break;
-            case 'this-year':
-                $date_range = gamipress_get_date_range( 'year' );
-                break;
-            case 'past-year':
-                $previous_year = strtotime( '-1 year +1 day' );
-                $date_range = gamipress_get_date_range( 'year', $previous_year );
-                break;
-            default:
-                // For custom ranges use 'gamipress_get_period_range' filter
-                break;
-        }
-    }
-
-    /**
-     * Filter the period date range
-     *
-     * @since 1.6.9
-     *
-     * @param array     $date_range An array with period date range
-     * @param string    $period     Given period, see gamipress_get_time_periods()
-     */
-    return $date_range = apply_filters( 'gamipress_get_period_range', $date_range, $period );
-}
-
-/**
- * Helper function to get a range date based on a given date
- *
- * @since 1.6.9
- *
- * @param string            $range (week|month|year)
- * @param integer|string    $date
- *
- * @return array
- */
-function gamipress_get_date_range( $range = '', $date = 0 ) {
-
-    if( gettype( $date ) === 'string' ) {
-        $date = strtotime( $date );
-    }
-
-    if( ! $date ) {
-        $date = current_time( 'timestamp' );
-    }
-
-    $start_date = 0;
-    $end_date = 0;
-
-    switch( $range ) {
-        case 'week':
-
-            // Weekly range
-            $start_date    = strtotime( 'last monday', $date );
-            $end_date      = strtotime( 'midnight', strtotime( 'next sunday', $date ) );
-
-            break;
-        case 'month':
-
-            // Monthly range
-            $start_date    = strtotime( date( 'Y-m-01', $date ) );
-            $end_date      = strtotime( 'midnight', strtotime( 'last day of this month', $date ) );
-
-            break;
-        case 'year':
-
-            // Yearly range
-            $start_date    = strtotime( date( 'Y-01-01', $date ) );
-            $end_date      = strtotime( date( 'Y-12-31', $date ) );
-
-            break;
-    }
-
-    return array(
-        'start'    => date( 'Y-m-d', $start_date ),
-        'end'      => date( 'Y-m-d', $end_date )
-    );
-
-}
-
-/**
- * Helper function to format a given date or timestamp
- *
- * @since 1.6.9
- *
- * @param string    $format Date format
- * @param mixed     $date
- *
- * @return string|false
- */
-function gamipress_date( $format, $date = '' ) {
-
-    $date_formatted = false;
-
-    if( strtotime( $date ) ) {
-        // Ensure date given is correct
-        $date_formatted = date( $format, strtotime( $date ) );
-    } else if( absint( $date ) > 0 ) {
-        // Support for timestamp value
-        $date_formatted = date( $format, absint( $date ) );
-    }
-
-    return $date_formatted;
-
-}
-
-/**
- * Helper function to check if a string starts by needle string given
- *
- * @since 1.7.0
- *
- * @param string $haystack
- * @param string $needle
- *
- * @return bool
- */
-function gamipress_starts_with( $haystack, $needle ) {
-    return strncmp( $haystack, $needle, strlen( $needle ) ) === 0;
-}
-
-/**
- * Helper function to check if a string ends by needle string given
- *
- * @since 1.7.0
- *
- * @param string $haystack
- * @param string $needle
- *
- * @return bool
- */
-function gamipress_ends_with( $haystack, $needle ) {
-    return $needle === '' || substr_compare( $haystack, $needle, -strlen( $needle ) ) === 0;
-}
-
-/**
- * Attempt to find the attachment ID from the file URL or, if comes from external URL, attempt to download and insert it as attachment
- *
- * @since 1.7.0
- *
- * @param string $url       Attachment URL
- *
- * @return int|WP_Error     Attachment ID on success, WP_Error otherwise
- */
-function gamipress_import_attachment( $url ) {
-
-    $site_url = site_url();
-
-    // If the URL is absolute, but does not contain address, then upload it assuming base_site_url
-    if ( preg_match( '|^/[\w\W]+$|', $url ) )
-        $url = rtrim( $site_url, '/' ) . $url;
-
-    $thumbnail_id = gamipress_get_attachment_id_from_url( $url );
-
-    if( $thumbnail_id ) {
-        return $thumbnail_id;
-    } else {
-        // Remove protocol for following checks
-        $site_url = str_replace( array( 'https://', 'http://' ), array( '', '' ), $site_url );
-
-        if( strpos( $url, $site_url ) === false )
-            return gamipress_insert_external_attachment( $url );
-    }
-
-    return new WP_Error( 'attachment_import_error', __('Attachment not found', 'gamipress') );
-
-}
-
-/**
- * Retrieves the attachment ID from the file URL
- *
- * @since 1.7.0
- *
- * @param string $url   Attachment URL
- *
- * @return int|false    Attachment ID on success, false otherwise
- */
-function gamipress_get_attachment_id_from_url( $url ) {
-
-    global $wpdb;
-
-    $attachment = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts WHERE guid='%s';", $url ) );
-
-    return isset( $attachment[0] ) ? $attachment[0] : false;
-
-}
-
-/**
- * Attempt to create a new attachment from an external URL
- *
- * Taken from WordPress Importer tool
- *
- * @since 1.7.0
- *
- * @param string $url URL to fetch attachment from
- * @param array $post Attachment post details
- *
- * @return int|WP_Error Post ID on success, WP_Error otherwise
- */
-function gamipress_insert_external_attachment( $url, $post = array() ) {
-
-    $upload = gamipress_fetch_remote_file( $url );
-
-    if ( is_wp_error( $upload ) )
-        return $upload;
-
-    if ( $info = wp_check_filetype( $upload['file'] ) )
-        $post['post_mime_type'] = $info['type'];
-    else
-        return new WP_Error( 'attachment_processing_error', __('Invalid file type', 'gamipress') );
-
-    $post['guid'] = $upload['url'];
-
-    // as per wp-admin/includes/upload.php
-    $post_id = wp_insert_attachment( $post, $upload['file'] );
-    wp_update_attachment_metadata( $post_id, wp_generate_attachment_metadata( $post_id, $upload['file'] ) );
-
-    return $post_id;
-
-}
-
-/**
- * Attempt to download a remote file attachment
- *
- * Taken from WordPress Importer tool
- *
- * @since 1.7.0
- *
- * @param string $url URL of item to fetch
- *
- * @return array|WP_Error Local file location details on success, WP_Error otherwise
- */
-function gamipress_fetch_remote_file( $url ) {
-
-    if( ! filter_var( $url, FILTER_VALIDATE_URL ) ) {
-        return new WP_Error( 'import_url_error', __('Invalid URL', 'gamipress') );
-    }
-
-    // extract the file name and extension from the url
-    $file_name = basename( $url );
-
-    // get placeholder file in the upload dir with a unique, sanitized filename
-    $upload = wp_upload_bits( $file_name, 0, '', null );
-    if ( $upload['error'] )
-        return new WP_Error( 'upload_dir_error', $upload['error'] );
-
-    // fetch the remote url and write it to the placeholder file
-    $remote_response = wp_safe_remote_get( $url, array(
-        'timeout' => 300,
-        'stream' => true,
-        'filename' => $upload['file'],
-    ) );
-
-    $headers = wp_remote_retrieve_headers( $remote_response );
-
-    // request failed
-    if ( ! $headers ) {
-        @unlink( $upload['file'] );
-        return new WP_Error( 'import_file_error', __('Remote server did not respond', 'gamipress') );
-    }
-
-    $remote_response_code = wp_remote_retrieve_response_code( $remote_response );
-
-    // make sure the fetch was successful
-    if ( $remote_response_code != '200' ) {
-        @unlink( $upload['file'] );
-        return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'gamipress'), esc_html($remote_response_code), get_status_header_desc($remote_response_code) ) );
-    }
-
-    $filesize = filesize( $upload['file'] );
-
-    if ( isset( $headers['content-length'] ) && $filesize != $headers['content-length'] ) {
-        @unlink( $upload['file'] );
-        return new WP_Error( 'import_file_error', __('Remote file is incorrect size', 'gamipress') );
-    }
-
-    if ( 0 == $filesize ) {
-        @unlink( $upload['file'] );
-        return new WP_Error( 'import_file_error', __('Zero size file downloaded', 'gamipress') );
-    }
-
-    return $upload;
-
-}

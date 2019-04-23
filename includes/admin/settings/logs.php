@@ -22,7 +22,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['logs-patterns-settings'] = array(
-        'title' => '<i class="dashicons dashicons-editor-alignleft"></i>' . __( 'Logs', 'gamipress' ),
+        'title' => gamipress_dashicon( 'editor-alignleft' ) . __( 'Logs', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_logs_patterns_settings_fields', array(
             'log_all_events' => array(
                 'name' => __( 'Log all activities', 'gamipress' ),

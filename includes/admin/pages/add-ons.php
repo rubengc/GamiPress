@@ -34,11 +34,11 @@ function gamipress_add_ons_page() {
 
         <div class="wp-filter">
             <ul class="filter-links">
-                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><span class="dashicons dashicons-gamipress"></span> <?php _e( 'Premium', 'gamipress' ); ?></a></li>
-                <li class="plugins-free"><a href="#" data-target="gamipress-free-add-on"><span class="dashicons dashicons-heart"></span> <?php _e( 'Free', 'gamipress' ); ?></a></li>
-                <li class="plugins-integrations"><a href="#" data-target="gamipress-integration-add-on"><span class="dashicons dashicons-admin-plugins"></span> <?php _e( 'Integrations', 'gamipress' ); ?></a></li>
-                <li class="plugins-third-party"><a href="#" data-target="gamipress-third-party-add-on"><span class="dashicons dashicons-star-filled"></span> <?php _e( '3rd Party', 'gamipress' ); ?></a></li>
-                <li class="plugins-tools"><a href="#" data-target="gamipress-tool-add-on"><span class="dashicons dashicons-admin-tools"></span> <?php _e( 'Tools', 'gamipress' ); ?></a></li>
+                <li class="plugins-premium"><a href="#" data-target="gamipress-premium-add-on" class="current"><?php echo gamipress_dashicon( 'gamipress', 'span' ); ?> <?php _e( 'Premium', 'gamipress' ); ?></a></li>
+                <li class="plugins-free"><a href="#" data-target="gamipress-free-add-on"><?php echo gamipress_dashicon( 'heart', 'span' ); ?> <?php _e( 'Free', 'gamipress' ); ?></a></li>
+                <li class="plugins-integrations"><a href="#" data-target="gamipress-integration-add-on"><?php echo gamipress_dashicon( 'admin-plugins', 'span' ); ?> <?php _e( 'Integrations', 'gamipress' ); ?></a></li>
+                <li class="plugins-third-party"><a href="#" data-target="gamipress-third-party-add-on"><?php echo gamipress_dashicon( 'star-filled', 'span' ); ?> <?php _e( '3rd Party', 'gamipress' ); ?></a></li>
+                <li class="plugins-tools"><a href="#" data-target="gamipress-tool-add-on"><?php echo gamipress_dashicon( 'admin-tools', 'span' ); ?> <?php _e( 'Tools', 'gamipress' ); ?></a></li>
             </ul>
         </div>
 

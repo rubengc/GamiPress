@@ -21,7 +21,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_settings_style_meta_boxes( $meta_boxes ) {
 
     $meta_boxes['style-settings'] = array(
-        'title' => '<i class="dashicons dashicons-admin-appearance"></i>' . __( 'Style Settings', 'gamipress' ),
+        'title' => gamipress_dashicon( 'admin-appearance' ) . __( 'Style Settings', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_style_settings_fields', array(
             'disable_css' => array(
                 'name' => __( 'Disable frontend CSS', 'gamipress' ),

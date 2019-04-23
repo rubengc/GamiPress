@@ -63,7 +63,7 @@ function gamipress_import_export_setup_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['import-export-setup'] = array(
-        'title' => '<i class="dashicons dashicons-admin-generic"></i>' . __( 'Setup', 'gamipress' ),
+        'title' => gamipress_dashicon( 'admin-generic' ) . __( 'Setup', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_import_export_setup_tool_fields', array(
             'export_setup_options' => array(
                 'label'     => __( 'Export Setup', 'gamipress' ),

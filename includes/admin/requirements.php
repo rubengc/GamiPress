@@ -20,6 +20,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @return mixed
  */
 function gamipress_requirements_posts_columns( $posts_columns, $post_type ) {
+
     if( ! in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
         return $posts_columns;
     }
@@ -56,31 +57,39 @@ add_filter( 'manage_posts_columns', 'gamipress_requirements_posts_columns', 10, 
  */
 function gamipress_requirements_posts_custom_columns( $column_name, $post_id ) {
 
-    if( ! in_array( gamipress_get_post_type( $post_id ), gamipress_get_requirement_types_slugs() ) || $column_name !== 'connected_to' ) {
+    $post_type = gamipress_get_post_type( $post_id );
+
+    if( ! in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
         return;
     }
 
-    $post_type = gamipress_get_post_type( $post_id );
-
-    if( ( $post_type === 'points-award' ) ) {
-        $connected_label = __( 'Points Type', 'gamipress' );
-        $connected_object =  gamipress_get_points_award_points_type( $post_id );
-    } else if( ( $post_type === 'points-deduct' ) ) {
-        $connected_label = __( 'Points Type', 'gamipress' );
-        $connected_object =  gamipress_get_points_deduct_points_type( $post_id );
-    } else if( $post_type === 'step' ) {
-        $connected_label = __( 'Achievement', 'gamipress' );
-        $connected_object = gamipress_get_step_achievement( $post_id );
-    } else if( $post_type === 'rank-requirement' ) {
-        $connected_label = __( 'Rank', 'gamipress' );
-        $connected_object = gamipress_get_rank_requirement_rank( $post_id );
+    if( $column_name !== 'connected_to' ) {
+        return;
     }
 
-    if( $connected_object ) : ?>
-        <a href="<?php echo get_edit_post_link( $connected_object->ID ); ?>"><?php echo $connected_object->post_title; ?></a>
+    $label = '';
+    $object = null;
+
+    if( ( $post_type === 'points-award' ) ) {
+        $label = __( 'Points Type', 'gamipress' );
+        $object =  gamipress_get_points_award_points_type( $post_id );
+    } else if( ( $post_type === 'points-deduct' ) ) {
+        $label = __( 'Points Type', 'gamipress' );
+        $object =  gamipress_get_points_deduct_points_type( $post_id );
+    } else if( $post_type === 'step' ) {
+        $label = __( 'Achievement', 'gamipress' );
+        $object = gamipress_get_step_achievement( $post_id );
+    } else if( $post_type === 'rank-requirement' ) {
+        $label = __( 'Rank', 'gamipress' );
+        $object = gamipress_get_rank_requirement_rank( $post_id );
+    }
+
+    if( $object ) : ?>
+        <a href="<?php echo get_edit_post_link( $object->ID ); ?>"><?php echo $object->post_title; ?></a>
     <?php else : ?>
-        <span style="color: #a00;"><?php printf( __( 'Missed %s', 'gamipress' ), $connected_label ); ?></span>
+        <span style="color: #a00;"><?php printf( __( 'Missed %s', 'gamipress' ), $label ); ?></span>
     <?php endif;
 
 }
 add_action( 'manage_posts_custom_column', 'gamipress_requirements_posts_custom_columns', 10, 2 );
+add_action( 'manage_pages_custom_column', 'gamipress_requirements_posts_custom_columns', 10, 2 );

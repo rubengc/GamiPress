@@ -183,7 +183,7 @@ function gamipress_user_profile_data( $user = null ) {
 	<?php // Verify user meets minimum role to manage earned achievements
 	if ( current_user_can( gamipress_get_manager_capability() ) ) : ?>
 
-		<h2><i class="dashicons dashicons-gamipress"></i> <?php _e( 'GamiPress', 'gamipress' ); ?></h2>
+		<h2><?php echo gamipress_dashicon( 'gamipress' ); ?> <?php _e( 'GamiPress', 'gamipress' ); ?></h2>
 
 	<?php endif; ?>
 
