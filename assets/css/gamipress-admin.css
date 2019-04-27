@@ -755,6 +755,10 @@ body > .gamipress-select2,
 	max-width: 100%;
 }
 
+body.wp-customizer > .gamipress-select2 {
+	z-index: 1000051;
+}
+
 .gamipress-widget-form .gamipress-select2 {
 	width: 25em !important;
 }

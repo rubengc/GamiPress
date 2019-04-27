@@ -58,11 +58,12 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 ### LMS integrations ###
 
 * [LearnDash](https://wordpress.org/plugins/gamipress-learndash-integration/)
-* [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
-* [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
-* [CoursePress](https://wordpress.org/plugins/gamipress-coursepress-integration/)
+* [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [LifterLMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
+* [CoursePress](https://wordpress.org/plugins/gamipress-coursepress-integration/)
+* [Tutor LMS](https://wordpress.org/plugins/gamipress-tutor-integration/)
+* [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
 * [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
 * [WPEP](https://wordpress.org/plugins/gamipress-wpep-integration/)
 * [WP Courseware](https://wordpress.org/plugins/gamipress-wp-courseware-integration/)
@@ -272,6 +273,12 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.7.2 ###
+
+* **Bug Fixes**
+* Fixed required times check from last update checking just last time earned when needed (and not for all checks).
+* Fixed GamiPress dropdowns display on customizer.
 
 ### 1.7.1 ###
 
