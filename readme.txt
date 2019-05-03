@@ -2,8 +2,8 @@
 Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
-Tested up to: 5.1
-Stable tag: 1.7.2
+Tested up to: 5.2
+Stable tag: 1.7.3
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -257,6 +257,17 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.7.3 =
+
+* **New Features**
+* New event: Get a comment marked as spam.
+* New event: Get a comment of a specific post marked as spam.
+* **Improvements**
+* Improved "Daily visit any post" event count detection.
+* **Developer Notes**
+* GamiPress fully tested up to WordPress 5.2.
+
 
 = 1.7.2 =
 

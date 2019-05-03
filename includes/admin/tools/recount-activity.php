@@ -41,7 +41,7 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
         'fields' => apply_filters( 'gamipress_recount_activity_tool_fields', array(
             'recount_activity_desc' => array(
                 'content' => __( 'This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and deducts and achievements will be awarded or deducted too.', 'gamipress' )
-                    . '<br>' . __( '<strong>Note:</strong> Some activity may not be possible to recount (like user log in or daily visits) because there are not registries stored in the database.', 'gamipress' )
+                    . '<br>' . __( '<strong>Note:</strong> Some activity may not be possible to recount (like user log ins or daily visits) because there are not registries stored in the database.', 'gamipress' )
                     . '<br>' . __( '<strong>Important:</strong> If emails to notify users about new earnings are enabled is possible that users will receive a lot of emails so is recommendable to deactivate them temporally.', 'gamipress' ),
                 'type' => 'html',
             ),
@@ -168,16 +168,16 @@ function gamipress_activity_recount_comments( $response, $loop ) {
     foreach( $comments as $comment ) {
 
         // Trigger comment actions to user
-        do_action( 'gamipress_specific_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
         do_action( 'gamipress_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
+        do_action( 'gamipress_specific_new_comment', (int) $comment->ID, (int) $comment->user_id, $comment->comment_post_ID, $comment );
 
         if( $comment->comment_post_ID !== 0 ) {
 
             $post_author = absint( get_post_field( 'post_author', $comment->comment_post_ID ) );
 
             // Trigger comment actions to author
-            do_action( 'gamipress_user_specific_post_comment', (int) $comment->ID, $post_author, $comment->comment_post_ID, $comment );
             do_action( 'gamipress_user_post_comment', (int) $comment->ID, $post_author, $comment->comment_post_ID, $comment );
+            do_action( 'gamipress_user_specific_post_comment', (int) $comment->ID, $post_author, $comment->comment_post_ID, $comment );
         }
 
         // GamiPress has a 1 second delay to prevent unlimited earnings

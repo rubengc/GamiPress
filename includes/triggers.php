@@ -28,6 +28,8 @@ function gamipress_get_activity_triggers() {
 				'gamipress_specific_new_comment' 		=> __( 'Comment on a specific post', 'gamipress' ),
 				'gamipress_user_post_comment'  			=> __( 'Get a comment on a post', 'gamipress' ),
 				'gamipress_user_specific_post_comment' 	=> __( 'Get a comment on a specific post', 'gamipress' ),
+                'gamipress_spam_comment'  				=> __( 'Get a comment marked as spam', 'gamipress' ),
+                'gamipress_specific_spam_comment' 		=> __( 'Get a comment of a specific post marked as spam', 'gamipress' ),
 				'gamipress_publish_post'     			=> __( 'Publish a new post', 'gamipress' ),
 				'gamipress_delete_post'     			=> __( 'Delete a post', 'gamipress' ),
 				'gamipress_publish_page'     			=> __( 'Publish a new page', 'gamipress' ),
@@ -92,6 +94,7 @@ function gamipress_get_specific_activity_triggers() {
 	return apply_filters( 'gamipress_specific_activity_triggers', array(
 		'gamipress_specific_new_comment' 		=> $comments_post_types,
 		'gamipress_user_specific_post_comment'  => $comments_post_types,
+        'gamipress_specific_spam_comment' 		=> $comments_post_types,
 		'gamipress_specific_post_visit'  		=> $public_post_types,
 		'gamipress_user_specific_post_visit'  	=> $public_post_types,
 	) );
@@ -167,6 +170,7 @@ function gamipress_get_specific_activity_trigger_label( $activity_trigger ) {
 	$specific_activity_trigger_labels = apply_filters( 'gamipress_specific_activity_trigger_label', array(
 		'gamipress_specific_new_comment' 		=> __( 'Comment on %s', 'gamipress' ),
 		'gamipress_user_specific_post_comment'  => __( 'Get a comment on %s', 'gamipress' ),
+        'gamipress_specific_spam_comment' 		=> __( 'Get a comment on %s marked as spam', 'gamipress' ),
 		'gamipress_specific_post_visit'  		=> __( 'Visit %s', 'gamipress' ),
 		'gamipress_user_specific_post_visit'  	=> __( '%s gets visited', 'gamipress' ),
 	) );
@@ -526,6 +530,8 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 		case 'gamipress_specific_new_comment':
 		case 'gamipress_user_post_comment':
 		case 'gamipress_user_specific_post_comment':
+		case 'gamipress_spam_comment':
+		case 'gamipress_specific_spam_comment':
 			// Add the comment ID and post commented ID
 			$log_meta['comment_id'] = $args[0];
 			$log_meta['comment_post_id'] = $args[2];
@@ -593,6 +599,8 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 		case 'gamipress_specific_new_comment':
 		case 'gamipress_user_post_comment':
 		case 'gamipress_user_specific_post_comment':
+        case 'gamipress_spam_comment':
+        case 'gamipress_specific_spam_comment':
 			// User can not publish same comment more times, so check it
 			$log_meta['comment_id'] = $args[0];
 			$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
@@ -636,6 +644,8 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 		case 'gamipress_specific_new_comment':
 		case 'gamipress_user_post_comment':
 		case 'gamipress_user_specific_post_comment':
+        case 'gamipress_spam_comment':
+        case 'gamipress_specific_spam_comment':
 		case 'gamipress_post_visit':
 		case 'gamipress_specific_post_visit':
 		case 'gamipress_user_post_visit':
@@ -671,6 +681,7 @@ function gamipress_specific_trigger_get_id( $trigger = '', $args = array() ) {
 	switch ( $trigger ) {
 		case 'gamipress_specific_new_comment':
 		case 'gamipress_user_specific_post_comment':
+        case 'gamipress_specific_spam_comment':
 			$specific_id = $args[2];
 			break;
 		case 'gamipress_specific_post_visit':

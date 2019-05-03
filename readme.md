@@ -274,6 +274,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.3 ###
+
+* **New Features**
+* New event: Get a comment marked as spam.
+* New event: Get a comment of a specific post marked as spam.
+* **Improvements**
+* Improved "Daily visit any post" event count detection.
+* **Developer Notes**
+* GamiPress fully tested up to WordPress 5.2.
+
 ### 1.7.2 ###
 
 * **Bug Fixes**

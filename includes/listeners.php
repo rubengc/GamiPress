@@ -129,42 +129,74 @@ add_action( 'before_delete_post', 'gamipress_delete_post_listener' );
  *
  * @since  1.0.0
  *
- * @param  integer $comment_ID The comment ID
- * @param  array|object $comment The comment array
+ * @param  integer      $comment_ID The comment ID
+ * @param  array|object $comment    The comment array
  *
  * @return void
  */
 function gamipress_approved_comment_listener( $comment_ID, $comment ) {
 
-    // Enforce array for both hooks (wp_insert_comment uses object, comment_{status}_comment uses array)
-    if ( is_object( $comment ) ) {
+    // Ensure comment as array (wp_insert_comment uses object, comment_{status}_comment uses array)
+    if ( is_object( $comment ) )
         $comment = get_object_vars( $comment );
-    }
 
     // Check if comment is approved
-    if ( 1 != (int) $comment[ 'comment_approved' ] ) {
+    if ( (int) $comment['comment_approved'] !== 1 )
         return;
-    }
 
+    // Setup vars
+    $comment_id = (int) $comment_ID;
+    $user_id = (int) $comment['user_id'];
     $post_id = absint( $comment[ 'comment_post_ID' ] );
 
     // Trigger comment actions
-    do_action( 'gamipress_specific_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $post_id, $comment );
-    do_action( 'gamipress_new_comment', (int) $comment_ID, (int) $comment[ 'user_id' ], $post_id, $comment );
+    do_action( 'gamipress_new_comment', $comment_id, $user_id, $post_id, $comment );
+    do_action( 'gamipress_specific_new_comment', $comment_id, $user_id, $post_id, $comment );
 
     if( $post_id !== 0 ) {
 
         $post_author = absint( get_post_field( 'post_author', $post_id ) );
 
         // Trigger comment actions to author
-        do_action( 'gamipress_user_specific_post_comment', (int) $comment_ID, $post_author, $post_id, $comment );
-        do_action( 'gamipress_user_post_comment', (int) $comment_ID, $post_author, $post_id, $comment );
+        do_action( 'gamipress_user_post_comment', $comment_id, $post_author, $post_id, $comment );
+        do_action( 'gamipress_user_specific_post_comment', $comment_id, $post_author, $post_id, $comment );
     }
 
 }
 add_action( 'comment_approved_', 'gamipress_approved_comment_listener', 10, 2 );
 add_action( 'comment_approved_comment', 'gamipress_approved_comment_listener', 10, 2 );
 add_action( 'wp_insert_comment', 'gamipress_approved_comment_listener', 10, 2 );
+
+/**
+ * Listener for comment marked as spam
+ *
+ * Triggers: gamipress_spam_comment, gamipress_specific_spam_comment
+ *
+ * @since  1.7.3
+ *
+ * @param  integer      $comment_ID The comment ID
+ * @param  array|object $comment    The comment array
+ *
+ * @return void
+ */
+function gamipress_spam_comment_listener( $comment_ID, $comment ) {
+
+    // Ensure comment as array
+    if ( is_object( $comment ) )
+        $comment = get_object_vars( $comment );
+
+    // Setup vars
+    $comment_id = (int) $comment_ID;
+    $user_id = (int) $comment['user_id'];
+    $post_id = absint( $comment[ 'comment_post_ID' ] );
+
+    // Trigger comment actions
+    do_action( 'gamipress_spam_comment', $comment_id, $user_id, $post_id, $comment );
+    do_action( 'gamipress_specific_spam_comment', $comment_id, $user_id, $post_id, $comment );
+
+}
+add_action( 'comment_spam_', 'gamipress_spam_comment_listener', 10, 2 );
+add_action( 'comment_spam_comment', 'gamipress_spam_comment_listener', 10, 2 );
 
 /**
  * Listener for daily visits
@@ -262,7 +294,14 @@ function gamipress_site_visit_listener() {
 
     if( $track_post_visits ) {
 
-        $count = gamipress_get_user_trigger_count( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
+        $log_meta = array(
+            'type'          => 'event_trigger',
+            'trigger_type'  => 'gamipress_post_visit',
+            'post_id'       => $post->ID,
+        );
+
+        // Get the trigger count
+        $count = absint( gamipress_get_user_log_count( $user_id, $log_meta, $now ) );
 
         // Trigger daily post visit action if not triggered today
         if( $count === 0 ) {
@@ -271,6 +310,13 @@ function gamipress_site_visit_listener() {
             do_action( 'gamipress_post_visit', $post->ID, $user_id, $post );
 
             $events_triggered['gamipress_post_visit'] = array( $post->ID, $user_id, $post );
+
+        }
+
+        $specific_count = gamipress_get_user_trigger_count( $user_id, 'gamipress_specific_post_visit', $now, 0, array( $post->ID, $user_id, $post ) );
+
+        // Trigger daily specific post visit action if not triggered today
+        if( $specific_count === 0 ) {
 
             // Trigger specific post visit
             do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
