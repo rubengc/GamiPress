@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-04-27 12:44+0200\n"
+"POT-Creation-Date: 2019-05-27 13:08+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -42,7 +42,7 @@ msgid "Ranks"
 msgstr ""
 
 #: includes/admin.php:95 includes/admin.php:140 includes/blocks.php:21
-#: includes/triggers.php:45 includes/triggers.php:322 includes/triggers.php:323
+#: includes/triggers.php:47 includes/triggers.php:326 includes/triggers.php:327
 #: includes/user.php:186
 msgid "GamiPress"
 msgstr ""
@@ -532,7 +532,7 @@ msgid "Attached post to this log."
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:184 includes/admin/requirements.php:41
-#: includes/admin/requirements.php:80 includes/ajax-functions.php:428
+#: includes/admin/requirements.php:80 includes/ajax-functions.php:443
 #: includes/compatibility/1.2.8.php:1000
 #: includes/functions/achievement-types.php:155
 #: includes/functions/achievement-types.php:162
@@ -552,7 +552,7 @@ msgstr ""
 #: includes/admin/tools/bulk-awards.php:120
 #: includes/admin/tools/bulk-revokes.php:120
 #: includes/admin/tools/import-export-points.php:140
-#: includes/ajax-functions.php:606 includes/ajax-functions.php:712
+#: includes/ajax-functions.php:621 includes/ajax-functions.php:727
 #: includes/compatibility/1.2.8.php:1021
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
@@ -592,7 +592,7 @@ msgstr ""
 #: includes/admin/log-extra-data-ui.php:230 includes/admin/requirements.php:43
 #: includes/admin/requirements.php:83
 #: includes/admin/tools/import-export-ranks.php:153
-#: includes/ajax-functions.php:467 includes/functions/rank-types.php:156
+#: includes/ajax-functions.php:482 includes/functions/rank-types.php:156
 #: includes/functions/rank-types.php:163
 #: includes/shortcodes/gamipress_rank.php:26
 #: includes/shortcodes/gamipress_ranks.php:40
@@ -1443,8 +1443,8 @@ msgstr ""
 #: includes/admin/tools/import-export-setup.php:138
 #: includes/admin/tools/import-export-setup.php:355
 #: includes/admin/tools/recount-activity.php:76
-#: includes/admin/tools/reset-data.php:103 includes/ajax-functions.php:579
-#: includes/ajax-functions.php:685
+#: includes/admin/tools/reset-data.php:103 includes/ajax-functions.php:594
+#: includes/ajax-functions.php:700
 msgid "You are not allowed to perform this action."
 msgstr ""
 
@@ -1875,7 +1875,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:468
+#: includes/admin/settings/logs.php:43 includes/triggers.php:472
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -1911,8 +1911,8 @@ msgstr ""
 msgid "Used when user expend an amount of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:623
-#: includes/ajax-functions.php:729
+#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:638
+#: includes/ajax-functions.php:744
 msgid "{user} expended {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2615,7 +2615,7 @@ msgid "This tool will try to sync old activity with your already configured Gami
 msgstr ""
 
 #: includes/admin/tools/recount-activity.php:44
-msgid "<strong>Note:</strong> Some activity may not be possible to recount (like user log in or daily visits) because there are not registries stored in the database."
+msgid "<strong>Note:</strong> Some activity may not be possible to recount (like user log ins or daily visits) because there are not registries stored in the database."
 msgstr ""
 
 #: includes/admin/tools/recount-activity.php:45
@@ -2897,54 +2897,54 @@ msgstr ""
 msgid "Removing this library will improve the <strong>compatibility</strong> of GamiPress with other plugins and themes as well as will <strong>speed up</strong> all relationship related queries making GamiPress much faster!"
 msgstr ""
 
-#: includes/ajax-functions.php:441 includes/ajax-functions.php:496
+#: includes/ajax-functions.php:456 includes/ajax-functions.php:511
 #, php-format
 msgid "Choose the %s"
 msgstr ""
 
-#: includes/ajax-functions.php:564
+#: includes/ajax-functions.php:579
 msgid "Achievement not found."
 msgstr ""
 
-#: includes/ajax-functions.php:570
+#: includes/ajax-functions.php:585
 msgid "Invalid achievement."
 msgstr ""
 
-#: includes/ajax-functions.php:584 includes/ajax-functions.php:591
-#: includes/ajax-functions.php:690 includes/ajax-functions.php:697
+#: includes/ajax-functions.php:599 includes/ajax-functions.php:606
+#: includes/ajax-functions.php:705 includes/ajax-functions.php:712
 #, php-format
 msgid "You are not allowed to unlock this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:598
+#: includes/ajax-functions.php:613
 #, php-format
 msgid "You already unlocked this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:617 includes/ajax-functions.php:723
+#: includes/ajax-functions.php:632 includes/ajax-functions.php:738
 #, php-format
 msgid "Insufficient %s."
 msgstr ""
 
-#: includes/ajax-functions.php:632
+#: includes/ajax-functions.php:647
 #, php-format
 msgid "Congratulations! You unlocked the %s %s."
 msgstr ""
 
-#: includes/ajax-functions.php:670
+#: includes/ajax-functions.php:685
 msgid "Rank not found."
 msgstr ""
 
-#: includes/ajax-functions.php:676
+#: includes/ajax-functions.php:691
 msgid "Invalid rank."
 msgstr ""
 
-#: includes/ajax-functions.php:704
+#: includes/ajax-functions.php:719
 #, php-format
 msgid "You are already in a higher %s."
 msgstr ""
 
-#: includes/ajax-functions.php:738
+#: includes/ajax-functions.php:753
 #, php-format
 msgid "Congratulations! You reached to the %s %s."
 msgstr ""
@@ -4208,32 +4208,49 @@ msgstr ""
 msgid "%s Requirement"
 msgstr ""
 
-#: includes/scripts.php:141
+#: includes/scripts.php:143
 msgid "Select an option"
 msgstr ""
 
-#: includes/scripts.php:142
+#: includes/scripts.php:144
 msgid "Select a post"
 msgstr ""
 
-#: includes/scripts.php:143
+#: includes/scripts.php:145
 msgid "Select an user"
 msgstr ""
 
-#: includes/scripts.php:158 includes/scripts.php:176
+#: includes/scripts.php:147
+msgid "Slug can't contain special characters. Only alphanumeric characters are allowed."
+msgstr ""
+
+#: includes/scripts.php:148
+msgid "Slug supports a maximum of 20 characters."
+msgstr ""
+
+#: includes/scripts.php:149
+#, php-format
+msgid "The %s post type already uses this slug."
+msgstr ""
+
+#: includes/scripts.php:150
+msgid "Slug can't match any <a href=\"https://codex.wordpress.org/Reserved_Terms\">WordPress reserved term</a>."
+msgstr ""
+
+#: includes/scripts.php:166 includes/scripts.php:184
 #: includes/shortcodes/shortcodes-editor.php:74
 msgid "Select a Post"
 msgstr ""
 
-#: includes/scripts.php:177 includes/shortcodes/shortcodes-editor.php:75
+#: includes/scripts.php:185 includes/shortcodes/shortcodes-editor.php:75
 msgid "Select Post(s)"
 msgstr ""
 
-#: includes/scripts.php:178 includes/shortcodes/shortcodes-editor.php:76
+#: includes/scripts.php:186 includes/shortcodes/shortcodes-editor.php:76
 msgid "Select an User"
 msgstr ""
 
-#: includes/scripts.php:179 includes/shortcodes/gamipress_achievements.php:70
+#: includes/scripts.php:187 includes/shortcodes/gamipress_achievements.php:70
 #: includes/shortcodes/gamipress_earnings.php:117
 #: includes/shortcodes/gamipress_earnings.php:154
 #: includes/shortcodes/gamipress_earnings.php:184
@@ -4245,20 +4262,20 @@ msgstr ""
 msgid "Default: All"
 msgstr ""
 
-#: includes/scripts.php:180 includes/scripts.php:201
+#: includes/scripts.php:188 includes/scripts.php:209
 #: includes/shortcodes/shortcodes-editor.php:78
 msgid "Select a Rank"
 msgstr ""
 
-#: includes/scripts.php:198
+#: includes/scripts.php:206
 msgid "Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed."
 msgstr ""
 
-#: includes/scripts.php:200
+#: includes/scripts.php:208
 msgid "Select Achievements"
 msgstr ""
 
-#: includes/scripts.php:202
+#: includes/scripts.php:210
 msgid "Select Users"
 msgstr ""
 
@@ -5274,99 +5291,112 @@ msgid "Get a comment on a specific post"
 msgstr ""
 
 #: includes/triggers.php:31
-msgid "Publish a new post"
+msgid "Get a comment marked as spam"
 msgstr ""
 
 #: includes/triggers.php:32
-msgid "Delete a post"
+msgid "Get a comment of a specific post marked as spam"
 msgstr ""
 
 #: includes/triggers.php:33
-msgid "Publish a new page"
+msgid "Publish a new post"
 msgstr ""
 
 #: includes/triggers.php:34
+msgid "Delete a post"
+msgstr ""
+
+#: includes/triggers.php:35
+msgid "Publish a new page"
+msgstr ""
+
+#: includes/triggers.php:36
 msgid "Delete a page"
 msgstr ""
 
-#: includes/triggers.php:37
+#: includes/triggers.php:39
 msgid "Site Interactions"
 msgstr ""
 
-#: includes/triggers.php:38
+#: includes/triggers.php:40
 msgid "Daily visit the website"
 msgstr ""
 
-#: includes/triggers.php:39
+#: includes/triggers.php:41
 msgid "Daily visit any post"
 msgstr ""
 
-#: includes/triggers.php:40
+#: includes/triggers.php:42
 msgid "Daily visit a specific post"
 msgstr ""
 
-#: includes/triggers.php:41
+#: includes/triggers.php:43
 msgid "Get visits on any post"
 msgstr ""
 
-#: includes/triggers.php:42
+#: includes/triggers.php:44
 msgid "Get visits on a specific post"
 msgstr ""
 
-#: includes/triggers.php:46
+#: includes/triggers.php:48
 msgid "Unlock a specific achievement"
 msgstr ""
 
-#: includes/triggers.php:47
+#: includes/triggers.php:49
 msgid "Unlock any achievement of type"
 msgstr ""
 
-#: includes/triggers.php:48
+#: includes/triggers.php:50
 msgid "Unlock all Achievements of type"
 msgstr ""
 
-#: includes/triggers.php:49
+#: includes/triggers.php:51
 msgid "Earn an amount of points"
 msgstr ""
 
-#: includes/triggers.php:50
+#: includes/triggers.php:52
 msgid "Reach a points balance"
 msgstr ""
 
-#: includes/triggers.php:51
+#: includes/triggers.php:53
 msgid "Expend an amount of points"
 msgstr ""
 
-#: includes/triggers.php:52
+#: includes/triggers.php:54
 msgid "Reach a rank"
-msgstr ""
-
-#: includes/triggers.php:168
-#, php-format
-msgid "Comment on %s"
-msgstr ""
-
-#: includes/triggers.php:169
-#, php-format
-msgid "Get a comment on %s"
-msgstr ""
-
-#: includes/triggers.php:170
-#, php-format
-msgid "Visit %s"
 msgstr ""
 
 #: includes/triggers.php:171
 #, php-format
+msgid "Comment on %s"
+msgstr ""
+
+#: includes/triggers.php:172
+#, php-format
+msgid "Get a comment on %s"
+msgstr ""
+
+#: includes/triggers.php:173
+#, php-format
+msgid "Get a comment on %s marked as spam"
+msgstr ""
+
+#: includes/triggers.php:174
+#, php-format
+msgid "Visit %s"
+msgstr ""
+
+#: includes/triggers.php:175
+#, php-format
 msgid "%s gets visited"
 msgstr ""
 
-#: includes/triggers.php:322
+#: includes/triggers.php:326
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:323
+#: includes/triggers.php:327
 #, php-format
 msgid "Unlocked all %s"
 msgstr ""

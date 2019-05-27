@@ -280,6 +280,21 @@ function gamipress_ajax_get_posts() {
 			// Get the current site name to append it to results
 			$site_name = get_bloginfo( 'name' );
 
+            // Setup from after switch site to get the site's posts table correctly
+            $from = "{$wpdb->posts} AS p";
+
+            /**
+             * Ajax posts from (for current switched site)
+             *
+             * @since  1.7.4
+             *
+             * @param string    $from       By default '{$wpdb->posts} AS p'
+             * @param int       $site_id    Site ID
+             *
+             * @return string
+             */
+            $from = apply_filters( 'gamipress_ajax_get_posts_site_from', $from, $site_id );
+
 			// On this query, keep $wpdb->posts to get sub site posts
 			$site_results = $wpdb->get_results( $wpdb->prepare(
 				"SELECT p.ID, p.post_title, p.post_type

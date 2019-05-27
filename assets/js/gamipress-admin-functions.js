@@ -385,6 +385,51 @@ function gamipress_get_post_type_label( post_type ) {
 }
 
 /**
+ * Check if given term is on reserved terms
+ *
+ * @since 1.7.4
+ *
+ * @param {string} term
+ *
+ * @return {boolean}
+ */
+function gamipress_is_reserved_term( term ) {
+    return ( gamipress_admin_functions.reserved_terms.indexOf( term ) !== -1 )
+}
+
+/**
+ * Check if given slug has any error (like invalid chars, exceeds lenght, etc)
+ *
+ * @since 1.7.4
+ *
+ * @param {string} slug
+ * @param {string} current_slug
+ *
+ * @return {string}
+ */
+function gamipress_get_slug_error( slug, current_slug ) {
+
+    // Only allow alphanumeric characters, "-" adn "_"
+    if( /[^a-zA-Z0-9\-_]/.test( slug ) )
+        return gamipress_admin_functions.slug_error_special_char;
+
+    // Check if slug is greater than 20 characters (maximum allowed for a post type)
+    if ( slug.length > 20 )
+        return gamipress_admin_functions.slug_error_max_length;
+
+    // Check if slug has been already registered
+    if( gamipress_post_type_exists( slug ) && slug !== current_slug )
+        return gamipress_admin_functions.slug_error_post_type.replace( '%s', gamipress_get_post_type_label( slug ) );
+
+    // Check if slug matches a reserved term
+    if ( gamipress_is_reserved_term( slug ) )
+        return gamipress_admin_functions.slug_error_reserved_term;
+
+    // No errors
+    return '';
+}
+
+/**
  * Function to turn an object or a JSON object to a CSV file and force the download (Used on import/export tools)
  *
  * @since 1.6.4

@@ -133,55 +133,21 @@
 		var field = $(this);
 		var slug = $(this).val();
 		var preview = $(this).next('.cmb2-metabox-description').find('.gamipress-post-name');
-		var has_error = false;
-		var error_message = '';
+		var error = gamipress_get_slug_error( slug, current_slug );
 
-		if( preview.length ) {
+		// Update preview element
+		if( preview.length )
 			preview.text(slug);
-		}
-
-		var label = 'Points Type';
-
-		switch ( $('#post_type').val() ) {
-			case 'achievement-type':
-				label = 'Achievement Type';
-				break;
-			case 'rank-type':
-				label = 'Rank Type';
-				break;
-		}
-
-		// Only allow alphanumeric characters, "-" adn "_"
-		if( /[^a-zA-Z0-9\-_]/.test( slug ) ) {
-			// TODO: Localization here
-			error_message = label + '\'s slug can\'t contain special characters. Only alphanumeric characters are allowed.';
-			has_error = true;
-		}
-
-		// Check if slug is greater than 20 characters (maximum allowed for a post type)
-		if ( slug.length > 20 ) {
-			// TODO: Localization here
-			error_message = label + '\'s slug supports a maximum of 20 characters.';
-			has_error = true;
-		}
-
-		// Check if slug has been already registered
-		if( gamipress_post_type_exists( slug ) && slug !== current_slug ) {
-			// TODO: Localization here
-			error_message = 'The ' + gamipress_get_post_type_label( slug ) + ' post type already uses this slug.';
-			has_error = true;
-
-		}
 
 		// Delete any existing version of this warning
 		$('#slug-warning').remove();
 
-		if( has_error ) {
+		if( error.length ) {
 			// Set input to look like danger
 			field.css({'background':'#faa', 'color':'#a00', 'border-color':'#a55' });
 
 			// Output a custom warning
-			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + error_message + '</span>');
+			field.parent().append('<span id="slug-warning" class="cmb2-metabox-description" style="color: #a00;">' + error + '</span>');
 
 			// Disable the save button
 			$('input#publish').prop( 'disabled', true );

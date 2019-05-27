@@ -138,9 +138,17 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         // Localize admin functions script
         wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
             'post_type_labels'          => $post_type_labels,
+            'reserved_terms'            => gamipress_get_reserved_terms(),
+            // Selector placeholders
             'selector_placeholder'      => __( 'Select an option', 'gamipress' ),
             'post_selector_placeholder' => __( 'Select a post', 'gamipress' ),
             'user_selector_placeholder' => __( 'Select an user', 'gamipress' ),
+            // Slug error messages
+            'slug_error_special_char'   => __( 'Slug can\'t contain special characters. Only alphanumeric characters are allowed.', 'gamipress' ),
+            'slug_error_max_length'     => __( 'Slug supports a maximum of 20 characters.', 'gamipress' ),
+            'slug_error_post_type'      => __( 'The %s post type already uses this slug.', 'gamipress' ),
+            'slug_error_reserved_term'  => __( 'Slug can\'t match any <a href="https://codex.wordpress.org/Reserved_Terms">WordPress reserved term</a>.', 'gamipress' ),
+
         ) );
 
         wp_enqueue_script( 'gamipress-admin-functions-js' );

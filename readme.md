@@ -274,6 +274,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.4 ###
+
+* **Bug Fixes**
+* Fixed blocks single post/user fields not saving.
+* Fixed incorrect posts on requirements UI posts selector when GamiPress is network wide active.
+* **Improvements**
+* Prevent type's slug match any WordPress reserved term.
+* Full reformat of slug check function.
+
 ### 1.7.3 ###
 
 * **New Features**
