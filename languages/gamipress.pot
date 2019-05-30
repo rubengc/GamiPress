@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-05-27 13:08+0200\n"
+"POT-Creation-Date: 2019-05-30 17:52+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -4208,49 +4208,20 @@ msgstr ""
 msgid "%s Requirement"
 msgstr ""
 
-#: includes/scripts.php:143
-msgid "Select an option"
-msgstr ""
-
-#: includes/scripts.php:144
-msgid "Select a post"
-msgstr ""
-
-#: includes/scripts.php:145
-msgid "Select an user"
-msgstr ""
-
-#: includes/scripts.php:147
-msgid "Slug can't contain special characters. Only alphanumeric characters are allowed."
-msgstr ""
-
-#: includes/scripts.php:148
-msgid "Slug supports a maximum of 20 characters."
-msgstr ""
-
-#: includes/scripts.php:149
-#, php-format
-msgid "The %s post type already uses this slug."
-msgstr ""
-
-#: includes/scripts.php:150
-msgid "Slug can't match any <a href=\"https://codex.wordpress.org/Reserved_Terms\">WordPress reserved term</a>."
-msgstr ""
-
-#: includes/scripts.php:166 includes/scripts.php:184
-#: includes/shortcodes/shortcodes-editor.php:74
+#: includes/scripts.php:138 includes/scripts.php:156
+#: includes/shortcodes/shortcodes-editor.php:65
 msgid "Select a Post"
 msgstr ""
 
-#: includes/scripts.php:185 includes/shortcodes/shortcodes-editor.php:75
+#: includes/scripts.php:157 includes/shortcodes/shortcodes-editor.php:66
 msgid "Select Post(s)"
 msgstr ""
 
-#: includes/scripts.php:186 includes/shortcodes/shortcodes-editor.php:76
+#: includes/scripts.php:158 includes/shortcodes/shortcodes-editor.php:67
 msgid "Select an User"
 msgstr ""
 
-#: includes/scripts.php:187 includes/shortcodes/gamipress_achievements.php:70
+#: includes/scripts.php:159 includes/shortcodes/gamipress_achievements.php:70
 #: includes/shortcodes/gamipress_earnings.php:117
 #: includes/shortcodes/gamipress_earnings.php:154
 #: includes/shortcodes/gamipress_earnings.php:184
@@ -4258,25 +4229,54 @@ msgstr ""
 #: includes/shortcodes/gamipress_points.php:33
 #: includes/shortcodes/gamipress_points_types.php:33
 #: includes/shortcodes/gamipress_ranks.php:66
-#: includes/shortcodes/shortcodes-editor.php:77
+#: includes/shortcodes/shortcodes-editor.php:68
 msgid "Default: All"
 msgstr ""
 
-#: includes/scripts.php:188 includes/scripts.php:209
-#: includes/shortcodes/shortcodes-editor.php:78
+#: includes/scripts.php:160 includes/scripts.php:181
+#: includes/shortcodes/shortcodes-editor.php:69
 msgid "Select a Rank"
 msgstr ""
 
-#: includes/scripts.php:206
+#: includes/scripts.php:178
 msgid "Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed."
 msgstr ""
 
-#: includes/scripts.php:208
+#: includes/scripts.php:180
 msgid "Select Achievements"
 msgstr ""
 
-#: includes/scripts.php:210
+#: includes/scripts.php:182
 msgid "Select Users"
+msgstr ""
+
+#: includes/scripts.php:321
+msgid "Select an option"
+msgstr ""
+
+#: includes/scripts.php:322
+msgid "Select a post"
+msgstr ""
+
+#: includes/scripts.php:323
+msgid "Select an user"
+msgstr ""
+
+#: includes/scripts.php:325
+msgid "Slug can't contain special characters. Only alphanumeric characters are allowed."
+msgstr ""
+
+#: includes/scripts.php:326
+msgid "Slug supports a maximum of 20 characters."
+msgstr ""
+
+#: includes/scripts.php:327
+#, php-format
+msgid "The %s post type already uses this slug."
+msgstr ""
+
+#: includes/scripts.php:328
+msgid "Slug can't match any <a href=\"https://codex.wordpress.org/Reserved_Terms\">WordPress reserved term</a>."
 msgstr ""
 
 #: includes/shortcodes.php:91
@@ -5240,28 +5240,28 @@ msgstr ""
 msgid "Please, provide the user_id attribute."
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:100
+#: includes/shortcodes/shortcodes-editor.php:91
 msgid "GamiPress Shortcode"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:120
+#: includes/shortcodes/shortcodes-editor.php:111
 msgid "GamiPress shortcode"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:121
+#: includes/shortcodes/shortcodes-editor.php:112
 #, php-format
 msgid "See the %s page for more information"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:121
+#: includes/shortcodes/shortcodes-editor.php:112
 msgid "Help/Support"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:126
+#: includes/shortcodes/shortcodes-editor.php:117
 msgid "Insert Shortcode"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:127 includes/user.php:402
+#: includes/shortcodes/shortcodes-editor.php:118 includes/user.php:402
 #: includes/user.php:494 includes/user.php:534
 msgid "Cancel"
 msgstr ""

@@ -274,6 +274,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.4.1 ###
+
+* **Bug Fixes**
+* Fixed admin scripts localization to avoid issues when scripts are loaded on not expected pages.
+
 ### 1.7.4 ###
 
 * **Bug Fixes**

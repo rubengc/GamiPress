@@ -123,36 +123,8 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         || $hook === 'gamipress_page_gamipress_settings'
         || $hook === 'gamipress_page_gamipress_tools'
     ) {
-        // Enqueue Select2 library
-        wp_enqueue_script( 'gamipress-select2-js' );
-        wp_enqueue_style( 'gamipress-select2-css' );
-
-        // Setup an array of post type labels to use on post selector field
-        $post_types = get_post_types( array(), 'objects' );
-        $post_type_labels = array();
-
-        foreach( $post_types as $key => $obj ) {
-            $post_type_labels[$key] = $obj->labels->singular_name;
-        }
-
-        // Localize admin functions script
-        wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
-            'post_type_labels'          => $post_type_labels,
-            'reserved_terms'            => gamipress_get_reserved_terms(),
-            // Selector placeholders
-            'selector_placeholder'      => __( 'Select an option', 'gamipress' ),
-            'post_selector_placeholder' => __( 'Select a post', 'gamipress' ),
-            'user_selector_placeholder' => __( 'Select an user', 'gamipress' ),
-            // Slug error messages
-            'slug_error_special_char'   => __( 'Slug can\'t contain special characters. Only alphanumeric characters are allowed.', 'gamipress' ),
-            'slug_error_max_length'     => __( 'Slug supports a maximum of 20 characters.', 'gamipress' ),
-            'slug_error_post_type'      => __( 'The %s post type already uses this slug.', 'gamipress' ),
-            'slug_error_reserved_term'  => __( 'Slug can\'t match any <a href="https://codex.wordpress.org/Reserved_Terms">WordPress reserved term</a>.', 'gamipress' ),
-
-        ) );
-
-        wp_enqueue_script( 'gamipress-admin-functions-js' );
-
+        // Enqueue admin functions
+        gamipress_enqueue_admin_functions_script();
     }
 
     // Requirements ui script
@@ -320,3 +292,43 @@ function gamipress_admin_register_dark_mode_scripts() {
     wp_register_style( 'gamipress-dark-mode-css', GAMIPRESS_URL . 'assets/css/gamipress-dark-mode' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
 }
 add_action( 'doing_dark_mode', 'gamipress_admin_register_dark_mode_scripts' );
+
+/**
+ * Enqueue the admin functions script with all required components
+ *
+ * @since       1.7.4.1
+ * @return      void
+ */
+function gamipress_enqueue_admin_functions_script() {
+
+    // Enqueue Select2 library
+    wp_enqueue_script( 'gamipress-select2-js' );
+    wp_enqueue_style( 'gamipress-select2-css' );
+
+    // Setup an array of post type labels to use on post selector field
+    $post_types = get_post_types( array(), 'objects' );
+    $post_type_labels = array();
+
+    foreach( $post_types as $key => $obj ) {
+        $post_type_labels[$key] = $obj->labels->singular_name;
+    }
+
+    // Localize admin functions script
+    wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
+        'post_type_labels'          => $post_type_labels,
+        'reserved_terms'            => gamipress_get_reserved_terms(),
+        // Selector placeholders
+        'selector_placeholder'      => __( 'Select an option', 'gamipress' ),
+        'post_selector_placeholder' => __( 'Select a post', 'gamipress' ),
+        'user_selector_placeholder' => __( 'Select an user', 'gamipress' ),
+        // Slug error messages
+        'slug_error_special_char'   => __( 'Slug can\'t contain special characters. Only alphanumeric characters are allowed.', 'gamipress' ),
+        'slug_error_max_length'     => __( 'Slug supports a maximum of 20 characters.', 'gamipress' ),
+        'slug_error_post_type'      => __( 'The %s post type already uses this slug.', 'gamipress' ),
+        'slug_error_reserved_term'  => __( 'Slug can\'t match any <a href="https://codex.wordpress.org/Reserved_Terms">WordPress reserved term</a>.', 'gamipress' ),
+
+    ) );
+
+    wp_enqueue_script( 'gamipress-admin-functions-js' );
+
+}

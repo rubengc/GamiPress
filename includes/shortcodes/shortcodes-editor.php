@@ -11,6 +11,12 @@ if( !defined( 'ABSPATH' ) ) exit;
 
 class GamiPress_Shortcodes_Editor {
 
+    /**
+     * @var         array $shortcodes All registered shortcodes
+     * @since       1.4.7
+     */
+    public $shortcodes = array();
+
 	/**
 	 * @var         bool $button_rendered Flag to check if button has been rendered
 	 * @since       1.4.7
@@ -49,25 +55,10 @@ class GamiPress_Shortcodes_Editor {
 
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
-			// Enqueue GamiPress Select2
-			wp_enqueue_script( 'gamipress-select2-js' );
-			wp_enqueue_style( 'gamipress-select2-css' );
+			// Enqueue admin functions
+            gamipress_enqueue_admin_functions_script();
 
-            // Setup an array of post type labels to use on post selector field
-            $post_types = get_post_types( array(), 'objects' );
-            $post_type_labels = array();
-
-            foreach( $post_types as $key => $obj ) {
-                $post_type_labels[$key] = $obj->labels->singular_name;
-            }
-
-            // Localize admin functions script
-            wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
-                'post_type_labels' => $post_type_labels
-            ) );
-
-			wp_enqueue_script( 'gamipress-admin-functions-js' );
-
+            // Enqueue shortcodes editor
 			wp_enqueue_script( 'gamipress-shortcodes-editor', GAMIPRESS_URL . 'assets/js/gamipress-shortcodes-editor' . $min . '.js', array( 'jquery', 'gamipress-admin-functions-js', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
 
 			wp_localize_script( 'gamipress-shortcodes-editor', 'gamipress_shortcodes_editor', array(
