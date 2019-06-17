@@ -119,6 +119,9 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Restrict Unlock](https://gamipress.com/add-ons/gamipress-restrict-unlock/) - Restrict users to unlock any gamification element.
+* [Conditional Emails](https://gamipress.com/add-ons/gamipress-conditional-emails/) - Automatically send emails based on pre-defined conditions.
+* [Conditional Notifications](https://gamipress.com/add-ons/gamipress-conditional-notifications/) - Automatically display notifications based on pre-defined conditions.
 * [Email Digests](https://gamipress.com/add-ons/gamipress-email-digests/) - Send email digests periodically to keep in touch with your users.
 * [Rest API Extended](https://gamipress.com/add-ons/gamipress-rest-api-extended/) - New rest API endpoints to extend interaction between your gamification environment and external applications.
 * [Referrals](https://gamipress.com/add-ons/gamipress-referrals/) - Add a complete referral system to award users who refer visitors and sign ups.
@@ -273,6 +276,16 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.7.4.2 ###
+
+* **Bug Fixes**
+* Fixed type on [gamipress_points_types] shortcode slug used to pair attributes.
+* **Improvements**
+* Improved user ID detection on user profile form included when other plugins causes issues on this form to keep GamiPress utilities working.
+* Prevent to display all user earnings to visitors if current user is set to "yes".
+* **Developer Notes**
+* Added filters to change the workflow on user earnings and logs shortcode to display or not content to visitors when current user is set to "yes".
 
 ### 1.7.4.1 ###
 

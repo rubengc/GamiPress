@@ -130,7 +130,7 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
         'toggle'    => 'yes',
         'layout'    => 'left',
         'wpms'      => 'no',
-    ), $atts, 'gamipress_points' );
+    ), $atts, 'gamipress_points_types' );
 
     // Single type check to use dynamic template
     $is_single_type = false;

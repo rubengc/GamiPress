@@ -204,7 +204,7 @@
         var select = parent.find('select');
         var rank_id = select.val();
         var current_rank_id = select.data('current');
-        var user_id = $this.closest('form').find('input[name="user_id"]').val();
+        var user_id = $('#wpbody-content input[name="user_id"]').val();
 
         // If no changes made, then toggle form visibility
         if( current_rank_id === rank_id ) {
@@ -289,13 +289,12 @@
         var points = input.val();
         var current_points = input.data('current');
         var points_type = input.data('points-type');
-        var user_id = $this.closest('form').find('input[name="user_id"]').val();
+        var user_id = $('#wpbody-content input[name="user_id"]').val();
 
         // If no changes made, then toggle form visibility
         if( current_points === points ) {
             parent.slideUp();
             parent.prev('.profile-points-toggle').slideDown();
-
             return false;
         }
 

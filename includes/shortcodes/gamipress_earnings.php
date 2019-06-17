@@ -243,7 +243,24 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
 
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' ) {
+
+        /**
+         * Filter to override shortcode workflow with not logged in users when current user is set to yes
+         *
+         * @since 1.7.4.2
+         *
+         * @param bool      $empty_if_not_logged_in     Final workflow to follow
+         * @param array     $atts                       Shortcode attributes
+         * @param string    $content                    Shortcode content
+         */
+        $empty_if_not_logged_in = apply_filters( 'gamipress_earnings_shortcode_empty_if_not_logged_in', true, $atts, $content );
+
+        // Return if current_user is set to yes and current user is a guest
+        if( get_current_user_id() === 0 && $empty_if_not_logged_in )
+            return '';
+
         $atts['user_id'] = get_current_user_id();
+
     }
 
     // GamiPress template args global
