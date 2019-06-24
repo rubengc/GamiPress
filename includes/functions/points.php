@@ -1031,36 +1031,13 @@ function gamipress_update_points_types( $original_type = '', $new_type = '' ) {
 		return $new_type;
 	}
 
-	gamipress_update_points_awards_points_type( $original_type, $new_type );
+    gamipress_update_post_meta_points_type( $original_type, $new_type );
 	gamipress_update_user_meta_points_types( $original_type, $new_type );
+    gamipress_update_logs_metas_points_types( $original_type, $new_type );
+    gamipress_update_user_earnings_points_types( $original_type, $new_type );
 	gamipress_flush_rewrite_rules();
 
 	return $new_type;
-}
-
-/**
- * Replace all user metas with old points type with the new one.
- *
- * @since  1.0.0
- *
- * @param  string 	$original_type Original points type.
- * @param  string 	$new_type      New points type.
- * @return integer                 User metas updated count.
- */
-function gamipress_update_user_meta_points_types( $original_type = '', $new_type = '' ) {
-
-	global $wpdb;
-
-	return $wpdb->get_results( $wpdb->prepare(
-		"
-		UPDATE $wpdb->usermeta
-		SET meta_key = %s
-		WHERE meta_key = %s
-		",
-		"_gamipress_{$new_type}_points",
-		"_gamipress_{$original_type}_points"
-	) );
-
 }
 
 /**
@@ -1068,30 +1045,110 @@ function gamipress_update_user_meta_points_types( $original_type = '', $new_type
  *
  * @since  1.2.7
  *
- * @param  string 	$original_type Original points type.
- * @param  string 	$new_type      New points type.
- * @return integer                 Post metas updated count.
+ * @param  string 	            $original_type  Original points type.
+ * @param  string 	            $new_type       New points type.
+ *
+ * @return array|object|null                    Post metas updated.
  */
-function gamipress_update_points_awards_points_type( $original_type = '', $new_type = '' ) {
+function gamipress_update_post_meta_points_type( $original_type = '', $new_type = '' ) {
 
 	global $wpdb;
 
 	$postmeta = GamiPress()->db->postmeta;
 
 	return $wpdb->get_results( $wpdb->prepare(
-		"
-		UPDATE $postmeta
+		"UPDATE {$postmeta}
 		SET meta_value = %s
 		WHERE meta_key = %s
-		AND meta_value = %s
-		",
+		AND meta_value = %s",
 		$new_type,
 		"_gamipress_points_type",
-		"$original_type"
+        $original_type
 	) );
 
 }
 
+/**
+ * Replace all user metas with old points type with the new one.
+ *
+ * @since  1.0.0
+ *
+ * @param  string 	            $original_type  Original points type.
+ * @param  string 	            $new_type       New points type.
+ *
+ * @return array|object|null                    User metas updated.
+ */
+function gamipress_update_user_meta_points_types( $original_type = '', $new_type = '' ) {
+
+    global $wpdb;
+
+    return $wpdb->get_results( $wpdb->prepare(
+        "UPDATE {$wpdb->usermeta}
+		SET meta_key = %s
+		WHERE meta_key = %s",
+        "_gamipress_{$new_type}_points",
+        "_gamipress_{$original_type}_points"
+    ) );
+
+}
+
+/**
+ * Replace all logs metas with old points type with the new one.
+ *
+ * @since  1.7.5
+ *
+ * @param  string 	            $original_type  Original points type.
+ * @param  string 	            $new_type       New points type.
+ *
+ * @return array|object|null                    Logs metas updated.
+ */
+function gamipress_update_logs_metas_points_types( $original_type = '', $new_type = '' ) {
+
+    global $wpdb;
+
+    $logs_meta = GamiPress()->db->logs_meta;
+
+    $result = $wpdb->get_results( $wpdb->prepare(
+        "UPDATE {$logs_meta}
+		SET meta_value = %s
+		WHERE meta_key = %s
+		AND meta_value = %s",
+        $new_type,
+        "_gamipress_points_type",
+        $original_type
+    ) );
+
+    return $result;
+
+}
+
+/**
+ * Replace all user earnings with old points type with the new one.
+ *
+ * @since  1.7.5
+ *
+ * @param  string 	            $original_type  Original points type.
+ * @param  string 	            $new_type       New points type.
+ *
+ * @return array|object|null                    User earnings updated.
+ */
+function gamipress_update_user_earnings_points_types( $original_type = '', $new_type = '' ) {
+
+    global $wpdb;
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    $result = $wpdb->get_results( $wpdb->prepare(
+        "UPDATE {$user_earnings}
+		SET points_type = %s
+		WHERE points_type = %s",
+        $new_type,
+        $original_type
+    ) );
+
+    return $result;
+
+}
 
 /**
  * Redirect to include custom rename message.

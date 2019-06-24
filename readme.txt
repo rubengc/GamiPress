@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.2
-Stable tag: 1.7.4.2
+Stable tag: 1.7.5
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -113,6 +113,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [Conditional Emails Recipients](https://wordpress.org/plugins/gamipress-conditional-emails-recipients/) - Add custom recipients on conditional emails.
 * [Leaderboards Include/Exclude Users](https://wordpress.org/plugins/gamipress-leaderboards-include-exclude-users/) - Include or exclude specific users or roles on any GamiPress leaderboard.
 * [LearnDash Group Leaderboard](https://wordpress.org/plugins/gamipress-learndash-group-leaderboard/) - Automatically create a GamiPress leaderboard of LearnDash group members.
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
@@ -260,6 +261,12 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.7.5 =
+
+* **Improvements**
+* On rename a points type update logs metas and user earnings with old points type.
+* Added support to multiples conditional field values on Gutenberg fields.
 
 = 1.7.4.2 =
 

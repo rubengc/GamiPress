@@ -1285,22 +1285,18 @@ function gamipress_update_earned_meta_rank_types( $original_type = '', $new_type
     $ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
     $ct_table->db->update(
-        array(
-            'post_type' => $new_type
-        ),
-        array(
-            'post_type' => $original_type
-        )
+        array( 'post_type' => $new_type ),
+        array( 'post_type' => $original_type )
     );
+
+    ct_reset_setup_table();
 
     global $wpdb;
 
     $wpdb->get_results( $wpdb->prepare(
-        "
-		UPDATE $wpdb->usermeta
+        "UPDATE {$wpdb->usermeta}
 		SET meta_key = %s
-		WHERE meta_key = %s
-		",
+		WHERE meta_key = %s",
         "_gamipress_{$new_type}_rank",
         "_gamipress_{$original_type}_rank"
     ) );

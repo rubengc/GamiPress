@@ -1129,13 +1129,11 @@ function gamipress_update_earned_meta_achievement_types( $original_type = '', $n
 	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
 	$ct_table->db->update(
-		array(
-			'post_type' => $new_type
-		),
-		array(
-			'post_type' => $original_type
-		)
+		array( 'post_type' => $new_type ),
+		array( 'post_type' => $original_type )
 	);
+
+	ct_reset_setup_table();
 
 }
 
@@ -1199,12 +1197,10 @@ function gamipress_get_achievement_metas( $meta_key = '', $original_type = '' ) 
 	global $wpdb;
 
 	return $wpdb->get_results( $wpdb->prepare(
-		"
-		SELECT *
-		FROM   $wpdb->usermeta
+		"SELECT *
+		FROM   {$wpdb->usermeta}
 		WHERE  meta_key = %s
-		       AND meta_value LIKE '%%%s%%'
-		",
+		       AND meta_value LIKE '%%%s%%'",
 		$meta_key,
 		$original_type
 	) );

@@ -277,6 +277,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.5 ###
+
+* **Improvements**
+* On rename a points type update logs metas and user earnings with old points type.
+* Added support to multiples conditional field values on Gutenberg fields.
+
 ### 1.7.4.2 ###
 
 * **Bug Fixes**
