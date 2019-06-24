@@ -106,6 +106,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [Conditional Emails Recipients](https://wordpress.org/plugins/gamipress-conditional-emails-recipients/) - Add custom recipients on conditional emails.
 * [Leaderboards Include/Exclude Users](https://wordpress.org/plugins/gamipress-leaderboards-include-exclude-users/) - Include or exclude specific users or roles on any GamiPress leaderboard.
 * [LearnDash Group Leaderboard](https://wordpress.org/plugins/gamipress-learndash-group-leaderboard/) - Automatically create a GamiPress leaderboard of LearnDash group members.
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/) - Add a new tab on BuddyPress groups with a GamiPress leaderboard of group members.
