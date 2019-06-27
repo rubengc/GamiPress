@@ -88,6 +88,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
 * [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/)
 * [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
+* [WP Job Manager](https://wordpress.org/plugins/gamipress-wp-job-manager-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
