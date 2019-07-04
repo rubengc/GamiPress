@@ -367,8 +367,8 @@ function gamipress_plugins_api() {
 
         $res = (array) $res->products;
 
-        // Set a transient of 24 hours with api plugins
-        set_transient( 'gamipress_plugins_api', $res, 24 * HOUR_IN_SECONDS );
+        // Set a transient of 48 hours with api plugins
+        set_transient( 'gamipress_plugins_api', $res, 48 * HOUR_IN_SECONDS );
     }
 
     return $res;

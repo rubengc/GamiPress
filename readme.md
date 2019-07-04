@@ -95,7 +95,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Events Manager](https://wordpress.org/plugins/gamipress-events-manager-integration/)
 * [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
 * [wpForo](https://wordpress.org/plugins/gamipress-wpforo-integration/)
-* [AnsPress](https://wordpress.org/plugins/gamipress-anspress-integration/)
+* [Invite Anyone](https://wordpress.org/plugins/gamipress-invite-anyone-integration/)
 * [WP Ulike](https://wordpress.org/plugins/gamipress-wp-ulike-integration/)
 * [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
 * [WP Polls](https://wordpress.org/plugins/gamipress-wp-polls-integration/)
@@ -284,6 +284,8 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * **Improvements**
 * On rename a points type update logs metas and user earnings with old points type.
 * Added support to multiples conditional field values on Gutenberg fields.
+* **Developer Notes**
+* Increased GamiPress plugins API transient expiration time from 24 to 48 hours.
 
 ### 1.7.4.2 ###
 
