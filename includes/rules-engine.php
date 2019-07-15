@@ -430,7 +430,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
         $last_activity          = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
 		// Get user points earned since last time has earning the achievement
-		$awarded_points    		= gamipress_get_user_points_awarded( $user_id, $points_type_required, $last_activity - 2 );
+		$awarded_points    		= gamipress_get_last_updated_user_points( $user_id, $points_type_required );
 
 		if( $awarded_points >= $points_required ) {
 
@@ -950,19 +950,20 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
         // Grab our user's points and see if they at least as many as required
         $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
         $points_type_required   = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_required' );
+        $multiple_award_key     = "gamipress_doing_multiple_{$points_type_required}_award";
 
         // Check if we are in a loop of multiple points to award
-        if( ! ( isset( $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] ) && $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] === true ) ) {
+        if( ! ( isset( $GLOBALS[$multiple_award_key] ) && $GLOBALS[$multiple_award_key] === true ) ) {
 
             $last_achievement_activity = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
             // Get user points earned since last time has earning the achievement
-            $user_last_points = gamipress_get_user_points_awarded( $user_id, $points_type_required, $last_achievement_activity - 2 );
+            $user_last_points = gamipress_get_last_updated_user_points( $user_id, $points_type_required );
 
             if( $user_last_points >= $points_required && $points_required > 0 ) {
 
                 // Starting multiple points award
-                $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] = true;
+                $GLOBALS[$multiple_award_key] = true;
 
                 // Set times to award
                 $times_to_award = intval( $user_last_points / $points_required ) - 1; // -1 is to prevent award the current one
@@ -992,7 +993,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
                 }
 
                 // Ending multiple points award
-                $GLOBALS["gamipress_doing_multiple_{$points_type_required}_award"] = false;
+                $GLOBALS[$multiple_award_key] = false;
 
             }
 

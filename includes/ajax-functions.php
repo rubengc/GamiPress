@@ -472,6 +472,7 @@ add_action( 'wp_ajax_gamipress_get_achievements_options_html', 'gamipress_achiev
  * @since 1.3.1
  */
 function gamipress_ajax_get_ranks_options_html() {
+
 	global $wpdb;
 
 	// Post type conditional
@@ -497,7 +498,7 @@ function gamipress_ajax_get_ranks_options_html() {
 		$selected = $_REQUEST['selected'];
 	}
 
-	$posts    	= GamiPress()->db->posts;
+	$posts = GamiPress()->db->posts;
 
 	$ranks = $wpdb->get_results(
 	    "SELECT p.ID, p.post_title
@@ -516,6 +517,7 @@ function gamipress_ajax_get_ranks_options_html() {
 	// Send back our results and die like a man
 	echo $output;
 	die();
+
 }
 add_action( 'wp_ajax_gamipress_get_ranks_options_html', 'gamipress_ajax_get_ranks_options_html' );
 

@@ -114,9 +114,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     wp_enqueue_script( 'gamipress-admin-js' );
 
     if(
-        $post_type === 'points-type'
-        || $post_type === 'achievement-type'
-        || $post_type === 'rank-type'
+        in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) )
         || in_array( $post_type, gamipress_get_achievement_types_slugs() )
         || in_array( $post_type, gamipress_get_rank_types_slugs() )
         || $hook === 'widgets.php'

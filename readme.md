@@ -281,7 +281,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ### 1.7.5 ###
 
+* **Bug Fixes**
+* Fixed detection of points earned when awards engine awards a requirement with "Earn an amount of points" event multiple times.
+* Fixed Javascript assets load on user edit screen when a third party plugin creates an editor on this screen.
 * **Improvements**
+* Performance improvements on last points awarded detection.
 * On rename a points type update logs metas and user earnings with old points type.
 * Added support to multiples conditional field values on Gutenberg fields.
 * **Developer Notes**

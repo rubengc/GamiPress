@@ -46,11 +46,10 @@ class GamiPress_Shortcodes_Editor {
 	 */
 	public function admin_scripts( $hook ) {
 
-		global $post_type;
-
 		if(
-			( in_array( $hook, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) ) && post_type_supports( $post_type, 'editor' ) 	// Add/edit views of post types that supports editor feature
-			|| $hook === 'gamipress_page_gamipress_settings'																						// GamiPress settings screen
+            in_array( $hook, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) // Add/edit post screen
+			|| $hook === 'gamipress_page_gamipress_settings'		                            // GamiPress settings screen
+            || in_array( $hook, array( 'profile.php', 'user-edit.php' ) )                       // User edit screen (added to avoid issues with plugins that creates an editor on user profile)
 		) {
 
 			$min = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
