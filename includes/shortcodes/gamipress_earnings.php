@@ -19,6 +19,7 @@ function gamipress_register_earnings_shortcode() {
     gamipress_register_shortcode( 'gamipress_earnings', array(
         'name'            => __( 'User Earnings', 'gamipress' ),
         'description'     => __( 'Output a list of user earnings.', 'gamipress' ),
+        'group' 	      => 'gamipress',
         'output_callback' => 'gamipress_earnings_shortcode',
         'tabs' => array(
             'general' => array(

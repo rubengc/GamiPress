@@ -15,6 +15,7 @@ class GamiPress_Shortcode {
 	public $description     = '';
 	public $slug            = '';
 	public $icon            = '';
+	public $group           = '';
 	public $output_callback = '';
 	public $tabs 			= array();
 	public $fields      	= array();
@@ -105,6 +106,7 @@ class GamiPress_Shortcode {
             'name'              => '',
             'description'       => '',
             'icon'              => 'gamipress',
+            'group'             => 'others',
             'output_callback'   => '',
             'tabs' 			    => array(),
             'fields'      	    => array(),
@@ -113,6 +115,7 @@ class GamiPress_Shortcode {
 		$this->name             = $args['name'];
 		$this->description      = $args['description'];
 		$this->icon             = $args['icon'];
+		$this->group            = $args['group'];
 		$this->output_callback  = $args['output_callback'];
 
 		// Filter to register custom shortcode tabs

@@ -130,15 +130,61 @@ class GamiPress_Shortcodes_Editor {
 	/**
 	 * Generate the shortcode selector options
 	 *
-	 * @since 1.0.0
+	 * @since   1.0.0
+	 * @updated 1.7.6 Added support for shortcode groups
 	 *
 	 * @return string
 	 */
 	private function get_shortcode_selector() {
-		$output = '';
 
-		foreach( $this->shortcodes as $shortcode ) {
-			$output .= sprintf( '<option value="%1$s">%2$s</option>', $shortcode->slug, $shortcode->name );
+	    // Setup vars
+		$output = '';
+        $current_group = '';
+		$groups = gamipress_get_shortcodes_groups();
+
+		$shortcodes = array();
+
+		// Make a first loop to reorder all shortcodes by group
+        foreach( $this->shortcodes as $shortcode ) {
+
+            $group = $shortcode->group;
+
+            // If group is not registered fallback to others
+            if( ! isset( $groups[$group] ) ) $group = 'others';
+
+            // Initialize shortcode group array
+            if( ! isset( $shortcodes[$group] ) ) $shortcodes[$group] = array();
+
+            // Add the shortcode to the group
+            $shortcodes[$group][] = $shortcode;
+        }
+
+        // Move others to the end
+        $others = $shortcodes['others'];
+
+        unset( $shortcodes['others'] );
+
+        $shortcodes['others'] = $others;
+
+		foreach( $shortcodes as $group => $group_shortcodes ) {
+
+            if( $current_group !== $group ) {
+
+                // Close the previous group
+                if( $current_group !== '' ) $output .= '</optgroup>';
+
+                // Render the shortcode group
+                $output .= sprintf( '<optgroup label="%1$s">', $groups[$group] );
+
+                // Set the current group for next loop
+                $current_group = $group;
+
+            }
+
+            // Render the group shortcodes as options
+            foreach( $group_shortcodes as $shortcode )
+                $output .= sprintf( '<option value="%1$s">%2$s</option>', $shortcode->slug, $shortcode->name );
+
 		}
 
 		return $output;

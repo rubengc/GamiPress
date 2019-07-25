@@ -18,10 +18,14 @@
         var inputs = gamipress_get_shortcode_inputs( shortcode );
 
         $.each( inputs, function( index, el ) {
-            var key, value;
+            var key, field, value, fields, values, i;
+            var row = $(el).closest('.cmb-row');
+
+            // Skip repeatable fields pattern
+            if( row.hasClass('empty-row') && row.hasClass('hidden') ) return true;
 
             // Turn array of repeatable field into a comma separated values
-            if( $(el).closest('.cmb-row').hasClass('cmb-repeat-row') ) {
+            if( row.hasClass('cmb-repeat-row') ) {
                 // Repeatable
 
                 key = el.name.replace( shortcode + '_', '').replace('[]', '');
@@ -36,23 +40,49 @@
 
                     var field_name = el.name.split('[')[0];
 
-                   // Look at all fields
-                    var fields = $(el).closest('.cmb-tbody').find('[name^="' + field_name + '"]');
-                    var values = [];
+                    // Look at all fields
+                    fields = $(el).closest('.cmb-tbody').find('[name^="' + field_name + '"]');
+                    values = [];
 
-                    // Loop all fields and make a comma separated attr value
-                    for( var i=0; i < fields.length; i++ ) {
+                    // Loop all fields and make an array with all values
+                    // Note: loop max is set to length-1 to skip pattern field
+                    for( i=0; i < fields.length-1; i++ ) {
+                        field = $(fields[i]);
 
-                        var field = $(fields[i]);
-
-                        if( field.val().length ) {
+                        if( field.val().length )
                             values.push( field.val() );
-                        }
                     }
 
-                    attrs[key] = values.join(',');
+                    // Setup a comma-separated list of values as attribute value
+                    if( values.length )
+                        attrs[key] = values.join(',');
 
                 }
+            } else if( row.data('fieldtype') === 'multicheck' ) {
+                // Multicheck
+
+                key = el.name.replace( shortcode + '_', '').replace('[]', '');
+
+                // Skip empty shortcode keys
+                if( key === '' ) return true;
+
+                // Look at checked fields
+                fields = $(el).closest('.cmb2-checkbox-list').find('[name^="' + el.name + '"]:checked');
+                values = [];
+
+                // Loop checked fields and make an array with all values
+                for( i=0; i < fields.length; i++ ) {
+
+                    field = $(fields[i]);
+
+                    if( field.val().length )
+                        values.push( field.val() );
+                }
+
+                // Setup a comma-separated list of values as attribute value
+                if( values.length )
+                    attrs[key] = values.join(',');
+
             } else {
                 // Single
 
@@ -81,9 +111,9 @@
                 }
 
                 if (value !== '' && value !== undefined && value !== null ) {
-
                     attrs[key] = value;
                 }
+
             }
         });
 

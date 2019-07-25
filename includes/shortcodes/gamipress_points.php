@@ -20,6 +20,7 @@ function gamipress_register_points_shortcode() {
         'name'              => __( 'User Points Balance', 'gamipress' ),
         'description'       => __( 'Output an user points balance.', 'gamipress' ),
         'icon' 	            => 'star-filled',
+        'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_points_shortcode',
         'fields'      => array(
             'type' => array(
@@ -311,11 +312,7 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
 
         // Template rendering
         ob_start();
-        if( $is_single_type ) {
-            gamipress_get_template_part( 'points', $atts['type'] );
-        } else {
-            gamipress_get_template_part( 'points' );
-        }
+        gamipress_get_template_part( 'points', ( $is_single_type ? $atts['type'] : null ) );
         $output = ob_get_clean();
 
     }

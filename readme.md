@@ -279,6 +279,17 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.6 ###
+
+* **New Features**
+* Added support for shortcode groups on Shortcodes Editor.
+* **Bug Fixes**
+* Prevent to take field values from repeatable patterns on Shortcodes Editor.
+* **Improvements**
+* Style improvements for repeatable color pickers on Shortcodes Editor.
+* **Developer Notes**
+* Added support for multicheck fields on Shortcodes Editor.
+
 ### 1.7.5 ###
 
 * **Bug Fixes**

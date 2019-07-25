@@ -554,6 +554,28 @@ li.requirement-row.requirement-disabled {
 	display: none;
 }
 
+#gamipress-awards-options td img {
+	float: left;
+	margin-right: 10px;
+}
+
+#gamipress-awards-options .spinner,
+.gamipress_user_earnings .gamipress-revoke-user-earning + .spinner {
+	float: none;
+	margin: 3px 0 0 4px;
+	background-size: 14px 14px;
+	width: 14px;
+	height: 14px;
+	vertical-align: top;
+}
+
+.gamipress-award-achievement.disabled,
+.gamipress-revoke-achievement.disabled,
+.gamipress-revoke-user-earning.disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
 /* -------------------------------------------
 	Shortcode Editor
    ------------------------------------------- */
@@ -603,9 +625,13 @@ li.requirement-row.requirement-disabled {
 	padding: 5px 40px 5px 40px;
 }
 
-.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row input,
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row input:not(.button),
 .gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row select {
 	width: 100%;
+}
+
+.gamipress-shortcode-thickbox .cmb2-wrap .cmb-field-list .cmb-row.cmb-repeat-row input.wp-color-picker {
+	min-width: 165px;
 }
 
 .gamipress-shortcode-thickbox .cmb2-wrap .cmb-row.cmb-repeat-row .cmb-td.cmb-remove-row {
@@ -672,28 +698,6 @@ li.requirement-row.requirement-disabled {
 	.gamipress-shortcode-thickbox .wrap {
 		padding-left: 12px;
 	}
-}
-
-#gamipress-awards-options td img {
-	float: left;
-	margin-right: 10px;
-}
-
-#gamipress-awards-options .spinner,
-.gamipress_user_earnings .gamipress-revoke-user-earning + .spinner {
-	float: none;
-	margin: 3px 0 0 4px;
-	background-size: 14px 14px;
-	width: 14px;
-	height: 14px;
-	vertical-align: top;
-}
-
-.gamipress-award-achievement.disabled,
-.gamipress-revoke-achievement.disabled,
-.gamipress-revoke-user-earning.disabled {
-	opacity: 0.6;
-	cursor: not-allowed;
 }
 
 /* Shortcode Editor tabs */

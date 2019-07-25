@@ -20,6 +20,7 @@ function gamipress_register_points_types_shortcode() {
         'name'              => __( 'Points Types', 'gamipress' ),
         'description'       => __( 'Output a list of points types with their points awards.', 'gamipress' ),
         'icon' 	            => 'star-filled',
+        'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_points_types_shortcode',
         'fields'      => array(
             'type' => array(
@@ -236,11 +237,7 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
     }
 
     ob_start();
-    if( $is_single_type ) {
-        gamipress_get_template_part( 'points-types', $atts['type'] );
-    } else {
-        gamipress_get_template_part( 'points-types' );
-    }
+    gamipress_get_template_part( 'points-types', ( $is_single_type ? $atts['type'] : null ) );
     $output = ob_get_clean();
 
     /**

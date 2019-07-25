@@ -20,6 +20,7 @@ function gamipress_register_achievement_shortcode() {
 		'name'            	=> __( 'Single Achievement', 'gamipress' ),
 		'description'     	=> __( 'Render a single achievement.', 'gamipress' ),
 		'icon' 	            => 'awards',
+		'group' 	        => 'gamipress',
 		'output_callback' 	=> 'gamipress_achievement_shortcode',
 		'fields'      		=> array(
 			'id' => array(

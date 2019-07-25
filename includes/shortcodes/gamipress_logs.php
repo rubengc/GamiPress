@@ -19,8 +19,9 @@ function gamipress_register_logs_shortcode() {
     gamipress_register_shortcode( 'gamipress_logs', array(
         'name'              => __( 'Logs', 'gamipress' ),
         'description'       => __( 'Output a list of logs.', 'gamipress' ),
-        'output_callback'   => 'gamipress_logs_shortcode',
         'icon' 	            => 'editor-ul',
+        'group' 	        => 'gamipress',
+        'output_callback'   => 'gamipress_logs_shortcode',
         'fields'      => array(
             'type' => array(
                 'name'              => __( 'Log Type(s)', 'gamipress' ),

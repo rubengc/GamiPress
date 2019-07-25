@@ -20,6 +20,7 @@ function gamipress_register_rank_shortcode() {
 		'name'              => __( 'Single Rank', 'gamipress' ),
 		'description'       => __( 'Render a single rank.', 'gamipress' ),
         'icon' 	            => 'rank',
+        'group' 	        => 'gamipress',
 		'output_callback'   => 'gamipress_rank_shortcode',
 		'fields'      	  => array(
 			'id' => array(

@@ -55,6 +55,22 @@ function gamipress_get_shortcodes() {
 }
 
 /**
+ * Get all registered shortcodes groups.
+ *
+ * @since  1.7.6
+ *
+ * @return array Registered shortcodes groups.
+ */
+function gamipress_get_shortcodes_groups() {
+
+    return apply_filters( 'gamipress_shortcodes_groups', array(
+        'gamipress' => __( 'GamiPress', 'gamipress' ),
+        'others'    => __( 'Others', 'gamipress' ),
+    ) );
+
+}
+
+/**
  * Add all shortcodes to the help page.
  *
  * @since 1.0.0
@@ -95,7 +111,7 @@ function gamipress_shortcode_help_render_help( $shortcode ) {
 }
 
 /**
- * Render attributes portion of shordcode help section.
+ * Render attributes portion of shortcode help section.
  *
  * @since  1.0.0
  *

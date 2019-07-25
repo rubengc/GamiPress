@@ -24,6 +24,7 @@ function gamipress_register_achievements_shortcode() {
 		'name'              => __( 'Achievement List', 'gamipress' ),
 		'description'       => __( 'Output a list of achievements.', 'gamipress' ),
         'icon' 	            => 'awards',
+        'group' 	        => 'gamipress',
 		'output_callback'   => 'gamipress_achievements_shortcode',
 		'tabs' => array(
 			'general' => array(
