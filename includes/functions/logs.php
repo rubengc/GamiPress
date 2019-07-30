@@ -126,6 +126,7 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context
  *
  * @since   1.6.0
  * @updated 1.6.9 Added 'where' and 'get_var' arguments, improvements on query args processing and support to where definition in format: array( 'key' =>'key', 'value' =>'value', 'compare' =>'compare' )
+ * @updated 1.7.6 Added support for array selects and to group_by parameter
  *
  * @param array $args
  *
@@ -139,10 +140,11 @@ function gamipress_query_logs( $args ) {
     $logs_meta 	= GamiPress()->db->logs_meta;
 
     $args = wp_parse_args( $args, array(
-        'select'            => 'l.id',  // You can pass 'l.*', 'l.{field}' or 'COUNT(*)' as select
+        'select'            => 'l.id',  // You can pass 'l.*', 'l.{field}', 'COUNT(*)' or an array as select
         'where'      	    => array(), // Supported formats: 'key' =>'value' | array( 'key' =>'key', 'value' =>'value', 'compare' =>'compare' )
         'date_query'      	=> array(), // Supports before and after parameters
         'user_id'           => 0,
+        'group_by'          => '',
         'order_by'          => 'l.date',
         'order'             => 'DESC',
         'limit'             => 0,
@@ -158,20 +160,6 @@ function gamipress_query_logs( $args ) {
         $args['where'] = array_merge( $args['where'], $args['meta'] );
     }
 
-    // Initialize query definitions
-    $joins      = array();
-    $where      = array();
-    $query_args = array();
-
-    // User ID
-    if( absint( $args['user_id'] ) !== 0 ) {
-
-        $where[] = "l.user_id = %s";
-
-        $query_args[] = $args['user_id'];
-
-    }
-
     $log_fields = array(
         'log_id',
         'title',
@@ -182,7 +170,59 @@ function gamipress_query_logs( $args ) {
         'date'
     );
 
-    // Log where
+    // Initialize query definitions
+    $select     = array();
+    $joins      = array();
+    $where      = array();
+    $query_args = array();
+
+    // Select
+    if( is_array( $args['select'] ) ) {
+
+        foreach( $args['select'] as $key => $value ) {
+
+            if( isset( $value['field'] ) ) {
+                $field = $value['field'];
+            } else {
+                $field = $key;
+            }
+
+            if( in_array( $field, $log_fields ) ) {
+                $get_key = "l.{$field}";
+            } else {
+
+                $index = count( $joins );
+
+                $get_key = "lm{$index}.meta_value";
+                $joins[] = "INNER JOIN {$logs_meta} AS lm{$index} ON ( lm{$index}.log_id = l.log_id AND lm{$index}.meta_key = %s )";
+                $query_args[] = $field;
+            }
+
+            if ( isset( $value['function'] ) && $value['function'] ) {
+                $get = "{$value['function']}({$get_key})";
+            } else if ( isset( $value['cast'] ) && $value['cast'] ) {
+                $get = "CAST({$get_key} AS {$value['cast']})";
+            } else {
+                $get = "{$get_key}";
+            }
+
+            $select[] = "{$get} as `{$key}`";
+
+        }
+
+        $args['select'] = ( ! empty( $select ) ? implode( ', ', $select ) : '' );
+    }
+
+    // User ID
+    if( absint( $args['user_id'] ) !== 0 ) {
+
+        $where[] = "l.user_id = %s";
+
+        $query_args[] = $args['user_id'];
+
+    }
+
+    // Where
 
     if( isset( $args['where'] ) && is_array( $args['where'] ) ) {
 
@@ -255,33 +295,29 @@ function gamipress_query_logs( $args ) {
 
     // Date query before
     if( isset( $args['date_query']['before'] ) && ! empty( $args['date_query']['before'] ) ) {
-
         $where[] = "l.date <= %s";
         $query_args[] = $args['date_query']['before'];
-
     }
 
     // Date query after
     if( isset( $args['date_query']['after'] ) && ! empty( $args['date_query']['after'] ) ) {
-
         $where[] = "l.date >= %s";
         $query_args[] = $args['date_query']['after'];
-
-    }
-
-    if( ( isset( $args['date_query']['before'] ) || isset( $args['date_query']['after'] ) )
-        && ( ! empty( $args['date_query']['before'] ) || ! empty( $args['date_query']['after'] ) ) ) {
-
     }
 
     // Since
     if( absint( $args['since'] ) > 0 ) {
-
         $date = date( 'Y-m-d H:i:s', $args['since'] );
 
         $where[] = "l.date >= %s";
         $query_args[] = $date;
+    }
 
+    // Group By
+    $group_by = '';
+
+    if( ! empty( $args['group_by'] ) ) {
+        $group_by = 'GROUP BY ' . $args['group_by'];
     }
 
     // Order By
@@ -303,6 +339,7 @@ function gamipress_query_logs( $args ) {
          FROM {$logs} AS l
          {$joins}
          {$where}
+         {$group_by}
          {$order_by}
          {$limit}",
         $query_args
