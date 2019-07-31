@@ -126,7 +126,7 @@ function gamipress_get_log_pattern_tags_html( $specific_tags = array(), $context
  *
  * @since   1.6.0
  * @updated 1.6.9 Added 'where' and 'get_var' arguments, improvements on query args processing and support to where definition in format: array( 'key' =>'key', 'value' =>'value', 'compare' =>'compare' )
- * @updated 1.7.6 Added support for array selects and to group_by parameter
+ * @updated 1.7.6 Added support for array selects, to group_by parameter and the output parameter
  *
  * @param array $args
  *
@@ -150,6 +150,7 @@ function gamipress_query_logs( $args ) {
         'limit'             => 0,
         'since'             => 0,
         'get_var'           => false,   // Force the use of get_var() function
+        'output'            => OBJECT,  // Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants.
 
         // Deprecated
         'meta'      	    => array(),
@@ -349,7 +350,7 @@ function gamipress_query_logs( $args ) {
         // If is a count, ensure return an integer
         $logs = absint( $wpdb->get_var( $sql ) );
     } else {
-        $logs = $wpdb->get_results( $sql );
+        $logs = $wpdb->get_results( $sql, $args['output'] );
     }
 
 

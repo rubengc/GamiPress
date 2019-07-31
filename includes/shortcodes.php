@@ -96,7 +96,7 @@ function gamipress_shortcode_help_render_help( $shortcode ) {
 		'<hr/>
 		<h3>%1$s &ndash; [%2$s]</h3>
 		<p>%3$s</p>
-		<ul style="margin:1em 2em; padding:1em;">
+		<ul>
 		<li><strong>%4$s</strong></li>
 		%5$s
 		</ul>
@@ -195,6 +195,9 @@ function gamipress_shortcode_help_attributes( $key, $value ) {
 			$value = is_multisite() ? 'yes' : 'no';
 			break;
 	}
+
+	if( is_array( $value ) )
+        $value = implode( ',', $value );
 
 	return "{$key}=\"$value\"";
 
