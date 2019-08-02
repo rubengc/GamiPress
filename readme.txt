@@ -276,6 +276,8 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Added support to multiples selects on query logs function.
 * Added support to group_by to query logs function.
 * Added support to output parameter on query logs function.
+* New Gutenberg component: MultiCheckboxControl (works equal than RadioControl but with checkboxes).
+* Added support for multicheck fields through MultiCheckboxControl on Gutenberg blocks.
 
 = 1.7.5 =
 
