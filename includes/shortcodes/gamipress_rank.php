@@ -133,9 +133,11 @@ add_action( 'init', 'gamipress_register_rank_shortcode' );
  */
 function gamipress_rank_shortcode( $atts = array(), $content = '' ) {
 
+    $shortcode = 'gamipress_rank';
+
     $original_atts = $atts;
 
-	$atts = shortcode_atts( gamipress_rank_shortcode_defaults(), $atts, 'gamipress_rank' );
+	$atts = shortcode_atts( gamipress_rank_shortcode_defaults(), $atts, $shortcode );
 
     // ---------------------------
     // Shortcode Errors
@@ -151,11 +153,11 @@ function gamipress_rank_shortcode( $atts = array(), $content = '' ) {
 
     // Return if rank id not specified
     if ( empty( $original_atts['id'] ) && ! $is_rank )
-        return gamipress_shortcode_error( __( 'Please, provide the id attribute.', 'gamipress' ), 'gamipress_rank' );
+        return gamipress_shortcode_error( __( 'Please, provide the rank ID.', 'gamipress' ), $shortcode );
 
     // Check if we're dealing with a rank post
     if ( ! $is_rank )
-        return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid rank.', 'gamipress' ), 'gamipress_rank' );
+        return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid rank.', 'gamipress' ), $shortcode );
 
     // ---------------------------
     // Shortcode Processing

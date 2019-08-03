@@ -145,6 +145,8 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
+    $shortcode = 'gamipress_points';
+
     $atts = shortcode_atts( array(
         // Points atts
         'type'          => 'all',
@@ -159,7 +161,7 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
         'columns'       => '1',
         'layout'        => 'left',
         'wpms'          => 'no',
-    ), $atts, 'gamipress_points' );
+    ), $atts, $shortcode );
 
     // Single type check to use dynamic template
     $is_single_type = false;
@@ -191,7 +193,7 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
 
         // Check if points type is valid
         if ( ! in_array( $atts['type'], gamipress_get_points_types_slugs() ) )
-            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered points type.', 'gamipress' ), 'gamipress_points' );
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered points type.', 'gamipress' ), $shortcode );
 
     } else if( $atts['type'] !== 'all' ) {
 
@@ -205,7 +207,7 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
 
         // just notify error if all types are wrong
         if( $all_types_wrong )
-            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered points types.', 'gamipress' ), 'gamipress_points' );
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered points types.', 'gamipress' ), $shortcode );
 
     }
 

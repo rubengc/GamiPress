@@ -241,6 +241,32 @@ add_filter( 'gamipress_gamipress_ranks_shortcode_fields', 'gamipress_shortcodes_
  */
 function gamipress_shortcode_error( $error_message, $shortcode ) {
 
+    global $gamipress_renderer, $gamipress_current_widget, $wp;
+
+    // Support for block Rest API rendering
+    if( isset( $wp->query_vars[ 'rest_route' ] )
+        && ! empty( $wp->query_vars[ 'rest_route' ] )
+        && strpos( $wp->query_vars[ 'rest_route' ], 'block-renderer' ) !== false ) {
+        $gamipress_renderer = 'block';
+    }
+
+    // Setup label and shortcode label to customize message for shortcodes, widgets or blocks
+    switch( $gamipress_renderer ) {
+        case 'widget':
+            $label = __( 'Widget:', 'gamipress' );
+            $shortcode_label = $gamipress_current_widget->name;
+            break;
+        case 'block':
+            $label = __( 'Block:', 'gamipress' );
+            $shortcode_label = GamiPress()->shortcodes[$shortcode]->name;
+            break;
+        case 'shortcode':
+        default:
+            $label = __( 'Shortcode:', 'gamipress' );
+            $shortcode_label = '&#91;' . $shortcode . '&#93;';
+            break;
+    }
+
     if( current_user_can( gamipress_get_manager_capability() ) ) {
         // Notify to admins about the error
         return '<div class="gamipress-shortcode-error">'
@@ -248,7 +274,7 @@ function gamipress_shortcode_error( $error_message, $shortcode ) {
                     . $error_message
                 . '</div>'
                 . '<div class="gamipress-shortcode-error-shortcode">'
-                    . __( 'Shortcode:', 'gamipress' ) . ' &#91;' . $shortcode . '&#93;'
+                    . $label . ' ' . $shortcode_label
                 . '</div>'
                 . '<div class="gamipress-shortcode-error-reminder">'
                     . __( 'Message visible only to administrators.', 'gamipress' )

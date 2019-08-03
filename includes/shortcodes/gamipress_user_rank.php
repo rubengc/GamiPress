@@ -125,6 +125,8 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
+    $shortcode = 'gamipress_user_rank';
+
     $atts = shortcode_atts( array_merge( array(
 
         // User rank atts
@@ -136,7 +138,7 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
         'user_id' 		=> '0',
         'columns'       => '1',
 
-    ), gamipress_rank_shortcode_defaults() ), $atts, 'gamipress_user_rank' );
+    ), gamipress_rank_shortcode_defaults() ), $atts, $shortcode );
 
     // ---------------------------
     // Shortcode Errors
@@ -144,15 +146,15 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
 
     // Not type provided
     if( $atts['type'] === '' )
-        return gamipress_shortcode_error( __( 'Please, provide the type attribute.', 'gamipress' ), 'gamipress_user_rank' );
+        return gamipress_shortcode_error( __( 'Please, provide any rank type.', 'gamipress' ), $shortcode );
 
     // Wrong rank
     if( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) )
-        return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), 'gamipress_user_rank' );
+        return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), $shortcode );
 
     // Nothing to show
     if( $atts['prev_rank'] === 'no' && $atts['current_rank'] === 'no' && $atts['next_rank'] === 'no' )
-        return gamipress_shortcode_error( __( 'None of the options to be displayed have been selected (previous, current or next). Please, select one.', 'gamipress' ), 'gamipress_user_rank' );
+        return gamipress_shortcode_error( __( 'None of the options to be displayed have been selected (previous, current or next). Please, select one.', 'gamipress' ), $shortcode );
 
     // Force to set current user as user ID
     if( $atts['current_user'] === 'yes' )
@@ -160,7 +162,7 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
 
     // Not user ID provided
     if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 )
-        return gamipress_shortcode_error( __( 'Please, provide the user_id attribute.', 'gamipress' ), 'gamipress_user_rank' );
+        return gamipress_shortcode_error( __( 'Please, provide the user ID.', 'gamipress' ), $shortcode );
 
     // Guests not supported
     if( absint( $atts['user_id'] ) === 0 )

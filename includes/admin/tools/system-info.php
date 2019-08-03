@@ -23,12 +23,12 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     global $wpdb;
 
-    //--------------------------
+    // ----------------------------------------------------
     // Server Info
-    //--------------------------
+    // ----------------------------------------------------
 
     $meta_boxes['server-info'] = array(
-        'title' => gamipress_dashicon( 'cloud' ) . __( 'Server Info', 'gamipress' ),
+        'title' => gamipress_dashicon( 'dashboard' ) . __( 'Server Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_server_info_tool_fields', array(
             'hosting_provider' => array(
@@ -36,17 +36,16 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'type' => 'display',
                 'value' => gamipress_get_hosting_provider(),
             ),
+            'php_os' => array(
+                'name' => __( 'Operating System', 'gamipress' ),
+                'type' => 'display',
+                'value' => PHP_OS,
+            ),
             'php_version' => array(
                 'name' => __( 'PHP Version', 'gamipress' ),
                 'type' => 'display',
                 'value' => PHP_VERSION,
                 'classes' => ( version_compare( PHP_VERSION, '7.0.0', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
-            ),
-            'db_version' => array(
-                'name' => __( 'MySQL Version', 'gamipress' ),
-                'type' => 'display',
-                'value' => $wpdb->db_version(),
-                'classes' => ( version_compare( $wpdb->db_version(), '5.0', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'server_software' => array(
                 'name' => __( 'Webserver Info', 'gamipress' ),
@@ -90,9 +89,69 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         ) )
     );
 
-    //--------------------------
+    // ----------------------------------------------------
+    // Database Info
+    // ----------------------------------------------------
+
+    // Check database tables
+    $logs_exists = gamipress_database_table_exists( GamiPress()->db->logs );
+    $logs_meta_exists = gamipress_database_table_exists( GamiPress()->db->logs_meta );
+    $user_earnings_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings );
+    $user_earnings_meta_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings_meta );
+    $last_upgrade = get_option( 'gamipress_version', '1.0.0' );
+    $last_required_upgrade = gamipress_get_last_required_upgrade();
+
+    $meta_boxes['db-info'] = array(
+        'title' => gamipress_dashicon( 'cloud' ) . __( 'Database Info', 'gamipress' ),
+        'classes' => 'gamipress-list-table',
+        'fields' => apply_filters( 'gamipress_db_info_tool_fields', array(
+            'db_host' => array(
+                'name' => __( 'Database Host', 'gamipress' ),
+                'type' => 'display',
+                'value' => DB_HOST,
+            ),
+            'db_version' => array(
+                'name' => __( 'MySQL Version', 'gamipress' ),
+                'type' => 'display',
+                'value' => $wpdb->db_version(),
+                'classes' => ( version_compare( $wpdb->db_version(), '5.0', '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_last_upgrade' => array(
+                'name' => __( 'Last Upgrade', 'gamipress' ),
+                'type' => 'display',
+                'value' => $last_upgrade,
+                'classes' => ( version_compare( $last_upgrade, $last_required_upgrade, '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_logs' => array(
+                'name' => __( 'Logs Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $logs_exists ? 'Yes' : 'No' ),
+                'classes' => ( $logs_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_logs_meta' => array(
+                'name' => __( 'Logs Meta Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $logs_meta_exists ? 'Yes' : 'No' ),
+                'classes' => ( $logs_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_user_earnigns' => array(
+                'name' => __( 'User Earnings Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $user_earnings_exists ? 'Yes' : 'No' ),
+                'classes' => ( $user_earnings_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+            'gamipress_user_earnigns_meta' => array(
+                'name' => __( 'User Earnings Meta Database', 'gamipress' ),
+                'type' => 'display',
+                'value' => ( $user_earnings_meta_exists ? 'Yes' : 'No' ),
+                'classes' => ( $user_earnings_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
+            ),
+        ) )
+    );
+
+    // ----------------------------------------------------
     // WordPress Info
-    //--------------------------
+    // ----------------------------------------------------
 
     $locale = get_locale();
 
@@ -204,9 +263,9 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
         ) )
     );
 
-    //--------------------------
+    // ----------------------------------------------------
     // GamiPress Info
-    //--------------------------
+    // ----------------------------------------------------
 
     // Get all points types
     $points_types = gamipress_get_points_types();
@@ -261,14 +320,6 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     }
 
-    // Check database tables
-    $logs_exists = gamipress_database_table_exists( GamiPress()->db->logs );
-    $logs_meta_exists = gamipress_database_table_exists( GamiPress()->db->logs_meta );
-    $user_earnings_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings );
-    $user_earnings_meta_exists = gamipress_database_table_exists( GamiPress()->db->user_earnings_meta );
-    $last_upgrade = get_option( 'gamipress_version', '1.0.0' );
-    $last_required_upgrade = gamipress_get_last_required_upgrade();
-
     // Get the installation date
     if( gamipress_is_network_wide_active() ) {
         $gamipress_install_date = ( $exists = get_site_option( 'gamipress_install_date' ) ) ? $exists : '';
@@ -294,36 +345,6 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Rank Types', 'gamipress' ),
                 'type' => 'display',
                 'value' => $rank_types_output,
-            ),
-            'gamipress_last_upgrade' => array(
-                'name' => __( 'Last Upgrade', 'gamipress' ),
-                'type' => 'display',
-                'value' => $last_upgrade,
-                'classes' => ( version_compare( $last_upgrade, $last_required_upgrade, '>=' ) ? 'gamipress-label-success' : 'gamipress-label-danger' ),
-            ),
-            'gamipress_logs' => array(
-                'name' => __( 'Logs Database', 'gamipress' ),
-                'type' => 'display',
-                'value' => ( $logs_exists ? 'Yes' : 'No' ),
-                'classes' => ( $logs_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
-            ),
-            'gamipress_logs_meta' => array(
-                'name' => __( 'Logs Meta Database', 'gamipress' ),
-                'type' => 'display',
-                'value' => ( $logs_meta_exists ? 'Yes' : 'No' ),
-                'classes' => ( $logs_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
-            ),
-            'gamipress_user_earnigns' => array(
-                'name' => __( 'User Earnings Database', 'gamipress' ),
-                'type' => 'display',
-                'value' => ( $user_earnings_exists ? 'Yes' : 'No' ),
-                'classes' => ( $user_earnings_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
-            ),
-            'gamipress_user_earnigns_meta' => array(
-                'name' => __( 'User Earnings Meta Database', 'gamipress' ),
-                'type' => 'display',
-                'value' => ( $user_earnings_meta_exists ? 'Yes' : 'No' ),
-                'classes' => ( $user_earnings_meta_exists ? 'gamipress-label-success' : 'gamipress-label-danger' ),
             ),
             'gamipress_select2' => array(
                 'name' => __( 'Select2 Library', 'gamipress' ),
@@ -387,7 +408,6 @@ add_filter( 'gamipress_tools_system_meta_boxes', 'gamipress_download_system_info
  * @return mixed string $host if detected, false otherwise
  */
 function gamipress_get_hosting_provider() {
-    $host = false;
 
     if( defined( 'WPE_APIKEY' ) ) {
         $host = 'WP Engine';
@@ -413,7 +433,7 @@ function gamipress_get_hosting_provider() {
         $host = 'Flywheel';
     } else {
         // Adding a general fallback for data gathering
-        $host = 'DBH: ' . DB_HOST . ', SRV: ' . $_SERVER['SERVER_NAME'] . ', OS:' . PHP_OS;
+        $host = $_SERVER['SERVER_NAME'];
     }
 
     return $host;

@@ -214,7 +214,10 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
 
     global $gamipress_template_args;
 
+    // Initialize GamiPress template args global
     $gamipress_template_args = array();
+
+    $shortcode = 'gamipress_earnings';
 
     $atts = shortcode_atts( array(
         'current_user'      => 'yes',
@@ -235,7 +238,7 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
         'ranks'             => 'yes',
         'rank_types'        => 'all',
         'rank_requirements' => 'yes',
-    ), $atts, 'gamipress_earnings' );
+    ), $atts, $shortcode );
 
     gamipress_enqueue_scripts();
 

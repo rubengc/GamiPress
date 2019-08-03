@@ -226,6 +226,8 @@ function gamipress_achievements_shortcode( $atts = array(), $content = '' ) {
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
 
+    $shortcode = 'gamipress_achievements';
+
 	$atts = shortcode_atts( array_merge( array(
 		// Achievements atts
 		'type'        	    => 'all',
@@ -243,7 +245,7 @@ function gamipress_achievements_shortcode( $atts = array(), $content = '' ) {
 		'include'     	    => '',
 		'exclude'     	    => '',
 		'wpms'        	    => 'no',
-	), gamipress_achievement_shortcode_defaults() ), $atts, 'gamipress_achievements' );
+	), gamipress_achievement_shortcode_defaults() ), $atts, $shortcode );
 
 	// Single type check to use dynamic template
 	$is_single_type = false;
@@ -261,7 +263,7 @@ function gamipress_achievements_shortcode( $atts = array(), $content = '' ) {
 
         // Check if achievement type is valid
         if ( ! in_array( $atts['type'], gamipress_get_achievement_types_slugs() ) )
-            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered achievement type.', 'gamipress' ), 'gamipress_achievements' );
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered achievement type.', 'gamipress' ), $shortcode );
 
     } else if( $atts['type'] !== 'all' ) {
 
@@ -275,7 +277,7 @@ function gamipress_achievements_shortcode( $atts = array(), $content = '' ) {
 
         // just notify error if all types are wrong
         if( $all_types_wrong )
-            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered achievement types.', 'gamipress' ), 'gamipress_achievements' );
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered achievement types.', 'gamipress' ), $shortcode );
 
     }
 

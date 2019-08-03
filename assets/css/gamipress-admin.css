@@ -1644,6 +1644,7 @@ label[for="_gamipress_sequential"] {
 }
 
 #server-info .inside,
+#db-info .inside,
 #wordpress-info .inside,
 #gamipress-info .inside {
 	padding: 0;

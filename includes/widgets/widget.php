@@ -64,6 +64,12 @@ class GamiPress_Widget extends WP_Widget {
      */
     public function widget( $args, $instance ) {
 
+        global $gamipress_renderer, $gamipress_current_widget;
+
+        // Setup renderer
+        $gamipress_renderer = 'widget';
+        $gamipress_current_widget = $this;
+
         $atts = array(
             'args'     => $args,
             'instance' => $instance,
@@ -119,6 +125,10 @@ class GamiPress_Widget extends WP_Widget {
 
         // After widget hook
         $widget .= $atts['after_widget'];
+
+        // Reset renderer
+        $gamipress_renderer = false;
+        $gamipress_current_widget = null;
 
         echo $widget;
     }

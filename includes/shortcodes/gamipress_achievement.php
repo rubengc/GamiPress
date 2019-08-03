@@ -147,9 +147,11 @@ add_action( 'init', 'gamipress_register_achievement_shortcode' );
  */
 function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
 
+    $shortcode = 'gamipress_achievement';
+
     $original_atts = $atts;
 
-	$atts = shortcode_atts( gamipress_achievement_shortcode_defaults(), $atts, 'gamipress_achievement' );
+	$atts = shortcode_atts( gamipress_achievement_shortcode_defaults(), $atts, $shortcode );
 
     // ---------------------------
 	// Shortcode Errors
@@ -161,11 +163,11 @@ function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
 
     // Return if achievement id not specified
     if ( empty( $original_atts['id'] ) && ! $is_achievement )
-        return gamipress_shortcode_error( __( 'Please, provide the id attribute.', 'gamipress' ), 'gamipress_achievement' );
+        return gamipress_shortcode_error( __( 'Please, provide the achievement ID.', 'gamipress' ), $shortcode );
 
     // Check if we're dealing with an achievement post
     if ( ! $is_achievement )
-        return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid achievement.', 'gamipress' ), 'gamipress_achievement' );
+        return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid achievement.', 'gamipress' ), $shortcode );
 
     // ---------------------------
     // Shortcode Processing

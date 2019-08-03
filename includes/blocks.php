@@ -321,6 +321,48 @@ function gamipress_remove_null_block_attributes( $out, $pairs, $atts, $shortcode
 }
 
 /**
+ * Filter block per-rendering to setup the renderer for error messages
+ *
+ * @since 1.7.6
+ *
+ * @param string $pre_render The pre-rendered content. Default null.
+ * @param array  $block      The block being rendered.
+ *
+ * @return string
+ */
+function gamipress_pre_render_block( $pre_render, $block ) {
+
+    global $gamipress_renderer;
+
+    // Setup renderer
+    $gamipress_renderer = 'block';
+
+    return $pre_render;
+}
+add_filter( 'pre_render_block', 'gamipress_pre_render_block', 10, 2 );
+
+/**
+ * Filter block rendering to reset the renderer for error messages
+ *
+ * @since 1.7.6
+ *
+ * @param string $block_content The block content about to be appended.
+ * @param array  $block         The full block, including name and attributes.
+ *
+ * @return string
+ */
+function gamipress_render_block( $block_content, $block ) {
+
+    global $gamipress_renderer;
+
+    // Reset renderer
+    $gamipress_renderer = false;
+
+    return $block_content;
+}
+add_filter( 'render_block', 'gamipress_render_block', 10, 2 );
+
+/**
  * Simulates CMB2 options_cb processing
  *
  * @since 1.6.0

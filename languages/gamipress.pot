@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-07-30 17:15+0200\n"
+"POT-Creation-Date: 2019-08-03 10:03+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -62,20 +62,20 @@ msgid "Assets"
 msgstr ""
 
 #: includes/admin.php:150 includes/admin/tools/reset-data.php:34
-#: includes/admin/tools/system-info.php:284 includes/post-types.php:23
+#: includes/admin/tools/system-info.php:335 includes/post-types.php:23
 #: includes/post-types.php:29 includes/post-types.php:35
 #: includes/shortcodes/gamipress_points_types.php:20
 msgid "Points Types"
 msgstr ""
 
 #: includes/admin.php:183 includes/admin/tools/reset-data.php:31
-#: includes/admin/tools/system-info.php:289 includes/post-types.php:130
+#: includes/admin/tools/system-info.php:340 includes/post-types.php:130
 #: includes/post-types.php:136 includes/post-types.php:142
 msgid "Achievement Types"
 msgstr ""
 
 #: includes/admin.php:216 includes/admin/tools/reset-data.php:37
-#: includes/admin/tools/system-info.php:294 includes/post-types.php:201
+#: includes/admin/tools/system-info.php:345 includes/post-types.php:201
 #: includes/post-types.php:207 includes/post-types.php:213
 msgid "Rank Types"
 msgstr ""
@@ -110,7 +110,7 @@ msgstr ""
 #: includes/admin/pages/settings.php:147 includes/admin/plugins.php:30
 #: includes/admin/plugins.php:33
 #: includes/admin/tools/import-export-settings.php:24
-#: includes/admin/tools/system-info.php:340
+#: includes/admin/tools/system-info.php:361
 msgid "Settings"
 msgstr ""
 
@@ -557,7 +557,7 @@ msgstr ""
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:38
-#: includes/shortcodes/gamipress_earnings.php:287 templates/points.php:18
+#: includes/shortcodes/gamipress_earnings.php:290 templates/points.php:18
 msgid "Points"
 msgstr ""
 
@@ -859,7 +859,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:334
 #: includes/shortcodes/gamipress_achievements.php:166
 #: includes/shortcodes/gamipress_earnings.php:74
-#: includes/shortcodes/gamipress_earnings.php:281
+#: includes/shortcodes/gamipress_earnings.php:284
 #: includes/shortcodes/gamipress_logs.php:46
 #: includes/shortcodes/gamipress_points.php:60
 #: includes/shortcodes/gamipress_ranks.php:115
@@ -2704,143 +2704,155 @@ msgid "Hosting Provider"
 msgstr ""
 
 #: includes/admin/tools/system-info.php:40
+msgid "Operating System"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:45
 msgid "PHP Version"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:46
-msgid "MySQL Version"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:52
+#: includes/admin/tools/system-info.php:51
 msgid "Webserver Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:57
+#: includes/admin/tools/system-info.php:56
 msgid "PHP Configuration"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:61
-#: includes/admin/tools/system-info.php:180
+#: includes/admin/tools/system-info.php:60
+#: includes/admin/tools/system-info.php:239
 msgid "Memory Limit"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:66
+#: includes/admin/tools/system-info.php:65
 msgid "Time Limit"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:71
+#: includes/admin/tools/system-info.php:70
 msgid "Upload Max Size"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:76
+#: includes/admin/tools/system-info.php:75
 msgid "Post Max Size"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:81
+#: includes/admin/tools/system-info.php:80
 msgid "Max Input Vars"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:86
+#: includes/admin/tools/system-info.php:85
 msgid "Display Errors"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:131
-msgid "WordPress Info"
+#: includes/admin/tools/system-info.php:105
+msgid "Database Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:135
-msgid "Site URL"
+#: includes/admin/tools/system-info.php:109
+msgid "Database Host"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:140
-msgid "Home URL"
+#: includes/admin/tools/system-info.php:114
+msgid "MySQL Version"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:145
-msgid "Multisite"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:150
-msgid "Version"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:155
-msgid "Language"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:160
-msgid "Timezone"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:165
-msgid "Permalink Structure"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:170
-msgid "Absolute Path"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:175
-msgid "Debug"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:185
-msgid "Table Prefix:"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:190
-msgid "Active Theme"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:195
-msgid "Parent Theme"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:200
-msgid "Active Plugins"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:280
-msgid "GamiPress Info"
-msgstr ""
-
-#: includes/admin/tools/system-info.php:299
+#: includes/admin/tools/system-info.php:120
 msgid "Last Upgrade"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:305
+#: includes/admin/tools/system-info.php:126
 msgid "Logs Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:311
+#: includes/admin/tools/system-info.php:132
 msgid "Logs Meta Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:317
+#: includes/admin/tools/system-info.php:138
 msgid "User Earnings Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:323
+#: includes/admin/tools/system-info.php:144
 msgid "User Earnings Meta Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:329
-msgid "Select2 Library"
+#: includes/admin/tools/system-info.php:190
+msgid "WordPress Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:194
+msgid "Site URL"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:199
+msgid "Home URL"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:204
+msgid "Multisite"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:209
+msgid "Version"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:214
+msgid "Language"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:219
+msgid "Timezone"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:224
+msgid "Permalink Structure"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:229
+msgid "Absolute Path"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:234
+msgid "Debug"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:244
+msgid "Table Prefix:"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:249
+msgid "Active Theme"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:254
+msgid "Parent Theme"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:259
+msgid "Active Plugins"
 msgstr ""
 
 #: includes/admin/tools/system-info.php:331
+msgid "GamiPress Info"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:350
+msgid "Select2 Library"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:352
 msgid "Outdated"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:335
+#: includes/admin/tools/system-info.php:356
 msgid "Installation Date"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:364
+#: includes/admin/tools/system-info.php:385
 msgid "Download System Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:367
+#: includes/admin/tools/system-info.php:388
 msgid "Download System Info File"
 msgstr ""
 
@@ -3176,7 +3188,7 @@ msgstr ""
 msgid "No Log Entries found in Trash"
 msgstr ""
 
-#: includes/compatibility/1.2.8.php:591 includes/functions/logs.php:668
+#: includes/compatibility/1.2.8.php:591 includes/functions/logs.php:669
 msgid "points"
 msgstr ""
 
@@ -3269,7 +3281,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:337
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:251
-#: includes/shortcodes/gamipress_earnings.php:286
+#: includes/shortcodes/gamipress_earnings.php:289
 #: includes/shortcodes/gamipress_logs.php:81
 msgid "Date"
 msgstr ""
@@ -4302,11 +4314,19 @@ msgstr ""
 msgid "Example: %s"
 msgstr ""
 
-#: includes/shortcodes.php:248
+#: includes/shortcodes.php:256
+msgid "Widget:"
+msgstr ""
+
+#: includes/shortcodes.php:260
+msgid "Block:"
+msgstr ""
+
+#: includes/shortcodes.php:265
 msgid "Shortcode:"
 msgstr ""
 
-#: includes/shortcodes.php:251
+#: includes/shortcodes.php:280
 msgid "Message visible only to administrators."
 msgstr ""
 
@@ -4414,12 +4434,11 @@ msgstr ""
 msgid "Display a list of users that has earned the achievement."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievement.php:164
-#: includes/shortcodes/gamipress_rank.php:154
-msgid "Please, provide the id attribute."
+#: includes/shortcodes/gamipress_achievement.php:166
+msgid "Please, provide the achievement ID."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievement.php:168
+#: includes/shortcodes/gamipress_achievement.php:170
 msgid "The id provided doesn't belong to a valid achievement."
 msgstr ""
 
@@ -4683,31 +4702,31 @@ msgstr ""
 msgid "Show achievements from all network sites."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:264
+#: includes/shortcodes/gamipress_achievements.php:266
 msgid "The type provided isn't a valid registered achievement type."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:278
+#: includes/shortcodes/gamipress_achievements.php:280
 msgid "All types provided aren't valid registered achievement types."
 msgstr ""
 
-#: includes/shortcodes/gamipress_achievements.php:314
 #: includes/shortcodes/gamipress_achievements.php:316
-#: includes/shortcodes/gamipress_achievements.php:556
+#: includes/shortcodes/gamipress_achievements.php:318
+#: includes/shortcodes/gamipress_achievements.php:558
 msgid "achievements"
-msgstr ""
-
-#: includes/shortcodes/gamipress_achievements.php:562
-#, php-format
-msgid "No completed %s to display."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:564
 #, php-format
-msgid "You completed all %s."
+msgid "No completed %s to display."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:566
+#, php-format
+msgid "You completed all %s."
+msgstr ""
+
+#: includes/shortcodes/gamipress_achievements.php:568
 #, php-format
 msgid "No %s to display."
 msgstr ""
@@ -4837,11 +4856,11 @@ msgstr ""
 msgid "Show rank requirements completed."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:284
+#: includes/shortcodes/gamipress_earnings.php:287
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:285
+#: includes/shortcodes/gamipress_earnings.php:288
 msgid "Description"
 msgstr ""
 
@@ -5009,13 +5028,13 @@ msgstr ""
 msgid "Show points from all network sites."
 msgstr ""
 
-#: includes/shortcodes/gamipress_points.php:194
-#: includes/shortcodes/gamipress_points_types.php:154
+#: includes/shortcodes/gamipress_points.php:196
+#: includes/shortcodes/gamipress_points_types.php:156
 msgid "The type provided isn't a valid registered points type."
 msgstr ""
 
-#: includes/shortcodes/gamipress_points.php:208
-#: includes/shortcodes/gamipress_points_types.php:168
+#: includes/shortcodes/gamipress_points.php:210
+#: includes/shortcodes/gamipress_points_types.php:170
 msgid "All types provided aren't valid registered points types."
 msgstr ""
 
@@ -5119,7 +5138,11 @@ msgstr ""
 msgid "Display a list of users that actually are in this rank."
 msgstr ""
 
-#: includes/shortcodes/gamipress_rank.php:158
+#: includes/shortcodes/gamipress_rank.php:156
+msgid "Please, provide the rank ID."
+msgstr ""
+
+#: includes/shortcodes/gamipress_rank.php:160
 msgid "The id provided doesn't belong to a valid rank."
 msgstr ""
 
@@ -5187,12 +5210,12 @@ msgstr ""
 msgid "Show ranks from all network sites."
 msgstr ""
 
-#: includes/shortcodes/gamipress_ranks.php:209
-#: includes/shortcodes/gamipress_user_rank.php:151
+#: includes/shortcodes/gamipress_ranks.php:211
+#: includes/shortcodes/gamipress_user_rank.php:153
 msgid "The type provided isn't a valid registered rank type."
 msgstr ""
 
-#: includes/shortcodes/gamipress_ranks.php:223
+#: includes/shortcodes/gamipress_ranks.php:225
 msgid "All types provided aren't valid registered rank types."
 msgstr ""
 
@@ -5232,16 +5255,16 @@ msgstr ""
 msgid "Show the next user rank."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:147
-msgid "Please, provide the type attribute."
+#: includes/shortcodes/gamipress_user_rank.php:149
+msgid "Please, provide any rank type."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:155
+#: includes/shortcodes/gamipress_user_rank.php:157
 msgid "None of the options to be displayed have been selected (previous, current or next). Please, select one."
 msgstr ""
 
-#: includes/shortcodes/gamipress_user_rank.php:163
-msgid "Please, provide the user_id attribute."
+#: includes/shortcodes/gamipress_user_rank.php:165
+msgid "Please, provide the user ID."
 msgstr ""
 
 #: includes/shortcodes/shortcodes-editor.php:90
@@ -5579,7 +5602,7 @@ msgstr ""
 msgid "Display previous, current and/or next rank of an user."
 msgstr ""
 
-#: includes/widgets/widget.php:161
+#: includes/widgets/widget.php:171
 msgid "Title:"
 msgstr ""
 

@@ -282,11 +282,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 ### 1.7.6 ###
 
 * **New Features**
+* Added database information on System Info tool.
 * Added support for shortcode groups on Shortcodes Editor.
 * **Bug Fixes**
 * Prevent to take field values from repeatable patterns on Shortcodes Editor.
 * **Improvements**
 * Style improvements for repeatable color pickers on Shortcodes Editor.
+* Improvements on shortcode error messages.
+* Added the ability to detect if an error is rendered on a shortcode, block or widget.
 * **Developer Notes**
 * Added support for multicheck fields on Shortcodes Editor.
 * Added support to multiples selects on query logs function.

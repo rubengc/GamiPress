@@ -175,6 +175,8 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
 
+    $shortcode = 'gamipress_ranks';
+
 	$atts = shortcode_atts( array_merge( array(
 		// Ranks atts
 		'type'        	=> 'all',
@@ -186,7 +188,7 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 		'order'       	=> 'DESC',
 		'include'     	=> '',
 		'exclude'     	=> '',
-	), gamipress_rank_shortcode_defaults() ), $atts, 'gamipress_ranks' );
+	), gamipress_rank_shortcode_defaults() ), $atts, $shortcode );
 
 	// Single type check to use dynamic template
 	$is_single_type = false;
@@ -206,7 +208,7 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 
         // Check if rank type is valid
         if ( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) )
-            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), 'gamipress_ranks' );
+            return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), $shortcode );
 
     } else if( $atts['type'] !== 'all' ) {
 
@@ -220,7 +222,7 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 
         // just notify error if all types are wrong
         if( $all_types_wrong )
-            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered rank types.', 'gamipress' ), 'gamipress_ranks' );
+            return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered rank types.', 'gamipress' ), $shortcode );
 
     }
 

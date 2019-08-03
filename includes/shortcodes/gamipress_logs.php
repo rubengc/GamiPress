@@ -146,7 +146,10 @@ function gamipress_logs_shortcode( $atts = array(), $content = '' ) {
 
     global $gamipress_template_args;
 
+    // Initialize GamiPress template args global
     $gamipress_template_args = array();
+
+    $shortcode = 'gamipress_logs';
 
     $atts = shortcode_atts( array(
         'type'          => 'all',
@@ -159,7 +162,7 @@ function gamipress_logs_shortcode( $atts = array(), $content = '' ) {
         'order'         => 'ASC',
         'include'       => '',
         'exclude'       => '',
-    ), $atts, 'gamipress_logs' );
+    ), $atts, $shortcode );
 
     // Turn old orderby values into new ones
     switch( $atts['orderby'] ) {
