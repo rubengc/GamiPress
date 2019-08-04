@@ -279,6 +279,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.6.1 ###
+
+* **Improvements**
+* Update blocks code to avoid conflicts with others plugins.
+* Remove lodash usage to avoid functions conflicts.
+* Updated all Gutenberg blocks dependencies to latest stable releases.
+
 ### 1.7.6 ###
 
 * **New Features**
