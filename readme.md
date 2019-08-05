@@ -279,6 +279,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.6.3 ###
+
+* **Bug Fixes**
+* Fixed detection of points earned when awards engine awards a requirement with "Earn an amount of points" event multiple times.
+
 ### 1.7.6.2 ###
 
 * **Bug Fixes**
