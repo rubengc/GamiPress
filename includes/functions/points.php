@@ -586,6 +586,54 @@ function gamipress_update_user_points_awarded( $user_id = 0, $points = 0, $point
 }
 
 /**
+ * Used on rules engine, this function returns the points amount that user has earned subtracting the used on the different checks
+ *
+ * @since 1.7.6.3
+ *
+ * @param  integer 	$user_id      	The given user's ID
+ * @param  string 	$points_type   	The points type
+ *
+ * @return integer $user_points  The user's points on the current rules engine loop
+ */
+function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type = '' ) {
+
+    // Get user points earned since last time has earning the achievement
+    $awarded_points    		= gamipress_get_last_updated_user_points( $user_id, $points_type );
+    $points_awarded_key     = "gamipress_multiple_{$points_type}_awarded";
+
+    // Initialize the awarded points count
+    if( ! isset( $GLOBALS[$points_awarded_key] ) )
+        $GLOBALS[$points_awarded_key] = 0;
+
+    return ( $awarded_points - $GLOBALS[$points_awarded_key] );
+
+}
+
+/**
+ * Used on rules engine, update the points amount used on the different checks
+ *
+ * @since 1.7.6.3
+ *
+ * @param  integer 	$new_points     New points to apply to the already checked amoount
+ * @param  string 	$points_type   	The points type
+ *
+ * @return integer $user_points  The user's points on the current rules engine loop
+ */
+function gamipress_update_user_points_awarded_in_loop( $new_points = 0, $points_type = '' ) {
+
+    $points_awarded_key = "gamipress_multiple_{$points_type}_awarded";
+
+    // Initialize the awarded points count
+    if( ! isset( $GLOBALS[$points_awarded_key] ) )
+        $GLOBALS[$points_awarded_key] = 0;
+
+    $GLOBALS[$points_awarded_key] += $new_points;
+
+    return $GLOBALS[$points_awarded_key];
+
+}
+
+/**
  * Update user points deducted
  *
  * @since 1.3.7

@@ -430,7 +430,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
         $last_activity          = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
 		// Get user points earned since last time has earning the achievement
-		$awarded_points    		= gamipress_get_last_updated_user_points( $user_id, $points_type_required );
+		$awarded_points    		= gamipress_get_user_points_awarded_in_loop( $user_id, $points_type_required );
 
 		if( $awarded_points >= $points_required ) {
 
@@ -438,9 +438,11 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 			// This prevents an infinite loop if the achievement has no maximum earnings limit
 			$minimum_time  	= current_time( 'timestamp' ) - 1;
 
-			if ( $last_activity > $minimum_time ) {
+			if ( $last_activity > $minimum_time )
 				$return = false;
-			}
+
+            // Increase the points awarded of this loop
+            gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required );
 
 		} else {
             $return = false;
@@ -462,9 +464,8 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
             $minimum_time  	= current_time( 'timestamp' ) - 1;
             $last_activity  = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
-            if ( $last_activity > $minimum_time ) {
+            if ( $last_activity > $minimum_time )
                 $return = false;
-            }
 
         } else {
             $return = false;
@@ -529,9 +530,8 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 			$last_activity 	= gamipress_achievement_last_user_activity( $achievement_id, $user_id );
 			$minimum_time 	= current_time( 'timestamp' ) - 1;
 
-			if ( $last_activity > $minimum_time ) {
+			if ( $last_activity > $minimum_time )
 				$return = false;
-			}
 
 		}
 	}
@@ -562,9 +562,8 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 	$trigger_type = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
 
 	// Check if activity trigger is excluded from this check
-	if( in_array( $trigger_type, gamipress_get_activity_triggers_excluded_from_activity_limit() ) ) {
+	if( in_array( $trigger_type, gamipress_get_activity_triggers_excluded_from_activity_limit() ) )
 		return $return;
-	}
 
 	// Only override the $return data if we're working on a requirement
 	if ( in_array( gamipress_get_post_type( $achievement_id ), gamipress_get_requirement_types_slugs() ) ) {
@@ -581,9 +580,8 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 			$activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id, $since ) );
 
 			// Force bail if user exceeds the limit over time
-			if( $activity_count > $activity_count_limit ) {
+			if( $activity_count > $activity_count_limit )
 				return false;
-			}
 
 		}
 
@@ -641,9 +639,8 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 					$achievement = gamipress_get_step_achievement( $achievement_id );
 
 					// If the user has any interaction with this achievement, only get activity since that date
-					if ( $achievement && $date = gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) ) {
+					if ( $achievement && $date = gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
 						$since = $date;
-					}
 
 				}
 
@@ -684,9 +681,8 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
                     $since = gamipress_achievement_last_user_activity( $achievement_id, $user_id );
 
                     // If user hasn't earned this yet, then get activity count from publish date
-                    if( $since === 0 ) {
+                    if( $since === 0 )
                         $since = strtotime( gamipress_get_post_date( $achievement_id ) );
-				    }
 				}
 
 			}
@@ -712,10 +708,9 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
 
 	$limit_type = gamipress_get_post_meta( $achievement_id, '_gamipress_limit_type' );
 
-	if( ! $limit_type || $limit_type === 'unlimited' ) {
-		// No limit
+    // No limit
+	if( ! $limit_type || $limit_type === 'unlimited' )
 		return 0;
-	}
 
 	$now = current_time( 'timestamp' );
 	$from = current_time( 'timestamp' );
@@ -944,8 +939,12 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_points', 10, 2
  */
 function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 0 ) {
 
+    $post_type = gamipress_get_post_type( $achievement_id );
+
     // First, see if the requirement requires a minimum amount of points (just requirements has this meta)
-    if ( 'earn-points' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' ) ) {
+    // Note: Steps and rank requirements are excluded from this
+    if ( 'earn-points' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' )
+         && ! in_array( $post_type, array( 'step', 'rank-requirement' ) )) {
 
         // Grab our user's points and see if they at least as many as required
         $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
@@ -958,7 +957,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
             $last_achievement_activity = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
             // Get user points earned since last time has earning the achievement
-            $user_last_points = gamipress_get_last_updated_user_points( $user_id, $points_type_required );
+            $user_last_points = gamipress_get_user_points_awarded_in_loop( $user_id, $points_type_required );
 
             if( $user_last_points >= $points_required && $points_required > 0 ) {
 
@@ -966,7 +965,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
                 $GLOBALS[$multiple_award_key] = true;
 
                 // Set times to award
-                $times_to_award = intval( $user_last_points / $points_required ) - 1; // -1 is to prevent award the current one
+                $times_to_award = intval( $user_last_points / $points_required );
 
                 // Check the maximum times this requirement could be earned
                 $maximum_earnings = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_maximum_earnings' ) );
@@ -981,15 +980,17 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
                     ) ) );
 
                     // If times to award and earned times exceed the maximum earnings
-                    if( ( $times_to_award + $earned_times ) >= $maximum_earnings  ) {
-                        $times_to_award = ( $maximum_earnings - $earned_times ) - 1; // -1 is to prevent award the current one
-                    }
+                    if( ( $times_to_award + $earned_times ) >= $maximum_earnings )
+                        $times_to_award = ( $maximum_earnings - $earned_times );
 
                 }
 
                 // Award same achievement many times (rules engine will check limited times to earn it)
                 for( $i=0; $i < $times_to_award; $i++ ) {
                     gamipress_award_achievement_to_user( $achievement_id, $user_id );
+
+                    // On every loop increase the points awarded
+                    gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required );
                 }
 
                 // Ending multiple points award
