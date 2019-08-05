@@ -279,6 +279,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.6.2 ###
+
+* **Bug Fixes**
+* Fixed issue on Gutenberg blocks conditions functionality when passing an array to define the condition.
+* Fixed conflicts with WordPress javascript libraries by updating Gutenberg blocks dependencies.
+* **Improvements**
+* Added support for Javascript objects conditions on Gutenberg blocks.
+* Updated Gutenberg blocks dependencies.
+
 ### 1.7.6.1 ###
 
 * **Improvements**
