@@ -161,12 +161,13 @@ class GamiPress_Shortcodes_Editor {
 
         // Move others to the end
         $others = $shortcodes['others'];
-
         unset( $shortcodes['others'] );
-
         $shortcodes['others'] = $others;
 
 		foreach( $shortcodes as $group => $group_shortcodes ) {
+
+		    // Skip empty groups
+		    if( ! is_array( $group_shortcodes ) ) continue;
 
             if( $current_group !== $group ) {
 
