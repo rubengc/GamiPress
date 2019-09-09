@@ -269,6 +269,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * **Improvements**
 * Added some extra checks on shortcodes editor to avoid warnings while looping shortcode groups.
 * Readme reduction by removing the add-ons descriptions.
+* Avoid conflicts on logs compatibility functions.
 
 = 1.7.6.3 =
 

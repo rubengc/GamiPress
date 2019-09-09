@@ -197,9 +197,8 @@
 		button.prop( 'disabled', true );
 
 		// Hide previous notices
-		if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length ) {
-			submit_wrap.find('.gamipress-achievement-unlock-with-points-response').slideUp()
-		}
+		if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length )
+			submit_wrap.find('.gamipress-achievement-unlock-with-points-response').slideUp();
 
 		// Show the spinner
 		spinner.show();
@@ -215,9 +214,8 @@
 			success: function( response ) {
 
 				// Ensure response wrap
-				if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length === 0 ) {
-					submit_wrap.prepend('<div class="gamipress-achievement-unlock-with-points-response gamipress-notice" style="display: none;"></div>')
-				}
+				if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length === 0 )
+					submit_wrap.prepend('<div class="gamipress-achievement-unlock-with-points-response gamipress-notice" style="display: none;"></div>');
 
 				var response_wrap = submit_wrap.find('.gamipress-achievement-unlock-with-points-response');
 

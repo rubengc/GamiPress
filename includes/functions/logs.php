@@ -455,6 +455,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
     // Backward compatibility for functions that called it by the old way
     if( is_array( $trigger_type ) && empty( $log_meta ) ) {
         $log_meta = $trigger_type;
+        $trigger_type = '';
     }
 
     // Trigger type is not a meta yet, so update it correctly
