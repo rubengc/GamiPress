@@ -121,6 +121,7 @@ WordPress.org is home to some amazing extensions for GamiPress, including:
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
+* [Time-based Rewards](https://gamipress.com/add-ons/gamipress-time-based-rewards/)
 * [Frontend Reports](https://gamipress.com/add-ons/gamipress-frontend-reports/)
 * [Restrict Unlock](https://gamipress.com/add-ons/gamipress-restrict-unlock/)
 * [Conditional Emails](https://gamipress.com/add-ons/gamipress-conditional-emails/)
@@ -286,6 +287,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Added some extra checks on shortcodes editor to avoid warnings while looping shortcode groups.
 * Readme reduction by removing the add-ons descriptions.
 * Avoid conflicts on logs compatibility functions.
+* Removed gamipress-blocks-style.css file since is not in use.
 
 ### 1.7.6.3 ###
 

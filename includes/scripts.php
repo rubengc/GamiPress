@@ -227,18 +227,10 @@ function gamipress_blocks_editor_assets() {
 add_action( 'enqueue_block_editor_assets', 'gamipress_blocks_editor_assets' );
 
 /**
- * Enqueue Gutenberg block assets for both frontend + backend.
+ * Localize Gutenberg block assets.
  *
  * @since 1.6.0
  */
-function gamipress_blocks_assets() {
-
-    // Styles
-    wp_enqueue_style( 'gamipress-blocks-style-css', GAMIPRESS_URL . 'assets/css/gamipress-blocks-style.css', array(), GAMIPRESS_VER );
-
-}
-add_action( 'enqueue_block_assets', 'gamipress_blocks_assets' );
-
 function gamipress_localize_blocks_editor_assets() {
 
     // Setup shortcode to be converted as gutenberg block
