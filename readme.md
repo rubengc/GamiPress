@@ -92,6 +92,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [Give](https://wordpress.org/plugins/gamipress-give-integration/)
 * [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
+* [The Events Calendar](https://wordpress.org/plugins/gamipress-the-events-calendar-integration/)
 * [Events Manager](https://wordpress.org/plugins/gamipress-events-manager-integration/)
 * [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
 * [wpForo](https://wordpress.org/plugins/gamipress-wpforo-integration/)
@@ -283,11 +284,20 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ### 1.7.7 ###
 
+* **New Features**
+* Added the fields "Include" and "Exclude" to the Earnings block and widget.
+* Added the attributes "include" and "exclude" to the [gamipress_earnings] shortcodes.
 * **Improvements**
 * Added some extra checks on shortcodes editor to avoid warnings while looping shortcode groups.
 * Readme reduction by removing the add-ons descriptions.
 * Avoid conflicts on logs compatibility functions.
 * Removed gamipress-blocks-style.css file since is not in use.
+* Added site ID metadata on logs when GamiPress is network wide active on multisite.
+* Performance improvements on multisites by caching queried posts on rules engine.
+* **Bug Fixes**
+* Fixed an issue that makes ranks not being awarded on multisites when user meets it's requirements on a subsite.
+* **Developer Notes**
+* Added Javascript events before and after unlock achievements and ranks through points.
 
 ### 1.7.6.3 ###
 
