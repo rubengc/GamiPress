@@ -203,6 +203,16 @@
 		// Show the spinner
 		spinner.show();
 
+		/**
+		 * Allow external functions to process anything before unlock achievement with points
+		 *
+		 * @since 1.7.7
+		 *
+		 * @selector    .gamipress-achievement-unlock-with-points-button
+		 * @event       gamipress_before_unlock_achievement_with_points
+		 */
+		button.trigger( 'gamipress_before_unlock_achievement_with_points', [] );
+
 		$.ajax( {
 			url: gamipress.ajaxurl,
 			method: 'POST',
@@ -244,6 +254,18 @@
 					// Enable the button
 					button.prop( 'disabled', false );
 				}
+
+				/**
+				 * Allow external functions to process anything after unlock achievement with points
+				 *
+				 * @since 1.7.7
+				 *
+				 * @selector    .gamipress-achievement-unlock-with-points-button
+				 * @event       gamipress_after_unlock_achievement_with_points
+				 *
+				 * @param Object response	Response retrieved from server
+				 */
+				button.trigger( 'gamipress_after_unlock_achievement_with_points', [ response ] );
 			}
 		});
 	});
@@ -270,6 +292,16 @@
 
 		// Show the spinner
 		spinner.show();
+
+		/**
+		 * Allow external functions to process anything before unlock rank with points
+		 *
+		 * @since 1.7.7
+		 *
+		 * @selector    .gamipress-rank-unlock-with-points-button
+		 * @event       gamipress_before_unlock_rank_with_points
+		 */
+		button.trigger( 'gamipress_before_unlock_rank_with_points', [] );
 
 		$.ajax( {
 			url: gamipress.ajaxurl,
@@ -313,6 +345,18 @@
 					// Enable the button
 					button.prop( 'disabled', false );
 				}
+
+				/**
+				 * Allow external functions to process anything after unlock rank with points
+				 *
+				 * @since 1.7.7
+				 *
+				 * @selector    .gamipress-rank-unlock-with-points-button
+				 * @event       gamipress_after_unlock_rank_with_points
+				 *
+				 * @param Object response	Response retrieved from server
+				 */
+				button.trigger( 'gamipress_after_unlock_rank_with_points', [ response ] );
 			}
 		});
 	});

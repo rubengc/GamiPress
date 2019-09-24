@@ -495,9 +495,8 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
     if ( $log_id && ! empty( $log_meta ) ) {
 
         foreach ( (array) $log_meta as $key => $meta ) {
-
+            // Update the log meta
             ct_update_object_meta( $log_id, '_gamipress_' . sanitize_key( $key ), $meta );
-
         }
 
     }
@@ -563,9 +562,8 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
         }
 
         // Implode meta value if is an array of values
-        if( is_array( $log_meta_value ) ) {
+        if( is_array( $log_meta_value ) )
             $log_meta_value = implode( ', ', $log_meta_value );
-        }
 
         $gamipress_pattern_replacements['{' . $log_meta_key . '}'] = $log_meta_value;
     }

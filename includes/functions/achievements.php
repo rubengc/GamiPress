@@ -62,9 +62,8 @@ function gamipress_get_achievements( $args = array() ) {
 		$post_parent = absint( gamipress_get_post_field( 'post_parent', $args['parent_of'] ) );
 
         // Bail if achievement hasn't any parent
-		if( $post_parent === 0 ) {
+		if( $post_parent === 0 )
 			return array();
-		}
 
         $args['post__in'] = array( $post_parent );
 
@@ -173,7 +172,7 @@ function gamipress_get_step_achievement( $step_id = 0 ) {
 
 	if( $achievement_id !== 0 ) {
 		// If has parent, return his post object
-		return get_post( $achievement_id );
+		return gamipress_get_post( $achievement_id );
 	} else {
 		return false;
 	}
@@ -485,7 +484,7 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 	$post_parent = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) );
 
 	if( $post_parent !== 0 ) {
-		$specific_achievements[] = get_post( $post_parent );
+		$specific_achievements[] = gamipress_get_post( $post_parent );
 	}
 
 	// Grab posts triggered by unlocking any/all of the given achievement's type

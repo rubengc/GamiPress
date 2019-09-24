@@ -891,7 +891,7 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
 
 	if( $points_type_id !== 0 ) {
 		// If has parent, return his post object
-		return get_post( $points_type_id );
+		return gamipress_get_post( $points_type_id );
 	} else {
 		return false;
 	}

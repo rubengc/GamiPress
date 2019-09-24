@@ -23,19 +23,16 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
 	// Set to current site id
-	if ( ! $site_id ) {
+	if ( ! $site_id )
 		$site_id = get_current_blog_id();
-    }
 
 	// Grab current user ID if one isn't specified
-	if ( ! $user_id ) {
+	if ( ! $user_id )
 		$user_id = wp_get_current_user()->ID;
-    }
 
 	// If the user does not have access to this achievement, bail here
-	if ( ! gamipress_user_has_access_to_achievement( $user_id, $achievement_id, $trigger, $site_id, $args ) ) {
+	if ( ! gamipress_user_has_access_to_achievement( $user_id, $achievement_id, $trigger, $site_id, $args ) )
 		return;
-    }
 
 	// If the user has completed the achievement, award it
 	if ( gamipress_check_achievement_completion_for_user( $achievement_id, $user_id, $trigger, $site_id, $args ) ) {
@@ -64,44 +61,42 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
 function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
 	// Set to current site id
-	if ( ! $site_id ) {
+	if ( ! $site_id )
 		$site_id = get_current_blog_id();
-	}
 
 	// Assume we have access
 	$return = true;
 
 	// If the achievement is not published, we do not have access
-	if ( gamipress_get_post_status( $achievement_id ) !== 'publish' ) {
+	if ( gamipress_get_post_status( $achievement_id ) !== 'publish' )
 		$return = false;
-	}
 
 	// If we've exceeded the max earnings, we do not have access
-	if ( $return && gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id ) ) {
+	if ( $return && gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id ) )
 		$return = false;
-	}
 
 	// If we have access, and the achievement has a parent...
-	if ( $return && $parent_achievement = gamipress_get_parent_of_achievement( $achievement_id ) ) {
+	if ( $return && $parent_id = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) ) ) {
 
 		// If we don't have access to the parent, we do not have access to this
-		if ( ! gamipress_user_has_access_to_achievement( $user_id, $parent_achievement->ID, $trigger, $site_id, $args ) ) {
+		if ( ! gamipress_user_has_access_to_achievement( $user_id, $parent_id, $trigger, $site_id, $args ) )
 			$return = false;
-		}
 
 		// If the parent requires sequential steps, confirm we've earned all previous steps
-		if ( $return && gamipress_is_achievement_sequential( $parent_achievement->ID ) ) {
-			foreach ( gamipress_get_children_of_achievement( $parent_achievement->ID ) as $sibling ) {
+		if ( $return && gamipress_is_achievement_sequential( $parent_id ) ) {
+
+			foreach ( gamipress_get_children_of_achievement( $parent_id ) as $sibling ) {
 				// If this is the current step, we're good to go
-				if ( $sibling->ID == $achievement_id ) {
-					break;
-				}
+				if ( $sibling->ID == $achievement_id )
+				    break;
+
 				// If we haven't earned any previous step, we can't earn this one
 				if ( ! gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $sibling->ID ) ) ) ) {
 					$return = false;
 					break;
 				}
 			}
+
 		}
 	}
 
@@ -170,22 +165,21 @@ function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step
 	// Prevent user from earning steps with no parents
 	$achievement = gamipress_get_step_achievement( $step_id );
 
-	if ( ! $achievement ) {
+	if ( ! $achievement )
 		return false;
-	}
 
 	// Prevent user from earning steps if achievement is not setup to be earned through steps
-    if( 'triggers' !== gamipress_get_post_meta( $achievement->ID, '_gamipress_earned_by' ) ) {
+    if( 'triggers' !== gamipress_get_post_meta( $achievement->ID, '_gamipress_earned_by' ) )
         return false;
-    }
+
+    $earned_times = count( gamipress_get_user_achievements( array(
+        'user_id'        => absint( $user_id ),
+        'achievement_id' => absint( $step_id ),
+        'since'          => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
+    ) ) );
 
 	// Prevent user from repeatedly earning the same step
-	if ( $return && gamipress_get_user_achievements( array(
-			'user_id'        => absint( $user_id ),
-			'achievement_id' => absint( $step_id ),
-			'since'          => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
-		) )
-	)
+	if ( $return && $earned_times > 0 )
 		$return = false;
 
 	// Send back our eligibility
@@ -213,16 +207,14 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 	// Prevent user from earning points awards with no points type
 	$points_type = gamipress_get_points_award_points_type( $points_award_id );
 
-	if ( ! $points_type ) {
+	if ( ! $points_type )
 		return false;
-	}
 
 	$maximum_earnings = absint( gamipress_get_post_meta( $points_award_id, '_gamipress_maximum_earnings' ) );
 
 	// No maximum earnings set
-	if( $maximum_earnings === 0 ) {
+	if( $maximum_earnings === 0 )
 		return $return;
-	}
 
 	$earned_times = count( gamipress_get_user_achievements( array(
 		'user_id'        => absint( $user_id ),
@@ -260,9 +252,8 @@ function gamipress_user_has_access_to_points_deduct( $return = false, $user_id =
 	// Prevent user from earning points deducts with no points type
 	$points_type = gamipress_get_points_deduct_points_type( $points_deduct_id );
 
-	if ( ! $points_type ) {
+	if ( ! $points_type )
 		return false;
-	}
 
 	$maximum_earnings = absint( gamipress_get_post_meta( $points_deduct_id, '_gamipress_maximum_earnings' ) );
 
@@ -308,29 +299,26 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 	$requirement_rank = gamipress_get_rank_requirement_rank( $rank_requirement_id );
 
 	// Bail if not rank assigned to this rank requirement
-	if( ! $requirement_rank ) {
+	if( ! $requirement_rank )
 		return false;
-	}
 
 	$next_user_rank_id = gamipress_get_next_user_rank_id( $user_id, $requirement_rank->post_type );
 
-	if( $return && $next_user_rank_id === 0 ) {
+	if( $return && $next_user_rank_id === 0 )
 		$return = false;
-	}
 
-	if ( $return && $requirement_rank->ID !== $next_user_rank_id ) {
+	if ( $return && absint( $requirement_rank->ID ) !== $next_user_rank_id )
 		$return = false;
-	}
+
+    $earned_times = count( gamipress_get_user_achievements( array(
+        'user_id'        => absint( $user_id ),
+        'achievement_id' => absint( $rank_requirement_id ),
+        'since'          => absint( gamipress_achievement_last_user_activity( $requirement_rank->ID, $user_id ) )
+    ) ) );
 
 	// Prevent user from repeatedly earning the same requirement
-	if ( $return && gamipress_get_user_achievements( array(
-			'user_id'        => absint( $user_id ),
-			'achievement_id' => absint( $rank_requirement_id ),
-			'since'          => absint( gamipress_achievement_last_user_activity( $requirement_rank->ID, $user_id ) )
-		) )
-	) {
+	if ( $return && $earned_times > 0 )
 		$return = false;
-	}
 
 	// Send back our eligibility
 	return $return;

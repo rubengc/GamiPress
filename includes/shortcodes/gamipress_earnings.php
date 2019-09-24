@@ -31,6 +31,8 @@ function gamipress_register_earnings_shortcode() {
                     'limit',
                     'pagination',
                     'order',
+                    'include',
+                    'exclude',
                 ),
             ),
             'points' => array(
@@ -96,6 +98,16 @@ function gamipress_register_earnings_shortcode() {
                 'type'        => 'select',
                 'options'      => array( 'DESC' => __( 'Newest', 'gamipress' ), 'ASC' => __( 'Older', 'gamipress' ) ),
                 'default'     => 'DESC',
+            ),
+            'include' => array(
+                'name'              => __( 'Include', 'gamipress' ),
+                'description'       => __( 'Comma-separated list of specific earnings IDs to include.', 'gamipress' ),
+                'type'              => 'text',
+            ),
+            'exclude' => array(
+                'name'              => __( 'Exclude', 'gamipress' ),
+                'description'       => __( 'Comma-separated list of specific earnings IDs to exclude.', 'gamipress' ),
+                'type'              => 'text',
             ),
 
             // Points types
@@ -225,6 +237,8 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
         'limit'             => '10',
         'pagination'        => 'yes',
         'order'             => 'DESC',
+        'include'       => '',
+        'exclude'       => '',
 
         'points'            => 'yes',
         'points_types'      => 'all',
@@ -337,6 +351,26 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
     // User
     if( isset( $args['user_id'] ) && absint( $args['user_id'] ) !== 0 ) {
         $query_args['user_id'] = $args['user_id'];
+    }
+
+    // Build $include array
+    if ( ! is_array( $args['include'] ) && ! empty( $args['include'] ) ) {
+        $include = explode( ',', $args['include'] );
+    }
+
+    // Build $exclude array
+    if ( ! is_array( $args['exclude'] ) && ! empty( $args['exclude'] ) ) {
+        $exclude = explode( ',', $args['exclude'] );
+    }
+
+    // Include certain user earnings
+    if ( isset( $include ) && ! empty( $include ) ) {
+        $query_args[ 'user_earning__in' ] = $include;
+    }
+
+    // Exclude certain user earnings
+    if ( isset( $exclude ) && ! empty( $exclude ) ) {
+        $query_args[ 'user_earning__not_in' ] = $exclude;
     }
 
     // Points types

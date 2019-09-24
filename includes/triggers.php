@@ -402,9 +402,8 @@ function gamipress_trigger_event() {
 	$args = func_get_args();
 
 	// Check if method has been called directly
-	if( isset( $args[0] ) && is_array( $args[0] ) && isset( $args[0]['event'] ) ) {
+	if( isset( $args[0] ) && is_array( $args[0] ) && isset( $args[0]['event'] ) )
 		$args = $args[0];
-	}
 
 	// Grab our current trigger
 	$trigger = ( isset( $args['event'] ) ? $args['event'] : current_filter() );
@@ -416,9 +415,8 @@ function gamipress_trigger_event() {
 		if( ! (bool) gamipress_get_option( 'log_all_events', false ) ) {
 
 			// If not achievements listening it, then return
-			if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
+			if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) )
 				return false;
-			}
 
 		}
 
@@ -429,14 +427,12 @@ function gamipress_trigger_event() {
 	$user_data = get_user_by( 'id', $user_id );
 
 	// Sanity check, if we don't have a user object, bail here
-	if ( ! is_object( $user_data ) ) {
+	if ( ! is_object( $user_data ) )
 		return false;
-	}
 
 	// If the user doesn't satisfy the trigger requirements, bail here
-	if ( ! apply_filters( 'gamipress_user_deserves_trigger', true, $user_id, $trigger, $site_id, $args ) ) {
+	if ( ! apply_filters( 'gamipress_user_deserves_trigger', true, $user_id, $trigger, $site_id, $args ) )
 		return false;
-	}
 
 	// Update hook count for this user
 	gamipress_update_user_trigger_count( $user_id, $trigger, $site_id, $args );
@@ -473,6 +469,10 @@ function gamipress_log_event_triggered( $user_id, $trigger, $site_id, $args ) {
         'count' => gamipress_get_user_trigger_count( $user_id, $trigger, 0, $site_id, $args ),
         //'trigger_type' => $trigger, // Removed since 1.4.7
     );
+
+    // On multisite, search for site logs
+    if( is_multisite() && gamipress_is_network_wide_active() )
+        $log_meta['site_id'] = $site_id;
 
     // If is specific trigger then try to get the attached id
     if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
@@ -574,6 +574,10 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 		'type' => 'event_trigger',
 		'trigger_type' => $trigger,
 	);
+
+	// On multisite, search for site logs
+	if( is_multisite() && gamipress_is_network_wide_active() )
+        $log_meta['site_id'] = $site_id;
 
 	switch ( $trigger ) {
 		case 'gamipress_publish_post':

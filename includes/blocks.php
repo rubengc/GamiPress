@@ -194,8 +194,6 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
             break;
     }
 
-    // TODO: [gamipress_logs] include and exclude (just possible when CT includes WP Rest API endpoints)
-
     // Common fields to all shortcodes
 
     // User ID

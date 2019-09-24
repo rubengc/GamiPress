@@ -393,7 +393,7 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
             $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
             // Check if assigned post exists to modify the output
-            if( gamipress_post_exists( $user_earning->post_id ) && gamipress_get_post_status( $user_earning->post_id ) === 'publish' ) : ?>
+            if( gamipress_post_exists( $user_earning->post_id ) ) : ?>
 
                 <?php if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) : ?>
 

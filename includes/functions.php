@@ -285,7 +285,8 @@ function gamipress_delete_post_meta( $post_id, $meta_key, $meta_value = '' ) {
  *
  * Important: On network wide installs, this function will return the post from main site, so use only for points, achievements and ranks posts
  *
- * @since  1.4.0
+ * @since   1.4.0
+ * @updated 1.7.7 Make use of GamiPress cache feature to get network posts from cache
  *
  * @param int    $post_id       Post ID.
  *
@@ -302,13 +303,26 @@ function gamipress_get_post( $post_id ) {
 
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
 
+        $cache = gamipress_get_cache( 'posts', array() );
+
+        // If result already cached, return it
+        if( isset( $cache[absint( $post_id )] ) ) {
+            return $cache[absint( $post_id )];
+        }
+
         // GamiPress post are stored on main site, so if we are not on main site, then we need to get their fields from global table
         $posts = GamiPress()->db->posts;
 
-        return $wpdb->get_row( $wpdb->prepare(
+        $post = $wpdb->get_row( $wpdb->prepare(
             "SELECT * FROM {$posts} WHERE ID = %d",
             absint( $post_id )
         ) );
+
+        // Cache network posts
+        $cache[absint( $post_id )] = $post;
+        gamipress_set_cache( 'posts', $cache );
+
+        return $post;
 
     } else {
         return get_post( $post_id );
@@ -328,9 +342,7 @@ function gamipress_get_post( $post_id ) {
  * @return false|string         Post status on success, false on failure.
  */
 function gamipress_get_post_status( $post_id = null ) {
-
     return gamipress_get_post_field( 'post_status', $post_id );
-
 }
 
 /**
@@ -345,9 +357,7 @@ function gamipress_get_post_status( $post_id = null ) {
  * @return false|string         Post status on success, false on failure.
  */
 function gamipress_get_post_type( $post_id = null ) {
-
     return gamipress_get_post_field( 'post_type', $post_id );
-
 }
 
 /**
@@ -362,9 +372,7 @@ function gamipress_get_post_type( $post_id = null ) {
  * @return false|string         Post status on success, false on failure.
  */
 function gamipress_get_post_date( $post_id = null ) {
-
     return gamipress_get_post_field( 'post_date', $post_id );
-
 }
 
 /**
@@ -372,7 +380,8 @@ function gamipress_get_post_date( $post_id = null ) {
  *
  * Important: On network wide installs, this function will return the post field from main site, so use only for points, achievements and ranks posts fields
  *
- * @since  1.4.0
+ * @since   1.4.0
+ * @updated 1.7.7 Make use of gamipress_get_post() function to get network posts fields from cache
  *
  * @param string                $field      The post field.
  * @param integer|WP_Post|null  $post_id    Post ID.
@@ -391,16 +400,11 @@ function gamipress_get_post_field( $field, $post_id = null  ) {
         return $post_id->$field;
     }
 
-    global $wpdb;
-
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
-        // GamiPress post are stored on main site, so if we are not on main site, then we need to get their fields from global table
-        $posts = GamiPress()->db->posts;
 
-        return $wpdb->get_var( $wpdb->prepare(
-            "SELECT {$field} FROM {$posts} WHERE ID = %d",
-            absint( $post_id )
-        ) );
+        $post = gamipress_get_post( $post_id );
+
+        return ( $post ? $post->$field : null );
     } else {
         return get_post_field( $field, $post_id );
     }
@@ -422,9 +426,8 @@ function gamipress_post_exists( $post_id  ) {
 
     $post_id = absint( $post_id );
 
-    if( $post_id === 0 ) {
+    if( $post_id === 0 )
         return false;
-    }
 
     global $wpdb;
 
@@ -445,14 +448,12 @@ function gamipress_post_exists( $post_id  ) {
  * @since 1.0.0
  */
 function gamipress_flush_rewrite_rules() {
-
     gamipress_register_post_types();
     gamipress_register_points_types();
     gamipress_register_achievement_types();
     gamipress_register_rank_types();
 
     flush_rewrite_rules();
-
 }
 
 /**

@@ -241,9 +241,8 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
 
     global $wpdb;
 
-    if( $rank_id === null ) {
+    if( $rank_id === null )
         $rank_id = get_the_ID();
-    }
 
     $rank_type = gamipress_get_post_type( $rank_id );
 
@@ -263,9 +262,8 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
         gamipress_get_post_field( 'menu_order', $rank_id )
     ) );
 
-    if( absint( $next_rank_id ) === $rank_id ) {
+    if( absint( $next_rank_id ) === $rank_id )
         $next_rank_id = 0;
-    }
 
 
     return apply_filters( 'gamipress_get_next_rank_id', absint( $next_rank_id ), $rank_id );
@@ -767,7 +765,7 @@ function gamipress_get_rank_requirement_rank( $rank_requirement_id = 0 ) {
 
     if( $rank_id !== 0 ) {
         // If has parent, return his post object
-        return get_post( $rank_id );
+        return gamipress_get_post( $rank_id );
     } else {
         return false;
     }

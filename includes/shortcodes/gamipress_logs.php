@@ -95,31 +95,13 @@ function gamipress_register_logs_shortcode() {
             ),
             'include' => array(
                 'name'              => __( 'Include', 'gamipress' ),
-                'description'       => __( 'Log entries to include.', 'gamipress' ),
-                'shortcode_desc'    => __( 'Comma-separated list of specific log entries IDs to include.', 'gamipress' ),
-                'type'              => 'advanced_select',
-                'multiple'          => true,
-                'classes' 	        => 'gamipress-post-selector',
-                'attributes' 	    => array(
-                    'data-post-type' => 'gamipress_logs',
-                    'data-placeholder' => __( 'Select logs', 'gamipress' ),
-                ),
-                'default'           => '',
-                'options_cb'        => 'gamipress_options_cb_posts'
+                'description'       => __( 'Comma-separated list of specific log entries IDs to include.', 'gamipress' ),
+                'type'              => 'text',
             ),
             'exclude' => array(
                 'name'              => __( 'Exclude', 'gamipress' ),
-                'description'       => __( 'Log entries to exclude.', 'gamipress' ),
-                'shortcode_desc'    => __( 'Comma-separated list of specific log entries IDs to exclude.', 'gamipress' ),
-                'type'              => 'advanced_select',
-                'multiple'          => true,
-                'classes' 	        => 'gamipress-post-selector',
-                'attributes' 	    => array(
-                    'data-post-type' => 'gamipress_logs',
-                    'data-placeholder' => __( 'Select logs', 'gamipress' ),
-                ),
-                'default'           => '',
-                'options_cb'        => 'gamipress_options_cb_posts'
+                'description'       => __( 'Comma-separated list of specific log entries IDs to exclude.', 'gamipress' ),
+                'type'              => 'text',
             ),
         ),
     ) );
@@ -296,12 +278,12 @@ function gamipress_logs_shortcode_query( $args ) {
         $exclude = explode( ',', $args['exclude'] );
     }
 
-    // Include certain achievements
+    // Include certain logs
     if ( isset( $include ) && ! empty( $include ) ) {
         $query_args[ 'log__in' ] = $include;
     }
 
-    // Exclude certain achievements
+    // Exclude certain logs
     if ( isset( $exclude ) && ! empty( $exclude ) ) {
         $query_args[ 'log__not_in' ] = $exclude;
     }
