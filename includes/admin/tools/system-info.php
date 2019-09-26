@@ -346,12 +346,6 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'type' => 'display',
                 'value' => $rank_types_output,
             ),
-            'gamipress_select2' => array(
-                'name' => __( 'Select2 Library', 'gamipress' ),
-                'type' => 'display',
-                'value' => __( 'Outdated', 'gamipress' ),
-                'classes' => 'gamipress-label-danger',
-            ),
             'gamipress_install_date' => array(
                 'name' => __( 'Installation Date', 'gamipress' ),
                 'type' => 'display',

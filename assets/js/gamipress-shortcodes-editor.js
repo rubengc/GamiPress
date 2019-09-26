@@ -181,7 +181,7 @@
     });
 
     // User ajax
-    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_user_rank_user_id, #gamipress_earnings_user_id' ).select2({
+    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_user_rank_user_id, #gamipress_earnings_user_id' ).gamipress_select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',

@@ -231,6 +231,33 @@ function gamipress_options_cb_users( $field ) {
 
 }
 
+// Options callback for WordPress roles
+function gamipress_options_cb_roles( $field ) {
+
+    $options = array();
+
+    $editable_roles = get_editable_roles();
+
+    $field->args['excluded_roles'] = ( isset( $field->args['excluded_roles'] ) ? $field->args['excluded_roles'] : array() );
+
+    // Ensure excluded roles as array
+    if( ! is_array( $field->args['excluded_roles'] ) )
+        $field->args['excluded_roles'] = array( $field->args['excluded_roles'] );
+
+    foreach ( $editable_roles as $role => $details ) {
+
+        // Skip excluded roles
+        if( in_array( $role, $field->args['excluded_roles'] ) )
+            continue;
+
+        $options[$role] = translate_user_role( $details['name'] );
+
+    }
+
+    return $options;
+
+}
+
 /**
  * Helper function to enable a checkbox when value was not stored
  */

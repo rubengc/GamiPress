@@ -836,97 +836,24 @@
         + '#bulk_revoke_points_all_users, #bulk_revoke_achievements_all_users, #bulk_revoke_rank_all_users'
         , function() {
 
-        var target = $('#' + $(this).attr('id').replace('_all', '')).closest('.cmb-row');
+        var users_target = $('#' + $(this).attr('id').replace('_all', '')).closest('.cmb-row');
+        var roles_target = $('#' + $(this).attr('id').replace('all_users', 'roles')).closest('.cmb-row');
 
         if( $(this).prop('checked') ) {
-            target.slideUp(250).addClass('cmb2-tab-ignore');
+            users_target.slideUp(250).addClass('cmb2-tab-ignore');
+            roles_target.slideUp(250).addClass('cmb2-tab-ignore');
         } else {
-            target.slideDown(250).removeClass('cmb2-tab-ignore');
+            users_target.slideDown(250).removeClass('cmb2-tab-ignore');
+            roles_target.slideDown(250).removeClass('cmb2-tab-ignore');
         }
 
-    });
-
-    // Achievements ajax
-    $('#bulk_award_achievements, #bulk_revoke_achievements').select2({
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            cache: true,
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    action: 'gamipress_get_achievements_options'
-                };
-            },
-            processResults: gamipress_select2_posts_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_posts_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_admin_tools.achievements_placeholder,
-        allowClear: true,
-        closeOnSelect: false,
-        multiple: true
-    });
-
-    // Rank ajax
-    $('#bulk_award_rank, #bulk_revoke_rank').select2({
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            cache: true,
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    action: 'gamipress_get_ranks_options'
-                };
-            },
-            processResults: gamipress_select2_posts_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_posts_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_admin_tools.rank_placeholder,
-        allowClear: true,
-        multiple: false
-    });
-
-    // User ajax
-    $( '#bulk_award_points_users, #bulk_award_achievements_users, #bulk_award_rank_users, '
-        + '#bulk_revoke_points_users, #bulk_revoke_achievements_users, #bulk_revoke_rank_users').select2({
-        ajax: {
-            url: ajaxurl,
-            dataType: 'json',
-            delay: 250,
-            type: 'POST',
-            cache: true,
-            data: function( params ) {
-                return {
-                    q: params.term,
-                    page: params.page || 1,
-                    action: 'gamipress_get_users'
-                };
-            },
-            processResults: gamipress_select2_users_process_results
-        },
-        escapeMarkup: function ( markup ) { return markup; }, // Let our custom formatter work
-        templateResult: gamipress_select2_users_template_result,
-        theme: 'default gamipress-select2',
-        placeholder: gamipress_admin_tools.users_placeholder,
-        allowClear: true,
-        closeOnSelect: false,
-        multiple: true
     });
 
     function gamipress_run_bulk_tool( button, loop ) {
 
-        if( loop === undefined ) {
+        // Initialize loop
+        if( loop === undefined )
             loop = 0;
-        }
 
         var response_id = button.attr('id').replace('_button', '_response');
         var active_tab = button.closest('.cmb-tabs-wrap').find('.cmb-tab.active');
@@ -1025,24 +952,5 @@
 
         gamipress_run_bulk_tool( $(this) );
     });
-
-    // ----------------------------------
-    // System Info
-    // ----------------------------------
-
-    // Select2 version check
-    if( gamipress_is_select2_updated() ) {
-
-        var field_row = $('.cmb-type-display.cmb2-id-gamipress-select2');
-        var field = field_row.find('.cmb-td span');
-
-        // Update field and row classes
-        field_row.addClass('gamipress-label-success').removeClass('gamipress-label-danger');
-        field.addClass('gamipress-label-success').removeClass('gamipress-label-danger');
-
-        // Update field text
-        field.text('Updated');
-
-    }
 
 })( jQuery );

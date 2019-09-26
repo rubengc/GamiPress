@@ -287,6 +287,8 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * **New Features**
 * Added the fields "Include" and "Exclude" to the Earnings block and widget.
 * Added the attributes "include" and "exclude" to the [gamipress_earnings] shortcodes.
+* Added support to award by roles to the Bulk Award Tool.
+* Added support to revoke by roles to the Bulk Revokes Tool.
 * **Improvements**
 * Added some extra checks on shortcodes editor to avoid warnings while looping shortcode groups.
 * Readme reduction by removing the add-ons descriptions.
@@ -294,10 +296,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Removed gamipress-blocks-style.css file since is not in use.
 * Added site ID metadata on logs when GamiPress is network wide active on multisite.
 * Performance improvements on multisites by caching queried posts on rules engine.
+* Code improvements for bulk awards and bulk revokes scripts.
 * **Bug Fixes**
 * Fixed an issue that makes ranks not being awarded on multisites when user meets it's requirements on a subsite.
 * **Developer Notes**
 * Added Javascript events before and after unlock achievements and ranks through points.
+* Updated Select2 library to 4.0.10.
+* Creation of the gamipress_select2() to ensure load always the up to date select2 version.
+* Replacement of all select2() calls to gamipress_select2().
+* Removed select2 information on System Info tool.
 
 ### 1.7.6.3 ###
 

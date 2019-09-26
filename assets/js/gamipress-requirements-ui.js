@@ -105,7 +105,7 @@
 
         // Initialize select 2 on select trigger type
         if( ! $(this).hasClass('select2-hidden-accessible') ) {
-            $(this).select2({
+            $(this).gamipress_select2({
                 theme: 'default gamipress-select2 gamipress-trigger-type-selector',
                 matcher: gamipress_select2_optgroup_matcher,
             });
@@ -211,7 +211,7 @@
                     .val('').change()   // Reset value
                     .next().show();     // Show Select2 container
             } else {
-                post_selector.select2({
+                post_selector.gamipress_select2({
                     ajax: {
                         url: ajaxurl,
                         dataType: 'json',

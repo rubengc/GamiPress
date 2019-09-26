@@ -80,7 +80,7 @@ function gamipress_admin_register_scripts() {
 
     // Libraries
     wp_register_style( 'gamipress-select2-css', GAMIPRESS_URL . 'assets/libs/select2/css/select2' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
-    wp_register_script( 'gamipress-select2-js', GAMIPRESS_URL . 'assets/libs/select2/js/select2.full' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
+    wp_register_script( 'gamipress-select2-js', GAMIPRESS_URL . 'assets/js/gamipress-select2' . $suffix . '.js', array( 'jquery' ), GAMIPRESS_VER, true );
 
     // Stylesheets
     wp_register_style( 'gamipress-admin-css', GAMIPRESS_URL . 'assets/css/gamipress-admin' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
@@ -174,11 +174,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         wp_localize_script( 'gamipress-admin-tools-js', 'gamipress_admin_tools', array(
             // Notices
             'recount_activity_notice'   => __( 'Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed.', 'gamipress' ),
-            // Field placeholders
-            'achievements_placeholder'  => __( 'Select Achievements', 'gamipress' ),
-            'rank_placeholder'          => __( 'Select a Rank', 'gamipress' ),
-            'users_placeholder'         => __( 'Select Users', 'gamipress' ),
-            // User data (to be used as sample or on CSV templates)
+            // User data (used as sample on CSV templates)
             'user_id'                   => $user->ID,
             'user_name'                 => $user->user_login,
             'user_email'                => $user->user_email,

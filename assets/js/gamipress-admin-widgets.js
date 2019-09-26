@@ -24,7 +24,7 @@
     };
 
     // User ajax
-    $( '#widgets-right select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
+    $( '#widgets-right select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).gamipress_select2( gamipress_widget_select2_users );
 
     // Current user field
     $('body').on('change', 'input[id^="widget-gamipress"][id$="[current_user]"]', function() {
@@ -144,7 +144,7 @@
     $(document).on('widget-updated widget-added', function(e, widget) {
 
         // User ajax
-        widget.find( 'select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).select2( gamipress_widget_select2_users );
+        widget.find( 'select[id^="widget-gamipress"][id$="[user_id]"]:not(.select2-hidden-accessible)' ).gamipress_select2( gamipress_widget_select2_users );
 
         // Current user field
         var current_user = widget.find( 'input[id^="widget-gamipress"][id$="[current_user]"]');

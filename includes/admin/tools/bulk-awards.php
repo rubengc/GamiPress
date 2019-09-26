@@ -56,7 +56,26 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
             'bulk_award_points_users' => array(
                 'name' => __( 'Users to award', 'gamipress' ),
                 'desc' => __( 'Choose users to award this points amount.', 'gamipress' ),
-                'type' => 'select',
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-user-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Choose users(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_users',
+            ),
+            'bulk_award_points_roles' => array(
+                'name' => __( 'Roles to award', 'gamipress' ),
+                'desc' => __( 'Choose roles to award this points amount.', 'gamipress' ),
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Choose role(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_roles',
             ),
             'bulk_award_points_button' => array(
                 'label' => __( 'Award Points', 'gamipress' ),
@@ -69,7 +88,15 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
             'bulk_award_achievements' => array(
                 'name' => __( 'Achievements to Award', 'gamipress' ),
                 'desc' => __( 'Choose the achievements to award.', 'gamipress' ),
-                'type' => 'select',
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_achievement_types_slugs() ),
+                    'data-placeholder' => __( 'Choose achievement(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_posts',
             ),
             'bulk_award_achievements_all_users' => array(
                 'name' => __( 'Award to all users', 'gamipress' ),
@@ -80,7 +107,26 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
             'bulk_award_achievements_users' => array(
                 'name' => __( 'Users to award', 'gamipress' ),
                 'desc' => __( 'Choose users to award this achievements.', 'gamipress' ),
-                'type' => 'select',
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-user-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Choose users(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_users',
+            ),
+            'bulk_award_achievements_roles' => array(
+                'name' => __( 'Roles to award', 'gamipress' ),
+                'desc' => __( 'Choose roles to award this achievements.', 'gamipress' ),
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Choose role(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_roles',
             ),
             'bulk_award_achievements_button' => array(
                 'label' => __( 'Award Achievements', 'gamipress' ),
@@ -94,7 +140,13 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Rank to Award', 'gamipress' ),
                 'desc' => __( 'Choose the rank to award.', 'gamipress' )
                 . '<br>' . __( '<strong>Important!</strong> Users on higher rank will be downgrade to this rank.', 'gamipress' ),
-                'type' => 'select',
+                'type' => 'advanced_select',
+                'classes' 	        => 'gamipress-post-selector',
+                'attributes' 	    => array(
+                    'data-post-type' => implode( ',',  gamipress_get_rank_types_slugs() ),
+                    'data-placeholder' => __( 'Choose rank', 'gamipress' ),
+                ),
+                'options_cb' => 'gamipress_options_cb_posts',
             ),
             'bulk_award_rank_all_users' => array(
                 'name' => __( 'Award to all users', 'gamipress' ),
@@ -105,7 +157,26 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
             'bulk_award_rank_users' => array(
                 'name' => __( 'Users to award', 'gamipress' ),
                 'desc' => __( 'Choose users to award this rank.', 'gamipress' ),
-                'type' => 'select',
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-user-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Choose users(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_users',
+            ),
+            'bulk_award_rank_roles' => array(
+                'name' => __( 'Roles to award', 'gamipress' ),
+                'desc' => __( 'Choose roles to award this rank.', 'gamipress' ),
+                'type' => 'advanced_select',
+                'multiple' => true,
+                'classes' 	        => 'gamipress-selector',
+                'attributes' 	    => array(
+                    'data-placeholder' => __( 'Choose role(s)', 'gamipress' ),
+                    'data-close-on-select' => 'false',
+                ),
+                'options_cb' => 'gamipress_options_cb_roles',
             ),
             'bulk_award_rank_button' => array(
                 'label' => __( 'Award Rank', 'gamipress' ),
@@ -123,6 +194,7 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
                     'bulk_award_points_type',
                     'bulk_award_points_all_users',
                     'bulk_award_points_users',
+                    'bulk_award_points_roles',
                     'bulk_award_points_button',
                 ),
             ),
@@ -133,6 +205,7 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
                     'bulk_award_achievements',
                     'bulk_award_achievements_all_users',
                     'bulk_award_achievements_users',
+                    'bulk_award_achievements_roles',
                     'bulk_award_achievements_button',
                 ),
             ),
@@ -143,6 +216,7 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
                     'bulk_award_rank',
                     'bulk_award_rank_all_users',
                     'bulk_award_rank_users',
+                    'bulk_award_rank_roles',
                     'bulk_award_rank_button',
                 ),
             )
@@ -164,14 +238,12 @@ function gamipress_ajax_bulk_awards_tool() {
     global $wpdb;
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
-    }
 
     // Check parameters received
-    if( ! isset( $_POST['bulk_award'] ) || empty( $_POST['bulk_award'] ) ) {
+    if( ! isset( $_POST['bulk_award'] ) || empty( $_POST['bulk_award'] ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
-    }
 
     $bulk_award = $_POST['bulk_award'];
     $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
@@ -181,12 +253,17 @@ function gamipress_ajax_bulk_awards_tool() {
 
     ignore_user_abort( true );
 
-    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) )
         set_time_limit( 0 );
-    }
 
+    // Initialize vars
     $points_types = gamipress_get_points_types();
     $rank_types = gamipress_get_rank_types();
+    $to_all_users = false;
+    $specific_users = array();
+    $specific_roles = array();
+    $join = array();
+    $where = array();
 
     if( $bulk_award === 'points' ) {
         // Check points parameters
@@ -207,6 +284,7 @@ function gamipress_ajax_bulk_awards_tool() {
 
         if( ! $to_all_users ) {
             $specific_users = isset( $_POST['bulk_award_points_users'] ) ? $_POST['bulk_award_points_users'] : array();
+            $specific_roles = isset( $_POST['bulk_award_points_roles'] ) ? $_POST['bulk_award_points_roles'] : array();
         }
 
     } else if( $bulk_award === 'achievements' ) {
@@ -222,6 +300,7 @@ function gamipress_ajax_bulk_awards_tool() {
 
         if( ! $to_all_users ) {
             $specific_users = isset( $_POST['bulk_award_achievements_users'] ) ? $_POST['bulk_award_achievements_users'] : array();
+            $specific_roles = isset( $_POST['bulk_award_achievements_roles'] ) ? $_POST['bulk_award_achievements_roles'] : array();
         }
 
     } else if( $bulk_award === 'rank' ) {
@@ -239,35 +318,79 @@ function gamipress_ajax_bulk_awards_tool() {
 
         if( ! $to_all_users ) {
             $specific_users = isset( $_POST['bulk_award_rank_users'] ) ? $_POST['bulk_award_rank_users'] : array();
+            $specific_roles = isset( $_POST['bulk_award_rank_roles'] ) ? $_POST['bulk_award_rank_roles'] : array();
         }
 
     }
 
-    // Check users parameters
-    if( ! $to_all_users && empty( $specific_users ) ) {
-        wp_send_json_error( __( 'Choose at least one user to award.', 'gamipress' ) );
+    // Ensure all specific users are correct
+    foreach( $specific_users as $i => $specific_user ) {
+        if( absint( $specific_user ) === 0 )
+            unset( $specific_users[$i] );
     }
+
+    // Ensure all specific roles are correct
+    $editable_roles = get_editable_roles();
+
+    foreach( $specific_roles as $i => $specific_role ) {
+        if( ! isset( $editable_roles[$specific_role] ) )
+            unset( $specific_roles[$i] );
+    }
+
+    // Check users parameters
+    if( ! $to_all_users && empty( $specific_users ) && empty( $specific_roles ) )
+        wp_send_json_error( __( 'Choose at least one user to award.', 'gamipress' ) );
 
     if( $to_all_users ) {
 
         // Get all stored users
-        $users = $wpdb->get_results( "SELECT ID FROM {$wpdb->users} ORDER BY ID ASC LIMIT {$offset}, {$limit}" );
+        $users = $wpdb->get_results( "SELECT u.ID FROM {$wpdb->users} AS u ORDER BY u.ID ASC LIMIT {$offset}, {$limit}" );
 
-        if( empty( $users ) && $loop !== 0 ) {
-            // Return a success message
+        // Return a success message if finished, else run again
+        if( empty( $users ) && $loop !== 0 )
             wp_send_json_success( __( 'Bulk award process has been done successfully.', 'gamipress' ) );
-        } else {
+        else
             $run_again = true;
-        }
 
     } else {
         // Get specific stored users
-        $users = $wpdb->get_results( "SELECT ID FROM {$wpdb->users} WHERE ID IN( " . implode( ', ', $specific_users ) . " )" );
+
+        // Setup specific users where
+        if( ! empty( $specific_users ) && count( $specific_users ) > 0 )
+            $where[] = "u.ID IN( " . implode( ', ', $specific_users ) . " )";
+
+        // Setup specific users join
+        if( ! empty( $specific_roles ) && count( $specific_roles ) > 0 ) {
+            // Setup join to the users meta table
+            $join[] = "LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID AND umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities' )";
+
+            foreach( $specific_roles as $role ) {
+                $where[] = "umcap.meta_value LIKE '%\\\"{$role}\\\"%'";
+            }
+
+        }
+
+        // Setup each query part
+        $where = ( ! empty( $where ) ? "WHERE (" . implode( ') OR (', $where ) . ")" : '' );
+        $join = ( ! empty( $join ) ? implode( ' ', $join ) : '' );
+
+        $sql = "SELECT u.ID 
+                FROM {$wpdb->users} AS u
+                {$join}
+                {$where}
+                ORDER BY u.ID ASC LIMIT {$offset}, {$limit}";
+
+        $users = $wpdb->get_results( $sql );
+
+        // Return a success message if finished, else run again
+        if( empty( $users ) && $loop !== 0 )
+            wp_send_json_success( __( 'Bulk award process has been done successfully.', 'gamipress' ) );
+        else
+            $run_again = true;
     }
 
-    if( empty( $users ) ) {
+    if( empty( $users ) )
         wp_send_json_error( __( 'Could not find users to award.', 'gamipress' ) );
-    }
 
     // Let's to bulk award
     foreach( $users as $user ) {
@@ -299,12 +422,25 @@ function gamipress_ajax_bulk_awards_tool() {
     if( $run_again ) {
 
         $awarded_users = $limit * ( $loop + 1 );
-        $users_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->users} ORDER BY ID ASC" ) );
+
+        if( $to_all_users ) {
+            $users_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->users} AS u ORDER BY u.ID ASC" ) );
+        } else {
+            $users_count = absint( $wpdb->get_var(
+                "SELECT COUNT(*) 
+                FROM {$wpdb->users} AS u 
+                {$join}
+                {$where}
+                ORDER BY u.ID ASC"
+            ) );
+        }
+
+        $remaining_users = $users_count - $awarded_users;
 
         // Return a run again message (just when awarding to all users)
         wp_send_json_success( array(
             'run_again' => $run_again,
-            'message' => sprintf( __( '%d remaining users', 'gamipress' ), ( $users_count - $awarded_users ) ),
+            'message' => sprintf( __( '%d remaining users', 'gamipress' ), ( $remaining_users > 0 ? $remaining_users : 0 ) ),
         ) );
 
     } else {

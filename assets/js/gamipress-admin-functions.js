@@ -19,7 +19,7 @@ function gamipress_selector( $this ) {
         multiple: ( $this[0].hasAttribute('multiple') )
     };
 
-    $this.select2( select2_args );
+    $this.gamipress_select2( select2_args );
 
 }
 
@@ -61,7 +61,7 @@ function gamipress_post_selector( $this ) {
         multiple: ( $this[0].hasAttribute('multiple') )
     };
 
-    $this.select2( select2_args );
+    $this.gamipress_select2( select2_args );
 
 }
 
@@ -102,7 +102,7 @@ function gamipress_user_selector( $this ) {
         multiple: ( $this[0].hasAttribute('multiple') )
     };
 
-    $this.select2( select2_args );
+    $this.gamipress_select2( select2_args );
 
 }
 
@@ -308,47 +308,6 @@ function gamipress_select2_optgroup_matcher( params, data ) {
 
     // If it doesn't contain the term, don't return anything
     return null;
-}
-
-/**
- * Function to check if select2 is correctly updated to latest release
- *
- * @since 1.6.3
- *
- * @param {boolean} show_in_console
- *
- * @return {boolean}
- */
-function gamipress_is_select2_updated( show_in_console ) {
-
-    if( show_in_console === undefined )
-        show_in_console = false;
-
-    // Select2 version check
-    try {
-        // Select2 ver >= 4.x
-
-        // Let's to create a hidden select element to turn it into a select2 element and check that everything works correctly
-        jQuery('<select id="gamipress-select2-version-check" style="display: none;"><option value=""></option></select>').insertAfter('body');
-
-        jQuery("#gamipress-select2-version-check").select2({ theme: 'gamipress-select2-hidden' });
-
-        // If this function doesn't triggers any error, then Select2 is correctly up to date
-        jQuery("#gamipress-select2-version-check").select2('isOpen');
-
-        if( show_in_console )
-            console.log('Select2 is up to date!');
-
-        return true;
-
-    } catch(e) {
-        // Select2 ver <= 3.x
-
-        if( show_in_console )
-            console.log('Select2 is outdated!');
-
-        return false;
-    }
 }
 
 /**
