@@ -108,6 +108,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [Transfers Notes](https://wordpress.org/plugins/gamipress-transfers-notes/)
 * [Conditional Emails Recipients](https://wordpress.org/plugins/gamipress-conditional-emails-recipients/)
 * [Leaderboards Include/Exclude Users](https://wordpress.org/plugins/gamipress-leaderboards-include-exclude-users/)
 * [LearnDash Group Leaderboard](https://wordpress.org/plugins/gamipress-learndash-group-leaderboard/)
