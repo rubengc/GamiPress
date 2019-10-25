@@ -283,6 +283,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.8 ###
+
+* **New Features**
+* Support to WordPress 5.3 admin style guidelines.
+* **Improvements**
+* Make GamiPress switches match WordPress togglers style.
+* Make GamiPress Select2 match WordPress selects style.
+
 ### 1.7.7 ###
 
 * **New Features**

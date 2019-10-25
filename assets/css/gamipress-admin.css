@@ -784,8 +784,8 @@ body.wp-customizer > .gamipress-select2 {
 .gamipress-select2 .select2-selection,
 .gamipress-select2 .select2-search--dropdown .select2-search__field,
 .gamipress-select2.select2-container--focus .select2-selection--multiple {
-	border: 1px solid #ddd !important;
-	border-radius: 0 !important;
+	border: 1px solid #7e8993 !important;
+	border-radius: 3px !important;
 	-webkit-box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 ) !important;
 	box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 ) !important;
 	color: #32373c !important;
@@ -797,7 +797,7 @@ body.wp-customizer > .gamipress-select2 {
 }
 
 .gamipress-select2 .select2-dropdown {
-	border-color: #ddd !important;
+	border-color: #7e8993 !important;
 	border-radius: 0 !important;
 }
 
@@ -837,7 +837,8 @@ body.wp-customizer > .gamipress-select2 {
 
 .gamipress-select2  .select2-selection--multiple .select2-selection__choice {
 	background-color: #f5f5f5 !important;
-	border-color: #ddd !important;
+	border-color: #7e8993 !important;
+	border-radius: 3px !important;
 	font-style: normal !important;
 }
 
@@ -857,6 +858,17 @@ body.wp-customizer > .gamipress-select2 {
 
 .gamipress-select2.select2-container--default .select2-selection--single .select2-selection__arrow {
 	height: 29px;
+	/* The SVG is arrow-down-alt2 from Dashicons. */
+	background: #fff url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23555%22%2F%3E%3C%2Fsvg%3E') no-repeat right 2px top 55%;
+}
+
+.gamipress-select2.select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow {
+	transform: rotate(180deg);
+	background-position-x: 3px;
+}
+
+.gamipress-select2.select2-container--default .select2-selection--single .select2-selection__arrow b {
+	display: none;
 }
 
 .gamipress-select2 .select2-results .select2-results__option .result-description {
@@ -913,12 +925,57 @@ body.wp-customizer > .gamipress-select2 {
 }
 
 .gamipress-switch input {
-	display: none;
+	position: absolute;
+	top: -2px;
+	left: -1px;
+	width: 48px;
+	height: 26px;
+	margin: 0;
+	padding: 0;
+	z-index: 1;
+	border: none;
+	box-shadow: none;
+	background: transparent !important;
+	border-radius: 60px;
+}
+
+.gamipress-switch input:before,
+.gamipress-switch input:after {
+	display: block;
+	position: absolute;
+	content: "" !important;
+	left: 0;
+	top: 0;
+}
+
+.gamipress-switch input:before {
+	border: 2px solid #6c7781;
+	border-radius: 100%;
+	width: 4px;
+	height: 4px;
+	margin-top: 9px;
+	margin-left: 32px;
+}
+
+.gamipress-switch input:checked:before {
+	border-color: transparent;
+}
+
+.gamipress-switch input:before {
+	background: transparent;
+}
+
+.gamipress-switch input:checked:after {
+	background: #fff;
+	width: 2px;
+	height: 8px;
+	margin-top: 9px;
+	margin-left: 12px;
 }
 
 .gamipress-switch label .cmb2-metabox-description {
     display: block;
-    margin-top: 34px;
+    margin-top: 28px;
 }
 
 .gamipress-switch input + label:before,
@@ -929,34 +986,35 @@ body.wp-customizer > .gamipress-select2 {
 	bottom: 0;
 	left: 1px;
 	content: "";
-
-	width: 44px;
-	height: 22px;
+	width: 40px;
+	height: 18px;
 }
 
 .gamipress-switch input + label:before {
 	right: 1px;
-	background-color: #f1f1f1;
-    border: 1px solid #e5e5e5;
+	background-color: transparent;
+	border: 2px solid #6c7781;
 	border-radius: 60px;
-	transition: background 0.4s;
+	transition: all 0.2s ease;
 }
 
 .gamipress-switch input + label:after {
-	width: 22px;
-	background-color: #fff;
+	width: 14px;
+	height: 14px;
+	margin-left: 4px;
+	margin-top: 4px;
+	background-color: #6c7781;
 	border-radius: 100%;
-    -webkit-box-shadow: 0 1px 1px rgba(0,0,0,0.04);
-    box-shadow: 0 1px 1px rgba(0,0,0,0.04);
-    border: 1px solid #ddd;
-	transition: margin 0.4s;
+	transition: all 0.2s ease;
 }
 .gamipress-switch input:checked + label:before {
-	background-color: #0098d7;
+	background-color: #11a0d2;
+	border-color: transparent;
 }
 
 .gamipress-switch input:checked + label:after {
-	margin-left: 22px;
+	margin-left: 26px;
+	background-color: #fff;
 }
 
 #postbox-container-1 #side-sortables .gamipress-box-form .gamipress-switch .cmb-td {
@@ -992,6 +1050,13 @@ li.requirement-row .requirement-header .requirement-actions .requirement-action 
     position: relative;
 }
 
+li.requirement-row .requirement-header .requirement-actions .requirement-action .gamipress-switch input {
+	top: -2px;
+	left: -1px;
+	width: 44px;
+	height: 24px;
+}
+
 .gamipress-requirements-sequential.gamipress-switch input + label:before,
 .gamipress-requirements-sequential.gamipress-switch input + label:after {
     top: 2px;
@@ -1008,22 +1073,44 @@ label[for="_gamipress_sequential"] {
 	Switch control (small version)
    ------------------------------------------- */
 
+.gamipress-switch.gamipress-switch-small input {
+	top: 0px;
+	left: -1px;
+	width: 44px;
+	height: 24px;
+}
+
+.gamipress-switch.gamipress-switch-small input:before {
+	width: 3px;
+	height: 3px;
+	margin-top: 9px;
+	margin-left: 29px;
+}
+
+.gamipress-switch.gamipress-switch-small input:after {
+	height: 6px;
+	margin-top: 9px;
+	margin-left: 11px;
+}
+
 .gamipress-switch.gamipress-switch-small label {
     width: 40px;
 }
 
 .gamipress-switch.gamipress-switch-small input + label:before,
 .gamipress-switch.gamipress-switch-small input + label:after {
-    width: 36px;
-    height: 18px;
+	width: 36px;
+	height: 16px;
 }
 
 .gamipress-switch.gamipress-switch-small input + label:after {
-    width: 18px;
+	width: 12px;
+	height: 12px;
+	margin-top: 4px;
 }
 
 .gamipress-switch.gamipress-switch-small input:checked + label:after {
-    margin-left: 18px;
+    margin-left: 24px;
 }
 
 /* -------------------------------------------
@@ -1206,6 +1293,11 @@ label[for="_gamipress_sequential"] {
 	margin-right: 12px;
 }
 
+.gamipress-page .gamipress-switch input {
+	top: 2px;
+	left: 8px;
+}
+
 .gamipress-page .gamipress-switch input + label:before,
 .gamipress-page .gamipress-switch input + label:after {
 	top: 4px;
@@ -1216,6 +1308,11 @@ label[for="_gamipress_sequential"] {
 	display: inline-block;
 	margin-left: 50px;
 	margin-top: 7px;
+}
+
+.gamipress-page .gamipress-switch .cmb2-list input {
+	top: -2px;
+	left: -2px;
 }
 
 .gamipress-page .gamipress-switch .cmb2-list input + label:before,
@@ -1585,7 +1682,7 @@ label[for="_gamipress_sequential"] {
 }
 
 .is-gamipress-asset#plugin-information #plugin-information-content {
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #7e8993;
 }
 
 .is-gamipress-asset#plugin-information #plugin-information-content #section-holder {
