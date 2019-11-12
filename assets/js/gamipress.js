@@ -182,23 +182,16 @@
 	} );
 
 	/**
-	 * Unlock achievement with points button
+	 * Unlock achievement with points
 	 *
-	 * @since 1.3.7
+	 * @since 1.7.8.1
 	 */
-	$body.on( 'click', '.gamipress-achievement-unlock-with-points-button', function(e) {
+    function gamipress_unlock_achievement_with_points( submit_wrap ) {
 
-		var button = $(this);
-		var submit_wrap = button.closest('.gamipress-achievement-unlock-with-points');
+		var button = submit_wrap.find('.gamipress-achievement-unlock-with-points-button');
 		var spinner = submit_wrap.find('.gamipress-spinner');
-		var achievement_id = button.data('id');
-
-		// Disable the button
-		button.prop( 'disabled', true );
-
-		// Hide previous notices
-		if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length )
-			submit_wrap.find('.gamipress-achievement-unlock-with-points-response').slideUp();
+		var achievement_id = submit_wrap.data('id');
+		var confirmation = submit_wrap.find('.gamipress-achievement-unlock-with-points-confirmation');
 
 		// Show the spinner
 		spinner.show();
@@ -211,7 +204,7 @@
 		 * @selector    .gamipress-achievement-unlock-with-points-button
 		 * @event       gamipress_before_unlock_achievement_with_points
 		 */
-		button.trigger( 'gamipress_before_unlock_achievement_with_points', [] );
+		submit_wrap.trigger( 'gamipress_before_unlock_achievement_with_points', [] );
 
 		$.ajax( {
 			url: gamipress.ajaxurl,
@@ -240,6 +233,12 @@
 				spinner.hide();
 
 				if( response.success === true ) {
+
+					if( confirmation.length ) {
+						// Hide confirmation and enable confirm/cancel buttons
+						confirmation.slideUp();
+					}
+
 					// Hide the button
 					button.slideUp();
 
@@ -251,6 +250,14 @@
 					// Shortcode/Widget template
 					button.closest('.gamipress-achievement.user-has-not-earned').removeClass('user-has-not-earned').addClass('user-has-earned');
 				} else {
+
+					if( confirmation.length ) {
+						// Hide confirmation and enable confirm/cancel buttons
+						confirmation.slideUp();
+						submit_wrap.find('.gamipress-achievement-unlock-with-points-confirm-button').prop( 'disabled', false );
+						submit_wrap.find('.gamipress-achievement-unlock-with-points-cancel-button').prop( 'disabled', false );
+					}
+
 					// Enable the button
 					button.prop( 'disabled', false );
 				}
@@ -265,30 +272,23 @@
 				 *
 				 * @param Object response	Response retrieved from server
 				 */
-				button.trigger( 'gamipress_after_unlock_achievement_with_points', [ response ] );
+				submit_wrap.trigger( 'gamipress_after_unlock_achievement_with_points', [ response ] );
 			}
 		});
-	});
+
+	}
 
 	/**
-	 * Unlock rank with points button
+	 * Unlock rank with points
 	 *
-	 * @since 1.3.7
+	 * @since 1.7.8.1
 	 */
-	$body.on( 'click', '.gamipress-rank-unlock-with-points-button', function(e) {
+	function gamipress_unlock_rank_with_points( submit_wrap ) {
 
-		var button = $(this);
-		var submit_wrap = button.closest('.gamipress-rank-unlock-with-points');
+		var button = submit_wrap.find('.gamipress-rank-unlock-with-points-button');
 		var spinner = submit_wrap.find('.gamipress-spinner');
-		var rank_id = button.data('id');
-
-		// Disable the button
-		button.prop( 'disabled', true );
-
-		// Hide previous notices
-		if( submit_wrap.find('.gamipress-rank-unlock-with-points-response').length ) {
-			submit_wrap.find('.gamipress-rank-unlock-with-points-response').slideUp()
-		}
+		var rank_id = submit_wrap.data('id');
+		var confirmation = submit_wrap.find('.gamipress-rank-unlock-with-points-confirmation');
 
 		// Show the spinner
 		spinner.show();
@@ -301,7 +301,7 @@
 		 * @selector    .gamipress-rank-unlock-with-points-button
 		 * @event       gamipress_before_unlock_rank_with_points
 		 */
-		button.trigger( 'gamipress_before_unlock_rank_with_points', [] );
+		submit_wrap.trigger( 'gamipress_before_unlock_rank_with_points', [] );
 
 		$.ajax( {
 			url: gamipress.ajaxurl,
@@ -314,9 +314,8 @@
 			success: function( response ) {
 
 				// Ensure response wrap
-				if( submit_wrap.find('.gamipress-rank-unlock-with-points-response').length === 0 ) {
-					submit_wrap.prepend('<div class="gamipress-rank-unlock-with-points-response gamipress-notice" style="display: none;"></div>')
-				}
+				if( submit_wrap.find('.gamipress-rank-unlock-with-points-response').length === 0 )
+					submit_wrap.prepend('<div class="gamipress-rank-unlock-with-points-response gamipress-notice" style="display: none;"></div>');
 
 				var response_wrap = submit_wrap.find('.gamipress-rank-unlock-with-points-response');
 
@@ -331,6 +330,12 @@
 				spinner.hide();
 
 				if( response.success === true ) {
+
+					if( confirmation.length ) {
+						// Hide confirmation and enable confirm/cancel buttons
+						confirmation.slideUp();
+					}
+
 					// Hide the button
 					button.slideUp();
 
@@ -342,6 +347,14 @@
 					// Shortcode/Widget template
 					button.closest('.gamipress-rank.user-has-not-earned').removeClass('user-has-not-earned').addClass('user-has-earned');
 				} else {
+
+					if( confirmation.length ) {
+						// Hide confirmation and enable confirm/cancel buttons
+						confirmation.slideUp();
+						submit_wrap.find('.gamipress-rank-unlock-with-points-confirm-button').prop( 'disabled', false );
+						submit_wrap.find('.gamipress-rank-unlock-with-points-cancel-button').prop( 'disabled', false );
+					}
+
 					// Enable the button
 					button.prop( 'disabled', false );
 				}
@@ -356,9 +369,91 @@
 				 *
 				 * @param Object response	Response retrieved from server
 				 */
-				button.trigger( 'gamipress_after_unlock_rank_with_points', [ response ] );
+				submit_wrap.trigger( 'gamipress_after_unlock_rank_with_points', [ response ] );
 			}
 		});
+
+	}
+
+	/**
+	 * Unlock achievement/rank with points button
+	 *
+	 * @since 1.3.7
+	 */
+	$body.on( 'click', '.gamipress-achievement-unlock-with-points-button, .gamipress-rank-unlock-with-points-button', function(e) {
+
+		var button = $(this);
+
+		var selector = ( button.hasClass('gamipress-achievement-unlock-with-points-button') ? 'achievement' : 'rank' );
+
+		var submit_wrap = button.closest('.gamipress-' + selector + '-unlock-with-points');
+		var confirmation = submit_wrap.find('.gamipress-' + selector + '-unlock-with-points-confirmation');
+
+		// Disable the button
+		button.prop( 'disabled', true );
+
+		// Hide previous notices
+		if( submit_wrap.find('.gamipress-' + selector + '-unlock-with-points-response').length )
+			submit_wrap.find('.gamipress-' + selector + '-unlock-with-points-response').slideUp();
+
+		// If has confirmation, show it and return
+		if( confirmation.length ) {
+			confirmation.slideDown();
+		} else {
+			// Perform the ajax request to unlock with points
+			if( selector === 'achievement' )
+				gamipress_unlock_achievement_with_points( submit_wrap );
+			else
+				gamipress_unlock_rank_with_points( submit_wrap );
+		}
+
+	});
+
+	/**
+	 * Unlock achievement/rank with points confirmation confirm button
+	 *
+	 * @since 1.7.8.1
+	 */
+	$body.on( 'click', '.gamipress-achievement-unlock-with-points-confirm-button, .gamipress-rank-unlock-with-points-confirm-button', function(e) {
+
+		var $this = $(this);
+		var selector = ( $this.hasClass('gamipress-achievement-unlock-with-points-confirm-button') ? 'achievement' : 'rank' );
+
+		var submit_wrap = $this.closest('.gamipress-' + selector + '-unlock-with-points');
+
+		// Disable the confirm button
+		$this.prop( 'disabled', true );
+		// Disable the cancel button
+		submit_wrap.find('.gamipress-' + selector + '-unlock-with-points-cancel-button').prop( 'disabled', true );
+
+		// Perform the ajax request to unlock with points
+		if( selector === 'achievement' )
+			gamipress_unlock_achievement_with_points( submit_wrap );
+		else
+			gamipress_unlock_rank_with_points( submit_wrap );
+
+	});
+
+	/**
+	 * Unlock achievement/rank with points confirmation cancel button
+	 *
+	 * @since 1.7.8.1
+	 */
+	$body.on( 'click', '.gamipress-achievement-unlock-with-points-cancel-button, .gamipress-rank-unlock-with-points-cancel-button', function(e) {
+
+		var $this = $(this);
+		var selector = ( $this.hasClass('gamipress-achievement-unlock-with-points-cancel-button') ? 'achievement' : 'rank' );
+
+		var submit_wrap = $this.closest('.gamipress-' + selector + '-unlock-with-points');
+		var button = submit_wrap.find('.gamipress-' + selector + '-unlock-with-points-button');
+		var confirmation = submit_wrap.find('.gamipress-' + selector + '-unlock-with-points-confirmation');
+
+		// Hide confirmation
+		confirmation.slideUp();
+
+		// Enable the button
+		button.prop( 'disabled', false );
+
 	});
 
     /**

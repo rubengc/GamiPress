@@ -616,7 +616,7 @@ function gamipress_achievement_points_markup( $achievement_id = 0, $template_arg
  *
  * @since  1.3.7
  *
- * @param  integer 	$achievement_id The given achievement's ID
+ * @param  int 	    $achievement_id The given achievement's ID
  * @param  array 	$template_args 	Achievement template args
  *
  * @return string                  The HTML markup for our points
@@ -624,58 +624,93 @@ function gamipress_achievement_points_markup( $achievement_id = 0, $template_arg
 function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $template_args = array() ) {
 
 	// Grab the current post ID if no achievement_id was specified
-	if ( ! $achievement_id ) {
-		global $post;
-		$achievement_id = $post->ID;
-	}
+	if ( ! $achievement_id )
+		$achievement_id = get_the_ID();
 
 	$user_id = get_current_user_id();
 
 	// Guest not supported yet (basically because they has not points)
-	if( $user_id === 0 ) {
+	if( $user_id === 0 )
 		return '';
-	}
 
-	if( ! isset( $template_args['user_id'] ) ) {
+	if( ! isset( $template_args['user_id'] ) )
 		$template_args['user_id'] = get_current_user_id();
-	}
 
 	// Return if user is displaying achievements of another user
-	if( $user_id !== absint( $template_args['user_id'] ) ) {
+	if( $user_id !== absint( $template_args['user_id'] ) )
 		return '';
-	}
 
 	// Return if this option not was enabled
-	if( ! (bool) gamipress_get_post_meta( $achievement_id, '_gamipress_unlock_with_points' ) ) {
+	if( ! (bool) gamipress_get_post_meta( $achievement_id, '_gamipress_unlock_with_points' ) )
 		return '';
-	}
 
 	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
-	if( $points === 0 ) {
+	if( $points === 0 )
 		return '';
-	}
 
 	$earned = gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id );
 
 	// Return if user has completely earned this achievement
-	if( $earned ) {
+	if( $earned )
 		return '';
-	}
 
 	// Setup vars
 	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock' );
 
+	// Template vars
+    $achievement_title = gamipress_get_post_field( 'post_title', $achievement_id );
+	$points_formatted = gamipress_format_points( $points, $points_type );
+
+    /**
+     * Filters if achievement unlock with points requires confirmation, by default true
+     *
+     * @since  1.7.8.1
+     *
+     * @param  bool 	    $confirmation   If the given achievement's ID requires confirmation on unlock using points
+     * @param  int 	    $achievement_id The given achievement's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  int 	    $points         Points amount to unlock
+     * @param  string 	$points_type    Points type of points amount to unlock
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return bool                     Whatever if achievement requires confirmation or not
+     */
+	$confirmation = apply_filters( 'gamipress_achievement_unlock_with_points_confirmation', true, $achievement_id, $user_id, $points, $points_type, $template_args );
+
 	ob_start(); ?>
-		<div class="gamipress-achievement-unlock-with-points">
-			<div class="gamipress-spinner" style="display: none;"></div>
-			<button type="button" class="gamipress-achievement-unlock-with-points-button" data-id="<?php echo $achievement_id; ?>"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), gamipress_format_points( $points, $points_type ) ); ?></button>
-		</div>
+		<div class="gamipress-achievement-unlock-with-points" data-id="<?php echo $achievement_id; ?>">
+			<button type="button" class="gamipress-achievement-unlock-with-points-button"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), $points_formatted ); ?></button>
+            <?php if( $confirmation ) : ?>
+                <div class="gamipress-achievement-unlock-with-points-confirmation" style="display: none;">
+                    <p><?php echo sprintf( __( 'Do you want to unlock %s using %s?', 'gamipress' ), $achievement_title, $points_formatted ); ?></p>
+                    <button type="button" class="gamipress-achievement-unlock-with-points-confirm-button"><?php echo __( 'Yes', 'gamipress' ); ?></button>
+                    <button type="button" class="gamipress-achievement-unlock-with-points-cancel-button"><?php echo __( 'No', 'gamipress' ); ?></button>
+                </div>
+            <?php endif; ?>
+            <div class="gamipress-spinner" style="display: none;"></div>
+        </div>
 	<?php $output = ob_get_clean();
 
+    /**
+     * Filters the achievement unlock with points markup
+     *
+     * @since  1.3.7
+     *
+     * @param  string 	$output         The HTML markup for our points
+     * @param  int 	    $achievement_id The given achievement's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  int 	    $points         Points amount to unlock
+     * @param  string 	$points_type    Points type of points amount to unlock
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return string                  The HTML markup for our points
+     */
+	$output = apply_filters( 'gamipress_achievement_unlock_with_points_markup', $output, $achievement_id, $user_id, $points, $points_type, $template_args );
+
 	// Return the unlock with points output
-	return apply_filters( 'gamipress_achievement_unlock_with_points_markup', $output, $achievement_id, $user_id, $template_args );
+	return $output;
 
 }
 
@@ -692,65 +727,99 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args = array() ) {
 
 	// Grab the current post ID if no rank_id was specified
-	if ( ! $rank_id ) {
-		global $post;
-		$rank_id = $post->ID;
-	}
+	if ( ! $rank_id )
+		$rank_id = get_the_ID();
 
 	$rank_types = gamipress_get_rank_types();
 	$rank_type = gamipress_get_post_type( $rank_id );
 
-	if( ! isset( $rank_types[$rank_type] ) ) {
+	if( ! isset( $rank_types[$rank_type] ) )
 		return '';
-	}
 
 	$user_id = get_current_user_id();
 
 	// Guest not supported yet (basically because they has not points)
-	if( $user_id === 0 ) {
+	if( $user_id === 0 )
 		return '';
-	}
 
-	if( ! isset( $template_args['user_id'] ) ) {
+	if( ! isset( $template_args['user_id'] ) )
 		$template_args['user_id'] = get_current_user_id();
-	}
 
 	// Return if user is displaying ranks of another user
-	if( $user_id !== absint( $template_args['user_id'] ) ) {
+	if( $user_id !== absint( $template_args['user_id'] ) )
 		return '';
-	}
 
 	// Return if this option not was enabled
-	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) ) {
+	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) )
 		return '';
-	}
 
 	$points = absint( gamipress_get_post_meta( $rank_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
-	if( $points === 0 ) {
+	if( $points === 0 )
 		return '';
-	}
 
 	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
 
 	// Return if user is in a higher rank
-	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) ) {
+	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) )
 		return '';
-	}
 
 	// Setup vars
 	$points_type = gamipress_get_post_meta( $rank_id, '_gamipress_points_type_to_unlock' );
 
+    // Template vars
+    $rank_title = gamipress_get_post_field( 'post_title', $rank_id );
+    $points_formatted = gamipress_format_points( $points, $points_type );
+
+    /**
+     * Filters if rank unlock with points requires confirmation, by default true
+     *
+     * @since  1.7.8.1
+     *
+     * @param  bool 	$confirmation   If the given rank's ID requires confirmation on unlock using points
+     * @param  int 	    $rank_id        The given rank's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  int 	    $points         Points amount to unlock
+     * @param  string 	$points_type    Points type of points amount to unlock
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return bool                     Whatever if achievement requires confirmation or not
+     */
+    $confirmation = apply_filters( 'gamipress_rank_unlock_with_points_confirmation', true, $rank_id, $user_id, $points, $points_type, $template_args );
+
 	ob_start(); ?>
-	<div class="gamipress-rank-unlock-with-points">
-		<div class="gamipress-spinner" style="display: none;"></div>
-		<button type="button" class="gamipress-rank-unlock-with-points-button" data-id="<?php echo $rank_id; ?>"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), gamipress_format_points( $points, $points_type ) ); ?></button>
+	<div class="gamipress-rank-unlock-with-points" data-id="<?php echo $rank_id; ?>">
+		<button type="button" class="gamipress-rank-unlock-with-points-button"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), $points_formatted ); ?></button>
+        <?php if( $confirmation ) : ?>
+            <div class="gamipress-rank-unlock-with-points-confirmation" style="display: none;">
+                <p><?php echo sprintf( __( 'Do you want to unlock %s using %s?', 'gamipress' ), $rank_title, $points_formatted ); ?></p>
+                <button type="button" class="gamipress-rank-unlock-with-points-confirm-button"><?php echo __( 'Yes', 'gamipress' ); ?></button>
+                <button type="button" class="gamipress-rank-unlock-with-points-cancel-button"><?php echo __( 'No', 'gamipress' ); ?></button>
+            </div>
+        <?php endif; ?>
+        <div class="gamipress-spinner" style="display: none;"></div>
 	</div>
 	<?php $output = ob_get_clean();
 
-	// Return our markup
-	return apply_filters( 'gamipress_rank_unlock_with_points_markup', $output, $rank_id, $user_id, $template_args );
+    /**
+     * Filters the achievement unlock with points markup
+     *
+     * @since  1.3.7
+     *
+     * @param  string 	$output         The HTML markup for our points
+     * @param  int 	    $rank_id        The given rank's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  int 	    $points         Points amount to unlock
+     * @param  string 	$points_type    Points type of points amount to unlock
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return string                  The HTML markup for our points
+     */
+    $output = apply_filters( 'gamipress_rank_unlock_with_points_markup', $output, $rank_id, $user_id, $template_args );
+
+    // Return our markup
+	return $output;
 }
 
 /**

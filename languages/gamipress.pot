@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-10-08 09:23+0200\n"
+"POT-Creation-Date: 2019-11-12 13:34+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3284,45 +3284,58 @@ msgstr ""
 msgid "%d of %d times earned"
 msgstr ""
 
-#: includes/content-filters.php:673 includes/content-filters.php:748
+#: includes/content-filters.php:684 includes/content-filters.php:793
 #, php-format
 msgid "Unlock using %s"
 msgstr ""
 
-#: includes/content-filters.php:809
+#: includes/content-filters.php:687 includes/content-filters.php:796
+#, php-format
+msgid "Do you want to unlock %s using %s?"
+msgstr ""
+
+#: includes/content-filters.php:688 includes/content-filters.php:797
+msgid "Yes"
+msgstr ""
+
+#: includes/content-filters.php:689 includes/content-filters.php:798
+msgid "No"
+msgstr ""
+
+#: includes/content-filters.php:878
 #, php-format
 msgid "You have earned this %s!"
 msgstr ""
 
-#: includes/content-filters.php:971
+#: includes/content-filters.php:1040
 msgid "Next Post"
 msgstr ""
 
-#: includes/content-filters.php:973
+#: includes/content-filters.php:1042
 msgid "Previous Post"
 msgstr ""
 
-#: includes/content-filters.php:1078 includes/content-filters.php:1336
+#: includes/content-filters.php:1147 includes/content-filters.php:1405
 msgid "Requirement"
 msgid_plural "Requirements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/content-filters.php:1151
+#: includes/content-filters.php:1220
 #, php-format
 msgid "You have reached this %s!"
 msgstr ""
 
-#: includes/content-filters.php:1317 includes/post-types.php:168
+#: includes/content-filters.php:1386 includes/post-types.php:168
 msgid "Step"
 msgstr ""
 
-#: includes/content-filters.php:1327
+#: includes/content-filters.php:1396
 #: includes/privacy/exporters/user-earnings.php:164
 msgid "Award"
 msgstr ""
 
-#: includes/content-filters.php:1327
+#: includes/content-filters.php:1396
 #: includes/privacy/exporters/user-earnings.php:164
 msgid "Deduction"
 msgstr ""

@@ -283,6 +283,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.8.1 ###
+
+* **New Features**
+* Added confirmation on unlock achievement and rank using points.
+* **Improvements**
+* Code reduction on unlock achievement and rank using points code.
+* **Developer Notes**
+* Full refactor of unlock achievement and rank using points code.
+* Added hooks to deactivate confirmation on unlock achievement and rank using points.
+
 ### 1.7.8 ###
 
 * **New Features**
