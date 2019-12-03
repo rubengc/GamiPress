@@ -277,11 +277,8 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 
 	// Loop rank shortcode fields to pass to the rank template
 	foreach( $rank_fields as $field_id => $field_args ) {
-
-		if( isset( $atts[$field_id] ) ) {
+		if( isset( $atts[$field_id] ) )
 			$template_args[$field_id] = $atts[$field_id];
-		}
-
 	}
 
 	$gamipress_template_args['template_args'] = $template_args;

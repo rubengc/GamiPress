@@ -283,6 +283,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.8.2 ###
+
+* **Bug Fixes**
+* Fixed incorrect achievements query results on GamiPress: Achievements shortcode, block and widget.
+* **Improvements**
+* Code reduction on achievements query function.
+
 ### 1.7.8.1 ###
 
 * **New Features**

@@ -309,7 +309,7 @@ function gamipress_format_points( $amount, $points_type ) {
     $formatted_amount = gamipress_format_amount( $amount, $points_type );
 
     // Apply points type settings of label position (after or before)
-    $label_position =  gamipress_get_points_type_label_position( $points_type );
+    $label_position = gamipress_get_points_type_label_position( $points_type );
 
     if( $label_position === 'before' ) {
         $formatted_amount = $label . ' ' . $formatted_amount;
