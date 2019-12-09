@@ -72,7 +72,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Tutor LMS](https://wordpress.org/plugins/gamipress-tutor-integration/)
 * [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
 * [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
-* [WPEP](https://wordpress.org/plugins/gamipress-wpep-integration/)
+* [MasterStudy LMS](https://wordpress.org/plugins/gamipress-masterstudy-lms-integration/)
 * [WP Courseware](https://wordpress.org/plugins/gamipress-wp-courseware-integration/)
 
 = Forms integrations =
@@ -115,6 +115,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
+* [Button](https://wordpress.org/plugins/gamipress-button/)
 * [Transfers Notes](https://wordpress.org/plugins/gamipress-transfers-notes/)
 * [Conditional Emails Recipients](https://wordpress.org/plugins/gamipress-conditional-emails-recipients/)
 * [Leaderboards Include/Exclude Users](https://wordpress.org/plugins/gamipress-leaderboards-include-exclude-users/)

@@ -189,7 +189,6 @@ function gamipress_ajax_get_posts() {
 		}
 	}
 
-    // Check for extra conditionals
     /**
      * Ajax posts query args (used on almost every post selector)
      *
@@ -203,6 +202,7 @@ function gamipress_ajax_get_posts() {
      */
     $extra_query_args = apply_filters( 'gamipress_ajax_get_posts_query_args', '' );
 
+    // Check for extra conditionals
     if( ! empty( $extra_query_args ) ) {
 
         if( is_array( $extra_query_args ) ) {

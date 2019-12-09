@@ -416,7 +416,7 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	if ( ! $count )
 		return null;
 
-	// Grab the current user's ID if none was specifed
+	// Grab the current user's ID if none was specified
 	if ( ! $user_id )
 		$user_id = get_current_user_id();
 
