@@ -284,6 +284,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.7.9 ###
+
+* **Improvements**
+* Awards engine performance improvement by better filter specific triggered events.
+* Added disabled effect styles to Select2.
+* **Developer Notes**
+* Several improvements on gamipress_get_triggered_requirements() function.
+
 ### 1.7.8.2 ###
 
 * **Bug Fixes**

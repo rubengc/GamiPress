@@ -130,36 +130,30 @@ function gamipress_init_meta_boxes() {
 
 	global $post, $pagenow, $ct_table;
 
-    if( ! in_array( $pagenow, array( 'post-new.php', 'post.php', 'admin.php' ) ) ) {
+    if( ! in_array( $pagenow, array( 'post-new.php', 'post.php', 'admin.php' ) ) )
         return;
-    }
 
     $post_type = '';
 
     // Get post type from global post
-    if( $post && $post->post_type ) {
+    if( $post && $post->post_type )
         $post_type = $post->post_type;
-    }
 
     // On post.php post ID is on GET parameters
-    if( empty( $post_type ) && isset( $_GET['post'] ) ) {
+    if( empty( $post_type ) && isset( $_GET['post'] ) )
         $post_type = gamipress_get_post_field( 'post_type', $_GET['post'] );
-    }
 
     // On post-new.php and sometimes on post.php post type is on GET or POST parameters
-    if( empty( $post_type ) && isset( $_REQUEST['post_type'] ) ) {
+    if( empty( $post_type ) && isset( $_REQUEST['post_type'] ) )
         $post_type = $_REQUEST['post_type'];
-    }
 
     // Check if there is a CT view
-    if( empty( $post_type ) && $pagenow === 'admin.php' && $ct_table ) {
+    if( empty( $post_type ) && $pagenow === 'admin.php' && $ct_table )
         $post_type = $ct_table->name;
-    }
 
     // Check if there is the edit GamiPress logs screen
-    if( empty( $post_type ) && $pagenow === 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] === 'edit_gamipress_logs' ) {
+    if( empty( $post_type ) && $pagenow === 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] === 'edit_gamipress_logs' )
         $post_type = 'gamipress_logs';
-    }
 
     /**
      * Hook to register meta boxes
