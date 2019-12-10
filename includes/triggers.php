@@ -970,7 +970,8 @@ add_filter( 'gamipress_get_triggered_requirements', 'gamipress_sort_triggered_ra
 /**
  * Delete cache of a specific trigger
  *
- * @since 1.6.1
+ * @since   1.6.1
+ * @updated 1.7.9 Added support to the brand new triggered requirements cache
  *
  * @param string $trigger
  *
@@ -978,11 +979,8 @@ add_filter( 'gamipress_get_triggered_requirements', 'gamipress_sort_triggered_ra
  */
 function gamipress_delete_trigger_cache( $trigger ) {
 
-    if( empty( $trigger ) )
-        return false;
-
-    // Delete triggered requirements cache
-    gamipress_delete_cache( "{$trigger}_triggered_requirements" );
+    // Bail if empty trigger
+    if( empty( $trigger ) ) return false;
 
     // Listeners count cache varies if is specific trigger
     if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
@@ -991,33 +989,23 @@ function gamipress_delete_trigger_cache( $trigger ) {
 
         // Cache prefix and suffix
         $prefix = "gamipress_cache_{$trigger}_";
-        $suffix = '_listeners_count';
+        $triggered_suffix = '_triggered_requirements';
+        $listeners_suffix = '_listeners_count';
 
         // Delete listeners count cache for specific trigger
 
         if( gamipress_is_network_wide_active() ) {
-
             // Multi site installs
-            $wpdb->query( "
-                DELETE
-                FROM {$wpdb->sitemeta}
-                WHERE meta_key LIKE '{$prefix}%'
-                AND meta_key LIKE '%{$suffix}'
-            " );
-
+            $wpdb->query( "DELETE FROM {$wpdb->sitemeta} WHERE meta_key LIKE '{$prefix}%' AND ( meta_key LIKE '%{$triggered_suffix}' OR meta_key LIKE '%{$listeners_suffix}' )");
         } else {
-
             // Single site installs
-            $wpdb->query( "
-                DELETE
-                FROM {$wpdb->options}
-                WHERE option_name LIKE '{$prefix}%'
-                AND option_name LIKE '%{$suffix}'
-            " );
-
+            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '{$prefix}%' AND ( option_name LIKE '%{$triggered_suffix}' OR option_name LIKE '%{$listeners_suffix}' )" );
         }
 
     } else {
+
+        // Delete triggered requirements cache
+        gamipress_delete_cache( "{$trigger}_triggered_requirements" );
 
         // Delete listeners count cache for not specific trigger
         gamipress_delete_cache( "{$trigger}_listeners_count" );
