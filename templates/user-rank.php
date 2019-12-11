@@ -21,7 +21,7 @@ if( isset( $a['user_id'] ) ) {
 $user_rank_id = gamipress_get_user_rank_id( $user_id, $rank_type );
 ?>
 
-<div id="gamipress-user-ranks" class="gamipress-user-ranks gamipress-columns-<?php echo $a['columns']; ?>">
+<div id="gamipress-user-ranks" class="gamipress-user-ranks gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?>">
 
     <?php
     /**

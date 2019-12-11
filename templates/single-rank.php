@@ -39,7 +39,7 @@ $classes = apply_filters( 'gamipress_single_rank_classes', $classes, get_the_ID(
 <?php // Check if current user has earned this rank
 echo gamipress_render_earned_rank_text( get_the_ID(), get_current_user_id() ); ?>
 
-<div class="<?php echo implode( ' ', $classes ); ?>">
+<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
     <?php
     /**

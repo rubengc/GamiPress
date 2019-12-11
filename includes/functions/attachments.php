@@ -140,7 +140,7 @@ function gamipress_fetch_remote_file( $url ) {
     // make sure the fetch was successful
     if ( $remote_response_code != '200' ) {
         @unlink( $upload['file'] );
-        return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'gamipress'), esc_html($remote_response_code), get_status_header_desc($remote_response_code) ) );
+        return new WP_Error( 'import_file_error', sprintf( __('Remote server returned error response %1$d %2$s', 'gamipress'), esc_html( $remote_response_code ), get_status_header_desc($remote_response_code) ) );
     }
 
     $filesize = filesize( $upload['file'] );

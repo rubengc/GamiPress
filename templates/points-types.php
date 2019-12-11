@@ -32,7 +32,7 @@ $classes = array(
  */
 $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points-types'], $a ); ?>
 
-<div class="<?php echo implode( ' ', $classes ); ?>">
+<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
     <?php
     /**
@@ -54,7 +54,7 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
             $points_deducts = ( $a['deducts'] === 'yes' ) ? $points_type_args['deducts'] : array();
         ?>
 
-        <div id="gamipress-points-type-<?php echo $points_type; ?>" class="gamipress-points-type gamipress-points-type-<?php echo $points_type; ?>">
+        <div id="gamipress-points-type-<?php echo esc_attr( $points_type ); ?>" class="gamipress-points-type gamipress-points-type-<?php echo esc_attr( $points_type ); ?>">
 
             <?php
             /**
@@ -72,7 +72,7 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
 
             <?php // Points Type Image
             if( $a['thumbnail'] === 'yes' ) : ?>
-                <div class="gamipress-points-type-image gamipress-points-type-<?php echo $points_type; ?>-image">
+                <div class="gamipress-points-type-image gamipress-points-type-<?php echo esc_attr( $points_type ); ?>-image">
                     <?php echo gamipress_get_points_type_thumbnail( $points_type ); ?>
                 </div><!-- .gamipress-points-image -->
 
@@ -94,7 +94,7 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
 
             <div class="gamipress-points-type-description">
 
-                <h2 class="gamipress-points-type-title"><?php echo $points_types[$points_type]['plural_name']; ?></h2>
+                <h2 class="gamipress-points-type-title"><?php echo esc_html( $points_types[$points_type]['plural_name'] ); ?></h2>
 
                 <?php
                 /**
@@ -116,11 +116,11 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
 
                         <?php if ( $a['toggle'] === 'yes' ) : ?>
 
-                            <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
+                            <div id="show-more-<?php echo esc_attr( $points_type ); ?>" class="gamipress-open-close-switch">
                                 <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
                             </div>
 
-                            <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                            <div id="gamipress-toggle-more-window-<?php echo esc_attr( $points_type ); ?>" class="gamipress-extras-window">
                                 <?php echo gamipress_get_points_awards_for_points_types_list_markup( $points_awards, $user_id, $a ); ?>
                             </div><!-- .gamipress-extras-window -->
 
@@ -154,11 +154,11 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
 
                         <?php if ( $a['toggle'] === 'yes' ) : ?>
 
-                            <div id="show-more-<?php echo $points_type; ?>" class="gamipress-open-close-switch">
+                            <div id="show-more-<?php echo esc_attr( $points_type ); ?>" class="gamipress-open-close-switch">
                                 <a class="show-hide-open" data-action="open" data-open-text="<?php _e( 'Show Details', 'gamipress' ); ?>" data-close-text="<?php _e( 'Hide Details', 'gamipress' ); ?>" href="#"><?php _e( 'Show Details', 'gamipress' ); ?></a>
                             </div>
 
-                            <div id="gamipress-toggle-more-window-<?php echo $points_type; ?>" class="gamipress-extras-window">
+                            <div id="gamipress-toggle-more-window-<?php echo esc_attr( $points_type ); ?>" class="gamipress-extras-window">
                                 <?php echo gamipress_get_points_deducts_for_points_types_list_markup( $points_deducts, $user_id, $a ); ?>
                             </div><!-- .gamipress-extras-window -->
 

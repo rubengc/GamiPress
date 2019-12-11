@@ -43,7 +43,7 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
 ?>
 
 
-<div id="gamipress-rank-<?php the_ID(); ?>" class="<?php echo implode( ' ', $classes ); ?>">
+<div id="gamipress-rank-<?php the_ID(); ?>" class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
     <?php
     /**

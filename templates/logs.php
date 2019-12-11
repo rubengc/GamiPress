@@ -64,9 +64,22 @@ $a = $gamipress_template_args;
              * @param integer $log_id           The Log ID
              * @param array   $template_args    Template received arguments
              */
-            do_action( 'gamipress_before_render_log', $log->log_id, $a ); ?>
+            do_action( 'gamipress_before_render_log', $log->log_id, $a );
 
-            <div id="gamipress-log-<?php echo $log->log_id; ?>" class="gamipress-log"><?php echo apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id ); ?></div>
+            /**
+             * Filters the log title
+             *
+             * @since 1.0.0
+             *
+             * @param string    $log_title      The Log title to render
+             * @param integer   $log_id         The Log ID
+             * @param array     $template_args  Template received arguments
+             *
+             * @return string
+             */
+            $log_title = apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id, $a ); ?>
+
+            <div id="gamipress-log-<?php echo esc_attr( $log->log_id ); ?>" class="gamipress-log"><?php echo $log_title; ?></div>
 
             <?php
             /**

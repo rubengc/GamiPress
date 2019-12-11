@@ -1,8 +1,8 @@
 <?php
 /**
- * Content Filters
+ * Filters
  *
- * @package     GamiPress\Content_Filters
+ * @package     GamiPress\Filters
  * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
@@ -15,18 +15,14 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @since 1.0.0
  */
 function gamipress_do_single_filters() {
-
 	// Check we're in the right place
 	if ( gamipress_is_single_achievement() || gamipress_is_single_rank() ) {
-
 		// Filter out the post title
 		// add_filter( 'the_title', 'gamipress_remove_to_reformat_entries_title', 10, 2 );
 
 		// and filter out the post image
 		add_filter( 'post_thumbnail_html', 'gamipress_remove_to_reformat_entries_thumbnail', 10, 2 );
-
 	}
-
 }
 add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
 
@@ -41,19 +37,15 @@ add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
  * @return string        The page content after being filtered
  */
 function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
-
 	// Remove, but only on the main loop!
 	if ( ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) ) && empty( $GLOBALS['gamipress_reformat_title'] ) ) {
-
         // Now that we're where we want to be, tell the filters to stop removing
         $GLOBALS['gamipress_reformat_title'] = true;
-
 		return '';
     }
 
 	// Nothing to see here... move along
 	return $html;
-
 }
 
 /**
@@ -67,21 +59,15 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  * @return string        The page content after being filtered
  */
 function gamipress_remove_to_reformat_entries_thumbnail( $html = '', $id = 0 ) {
-
     // Remove, but only on the main loop!
     if ( ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) ) && empty( $GLOBALS['gamipress_reformat_thumbnail'] ) ) {
-
         // Now that we're where we want to be, tell the filters to stop removing
         $GLOBALS['gamipress_reformat_thumbnail'] = true;
-
         return '';
-
     }
-
 
     // Nothing to see here... move along
     return $html;
-
 }
 
 /**
@@ -215,18 +201,29 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 	if( $points_type ) {
 		$plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
 
-		if( ! $plural_name ) {
+		if( ! $plural_name )
 			$plural_name = $points_type->post_title;
-		}
 
 		$points_awards_heading = sprintf( __( '%1$d %2$s Awards', 'gamipress' ), $count, $plural_name ); // 2 Credits Awards
 	} else {
 		$points_awards_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Awards
 	}
 
+    /**
+     * Filters the points award heading text
+     *
+     * @since 1.0.0
+     *
+     * @param string    $points_awards_heading  The heading text (eg: 2 Points Awards)
+     * @param array     $points_awards          The points awards
+     * @param int       $user_id                The user's ID
+     * @param array     $template_args          The given template args
+     *
+     * @return string
+     */
+    $points_awards_heading = apply_filters( 'gamipress_points_awards_heading', $points_awards_heading, $points_awards, $user_id, $template_args );
 
-
-	$output .= '<h4>' . apply_filters( 'gamipress_points_awards_heading', $points_awards_heading, $points_awards ) . '</h4>';
+	$output .= '<h4>' . $points_awards_heading . '</h4>';
 	$output .= '<ul class="gamipress-points-awards">';
 
 	// Concatenate our output
@@ -253,11 +250,38 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 		$title = $points_award->post_title;
 
 		// If points award doesn't have a title, then try to build one
-		if( empty( $title ) ) {
+		if( empty( $title ) )
 			$title = gamipress_build_requirement_title( $points_award->ID );
-		}
 
-		$output .= '<li class="'. apply_filters( 'gamipress_points_award_class', $earned_status, $points_award, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_points_award_title_display', $title, $points_award, $user_id, $template_args ) . '</li>';
+        /**
+         * Filters the points award CSS class
+         *
+         * @since 1.0.0
+         *
+         * @param string    $class          CSS class based on earned status ('user-has-earned' | 'user-has-not-earned')
+         * @param stdClass  $points_award   Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $class = apply_filters( 'gamipress_points_award_class', $earned_status, $points_award, $user_id, $template_args );
+
+        /**
+         * Filters the points award HTML title to display
+         *
+         * @since 1.0.0
+         *
+         * @param string    $title          Title to display
+         * @param stdClass  $points_award   Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $title = apply_filters( 'gamipress_points_award_title_display', $title, $points_award, $user_id, $template_args );
+
+		$output .= '<li class="'. esc_attr( $class ) .'">'. $title . '</li>';
 	}
 
 	$output .= '</ul><!-- .gamipress-points-awards -->';
@@ -311,9 +335,21 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 		$points_deducts_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Deducts
 	}
 
+    /**
+     * Filters the points deduct heading text
+     *
+     * @since 1.3.7
+     *
+     * @param string    $points_deducts_heading The heading text (eg: 2 Points Deducts)
+     * @param array     $points_deducts         The points deducts
+     * @param int       $user_id                The user's ID
+     * @param array     $template_args          The given template args
+     *
+     * @return string
+     */
+    $points_deducts_heading = apply_filters( 'gamipress_points_deducts_heading', $points_deducts_heading, $points_deducts, $user_id, $template_args );
 
-
-	$output .= '<h4>' . apply_filters( 'gamipress_points_deducts_heading', $points_deducts_heading, $points_deducts ) . '</h4>';
+	$output .= '<h4>' . $points_deducts_heading . '</h4>';
 	$output .= '<ul class="gamipress-points-deducts">';
 
 	// Concatenate our output
@@ -340,11 +376,38 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 		$title = $points_deduct->post_title;
 
 		// If points deduct doesn't have a title, then try to build one
-		if( empty( $title ) ) {
+		if( empty( $title ) )
 			$title = gamipress_build_requirement_title( $points_deduct->ID );
-		}
 
-		$output .= '<li class="'. apply_filters( 'gamipress_points_deduct_class', $earned_status, $points_deduct, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_points_deduct_title_display', $title, $points_deduct, $user_id, $template_args ) . '</li>';
+        /**
+         * Filters the points deduct CSS class
+         *
+         * @since 1.3.7
+         *
+         * @param string    $class          CSS class based on earned status ('user-has-earned' | 'user-has-not-earned')
+         * @param stdClass  $points_deduct  Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $class = apply_filters( 'gamipress_points_deduct_class', $earned_status, $points_deduct, $user_id, $template_args );
+
+        /**
+         * Filters the points deduct HTML title to display
+         *
+         * @since 1.3.7
+         *
+         * @param string    $title          Title to display
+         * @param stdClass  $points_deduct  Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $title = apply_filters( 'gamipress_points_deduct_title_display', $title, $points_deduct, $user_id, $template_args );
+
+		$output .= '<li class="'. esc_attr( $class ) .'">'. $title . '</li>';
 	}
 
 	$output .= '</ul><!-- .gamipress-points-deducts -->';
@@ -426,7 +489,23 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 
 	$post_type_object = get_post_type_object( 'step' );
 
-	$output .= '<h4>' . apply_filters( 'gamipress_steps_heading', sprintf( __( '%1$d Required %2$s', 'gamipress' ), $count, $post_type_object->labels->name ), $steps ) . '</h4>';
+    $steps_heading =  sprintf( __( '%1$d Required %2$s', 'gamipress' ), $count, $post_type_object->labels->name );
+
+    /**
+     * Filters the steps heading text
+     *
+     * @since 1.0.0
+     *
+     * @param string    $steps_heading          The heading text (eg: 2 Required Steps)
+     * @param array     $steps                  The achievement steps
+     * @param int       $user_id                The user's ID
+     * @param array     $template_args          The given template args
+     *
+     * @return string
+     */
+    $steps_heading = apply_filters( 'gamipress_steps_heading', $steps_heading, $steps, $user_id, $template_args );
+
+	$output .= '<h4>' . $steps_heading . '</h4>';
 	$output .= '<' . $container .' class="gamipress-required-achievements">';
 
 	// Concatenate our output
@@ -441,11 +520,38 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 		$title = $step->post_title;
 
 		// If step doesn't have a title, then try to build one
-		if( empty( $title ) ) {
+		if( empty( $title ) )
 			$title = gamipress_build_requirement_title( $step->ID );
-		}
 
-		$output .= '<li class="'. apply_filters( 'gamipress_step_class', $earned_status, $step, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_step_title_display', $title, $step, $user_id, $template_args ) . '</li>';
+        /**
+         * Filters the step CSS class
+         *
+         * @since 1.0.0
+         *
+         * @param string    $class          CSS class based on earned status ('user-has-earned' | 'user-has-not-earned')
+         * @param stdClass  $step           Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $class = apply_filters( 'gamipress_step_class', $earned_status, $step, $user_id, $template_args );
+
+        /**
+         * Filters the step HTML title to display
+         *
+         * @since 1.0.0
+         *
+         * @param string    $title          Title to display
+         * @param stdClass  $step           Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $title = apply_filters( 'gamipress_step_title_display', $title, $step, $user_id, $template_args );
+
+		$output .= '<li class="'. esc_attr( $class ) .'">'. $title . '</li>';
 	}
 
 	$output .= '</'. $container .'><!-- .gamipress-required-achievements -->';
@@ -1111,10 +1217,10 @@ function gamipress_get_rank_requirements_list( $rank_id = 0, $user_id = 0 ) {
  *
  * @since  1.3.1
  *
- * @param  array   	$requirements    An rank's required requirements
- * @param  integer 	$rank_id  The given rank's ID
- * @param  integer 	$user_id         The given user's ID
- * @param  array	$template_args   The given template args
+ * @param  array   	$requirements   An rank's required requirements
+ * @param  integer 	$rank_id        The given rank's ID
+ * @param  integer 	$user_id        The given user's ID
+ * @param  array	$template_args  The given template args
  *
  * @return string                   The markup for our list
  */
@@ -1144,7 +1250,23 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	$output = '';
 	$container = gamipress_is_achievement_sequential() ? 'ol' : 'ul';
 
-	$output .= '<h4>' . apply_filters( 'gamipress_rank_requirements_heading', $count . ' ' . _n( 'Requirement', 'Requirements', $count, 'gamipress' ), $requirements ) . '</h4>';
+    $requirements_heading = $count . ' ' . _n( 'Requirement', 'Requirements', $count, 'gamipress' );
+
+    /**
+     * Filters the steps heading text
+     *
+     * @since 1.0.0
+     *
+     * @param string    $steps_heading          The heading text (eg: 2 Requirements)
+     * @param array     $requirements           The rank requirements
+     * @param int       $user_id                The user's ID
+     * @param array     $template_args          The given template args
+     *
+     * @return string
+     */
+    $requirements_heading = apply_filters( 'gamipress_rank_requirements_heading', $requirements_heading, $requirements, $user_id, $template_args );
+
+	$output .= '<h4>' . $requirements_heading . '</h4>';
 	$output .= '<' . $container .' class="gamipress-required-requirements">';
 
 	// Concatenate our output
@@ -1159,11 +1281,38 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 		$title = $requirement->post_title;
 
 		// If step doesn't have a title, then try to build one
-		if( empty( $title ) ) {
+		if( empty( $title ) )
 			$title = gamipress_build_requirement_title( $requirement->ID );
-		}
 
-		$output .= '<li class="'. apply_filters( 'gamipress_rank_requirement_class', $earned_status, $requirement, $user_id, $template_args ) .'">'. apply_filters( 'gamipress_rank_requirement_title_display', $title, $requirement, $user_id, $template_args ) . '</li>';
+        /**
+         * Filters the rank requirement CSS class
+         *
+         * @since 1.3.1
+         *
+         * @param string    $class          CSS class based on earned status ('user-has-earned' | 'user-has-not-earned')
+         * @param stdClass  $requirement    Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+		$class = apply_filters( 'gamipress_rank_requirement_class', $earned_status, $requirement, $user_id, $template_args );
+
+        /**
+         * Filters the rank requirement HTML title to display
+         *
+         * @since 1.3.1
+         *
+         * @param string    $title          Title to display
+         * @param stdClass  $requirement    Requirement object
+         * @param int       $user_id        User's ID
+         * @param array     $template_args  The given template args
+         *
+         * @return string
+         */
+        $title = apply_filters( 'gamipress_rank_requirement_title_display', $title, $requirement, $user_id, $template_args );
+
+		$output .= '<li class="'. esc_attr( $class ) .'">'. $title . '</li>';
 	}
 
 	$output .= '</'. $container .'><!-- .gamipress-requirements -->';

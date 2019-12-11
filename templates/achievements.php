@@ -40,7 +40,7 @@ $a = $gamipress_template_args; ?>
         <?php // Filter
         if ( $a['filter'] === 'no' ) : ?>
 
-            <input type="hidden" name="achievements_list_filter" id="achievements_list_filter" value="<?php echo $a['filter_value']; ?>">
+            <input type="hidden" name="achievements_list_filter" id="achievements_list_filter" value="<?php echo esc_attr( $a['filter_value'] ); ?>">
 
         <?php elseif( is_user_logged_in() ) : ?>
 
@@ -72,7 +72,7 @@ $a = $gamipress_template_args; ?>
 
                     <?php // Loop all filter options
                     foreach( $filter_options as $value => $label ) :?>
-                        <option value="<?php echo $value; ?>" <?php selected( $a['filter_value'], $value ); ?>><?php echo $label; ?></option>
+                        <option value="<?php echo esc_attr( $value ); ?>" <?php selected( $a['filter_value'], $value ); ?>><?php echo esc_html( $label ); ?></option>
                     <?php endforeach; ?>
 
                 </select>
@@ -92,6 +92,8 @@ $a = $gamipress_template_args; ?>
              *
              * @param string    $search_button_text The search button text
              * @param array     $template_args      Template received arguments
+             *
+             * @return string
              */
             $search_button_text = apply_filters( 'gamipress_achievements_search_button_text', __( 'Go', 'gamipress' ), $a ); ?>
 
@@ -99,7 +101,7 @@ $a = $gamipress_template_args; ?>
 
                 <form id="gamipress-achievements-search-form" action="" method="post">
                     <label for="achievements_list_search"><?php _e( 'Search:', 'gamipress' ); ?></label>
-                    <input type="text" id="gamipress-achievements-search-input" name="achievements_list_search" value="<?php echo $search; ?>">
+                    <input type="text" id="gamipress-achievements-search-input" name="achievements_list_search" value="<?php echo esc_attr( $search ); ?>">
                     <input type="submit" id="gamipress-achievements-search-submit" name="achievements_list_search_go" value="<?php echo esc_attr( $search_button_text ); ?>">
                 </form>
 
@@ -120,13 +122,13 @@ $a = $gamipress_template_args; ?>
     </div><!-- #gamipress-achievements-filters-wrap -->
 
     <?php // Content Container ?>
-    <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo $a['columns']; ?>">
+    <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?>">
         <?php echo $a['query']['achievements']; ?>
     </div>
 
     <?php // Hidden fields ?>
-    <input type="hidden" id="gamipress-achievements-offset" value="<?php echo $a['query']['offset']; ?>">
-    <input type="hidden" id="gamipress-achievements-count" value="<?php echo $a['query']['achievement_count']; ?>">
+    <input type="hidden" id="gamipress-achievements-offset" value="<?php echo esc_attr( $a['query']['offset'] ); ?>">
+    <input type="hidden" id="gamipress-achievements-count" value="<?php echo esc_attr( $a['query']['achievement_count'] ); ?>">
 
     <?php // Load More button ?>
     <?php if ( $a['load_more'] === 'yes' ) :
@@ -139,6 +141,8 @@ $a = $gamipress_template_args; ?>
          *
          * @param string    $load_more_button_text  The load more button text
          * @param array     $template_args          Template received arguments
+         *
+         * @return string
          */
         $load_more_button_text = apply_filters( 'gamipress_achievements_load_more_button_text', __( 'Load More', 'gamipress' ), $a ); ?>
 

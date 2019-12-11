@@ -33,7 +33,7 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
         endif; ?>
 
 
-        <div id="gamipress-rank-type-<?php echo $rank_type; ?>" class="gamipress-rank-type gamipress-rank-type-<?php echo $rank_type; ?>">
+        <div id="gamipress-rank-type-<?php echo esc_attr( $rank_type ); ?>" class="gamipress-rank-type gamipress-rank-type-<?php echo esc_attr( $rank_type ); ?>">
 
             <?php
             /**
@@ -47,7 +47,7 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
              */
             do_action( 'gamipress_before_render_rank_type', $rank_type, $a['rank-types'], $a ); ?>
 
-            <h2 class="gamipress-rank-type-title"><?php echo $rank_types[$rank_type]['plural_name']; ?></h2>
+            <h2 class="gamipress-rank-type-title"><?php echo esc_html( $rank_types[$rank_type]['plural_name'] ); ?></h2>
 
             <?php
             /**
@@ -61,7 +61,7 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
              */
             do_action( 'gamipress_after_rank_type_title', $rank_type, $a['rank-types'], $a ); ?>
 
-            <div class="gamipress-ranks-container gamipress-columns-<?php echo $a['columns']; ?>">
+            <div class="gamipress-ranks-container gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?>">
 
                 <?php foreach( $rank_ids as $rank_id ) : ?>
 

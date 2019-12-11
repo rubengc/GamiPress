@@ -35,7 +35,7 @@ $classes = apply_filters( 'gamipress_single_achievement_classes', $classes, get_
 <?php // Check if current user has earned this achievement
 echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id() ); ?>
 
-<div class="<?php echo implode( ' ', $classes ); ?>">
+<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
     <?php
     /**

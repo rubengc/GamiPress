@@ -40,7 +40,7 @@ $classes = array(
  */
 $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $a ); ?>
 
-<div class="<?php echo implode( ' ', $classes ); ?>">
+<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
     <?php
     /**
@@ -70,11 +70,11 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
          */
         do_action( 'gamipress_before_render_points', $points_type, $amount, $points_types, $a ); ?>
 
-        <div class="gamipress-points gamipress-user-points-<?php echo $points_type; ?>">
+        <div class="gamipress-points gamipress-user-points-<?php echo esc_attr( $points_type ); ?>">
 
             <?php // User Points Image
             if( $a['thumbnail'] === 'yes' ) : ?>
-                <div class="gamipress-user-points-image gamipress-user-points-<?php echo $points_type; ?>-image">
+                <div class="gamipress-user-points-image gamipress-user-points-<?php echo esc_attr( $points_type ); ?>-image">
                     <?php echo gamipress_get_points_type_thumbnail( $points_type ); ?>
                 </div><!-- .gamipress-user-points-image -->
 

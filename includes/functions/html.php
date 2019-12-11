@@ -24,22 +24,16 @@ function gamipress_array_as_hidden_inputs( $array, $excluded = array() ) {
     $html = '';
 
     foreach( $array as $key => $value ) {
-
         // Skip excluded keys
-        if( in_array( $key, $excluded ) ) {
-            continue;
-        }
+        if( in_array( $key, $excluded ) ) continue;
 
         // Sanitize value
         $value = is_array( $value ) ? implode(',', $value ) : $value;
 
-
-        $html .= '<input type="hidden" name="' . $key . '" value="' . $value . '">';
-
+        $html .= '<input type="hidden" name="' . esc_attr( $key ) . '" value="' . esc_attr( $value ) . '">';
     }
 
     return $html;
-
 }
 
 /**

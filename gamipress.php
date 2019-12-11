@@ -226,7 +226,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/network.php';
 		require_once GAMIPRESS_DIR . 'includes/scripts.php';
 		require_once GAMIPRESS_DIR . 'includes/shortcodes.php';
-		require_once GAMIPRESS_DIR . 'includes/content-filters.php';
+		require_once GAMIPRESS_DIR . 'includes/filters.php';
 		require_once GAMIPRESS_DIR . 'includes/rules-engine.php';
 		require_once GAMIPRESS_DIR . 'includes/template-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/triggers.php';

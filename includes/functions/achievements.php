@@ -257,17 +257,14 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
 	$max_earnings = gamipress_get_post_meta( $achievement_id, '_gamipress_maximum_earnings' );
 
 	// Infinite maximum earnings check
-    if( $max_earnings === '-1' || $max_earnings === '0' || empty( $max_earnings ) ) {
+    if( $max_earnings === '-1' || $max_earnings === '0' || empty( $max_earnings ) )
 		return false;
-	}
 
 	// If the achievement has an earning limit, and we've earned it before...
 	if ( $max_earnings && $user_has_achievement = gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $achievement_id ) ) ) ) {
-		// If we've earned it as many (or more) times than allowed,
-		// then we have exceeded maximum earnings, thus true
-		if ( count( $user_has_achievement ) >= $max_earnings ) {
+		// If we've earned it as many (or more) times than allowed, then we have exceeded maximum earnings, thus true
+		if ( count( $user_has_achievement ) >= $max_earnings )
 			return true;
-		}
 	}
 
 	// The post has no limit, or we're under it

@@ -33,7 +33,7 @@ $classes = array(
  */
 $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(), $a ); ?>
 
-<div id="gamipress-achievement-<?php the_ID(); ?>" class="<?php echo implode( ' ', $classes ); ?>">
+<div id="gamipress-achievement-<?php the_ID(); ?>" class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>">
 
     <?php
     /**
