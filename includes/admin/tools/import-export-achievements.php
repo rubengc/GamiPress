@@ -141,8 +141,8 @@ function gamipress_import_export_achievements_tool_ajax_export() {
     // Setup vars
     $achievement_types = gamipress_get_achievement_types();
     $desired_achievement_types = ( isset( $_REQUEST['achievement_types'] ) ? $_REQUEST['achievement_types'] : array() );
-    $user_field = ( isset( $_REQUEST['user_field'] ) ? $_REQUEST['user_field'] : 'email' );
-    $achievement_field = ( isset( $_REQUEST['achievement_field'] ) ? $_REQUEST['achievement_field'] : 'slug' );
+    $user_field = ( isset( $_REQUEST['user_field'] ) ? sanitize_text_field( $_REQUEST['user_field'] ) : 'email' );
+    $achievement_field = ( isset( $_REQUEST['achievement_field'] ) ? sanitize_text_field( $_REQUEST['achievement_field'] ) : 'slug' );
     $loop = ( isset( $_REQUEST['loop'] ) ? absint( $_REQUEST['loop'] ) : 0 );
     $limit = 200;
     $offset = $limit * $loop;

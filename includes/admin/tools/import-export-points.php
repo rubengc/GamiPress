@@ -129,7 +129,7 @@ function gamipress_import_export_points_tool_ajax_export() {
     // Setup vars
     $points_types = gamipress_get_points_types();
     $desired_points_types = ( isset( $_REQUEST['points_types'] ) ? $_REQUEST['points_types'] : array() );
-    $user_field = ( isset( $_REQUEST['user_field'] ) ? $_REQUEST['user_field'] : 'email' );
+    $user_field = ( isset( $_REQUEST['user_field'] ) ? sanitize_text_field( $_REQUEST['user_field'] ) : 'email' );
     $loop = ( isset( $_REQUEST['loop'] ) ? absint( $_REQUEST['loop'] ) : 0 );
     $limit = 200;
     $offset = $limit * $loop;

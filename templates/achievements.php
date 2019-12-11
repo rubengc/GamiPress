@@ -83,7 +83,7 @@ $a = $gamipress_template_args; ?>
 
         // Search
         if ( $a['search'] === 'yes' ) :
-            $search = isset( $_POST['achievements_list_search'] ) ? $_POST['achievements_list_search'] : '';
+            $search = isset( $_POST['achievements_list_search'] ) ? sanitize_text_field( $_POST['achievements_list_search'] ) : '';
 
             /**
              * Achievements search button text

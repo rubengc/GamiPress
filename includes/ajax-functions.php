@@ -41,9 +41,8 @@ function gamipress_ajax_get_logs() {
     check_ajax_referer( 'gamipress', 'nonce' );
 
 	// Set current page var
-    if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 ) {
-        set_query_var( 'paged', $_REQUEST['page'] );
-    }
+    if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 )
+        set_query_var( 'paged', absint( $_REQUEST['page'] ) );
 
     $atts = $_REQUEST;
 
@@ -71,9 +70,8 @@ function gamipress_ajax_get_user_earnings() {
     check_ajax_referer( 'gamipress', 'nonce' );
 
 	// Set current page var
-	if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 ) {
-		set_query_var( 'paged', $_REQUEST['page'] );
-	}
+	if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 )
+		set_query_var( 'paged', absint( $_REQUEST['page'] ) );
 
     $atts = $_REQUEST;
 
@@ -433,7 +431,7 @@ function gamipress_achievement_post_ajax_handler() {
     // If requirement_id requested, then retrieve the selected option from this requirement
     if( isset( $_REQUEST['requirement_id'] ) && ! empty( $_REQUEST['requirement_id'] ) ) {
 
-		$requirements = gamipress_get_requirement_object( $_REQUEST['requirement_id'] );
+		$requirements = gamipress_get_requirement_object( absint( $_REQUEST['requirement_id'] ) );
 
 		$selected = isset( $requirements['achievement_post'] ) ? $requirements['achievement_post'] : '';
     } else if( isset( $_REQUEST['selected'] ) && ! empty( $_REQUEST['selected'] ) ) {
@@ -444,9 +442,8 @@ function gamipress_achievement_post_ajax_handler() {
 	$exclude_posts = isset( $_REQUEST['excluded_posts'] ) ? (array) $_REQUEST['excluded_posts'] : array();
 
     // If we don't have an achievement type, bail now
-    if ( empty( $achievement_type ) ) {
+    if ( empty( $achievement_type ) )
         die();
-    }
 
 	$achievement_types = gamipress_get_achievement_types();
 
@@ -507,7 +504,7 @@ function gamipress_ajax_get_ranks_options_html() {
 	// If requirement_id requested, then retrieve the selected option from this requirement
 	if( isset( $_REQUEST['requirement_id'] ) && ! empty( $_REQUEST['requirement_id'] ) ) {
 
-		$requirements = gamipress_get_requirement_object( $_REQUEST['requirement_id'] );
+		$requirements = gamipress_get_requirement_object( absint( $_REQUEST['requirement_id'] ) );
 
 		$selected = isset( $requirements['rank_required'] ) ? $requirements['rank_required'] : '';
 	} else if( isset( $_REQUEST['selected'] ) && ! empty( $_REQUEST['selected'] ) ) {
@@ -591,7 +588,7 @@ function gamipress_ajax_unlock_achievement_with_points() {
     // Security check, forces to die if not security passed
     check_ajax_referer( 'gamipress', 'nonce' );
 
-	$achievement_id = isset( $_POST['achievement_id'] ) ? $_POST['achievement_id'] : 0;
+	$achievement_id = isset( $_POST['achievement_id'] ) ? absint( $_POST['achievement_id'] ) : 0;
 
 	$achievement = gamipress_get_post( $achievement_id );
 
@@ -693,7 +690,7 @@ function gamipress_ajax_unlock_rank_with_points() {
     // Security check, forces to die if not security passed
     check_ajax_referer( 'gamipress', 'nonce' );
 
-	$rank_id = isset( $_POST['rank_id'] ) ? $_POST['rank_id'] : 0;
+	$rank_id = isset( $_POST['rank_id'] ) ? absint( $_POST['rank_id'] ) : 0;
 
 	$rank = gamipress_get_post( $rank_id );
 

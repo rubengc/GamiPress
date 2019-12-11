@@ -95,7 +95,7 @@ function gamipress_ajax_recount_activity_tool() {
         'message' =>  __( 'Activity recount process has been done successfully.', 'gamipress' )
     );
 
-    $activity = $_POST['activity'];
+    $activity = sanitize_text_field( $_POST['activity'] );
     $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
 
     /**

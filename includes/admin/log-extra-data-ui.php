@@ -306,9 +306,9 @@ function gamipress_get_log_extra_data_ui_ajax_handler() {
 
     ct_setup_table( 'gamipress_logs' );
 
-    $ct_object = ct_get_object( $_REQUEST['object_id'] );
+    $ct_object = ct_get_object( absint( $_REQUEST['object_id'] ) );
 
-    gamipress_log_extra_data_ui_html( $ct_object, $ct_object->log_id, $_REQUEST['type'] );
+    gamipress_log_extra_data_ui_html( $ct_object, $ct_object->log_id, sanitize_text_field( $_REQUEST['type'] ) );
     die;
 }
 add_action( 'wp_ajax_gamipress_get_log_extra_data_ui', 'gamipress_get_log_extra_data_ui_ajax_handler' );

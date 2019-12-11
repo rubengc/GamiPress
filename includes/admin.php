@@ -526,13 +526,11 @@ add_action( 'delete_post', 'gamipress_on_delete_post' );
  * @since 1.1.5
  */
 function gamipress_process_actions() {
-    if ( isset( $_POST['gamipress-action'] ) ) {
+    if ( isset( $_POST['gamipress-action'] ) )
         do_action( 'gamipress_action_post_' . $_POST['gamipress-action'], $_POST );
-    }
 
-    if ( isset( $_GET['gamipress-action'] ) ) {
+    if ( isset( $_GET['gamipress-action'] ) )
         do_action( 'gamipress_action_get_' . $_GET['gamipress-action'], $_GET );
-    }
 }
 add_action( 'admin_init', 'gamipress_process_actions' );
 

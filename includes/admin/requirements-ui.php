@@ -602,15 +602,19 @@ function gamipress_add_requirement_ajax_handler() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
-    }
 
-    $post = get_post( $_POST['post_id'] );
+    $post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+
+    $post = get_post( $post_id );
+
+    if( ! $post )
+        wp_send_json_error( __( 'Invalid post.', 'gamipress' ) );
 
     $requirement_type = gamipress_requirements_ui_get_requirement_type( $post, array(
         'args' => array(
-            'requirement_type' => ( isset($_POST['requirement_type']) ? $_POST['requirement_type'] : '' )
+            'requirement_type' => ( isset( $_POST['requirement_type'] ) ? sanitize_text_field( $_POST['requirement_type'] ) : '' )
         )
     ) );
 
@@ -638,13 +642,18 @@ function gamipress_duplicate_requirement_ajax_handler() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
-    }
 
-    $post = get_post( $_POST['post_id'] );
+    $post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
+    $requirement_id = isset( $_POST['requirement_id'] ) ? absint( $_POST['requirement_id'] ) : 0;
 
-    $requirement = gamipress_get_requirement_object( absint( $_POST['requirement_id'] ) );
+    $post = get_post( $post_id );
+
+    if( $post )
+        wp_send_json_error( __( 'Invalid post.', 'gamipress' ) );
+
+    $requirement = gamipress_get_requirement_object( $requirement_id );
 
     // Create a new requirement post and grab it's ID
     $clone_requirement_id = wp_insert_post( array(
@@ -683,13 +692,15 @@ function gamipress_delete_requirement_ajax_handler() {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
     }
 
+    $requirement_id = isset( $_POST['requirement_id'] ) ? absint( $_POST['requirement_id'] ) : 0;
+
     // Reset the trigger cache
-    $trigger = gamipress_get_post_meta( $_POST['requirement_id'], '_gamipress_trigger_type' );
+    $trigger = gamipress_get_post_meta( $requirement_id, '_gamipress_trigger_type' );
 
     gamipress_delete_trigger_cache( $trigger );
 
     // Delete the requirement post
-    wp_delete_post( $_POST['requirement_id'] );
+    wp_delete_post( $requirement_id );
     die;
 }
 add_action( 'wp_ajax_gamipress_delete_requirement', 'gamipress_delete_requirement_ajax_handler' );
@@ -708,7 +719,7 @@ function gamipress_update_requirements_ajax_handler() {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
     }
 
-    $post_id = $_POST['post_id'];
+    $post_id = isset( $_POST['post_id'] ) ? absint( $_POST['post_id'] ) : 0;
     $requirements_limit = 20;
     $order = absint( $_POST['loop'] ) * $requirements_limit;
 

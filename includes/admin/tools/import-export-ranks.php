@@ -141,8 +141,8 @@ function gamipress_import_export_ranks_tool_ajax_export() {
     // Setup vars
     $rank_types = gamipress_get_rank_types();
     $desired_rank_types = ( isset( $_REQUEST['rank_types'] ) ? $_REQUEST['rank_types'] : array() );
-    $user_field = ( isset( $_REQUEST['user_field'] ) ? $_REQUEST['user_field'] : 'email' );
-    $rank_field = ( isset( $_REQUEST['rank_field'] ) ? $_REQUEST['rank_field'] : 'slug' );
+    $user_field = ( isset( $_REQUEST['user_field'] ) ? sanitize_text_field( $_REQUEST['user_field'] ) : 'email' );
+    $rank_field = ( isset( $_REQUEST['rank_field'] ) ? sanitize_text_field( $_REQUEST['rank_field'] ) : 'slug' );
     $loop = ( isset( $_REQUEST['loop'] ) ? absint( $_REQUEST['loop'] ) : 0 );
     $limit = 200;
     $offset = $limit * $loop;
