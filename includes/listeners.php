@@ -209,6 +209,8 @@ add_action( 'comment_spam_comment', 'gamipress_spam_comment_listener', 10, 2 );
  * @return void
  */
 function gamipress_site_visit_listener() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress', 'nonce' );
 
     $events_triggered = array();
 

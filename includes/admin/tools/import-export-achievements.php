@@ -128,6 +128,8 @@ add_filter( 'gamipress_tools_import_export_meta_boxes', 'gamipress_import_export
  * @since 1.6.4
  */
 function gamipress_import_export_achievements_tool_ajax_export() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     global $wpdb;
 
@@ -267,6 +269,8 @@ add_action( 'wp_ajax_gamipress_import_export_achievements_tool_export', 'gamipre
  * @since 1.6.4
  */
 function gamipress_import_export_achievements_tool_ajax_import() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     global $wpdb;
 

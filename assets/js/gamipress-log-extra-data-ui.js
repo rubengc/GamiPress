@@ -47,7 +47,8 @@
         jQuery.post(
             ajaxurl,
             {
-                action: 'get_log_extra_data_ui',
+                action: 'gamipress_get_log_extra_data_ui',
+                nonce: gamipress_log_extra_data_ui.nonce,
                 log_id: $('input#object_id').val(),
                 type: type
             },

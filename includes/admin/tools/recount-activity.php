@@ -70,6 +70,8 @@ add_filter( 'gamipress_tools_general_meta_boxes', 'gamipress_recount_activity_to
  * @updated 1.4.2 Added the run again utility
  */
 function gamipress_ajax_recount_activity_tool() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) ) {

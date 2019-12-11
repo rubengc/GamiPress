@@ -272,7 +272,10 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 * **Improvements**
 * Awards engine performance improvement by better filter specific triggered events.
+* Nonce usage on all ajax funtions to improve security and veracity of ajax requests.
 * Added disabled effect styles to Select2.
+* Code reduction on several functions.
+* Removed support to the Dark Mode plugin since WordPress core is working on a new one.
 * **Developer Notes**
 * Several improvements on gamipress_get_triggered_requirements() function.
 

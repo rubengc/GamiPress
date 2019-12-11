@@ -32,6 +32,7 @@
                         ajaxurl,
                         {
                             action: 'gamipress_reset_data_tool',
+                            nonce: gamipress_admin_tools.nonce,
                             items: items
                         },
                         function( response ) {
@@ -166,6 +167,7 @@
 
                 data = {
                     action: 'gamipress_import_export_achievements_tool_export',
+                    nonce: gamipress_admin_tools.nonce,
                     achievement_types: achievement_types,
                     user_field: $('#export_achievements_user_field').val(),
                     achievement_field: $('#export_achievements_achievement_field').val(),
@@ -182,6 +184,7 @@
 
                 data = {
                     action: 'gamipress_import_export_points_tool_export',
+                    nonce: gamipress_admin_tools.nonce,
                     points_types: points_types,
                     user_field: $('#export_points_user_field').val(),
                     loop: loop
@@ -197,6 +200,7 @@
 
                 data = {
                     action: 'gamipress_import_export_ranks_tool_export',
+                    nonce: gamipress_admin_tools.nonce,
                     rank_types: rank_types,
                     user_field: $('#export_ranks_user_field').val(),
                     rank_field: $('#export_ranks_rank_field').val(),
@@ -589,6 +593,7 @@
             ajaxurl,
             {
                 action: 'gamipress_export_setup_tool',
+                nonce: gamipress_admin_tools.nonce,
                 items: items
             },
             function( response ) {
@@ -738,6 +743,7 @@
             ajaxurl,
             {
                 action: 'gamipress_recount_activity_tool',
+                nonce: gamipress_admin_tools.nonce,
                 activity: activity,
                 loop: loop // Used on run again utility to let know to the tool in which loop we are now
             },
@@ -863,17 +869,18 @@
         if( action === 'bulk_award' ) {
             data = {
                 action: 'gamipress_bulk_awards_tool',
+                nonce: gamipress_admin_tools.nonce,
                 bulk_award: button.attr('id').replace('bulk_award_', '').replace('_button', ''),
                 loop: loop
             };
         } else if( action === 'bulk_revoke' ) {
             data = {
                 action: 'gamipress_bulk_revokes_tool',
+                nonce: gamipress_admin_tools.nonce,
                 bulk_revoke: button.attr('id').replace('bulk_revoke_', '').replace('_button', ''),
                 loop: loop
             };
         }
-
 
         // Loop all fields to build the request data
         $(active_tab.data('fields')).find('input, select, textarea').each(function() {

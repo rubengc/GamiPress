@@ -212,8 +212,10 @@ add_action( 'edit_user_profile', 'gamipress_user_profile_data' );
  * @since 1.5.9
  */
 function gamipress_ajax_profile_update_user_rank() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
-    $rank_id = $_POST['rank_id'];
+    $rank_id = absint( $_POST['rank_id'] );
     $user_id = absint( $_POST['user_id'] );
 
     // Check if user has permissions
@@ -255,10 +257,12 @@ add_action( 'wp_ajax_gamipress_profile_update_user_rank', 'gamipress_ajax_profil
  * @updated 1.6.0 Now also return the current user ranks in order to see any rank change through the points earned
  */
 function gamipress_ajax_profile_update_user_points() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
-    $points = $_POST['points'];
-    $points_type = $_POST['points_type'];
-    $user_id = absint( $_POST['user_id'] );
+    $points         = absint( $_POST['points'] );
+    $points_type    = sanitize_text_field( $_POST['points_type'] );
+    $user_id        = absint( $_POST['user_id'] );
 
     // Check if user has permissions
     if ( ! current_user_can( 'edit_user', $user_id ) )

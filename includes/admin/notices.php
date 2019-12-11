@@ -78,6 +78,8 @@ add_action( 'admin_notices', 'gamipress_admin_notices' );
  * @since 1.5.9
  */
 function gamipress_ajax_hide_review_notice() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     if( gamipress_is_network_wide_active() ) {
         update_site_option( 'gamipress_hide_review_notice', 'yes' );

@@ -10,7 +10,8 @@
                 return {
                     q: params.term,
                     page: params.page || 1,
-                    action: 'gamipress_get_users'
+                    action: 'gamipress_get_users',
+                    nonce: gamipress_admin_widgets.nonce,
                 };
             },
             processResults: gamipress_select2_users_process_results

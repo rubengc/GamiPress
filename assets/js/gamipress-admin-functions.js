@@ -48,6 +48,7 @@ function gamipress_post_selector( $this ) {
                     q: params.term,
                     page: params.page || 1,
                     action: 'gamipress_get_posts',
+                    nonce: gamipress_admin_functions.nonce,
                     post_type: $this.data('post-type').split(','),
                 };
             },
@@ -90,6 +91,7 @@ function gamipress_user_selector( $this ) {
                     q: params.term,
                     page: params.page || 1,
                     action: 'gamipress_get_users',
+                    nonce: gamipress_admin_functions.nonce,
                 };
             },
             processResults: gamipress_select2_users_process_results

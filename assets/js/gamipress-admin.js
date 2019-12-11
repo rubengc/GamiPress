@@ -75,6 +75,7 @@
 				ajaxurl,
 				{
 					action: 'gamipress_get_ranks_options_html',
+					nonce: gamipress_admin.nonce,
 					post_type: rank_type,
 					selected: gamipress_rank_required_select.val(),
 				},
@@ -222,6 +223,7 @@
             method: 'POST',
             data: {
                 action: 'gamipress_profile_update_user_rank',
+				nonce: gamipress_admin.nonce,
                 rank_id: rank_id,
                 user_id: user_id
             },
@@ -306,6 +308,7 @@
             method: 'POST',
             data: {
                 action: 'gamipress_profile_update_user_points',
+				nonce: gamipress_admin.nonce,
                 points: points,
                 points_type: points_type,
                 user_id: user_id
@@ -501,7 +504,10 @@
 
         $.ajax({
 			url: ajaxurl,
-			data: { action: 'gamipress_hide_review_notice' },
+			data: {
+				action: 'gamipress_hide_review_notice',
+				nonce: gamipress_admin.nonce,
+			},
 			success: function(response) {
 				// Hide the notice on success
 				$('.gamipress-review-notice').slideUp('fast');
@@ -538,7 +544,8 @@ function gamipress_start_upgrade( version ) {
 	$.ajax({
 		url: ajaxurl,
 		data: {
-			action: 'gamipress_' + version + '_upgrade_info'
+			action: 'gamipress_' + version + '_upgrade_info',
+			nonce: gamipress_admin.nonce,
 		},
 		success: function( response ) {
 
@@ -609,6 +616,7 @@ function gamipress_run_upgrade( version ) {
 		url: ajaxurl,
 		data: {
 			action: 'gamipress_process_' + version + '_upgrade',
+			nonce: gamipress_admin.nonce,
 			current: gamipress_current_upgrade_progress,
 		},
 		success: function( response ) {
@@ -657,7 +665,8 @@ function gamipress_stop_upgrade( version, show_result ) {
 	$.ajax({
 		url: ajaxurl,
 		data: {
-			action: 'gamipress_stop_process_' + version + '_upgrade'
+			action: 'gamipress_stop_process_' + version + '_upgrade',
+			nonce: gamipress_admin.nonce,
 		},
         success: function( response ) {
             if( show_result === true ) {

@@ -191,7 +191,8 @@
                 return {
                     q: params.term,
                     page: params.page || 1,
-                    action: 'gamipress_get_users'
+                    action: 'gamipress_get_users',
+                    nonce: gamipress_shortcodes_editor.nonce,
                 };
             },
             processResults: gamipress_select2_users_process_results

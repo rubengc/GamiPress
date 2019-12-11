@@ -151,6 +151,8 @@ function gamipress_143_upgrade_size() {
  * Ajax function to meet the upgrade size
  */
 function gamipress_ajax_143_upgrade_info() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Already upgraded
     if ( is_gamipress_upgraded_to( '1.4.3' ) ) {
@@ -167,6 +169,8 @@ add_action( 'wp_ajax_gamipress_143_upgrade_info', 'gamipress_ajax_143_upgrade_in
  * Ajax process of 1.4.3 upgrades
  */
 function gamipress_ajax_process_143_upgrade() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     global $wpdb;
 
@@ -245,6 +249,8 @@ function gamipress_ajax_process_143_upgrade() {
 add_action( 'wp_ajax_gamipress_process_143_upgrade', 'gamipress_ajax_process_143_upgrade' );
 
 function gamipress_ajax_stop_process_143_upgrade() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     $running_upgrade = get_option( 'gamipress_running_upgrade' );
 

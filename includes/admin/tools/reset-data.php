@@ -92,22 +92,21 @@ add_filter( 'gamipress_tools_page_bottom', 'gamipress_reset_data_tool_page_botto
  * @updated 1.4.0 Added user earnings reset
  */
 function gamipress_ajax_reset_data_tool() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check parameters received
-    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) ) {
+    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) )
         wp_send_json_error( __( 'No items selected.', 'gamipress' ) );
-    }
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
-    }
 
     ignore_user_abort( true );
 
-    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) )
         set_time_limit( 0 );
-    }
 
     global $wpdb;
 

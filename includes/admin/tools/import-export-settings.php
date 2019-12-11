@@ -55,10 +55,11 @@ add_filter( 'gamipress_tools_import_export_meta_boxes', 'gamipress_import_export
  * @since 1.1.7
  */
 function gamipress_action_export_settings() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         return;
-    }
 
     nocache_headers();
 
@@ -79,17 +80,17 @@ add_action( 'gamipress_action_post_export_settings', 'gamipress_action_export_se
  * @since 1.1.7
  */
 function gamipress_ajax_import_settings_tool() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check parameters received
-    if( ! isset( $_FILES['file'] ) ) {
+    if( ! isset( $_FILES['file'] ) )
         wp_send_json_error( __( 'No settings to import.', 'gamipress' ) );
-    }
 
     $import_file = $_FILES['file']['tmp_name'];
 
-    if( empty( $import_file ) ) {
+    if( empty( $import_file ) )
         wp_send_json_error( __( 'Can not retrieve the file to import, check server file permissions.', 'gamipress' ) );
-    }
 
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) ) {

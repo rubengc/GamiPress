@@ -234,6 +234,8 @@ add_filter( 'gamipress_tools_general_meta_boxes', 'gamipress_bulk_revokes_tool_m
  * @since 1.4.3
  */
 function gamipress_ajax_bulk_revokes_tool() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     global $wpdb;
 

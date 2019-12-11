@@ -5,7 +5,8 @@
     /**
      * Achievement list ajax call
      *
-     * @since 1.0.0
+     * @since 	1.0.0
+	 * @updated 1.7.9 Added nonce usage
      */
 	function gamipress_ajax_achievement_list( achievement_list ) {
 
@@ -14,6 +15,7 @@
 
 		var data = {
 			action: 'gamipress_get_achievements',
+			nonce: gamipress.nonce,
 
 			// Achievements atts
 			type: achievement_list.find('input[type="hidden"][name="type"]').val(),
@@ -184,7 +186,8 @@
 	/**
 	 * Unlock achievement with points
 	 *
-	 * @since 1.7.8.1
+	 * @since 	1.7.8.1
+	 * @updated 1.7.9 Added nonce usage
 	 */
     function gamipress_unlock_achievement_with_points( submit_wrap ) {
 
@@ -212,6 +215,7 @@
 			dataType: 'json',
 			data: {
 				action: 'gamipress_unlock_achievement_with_points',
+				nonce: gamipress.nonce,
 				achievement_id: achievement_id
 			},
 			success: function( response ) {
@@ -281,7 +285,8 @@
 	/**
 	 * Unlock rank with points
 	 *
-	 * @since 1.7.8.1
+	 * @since 	1.7.8.1
+	 * @updated 1.7.9 Added nonce usage
 	 */
 	function gamipress_unlock_rank_with_points( submit_wrap ) {
 
@@ -309,6 +314,7 @@
 			dataType: 'json',
 			data: {
 				action: 'gamipress_unlock_rank_with_points',
+				nonce: gamipress.nonce,
 				rank_id: rank_id
 			},
 			success: function( response ) {
@@ -459,7 +465,8 @@
     /**
      * Logs ajax pagination
      *
-     * @since 1.4.9
+     * @since 	1.4.9
+	 * @updated 1.7.9 Added nonce usage
      */
     $body.on( 'click', '#gamipress-logs-pagination a', function (e) {
         e.preventDefault();
@@ -478,6 +485,7 @@
 
         var data = {
             action: 'gamipress_get_logs',
+			nonce: gamipress.nonce,
             page: page,
         };
 
@@ -509,7 +517,8 @@
     /**
      * Earnings ajax pagination
      *
-     * @since 1.4.9
+     * @since 	1.4.9
+	 * @updated 1.7.9 Added nonce usage
      */
     $body.on( 'click', '#gamipress-earnings-pagination a', function (e) {
         e.preventDefault();
@@ -528,6 +537,7 @@
 
         var data = {
             action: 'gamipress_get_user_earnings',
+			nonce: gamipress.nonce,
             page: page,
         };
 

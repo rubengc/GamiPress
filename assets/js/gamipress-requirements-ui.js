@@ -222,6 +222,7 @@
                                 q: params.term,
                                 page: params.page || 1,
                                 action: 'gamipress_get_posts',
+                                nonce: gamipress_requirements_ui.nonce,
                                 post_type: $(this).data('post-type').split(','),
                                 trigger_type: $(this).data('trigger-type'),
                             };
@@ -279,6 +280,7 @@
                 ajaxurl,
                 {
                     action: 'gamipress_get_achievements_options_html',
+                    nonce: gamipress_requirements_ui.nonce,
                     requirement_id: requirement_id,
                     requirement_type: requirement_type,
                     achievement_type: achievement_type,
@@ -321,6 +323,7 @@
                 ajaxurl,
                 {
                     action: 'gamipress_get_ranks_options_html',
+                    nonce: gamipress_requirements_ui.nonce,
                     requirement_id: requirement_id,
                     post_type: rank_type
                 },
@@ -414,6 +417,7 @@ function gamipress_add_requirement( element, post_id, requirement_type ) {
         ajaxurl,
         {
             action: 'gamipress_add_requirement',
+            nonce: gamipress_requirements_ui.nonce,
             post_id: post_id,
             requirement_type: requirement_type
         },
@@ -467,6 +471,7 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
         ajaxurl,
         {
             action: 'gamipress_duplicate_requirement',
+            nonce: gamipress_requirements_ui.nonce,
             post_id: $('input#post_ID').val(),
             requirement_id: requirement_id
         },
@@ -532,6 +537,7 @@ function gamipress_delete_requirement( element, requirement_id ) {
         ajaxurl,
         {
             action: 'gamipress_delete_requirement',
+            nonce: gamipress_requirements_ui.nonce,
             requirement_id: requirement_id
         },
         function( response ) {
@@ -571,6 +577,7 @@ function gamipress_update_requirements( element, loop ) {
     // Setup the data to be send
     var requirement_data = {
         action: 'gamipress_update_requirements',
+        nonce: gamipress_requirements_ui.nonce,
         post_id: $('input#post_ID').val(),
         loop: loop,
         _gamipress_sequential: ( $('input#_gamipress_sequential').prop('checked') ? 'on' : '' ),

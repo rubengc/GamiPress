@@ -60,13 +60,14 @@ class GamiPress_Shortcodes_Editor {
             // Enqueue shortcodes editor
 			wp_enqueue_script( 'gamipress-shortcodes-editor', GAMIPRESS_URL . 'assets/js/gamipress-shortcodes-editor' . $min . '.js', array( 'jquery', 'gamipress-admin-functions-js', 'gamipress-select2-js' ), GAMIPRESS_VER, true );
 
-			wp_localize_script( 'gamipress-shortcodes-editor', 'gamipress_shortcodes_editor', array(
-				'id_placeholder'          => __( 'Select a Post', 'gamipress' ),
-				'id_multiple_placeholder' => __( 'Select Post(s)', 'gamipress' ),
-				'user_placeholder'        => __( 'Select an User', 'gamipress' ),
-				'post_type_placeholder'   => __( 'Default: All', 'gamipress' ),
-				'rank_placeholder'        => __( 'Select a Rank', 'gamipress' ),
-			) );
+            wp_localize_script( 'gamipress-shortcodes-editor', 'gamipress_shortcodes_editor', array(
+                'nonce'                     => gamipress_get_admin_nonce(),
+                'id_placeholder'            => __( 'Select a Post', 'gamipress' ),
+                'id_multiple_placeholder'   => __( 'Select Post(s)', 'gamipress' ),
+                'user_placeholder'          => __( 'Select an User', 'gamipress' ),
+                'post_type_placeholder'     => __( 'Default: All', 'gamipress' ),
+                'rank_placeholder'          => __( 'Select a Rank', 'gamipress' ),
+            ) );
 
 		}
 
@@ -87,7 +88,7 @@ class GamiPress_Shortcodes_Editor {
 		$this->button_rendered = true;
 
 		echo '<a id="insert_gamipress_shortcodes" href="#TB_inline?width=660&height=800&inlineId=select_gamipress_shortcode" class="thickbox button gamipress_media_link" data-width="800">'
-                . '<span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'GamiPress Shortcode', 'gamipress' )
+                . '<span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'GamiPress', 'gamipress' )
             . '</a>';
 	}
 

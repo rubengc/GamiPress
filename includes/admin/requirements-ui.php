@@ -598,6 +598,8 @@ function gamipress_get_rank_requirement_requirements( $rank_requirement_id = 0 )
  * @since 1.0.0
  */
 function gamipress_add_requirement_ajax_handler() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) ) {
@@ -622,8 +624,6 @@ function gamipress_add_requirement_ajax_handler() {
 
     // Output the edit requirement html to insert into the requirements meta box
     gamipress_requirement_ui_html( $requirement_id, $post->ID );
-
-    // Die here, because it's AJAX
     die;
 }
 add_action( 'wp_ajax_gamipress_add_requirement', 'gamipress_add_requirement_ajax_handler' );
@@ -634,6 +634,8 @@ add_action( 'wp_ajax_gamipress_add_requirement', 'gamipress_add_requirement_ajax
  * @since 1.0.0
  */
 function gamipress_duplicate_requirement_ajax_handler() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) ) {
@@ -663,8 +665,6 @@ function gamipress_duplicate_requirement_ajax_handler() {
 
     // Output the edit requirement html to insert into the requirements meta box
     gamipress_requirement_ui_html( $clone_requirement_id, $post->ID );
-
-    // Die here, because it's AJAX
     die;
 }
 add_action( 'wp_ajax_gamipress_duplicate_requirement', 'gamipress_duplicate_requirement_ajax_handler' );
@@ -675,6 +675,8 @@ add_action( 'wp_ajax_gamipress_duplicate_requirement', 'gamipress_duplicate_requ
  * @since 1.0.0
  */
 function gamipress_delete_requirement_ajax_handler() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) ) {
@@ -688,7 +690,6 @@ function gamipress_delete_requirement_ajax_handler() {
 
     // Delete the requirement post
     wp_delete_post( $_POST['requirement_id'] );
-
     die;
 }
 add_action( 'wp_ajax_gamipress_delete_requirement', 'gamipress_delete_requirement_ajax_handler' );
@@ -699,6 +700,8 @@ add_action( 'wp_ajax_gamipress_delete_requirement', 'gamipress_delete_requiremen
  * @since 1.0.5
  */
 function gamipress_update_requirements_ajax_handler() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) ) {
@@ -758,7 +761,6 @@ function gamipress_update_requirements_ajax_handler() {
 
     // We're done here.
     die;
-
 }
 add_action( 'wp_ajax_gamipress_update_requirements', 'gamipress_update_requirements_ajax_handler' );
 
@@ -879,9 +881,9 @@ function gamipress_on_save_requirements_post_parent( $post_id ) {
     $post_type = gamipress_get_post_type( $post_id );
     $allowed_post_types = array_merge( gamipress_get_achievement_types_slugs(), gamipress_get_rank_types_slugs() );
 
-    if( ! in_array( $post_type, $allowed_post_types ) ) {
+    // Bail if not is an allowed type
+    if( ! in_array( $post_type, $allowed_post_types ) )
         return;
-    }
 
     // Save sequential steps (now placed on requirements UI)
     if( isset( $_REQUEST['_gamipress_sequential'] ) ) {
@@ -905,9 +907,8 @@ add_action( 'save_post', 'gamipress_on_save_requirements_post_parent' );
  */
 function gamipress_build_requirement_title( $requirement_id, $requirement = array() ) {
 
-    if( empty( $requirement ) ) {
+    if( empty( $requirement ) )
         $requirement = gamipress_get_requirement_object( $requirement_id );
-    }
 
     $requirement_type       = gamipress_get_post_type( $requirement_id );
     $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
@@ -1041,9 +1042,8 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
 function gamipress_get_requirement_menu_order( $requirement_id = 0 ) {
 
     // If not properly upgrade to required version fallback to compatibility function
-    if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) )
         return gamipress_get_requirement_menu_order_old( $requirement_id );
-    }
 
     return gamipress_get_post_field( 'menu_order', $requirement_id );
 
@@ -1063,13 +1063,11 @@ function gamipress_get_requirement_menu_order( $requirement_id = 0 ) {
 function gamipress_compare_requirements_order( $requirement_x, $requirement_y ) {
 
     // If not properly upgrade to required version fallback to compatibility function
-    if( ! is_gamipress_upgraded_to( '1.5.1' ) && property_exists( $requirement_x, 'order' ) ) {
+    if( ! is_gamipress_upgraded_to( '1.5.1' ) && property_exists( $requirement_x, 'order' ) )
         return gamipress_compare_requirements_order_old( $requirement_x, $requirement_y );
-    }
 
-    if ( $requirement_x->menu_order == $requirement_y->menu_order ) {
+    if ( $requirement_x->menu_order == $requirement_y->menu_order )
         return 0;
-    }
 
     return ( $requirement_x->menu_order < $requirement_y->menu_order ) ? -1 : 1;
 

@@ -48,6 +48,7 @@ function gamipress_enqueue_scripts( $hook = null ) {
     if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
         wp_localize_script( 'gamipress-js', 'gamipress', array(
             'ajaxurl'               => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
+            'nonce'                 => gamipress_get_nonce(),
             'achievement_fields'    => array_keys( GamiPress()->shortcodes['gamipress_achievement']->fields )
         ) );
 
@@ -57,6 +58,7 @@ function gamipress_enqueue_scripts( $hook = null ) {
     // Events script can't be affected by the disable_js option
     wp_localize_script( 'gamipress-events-js', 'gamipress_events', array(
         'ajaxurl'       => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
+        'nonce'         => gamipress_get_nonce(),
         'user_id'       => get_current_user_id(),
         'post_id'       => get_the_ID(),
         'debug_mode'    => gamipress_is_debug_mode()
@@ -110,6 +112,11 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     // Stylesheets
     wp_enqueue_style( 'gamipress-admin-css' );
 
+    // Localize admin script
+    wp_localize_script( 'gamipress-admin-js', 'gamipress_admin', array(
+        'nonce' => gamipress_get_admin_nonce(),
+    ) );
+
     // Scripts
     wp_enqueue_script( 'gamipress-admin-js' );
 
@@ -133,8 +140,9 @@ function gamipress_admin_enqueue_scripts( $hook ) {
     ) {
         // Localize requirements ui script
         wp_localize_script( 'gamipress-requirements-ui-js', 'gamipress_requirements_ui', array(
-            'post_placeholder' => __( 'Select a Post', 'gamipress' ),
-            'specific_activity_triggers' => gamipress_get_specific_activity_triggers()
+            'nonce'                         => gamipress_get_admin_nonce(),
+            'post_placeholder'              => __( 'Select a Post', 'gamipress' ),
+            'specific_activity_triggers'    => gamipress_get_specific_activity_triggers()
         ) );
 
         wp_enqueue_script( 'gamipress-requirements-ui-js' );
@@ -145,12 +153,18 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         $hook === 'gamipress_page_gamipress_logs'
         || $hook === 'admin_page_edit_gamipress_logs'
     ) {
+        // Localize log extra data ui script
+        wp_localize_script( 'gamipress-log-extra-data-ui-js', 'gamipress_log_extra_data_ui', array(
+            'nonce' => gamipress_get_admin_nonce(),
+        ) );
+
         wp_enqueue_script( 'gamipress-log-extra-data-ui-js' );
     }
 
     // Widgets scripts
     if( $hook === 'widgets.php' ) {
         wp_localize_script( 'gamipress-admin-widgets-js', 'gamipress_admin_widgets', array(
+            'nonce'                   => gamipress_get_admin_nonce(),
             'id_placeholder'          => __( 'Select a Post', 'gamipress' ),
             'id_multiple_placeholder' => __( 'Select Post(s)', 'gamipress' ),
             'user_placeholder'        => __( 'Select an User', 'gamipress' ),
@@ -172,6 +186,7 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         $user = get_userdata( get_current_user_id() );
 
         wp_localize_script( 'gamipress-admin-tools-js', 'gamipress_admin_tools', array(
+            'nonce'                     => gamipress_get_admin_nonce(),
             // Notices
             'recount_activity_notice'   => __( 'Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed.', 'gamipress' ),
             // User data (used as sample on CSV templates)
@@ -185,10 +200,6 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         // Enqueue WordPress jQuery UI Dialog style
         wp_enqueue_style ( 'wp-jquery-ui-dialog' );
 
-}
-    // If dark mode style is registered, then enqueue it as last style to override previous CSS rules
-    if( wp_style_is( 'gamipress-dark-mode-css', 'registered' ) ) {
-        wp_enqueue_style( 'gamipress-dark-mode-css' );
     }
 
 }
@@ -264,22 +275,6 @@ function gamipress_localize_blocks_editor_assets() {
 add_action( 'enqueue_block_editor_assets', 'gamipress_localize_blocks_editor_assets', 11 );
 
 /**
- * Register and enqueue dark mode scripts
- *
- * @since       1.3.8.1
- * @return      void
- */
-function gamipress_admin_register_dark_mode_scripts() {
-
-    // Use minified libraries if SCRIPT_DEBUG is turned off
-    $suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-
-    // Stylesheets
-    wp_register_style( 'gamipress-dark-mode-css', GAMIPRESS_URL . 'assets/css/gamipress-dark-mode' . $suffix . '.css', array( ), GAMIPRESS_VER, 'all' );
-}
-add_action( 'doing_dark_mode', 'gamipress_admin_register_dark_mode_scripts' );
-
-/**
  * Enqueue the admin functions script with all required components
  *
  * @since       1.7.4.1
@@ -301,6 +296,7 @@ function gamipress_enqueue_admin_functions_script() {
 
     // Localize admin functions script
     wp_localize_script( 'gamipress-admin-functions-js', 'gamipress_admin_functions', array(
+        'nonce'                     => gamipress_get_admin_nonce(),
         'post_type_labels'          => $post_type_labels,
         'reserved_terms'            => gamipress_get_reserved_terms(),
         // Selector placeholders
@@ -316,5 +312,37 @@ function gamipress_enqueue_admin_functions_script() {
     ) );
 
     wp_enqueue_script( 'gamipress-admin-functions-js' );
+
+}
+
+/**
+ * Setup a global nonce for all frontend scripts
+ *
+ * @since       1.7.9
+ *
+ * @return      string
+ */
+function gamipress_get_nonce() {
+
+    if( ! defined( 'GAMIPRESS_NONCE' ) )
+        define( 'GAMIPRESS_NONCE', wp_create_nonce( 'gamipress' ) );
+
+    return GAMIPRESS_NONCE;
+
+}
+
+/**
+ * Setup a global nonce for all admin scripts
+ *
+ * @since       1.7.9
+ *
+ * @return      string
+ */
+function gamipress_get_admin_nonce() {
+
+    if( ! defined( 'GAMIPRESS_ADMIN_NONCE' ) )
+        define( 'GAMIPRESS_ADMIN_NONCE', wp_create_nonce( 'gamipress_admin' ) );
+
+    return GAMIPRESS_ADMIN_NONCE;
 
 }

@@ -301,6 +301,8 @@ function gamipress_log_extra_data_ui_html( $object, $object_id, $type ) {
  * @return void
  */
 function gamipress_get_log_extra_data_ui_ajax_handler() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     ct_setup_table( 'gamipress_logs' );
 
@@ -308,10 +310,19 @@ function gamipress_get_log_extra_data_ui_ajax_handler() {
 
     gamipress_log_extra_data_ui_html( $ct_object, $ct_object->log_id, $_REQUEST['type'] );
     die;
-
 }
-add_action( 'wp_ajax_get_log_extra_data_ui', 'gamipress_get_log_extra_data_ui_ajax_handler' );
+add_action( 'wp_ajax_gamipress_get_log_extra_data_ui', 'gamipress_get_log_extra_data_ui_ajax_handler' );
 
+/**
+ * Helper function to recursive search an array key
+ *
+ * @since 1.0.0
+ *
+ * @param $needle_key
+ * @param $array
+ *
+ * @return bool|mixed
+ */
 function gamipress_array_search_key( $needle_key, $array ) {
 
     foreach( $array as $key => $value ) {

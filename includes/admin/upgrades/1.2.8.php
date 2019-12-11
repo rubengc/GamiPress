@@ -180,6 +180,8 @@ function gamipress_128_upgrade_size() {
  * Ajax function to meet the upgrade size
  */
 function gamipress_ajax_128_upgrade_info() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Already upgraded
     if ( is_gamipress_upgraded_to( '1.2.8' ) ) {
@@ -196,6 +198,8 @@ add_action( 'wp_ajax_gamipress_128_upgrade_info', 'gamipress_ajax_128_upgrade_in
  * Ajax process of 1.2.8 upgrades
  */
 function gamipress_ajax_process_128_upgrade() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     global $wpdb;
 
@@ -486,6 +490,8 @@ function gamipress_ajax_process_128_upgrade() {
 add_action( 'wp_ajax_gamipress_process_128_upgrade', 'gamipress_ajax_process_128_upgrade' );
 
 function gamipress_ajax_stop_process_128_upgrade() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     $running_upgrade = get_option( 'gamipress_running_upgrade' );
 

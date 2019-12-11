@@ -234,6 +234,8 @@ add_filter( 'gamipress_tools_general_meta_boxes', 'gamipress_bulk_awards_tool_me
  * @since 1.4.1
  */
 function gamipress_ajax_bulk_awards_tool() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     global $wpdb;
 
