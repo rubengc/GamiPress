@@ -291,7 +291,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
             foreach ( $activity_triggers as $group => $group_triggers ) : ?>
                 <optgroup label="<?php echo esc_attr( $group ); ?>">
                     <?php foreach( $group_triggers as $trigger => $label ) : ?>
-                        <option value="<?php echo esc_attr( $trigger ); ?>" <?php selected( $requirements['trigger_type'], $trigger, true ); ?>><?php echo esc_html( $label ); ?></option>
+                        <option value="<?php echo esc_attr( $trigger ); ?>" <?php selected( $requirements['trigger_type'], $trigger, true ); ?>><?php echo $label; ?></option>
                     <?php endforeach; ?>
                 </optgroup>
             <?php endforeach; ?>

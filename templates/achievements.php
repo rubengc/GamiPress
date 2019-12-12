@@ -72,7 +72,7 @@ $a = $gamipress_template_args; ?>
 
                     <?php // Loop all filter options
                     foreach( $filter_options as $value => $label ) :?>
-                        <option value="<?php echo esc_attr( $value ); ?>" <?php selected( $a['filter_value'], $value ); ?>><?php echo esc_html( $label ); ?></option>
+                        <option value="<?php echo esc_attr( $value ); ?>" <?php selected( $a['filter_value'], $value ); ?>><?php echo $label; ?></option>
                     <?php endforeach; ?>
 
                 </select>

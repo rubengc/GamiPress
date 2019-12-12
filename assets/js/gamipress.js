@@ -222,7 +222,7 @@
 
 				// Ensure response wrap
 				if( submit_wrap.find('.gamipress-achievement-unlock-with-points-response').length === 0 )
-					submit_wrap.prepend('<div class="gamipress-achievement-unlock-with-points-response gamipress-notice" style="display: none;"></div>');
+					submit_wrap.append('<div class="gamipress-achievement-unlock-with-points-response gamipress-notice" style="display: none;"></div>');
 
 				var response_wrap = submit_wrap.find('.gamipress-achievement-unlock-with-points-response');
 
@@ -238,10 +238,9 @@
 
 				if( response.success === true ) {
 
-					if( confirmation.length ) {
-						// Hide confirmation and enable confirm/cancel buttons
+					// Hide confirmation
+					if( confirmation.length )
 						confirmation.slideUp();
-					}
 
 					// Hide the button
 					button.slideUp();
@@ -321,7 +320,7 @@
 
 				// Ensure response wrap
 				if( submit_wrap.find('.gamipress-rank-unlock-with-points-response').length === 0 )
-					submit_wrap.prepend('<div class="gamipress-rank-unlock-with-points-response gamipress-notice" style="display: none;"></div>');
+					submit_wrap.append('<div class="gamipress-rank-unlock-with-points-response gamipress-notice" style="display: none;"></div>');
 
 				var response_wrap = submit_wrap.find('.gamipress-rank-unlock-with-points-response');
 
@@ -337,10 +336,9 @@
 
 				if( response.success === true ) {
 
-					if( confirmation.length ) {
-						// Hide confirmation and enable confirm/cancel buttons
+					// Hide confirmation
+					if( confirmation.length )
 						confirmation.slideUp();
-					}
 
 					// Hide the button
 					button.slideUp();

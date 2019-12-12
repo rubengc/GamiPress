@@ -47,7 +47,7 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
              */
             do_action( 'gamipress_before_render_rank_type', $rank_type, $a['rank-types'], $a ); ?>
 
-            <h2 class="gamipress-rank-type-title"><?php echo esc_html( $rank_types[$rank_type]['plural_name'] ); ?></h2>
+            <h2 class="gamipress-rank-type-title"><?php echo $rank_types[$rank_type]['plural_name']; ?></h2>
 
             <?php
             /**

@@ -94,7 +94,7 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
 
             <div class="gamipress-points-type-description">
 
-                <h2 class="gamipress-points-type-title"><?php echo esc_html( $points_types[$points_type]['plural_name'] ); ?></h2>
+                <h2 class="gamipress-points-type-title"><?php echo $points_types[$points_type]['plural_name']; ?></h2>
 
                 <?php
                 /**

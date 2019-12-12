@@ -274,6 +274,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Improved GamiPress security by applying the WordPress security standards on the whole project (nonce checks, sanitization and escaping).
 * **Improvements**
 * Awards engine performance improvement by better filter specific triggered events.
+* Improved placement of server messages given by the unlock using points process.
 * Nonce usage on all ajax functions to improve security and veracity of ajax requests.
 * Added sanitization on all requests fields.
 * Added escaping on all HTML templates where needed.
