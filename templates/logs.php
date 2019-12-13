@@ -10,6 +10,8 @@ global $gamipress_template_args;
 // Shorthand
 $a = $gamipress_template_args;
 
+// Execute the query
+$logs = $a['query']->get_results();
 ?>
 
 <div class="gamipress-logs">
@@ -53,46 +55,54 @@ $a = $gamipress_template_args;
          */
         do_action( 'gamipress_before_render_logs_list', $a ); ?>
 
-        <?php foreach( $a['query']->get_results() as $log ) : ?>
+        <?php if( $a['query']->found_results > 0 ) : ?>
 
-            <?php
-            /**
-             * Before render log
-             *
-             * @since 1.0.0
-             *
-             * @param integer $log_id           The Log ID
-             * @param array   $template_args    Template received arguments
-             */
-            do_action( 'gamipress_before_render_log', $log->log_id, $a );
+            <?php foreach( $logs as $log ) : ?>
 
-            /**
-             * Filters the log title
-             *
-             * @since 1.0.0
-             *
-             * @param string    $log_title      The Log title to render
-             * @param integer   $log_id         The Log ID
-             * @param array     $template_args  Template received arguments
-             *
-             * @return string
-             */
-            $log_title = apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id, $a ); ?>
+                <?php
+                /**
+                 * Before render log
+                 *
+                 * @since 1.0.0
+                 *
+                 * @param integer $log_id           The Log ID
+                 * @param array   $template_args    Template received arguments
+                 */
+                do_action( 'gamipress_before_render_log', $log->log_id, $a );
 
-            <div id="gamipress-log-<?php echo esc_attr( $log->log_id ); ?>" class="gamipress-log"><?php echo $log_title; ?></div>
+                /**
+                 * Filters the log title
+                 *
+                 * @since 1.0.0
+                 *
+                 * @param string    $log_title      The Log title to render
+                 * @param integer   $log_id         The Log ID
+                 * @param array     $template_args  Template received arguments
+                 *
+                 * @return string
+                 */
+                $log_title = apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id, $a ); ?>
 
-            <?php
-            /**
-             * After render log
-             *
-             * @since 1.0.0
-             *
-             * @param integer $log_id           The Log ID
-             * @param array   $template_args    Template received arguments
-             */
-            do_action( 'gamipress_after_render_log', $log->log_id, $a ); ?>
+                <div id="gamipress-log-<?php echo esc_attr( $log->log_id ); ?>" class="gamipress-log"><?php echo $log_title; ?></div>
 
-        <?php endforeach; ?>
+                <?php
+                /**
+                 * After render log
+                 *
+                 * @since 1.0.0
+                 *
+                 * @param integer $log_id           The Log ID
+                 * @param array   $template_args    Template received arguments
+                 */
+                do_action( 'gamipress_after_render_log', $log->log_id, $a ); ?>
+
+            <?php endforeach; ?>
+
+        <?php else : ?>
+
+            <p id="gamipress-logs-no-results"><?php echo __( 'You have not logs registered yet.', 'gamipress' ); ?></p>
+
+        <?php endif; ?>
 
         <?php
         /**

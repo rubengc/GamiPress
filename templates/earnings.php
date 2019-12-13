@@ -11,7 +11,6 @@ $a = $gamipress_template_args;
 
 // Execute the query
 $user_earnings = $a['query']->get_results();
-
 ?>
 
 <div class="gamipress-earnings">

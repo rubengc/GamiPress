@@ -112,6 +112,10 @@
 	background-color: #fafafa;
 }
 
+#dashboard-widgets #gamipress h3 a {
+	text-decoration: none;
+}
+
 #dashboard-widgets #gamipress h3 .dashicons {
 	color: #82878c;
 	vertical-align: bottom;
