@@ -61,46 +61,20 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
 * [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
 * [LifterLMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
-* [CoursePress](https://wordpress.org/plugins/gamipress-coursepress-integration/)
 * [Tutor LMS](https://wordpress.org/plugins/gamipress-tutor-integration/)
-* [Sensei](https://wordpress.org/plugins/gamipress-sensei-integration/)
-* [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
-* [MasterStudy LMS](https://wordpress.org/plugins/gamipress-masterstudy-lms-integration/)
-* [WP Courseware](https://wordpress.org/plugins/gamipress-wp-courseware-integration/)
-
-### Forms integrations ###
-
-* [Ninja Forms](https://wordpress.org/plugins/gamipress-ninja-forms-integration/)
-* [WP Forms](https://wordpress.org/plugins/gamipress-wp-forms-integration/)
-* [Formidable Forms](https://wordpress.org/plugins/gamipress-formidable-forms-integration/)
-* [Forminator](https://wordpress.org/plugins/gamipress-forminator-integration/)
-* [Contact Form 7](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
-* [Gravity Forms](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
-* [Caldera Forms](https://wordpress.org/plugins/gamipress-caldera-forms-integration/)
 
 ### Other integrations ###
 
-* [Easy Digital Downloads](https://wordpress.org/plugins/gamipress-easy-digital-downloads-integration/)
 * [WooCommerce](https://wordpress.org/plugins/gamipress-woocommerce-integration/)
+* [Easy Digital Downloads](https://wordpress.org/plugins/gamipress-easy-digital-downloads-integration/)
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
-* [Jetpack](https://wordpress.org/plugins/gamipress-jetpack-integration/)
-* [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/)
-* [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
-* [WP Job Manager](https://wordpress.org/plugins/gamipress-wp-job-manager-integration/)
+* [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/) & [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
-* [Give](https://wordpress.org/plugins/gamipress-give-integration/)
-* [PeepSo](https://wordpress.org/plugins/gamipress-peepso-integration/)
 * [The Events Calendar](https://wordpress.org/plugins/gamipress-the-events-calendar-integration/)
-* [Events Manager](https://wordpress.org/plugins/gamipress-events-manager-integration/)
-* [Simple:Press](https://wordpress.org/plugins/gamipress-simplepress-integration/)
-* [wpForo](https://wordpress.org/plugins/gamipress-wpforo-integration/)
-* [Invite Anyone](https://wordpress.org/plugins/gamipress-invite-anyone-integration/)
-* [WP Ulike](https://wordpress.org/plugins/gamipress-wp-ulike-integration/)
-* [Favorites](https://wordpress.org/plugins/gamipress-favorites-integration/)
-* [WP Polls](https://wordpress.org/plugins/gamipress-wp-polls-integration/)
-* [WP PostRatings](https://wordpress.org/plugins/gamipress-wp-postratings-integration/)
+* [Gravity Forms](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
+* [Contact Form 7](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
 
 [View all integrations](https://gamipress.com/integrations/)
 
@@ -108,42 +82,30 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 WordPress.org is home to some amazing extensions for GamiPress, including:
 
-* [Button](https://wordpress.org/plugins/gamipress-button/)
+* [Button](https://wordpress.org/plugins/gamipress-button/) & [Link](https://wordpress.org/plugins/gamipress-link/)
 * [Transfers Notes](https://wordpress.org/plugins/gamipress-transfers-notes/)
-* [Conditional Emails Recipients](https://wordpress.org/plugins/gamipress-conditional-emails-recipients/)
 * [Leaderboards Include/Exclude Users](https://wordpress.org/plugins/gamipress-leaderboards-include-exclude-users/)
 * [LearnDash Group Leaderboard](https://wordpress.org/plugins/gamipress-learndash-group-leaderboard/)
 * [BuddyPress Group Leaderboard](https://wordpress.org/plugins/gamipress-buddypress-group-leaderboard/)
-* [PeepSo Group Leaderboard](https://wordpress.org/plugins/gamipress-peepso-group-leaderboard/)
 * [Block Users](https://wordpress.org/plugins/gamipress-block-users/)
 * [Notifications By Type](https://wordpress.org/plugins/gamipress-notifications-by-type/)
-* [Emails By Type](https://wordpress.org/plugins/gamipress-emails-by-type/)
 * [Multimedia Content](https://wordpress.org/plugins/gamipress-multimedia-content/)
-* [Link](https://wordpress.org/plugins/gamipress-link/)
 * [Activity by Category](https://wordpress.org/plugins/gamipress-activity-by-category/)
+
+[View all plugins on wordpress.org](https://profiles.wordpress.org/gamipress/#content-plugins)
 
 If you’re looking for something endorsed and maintained by the developers who built GamiPress, there are a plethora of premium add-ons, the most popular of which include:
 
-* [Time-based Rewards](https://gamipress.com/add-ons/gamipress-time-based-rewards/)
-* [Frontend Reports](https://gamipress.com/add-ons/gamipress-frontend-reports/)
-* [Restrict Unlock](https://gamipress.com/add-ons/gamipress-restrict-unlock/)
-* [Conditional Emails](https://gamipress.com/add-ons/gamipress-conditional-emails/)
-* [Conditional Notifications](https://gamipress.com/add-ons/gamipress-conditional-notifications/)
-* [Email Digests](https://gamipress.com/add-ons/gamipress-email-digests/)
-* [Rest API Extended](https://gamipress.com/add-ons/gamipress-rest-api-extended/)
-* [Referrals](https://gamipress.com/add-ons/gamipress-referrals/)
-* [Coupons](https://gamipress.com/add-ons/gamipress-coupons/)
-* [Points Exchanges](https://gamipress.com/add-ons/gamipress-points-exchanges/)
-* [Transfers](https://gamipress.com/add-ons/gamipress-transfers/)
-* [Daily Login Rewards](https://gamipress.com/add-ons/gamipress-daily-login-rewards/)
-* [Reports](https://gamipress.com/add-ons/gamipress-reports/)
-* [Purchases](https://gamipress.com/add-ons/gamipress-purchases/)
-* [Restrict Content](https://gamipress.com/add-ons/gamipress-restrict-content/)
-* [Notifications](https://gamipress.com/add-ons/gamipress-notifications/)
-* [Progress Map](https://gamipress.com/add-ons/gamipress-progress-map/)
-* [Progress](https://gamipress.com/add-ons/gamipress-progress/)
 * [Leaderboards](https://gamipress.com/add-ons/gamipress-leaderboards/)
+* [Notifications](https://gamipress.com/add-ons/gamipress-notifications/)
 * [Social Share](https://gamipress.com/add-ons/gamipress-social-share/)
+* [Progress Map](https://gamipress.com/add-ons/gamipress-progress-map/)
+* [Restrict Content](https://gamipress.com/add-ons/gamipress-restrict-content/)
+* [Reports](https://gamipress.com/add-ons/gamipress-reports/) & [Frontend Reports](https://gamipress.com/add-ons/gamipress-frontend-reports/)
+* [Daily Login Rewards](https://gamipress.com/add-ons/gamipress-daily-login-rewards/)
+* [Time-based Rewards](https://gamipress.com/add-ons/gamipress-time-based-rewards/)
+* [Referrals](https://gamipress.com/add-ons/gamipress-referrals/)
+* [Transfers](https://gamipress.com/add-ons/gamipress-transfers/)
 
 [View all add-ons](https://gamipress.com/add-ons/)
 
@@ -155,7 +117,6 @@ If you’re looking for something endorsed and maintained by the developers who 
 * [Documentation](https://gamipress.com/docs "GamiPress Documentation") - GamiPress Official Documentation
 * [Code Snippets](https://gamipress.com/customize "GamiPress Code Snippets") - GamiPress Official Code Snippets
 * [Contact](https://gamipress.com/contact-us "GamiPress Contact") - GamiPress Contact
-* [GitHub](https://github.com/rubengc/gamipress "GamiPress on GitHub") - GamiPress GitHub repository
 
 ## Installation ##
 
