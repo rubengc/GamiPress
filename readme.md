@@ -245,6 +245,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.0 ###
+
+* **New Features**
+* Added the "Events Listener" section to the System Info tool.
+* **Bug Fixes**
+* Removed unused HTML from system info file.
+* **Improvements**
+* Awards engine performance improvement by improve the detection of events in use.
+
 ### 1.7.9 ###
 
 * **New Features**

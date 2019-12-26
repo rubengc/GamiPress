@@ -144,12 +144,8 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
 	$activity_triggers = gamipress_get_activity_triggers();
 
 	foreach( $activity_triggers as $group => $group_triggers ) {
-
-		if( isset( $group_triggers[$activity_trigger] ) ) {
-
+		if( isset( $group_triggers[$activity_trigger] ) )
 			return $group_triggers[$activity_trigger];
-		}
-
 	}
 
 	return '';
@@ -716,11 +712,14 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 	$posts  	= GamiPress()->db->posts;
 	$postmeta  	= GamiPress()->db->postmeta;
 
-	$listeners_count = 0;
+    $triggers_count = gamipress_get_triggers_listeners_count();
+	$listeners_count = ( isset( $triggers_count[$trigger] ) ? $triggers_count[$trigger] : 0 );
 
 	// If is specific trigger then try to get the attached id
-	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
+	if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) && isset( $triggers_count[$trigger] ) ) {
 
+	    // Reset the listeners count since is a specific trigger
+        $listeners_count = 0;
 		$specific_id = 0;
 
 		// If isset this key it means $args is a requirement object
@@ -758,28 +757,6 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
 
 		}
 
-	} else {
-
-        $cache = gamipress_get_cache( "{$trigger}_listeners_count", false );
-
-        // If result already cached, return it
-        if( $cache !== false ) {
-            $listeners_count = absint( $cache );
-        } else {
-            $listeners_count = $wpdb->get_var( $wpdb->prepare(
-                "SELECT COUNT(*)
-                FROM   {$posts} AS p
-                LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
-                WHERE p.post_status = 'publish'
-                    AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
-                    AND pm.meta_value = %s",
-                $trigger
-            ) );
-
-            // Cache listeners count
-            gamipress_save_cache( "{$trigger}_listeners_count", $listeners_count );
-        }
-
 	}
 
 	$has_listeners = ( absint( $listeners_count ) > 0 );
@@ -797,6 +774,60 @@ function gamipress_trigger_has_listeners( $trigger, $site_id, $args ) {
      * @return bool
      */
 	return apply_filters( 'gamipress_trigger_has_listeners', $has_listeners, $trigger, $site_id, $args );
+}
+
+/**
+ * Get all triggers listeners count
+ *
+ * @since 1.8.0
+ *
+ * @return array
+ */
+function gamipress_get_triggers_listeners_count() {
+
+    $cache = gamipress_get_cache( 'gamipress_triggers_listeners_count', false );
+
+    // If result already cached, return it
+    if( is_array( $cache ) )
+        return $cache;
+
+    global $wpdb;
+
+    $posts  	= GamiPress()->db->posts;
+    $postmeta  	= GamiPress()->db->postmeta;
+
+    // Get an array with each trigger count
+    $results = $wpdb->get_results(
+        "SELECT pm.meta_value AS 'trigger', COUNT(*) AS 'count'
+         FROM {$postmeta} AS pm
+         LEFT JOIN {$posts} AS p ON ( pm.post_id = p.ID )
+         WHERE p.post_status = 'publish'
+         AND p.post_type IN ( '" . implode( "', '", gamipress_get_requirement_types_slugs() ) . "' )
+         AND pm.meta_key = '_gamipress_trigger_type'
+         AND pm.meta_value != '' 
+         GROUP BY pm.meta_value"
+    );
+
+    $listeners_count = array();
+
+    // Turn the results array into a more accessible associative array
+    foreach( $results as $result )
+        $listeners_count[$result->trigger] = absint( $result->count );
+
+    // Cache listeners count
+    gamipress_save_cache( "gamipress_triggers_listeners_count", $listeners_count );
+
+    /**
+     * Filter to override if triggers listeners count
+     *
+     * @since 1.8.0
+     *
+     * @param array $listeners_count
+     *
+     * @return array
+     */
+    return apply_filters( 'gamipress_get_triggers_listeners_count', $listeners_count );
+
 }
 
 /**

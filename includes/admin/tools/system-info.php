@@ -23,12 +23,14 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
     global $wpdb;
 
+    $download = ( defined( 'GAMIPRESS_DOWNLOADING_SYSTEM_INFO' ) && GAMIPRESS_DOWNLOADING_SYSTEM_INFO );
+
     // ----------------------------------------------------
     // Server Info
     // ----------------------------------------------------
 
     $meta_boxes['server-info'] = array(
-        'title' => gamipress_dashicon( 'dashboard' ) . __( 'Server Info', 'gamipress' ),
+        'title' => ( ! $download ? gamipress_dashicon( 'dashboard' ) : '' ) . __( 'Server Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_server_info_tool_fields', array(
             'hosting_provider' => array(
@@ -102,7 +104,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $last_required_upgrade = gamipress_get_last_required_upgrade();
 
     $meta_boxes['db-info'] = array(
-        'title' => gamipress_dashicon( 'cloud' ) . __( 'Database Info', 'gamipress' ),
+        'title' => ( ! $download ? gamipress_dashicon( 'cloud' ) : '' ) . __( 'Database Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_db_info_tool_fields', array(
             'db_host' => array(
@@ -187,7 +189,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['wordpress-info'] = array(
-        'title' => gamipress_dashicon( 'wordpress' ) . __( 'WordPress Info', 'gamipress' ),
+        'title' => ( ! $download ? gamipress_dashicon( 'wordpress' ) : '' ) . __( 'WordPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_wordpress_info_tool_fields', array(
             'site_url' => array(
@@ -272,9 +274,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $points_types_output = '';
 
     foreach ( $points_types as $points_type_slug => $points_type ) {
-
         $points_types_output .= $points_type['singular_name'] . ' - ' . $points_type['plural_name'] . ' - ' . $points_type_slug . ' (#' . $points_type['ID'] . ')' . '<br>';
-
     }
 
     // Get all achievement types
@@ -282,7 +282,6 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $achievement_types_output = '';
 
     foreach ( $achievement_types as $achievement_type_slug => $achievement_type ) {
-
         $achievement_types_output .= $achievement_type['singular_name'] . ' - ' . $achievement_type['plural_name'] . ' - ' . $achievement_type_slug . ' (#' . $achievement_type['ID'] . ')' . '<br>';
     }
 
@@ -291,8 +290,20 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $rank_types_output = '';
 
     foreach ( $rank_types as $rank_type_slug => $rank_type ) {
-
         $rank_types_output .= $rank_type['singular_name'] . ' - ' . $rank_type['plural_name'] . ' - ' . $rank_type_slug . ' (#' . $rank_type['ID'] . ')' . '<br>';
+    }
+
+    // Listeners count
+    $listeners_count = gamipress_get_triggers_listeners_count();
+    $listeners_count_output = '';
+
+    foreach( $listeners_count as $trigger => $count ) {
+        $label = gamipress_get_activity_trigger_label( $trigger );
+
+        if( empty( $label ) )
+            $label = $trigger . ' ' . __( '(Event\'s plugin not installed)', 'gamipress' );
+
+        $listeners_count_output .= ( ! $download ? $label : $trigger ) . ': ' . $count . '<br>';
     }
 
     // Get all settings stored
@@ -310,9 +321,8 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
 
         foreach ( GamiPress()->settings as $setting_key => $setting_value ) {
 
-            if( is_array( $setting_value ) ) {
+            if( is_array( $setting_value ) )
                 $setting_value = json_encode( $setting_value );
-            }
 
             $gamipress_settings_output .= $setting_key . ': ' . $setting_value . '<br>';
 
@@ -328,7 +338,7 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     }
 
     $meta_boxes['gamipress-info'] = array(
-        'title' => gamipress_dashicon( 'gamipress' ) . __( 'GamiPress Info', 'gamipress' ),
+        'title' => ( ! $download ? gamipress_dashicon( 'gamipress' ) : '' ) . __( 'GamiPress Info', 'gamipress' ),
         'classes' => 'gamipress-list-table',
         'fields' => apply_filters( 'gamipress_gamipress_info_tool_fields', array(
             'points_types' => array(
@@ -345,6 +355,11 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Rank Types', 'gamipress' ),
                 'type' => 'display',
                 'value' => $rank_types_output,
+            ),
+            'listeners_count' => array(
+                'name' => __( 'Events Listeners', 'gamipress' ),
+                'type' => 'display',
+                'value' => $listeners_count_output,
             ),
             'gamipress_install_date' => array(
                 'name' => __( 'Installation Date', 'gamipress' ),
@@ -440,14 +455,17 @@ function gamipress_get_hosting_provider() {
  */
 function gamipress_action_download_system_info() {
 
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         return;
-    }
 
     nocache_headers();
 
     header( 'Content-Type: text/plain' );
     header( 'Content-Disposition: attachment; filename="gamipress-system-info.txt"' );
+
+    // Define a global var to meet that this execution is to download a system info file
+    if( ! defined( 'GAMIPRESS_DOWNLOADING_SYSTEM_INFO' ) )
+        define( 'GAMIPRESS_DOWNLOADING_SYSTEM_INFO', true );
 
     $meta_boxes = array();
     $output = '';
