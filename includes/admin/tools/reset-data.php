@@ -95,13 +95,13 @@ function gamipress_ajax_reset_data_tool() {
     // Security check, forces to die if not security passed
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
-    // Check parameters received
-    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) )
-        wp_send_json_error( __( 'No items selected.', 'gamipress' ) );
-
     // Check user capabilities
     if( ! current_user_can( gamipress_get_manager_capability() ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+
+    // Check parameters received
+    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) )
+        wp_send_json_error( __( 'No items selected.', 'gamipress' ) );
 
     ignore_user_abort( true );
 
@@ -187,25 +187,15 @@ function gamipress_ajax_reset_data_tool() {
                 break;
             case 'logs':
 
-                if( gamipress_database_table_exists( 'gamipress_logs' ) ) {
+                $logs 		= GamiPress()->db->logs;
+                $logs_meta 	= GamiPress()->db->logs_meta;
 
-                    $logs 		= GamiPress()->db->logs;
-                    $logs_meta 	= GamiPress()->db->logs_meta;
+                // Reset from gamipress_logs table
+                $wpdb->query( "DELETE FROM {$logs} WHERE 1=1" );
 
-                    // Reset from gamipress_logs table
-                    $wpdb->query( "DELETE FROM {$logs} WHERE 1=1" );
+                // Reset from gamipress_logs_meta table
+                $wpdb->query( "DELETE FROM {$logs_meta} WHERE 1=1" );
 
-                    // Reset from gamipress_logs_meta table
-                    $wpdb->query( "DELETE FROM {$logs_meta} WHERE 1=1" );
-
-                } else {
-
-                    // Reset from old gamipress-log CPT
-                    $wpdb->delete( $posts, array(
-                        'post_type' => 'gamipress-log'
-                    ) );
-
-                }
                 break;
             case 'earnings':
             case 'earned_points':

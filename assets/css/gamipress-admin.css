@@ -1760,6 +1760,15 @@ label[for="_gamipress_sequential"] {
 	min-width: 150px;
 }
 
+/* Logs Clean Up */
+.cmb2-id-logs-type ul li {
+	margin-bottom: 12px !important;
+}
+
+.cmb2-id-logs-type ul li label {
+	line-height: 1.2 !important;
+}
+
 /* Reset data options */
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(2),
 .cmb2-id-data-to-reset .cmb2-checkbox-list li:nth-child(5),
@@ -1783,7 +1792,14 @@ label[for="_gamipress_sequential"] {
 	font-weight: bold;
 }
 
+/* Align inputs */
+.cmb2-id-export-setup-options input[value$="-points-type"],
+.cmb2-id-export-setup-options input[value$="-achievement-type"],
+.cmb2-id-export-setup-options input[value$="-rank-type"] {
+	margin-left: 20px !important;
+}
 
+/* Align labels */
 .cmb2-id-export-setup-options input[value$="-points-type"] + label,
 .cmb2-id-export-setup-options input[value$="-achievement-type"] + label,
 .cmb2-id-export-setup-options input[value$="-rank-type"] + label {
@@ -1799,6 +1815,15 @@ label[for="_gamipress_sequential"] {
 	left: 20px !important;
 }
 
+/* Align inputs */
+.cmb2-id-export-setup-options input[value$="-points-awards"],
+.cmb2-id-export-setup-options input[value$="-points-deducts"],
+.cmb2-id-export-setup-options input[value$="-achievements"],
+.cmb2-id-export-setup-options input[value$="-ranks"] {
+	margin-left: 40px !important;
+}
+
+/* Align labels */
 .cmb2-id-export-setup-options input[value$="-points-awards"] + label,
 .cmb2-id-export-setup-options input[value$="-points-deducts"] + label,
 .cmb2-id-export-setup-options input[value$="-achievements"] + label,
@@ -1817,6 +1842,13 @@ label[for="_gamipress_sequential"] {
 	left: 40px !important;
 }
 
+/* Align inputs */
+.cmb2-id-export-setup-options input[value$="-steps"],
+.cmb2-id-export-setup-options input[value$="-rank-requirements"] {
+	margin-left: 60px !important;
+}
+
+/* Align labels */
 .cmb2-id-export-setup-options input[value$="-steps"] + label,
 .cmb2-id-export-setup-options input[value$="-rank-requirements"] + label {
 	margin-left: 112px;

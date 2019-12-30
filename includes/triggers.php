@@ -1042,6 +1042,9 @@ function gamipress_delete_trigger_cache( $trigger ) {
         gamipress_delete_cache( "{$trigger}_listeners_count" );
     }
 
+    // Delete all listeners count cache
+    gamipress_delete_cache( 'gamipress_triggers_listeners_count' );
+
     return true;
 
 }

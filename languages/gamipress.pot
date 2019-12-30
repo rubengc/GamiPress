@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2019-12-19 11:25+0100\n"
+"POT-Creation-Date: 2019-12-30 11:38+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: includes/admin/pages/settings.php:147 includes/admin/plugins.php:30
 #: includes/admin/plugins.php:33
 #: includes/admin/tools/import-export-settings.php:24
-#: includes/admin/tools/system-info.php:355
+#: includes/admin/tools/system-info.php:370
 msgid "Settings"
 msgstr ""
 
@@ -52,7 +52,7 @@ msgstr ""
 
 #: includes/admin.php:95 includes/admin.php:140 includes/blocks.php:21
 #: includes/shortcodes.php:67 includes/shortcodes/shortcodes-editor.php:91
-#: includes/triggers.php:47 includes/triggers.php:326 includes/triggers.php:327
+#: includes/triggers.php:47 includes/triggers.php:322 includes/triggers.php:323
 #: includes/user.php:186
 msgid "GamiPress"
 msgstr ""
@@ -72,20 +72,20 @@ msgid "Assets"
 msgstr ""
 
 #: includes/admin.php:150 includes/admin/tools/reset-data.php:34
-#: includes/admin/tools/system-info.php:335 includes/post-types.php:23
+#: includes/admin/tools/system-info.php:345 includes/post-types.php:23
 #: includes/post-types.php:29 includes/post-types.php:35
 #: includes/shortcodes/gamipress_points_types.php:20
 msgid "Points Types"
 msgstr ""
 
 #: includes/admin.php:183 includes/admin/tools/reset-data.php:31
-#: includes/admin/tools/system-info.php:340 includes/post-types.php:130
+#: includes/admin/tools/system-info.php:350 includes/post-types.php:130
 #: includes/post-types.php:136 includes/post-types.php:142
 msgid "Achievement Types"
 msgstr ""
 
 #: includes/admin.php:216 includes/admin/tools/reset-data.php:37
-#: includes/admin/tools/system-info.php:345 includes/post-types.php:201
+#: includes/admin/tools/system-info.php:355 includes/post-types.php:201
 #: includes/post-types.php:207 includes/post-types.php:213
 msgid "Rank Types"
 msgstr ""
@@ -112,7 +112,7 @@ msgid "Licenses"
 msgstr ""
 
 #: includes/admin.php:334 includes/admin/pages/add-ons.php:41
-#: includes/admin/pages/tools.php:125 includes/admin/pages/tools.php:131
+#: includes/admin/pages/tools.php:126 includes/admin/pages/tools.php:132
 msgid "Tools"
 msgstr ""
 
@@ -873,8 +873,10 @@ msgstr ""
 msgid "User assigned to this log."
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:35 includes/compatibility/1.2.8.php:308
-#: includes/custom-tables/logs.php:239 includes/privacy/exporters/logs.php:134
+#: includes/admin/meta-boxes/logs.php:35
+#: includes/admin/tools/logs-clean-up.php:59
+#: includes/compatibility/1.2.8.php:308 includes/custom-tables/logs.php:239
+#: includes/privacy/exporters/logs.php:134
 #: includes/privacy/exporters/user-earnings.php:143
 #: includes/privacy/exporters/user-earnings.php:161
 #: includes/privacy/exporters/user-earnings.php:172
@@ -1194,7 +1196,7 @@ msgstr ""
 msgid "Reset Settings"
 msgstr ""
 
-#: includes/admin/pages/settings.php:172 includes/admin/pages/tools.php:156
+#: includes/admin/pages/settings.php:172 includes/admin/pages/tools.php:157
 #: includes/shortcodes/gamipress_achievements.php:32
 #: includes/shortcodes/gamipress_earnings.php:27
 #: includes/shortcodes/gamipress_ranks.php:33
@@ -1260,11 +1262,11 @@ msgstr ""
 msgid "With GamiPress activated, the following shortcodes can be placed on any page or post within WordPress to expose a variety of GamiPress functions."
 msgstr ""
 
-#: includes/admin/pages/tools.php:160
+#: includes/admin/pages/tools.php:161
 msgid "Import/Export"
 msgstr ""
 
-#: includes/admin/pages/tools.php:164
+#: includes/admin/pages/tools.php:165
 msgid "System"
 msgstr ""
 
@@ -1444,8 +1446,9 @@ msgstr ""
 #: includes/admin/tools/import-export-settings.php:97
 #: includes/admin/tools/import-export-setup.php:138
 #: includes/admin/tools/import-export-setup.php:355
+#: includes/admin/tools/logs-clean-up.php:111
 #: includes/admin/tools/recount-activity.php:78
-#: includes/admin/tools/reset-data.php:104 includes/ajax-functions.php:611
+#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:611
 #: includes/ajax-functions.php:713
 msgid "You are not allowed to perform this action."
 msgstr ""
@@ -1882,7 +1885,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:468
+#: includes/admin/settings/logs.php:43 includes/triggers.php:464
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -2645,7 +2648,7 @@ msgid "Import Setup"
 msgstr ""
 
 #: includes/admin/tools/import-export-setup.php:133
-#: includes/admin/tools/reset-data.php:100
+#: includes/admin/tools/reset-data.php:104
 msgid "No items selected."
 msgstr ""
 
@@ -2663,6 +2666,104 @@ msgstr ""
 
 #: includes/admin/tools/import-export-setup.php:483
 msgid "Setup has been imported successfully."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:25
+msgid "This log has been registered by a plugin so contact his author for more details."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:26
+msgid "Used to log users events perform. GamiPress uses these logs to determine the times a user did a specific action (for example, to award an achievement that requires commenting 3 times). Is safe to delete the old ones."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:27
+msgid "Used to log users achievement unlocks. Is not recommended to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:28
+msgid "Used to log achievement awards perform by administrators. Is safe to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:29
+msgid "Used to log users points gains. Is not recommended to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:30
+msgid "Used to log users points loss. Is not recommended to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:31
+msgid "Used to log users points expended (mainly, for unlocking achievements and ranks through expending points). Is not recommended to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:32
+msgid "Used to log positive points movements perform by administrators. Is safe to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:33
+msgid "Used to log negative points movements perform by administrators. Is safe to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:34
+msgid "Used to log users rank unlocks. Is not recommended to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:35
+msgid "Used to log rank awards perform by administrators. Is safe to delete them."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:56
+msgid "Logs Clean Up"
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:60
+msgid "Choose the log's type you want to clean up."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:66
+msgid "From (Optional)"
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:67
+msgid "Choose the date from you want to clean up. Logs registered <strong>after</strong> this date will be deleted."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:68
+#: includes/admin/tools/logs-clean-up.php:74
+msgid "Leave blank to no filter by this date."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:72
+msgid "To (Optional)"
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:73
+msgid "Choose the date until you want to clean up. Logs registered <strong>before</strong> this date will be deleted."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:78
+msgid "You can click on the \"Count Logs\" button to preview how many logs will be affected."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:82
+msgid "Count Logs"
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:86
+msgid "Clean Logs"
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:115
+msgid "Please, choose at least 1 log type."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:178
+#, php-format
+msgid "%d logs will be deleted."
+msgstr ""
+
+#: includes/admin/tools/logs-clean-up.php:206
+msgid "Logs clean up process has been done successfully."
 msgstr ""
 
 #: includes/admin/tools/recount-activity.php:30
@@ -2767,160 +2868,168 @@ msgstr ""
 msgid "Please, confirm the data that will be removed:"
 msgstr ""
 
-#: includes/admin/tools/reset-data.php:286
+#: includes/admin/tools/reset-data.php:276
 msgid "Data has been reset successfully."
 msgstr ""
 
-#: includes/admin/tools/system-info.php:31
+#: includes/admin/tools/system-info.php:33
 msgid "Server Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:35
+#: includes/admin/tools/system-info.php:37
 msgid "Hosting Provider"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:40
+#: includes/admin/tools/system-info.php:42
 msgid "Operating System"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:45
+#: includes/admin/tools/system-info.php:47
 msgid "PHP Version"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:51
+#: includes/admin/tools/system-info.php:53
 msgid "Webserver Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:56
+#: includes/admin/tools/system-info.php:58
 msgid "PHP Configuration"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:60
-#: includes/admin/tools/system-info.php:239
+#: includes/admin/tools/system-info.php:62
+#: includes/admin/tools/system-info.php:241
 msgid "Memory Limit"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:65
+#: includes/admin/tools/system-info.php:67
 msgid "Time Limit"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:70
+#: includes/admin/tools/system-info.php:72
 msgid "Upload Max Size"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:75
+#: includes/admin/tools/system-info.php:77
 msgid "Post Max Size"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:80
+#: includes/admin/tools/system-info.php:82
 msgid "Max Input Vars"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:85
+#: includes/admin/tools/system-info.php:87
 msgid "Display Errors"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:105
+#: includes/admin/tools/system-info.php:107
 msgid "Database Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:109
+#: includes/admin/tools/system-info.php:111
 msgid "Database Host"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:114
+#: includes/admin/tools/system-info.php:116
 msgid "MySQL Version"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:120
+#: includes/admin/tools/system-info.php:122
 msgid "Last Upgrade"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:126
+#: includes/admin/tools/system-info.php:128
 msgid "Logs Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:132
+#: includes/admin/tools/system-info.php:134
 msgid "Logs Meta Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:138
+#: includes/admin/tools/system-info.php:140
 msgid "User Earnings Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:144
+#: includes/admin/tools/system-info.php:146
 msgid "User Earnings Meta Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:190
+#: includes/admin/tools/system-info.php:192
 msgid "WordPress Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:194
+#: includes/admin/tools/system-info.php:196
 msgid "Site URL"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:199
+#: includes/admin/tools/system-info.php:201
 msgid "Home URL"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:204
+#: includes/admin/tools/system-info.php:206
 msgid "Multisite"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:209
+#: includes/admin/tools/system-info.php:211
 msgid "Version"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:214
+#: includes/admin/tools/system-info.php:216
 msgid "Language"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:219
+#: includes/admin/tools/system-info.php:221
 msgid "Timezone"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:224
+#: includes/admin/tools/system-info.php:226
 msgid "Permalink Structure"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:229
+#: includes/admin/tools/system-info.php:231
 msgid "Absolute Path"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:234
+#: includes/admin/tools/system-info.php:236
 msgid "Debug"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:244
+#: includes/admin/tools/system-info.php:246
 msgid "Table Prefix:"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:249
+#: includes/admin/tools/system-info.php:251
 msgid "Active Theme"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:254
+#: includes/admin/tools/system-info.php:256
 msgid "Parent Theme"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:259
+#: includes/admin/tools/system-info.php:261
 msgid "Active Plugins"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:331
+#: includes/admin/tools/system-info.php:304
+msgid "(Event's plugin not installed)"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:341
 msgid "GamiPress Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:350
+#: includes/admin/tools/system-info.php:360
+msgid "Events Listeners"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:365
 msgid "Installation Date"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:379
+#: includes/admin/tools/system-info.php:394
 msgid "Download System Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:382
+#: includes/admin/tools/system-info.php:397
 msgid "Download System Info File"
 msgstr ""
 
@@ -5456,37 +5565,37 @@ msgstr ""
 msgid "Reach a rank"
 msgstr ""
 
-#: includes/triggers.php:171
+#: includes/triggers.php:167
 #, php-format
 msgid "Comment on %s"
 msgstr ""
 
-#: includes/triggers.php:172
+#: includes/triggers.php:168
 #, php-format
 msgid "Get a comment on %s"
 msgstr ""
 
-#: includes/triggers.php:173
+#: includes/triggers.php:169
 #, php-format
 msgid "Get a comment on %s marked as spam"
 msgstr ""
 
-#: includes/triggers.php:174
+#: includes/triggers.php:170
 #, php-format
 msgid "Visit %s"
 msgstr ""
 
-#: includes/triggers.php:175
+#: includes/triggers.php:171
 #, php-format
 msgid "%s gets visited"
 msgstr ""
 
-#: includes/triggers.php:326
+#: includes/triggers.php:322
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:327
+#: includes/triggers.php:323
 #, php-format
 msgid "Unlocked all %s"
 msgstr ""
