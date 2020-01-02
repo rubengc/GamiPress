@@ -168,8 +168,19 @@ add_filter( 'ct_rest_gamipress_logs_collection_params', 'gamipress_logs_rest_col
  */
 function gamipress_logs_rest_parameter_mappings( $parameter_mappings, $ct_table, $request ) {
 
+    // Fields
+    $parameter_mappings['type'] = 'type';
+    $parameter_mappings['trigger_type'] = 'trigger_type';
+    $parameter_mappings['access'] = 'access';
+    $parameter_mappings['user_id'] = 'user_id';
+
+    // Mappings
     $parameter_mappings['exclude'] = 'log__not_in';
     $parameter_mappings['include'] = 'log__in';
+
+    // Date
+    $parameter_mappings['after'] = 'after';
+    $parameter_mappings['before'] = 'before';
 
     return $parameter_mappings;
 }

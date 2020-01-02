@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-01-02 13:10+0100\n"
+"POT-Creation-Date: 2020-01-02 13:55+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3093,11 +3093,11 @@ msgid "You can perform this action."
 msgstr ""
 
 #: includes/admin/users.php:68 includes/admin/users.php:114
-#: includes/api/logs.php:198 includes/api/user-earnings.php:206
+#: includes/api/logs.php:209 includes/api/user-earnings.php:219
 msgid "Invalid user ID."
 msgstr ""
 
-#: includes/admin/users.php:74 includes/api/user-earnings.php:215
+#: includes/admin/users.php:74 includes/api/user-earnings.php:228
 msgid "Invalid post ID."
 msgstr ""
 
@@ -3113,7 +3113,7 @@ msgstr ""
 msgid "Invalid points amount."
 msgstr ""
 
-#: includes/admin/users.php:122 includes/api/user-earnings.php:222
+#: includes/admin/users.php:122 includes/api/user-earnings.php:235
 msgid "Invalid points type."
 msgstr ""
 
@@ -3396,7 +3396,7 @@ msgstr ""
 msgid "Limit response to logs before a given ISO8601 compliant date."
 msgstr ""
 
-#: includes/api/logs.php:209 includes/api/user-earnings.php:234
+#: includes/api/logs.php:220 includes/api/user-earnings.php:247
 msgid "Invalid date."
 msgstr ""
 

@@ -236,10 +236,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Added the "Events Listener" section to the System Info tool.
 * **Bug Fixes**
 * Fixed not awarding of "Unlock an achievement of type" and "Unlock all achievements of type" events.
+* Fixed parameters detection on custom tables rest API controllers.
 * Removed unused HTML from system info file.
 * Style fixes on Import/Export Setup tool settings.
 * **Improvements**
 * Awards engine performance improvement by improve the detection of events in use.
+* Prevent to hide success responses on tools.
 * **Developer Notes**
 * Make use of register_meta() to register user metas mainly to display them on Rest API.
 * Removed backward compatibility code on logs reset process.

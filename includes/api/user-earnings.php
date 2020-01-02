@@ -176,8 +176,21 @@ add_filter( 'ct_rest_gamipress_user_earnings_collection_params', 'gamipress_user
  */
 function gamipress_user_earnings_rest_parameter_mappings( $parameter_mappings, $ct_table, $request ) {
 
+    // Fields
+    $parameter_mappings['user_id'] = 'user_id';
+    $parameter_mappings['post_id'] = 'post_id';
+    $parameter_mappings['post_type'] = 'post_type';
+    $parameter_mappings['points_type'] = 'points_type';
+
+    $parameter_mappings['force_types'] = 'force_types';
+
+    // Mappings
     $parameter_mappings['exclude'] = 'user_earning__not_in';
     $parameter_mappings['include'] = 'user_earning__in';
+
+    // Date
+    $parameter_mappings['after'] = 'after';
+    $parameter_mappings['before'] = 'before';
 
     return $parameter_mappings;
 }

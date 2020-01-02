@@ -69,8 +69,7 @@
             button.parent().append('<span id="' + response_id + '" style="display: inline-block; padding: 5px 0 0 8px;"></span>');
 
         // Show the spinner
-        if( ! $('#' + response_id).find('.spinner').length )
-            $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
+        $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
 
         $.post(
             ajaxurl,
@@ -170,18 +169,12 @@
 
                 $('#recount-activity-notice').remove();
 
-                if( response.success === false ) {
+                if( response.success === false )
                     $('#recount-activity-response').css({color:'#a00'});
-                }
+                else
+                    $('#recount-activity-response').css({color:''});
 
                 $('#recount-activity-response').html(response.data);
-
-                if( response.success === true ) {
-
-                    setTimeout(function() {
-                        $('#recount-activity-response').remove();
-                    }, 5000);
-                }
 
                 // Enable the button and the activity select
                 button.prop('disabled', false);
@@ -189,12 +182,9 @@
             }
         ).fail(function() {
 
-            $('#recount-activity-response').html('The server has returned an internal error.');
+            $('#recount-activity-notice').remove();
 
-            setTimeout(function() {
-                $('#recount-activity-notice').remove();
-                $('#recount-activity-response').remove();
-            }, 5000);
+            $('#recount-activity-response').html('The server has returned an internal error.');
 
             // Enable the button and the activity select
             button.prop('disabled', false);
@@ -221,9 +211,8 @@
         // Show a notice to let know to the user that process could take a while
         $this.parent().prepend('<p id="recount-activity-notice" class="cmb2-metabox-description">' + gamipress_admin_tools.recount_activity_notice + '</p>');
 
-        if( ! $('#recount-activity-response').length ) {
+        if( ! $('#recount-activity-response').length )
             $this.parent().append('<span id="recount-activity-response"></span>');
-        }
 
         // Show the spinner
         $('#recount-activity-response').html('<span class="spinner is-active" style="float: none;"></span>');
@@ -272,8 +261,7 @@
         $('#logs_clean_up_count, #logs_clean_up').prop('disabled', true);
 
         // Show the spinner
-        if( ! $('#' + response_id).find('.spinner').length )
-            $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
+        $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
 
         $.post(
             ajaxurl,
@@ -296,12 +284,6 @@
                     $('#' + response_id).css({color:''});
 
                 $('#' + response_id).html( ( response.data.message !== undefined ? response.data.message : response.data ) );
-
-                if( response.success === true ) {
-                    setTimeout(function() {
-                        $('#' + response_id).remove();
-                    }, 5000);
-                }
 
                 // Enable the buttons
                 $('#logs_clean_up_count, #logs_clean_up').prop('disabled', false);
@@ -336,7 +318,11 @@
                 click: function() {
                     $('.reset-data-button').prop('disabled', true);
 
-                    $('.reset-data-button').parent().parent().prepend('<span id="reset-data-response"><span class="spinner is-active" style="float: none;"></span></span>');
+                    if( ! $('#reset-data-response').length )
+                        $('.reset-data-button').parent().parent().prepend('<span id="reset-data-response"></span>');
+
+                    // Show the spinner
+                    $('#reset-data-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
                     var items = [];
 
@@ -353,9 +339,10 @@
                         },
                         function( response ) {
 
-                            if( response.success === false ) {
+                            if( response.success === false )
                                 $('#reset-data-response').css({color:'#a00'});
-                            }
+                            else
+                                $('#reset-data-response').css({color:''});
 
                             $('#reset-data-response').html(response.data);
 
@@ -365,8 +352,6 @@
                                     $('.cmb2-id-data-to-reset input:checked').each(function() {
                                         $(this).prop( 'checked', false );
                                     });
-
-                                    $('#reset-data-response').remove();
 
                                     reset_data_dialog.dialog( "close" );
                                 }, 5000);
@@ -452,9 +437,8 @@
         var response_element = $('#export-' + type + '-response');
         var data;
 
-        if( loop === undefined ) {
+        if( loop === undefined )
             loop = 0;
-        }
 
         // Disable the export button
         button_element.prop('disabled', true);
@@ -466,10 +450,8 @@
             response_element = $('#export-' + type + '-response');
         }
 
-        if( ! response_element.find('.spinner').length ) {
-            // Show the spinner
-            response_element.html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
-        }
+        // Show the spinner
+        response_element.html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
 
         // Setup request data per type
         switch( type ) {
@@ -552,9 +534,10 @@
                     return;
                 }
 
-                if( response.success === false ) {
+                if( response.success === false )
                     response_element.css({color:'#a00'});
-                }
+                else
+                    response_element.css({color:''});
 
                 response_element.html( ( response.data.message !== undefined ? response.data.message : response.data ) );
 
@@ -674,8 +657,11 @@
         // Disable the button
         $this.prop('disabled', true);
 
+        if( ! $('#import-' + type + '-response').length )
+            $this.parent().prepend('<p id="import-' + type + '-response" class="cmb2-metabox-description"></p>');
+
         // Show the spinner
-        $this.parent().prepend('<p id="import-' + type + '-response" class="cmb2-metabox-description"><span class="spinner is-active" style="float: none;"></span></p>');
+        $('#import-' + type + '-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
         $.ajax({
             url: ajaxurl,
@@ -686,10 +672,11 @@
             data: form_data,
             success: function(response) {
 
-                if( response.success === false ) {
-                    // Set a red color to the response to let user known that something is going wrong
+                // Set a red color to the response to let user known that something is going wrong
+                if( response.success === false )
                     $('#import-' + type + '-response').css({color:'#a00'});
-                }
+                else
+                    $('#import-' + type + '-response').css({color:''});
 
                 // Update the response content
                 $('#import-' + type + '-response').html( response.data );
@@ -897,7 +884,11 @@
 
         $('.export-setup-button').prop('disabled', true);
 
-        $('.export-setup-button').parent().parent().prepend('<span id="export-setup-response"><span class="spinner is-active" style="float: none;"></span></span>');
+        if( ! $('#export-setup-response').length )
+            $('.export-setup-button').parent().parent().prepend('<span id="export-setup-response"></span>');
+
+        // Show the spinner
+        $('#export-setup-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
         var items = [];
 
@@ -914,19 +905,15 @@
             },
             function( response ) {
 
-                if( response.success === false ) {
+                if( response.success === false )
                     $('#export-setup-response').css({color:'#a00'});
-                }
+                else
+                    $('#export-setup-response').css({color:''});
 
                 $('#export-setup-response').html( ( response.data.message !== undefined ? response.data.message : response.data ) );
 
                 if( response.success === true ) {
-
                     gamipress_download_file( response.data.setup, 'setup-export', 'txt', 'text/plain' );
-
-                    setTimeout(function() {
-                        $('#export-setup-response').remove();
-                    }, 5000);
                 }
 
                 $('.export-setup-button').prop('disabled', false);
@@ -957,8 +944,11 @@
         // Disable the button
         $this.prop('disabled', true);
 
+        if( ! $('#import-setup-response').length )
+            $this.parent().append('<span id="import-setup-response"></span>');
+
         // Show the spinner
-        $this.parent().append('<span id="import-setup-response"><span class="spinner is-active" style="float: none;"></span></span>');
+        $('#import-setup-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
         $.ajax({
             url: ajaxurl,
@@ -969,18 +959,12 @@
             data: form_data,
             success: function(response) {
 
-                if( response.success === false ) {
+                if( response.success === false )
                     $('#import-setup-response').css({color:'#a00'});
-                }
+                else
+                    $('#import-setup-response').css({color:''});
 
                 $('#import-setup-response').html(response.data);
-
-                if( response.success === true ) {
-
-                    setTimeout(function() {
-                        $('#import-setup-response').remove();
-                    }, 5000);
-                }
 
                 $this.prop('disabled', false);
 
@@ -1010,8 +994,11 @@
         // Disable the button
         $this.prop('disabled', true);
 
+        if( ! $('#import-settings-response').length )
+            $this.parent().append('<span id="import-settings-response"></span>');
+
         // Show the spinner
-        $this.parent().append('<span id="import-settings-response"><span class="spinner is-active" style="float: none;"></span></span>');
+        $('#import-settings-response').html('<span class="spinner is-active" style="float: none;"></span>');
 
         $.ajax({
             url: ajaxurl,
@@ -1022,18 +1009,12 @@
             data: form_data,
             success: function(response) {
 
-                if( response.success === false ) {
+                if( response.success === false )
                     $('#import-settings-response').css({color:'#a00'});
-                }
+                else
+                    $('#import-settings-response').css({color:''});
 
                 $('#import-settings-response').html(response.data);
-
-                if( response.success === true ) {
-
-                    setTimeout(function() {
-                        $('#import-settings-response').remove();
-                    }, 5000);
-                }
 
                 $this.prop('disabled', false);
 
