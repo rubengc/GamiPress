@@ -230,7 +230,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/rules-engine.php';
 		require_once GAMIPRESS_DIR . 'includes/template-functions.php';
 		require_once GAMIPRESS_DIR . 'includes/triggers.php';
-		require_once GAMIPRESS_DIR . 'includes/user.php';
+		require_once GAMIPRESS_DIR . 'includes/users.php';
 		require_once GAMIPRESS_DIR . 'includes/widgets.php';
 
 	}

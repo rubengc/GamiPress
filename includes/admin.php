@@ -22,6 +22,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
+require_once GAMIPRESS_DIR . 'includes/admin/users.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
 // Admin pages

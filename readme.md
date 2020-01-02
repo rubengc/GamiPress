@@ -251,12 +251,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Added the Clean Up Logs tool to delete old logs.
 * Added the "Events Listener" section to the System Info tool.
 * **Bug Fixes**
+* Fixed not awarding of "Unlock an achievement of type" and "Unlock all achievements of type" events.
 * Removed unused HTML from system info file.
 * Style fixes on Import/Export Setup tool settings.
 * **Improvements**
 * Awards engine performance improvement by improve the detection of events in use.
 * **Developer Notes**
+* Make use of register_meta() to register user metas mainly to display them on Rest API.
 * Removed backward compatibility code on logs reset process.
+* Moved users admin profile functions to admin/users.php file.
 
 ### 1.7.9 ###
 

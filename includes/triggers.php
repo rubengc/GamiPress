@@ -392,7 +392,7 @@ function gamipress_get_activity_triggers_excluded_from_activity_limit() {
  */
 function gamipress_trigger_event() {
 
-    // get the current site
+    // Get the current site
 	$site_id = get_current_blog_id();
 
 	$args = func_get_args();
@@ -405,7 +405,7 @@ function gamipress_trigger_event() {
 	$trigger = ( isset( $args['event'] ) ? $args['event'] : current_filter() );
 
 	// gamipress_unlock_all_{achievement_type} and gamipress_unlock_{achievement_type} are excluded from this check
-	if( strpos( $trigger, 'gamipress_unlock_' ) !== 0 ) {
+	if( ! gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
 
 		// Check if log all events is enabled, if checked then function won't
 		if( ! (bool) gamipress_get_option( 'log_all_events', false ) ) {
@@ -541,7 +541,7 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 		case 'gamipress_login':
 		case 'gamipress_register':
 		case 'gamipress_site_visit':
-		case 'gamipress_unlock_' === substr( $trigger, 0, 15 ):
+		case gamipress_starts_with( $trigger, 'gamipress_unlock_' ):
 		default :
 			// Nothing to store
 			break;
@@ -633,7 +633,7 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 		case 'gamipress_login':
 		case 'gamipress_register':
 		case 'gamipress_site_visit':
-		case 'gamipress_unlock_' == substr( $trigger, 0, 15 ):
+		case gamipress_starts_with( $trigger, 'gamipress_unlock_' ):
 			$user_id = $args[0];
 			break;
 		case 'gamipress_publish_post':
@@ -897,6 +897,18 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
 
     } else {
 
+        // Store original trigger
+        $original_trigger = $trigger;
+
+        // Events for unlock an achievement of type or all requires to change the trigger
+        if( gamipress_starts_with( $trigger, 'gamipress_unlock_all_' ) ) {
+            // Replace "gamipress_unlock_all_{achievement-type}" to "all-achievements"
+            $trigger = 'all-achievements';
+        } else  if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
+            // Replace "gamipress_unlock_{achievement-type}" to "any-achievement"
+            $trigger = 'any-achievement';
+        }
+
         $cache = gamipress_get_cache( "{$trigger}_triggered_requirements", false );
 
         // If result already cached, return it
@@ -917,11 +929,11 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
 
             // Cache function result
             gamipress_save_cache( "{$trigger}_triggered_requirements", $triggered_requirements );
+
+            $trigger = $original_trigger;
         }
 
     }
-
-
 
     /**
      * Filter to modify triggered requirements by a specific trigger

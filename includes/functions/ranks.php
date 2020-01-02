@@ -617,13 +617,11 @@ function gamipress_downgrade_user_to_prev_rank( $user_id = 0, $rank_type = '' ) 
  */
 function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, $achievement_id = null ) {
 
-    if( ! $rank_id ) {
+    if( ! $rank_id )
         return false;
-    }
 
-    if( ! $user_id ) {
+    if( ! $user_id )
         $user_id = get_current_user_id();
-    }
 
     // Get user old rank if has one
     $old_rank = gamipress_get_user_rank( $user_id );
@@ -631,9 +629,8 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
     $new_rank = gamipress_get_post( $rank_id );
 
     // If is the same rank, return
-    if( $old_rank && $new_rank && $new_rank->ID === $old_rank->ID ) {
+    if( $old_rank && $new_rank && $new_rank->ID === $old_rank->ID )
         return $new_rank;
-    }
 
     // Check if is a valid rank and is not the same rank as current one
     if( $new_rank && gamipress_is_rank( $new_rank ) ) {
@@ -763,13 +760,11 @@ function gamipress_get_rank_requirement_rank( $rank_requirement_id = 0 ) {
     // The rank requirement's rank is the post parent
     $rank_id = absint( gamipress_get_post_field( 'post_parent', $rank_requirement_id ) );
 
-    if( $rank_id !== 0 ) {
-        // If has parent, return his post object
+    // If has parent, return his post object
+    if( $rank_id !== 0 )
         return gamipress_get_post( $rank_id );
-    } else {
+    else
         return false;
-    }
-
 }
 
 /**
@@ -788,13 +783,10 @@ function gamipress_get_rank_earned_time( $user_id = 0, $rank_type = '' ) {
 
     // If user has not earned a rank of this type, try to get the lowest priority rank and get its publish date
     if( $earned_time === 0 ) {
-
         $rank = gamipress_get_user_rank( $user_id, $rank_type );
 
-        if( $rank ) {
+        if( $rank )
             $earned_time = strtotime( $rank->post_date );
-        }
-
     }
 
     return $earned_time;
@@ -834,7 +826,7 @@ function gamipress_get_rank_requirements( $rank_id = 0, $post_status = 'publish'
         'order'				=> 'ASC',
         'posts_per_page'    => -1,
         'suppress_filters'  => false,
-    ));
+    ) );
 
     // Return rank requirements array
     return $requirements;
