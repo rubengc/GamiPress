@@ -69,7 +69,8 @@
             button.parent().append('<span id="' + response_id + '" style="display: inline-block; padding: 5px 0 0 8px;"></span>');
 
         // Show the spinner
-        $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
+        if( loop === 0 )
+            $('#' + response_id).html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
 
         $.post(
             ajaxurl,
@@ -79,10 +80,11 @@
                 // Run again utility
                 if( response.data.run_again !== undefined && response.data.run_again && response.success === true ) {
 
-                    if( ! $('#' + response_id).find('#' + response_id + '-message').length )
-                        $('#' + response_id).append('<span id="' + response_id + '-message" style="padding-left: 5px;"></span>');
-
-                    $('#' + response_id).find('#' + response_id + '-message').html(response.data.message);
+                    // Keep the spinner and add the server response
+                    $('#' + response_id).html(
+                        '<span class="spinner is-active" style="float: none; margin: 0;"></span>'
+                        + '<span style="display: inline-block; padding-left: 5px;">' + ( response.data.message !== undefined ? response.data.message : response.data ) + '</span>'
+                    );
 
                     loop++;
 
@@ -131,9 +133,8 @@
 
     function gamipress_run_recount_activity_tool( loop ) {
 
-        if( loop === undefined ) {
+        if( loop === undefined )
             loop = 0;
-        }
 
         var button = $("#recount_activity");
         var activity = $('#activity_to_recount').val();
@@ -153,11 +154,10 @@
 
                     var running_selector = '#recount-activity-response #running-' + activity;
 
-                    if( ! $(running_selector).length ) {
+                    if( ! $(running_selector).length )
                         $('#recount-activity-response').append( '<span id="running-' + activity + '"></span>' );
-                    }
 
-                    $(running_selector).html( response.data.message );
+                    $(running_selector).html( ( response.data.message !== undefined ? response.data.message : response.data ) );
 
                     loop++;
 
@@ -451,7 +451,8 @@
         }
 
         // Show the spinner
-        response_element.html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
+        if( loop === 0 )
+            response_element.html('<span class="spinner is-active" style="float: none; margin: 0;"></span>');
 
         // Setup request data per type
         switch( type ) {
@@ -520,11 +521,7 @@
                 // Run again utility
                 if( response.data.run_again !== undefined && response.data.run_again && response.success === true ) {
 
-                    if( ! response_element.find('#export-' + type + '-response-message').length ) {
-                        response_element.append('<span id="export-' + type + '-response-message" style="padding-left: 5px;"></span>');
-                    }
-
-                    response_element.find('#export-' + type + '-response-message').html( response.data.message );
+                    response_element.html( ( response.data.message !== undefined ? response.data.message : response.data ) );
 
                     loop++;
 
