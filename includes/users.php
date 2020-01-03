@@ -70,6 +70,36 @@ function gamipress_register_users_metas() {
 add_action( 'init', 'gamipress_register_users_metas' );
 
 /**
+ * Remove all user logs and earnings when is deleted from the database.
+ *
+ * @since 1.8.0
+ *
+ * @param int      $id       ID of the user to delete.
+ * @param int|null $reassign ID of the user to reassign posts and links to (Default null, for no reassignment).
+ */
+function gamipress_on_delete_user( $id, $reassign ) {
+
+    global $wpdb;
+
+    $user_earnings 		= GamiPress()->db->user_earnings;
+    $user_earnings_meta = GamiPress()->db->user_earnings_meta;
+    $logs 		        = GamiPress()->db->logs;
+    $logs_meta 	        = GamiPress()->db->logs_meta;
+
+    // Delete all user's earnings
+    $wpdb->query( "DELETE ue FROM {$user_earnings} AS ue WHERE ue.user_id = {$id}" );
+    // Delete orphaned user earnings metas
+    $wpdb->query( "DELETE uem FROM {$user_earnings_meta} uem LEFT JOIN {$user_earnings} ue ON ue.user_earning_id = uem.user_earning_id WHERE ue.user_earning_id IS NULL" );
+
+    // Delete all user's logs
+    $wpdb->query( "DELETE l FROM {$logs} AS l WHERE l.user_id = {$id}" );
+    // Delete orphaned logs metas
+    $wpdb->query( "DELETE lm FROM {$logs_meta} lm LEFT JOIN {$logs} l ON l.log_id = lm.log_id WHERE l.log_id IS NULL" );
+
+}
+add_action( 'delete_user', 'gamipress_on_delete_user' );
+
+/**
  * Get user's achievements
  *
  * @since   1.0.0
@@ -224,55 +254,5 @@ function gamipress_update_user_achievements( $args = array() ) {
 	}
 
 	return true;
-
-}
-
-/**
- * Returns array of achievement types a user has earned across a multisite network
- *
- * @since  1.0.0
- * @param  integer $user_id  The user's ID
- * @return array             An array of post types
- */
-function gamipress_get_network_achievement_types_for_user( $user_id ) {
-
-    $blog_id = get_current_blog_id();
-
-	// Assume we have no achievement types
-	$all_achievement_types = array();
-
-	// Loop through all active sites
-	$sites = gamipress_get_network_site_ids();
-
-	foreach( $sites as $site_blog_id ) {
-
-		// If we're polling a different blog, switch to it
-		if ( $blog_id != $site_blog_id ) {
-			switch_to_blog( $site_blog_id );
-		}
-
-		// Merge earned achievements to our achievement type array
-		$achievement_types = gamipress_get_user_earned_achievement_types( $user_id );
-
-		if ( is_array( $achievement_types ) ) {
-			$all_achievement_types = array_merge( $achievement_types, $all_achievement_types );
-		}
-
-        // If switched to blog, return back to que current blog
-        if ( $blog_id != $site_blog_id && is_multisite() ) {
-            restore_current_blog();
-        }
-	}
-
-    // Restore the original blog so the sky doesn't fall
-	if ( $blog_id != get_current_blog_id() && is_multisite() ) {
-        restore_current_blog();
-	}
-
-	// Pare down achievement type list so we return no duplicates
-	$achievement_types = array_unique( $all_achievement_types );
-
-	// Return all found achievements
-	return $achievement_types;
 
 }

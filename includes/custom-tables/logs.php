@@ -435,7 +435,6 @@ add_action( 'manage_gamipress_logs_custom_column', 'gamipress_manage_logs_custom
  * @param stdClass $object
  */
 function gamipress_logs_edit_form_top( $object ) {
-
     global $ct_table;
 
     if( $ct_table->name !== 'gamipress_logs' ) {
@@ -457,6 +456,5 @@ add_action( 'ct_edit_form_top', 'gamipress_logs_edit_form_top' );
  */
 function gamipress_add_logs_meta_boxes() {
     remove_meta_box( 'submitdiv', 'gamipress_logs', 'side' );
-
 }
 add_action( 'add_meta_boxes', 'gamipress_add_logs_meta_boxes' );

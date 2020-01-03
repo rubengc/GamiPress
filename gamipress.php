@@ -198,6 +198,7 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.5.0.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.5.1.php';
 		require_once GAMIPRESS_DIR . 'includes/compatibility/1.6.5.php';
+		require_once GAMIPRESS_DIR . 'includes/compatibility/1.8.0.php';
 
 	}
 

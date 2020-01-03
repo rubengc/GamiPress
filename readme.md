@@ -258,6 +258,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * **Improvements**
 * Awards engine performance improvement by improve the detection of events in use.
 * Prevent to hide success responses on tools.
+* Delete logs and earnings of users that gets deleted from the admin area (and not from the eraser tool).
 * **Developer Notes**
 * Make use of register_meta() to register user metas mainly to display them on Rest API.
 * Removed backward compatibility code on logs reset process.
