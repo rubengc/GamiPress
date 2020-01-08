@@ -245,6 +245,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.0.1 ###
+
+* **Bug Fixes**
+* Fixed internal php error when deleting a user.
+* Fixed some import tools that haven't correctly send the required security nonces.
+* **Improvements**
+* Delete earnings of posts that gets deleted.
+
 ### 1.8.0 ###
 
 * **New Features**

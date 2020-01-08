@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.3
-Stable tag: 1.8.0
+Stable tag: 1.8.0.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -228,6 +228,14 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.8.0.1 =
+
+* **Bug Fixes**
+* Fixed internal php error when deleting a user.
+* Fixed some import tools that haven't correctly send the required security nonces.
+* **Improvements**
+* Delete earnings of posts that gets deleted.
 
 = 1.8.0 =
 

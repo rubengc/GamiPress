@@ -440,23 +440,19 @@ add_action( 'manage_posts_custom_column', 'gamipress_posts_custom_columns', 10, 
  * @param integer $post_id
  */
 function gamipress_on_delete_post( $post_id ) {
+    global $wpdb;
 
     $post_type = gamipress_get_post_type( $post_id );
 
     $is_achievement = gamipress_is_achievement( $post_id );
-
     $is_rank = gamipress_is_rank( $post_id );
 
-    if( ! in_array( $post_type, array( 'points-type', 'achievement-type', 'rank-type' ) ) || ! $is_achievement || ! $is_rank ) {
-        return;
-    }
+    $delete_user_earnings = ( in_array( $post_type, gamipress_get_requirement_types_slugs() ) );
 
     if( $post_type === 'achievement-type' || $post_type === 'rank-type' ) {
         // Remove all achievements of this achievement type or if is a rank type, remove all ranks of this rank type
 
         $dependent_type = get_post_field( 'post_name', $post_id );
-
-        global $wpdb;
 
         $posts = GamiPress()->db->posts;
 
@@ -495,6 +491,9 @@ function gamipress_on_delete_post( $post_id ) {
     } else if( $is_achievement || $is_rank ) {
         // Remove steps/rank requirements assigned
 
+        // Force to delete user earnings
+        $delete_user_earnings = true;
+
         if( $is_rank ) {
             $requirement_type = 'rank-requirement';
         } else if ( $is_achievement ) {
@@ -516,6 +515,18 @@ function gamipress_on_delete_post( $post_id ) {
             }
 
         }
+    }
+
+    // Delete assigned user earnings
+    if( $delete_user_earnings ) {
+
+        $user_earnings 		= GamiPress()->db->user_earnings;
+        $user_earnings_meta = GamiPress()->db->user_earnings_meta;
+
+        // Delete all user's earnings
+        $wpdb->query( "DELETE ue FROM {$user_earnings} AS ue WHERE ue.post_id = {$post_id}" );
+        // Delete orphaned user earnings metas
+        $wpdb->query( "DELETE uem FROM {$user_earnings_meta} uem LEFT JOIN {$user_earnings} ue ON ue.user_earning_id = uem.user_earning_id WHERE ue.user_earning_id IS NULL" );
     }
 
 }

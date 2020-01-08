@@ -649,6 +649,7 @@
         // Setup the form data to send
         var form_data = new FormData();
         form_data.append( 'action', 'gamipress_import_export_' + type + '_tool_import' );
+        form_data.append( 'nonce', gamipress_admin_tools.nonce );
         form_data.append( 'file', $('#import_' + type + '_file')[0].files[0] );
 
         // Disable the button
@@ -936,6 +937,7 @@
         var $this = $(this);
         var form_data = new FormData();
         form_data.append( 'action', 'gamipress_import_setup_tool' );
+        form_data.append( 'nonce', gamipress_admin_tools.nonce );
         form_data.append( 'file', $('#import_setup_file')[0].files[0] );
 
         // Disable the button
@@ -986,6 +988,7 @@
         var $this = $(this);
         var form_data = new FormData();
         form_data.append( 'action', 'gamipress_import_settings_tool' );
+        form_data.append( 'nonce', gamipress_admin_tools.nonce );
         form_data.append( 'file', $('#import_settings_file')[0].files[0] );
 
         // Disable the button

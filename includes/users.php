@@ -97,7 +97,7 @@ function gamipress_on_delete_user( $id, $reassign ) {
     $wpdb->query( "DELETE lm FROM {$logs_meta} lm LEFT JOIN {$logs} l ON l.log_id = lm.log_id WHERE l.log_id IS NULL" );
 
 }
-add_action( 'delete_user', 'gamipress_on_delete_user' );
+add_action( 'delete_user', 'gamipress_on_delete_user', 10, 2 );
 
 /**
  * Get user's achievements
