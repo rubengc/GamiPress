@@ -588,24 +588,45 @@ function gamipress_update_user_points_awarded( $user_id = 0, $points = 0, $point
 /**
  * Used on rules engine, this function returns the points amount that user has earned subtracting the used on the different checks
  *
- * @since 1.7.6.3
+ * @since   1.7.6.3
+ * @updated 1.8.1   Force function to correctly pass the date query to gamipress_get_user_points() function
  *
- * @param  integer 	$user_id      	The given user's ID
- * @param  string 	$points_type   	The points type
+ * @param  int 	    $user_id      	    The given user's ID
+ * @param  string 	$points_type   	    The points type
+ * @param  int 	    $requirement_id   	The requirement ID that is already in the loop
  *
  * @return integer $user_points  The user's points on the current rules engine loop
  */
-function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type = '' ) {
+function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type = '', $requirement_id = 0 ) {
 
-    // Get user points earned since last time has earning the achievement
-    $awarded_points    		= gamipress_get_last_updated_user_points( $user_id, $points_type );
-    $points_awarded_key     = "gamipress_multiple_{$points_type}_awarded";
+    $multiple_awarded_key   = "gamipress_multiple_{$points_type}_awarded";
+    $last_points_key        = "gamipress_{$points_type}_last_points";
 
-    // Initialize the awarded points count
-    if( ! isset( $GLOBALS[$points_awarded_key] ) )
-        $GLOBALS[$points_awarded_key] = 0;
+    // Initialize the last points earned
+    if( ! isset( $GLOBALS[$last_points_key] ) ) {
+        // Get the last activity of the current in use achievement
+        $last_activity = absint( gamipress_achievement_last_user_activity( $requirement_id, $user_id ) );
 
-    return ( $awarded_points - $GLOBALS[$points_awarded_key] );
+        // Setup args for gamipress_get_user_points() function
+        if( $last_activity > 0 )
+            $args = array(
+                'date_query' => array(
+                    'after' => date( 'Y-m-d H:i:s', $last_activity )
+                )
+            );
+        else
+            $args = array();
+
+        // Get user points earned since last time has earning the achievement
+        $GLOBALS[$last_points_key] = gamipress_get_user_points( $user_id, $points_type, $args );
+    }
+
+
+    // Initialize the multiple awarded points count
+    if( ! isset( $GLOBALS[$multiple_awarded_key] ) )
+        $GLOBALS[$multiple_awarded_key] = 0;
+
+    return ( $GLOBALS[$last_points_key] - $GLOBALS[$multiple_awarded_key] );
 
 }
 
@@ -621,15 +642,15 @@ function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type =
  */
 function gamipress_update_user_points_awarded_in_loop( $new_points = 0, $points_type = '' ) {
 
-    $points_awarded_key = "gamipress_multiple_{$points_type}_awarded";
+    $multiple_awarded_key = "gamipress_multiple_{$points_type}_awarded";
 
     // Initialize the awarded points count
-    if( ! isset( $GLOBALS[$points_awarded_key] ) )
-        $GLOBALS[$points_awarded_key] = 0;
+    if( ! isset( $GLOBALS[$multiple_awarded_key] ) )
+        $GLOBALS[$multiple_awarded_key] = 0;
 
-    $GLOBALS[$points_awarded_key] += $new_points;
+    $GLOBALS[$multiple_awarded_key] += $new_points;
 
-    return $GLOBALS[$points_awarded_key];
+    return $GLOBALS[$multiple_awarded_key];
 
 }
 

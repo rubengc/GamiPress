@@ -418,7 +418,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
         $last_activity          = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
 		// Get user points earned since last time has earning the achievement
-		$awarded_points    		= gamipress_get_user_points_awarded_in_loop( $user_id, $points_type_required );
+		$awarded_points    		= gamipress_get_user_points_awarded_in_loop( $user_id, $points_type_required, $achievement_id );
 
 		if( $awarded_points >= $points_required ) {
 
@@ -930,9 +930,9 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
     $post_type = gamipress_get_post_type( $achievement_id );
 
     // First, see if the requirement requires a minimum amount of points (just requirements has this meta)
-    // Note: Steps and rank requirements are excluded from this
+    // Note: Rank requirements are excluded from this
     if ( 'earn-points' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' )
-         && ! in_array( $post_type, array( 'step', 'rank-requirement' ) )) {
+         && ! in_array( $post_type, array( 'rank-requirement' ) )) {
 
         // Grab our user's points and see if they at least as many as required
         $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
@@ -945,7 +945,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
             $last_achievement_activity = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
             // Get user points earned since last time has earning the achievement
-            $user_last_points = gamipress_get_user_points_awarded_in_loop( $user_id, $points_type_required );
+            $user_last_points = gamipress_get_user_points_awarded_in_loop( $user_id, $points_type_required, $achievement_id );
 
             if( $user_last_points >= $points_required && $points_required > 0 ) {
 
