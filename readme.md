@@ -251,8 +251,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed a wrong check of points earned in the past for points-based achievements.
 * Fixed a bug that causes that points-based requirement aren't getting triggered when perform manually points adjustments.
 * Fixed multiples achievements earn when user earns a big amount of points.
+* Fixed duplicate requirement functionality.
 * **Improvements**
 * Improving caching of the awards engine when user earns points.
+* **Developer Notes**
+* Updated gamipress_select2() library to 4.0.12.
 
 ### 1.8.0.1 ###
 

@@ -25,10 +25,8 @@ if( ! function_exists( 'cmb2_render_advanced_select_field_type' ) ) :
 
         // Support for multiple
         if( $field->args['multiple'] ) {
-
             $attrs['name'] = $attrs['name'] . '[]';
             $attrs['multiple'] = 'true';
-
         }
 
         // Parse options

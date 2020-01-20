@@ -3,11 +3,12 @@
  *
  * This script loads the Select2 functionality under the function gamipress_select2() to avoid conflicts with other plugins.
  *
- * @since 1.7.7
+ * @since   1.7.7
+ * @updated 1.8.1 Updated select2 library to 4.0.12
  */
 
 /*!
- * Select2 4.0.10
+ * Select2 4.0.12
  * https://select2.github.io
  *
  * Released under the MIT license
@@ -4501,7 +4502,17 @@
                     $offsetParent = $offsetParent.offsetParent();
                 }
 
-                var parentOffset = $offsetParent.offset();
+                var parentOffset = {
+                    top: 0,
+                    left: 0
+                };
+
+                if (
+                    $.contains(document.body, $offsetParent[0]) ||
+                    $offsetParent[0].isConnected
+                ) {
+                    parentOffset = $offsetParent.offset();
+                }
 
                 css.top -= parentOffset.top;
                 css.left -= parentOffset.left;
@@ -6761,3 +6772,4 @@
     // Return the Select2 instance for anyone who is importing it.
     return select2;
 }));
+

@@ -650,7 +650,7 @@ function gamipress_duplicate_requirement_ajax_handler() {
 
     $post = get_post( $post_id );
 
-    if( $post )
+    if( ! $post )
         wp_send_json_error( __( 'Invalid post.', 'gamipress' ) );
 
     $requirement = gamipress_get_requirement_object( $requirement_id );
@@ -688,9 +688,8 @@ function gamipress_delete_requirement_ajax_handler() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
-    }
 
     $requirement_id = isset( $_POST['requirement_id'] ) ? absint( $_POST['requirement_id'] ) : 0;
 

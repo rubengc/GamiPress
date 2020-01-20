@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-01-08 09:25+0100\n"
+"POT-Creation-Date: 2020-01-20 10:05+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1433,8 +1433,8 @@ msgstr ""
 #: includes/admin/requirements-ui.php:606
 #: includes/admin/requirements-ui.php:646
 #: includes/admin/requirements-ui.php:692
-#: includes/admin/requirements-ui.php:719
-#: includes/admin/requirements-ui.php:794
+#: includes/admin/requirements-ui.php:718
+#: includes/admin/requirements-ui.php:793
 #: includes/admin/tools/bulk-awards.php:244
 #: includes/admin/tools/bulk-awards.php:248
 #: includes/admin/tools/bulk-revokes.php:244
@@ -1460,77 +1460,77 @@ msgstr ""
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/requirements-ui.php:938
+#: includes/admin/requirements-ui.php:937
 #, php-format
 msgid "Earn %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:941
+#: includes/admin/requirements-ui.php:940
 #, php-format
 msgid "Reach a balance of %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:944
+#: includes/admin/requirements-ui.php:943
 #, php-format
 msgid "Expend %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:949
+#: includes/admin/requirements-ui.php:948
 #, php-format
 msgid "Reach %s %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:953
+#: includes/admin/requirements-ui.php:952
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:956
+#: includes/admin/requirements-ui.php:955
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:997
+#: includes/admin/requirements-ui.php:996
 #, php-format
 msgid "%s for"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:999
+#: includes/admin/requirements-ui.php:998
 #, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:1003
-#: includes/admin/requirements-ui.php:1012
-#: includes/admin/requirements-ui.php:1035
+#: includes/admin/requirements-ui.php:1002
+#: includes/admin/requirements-ui.php:1011
+#: includes/admin/requirements-ui.php:1034
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:1012
+#: includes/admin/requirements-ui.php:1011
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/requirements-ui.php:1022
+#: includes/admin/requirements-ui.php:1021
 msgid "day"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:1025
+#: includes/admin/requirements-ui.php:1024
 msgid "week"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:1028
+#: includes/admin/requirements-ui.php:1027
 msgid "month"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:1031
+#: includes/admin/requirements-ui.php:1030
 msgid "year"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:1035
+#: includes/admin/requirements-ui.php:1034
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
@@ -1899,7 +1899,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:49 includes/functions/points.php:764
+#: includes/admin/settings/logs.php:49 includes/functions/points.php:785
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1911,7 +1911,7 @@ msgstr ""
 msgid "Used when user gets a deduction of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:55 includes/functions/points.php:768
+#: includes/admin/settings/logs.php:55 includes/functions/points.php:789
 msgid "{user} deducted {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1973,7 +1973,7 @@ msgstr ""
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:85 includes/functions/points.php:752
+#: includes/admin/settings/logs.php:85 includes/functions/points.php:773
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr ""
 msgid "Used when an admin revokes points of an user. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:91 includes/functions/points.php:756
+#: includes/admin/settings/logs.php:91 includes/functions/points.php:777
 msgid "{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -3072,7 +3072,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/1.4.7.php:213 includes/admin/upgrades/1.4.7.php:241
-#: includes/functions/points.php:806
+#: includes/functions/points.php:827
 msgid "(no trigger)"
 msgstr ""
 
@@ -3980,7 +3980,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1260 includes/functions/points.php:1229
+#: includes/functions/achievements.php:1260 includes/functions/points.php:1250
 #: includes/functions/ranks.php:1324
 msgid "widgets"
 msgstr ""
@@ -4111,11 +4111,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: includes/functions/points.php:1228
+#: includes/functions/points.php:1249
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/functions/points.php:1229
+#: includes/functions/points.php:1250
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""

@@ -78,9 +78,8 @@
         e.preventDefault();
 
         // Bail if already clicked
-        if( $(this).hasClass('requirement-action-active') ) {
+        if( $(this).hasClass('requirement-action-active') )
             return;
-        }
 
         // Add a custom class to meet that has been clicked
         $(this).addClass('requirement-action-active');
@@ -504,9 +503,8 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
             $("#_gamipress_sequential").change();
 
             // If current element has a custom class for requirement actions, remove it
-            if( $(element).hasClass('requirement-action-active') ) {
+            if( $(element).hasClass('requirement-action-active') )
                 $(element).removeClass('requirement-action-active');
-            }
         }
     );
 
