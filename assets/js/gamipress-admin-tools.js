@@ -159,6 +159,22 @@
 
                     $(running_selector).html( ( response.data.message !== undefined ? response.data.message : response.data ) );
 
+                    if( response.data.log !== undefined && response.data.log.length ) {
+                        if( ! $('#recount-activity-log').length )
+                            $(
+                                '<div id="recount-activity-log">'
+                                + '<p>'
+                                    + '<a href="#" id="recount-activity-log-toggle">Show log</a>'
+                                    + ' | '
+                                    + '<a href="#" id="recount-activity-log-download">Download log</a>'
+                                + '</p>'
+                                + '<div id="recount-activity-log-content" style="display: none;"></div>'
+                                + '</div>'
+                            ).insertAfter( $('#recount-activity-response') );
+
+                        $('#recount-activity-log-content').append( response.data.log );
+                    }
+
                     loop++;
 
                     // Run again passing the next loop index
@@ -186,6 +202,9 @@
 
             $('#recount-activity-response').html('The server has returned an internal error.');
 
+            if( $('#recount-activity-log').length )
+                $('#recount-activity-log-content').append('The server has returned an internal error.');
+
             // Enable the button and the activity select
             button.prop('disabled', false);
             $('#activity_to_recount').prop('disabled', false);
@@ -208,6 +227,10 @@
         $this.prop('disabled', true);
         $('#activity_to_recount').prop('disabled', true);
 
+        // Reset the activity log
+        if( $('#recount-activity-log').length )
+            $('#recount-activity-log').remove();
+
         // Show a notice to let know to the user that process could take a while
         $this.parent().prepend('<p id="recount-activity-notice" class="cmb2-metabox-description">' + gamipress_admin_tools.recount_activity_notice + '</p>');
 
@@ -219,6 +242,28 @@
 
         // Make the ajax request
         gamipress_run_recount_activity_tool();
+    });
+
+    // Activity log toggle
+    $('body').on('click', '#recount-activity-log-toggle', function(e) {
+        e.preventDefault();
+
+        $('#recount-activity-log-content').toggle();
+
+        if( $(this).text() === 'Show log' ) {
+            $(this).text( 'Hide log' );
+        } else {
+            $(this).text( 'Show log' );
+        }
+    });
+
+    // Download activity log
+    $('body').on('click', '#recount-activity-log-download', function(e) {
+        e.preventDefault();
+
+        var activity = $('#activity_to_recount').val();
+
+        gamipress_download_file( $('#recount-activity-log-content').text(), 'gamipress-activity-recount-' + activity, 'log' );
     });
 
     // ----------------------------------

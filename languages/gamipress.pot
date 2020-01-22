@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-01-20 10:05+0100\n"
+"POT-Creation-Date: 2020-01-22 12:29+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -53,7 +53,7 @@ msgstr ""
 #: includes/admin.php:96 includes/admin.php:141 includes/admin/users.php:27
 #: includes/blocks.php:21 includes/shortcodes.php:67
 #: includes/shortcodes/shortcodes-editor.php:91 includes/triggers.php:47
-#: includes/triggers.php:322 includes/triggers.php:323
+#: includes/triggers.php:340 includes/triggers.php:341
 msgid "GamiPress"
 msgstr ""
 
@@ -546,7 +546,7 @@ msgid "Achievement"
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:185
-#: includes/compatibility/1.2.8.php:1001 includes/functions/logs.php:51
+#: includes/compatibility/1.2.8.php:1001 includes/functions/logs.php:52
 msgid "Achievement user has earned."
 msgstr ""
 
@@ -565,7 +565,7 @@ msgid "Points"
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:206
-#: includes/compatibility/1.2.8.php:1022 includes/functions/logs.php:55
+#: includes/compatibility/1.2.8.php:1022 includes/functions/logs.php:57
 msgid "Points user has earned."
 msgstr ""
 
@@ -1887,7 +1887,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:464
+#: includes/admin/settings/logs.php:43 includes/triggers.php:482
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -1899,7 +1899,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:49 includes/functions/points.php:785
+#: includes/admin/settings/logs.php:49 includes/functions/points.php:798
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1911,7 +1911,7 @@ msgstr ""
 msgid "Used when user gets a deduction of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:55 includes/functions/points.php:789
+#: includes/admin/settings/logs.php:55 includes/functions/points.php:802
 msgid "{user} deducted {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1973,7 +1973,7 @@ msgstr ""
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:85 includes/functions/points.php:773
+#: includes/admin/settings/logs.php:85 includes/functions/points.php:786
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr ""
 msgid "Used when an admin revokes points of an user. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:91 includes/functions/points.php:777
+#: includes/admin/settings/logs.php:91 includes/functions/points.php:790
 msgid "{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2805,30 +2805,47 @@ msgstr ""
 msgid "Choose the activity to recount."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:83
+#: includes/admin/tools/recount-activity.php:82
 msgid "You need to choose an activity to recount."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:95
+#: includes/admin/tools/recount-activity.php:92
 msgid "Activity recount process has been done successfully."
 msgstr ""
 
+#: includes/admin/tools/recount-activity.php:160
 #: includes/admin/tools/recount-activity.php:161
 #, php-format
 msgid "%d comments found, recounting..."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:194
+#: includes/admin/tools/recount-activity.php:186
+#, php-format
+msgid "[Comment on a post] Comment: %s User: %s Post: %s"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:200
+#, php-format
+msgid "[Get a comment on a post] Comment: %s User: %s Post: %s"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:213
 #, php-format
 msgid "%d remaining comments to finish recount"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:235
+#: includes/admin/tools/recount-activity.php:251
+#: includes/admin/tools/recount-activity.php:252
 #, php-format
 msgid "%d posts found, recounting..."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:257
+#: includes/admin/tools/recount-activity.php:265
+#, php-format
+msgid "[Publish a post] Post: %s User: %s Post Type: %s"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:277
 #, php-format
 msgid "%d remaining posts to finish recount"
 msgstr ""
@@ -3072,7 +3089,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/1.4.7.php:213 includes/admin/upgrades/1.4.7.php:241
-#: includes/functions/points.php:827
+#: includes/functions/points.php:840
 msgid "(no trigger)"
 msgstr ""
 
@@ -3485,7 +3502,7 @@ msgstr ""
 msgid "No Log Entries found in Trash"
 msgstr ""
 
-#: includes/compatibility/1.2.8.php:591 includes/functions/logs.php:668
+#: includes/compatibility/1.2.8.php:591 includes/functions/logs.php:667
 msgid "points"
 msgstr ""
 
@@ -3546,7 +3563,7 @@ msgstr ""
 msgid "Site Tags"
 msgstr ""
 
-#: includes/emails.php:43 includes/functions/logs.php:60
+#: includes/emails.php:43 includes/functions/logs.php:62
 msgid "Site name."
 msgstr ""
 
@@ -3980,7 +3997,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1260 includes/functions/points.php:1250
+#: includes/functions/achievements.php:1260 includes/functions/points.php:1263
 #: includes/functions/ranks.php:1324
 msgid "widgets"
 msgstr ""
@@ -4054,55 +4071,59 @@ msgstr ""
 msgid "Rank Award"
 msgstr ""
 
-#: includes/functions/logs.php:49
+#: includes/functions/logs.php:50
 msgid "User assigned."
 msgstr ""
 
-#: includes/functions/logs.php:50
+#: includes/functions/logs.php:51
 msgid "Admin that awards."
 msgstr ""
 
-#: includes/functions/logs.php:52
+#: includes/functions/logs.php:53
 msgid "Type of the achievement earned."
 msgstr ""
 
-#: includes/functions/logs.php:53
-msgid "Event type user has triggered."
+#: includes/functions/logs.php:54
+msgid "Event triggered label."
 msgstr ""
 
-#: includes/functions/logs.php:54
-msgid "Times user triggered this event."
+#: includes/functions/logs.php:55
+msgid "Event triggered internal key."
 msgstr ""
 
 #: includes/functions/logs.php:56
-msgid "Type of the points earned."
-msgstr ""
-
-#: includes/functions/logs.php:57
-msgid "Points user has earned until this log."
+msgid "Times user triggered this event."
 msgstr ""
 
 #: includes/functions/logs.php:58
-msgid "Rank user has ranked."
+msgid "Type of the points earned."
 msgstr ""
 
 #: includes/functions/logs.php:59
+msgid "Points user has earned until this log."
+msgstr ""
+
+#: includes/functions/logs.php:60
+msgid "Rank user has ranked."
+msgstr ""
+
+#: includes/functions/logs.php:61
 msgid "Rank type user has ranked."
 msgstr ""
 
-#: includes/functions/logs.php:79
+#: includes/functions/logs.php:81
 msgid "Points user has lost."
 msgstr ""
 
-#: includes/functions/logs.php:80
+#: includes/functions/logs.php:82
 msgid "Type of the points lost."
 msgstr ""
 
-#: includes/functions/logs.php:83
+#: includes/functions/logs.php:85
 msgid "Points user has expended."
 msgstr ""
 
-#: includes/functions/logs.php:84
+#: includes/functions/logs.php:86
 msgid "Type of the points expended."
 msgstr ""
 
@@ -4111,11 +4132,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: includes/functions/points.php:1249
+#: includes/functions/points.php:1262
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/functions/points.php:1250
+#: includes/functions/points.php:1263
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
@@ -5671,39 +5692,39 @@ msgstr ""
 msgid "Reach a rank"
 msgstr ""
 
-#: includes/triggers.php:167
+#: includes/triggers.php:163 includes/triggers.php:341
 #, php-format
-msgid "Comment on %s"
+msgid "Unlocked all %s"
 msgstr ""
 
-#: includes/triggers.php:168
-#, php-format
-msgid "Get a comment on %s"
-msgstr ""
-
-#: includes/triggers.php:169
-#, php-format
-msgid "Get a comment on %s marked as spam"
-msgstr ""
-
-#: includes/triggers.php:170
-#, php-format
-msgid "Visit %s"
-msgstr ""
-
-#: includes/triggers.php:171
-#, php-format
-msgid "%s gets visited"
-msgstr ""
-
-#: includes/triggers.php:322
+#: includes/triggers.php:165 includes/triggers.php:340
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:323
+#: includes/triggers.php:185
 #, php-format
-msgid "Unlocked all %s"
+msgid "Comment on %s"
+msgstr ""
+
+#: includes/triggers.php:186
+#, php-format
+msgid "Get a comment on %s"
+msgstr ""
+
+#: includes/triggers.php:187
+#, php-format
+msgid "Get a comment on %s marked as spam"
+msgstr ""
+
+#: includes/triggers.php:188
+#, php-format
+msgid "Visit %s"
+msgstr ""
+
+#: includes/triggers.php:189
+#, php-format
+msgid "%s gets visited"
 msgstr ""
 
 #: includes/users.php:23

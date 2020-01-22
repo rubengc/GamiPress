@@ -38,6 +38,7 @@ function gamipress_get_log_types() {
  *
  * @since   1.0.2
  * @updated 1.3.7 Added the content parameter
+ * @updated 1.8.2 Added the {trigger_type_key} tag
  *
  * @param string $context
  *
@@ -50,7 +51,8 @@ function gamipress_get_log_pattern_tags( $context = 'default' ) {
         '{admin}'               =>  __( 'Admin that awards.', 'gamipress' ),
         '{achievement}'         =>  __( 'Achievement user has earned.', 'gamipress' ),
         '{achievement_type}'    =>  __( 'Type of the achievement earned.', 'gamipress' ),
-        '{trigger_type}'        =>  __( 'Event type user has triggered.', 'gamipress' ),
+        '{trigger_type}'        =>  __( 'Event triggered label.', 'gamipress' ),
+        '{trigger_type_key}'    =>  __( 'Event triggered internal key.', 'gamipress' ),
         '{count}'               =>  __( 'Times user triggered this event.', 'gamipress' ),
         '{points}'              =>  __( 'Points user has earned.', 'gamipress' ),
         '{points_type}'         =>  __( 'Type of the points earned.', 'gamipress' ),
@@ -550,16 +552,13 @@ function gamipress_parse_log_pattern( $log_pattern = '',  $log_data = array(), $
 
     // TODO: Add more user tags
 
-    // Since 1.4.7 trigger_type is on logs table, so get it from log data
-    if( is_gamipress_upgraded_to( '1.4.7' ) ) {
-        $gamipress_pattern_replacements['{trigger_type}'] = $log_data['trigger_type'];
-    }
+    $gamipress_pattern_replacements['{trigger_type}'] = gamipress_get_activity_trigger_label( $log_data['trigger_type'] );
+    $gamipress_pattern_replacements['{trigger_type_key}'] = $log_data['trigger_type'];
 
     foreach( $log_meta as $log_meta_key => $log_meta_value ) {
 
-        if( in_array( $log_meta_key, array( 'pattern', 'type' ) ) ) {
+        if( in_array( $log_meta_key, array( 'pattern', 'type' ) ) )
             continue;
-        }
 
         // Implode meta value if is an array of values
         if( is_array( $log_meta_value ) )

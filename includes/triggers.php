@@ -148,6 +148,24 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
 			return $group_triggers[$activity_trigger];
 	}
 
+	// Check if trigger is for unlocking ANY and ALL posts of an achievement type
+	if( gamipress_starts_with( $activity_trigger, 'gamipress_unlock_' ) ) {
+
+	    $achievement_type = $activity_trigger;
+	    $achievement_type = str_replace( 'gamipress_unlock_all_', '', $achievement_type );
+	    $achievement_type = str_replace( 'gamipress_unlock_', '', $achievement_type );
+
+        // Grab the post type object
+        $post_type_object = get_post_type_object( $achievement_type );
+
+        if ( is_object( $post_type_object ) ) {
+            if( gamipress_starts_with( $activity_trigger, 'gamipress_unlock_all_' ) )
+                return sprintf( __( 'Unlocked all %s', 'gamipress' ), $post_type_object->labels->name );
+            else
+                return sprintf( __( 'Unlocked a %s', 'gamipress' ), $post_type_object->labels->singular_name );
+        }
+    }
+
 	return '';
 
 }

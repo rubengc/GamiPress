@@ -229,6 +229,22 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 == Changelog ==
 
+= 1.8.2 =
+
+* **New Features**
+* Added a log console to the Recount Activity tool to meet what is processing in background.
+* Added the ability to download the log console from the Recount Activity tool.
+* On activity trigger logs, {trigger_type} tag now display the events label (for "Publish a post" event will render "Publish a post").
+* New tag for activity trigger logs, {trigger_type_key} that displays the events internal key (for "Publish a post" event will render "gamipress_publish_post").
+* **Bug Fixes**
+* Fixed a wrong checks that blocks to trigger multiples points-based awards.
+* Fixed incorrect comment ID on the comments recount activity process.
+* **Improvements**
+* Make {trigger_type} tag display the event label to make it more user friendly.
+* **Developer Notes**
+* Added limit and offset vars to the recount activity tool process.
+* Added the ability to provide information about the process status on the recount activity tool process.
+
 = 1.8.1 =
 
 * **Bug Fixes**

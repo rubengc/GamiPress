@@ -430,7 +430,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 				$return = false;
 
             // Increase the points awarded of this loop
-            gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required );
+            gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id );
 
 		} else {
             $return = false;
@@ -770,18 +770,17 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 
 	// Patch for WordPress to support recursive actions, specifically for gamipress_award_achievement
 	// Because global iteration is fun, assuming we can get this fixed for WordPress 3.9
-	$is_recursed_filter = ( current_filter() === 'gamipress_award_achievement');
+	$is_recursive_filter = ( current_filter() === 'gamipress_award_achievement');
 	$current_key = null;
 
 	// Get current position
-	if ( $is_recursed_filter ) {
+	if ( $is_recursive_filter )
 		$current_key = key( $wp_filter[ 'gamipress_award_achievement' ] );
-	}
 
 	// Available hook to do other things with each awarded achievement
 	do_action( 'gamipress_award_achievement', $user_id, $achievement_id, $trigger, $site_id, $args );
 
-	if ( $is_recursed_filter ) {
+	if ( $is_recursive_filter ) {
 		reset( $wp_filter[ 'gamipress_award_achievement' ] );
 
 		while ( key( $wp_filter[ 'gamipress_award_achievement' ] ) !== $current_key ) {
@@ -932,7 +931,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
     // First, see if the requirement requires a minimum amount of points (just requirements has this meta)
     // Note: Rank requirements are excluded from this
     if ( 'earn-points' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' )
-         && ! in_array( $post_type, array( 'rank-requirement' ) )) {
+         && ! in_array( $post_type, array( 'rank-requirement' ) ) ) {
 
         // Grab our user's points and see if they at least as many as required
         $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
@@ -978,7 +977,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
                     gamipress_award_achievement_to_user( $achievement_id, $user_id );
 
                     // On every loop increase the points awarded
-                    gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required );
+                    gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id );
                 }
 
                 // Ending multiple points award

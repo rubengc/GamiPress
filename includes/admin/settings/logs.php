@@ -38,7 +38,7 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
             ),
             'trigger_log_pattern' => array(
                 'name' => __( 'Activity trigger', 'gamipress' ),
-                'description' => __( 'Used to register user activity triggered. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{trigger_type}', '{count}', '{site_title}' ) ),
+                'description' => __( 'Used to register user activity triggered. Available tags:', 'gamipress' ) . gamipress_get_log_pattern_tags_html( array( '{user}', '{trigger_type}', '{trigger_type_key}', '{count}', '{site_title}' ) ),
                 'type' => 'text',
                 'default' => __( '{user} triggered {trigger_type} (x{count})', 'gamipress' ),
             ),

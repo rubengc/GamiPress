@@ -1760,6 +1760,22 @@ label[for="_gamipress_sequential"] {
 	min-width: 150px;
 }
 
+/* Recount Activity */
+#recount-activity-log p {
+	margin-bottom: 0;
+}
+
+#recount-activity-log #recount-activity-log-content {
+	max-height: 300px;
+	overflow: auto;
+	font-family: consolas;
+	font-size: 12px;
+	border: 1px solid #ccd0d4;
+	background-color: #f1f1f1;
+	padding: 10px;
+	margin-top: 1em;
+}
+
 /* Logs Clean Up */
 .cmb2-id-logs-type ul li {
 	margin-bottom: 12px !important;
