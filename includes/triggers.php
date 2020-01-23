@@ -406,7 +406,7 @@ function gamipress_get_activity_triggers_excluded_from_activity_limit() {
  * @since 	1.0.0
  * @updated 1.4.3 Added the ability to be called directly
  *
- * @return bool
+ * @return mixed    Returns an array will all achievements awarded or false if none has been awarded
  */
 function gamipress_trigger_event() {
 
@@ -457,11 +457,17 @@ function gamipress_trigger_event() {
 	// Check if any achievements are earned based on this trigger event
 	$triggered_achievements = gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $args );
 
+	$awarded_achievements = array();
+
 	foreach ( $triggered_achievements as $achievement ) {
-		gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id, $trigger, $site_id, $args );
+	    $award_result = gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id, $trigger, $site_id, $args );
+
+		if( $award_result === true ) {
+            $awarded_achievements[] = $achievement->ID;
+        }
 	}
 
-	return true;
+	return ( count( $awarded_achievements ) ? $awarded_achievements : false );
 
 }
 

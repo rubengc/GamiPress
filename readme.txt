@@ -240,11 +240,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed a wrong checks that blocks to trigger multiples points-based awards.
 * Fixed incorrect comment ID on the comments recount activity process.
 * Fixed incorrect height of the preview color on color fields.
+* Fixed incorrect check on the awards engine that sometimes blocks some awards from the Recount Activity tool.
 * **Improvements**
 * Make {trigger_type} tag display the event label to make it more user friendly.
+* Performance improvements on the awards engine tool.
+* Code improvements on the award engine making it more readable.
 * **Developer Notes**
 * Added limit and offset vars to the recount activity tool process.
 * Added the ability to provide information about the process status on the recount activity tool process.
+* Update of gamipress_trigger_event() function to return information about what has been awarded.
+* Update of gamipress_maybe_award_achievement_to_user() function to return information about the award process.
 * Updated CMB2 library to 2.7.0.
 
 = 1.8.1 =

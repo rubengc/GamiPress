@@ -184,10 +184,10 @@ function gamipress_activity_recount_comments( $response, $loop, $limit, $offset 
         do_action( 'gamipress_specific_new_comment', $comment_id, $user_id, $post_id, $comment );
 
         $response['log'] .= sprintf( __( '[Comment on a post] Comment: %s User: %s Post: %s', 'gamipress' ),
-                $comment_id,
-                '<a href="' . get_edit_user_link( $user_id ) . '" target="_blank">' . $user_id . '</a>',
-                '<a href="' . get_edit_post_link( $post_id ) . '" target="_blank">' . $post_id . '</a>'
-            ) . "<br>\n";
+            $comment_id,
+            '<a href="' . get_edit_user_link( $user_id ) . '" target="_blank">' . $user_id . '</a>',
+            '<a href="' . get_edit_post_link( $post_id ) . '" target="_blank">' . $post_id . '</a>'
+        ) . "<br>\n";
 
         if( $post_id !== 0 ) {
 
@@ -198,10 +198,10 @@ function gamipress_activity_recount_comments( $response, $loop, $limit, $offset 
             do_action( 'gamipress_user_specific_post_comment', $comment_id, $post_author, $post_id, $comment );
 
             $response['log'] .= sprintf( __( '[Get a comment on a post] Comment: %s User: %s Post: %s', 'gamipress' ),
-                    $comment_id,
-                    '<a href="' . get_edit_user_link( $post_author ) . '" target="_blank">' . $post_author . '</a>',
-                    '<a href="' . get_edit_post_link( $post_id ) . '" target="_blank">' . $post_id . '</a>'
-                ) . "<br>\n";
+                $comment_id,
+                '<a href="' . get_edit_user_link( $post_author ) . '" target="_blank">' . $post_author . '</a>',
+                '<a href="' . get_edit_post_link( $post_id ) . '" target="_blank">' . $post_id . '</a>'
+            ) . "<br>\n";
         }
     }
 
@@ -263,10 +263,10 @@ function gamipress_activity_recount_published_content( $response, $loop, $limit,
         do_action( "gamipress_publish_{$post->post_type}", $post->ID, $post->post_author, $post );
 
         $response['log'] .= sprintf( __( '[Publish a post] Post: %s User: %s Post Type: %s', 'gamipress' ),
-                '<a href="' . get_edit_post_link( $post->ID ) . '" target="_blank">' . $post->ID . '</a>',
-                '<a href="' . get_edit_user_link( $post->post_author ) . '" target="_blank">' . $post->post_author . '</a>',
-                $post->post_type
-            ) . "<br>\n";
+            '<a href="' . get_edit_post_link( $post->ID ) . '" target="_blank">' . $post->ID . '</a>',
+            '<a href="' . get_edit_user_link( $post->post_author ) . '" target="_blank">' . $post->post_author . '</a>',
+            $post->post_type
+        ) . "<br>\n";
     }
 
     $recounted_posts = $limit * ( $loop + 1 );
