@@ -124,7 +124,7 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
             <div class="gamipress-achievement-excerpt">
                 <?php
                 $excerpt = has_excerpt() ? gamipress_get_post_field( 'post_excerpt', get_the_ID() ) : gamipress_get_post_field( 'post_content', get_the_ID() );
-                echo wpautop( apply_filters( 'get_the_excerpt', $excerpt ) );
+                echo wpautop( do_blocks( apply_filters( 'get_the_excerpt', $excerpt ) ) );
                 ?>
             </div><!-- .gamipress-achievement-excerpt -->
 

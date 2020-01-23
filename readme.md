@@ -259,6 +259,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed incorrect check on the awards engine that sometimes blocks some awards from the Recount Activity tool.
 * **Improvements**
 * Make {trigger_type} tag display the event label to make it more user friendly.
+* Execute Gutenberg blocks on achievements and ranks description.
 * Performance improvements on the awards engine tool.
 * Code improvements on the award engine making it more readable.
 * **Developer Notes**
