@@ -461,14 +461,14 @@ msgstr "Alle selecteren / deselecteren"
 msgid "Add Row"
 msgstr "Voeg Rij Toe"
 
-#: includes/CMB2_hookup.php:145
+#: includes/CMB2_Hookup.php:145
 msgid ""
 "Term Metadata is a WordPress > 4.4 feature. Please upgrade your WordPress "
 "install."
 msgstr "Term Metadata is een Wordpress > 4.4 optie. Upgrade je WordPress alstublieft"
 "installeren."
 
-#: includes/CMB2_hookup.php:149
+#: includes/CMB2_Hookup.php:149
 msgid "Term metaboxes configuration requires a 'taxonomies' parameter"
 msgstr ""
 

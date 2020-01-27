@@ -245,6 +245,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.2.1 ###
+
+* **Bug Fixes**
+* Rename all instances of CMB2_hookup to CMB2_Hookup.
+
 ### 1.8.2 ###
 
 * **New Features**

@@ -548,17 +548,17 @@ msgstr ""
 msgid "Remove Row"
 msgstr ""
 
-#: includes/CMB2_hookup.php:188
+#: includes/CMB2_Hookup.php:188
 msgid ""
 "Term Metadata is a WordPress 4.4+ feature. Please upgrade your WordPress "
 "install."
 msgstr ""
 
-#: includes/CMB2_hookup.php:192
+#: includes/CMB2_Hookup.php:192
 msgid "Term metaboxes configuration requires a \"taxonomies\" parameter."
 msgstr ""
 
-#: includes/CMB2_hookup.php:550
+#: includes/CMB2_Hookup.php:550
 msgid "Toggle panel: %s"
 msgstr ""
 

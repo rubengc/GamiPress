@@ -200,8 +200,8 @@ class GamiPress_Widget extends WP_Widget {
             $cmb2 = $this->cmb2();
 
             $cmb2->object_id( $this->option_name );
-            CMB2_hookup::enqueue_cmb_css();
-            CMB2_hookup::enqueue_cmb_js();
+            CMB2_Hookup::enqueue_cmb_css();
+            CMB2_Hookup::enqueue_cmb_js();
             $cmb2->show_form();
 
             return '';

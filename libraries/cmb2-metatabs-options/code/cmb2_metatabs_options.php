@@ -406,7 +406,7 @@ class Cmb2_Metatabs_Options {
 		// Include CMB CSS in the head to avoid FOUC, called here as we need the screen ID
 		add_action(
 			'admin_print_styles-' . self::$props[ $this->id ]['hook'],
-			array( 'CMB2_hookup', 'enqueue_cmb_css' )
+			array( 'CMB2_Hookup', 'enqueue_cmb_css' )
 		);
 		
 		// Adds existing metaboxes, see note in function, called here as we need the screen ID

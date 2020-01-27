@@ -40,8 +40,8 @@ class GamiPress_Shortcode {
 
 		$cmb2->object_id( $this->slug );
 
-		CMB2_hookup::enqueue_cmb_css();
-		CMB2_hookup::enqueue_cmb_js();
+		CMB2_Hookup::enqueue_cmb_css();
+		CMB2_Hookup::enqueue_cmb_js();
 
 		$cmb2->show_form();
 	}
