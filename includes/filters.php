@@ -31,14 +31,20 @@ add_action( 'wp_enqueue_scripts', 'gamipress_do_single_filters' );
  *
  * @since 1.0.0
  *
- * @param  string  $html The page content prior to filtering
- * @param  integer $id   The page id
+ * @param  string   $html        The page content prior to filtering
+ * @param  int      $post_id     The post ID.
  *
- * @return string        The page content after being filtered
+ * @return string               The page content after being filtered
  */
-function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
+function gamipress_remove_to_reformat_entries_title( $html = '', $post_id = 0 ) {
+
+    global $gamipress_template_args;
+
 	// Remove, but only on the main loop!
-	if ( ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) ) && empty( $GLOBALS['gamipress_reformat_title'] ) ) {
+	if ( ( gamipress_is_single_achievement( $post_id ) || gamipress_is_single_rank( $post_id ) )    // Ensure that is an achievement or a rank
+        && empty( $GLOBALS['gamipress_reformat_title'] )                                            // Ensure to pass it only one time
+        && ! is_array( $gamipress_template_args )                                                   // Prevents to pass this check on GamiPress shortcodes
+    ) {
         // Now that we're where we want to be, tell the filters to stop removing
         $GLOBALS['gamipress_reformat_title'] = true;
 		return '';
@@ -53,14 +59,20 @@ function gamipress_remove_to_reformat_entries_title( $html = '', $id = 0 ) {
  *
  * @since 1.0.0
  *
- * @param  string  $html The page content prior to filtering
- * @param  integer $id   The page id
+ * @param  string   $html        The page content prior to filtering
+ * @param  int      $post_id     The post ID.
  *
- * @return string        The page content after being filtered
+ * @return string               The page content after being filtered
  */
-function gamipress_remove_to_reformat_entries_thumbnail( $html = '', $id = 0 ) {
+function gamipress_remove_to_reformat_entries_thumbnail( $html = '', $post_id = 0 ) {
+
+    global $gamipress_template_args;
+
     // Remove, but only on the main loop!
-    if ( ( gamipress_is_single_achievement( $id ) || gamipress_is_single_rank( $id ) ) && empty( $GLOBALS['gamipress_reformat_thumbnail'] ) ) {
+    if ( ( gamipress_is_single_achievement( $post_id ) || gamipress_is_single_rank( $post_id ) )    // Ensure that is an achievement or a rank
+        && empty( $GLOBALS['gamipress_reformat_thumbnail'] )                                        // Ensure to pass it only one time
+        && ! is_array( $gamipress_template_args )                                                   // Prevents to pass this check on GamiPress shortcodes
+    ) {
         // Now that we're where we want to be, tell the filters to stop removing
         $GLOBALS['gamipress_reformat_thumbnail'] = true;
         return '';

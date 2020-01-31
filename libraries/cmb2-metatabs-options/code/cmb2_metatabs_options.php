@@ -5,6 +5,7 @@
  *
  * GamiPress Team updates:
  *
+ * Support to CMB2 2.7.0 by renaming CMB2_hookup instances to CMB2_Hookup
  * Support for PHP 5.6:
  * - Moved auto-generated id into a object var
  * - Removed all usages of [] to instantiate arrays

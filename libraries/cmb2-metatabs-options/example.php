@@ -34,7 +34,7 @@ function cmb2_metatabs_options_go() {
 	// configuration array
 	$args = array(
 		'key'      => $options_key,
-		'title'    =>  __( 'Settings', 'gamipress' ),
+		'title'    => 'Example Options Page',
 		'topmenu'  => 'options-general.php',
 		'cols'     => 2,
 		'boxes'    => cmb2_metatabs_options_add_boxes( $options_key ),

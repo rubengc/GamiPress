@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-01-27 16:36+0100\n"
+"POT-Creation-Date: 2020-01-31 10:12+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1899,7 +1899,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:49 includes/functions/points.php:798
+#: includes/admin/settings/logs.php:49 includes/functions/points.php:795
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1911,7 +1911,7 @@ msgstr ""
 msgid "Used when user gets a deduction of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:55 includes/functions/points.php:802
+#: includes/admin/settings/logs.php:55 includes/functions/points.php:799
 msgid "{user} deducted {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1973,7 +1973,7 @@ msgstr ""
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:85 includes/functions/points.php:786
+#: includes/admin/settings/logs.php:85 includes/functions/points.php:783
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr ""
 msgid "Used when an admin revokes points of an user. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:91 includes/functions/points.php:790
+#: includes/admin/settings/logs.php:91 includes/functions/points.php:787
 msgid "{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -3089,7 +3089,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/1.4.7.php:213 includes/admin/upgrades/1.4.7.php:241
-#: includes/functions/points.php:840
+#: includes/functions/points.php:837
 msgid "(no trigger)"
 msgstr ""
 
@@ -3872,87 +3872,87 @@ msgstr ""
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 
-#: includes/filters.php:207
+#: includes/filters.php:219
 #, php-format
 msgid "%1$d %2$s Awards"
 msgstr ""
 
-#: includes/filters.php:209 includes/filters.php:335
+#: includes/filters.php:221 includes/filters.php:347
 #, php-format
 msgid "%1$d %2$s"
 msgstr ""
 
-#: includes/filters.php:333
+#: includes/filters.php:345
 #, php-format
 msgid "%1$d %2$s Deducts"
 msgstr ""
 
-#: includes/filters.php:492
+#: includes/filters.php:504
 #, php-format
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/filters.php:642
+#: includes/filters.php:654
 #, php-format
 msgid "%d times earned"
 msgstr ""
 
-#: includes/filters.php:646
+#: includes/filters.php:658
 #, php-format
 msgid "%d of %d times earned"
 msgstr ""
 
-#: includes/filters.php:790 includes/filters.php:899
+#: includes/filters.php:802 includes/filters.php:911
 #, php-format
 msgid "Unlock using %s"
 msgstr ""
 
-#: includes/filters.php:793 includes/filters.php:902
+#: includes/filters.php:805 includes/filters.php:914
 #, php-format
 msgid "Do you want to unlock %s using %s?"
 msgstr ""
 
-#: includes/filters.php:794 includes/filters.php:903
+#: includes/filters.php:806 includes/filters.php:915
 msgid "Yes"
 msgstr ""
 
-#: includes/filters.php:795 includes/filters.php:904
+#: includes/filters.php:807 includes/filters.php:916
 msgid "No"
 msgstr ""
 
-#: includes/filters.php:984
+#: includes/filters.php:996
 #, php-format
 msgid "You have earned this %s!"
 msgstr ""
 
-#: includes/filters.php:1146
+#: includes/filters.php:1158
 msgid "Next Post"
 msgstr ""
 
-#: includes/filters.php:1148
+#: includes/filters.php:1160
 msgid "Previous Post"
 msgstr ""
 
-#: includes/filters.php:1253 includes/filters.php:1554
+#: includes/filters.php:1265 includes/filters.php:1566
 msgid "Requirement"
 msgid_plural "Requirements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:1369
+#: includes/filters.php:1381
 #, php-format
 msgid "You have reached this %s!"
 msgstr ""
 
-#: includes/filters.php:1535 includes/post-types.php:168
+#: includes/filters.php:1547 includes/post-types.php:168
 msgid "Step"
 msgstr ""
 
-#: includes/filters.php:1545 includes/privacy/exporters/user-earnings.php:164
+#: includes/filters.php:1557 includes/privacy/exporters/user-earnings.php:164
 msgid "Award"
 msgstr ""
 
-#: includes/filters.php:1545 includes/privacy/exporters/user-earnings.php:164
+#: includes/filters.php:1557 includes/privacy/exporters/user-earnings.php:164
 msgid "Deduction"
 msgstr ""
 
@@ -3997,7 +3997,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1260 includes/functions/points.php:1263
+#: includes/functions/achievements.php:1260 includes/functions/points.php:1260
 #: includes/functions/ranks.php:1324
 msgid "widgets"
 msgstr ""
@@ -4132,11 +4132,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: includes/functions/points.php:1262
+#: includes/functions/points.php:1259
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/functions/points.php:1263
+#: includes/functions/points.php:1260
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""

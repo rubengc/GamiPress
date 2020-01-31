@@ -609,21 +609,18 @@ function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type =
         // Get the last activity of the current in use achievement
         $last_activity = absint( gamipress_achievement_last_user_activity( $requirement_id, $user_id ) );
 
-        // Setup args for gamipress_get_user_points() function
-        if( $last_activity > 0 ) {
-            $args = array(
-                'date_query' => array(
-                    'after' => date( 'Y-m-d H:i:s', $last_activity )
-                )
-            );
+        // If user hasn't earned this yet, then get activity count from publish date
+        if( $last_activity === 0 )
+            $last_activity = strtotime( gamipress_get_post_date( $requirement_id ) );
 
-            // Get user points earned since last time has earning the achievement
-            $GLOBALS[$last_points_key][$requirement_id] = gamipress_get_user_points( $user_id, $points_type, $args );
-        } else {
-            // If is the first time the user earns the requirement get the last points the user has earned instead
-            // This is a fix to prevent an infinite loop the first time the user earns the requirement
-            $GLOBALS[$last_points_key][$requirement_id] = gamipress_get_last_updated_user_points( $user_id, $points_type );
-        }
+        $args = array(
+            'date_query' => array(
+                'after' => date( 'Y-m-d H:i:s', $last_activity )
+            )
+        );
+
+        // Get user points earned since last time has earning the achievement
+        $GLOBALS[$last_points_key][$requirement_id] = gamipress_get_user_points( $user_id, $points_type, $args );
     }
 
     // Initialize the awarded points array

@@ -245,6 +245,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.2.2 ###
+
+* **Bug Fixes**
+* Fixed a wrong check of points earned for points-based requirements that has been created recently.
+* Prevent to remove achievements and ranks images when they are rendered inside another achievement or rank content.
+
 ### 1.8.2.1 ###
 
 * **Bug Fixes**
