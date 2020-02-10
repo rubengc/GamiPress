@@ -138,6 +138,7 @@
 
         var button = $("#recount_activity");
         var activity = $('#activity_to_recount').val();
+        var limit = $('#entries_per_loop').val();
 
         $.post(
             ajaxurl,
@@ -145,6 +146,7 @@
                 action: 'gamipress_recount_activity_tool',
                 nonce: gamipress_admin_tools.nonce,
                 activity: activity,
+                limit: limit,
                 loop: loop // Used on run again utility to let know to the tool in which loop we are now
             },
             function( response ) {

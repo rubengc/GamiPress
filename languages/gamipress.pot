@@ -3,14 +3,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-01-31 10:12+0100\n"
+"POT-Creation-Date: 2020-02-10 13:09+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tsunoa (https://tsunoa.com/)\n"
 "Language-Team: Tsunoa <contact@tsunoa.com>\n"
-"X-Generator: Poedit 2.2.3\n"
+"X-Generator: Poedit 2.3\n"
 "X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "Language: en_US\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1449,7 +1449,7 @@ msgstr ""
 #: includes/admin/tools/import-export-setup.php:138
 #: includes/admin/tools/import-export-setup.php:355
 #: includes/admin/tools/logs-clean-up.php:111
-#: includes/admin/tools/recount-activity.php:78
+#: includes/admin/tools/recount-activity.php:95
 #: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:611
 #: includes/ajax-functions.php:713
 msgid "You are not allowed to perform this action."
@@ -2768,84 +2768,100 @@ msgstr ""
 msgid "Logs clean up process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:30
+#: includes/admin/tools/recount-activity.php:34
 msgid "Choose the activity to recount"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:32 includes/triggers.php:24
+#: includes/admin/tools/recount-activity.php:36 includes/triggers.php:24
 msgid "WordPress"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:33
+#: includes/admin/tools/recount-activity.php:37
 msgid "Recount comments"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:34
+#: includes/admin/tools/recount-activity.php:38
 msgid "Recount content publishing"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:40
-#: includes/admin/tools/recount-activity.php:54
+#: includes/admin/tools/recount-activity.php:44
+#: includes/admin/tools/recount-activity.php:71
 msgid "Recount Activity"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:43
+#: includes/admin/tools/recount-activity.php:47
 msgid "This tool will try to sync old activity with your already configured GamiPress install. GamiPress logs will be updated with all the activity stored in the database and the already configured points awards and deducts and achievements will be awarded or deducted too."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:44
+#: includes/admin/tools/recount-activity.php:48
 msgid "<strong>Note:</strong> Some activity may not be possible to recount (like user log ins or daily visits) because there are not registries stored in the database."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:45
+#: includes/admin/tools/recount-activity.php:49
 msgid "<strong>Important:</strong> If emails to notify users about new earnings are enabled is possible that users will receive a lot of emails so is recommendable to deactivate them temporally."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:49
+#: includes/admin/tools/recount-activity.php:53
+msgid "Activity to recount"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:54
 msgid "Choose the activity to recount."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:82
+#: includes/admin/tools/recount-activity.php:59
+msgid "Entries per loop"
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:60
+msgid "To prevent block your site, this tool performs the recount in small groups of entries. Set the number of entries to recount in each loop (by default, 100)."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:61
+msgid "<strong>Note:</strong> If the recount process fails, try to reduce this setting to a lower number to 50, 20 or 10 entries per loop."
+msgstr ""
+
+#: includes/admin/tools/recount-activity.php:99
 msgid "You need to choose an activity to recount."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:92
+#: includes/admin/tools/recount-activity.php:109
 msgid "Activity recount process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:160
-#: includes/admin/tools/recount-activity.php:161
+#: includes/admin/tools/recount-activity.php:177
+#: includes/admin/tools/recount-activity.php:178
 #, php-format
 msgid "%d comments found, recounting..."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:186
+#: includes/admin/tools/recount-activity.php:203
 #, php-format
 msgid "[Comment on a post] Comment: %s User: %s Post: %s"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:200
+#: includes/admin/tools/recount-activity.php:217
 #, php-format
 msgid "[Get a comment on a post] Comment: %s User: %s Post: %s"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:213
+#: includes/admin/tools/recount-activity.php:230
 #, php-format
 msgid "%d remaining comments to finish recount"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:251
-#: includes/admin/tools/recount-activity.php:252
+#: includes/admin/tools/recount-activity.php:268
+#: includes/admin/tools/recount-activity.php:269
 #, php-format
 msgid "%d posts found, recounting..."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:265
+#: includes/admin/tools/recount-activity.php:282
 #, php-format
 msgid "[Publish a post] Post: %s User: %s Post Type: %s"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:277
+#: includes/admin/tools/recount-activity.php:294
 #, php-format
 msgid "%d remaining posts to finish recount"
 msgstr ""

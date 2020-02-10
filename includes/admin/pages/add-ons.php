@@ -219,7 +219,7 @@ function gamipress_render_plugin_card( $plugin ) {
 
                         if( $license_status !== 'valid' ) {
                             // "Activate License" action
-                            $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_settings&tab=opt-tab-licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
+                            $action_links[] = '<a href="' . admin_url( 'admin.php?page=gamipress_licenses' ) . '" class="button">' . __( 'Activate License', 'gamipress' ) . '</a>';
                         } else {
                             // "Active and License Registered" action
                             $action_links[] = '<button type="button" class="button button-disabled" disabled="disabled">' . __( 'Active and License Registered', 'gamipress' ) . '</button>';

@@ -24,6 +24,10 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
      * Hook to add recountable activity triggers (login or daily visits are not recountable because they aren't stored in database)
      *
      * @since 1.1.8
+     *
+     * @param array $activity_triggers Activity triggers that can be recounted
+     *
+     * @return array
      */
     $recountable_activity_triggers = apply_filters( 'gamipress_recountable_activity_triggers',
         array(
@@ -46,9 +50,22 @@ function gamipress_recount_activity_tool_meta_boxes( $meta_boxes ) {
                 'type' => 'html',
             ),
             'activity_to_recount' => array(
+                'name' => __( 'Activity to recount', 'gamipress' ),
                 'desc' => __( 'Choose the activity to recount.', 'gamipress' ),
                 'type' => 'advanced_select',
                 'options' => $recountable_activity_triggers,
+            ),
+            'entries_per_loop' => array(
+                'name' => __( 'Entries per loop', 'gamipress' ),
+                'desc' => __( 'To prevent block your site, this tool performs the recount in small groups of entries. Set the number of entries to recount in each loop (by default, 100).', 'gamipress' )
+                    . '<br>' . __( '<strong>Note:</strong> If the recount process fails, try to reduce this setting to a lower number to 50, 20 or 10 entries per loop.', 'gamipress' ),
+                'type' => 'text',
+                'attributes' => array(
+                    'type'  => 'number',
+                    'min'   => '10',
+                    'step'   => '5'
+                ),
+                'default' => '100'
             ),
             'recount_activity' => array(
                 'label' => __( 'Recount Activity', 'gamipress' ),
@@ -94,8 +111,8 @@ function gamipress_ajax_recount_activity_tool() {
     );
 
     $activity = sanitize_text_field( $_POST['activity'] );
-    $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
-    $limit = 100;
+    $loop = ( isset( $_POST['loop'] ) ? absint( $_POST['loop'] ) : 0 );
+    $limit = ( isset( $_POST['limit'] ) ? absint( $_POST['limit'] ) : 100 );
     $offset = $limit * $loop;
 
     /**

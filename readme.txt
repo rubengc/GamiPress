@@ -222,6 +222,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 == Changelog ==
 
+= 1.8.3 =
+
+* **New Features**
+* Added the "Entries Per Loop" field to the Recount Activity Tool.
+* **Bug Fixes**
+* Fixed -1 limit on earners list function, thanks to @konnektiv.
+* Fixed "Activate License" link from "Add-ons" page.
+
 = 1.8.2.2 =
 
 * **Bug Fixes**
