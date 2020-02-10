@@ -180,7 +180,7 @@ Yes. You can use GamiPress on a WordPress multisite network.
 
 In addition, GamiPress has the ability to centralize all the data when is [network wide active](https://gamipress.com/docs/advanced/multisite/).
 
-= Does GamiPress work with WordPress rest API? =
+#### Does GamiPress work with WordPress rest API? ####
 
 Yes. GamiPress includes full built-in support to the WordPress rest API.
 
