@@ -11,6 +11,8 @@ The most flexible and powerful gamification system for WordPress.
 
 == Description ==
 
+[Live Demo](https://demo.gamipress.com/ "GamiPress live demo website") | [Add-ons](https://gamipress.com/add-ons "Add-ons to extend GamiPress") | [Assets](https://gamipress.com/assets "Assets to decorate GamiPress") | [Documentation](https://gamipress.com/docs "Documentation for GamiPress") | [Code Snippets](https://gamipress.com/customize "Code snippets to customize GamiPress")
+
 [GamiPress](https://gamipress.com "GamiPress") is the easiest way to gamify your WordPress website in just a few minutes, letting you award your users with digital rewards for interacting with your site.
 
 Easily define the achievements, organize requirements, and choose from a range of assessment options to determine whether each task or requirement has been successfully achieved.
@@ -115,15 +117,6 @@ If you’re looking for something endorsed and maintained by the developers who 
 * [Transfers](https://gamipress.com/add-ons/gamipress-transfers/)
 
 [View all add-ons](https://gamipress.com/add-ons/)
-
-= Helpful Links =
-
-* [GamiPress.com](https://gamipress.com/ "GamiPress") - Official website
-* [Add-ons](https://gamipress.com/add-ons "GamiPress Add-ons") - Official add-ons
-* [Assets](https://gamipress.com/assets "GamiPress Assets") - Official assets
-* [Documentation](https://gamipress.com/docs "GamiPress Documentation") - Official documentation
-* [Code Snippets](https://gamipress.com/customize "GamiPress Code Snippets") - Official code snippets
-* [Contact](https://gamipress.com/contact-us "GamiPress Contact") - Contact details
 
 == Installation ==
 
