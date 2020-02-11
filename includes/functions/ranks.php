@@ -623,10 +623,10 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
     if( ! $user_id )
         $user_id = get_current_user_id();
 
-    // Get user old rank if has one
-    $old_rank = gamipress_get_user_rank( $user_id );
-
     $new_rank = gamipress_get_post( $rank_id );
+
+    // Get user old rank if has one
+    $old_rank = gamipress_get_user_rank( $user_id, $new_rank->post_type );
 
     // If is the same rank, return
     if( $old_rank && $new_rank && $new_rank->ID === $old_rank->ID )

@@ -243,8 +243,9 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * **New Features**
 * Added the "Entries Per Loop" field to the Recount Activity Tool.
 * **Bug Fixes**
-* Fixed -1 limit on earners list function, thanks to @konnektiv.
 * Fixed "Activate License" link from "Add-ons" page.
+* Fixed -1 limit on earners list function, thanks to [@cherbst](https://github.com/cherbst).
+* Fixed old rank population on update user rank function, thanks to [@raghavnarang](https://github.com/raghavnarang).
 
 ### 1.8.2.2 ###
 
