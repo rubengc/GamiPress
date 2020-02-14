@@ -395,6 +395,19 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
     global $gamipress_email_template_args;
 
+    if( ! is_array( $gamipress_email_template_args ) )
+        $gamipress_email_template_args = array();
+
+    // Shorthand
+    $a = $gamipress_email_template_args;
+
+    // Ensure vars
+    if( ! isset( $a['user_id'] ) )
+        $a['user_id'] = 0;
+
+    if( ! isset( $a['type'] ) )
+        $a['type'] = '';
+
     // Setup site replacements
     $replacements = array(
         '{site_title}'  => get_bloginfo( 'name' ),
@@ -402,17 +415,18 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
     );
 
     // Setup user replacements
-    $user = get_userdata( $gamipress_email_template_args['user_id'] );
+    $user = get_userdata( $a['user_id'] );
+    $user_id = $a['user_id'];
 
     $replacements['{user_id}']      =  ( $user ? $user->ID : '' );
     $replacements['{user}']         =  ( $user ? $user->display_name : '' );
     $replacements['{user_first}']   =  ( $user ? $user->first_name : '' );
     $replacements['{user_last}']    =  ( $user ? $user->last_name : '' );
 
-    if( $gamipress_email_template_args['type'] === 'achievement_earned' && isset( $gamipress_email_template_args['achievement_id'] ) ) {
+    if( $a['type'] === 'achievement_earned' && isset( $a['achievement_id'] ) ) {
 
         // Get the achievement post object
-        $achievement = gamipress_get_post( $gamipress_email_template_args['achievement_id'] );
+        $achievement = gamipress_get_post( $a['achievement_id'] );
 
         if( $achievement ) {
 
@@ -432,9 +446,9 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 foreach( $steps as $step ) {
                     // check if user has earned this Achievement, and add an 'earned' class
                     $earned = count( gamipress_get_user_achievements( array(
-                        'user_id' => absint( $user->ID ),
+                        'user_id' => absint( $user_id ),
                         'achievement_id' => absint( $step->ID ),
-                        'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user->ID ) )
+                        'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
                     ) ) ) > 0;
 
                     $title = $step->post_title;
@@ -457,10 +471,10 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
         }
 
-    } else if( $gamipress_email_template_args['type'] === 'step_completed' && isset( $gamipress_email_template_args['step_id'] ) ) {
+    } else if( $a['type'] === 'step_completed' && isset( $a['step_id'] ) ) {
 
         // Get the step post object
-        $step = gamipress_get_post( $gamipress_email_template_args['step_id'] );
+        $step = gamipress_get_post( $a['step_id'] );
 
         if( $step ) {
             $replacements['{label}'] = $step->post_title;
@@ -469,22 +483,22 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             $achievement = gamipress_get_step_achievement( $step->ID );
 
             if( $achievement ) {
-                $gamipress_email_template_args['achievement_id'] = $achievement->ID;
+                $a['achievement_id'] = $achievement->ID;
 
                 // Set a temporal type to parse achievement tags
-                $gamipress_email_template_args['type'] = 'achievement_earned';
+                $a['type'] = 'achievement_earned';
 
                 $content = gamipress_parse_email_tags( $content, $to, $subject, $message, $attachments );
 
                 // Restore the original type
-                $gamipress_email_template_args['type'] = 'step_completed';
+                $a['type'] = 'step_completed';
             }
         }
 
-    } else if( $gamipress_email_template_args['type'] === 'points_award_completed' && isset( $gamipress_email_template_args['points_award_id'] ) ) {
+    } else if( $a['type'] === 'points_award_completed' && isset( $a['points_award_id'] ) ) {
 
         // Get the points award post object
-        $points_award = gamipress_get_post( $gamipress_email_template_args['points_award_id'] );
+        $points_award = gamipress_get_post( $a['points_award_id'] );
 
         if( $points_award ) {
             $replacements['{label}'] = $points_award->post_title;
@@ -498,7 +512,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 $points = absint( gamipress_get_post_meta( $points_award->ID, '_gamipress_points' ) );
                 $singular = $points_type->post_title;
                 $plural = gamipress_get_post_meta( $points_type->ID, '_gamipress_plural_name' );
-                $points_balance = gamipress_get_user_points( $user->ID, $points_type->post_name );
+                $points_balance = gamipress_get_user_points( $user_id, $points_type->post_name );
 
                 $replacements['{points}'] = $points;
                 $replacements['{points_balance}'] = $points_balance;
@@ -507,10 +521,10 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             }
         }
 
-    } else if( $gamipress_email_template_args['type'] === 'points_deduct_completed' && isset( $gamipress_email_template_args['points_deduct_id'] ) ) {
+    } else if( $a['type'] === 'points_deduct_completed' && isset( $a['points_deduct_id'] ) ) {
 
         // Get the points deduct post object
-        $points_deduct = gamipress_get_post( $gamipress_email_template_args['points_deduct_id'] );
+        $points_deduct = gamipress_get_post( $a['points_deduct_id'] );
 
         if( $points_deduct ) {
             $replacements['{label}'] = $points_deduct->post_title;
@@ -524,7 +538,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 $points = absint( gamipress_get_post_meta( $points_deduct->ID, '_gamipress_points' ) );
                 $singular = $points_type->post_title;
                 $plural = gamipress_get_post_meta( $points_type->ID, '_gamipress_plural_name' );
-                $points_balance = gamipress_get_user_points( $user->ID, $points_type->post_name );
+                $points_balance = gamipress_get_user_points( $user_id, $points_type->post_name );
 
                 $replacements['{points}'] = $points;
                 $replacements['{points_balance}'] = $points_balance;
@@ -533,10 +547,10 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             }
         }
 
-    } else if( $gamipress_email_template_args['type'] === 'rank_earned' && isset( $gamipress_email_template_args['rank_id'] ) ) {
+    } else if( $a['type'] === 'rank_earned' && isset( $a['rank_id'] ) ) {
 
         // Get the rank post object
-        $rank = gamipress_get_post( $gamipress_email_template_args['rank_id'] );
+        $rank = gamipress_get_post( $a['rank_id'] );
 
         if( $rank ) {
 
@@ -553,9 +567,9 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 foreach( $requirements as $requirement ) {
                     // check if user has earned this requirement, and add an 'earned' class
                     $earned = count( gamipress_get_user_achievements( array(
-                            'user_id' => absint( $user->ID ),
+                            'user_id' => absint( $user_id ),
                             'achievement_id' => absint( $requirement->ID ),
-                            'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user->ID ) )
+                            'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
                         ) ) ) > 0;
 
                     $title = $requirement->post_title;
@@ -578,10 +592,10 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
         }
 
-    } else if( $gamipress_email_template_args['type'] === 'rank_requirement_completed' && isset( $gamipress_email_template_args['rank_requirement_id'] ) ) {
+    } else if( $a['type'] === 'rank_requirement_completed' && isset( $a['rank_requirement_id'] ) ) {
 
         // Get the rank requirement post object
-        $requirement = gamipress_get_post( $gamipress_email_template_args['rank_requirement_id'] );
+        $requirement = gamipress_get_post( $a['rank_requirement_id'] );
 
         if( $requirement ) {
             $replacements['{label}'] = $requirement->post_title;
@@ -590,15 +604,15 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
             $rank = gamipress_get_rank_requirement_rank( $requirement->ID );
 
             if( $rank ) {
-                $gamipress_email_template_args['rank_id'] = $rank->ID;
+                $a['rank_id'] = $rank->ID;
 
                 // Set a temporal type to parse rank tags
-                $gamipress_email_template_args['type'] = 'rank_earned';
+                $a['type'] = 'rank_earned';
 
                 $content = gamipress_parse_email_tags( $content, $to, $subject, $message, $attachments );
 
                 // Restore the original type
-                $gamipress_email_template_args['type'] = 'rank_requirement_completed';
+                $a['type'] = 'rank_requirement_completed';
             }
         }
 
@@ -613,7 +627,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
      * @param WP_User   $user
      * @param array     $template_args
      */
-    $replacements = apply_filters( 'gamipress_parse_email_tags', $replacements, $user, $gamipress_email_template_args );
+    $replacements = apply_filters( 'gamipress_parse_email_tags', $replacements, $user, $a );
 
     return str_replace( array_keys( $replacements ), $replacements, $content );
 

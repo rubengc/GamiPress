@@ -8,9 +8,8 @@
 function gamipress_selector( $this ) {
 
     // Prevent load select2 on widgets lists
-    if( $this.closest('#available-widgets').length ) {
+    if( $this.closest('#available-widgets').length )
         return;
-    }
 
     var select2_args = {
         theme: 'default gamipress-select2',
@@ -33,9 +32,8 @@ function gamipress_selector( $this ) {
 function gamipress_post_selector( $this ) {
 
     // Prevent load select2 on widgets lists
-    if( $this.closest('#available-widgets').length ) {
+    if( $this.closest('#available-widgets').length )
         return;
-    }
 
     var select2_args = {
         ajax: {
@@ -76,9 +74,8 @@ function gamipress_post_selector( $this ) {
 function gamipress_user_selector( $this ) {
 
     // Prevent load select2 on widgets lists
-    if( $this.closest('#available-widgets').length ) {
+    if( $this.closest('#available-widgets').length )
         return;
-    }
 
     var select2_args = {
         ajax: {

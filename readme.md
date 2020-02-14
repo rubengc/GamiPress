@@ -246,6 +246,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed "Activate License" link from "Add-ons" page.
 * Fixed -1 limit on earners list function, thanks to [@cherbst](https://github.com/cherbst).
 * Fixed old rank population on update user rank function, thanks to [@raghavnarang](https://github.com/raghavnarang).
+* Prevent PHP warnings on email tags parser if global vars are not provided.
 
 ### 1.8.2.2 ###
 
