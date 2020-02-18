@@ -49,6 +49,7 @@ class GamiPress_Shortcodes_Editor {
 		if(
             in_array( $hook, array( 'post.php', 'page.php', 'post-new.php', 'post-edit.php' ) ) // Add/edit post screen
 			|| $hook === 'gamipress_page_gamipress_settings'		                            // GamiPress settings screen
+			|| gamipress_starts_with( $hook, 'admin_page_edit_gamipress_' )		                // GamiPress custom tables add/edit screen
             || in_array( $hook, array( 'profile.php', 'user-edit.php' ) )                       // User edit screen (added to avoid issues with plugins that creates an editor on user profile)
 		) {
 
