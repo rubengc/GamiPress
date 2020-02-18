@@ -326,11 +326,10 @@ function gamipress_render_plugin_card( $plugin ) {
 function gamipress_plugins_api() {
 
     // If a plugins api request has been cached already, then use cached plugins
-    if ( false !== ( $res = get_transient( 'gamipress_plugins_api' ) ) ) {
+    if ( false !== ( $res = get_transient( 'gamipress_plugins_api' ) ) )
         return $res;
-    }
 
-    $url = $http_url = 'http://gamipress.com/edd-api/products/?number=999';
+    $url = $http_url = 'http://gamipress.com/edd-api/products/?orderby=menu_order&order=ASC&number=999';
 
     if ( $ssl = wp_http_supports( array( 'ssl' ) ) ) {
         $url = set_url_scheme( $url, 'https' );
