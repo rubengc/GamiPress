@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-02-14 11:47+0100\n"
+"POT-Creation-Date: 2020-02-20 13:00+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,7 +52,7 @@ msgstr ""
 
 #: includes/admin.php:96 includes/admin.php:141 includes/admin/users.php:27
 #: includes/blocks.php:21 includes/shortcodes.php:67
-#: includes/shortcodes/shortcodes-editor.php:91 includes/triggers.php:47
+#: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:47
 #: includes/triggers.php:340 includes/triggers.php:341
 msgid "GamiPress"
 msgstr ""
@@ -1168,12 +1168,12 @@ msgstr ""
 msgid "More Details"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:348 includes/admin/pages/add-ons.php:360
+#: includes/admin/pages/add-ons.php:347 includes/admin/pages/add-ons.php:359
 #, php-format
 msgid "An unexpected error occurred. Something may be wrong with gamipress.com or this server&#8217;s configuration. If you continue to have problems, please try to <a href=\"%s\">contact us</a>."
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:350
+#: includes/admin/pages/add-ons.php:349
 msgid "(WordPress could not establish a secure connection to gamipress.com. Please contact your server administrator.)"
 msgstr ""
 
@@ -1899,7 +1899,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:49 includes/functions/points.php:795
+#: includes/admin/settings/logs.php:49 includes/functions/points.php:818
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1911,7 +1911,7 @@ msgstr ""
 msgid "Used when user gets a deduction of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:55 includes/functions/points.php:799
+#: includes/admin/settings/logs.php:55 includes/functions/points.php:822
 msgid "{user} deducted {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1973,7 +1973,7 @@ msgstr ""
 msgid "Used when an admin awards an user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:85 includes/functions/points.php:783
+#: includes/admin/settings/logs.php:85 includes/functions/points.php:806
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1985,7 +1985,7 @@ msgstr ""
 msgid "Used when an admin revokes points of an user. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:91 includes/functions/points.php:787
+#: includes/admin/settings/logs.php:91 includes/functions/points.php:810
 msgid "{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -3105,7 +3105,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/1.4.7.php:213 includes/admin/upgrades/1.4.7.php:241
-#: includes/functions/points.php:837
+#: includes/functions/points.php:860
 msgid "(no trigger)"
 msgstr ""
 
@@ -3184,7 +3184,7 @@ msgid "Save"
 msgstr ""
 
 #: includes/admin/users.php:247 includes/admin/users.php:339
-#: includes/admin/users.php:379 includes/shortcodes/shortcodes-editor.php:118
+#: includes/admin/users.php:379 includes/shortcodes/shortcodes-editor.php:119
 msgid "Cancel"
 msgstr ""
 
@@ -4013,7 +4013,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1260 includes/functions/points.php:1260
+#: includes/functions/achievements.php:1260 includes/functions/points.php:1283
 #: includes/functions/ranks.php:1324
 msgid "widgets"
 msgstr ""
@@ -4148,11 +4148,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: includes/functions/points.php:1259
+#: includes/functions/points.php:1282
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/functions/points.php:1260
+#: includes/functions/points.php:1283
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
@@ -4565,15 +4565,15 @@ msgid "User hasn't completed this achievement yet."
 msgstr ""
 
 #: includes/scripts.php:144 includes/scripts.php:168
-#: includes/shortcodes/shortcodes-editor.php:65
+#: includes/shortcodes/shortcodes-editor.php:66
 msgid "Select a Post"
 msgstr ""
 
-#: includes/scripts.php:169 includes/shortcodes/shortcodes-editor.php:66
+#: includes/scripts.php:169 includes/shortcodes/shortcodes-editor.php:67
 msgid "Select Post(s)"
 msgstr ""
 
-#: includes/scripts.php:170 includes/shortcodes/shortcodes-editor.php:67
+#: includes/scripts.php:170 includes/shortcodes/shortcodes-editor.php:68
 msgid "Select an User"
 msgstr ""
 
@@ -4585,11 +4585,11 @@ msgstr ""
 #: includes/shortcodes/gamipress_points.php:34
 #: includes/shortcodes/gamipress_points_types.php:34
 #: includes/shortcodes/gamipress_ranks.php:67
-#: includes/shortcodes/shortcodes-editor.php:68
+#: includes/shortcodes/shortcodes-editor.php:69
 msgid "Default: All"
 msgstr ""
 
-#: includes/scripts.php:172 includes/shortcodes/shortcodes-editor.php:69
+#: includes/scripts.php:172 includes/shortcodes/shortcodes-editor.php:70
 msgid "Select a Rank"
 msgstr ""
 
@@ -5599,20 +5599,20 @@ msgstr ""
 msgid "Please, provide the user ID."
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:111
+#: includes/shortcodes/shortcodes-editor.php:112
 msgid "GamiPress shortcode"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:112
+#: includes/shortcodes/shortcodes-editor.php:113
 #, php-format
 msgid "See the %s page for more information"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:112
+#: includes/shortcodes/shortcodes-editor.php:113
 msgid "Help/Support"
 msgstr ""
 
-#: includes/shortcodes/shortcodes-editor.php:117
+#: includes/shortcodes/shortcodes-editor.php:118
 msgid "Insert Shortcode"
 msgstr ""
 

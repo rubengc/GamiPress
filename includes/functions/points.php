@@ -604,8 +604,20 @@ function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type =
     if( ! isset( $GLOBALS[$last_points_key] ) )
         $GLOBALS[$last_points_key] = array();
 
-    // Initialize the last points earned for this requirement
-    if( ! isset( $GLOBALS[$last_points_key][$requirement_id] ) ) {
+    $requirement_key = $requirement_id;
+
+    // Special condition for ranks that all rank requiements follow the earn points event
+    if( gamipress_get_post_type( $requirement_id ) === 'rank-requirement' ) {
+
+        // Set as requirement key the rank type instead
+        $rank_id = gamipress_get_post_field( 'post_parent', $requirement_id );
+        $requirement_key = gamipress_get_post_type( $rank_id );
+
+    }
+
+    if( ! isset( $GLOBALS[$last_points_key][$requirement_key] ) ) {
+        // Initialize the last points earned for this requirement
+
         // Get the last activity of the current in use achievement
         $last_activity = absint( gamipress_achievement_last_user_activity( $requirement_id, $user_id ) );
 
@@ -620,7 +632,7 @@ function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type =
         );
 
         // Get user points earned since last time has earning the achievement
-        $GLOBALS[$last_points_key][$requirement_id] = gamipress_get_user_points( $user_id, $points_type, $args );
+        $GLOBALS[$last_points_key][$requirement_key] = gamipress_get_user_points( $user_id, $points_type, $args );
     }
 
     // Initialize the awarded points array
@@ -628,10 +640,10 @@ function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type =
         $GLOBALS[$multiple_awarded_key] = array();
 
     // Initialize the awarded points count for this requirement
-    if( ! isset( $GLOBALS[$multiple_awarded_key][$requirement_id] ) )
-        $GLOBALS[$multiple_awarded_key][$requirement_id] = 0;
+    if( ! isset( $GLOBALS[$multiple_awarded_key][$requirement_key] ) )
+        $GLOBALS[$multiple_awarded_key][$requirement_key] = 0;
 
-    return ( $GLOBALS[$last_points_key][$requirement_id] - $GLOBALS[$multiple_awarded_key][$requirement_id] );
+    return ( $GLOBALS[$last_points_key][$requirement_key] - $GLOBALS[$multiple_awarded_key][$requirement_key] );
 
 }
 
@@ -654,13 +666,24 @@ function gamipress_update_user_points_awarded_in_loop( $new_points = 0, $points_
     if( ! isset( $GLOBALS[$multiple_awarded_key] ) )
         $GLOBALS[$multiple_awarded_key] = array();
 
+    $requirement_key = $requirement_id;
+
+    // Special condition for ranks that all rank requiements follow the earn points event
+    if( gamipress_get_post_type( $requirement_id ) === 'rank-requirement' ) {
+
+        // Set as requirement key the rank type instead
+        $rank_id = gamipress_get_post_field( 'post_parent', $requirement_id );
+        $requirement_key = gamipress_get_post_type( $rank_id );
+
+    }
+
     // Initialize the awarded points count for this requirement
-    if( ! isset( $GLOBALS[$multiple_awarded_key][$requirement_id] ) )
-        $GLOBALS[$multiple_awarded_key][$requirement_id] = 0;
+    if( ! isset( $GLOBALS[$multiple_awarded_key][$requirement_key] ) )
+        $GLOBALS[$multiple_awarded_key][$requirement_key] = 0;
 
-    $GLOBALS[$multiple_awarded_key][$requirement_id] += $new_points;
+    $GLOBALS[$multiple_awarded_key][$requirement_key] += $new_points;
 
-    return $GLOBALS[$multiple_awarded_key][$requirement_id];
+    return $GLOBALS[$multiple_awarded_key][$requirement_key];
 
 }
 

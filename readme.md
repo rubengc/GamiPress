@@ -108,6 +108,7 @@ If you’re looking for something endorsed and maintained by the developers who 
 * [Time-based Rewards](https://gamipress.com/add-ons/gamipress-time-based-rewards/)
 * [Referrals](https://gamipress.com/add-ons/gamipress-referrals/)
 * [Transfers](https://gamipress.com/add-ons/gamipress-transfers/)
+* [Zapier](https://gamipress.com/add-ons/gamipress-zapier/)
 
 [View all add-ons](https://gamipress.com/add-ons/)
 
@@ -247,6 +248,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed -1 limit on earners list function, thanks to [@cherbst](https://github.com/cherbst).
 * Fixed old rank population on update user rank function, thanks to [@raghavnarang](https://github.com/raghavnarang).
 * Prevent PHP warnings on email tags parser if global vars are not provided.
+* Fixed earn points calculation when is working with a rank that all requirements are based on earn points.
 * **Improvements**
 * Enqueue Shortcodes Editor script on custom tables add/edit screens.
 
