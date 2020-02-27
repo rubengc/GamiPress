@@ -249,8 +249,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed old rank population on update user rank function, thanks to [@raghavnarang](https://github.com/raghavnarang).
 * Prevent PHP warnings on email tags parser if global vars are not provided.
 * Fixed earn points calculation when is working with a rank that all requirements are based on earn points.
+* Prevent to get user profile earnings per page overwritten by the user earnings screen setting.
 * **Improvements**
 * Enqueue Shortcodes Editor script on custom tables add/edit screens.
+* **Developer Notes**
+* Added a filter to override the items per page setting on user profile earnings.
 
 ### 1.8.2.2 ###
 

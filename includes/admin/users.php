@@ -34,8 +34,8 @@ function gamipress_user_profile_data( $user = null ) {
     // Output markup to list user points
     gamipress_profile_user_points( $user );
 
-    // Output markup to list user achievements
-    gamipress_profile_user_achievements( $user );
+    // Output markup to list user earnings
+    gamipress_profile_user_earnings( $user );
 
     // Output markup for awarding achievement for user
     gamipress_profile_award_achievement( $user );
@@ -402,7 +402,7 @@ function gamipress_profile_user_points( $user = null ) {
 }
 
 /**
- * Generate markup to list user earned achievements
+ * Generate markup to list user earnings
  *
  * @since  1.0.0
  *
@@ -410,16 +410,27 @@ function gamipress_profile_user_points( $user = null ) {
  *
  * @return string               concatenated markup
  */
-function gamipress_profile_user_achievements( $user = null ) {
+function gamipress_profile_user_earnings( $user = null ) {
 
     $can_manage = current_user_can( gamipress_get_manager_capability() );
+    /**
+     * Filter to allow set the number of user earnings to show on user profile
+     *
+     * @since 1.8.3
+     *
+     * @param int $items_per_page
+     *
+     * @return int
+     */
+    $items_per_page = apply_filters( 'gamipress_user_profile_earnings_items_per_page', 10 );
     ?>
 
     <h2><?php echo $can_manage ? __( 'User Earnings', 'gamipress' ) : __( 'Your Achievements', 'gamipress' ); ?></h2>
 
     <?php ct_render_ajax_list_table( 'gamipress_user_earnings',
         array(
-            'user_id' => absint( $user->ID )
+            'user_id' => absint( $user->ID ),
+            'items_per_page' => $items_per_page,
         ),
         array(
             'views' => false,

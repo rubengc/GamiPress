@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-02-20 13:00+0100\n"
+"POT-Creation-Date: 2020-02-27 09:32+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -90,7 +90,7 @@ msgstr ""
 msgid "Rank Types"
 msgstr ""
 
-#: includes/admin.php:267 includes/admin/users.php:418
+#: includes/admin.php:267 includes/admin/users.php:428
 #: includes/custom-tables.php:35 includes/custom-tables.php:47
 #: includes/privacy/erasers/user-earnings.php:24
 #: includes/privacy/exporters/user-earnings.php:24
@@ -628,7 +628,7 @@ msgid "No extra data registered"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:320 includes/admin/requirements-ui.php:370
-#: includes/admin/users.php:477
+#: includes/admin/users.php:488
 msgid "Choose an achievement type"
 msgstr ""
 
@@ -3209,46 +3209,46 @@ msgstr ""
 msgid "Enter a new total will automatically log the change and difference between totals."
 msgstr ""
 
-#: includes/admin/users.php:418
+#: includes/admin/users.php:428
 msgid "Your Achievements"
 msgstr ""
 
-#: includes/admin/users.php:469
+#: includes/admin/users.php:480
 msgid "Award Achievement"
 msgstr ""
 
-#: includes/admin/users.php:474
+#: includes/admin/users.php:485
 msgid "Select an achievement type to award:"
 msgstr ""
 
-#: includes/admin/users.php:494 includes/admin/users.php:629
+#: includes/admin/users.php:505 includes/admin/users.php:640
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/users.php:528 includes/admin/users.php:705
+#: includes/admin/users.php:539 includes/admin/users.php:716
 #, php-format
 msgid "Award %s"
 msgstr ""
 
-#: includes/admin/users.php:537 includes/admin/users.php:714
+#: includes/admin/users.php:548 includes/admin/users.php:725
 #: includes/custom-tables/user-earnings.php:549
 msgid "Revoke Award"
 msgstr ""
 
-#: includes/admin/users.php:546 includes/admin/users.php:723
+#: includes/admin/users.php:557 includes/admin/users.php:734
 #, php-format
 msgid "No %s found."
 msgstr ""
 
-#: includes/admin/users.php:604
+#: includes/admin/users.php:615
 msgid "Award Requirement"
 msgstr ""
 
-#: includes/admin/users.php:609
+#: includes/admin/users.php:620
 msgid "Select a requirement type to award:"
 msgstr ""
 
-#: includes/admin/users.php:612
+#: includes/admin/users.php:623
 msgid "Choose a requirement type"
 msgstr ""
 

@@ -20,7 +20,7 @@ defined( 'ABSPATH' ) || exit;
  */
 function ct_render_ajax_list_table( $table, $query_args = array(), $view_args = array() ) {
 
-    global $ct_table, $ct_query, $ct_list_table;
+    global $ct_table, $ct_query, $ct_list_table, $ct_ajax_list_items_per_page;
 
     $ct_table = ct_setup_table( $table );
 
@@ -43,6 +43,10 @@ function ct_render_ajax_list_table( $table, $query_args = array(), $view_args = 
             'views' => true,
             'search_box' => true,
         ) );
+
+        // Add a filter to override the items per page user setting
+        $ct_ajax_list_items_per_page = $query_args['items_per_page'];
+        add_filter( 'edit_' . $ct_table->name . '_per_page', 'ct_ajax_list_override_items_per_page' );
 
         // Set up vars
         $ct_query = new CT_Query( $query_args );
@@ -105,6 +109,27 @@ function ct_render_ajax_list_table( $table, $query_args = array(), $view_args = 
         <?php
 
     }
+
+}
+
+/**
+ * Overrides the items per page user setting
+ *
+ * @since 1.0.0
+ *
+ * @param int $items_per_page
+ *
+ * @return int
+ */
+function ct_ajax_list_override_items_per_page( $items_per_page ) {
+
+    global $ct_ajax_list_items_per_page;
+
+    if( absint( $ct_ajax_list_items_per_page ) !== 0 ) {
+        return absint( $ct_ajax_list_items_per_page );
+    }
+
+    return $items_per_page;
 
 }
 
