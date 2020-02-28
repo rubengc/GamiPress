@@ -80,6 +80,10 @@ In Addition, you can use the function `cmb2_edd_license_status( $license_key )` 
 
 ## Changelog
 
+### 1.0.6
+
+* Force update transient data on plugins page and update core.
+
 ### 1.0.5
 
 * Updated EDD SL Plugin Updater class to version 1.6.18.

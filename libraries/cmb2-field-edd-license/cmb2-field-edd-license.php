@@ -28,7 +28,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
         /**
          * Current version number
          */
-        const VERSION = '1.0.5';
+        const VERSION = '1.0.6';
 
         /**
          * Initialize the plugin by hooking into CMB2
@@ -189,49 +189,140 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
         public function check_updates() {
 
-            if( is_admin() ) {
+            if( ! is_admin() ) {
+                return;
+            }
 
-                // Loop all registered boxes
-                foreach( CMB2_Boxes::get_all() as $cmb ) {
+            // Loop all registered boxes
+            foreach( CMB2_Boxes::get_all() as $cmb ) {
 
-                    // Loop all fields
-                    foreach( $cmb->meta_box['fields'] as $field ) {
-                        if( $field['type'] === 'edd_license' ) {
+                // Loop all fields
+                foreach( $cmb->meta_box['fields'] as $field ) {
+                    if( $field['type'] === 'edd_license' ) {
 
-                            $args = $field;
+                        $args = $field;
 
-                            if( $cmb->is_options_page_mb() ) {
-                                $option_key = $cmb->object_id;
+                        if( $cmb->is_options_page_mb() ) {
+                            $option_key = $cmb->object_id;
 
-                                // TODO: On delete actions, $option_key is an array of deleted items
-                                if( is_array( $option_key ) ) {
-                                    return;
-                                }
-
-                                if( ! $option_key && isset( $cmb->meta_box['show_on'] ) && isset( $cmb->meta_box['show_on']['value'] ) ) {
-                                    if( is_array( $cmb->meta_box['show_on']['value'] ) ) {
-                                        $option_key = $cmb->meta_box['show_on']['value'][0];
-                                    } else {
-                                        $option_key = $cmb->meta_box['show_on']['value'];
-                                    }
-                                }
-
-                                $option_key = apply_filters( 'cmb2_edd_license_option_key', $option_key, $cmb );
-
-                                $default = isset( $field['default'] ) ? $field['default'] : '';
-
-                                $args['value'] = cmb2_get_option( $option_key, $field['id'], $default );
-                            } else {
-                                $args['value'] = cmb2_get_field_value( $cmb, $field['id'], $cmb->object_id, $cmb->mb_object_type() );
+                            // TODO: On delete actions, $option_key is an array of deleted items
+                            if( is_array( $option_key ) ) {
+                                return;
                             }
 
-                            $this->check_item_updates( $args );
+                            if( ! $option_key && isset( $cmb->meta_box['show_on'] ) && isset( $cmb->meta_box['show_on']['value'] ) ) {
+                                if( is_array( $cmb->meta_box['show_on']['value'] ) ) {
+                                    $option_key = $cmb->meta_box['show_on']['value'][0];
+                                } else {
+                                    $option_key = $cmb->meta_box['show_on']['value'];
+                                }
+                            }
+
+                            /**
+                             * Filter to override the license option key
+                             *
+                             * @since 1.0.0
+                             *
+                             * @param int|string $option_key
+                             * @param CMB2 $cmb
+                             *
+                             * @return int|string
+                             */
+                            $option_key = apply_filters( 'cmb2_edd_license_option_key', $option_key, $cmb );
+
+                            $default = isset( $field['default'] ) ? $field['default'] : '';
+
+                            $args['value'] = cmb2_get_option( $option_key, $field['id'], $default );
+                        } else {
+                            $args['value'] = cmb2_get_field_value( $cmb, $field['id'], $cmb->object_id, $cmb->mb_object_type() );
                         }
+
+                        $this->check_item_updates( $args );
                     }
+                }
+            }
+
+        }
+
+        /**
+         * Automatically adds an updater checker
+         */
+        public function check_item_updates( $args = array() ) {
+
+            global $pagenow;
+
+            // Bail if not in admin area
+            if( ! is_admin() ) {
+                return false;
+            }
+
+            // Include required files
+            if( ! function_exists( 'get_plugin_data' ) ) {
+                include ABSPATH . '/wp-admin/includes/plugin.php';
+            }
+
+            $args = wp_parse_args( $args, array(
+                'server'          => '',
+                'item_id'         => '',
+                'item_name'       => '',
+                'file'            => '',
+                'version'         => '',
+                'author'          => '',
+                'wp_override'     => false,
+            ) );
+
+            // Check if we have all the required parameters.
+            if ( empty( $args['server'] ) || empty( $args['file'] ) ) {
+                return false;
+            }
+
+            // Make sure the file actually exists.
+            if ( ! file_exists( $args['file'] ) ) {
+                return false;
+            }
+
+            // Item name
+            $item_name = ! empty( $args['item_name'] ) ? sanitize_text_field( $args['item_name'] ) : false;
+            $item_id   = ! empty( $args['item_id'] ) ? (int) $args['item_id'] : false;
+
+            // Retrieve license key
+            $license_key = trim( esc_attr( $args['value'] ) );
+
+            if( ! empty( $license_key ) && in_array( $pagenow, array( 'plugins.php', 'update-core.php' ) ) ) {
+
+                $key = substr( md5( $license_key ), 0, 10 );
+
+                // If there is a license key but transient has expired, update the license data
+                if( get_transient( "cmb2_edd_license_data_$key" ) === false ) {
+                    $this->api_request( $args['server'], $license_key, $args, 'check_license' );
                 }
 
             }
 
+            // Prepare updater arguments
+            $api_params = array(
+                'license' => ( cmb2_edd_license_status( $license_key ) === 'valid' ? $license_key : '' ),
+            );
+
+            // Add license ID or name for identification
+            if ( $item_id != false) {
+                $api_params['item_id'] = $item_id;
+            } elseif ( $item_name != false) {
+                $api_params['item_name'] = $item_name;
+            }
+
+            $plugin              		= get_plugin_data( $args['file'], false );
+            $api_params['version']     	= ! empty( $args['version'] ) ? sanitize_text_field( $args['version'] ) : $plugin['Version'];
+            $api_params['author']      	= ! empty( $args['author'] ) ? sanitize_text_field( $args['author'] ) : $plugin['Author'];
+            $api_params['wp_override'] 	= $args['wp_override'];
+
+            // Update server URL
+            $server = esc_url( $args['server'] );
+
+            // Setup updater
+            $cmb2_edd_updater = new CMB_EDD_SL_Plugin_Updater( $server, $args['file'], $api_params );
+
+            return $cmb2_edd_updater;
         }
 
         /**
@@ -371,74 +462,6 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
             // Return the license status.
             return $license_data->license;
-        }
-
-        /**
-         * Automatically adds an updater checker
-         */
-        public function check_item_updates( $args = array() ) {
-
-            // Bail if not in admin area
-            if( ! is_admin() ) {
-                return false;
-            }
-
-            // Include required files
-            if( ! function_exists( 'get_plugin_data' ) ) {
-                include ABSPATH . '/wp-admin/includes/plugin.php';
-            }
-
-            $args = wp_parse_args( $args, array(
-                'server'          => '',
-                'item_id'         => '',
-                'item_name'       => '',
-                'file'            => '',
-                'version'         => '',
-                'author'          => '',
-                'wp_override'     => false,
-            ) );
-
-            // Check if we have all the required parameters.
-            if ( empty( $args['server'] ) || empty( $args['file'] ) ) {
-                return false;
-            }
-
-            // Make sure the file actually exists.
-            if ( ! file_exists( $args['file'] ) ) {
-                return false;
-            }
-
-            // Item name
-            $item_name = ! empty( $args['item_name'] ) ? sanitize_text_field( $args['item_name'] ) : false;
-            $item_id   = ! empty( $args['item_id'] ) ? (int) $args['item_id'] : false;
-
-            // Retrieve license key
-            $license_key = trim( esc_attr( $args['value'] ) );
-
-            // Prepare updater arguments
-            $api_params = array(
-                'license' => ( cmb2_edd_license_status( $license_key ) === 'valid' ? $license_key : '' ),
-            );
-
-            // Add license ID or name for identification
-            if ( $item_id != false) {
-                $api_params['item_id'] = $item_id;
-            } elseif ( $item_name != false) {
-                $api_params['item_name'] = $item_name;
-            }
-
-            $plugin              		= get_plugin_data( $args['file'], false );
-            $api_params['version']     	= ! empty( $args['version'] ) ? sanitize_text_field( $args['version'] ) : $plugin['Version'];
-            $api_params['author']      	= ! empty( $args['author'] ) ? sanitize_text_field( $args['author'] ) : $plugin['Author'];
-            $api_params['wp_override'] 	= $args['wp_override'];
-
-            // Update server URL
-            $server = esc_url( $args['server'] );
-
-            // Setup updater
-            $cmb2_edd_updater = new CMB_EDD_SL_Plugin_Updater( $server, $args['file'], $api_params );
-
-            return $cmb2_edd_updater;
         }
 
     }

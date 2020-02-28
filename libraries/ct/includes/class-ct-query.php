@@ -190,7 +190,16 @@ if ( ! class_exists( 'CT_Query' ) ) :
                 $q['items_per_page'] = get_option( 'items_per_page', 20 );
             }
 
-            // items_per_page
+            // Pagination
+            if ( ! isset( $q['nopaging'] ) ) {
+                if ( $q['items_per_page'] == -1 ) {
+                    $q['nopaging'] = true;
+                } else {
+                    $q['nopaging'] = false;
+                }
+            }
+
+            // Items per page
             $q['items_per_page'] = (int) $q['items_per_page'];
 
             if ( $q['items_per_page'] < -1 )
@@ -205,10 +214,11 @@ if ( ! class_exists( 'CT_Query' ) ) :
             }
 
             // If true, forcibly turns off SQL_CALC_FOUND_ROWS even when limits are present.
-            if ( isset($q['no_found_rows']) )
+            if ( isset($q['no_found_rows']) ) {
                 $q['no_found_rows'] = (bool) $q['no_found_rows'];
-            else
+            } else {
                 $q['no_found_rows'] = false;
+            }
 
             switch ( $q['fields'] ) {
                 case 'ids':
