@@ -62,6 +62,12 @@ if ( ! class_exists( 'CT_View' ) ) :
             // Note: sub-menus need to be registered after parent
             add_action( 'admin_menu', array( $this, 'admin_menu' ), empty( $this->args['parent_slug'] ) ? 10 : 11 );
 
+            add_filter( 'parent_file', array( $this, 'parent_file' ), 10 );
+
+            add_filter( 'submenu_file', array( $this, 'submenu_file' ), 10, 2 );
+
+            add_action( 'adminmenu', array( $this, 'restore_plugin_page' ), 10, 2 );
+
             add_filter( 'screen_options_show_screen', array( $this, 'show_screen_options' ), 10, 2 );
 
             add_filter( 'screen_settings', array( $this, 'maybe_screen_settings' ), 10, 2 );
@@ -85,6 +91,8 @@ if ( ! class_exists( 'CT_View' ) ) :
 
         /**
          * Check if current screen is own.
+         *
+         * @since 1.0.0
          *
          * @param string    $screen_settings    Screen settings.
          * @param WP_Screen $screen             WP_Screen object.
@@ -119,6 +127,8 @@ if ( ! class_exists( 'CT_View' ) ) :
 
         /**
          * Screen settings text displayed in the Screen Options tab.
+         *
+         * @since 1.0.0
          *
          * @param string    $screen_settings    Screen settings.
          * @param WP_Screen $screen             WP_Screen object.
@@ -213,6 +223,8 @@ if ( ! class_exists( 'CT_View' ) ) :
 
         /**
          * Create a new menu
+         *
+         * @since 1.0.0
          */
         public function admin_menu() {
 
@@ -234,6 +246,126 @@ if ( ! class_exists( 'CT_View' ) ) :
 
         }
 
+        /**
+         * Parent file fix when a view is registered in a submenu
+         *
+         * @since 1.0.0
+         */
+        public function parent_file( $parent_file ) {
+
+            global $ct_table, $plugin_page;
+
+            if( ! $this->is_current_view() ) {
+                return $parent_file;
+            }
+
+            $list_view_args = $ct_table->views->list->args;
+
+            // If not empty parent slug, override actual parent slug
+            if( ! empty( $this->args['parent_slug'] ) ) {
+                $parent_file = $this->args['parent_slug'];
+
+                if( $this->args['menu_slug'] !== $list_view_args['menu_slug'] ) {
+                    // Hack required to make parent file work because get overwritten on get_admin_page_parent() function
+                    $plugin_page = null;
+                }
+            }
+
+            // If we are on an add or edit view and list is displayed on menu, apply the list parent slug
+            if( $this->args['menu_slug'] !== $list_view_args['menu_slug'] ) {
+
+                if( $list_view_args['show_in_menu'] && ! empty( $list_view_args['parent_slug'] ) ) {
+                    $parent_file = $list_view_args['parent_slug'];
+
+                    // Hack required to make parent file work because get overwritten on get_admin_page_parent() function
+                    $plugin_page = null;
+                }
+
+            }
+
+            return $parent_file;
+
+        }
+
+        /**
+         * Submenu file fix when a view is registered in a submenu
+         *
+         * @since 1.0.0
+         */
+        public function submenu_file( $submenu_file, $parent_file ) {
+
+            global $ct_table;
+
+            if( ! $this->is_current_view() ) {
+                return $submenu_file;
+            }
+
+            $list_view_args = $ct_table->views->list->args;
+
+            // If we are on an add or edit view and list is displayed on menu, then highlight list view
+            if( $this->args['menu_slug'] !== $list_view_args['menu_slug'] ) {
+                if( $list_view_args['show_in_menu'] && ! empty( $list_view_args['parent_slug'] ) ) {
+                    $submenu_file = $list_view_args['menu_slug'];
+                }
+            }
+
+            return $submenu_file;
+
+        }
+
+        /**
+         * Restore global $plugin_page since it was required to get overwritten on parent_file()
+         *
+         * @since 1.0.0
+         */
+        public function restore_plugin_page() {
+
+            global $ct_table, $plugin_page;
+
+            if( ! $this->is_current_view() ) {
+                return;
+            }
+
+            $list_view_args = $ct_table->views->list->args;
+
+            // If we are on an add or edit view and list is displayed on menu, restore plugin page too
+            if( $this->args['menu_slug'] !== $list_view_args['menu_slug'] ) {
+
+                // If not empty parent slug then restore plugin page
+                if( ! empty( $this->args['parent_slug'] ) ) {
+                    $plugin_page = $this->args['menu_slug'];
+                }
+
+                if( $list_view_args['show_in_menu'] && ! empty( $list_view_args['parent_slug'] ) ) {
+                    $plugin_page = $this->args['menu_slug'];
+                }
+            }
+
+        }
+
+        public function is_current_view() {
+
+            global $ct_registered_tables, $pagenow;
+
+            if( $pagenow !== 'admin.php' ) {
+                return false;
+            }
+
+            if( ! isset( $_GET['page'] ) ) {
+                return false;
+            }
+
+            if( empty( $_GET['page'] ) || $_GET['page'] !== $this->args['menu_slug'] ) {
+                return false;
+            }
+
+            if( ! isset( $ct_registered_tables[$this->name] ) ) {
+                return false;
+            }
+
+            return true;
+        }
+
         public function get_slug() {
             return $this->args['menu_slug'];
         }
@@ -252,21 +384,9 @@ if ( ! class_exists( 'CT_View' ) ) :
          */
         public function admin_init() {
 
-            global $ct_registered_tables, $ct_table, $pagenow;
+            global $ct_registered_tables, $ct_table;
 
-            if( $pagenow !== 'admin.php' ) {
-                return;
-            }
-
-            if( ! isset( $_GET['page'] ) ) {
-                return;
-            }
-
-            if( empty( $_GET['page'] ) || $_GET['page'] !== $this->args['menu_slug'] ) {
-                return;
-            }
-
-            if( ! isset( $ct_registered_tables[$this->name] ) ) {
+            if( ! $this->is_current_view() ) {
                 return;
             }
 

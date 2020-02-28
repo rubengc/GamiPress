@@ -257,6 +257,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Enqueue Shortcodes Editor script on custom tables add/edit screens.
 * Improved pro add-on update process to avoid "Update package not available" error.
 * Make block's async selects load default options without require to type something.
+* Highlight GamiPress menu when editing logs or users earnings (also takes effect on other custom table menus).
 * **Developer Notes**
 * Added a filter to override the items per page setting on user profile earnings.
 

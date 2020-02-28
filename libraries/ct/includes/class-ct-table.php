@@ -585,6 +585,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
                     'page_title'    => $this->labels->plural_name,
                     'menu_title'    => $this->labels->all_items,
                     'menu_slug'     => $this->name,
+                    'parent_slug'   => $this->name,
                     'show_in_menu'  => $this->show_ui,
 
                     // Specific view args
@@ -605,6 +606,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
                     'page_title'    => $this->labels->edit_item,
                     'menu_title'    => $this->labels->edit_item,
                     'menu_slug'     => 'edit_' . $this->name,
+                    'parent_slug'   => '',
                     'show_in_menu'  => false,
 
                     // Specific view args
@@ -650,6 +652,13 @@ if ( ! class_exists( 'CT_Table' ) ) :
                     } else if( $view_args instanceof CT_View || is_subclass_of( $view_args, 'CT_View' ) ) {
                         // View as custom object
                         $views[$view] = $view_args;
+                    }
+                }
+
+                // Ensure to add all default views
+                foreach( array( 'list', 'add', 'edit' ) as $view ) {
+                    if( ! isset( $views[$view] ) ) {
+                        $views[$view] = false;
                     }
                 }
 
