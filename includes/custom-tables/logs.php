@@ -225,6 +225,34 @@ function gamipress_logs_query_search( $search, $ct_query ) {
 add_filter( 'ct_query_search', 'gamipress_logs_query_search', 10, 2 );
 
 /**
+ * Define the field for logs views
+ *
+ * @since 1.8.3
+ *
+ * @param string $field_id
+ *
+ * @return string
+ */
+function gamipress_logs_views_field( $field_id = '' ) {
+    return 'type';
+}
+add_filter( 'ct_list_gamipress_logs_views_field', 'gamipress_logs_views_field' );
+
+/**
+ * Define the field labels for logs views
+ *
+ * @since 1.8.3
+ *
+ * @param array $field_labels
+ *
+ * @return array
+ */
+function gamipress_logs_views_field_labels( $field_labels = array() ) {
+    return gamipress_get_log_types();
+}
+add_filter( 'ct_list_gamipress_logs_views_field_labels', 'gamipress_logs_views_field_labels' );
+
+/**
  * Columns for logs list view
  *
  * @since 1.2.8

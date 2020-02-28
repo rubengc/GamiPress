@@ -35,20 +35,6 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
         }
 
         /**
-         * Retrieve view counts
-         *
-         * @since 1.0.0
-         *
-         * @return void
-         */
-        public function get_views_counts() {
-
-            $search = isset( $_GET['s'] ) ? $_GET['s'] : '';
-
-
-        }
-
-        /**
          * Show the search field
          *
          * @since 1.0.0
@@ -86,7 +72,78 @@ if ( ! class_exists( 'CT_List_Table' ) ) :
          * @return array $views All the views available
          */
         public function get_views() {
+
+            global $wpdb, $ct_table;
+
+            /**
+             * Utility filter to generate views based on a given field
+             *
+             * @since 1.0.0
+             *
+             * @param string $field_id The field id to generate the views
+             *
+             * @return string
+             */
+            $field_id = apply_filters( "ct_list_{$ct_table->name}_views_field", '' );
+
+            /**
+             * Labels for the filed id
+             *
+             * @since 1.0.0
+             *
+             * @param array $field_labels   Field labels in format array( 'field_value' => 'Field Label' )
+             *                              Field values that are not listed here won't get displayed
+             *
+             * @return array
+             */
+            $field_labels = apply_filters( "ct_list_{$ct_table->name}_views_field_labels", array() );
+
             $views = array();
+
+            // Check if field ID and labels has been passed and also is field is registered on the table (not as meta)
+            if( ! empty( $field_id ) && ! empty( $field_labels ) && isset( $ct_table->db->schema->fields[$field_id] ) ) {
+
+                // Get the number of entries per each different field value
+                $results = $wpdb->get_results( "SELECT {$field_id}, COUNT( * ) AS num_entries FROM {$ct_table->db->table_name} GROUP BY {$field_id}", ARRAY_A );
+                $counts  = array();
+
+                // Loop them to build the counts array
+                foreach( $results as $result ) {
+                    $counts[$result[$field_id]] = absint( $result['num_entries'] );
+                }
+
+                $list_link = ct_get_list_link( $ct_table->name );
+                $current = isset( $_GET[$field_id] ) ? $_GET[$field_id] : '';
+
+                // Setup the 'All' view
+                $all_count =  absint( $wpdb->get_var( "SELECT COUNT( * ) FROM {$ct_table->db->table_name}" ) );
+                $views['all'] = '<a href="' . $list_link . '" class="' . ( empty( $current ) ? 'current' : '' ) . '">' . __( 'All', 'ct' ) . ' <span class="count">(' . $all_count . ')</span></a>';
+
+                foreach( $counts as $value => $count ) {
+
+                    // Skip fields that are not intended to being displayed
+                    if( ! isset( $field_labels[$value] ) ) {
+                        continue;
+                    }
+
+                    $label = $field_labels[$value];
+                    $url = $list_link . '&' . $field_id . '=' . $value;
+
+                    $views[$value] = '<a href="' . $url . '" class="' . ( $current === $value ? 'current' : '' ) . '">' . $label . ' <span class="count">(' . $count . ')</span>' . '</a>';
+                }
+
+            }
+
+            /**
+             * Available filter to past custom views
+             *
+             * @since 1.0.0
+             *
+             * @param array $views  An array of views links.
+             *                      Array format: array( 'link_id' => 'link' )
+             *                      Link format: '<a href="#">{label} <span class="count">({count})</span></a>'
+             */
+            $views = apply_filters( "{$ct_table->name}_get_views", $views );
 
             return $views;
         }

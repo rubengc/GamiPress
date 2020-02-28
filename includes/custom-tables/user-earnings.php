@@ -78,6 +78,21 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     }
 
+    // Post Type (using the 'type' key)
+    if( isset( $qv['type'] ) && ! empty( $qv['type'] ) ) {
+
+        $post_type = $qv['type'];
+
+        if( is_array( $post_type ) ) {
+            $post_type = "'" . implode( "', '", $post_type ) . "'";
+
+            $post_type_where = "{$table_name}.post_type IN ( {$post_type} )";
+        } else {
+            $post_type_where = "{$table_name}.post_type = '{$post_type}'";
+        }
+
+    }
+
     // Points Type
     $points_type_where = '';
 
@@ -367,6 +382,90 @@ function gamipress_manage_user_earnings_sortable_columns( $sortable_columns ) {
 
 }
 add_filter( 'manage_gamipress_user_earnings_sortable_columns', 'gamipress_manage_user_earnings_sortable_columns' );
+
+/**
+ * Define the field labels for user earnings views
+ *
+ * @since 1.8.3
+ *
+ * @param array $field_labels
+ *
+ * @return array
+ */
+function gamipress_user_earnings_views_field_labels( $field_labels = array() ) {
+
+    foreach( gamipress_get_achievement_types() as $type => $data ) {
+        $field_labels[$type] = $data['plural_name'];
+    }
+
+    $field_labels['step'] = __( 'Steps', 'gamipress' );
+
+    foreach( gamipress_get_points_types() as $type => $data ) {
+        $field_labels[$type] = $data['plural_name'];
+    }
+
+    $field_labels['points-award'] = __( 'Points Awards', 'gamipress' );
+        $field_labels['points-deduct'] = __( 'Points Deducts', 'gamipress' );
+
+    foreach( gamipress_get_rank_types() as $type => $data ) {
+        $field_labels[$type] = $data['plural_name'];
+    }
+
+    $field_labels['rank-requirement'] = __( 'Rank Requirements', 'gamipress' );
+
+    return $field_labels;
+}
+//add_filter( 'ct_list_gamipress_user_earnings_views_field_labels', 'gamipress_user_earnings_views_field_labels' );
+
+/**
+ * Since the post_type query var causes issues, we need to pass it as type and process it differently
+ *
+ * @since 1.8.3
+ *
+ * @param array $field_labels
+ *
+ * @return array
+ */
+function gamipress_user_earnings_get_list_views( $views = array() ) {
+
+    global $wpdb, $ct_table;
+
+    $field_id = 'post_type';
+    $field_key = 'type';
+    $field_labels = gamipress_user_earnings_views_field_labels();
+
+    // Get the number of entries per each different field value
+    $results = $wpdb->get_results( "SELECT {$field_id}, COUNT( * ) AS num_entries FROM {$ct_table->db->table_name} GROUP BY {$field_id}", ARRAY_A );
+    $counts  = array();
+
+    // Loop them to build the counts array
+    foreach( $results as $result ) {
+        $counts[$result[$field_id]] = absint( $result['num_entries'] );
+    }
+
+    $list_link = ct_get_list_link( $ct_table->name );
+    $current = isset( $_GET[$field_key] ) ? $_GET[$field_key] : '';
+
+    // Setup the 'All' view
+    $all_count =  absint( $wpdb->get_var( "SELECT COUNT( * ) FROM {$ct_table->db->table_name}" ) );
+    $views['all'] = '<a href="' . $list_link . '" class="' . ( empty( $current ) ? 'current' : '' ) . '">' . __( 'All', 'ct' ) . ' <span class="count">(' . $all_count . ')</span></a>';
+
+    foreach( $counts as $value => $count ) {
+
+        // Skip fields that are not intended to being displayed
+        if( ! isset( $field_labels[$value] ) ) {
+            continue;
+        }
+
+        $label = $field_labels[$value];
+        $url = $list_link . '&' . $field_key . '=' . $value;
+
+        $views[$value] = '<a href="' . $url . '" class="' . ( $current === $value ? 'current' : '' ) . '">' . $label . ' <span class="count">(' . $count . ')</span>' . '</a>';
+    }
+
+    return $views;
+}
+add_filter( 'gamipress_user_earnings_get_views', 'gamipress_user_earnings_get_list_views' );
 
 /**
  * Columns rendering for user earnings list view

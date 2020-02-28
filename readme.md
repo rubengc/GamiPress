@@ -243,6 +243,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 * **New Features**
 * Added the "Entries Per Loop" field to the Recount Activity Tool.
+* Added list views on logs and user earnings.
 * **Bug Fixes**
 * Fixed "Activate License" link from "Add-ons" page.
 * Fixed -1 limit on earners list function, thanks to [@cherbst](https://github.com/cherbst).
@@ -251,6 +252,7 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Fixed earn points calculation when is working with a rank that all requirements are based on earn points.
 * Prevent to get user profile earnings per page overwritten by the user earnings screen setting.
 * Fixed incorrect invalid license messages.
+* Fixed logs and user earnings bulk delete.
 * **Improvements**
 * Enqueue Shortcodes Editor script on custom tables add/edit screens.
 * Improved pro add-on update process to avoid "Update package not available" error.

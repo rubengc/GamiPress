@@ -287,7 +287,7 @@ if ( ! class_exists( 'CT_List_View' ) ) :
                     wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
                 }
 
-                if ( ! ct_delete_object( $object_id ) )
+                if ( ! ct_delete_object( $object_id, true ) )
                     wp_die( __( 'Error in deleting.' ) );
 
                 $deleted++;

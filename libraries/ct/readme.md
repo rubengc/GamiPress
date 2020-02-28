@@ -32,8 +32,9 @@ List view (with features similar to WP tables):
 - [x] Sortable Columns
 - [x] Bulk actions
 - [x] User screen settings
-- [ ] List view views
+- [x] List view views
 - [ ] Trash functionality?
+- [ ] Revisions functionality?
 - [x] Delete Permanently action
 
 Edit View (similar to WP edit screen):
