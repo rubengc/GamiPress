@@ -41,8 +41,9 @@ function gamipress_ajax_get_logs() {
     check_ajax_referer( 'gamipress', 'nonce' );
 
 	// Set current page var
-    if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 )
+    if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 ) {
         set_query_var( 'paged', absint( $_REQUEST['page'] ) );
+    }
 
     $atts = $_REQUEST;
 
@@ -70,8 +71,9 @@ function gamipress_ajax_get_user_earnings() {
     check_ajax_referer( 'gamipress', 'nonce' );
 
 	// Set current page var
-	if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 )
+	if( isset( $_REQUEST['page'] ) && absint( $_REQUEST['page'] ) > 1 ) {
 		set_query_var( 'paged', absint( $_REQUEST['page'] ) );
+    }
 
     $atts = $_REQUEST;
 
@@ -96,8 +98,9 @@ function gamipress_ajax_get_users() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
 	// If no word query sent, initialize it
-	if ( ! isset( $_REQUEST['q'] ) )
+	if ( ! isset( $_REQUEST['q'] ) ) {
 		$_REQUEST['q'] = '';
+    }
 
 	global $wpdb;
 
@@ -122,7 +125,8 @@ function gamipress_ajax_get_users() {
 		 FROM {$wpdb->users}
 		 {$where}
 		 LIMIT {$offset}, {$limit}",
-		'ARRAY_A' );
+		'ARRAY_A'
+    );
 
 	$count = $wpdb->get_var(
 		"SELECT COUNT(*)
@@ -162,8 +166,18 @@ function gamipress_ajax_get_posts() {
 	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] :  array( 'post', 'page' ) );
 
 	if ( is_array( $post_type ) ) {
+
+	    // Sanitize all post types given
+        foreach( $post_type as $i => $value ) {
+            $post_type[$i] = sanitize_text_field( $value );
+        }
+
 		$post_type = sprintf( ' AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
 	} else {
+
+	    // Sanitize the post type
+        $post_type = sanitize_text_field( $post_type );
+
 		$post_type = sprintf( ' AND p.post_type = \'%s\'', $post_type );
 	}
 
@@ -179,7 +193,7 @@ function gamipress_ajax_get_posts() {
 	if( isset( $_REQUEST['trigger_type'] ) ) {
 
 		$query_args = array();
-		$trigger_type = $_REQUEST['trigger_type'];
+		$trigger_type = sanitize_text_field( $_REQUEST['trigger_type'] );
 
 		// Get trigger type query args (This function is filtered!)
 		$query_args = gamipress_get_specific_activity_triggers_query_args( $query_args, $trigger_type );
@@ -232,7 +246,6 @@ function gamipress_ajax_get_posts() {
 
     /**
      * Ajax posts from (used on almost every post selector)
-     *
      * Note: Use $_REQUEST for all given parameters
      *
      * @since  1.6.6
@@ -245,7 +258,6 @@ function gamipress_ajax_get_posts() {
 
     /**
      * Ajax posts where (used on almost every post selector)
-     *
      * Note: Use $_REQUEST for all given parameters
      *
      * @since  1.6.6
@@ -261,7 +273,6 @@ function gamipress_ajax_get_posts() {
 
     /**
      * Ajax posts order by (used on almost every post selector)
-     *
      * Note: Use $_REQUEST for all given parameters
      *
      * @since  1.6.6
@@ -492,9 +503,19 @@ function gamipress_ajax_get_ranks_options_html() {
 	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] :  gamipress_get_rank_types_slugs() );
 
 	if ( is_array( $post_type ) ) {
+
+        // Sanitize all post types given
+        foreach( $post_type as $i => $value ) {
+            $post_type[$i] = sanitize_text_field( $value );
+        }
+
 		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
 		$singular_name = __( 'Rank', 'gamipress' );
 	} else {
+
+        // Sanitize the post type
+        $post_type = sanitize_text_field( $post_type );
+
 		$singular_name = gamipress_get_rank_type_singular( $post_type, true );
 		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
 	}
@@ -552,10 +573,20 @@ function gamipress_ajax_get_ranks_options() {
 	$post_type = ( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) ? $_REQUEST['post_type'] : gamipress_get_rank_types_slugs() );
 
 	if ( is_array( $post_type ) ) {
+
+        // Sanitize all post types given
+        foreach( $post_type as $i => $value ) {
+            $post_type[$i] = sanitize_text_field( $value );
+        }
+
 		$post_type = sprintf( 'AND p.post_type IN(\'%s\')', implode( "','", $post_type ) );
 
 		$select = 'p.ID, p.post_title, p.post_type';
 	} else {
+
+        // Sanitize the post type
+        $post_type = sanitize_text_field( $post_type );
+
 		$post_type = sprintf( 'AND p.post_type = \'%s\'', $post_type );
 	}
 
