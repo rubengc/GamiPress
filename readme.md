@@ -239,6 +239,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.3.1 ###
+
+* **Improvements**
+* Added type support on query logs function.
+
 ### 1.8.3 ###
 
 * **New Features**

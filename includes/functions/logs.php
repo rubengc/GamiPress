@@ -143,7 +143,7 @@ function gamipress_query_logs( $args ) {
 
     $args = wp_parse_args( $args, array(
         'select'            => 'l.id',  // You can pass 'l.*', 'l.{field}', 'COUNT(*)' or an array as select
-        'where'      	    => array(), // Supported formats: 'key' =>'value' | array( 'key' =>'key', 'value' =>'value', 'compare' =>'compare' )
+        'where'      	    => array(), // Supported formats: 'key' =>'value' | array( 'key'=>'key', 'value'=>'value', 'compare'=>'compare', 'type'=>'type' )
         'date_query'      	=> array(), // Supports before and after parameters
         'user_id'           => 0,
         'group_by'          => '',
@@ -255,14 +255,48 @@ function gamipress_query_logs( $args ) {
 
             $compare = ( is_array( $value ) && isset( $value['compare'] ) ? $value['compare'] : $default_compare );
 
+            // Field type
+            $default_type = 'string';
+
+            $type = ( is_array( $value ) && isset( $value['type'] ) ? $value['type'] : $default_type );
+
+            // Parse common types to an unique one type
+            switch( $type ) {
+                case 'int':
+                case 'integer':
+                case 'number':
+                case 'numeric':
+                    $type = 'integer';
+                    break;
+                case 'text':
+                case 'string':
+                case 'char':
+                case 'varchar':
+                    $type = 'string';
+                    break;
+            }
+
             if( in_array( $field, $log_fields ) ) {
 
                 // Query log field
 
                 if( is_array( $field_value ) ) {
-                    $field_value = "'" . implode( "', '", $field_value ) . "'";
+
+                    if( $type === 'integer' ) {
+                        $field_value = "'" . implode( ", ", $field_value ) . "'";
+                    } else {
+                        $field_value = "'" . implode( "', '", $field_value ) . "'";
+                    }
+
                     $where[] = "l.{$field} {$compare} ({$field_value})";
                 } else {
+
+                    if( $type === 'integer' ) {
+                        $where[] = "l.{$field} {$compare} %d";
+                    } else {
+                        $where[] = "l.{$field} {$compare} %s";
+                    }
+
                     $where[] = "l.{$field} {$compare} %s";
                     $query_args[] = $field_value;
                 }
@@ -281,11 +315,23 @@ function gamipress_query_logs( $args ) {
                 // If meta value is an array then need to compare using IN operator
                 if( is_array( $field_value ) ) {
 
+                    if( $type === 'integer' ) {
+                        $field_value = "'" . implode( ", ", $field_value ) . "'";
+                    } else {
+                        $field_value = "'" . implode( "', '", $field_value ) . "'";
+                    }
+
                     $field_value = "'" . implode( "', '", $field_value ) . "'";
                     $where[] = "lm{$index}.meta_value {$compare} ({$field_value})";
 
                 } else {
                     // Meta query in format: 'key' =>'value'
+                    if( $type === 'integer' ) {
+                        $where[] = "lm{$index}.meta_value {$compare} %d";
+                    } else {
+                        $where[] = "lm{$index}.meta_value {$compare} %s";
+                    }
+
                     $where[] = "lm{$index}.meta_value {$compare} %s";
                     $query_args[] = $field_value;
                 }
