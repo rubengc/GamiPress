@@ -143,7 +143,7 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
 }
 
 /**
- * Checks if an user is allowed to work on a given requirement related to a specific ID
+ * Checks if a user is allowed to work on a given requirement related to a specific ID
  *
  * @since  1.0.8
  *
@@ -183,7 +183,7 @@ function gamipress_user_has_access_to_specific_requirement( $return = false, $us
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_specific_requirement', 10, 6 );
 
 /**
- * Checks if an user is allowed to work on a given step
+ * Checks if a user is allowed to work on a given step
  *
  * @since  1.0.0
  *
@@ -225,7 +225,7 @@ function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_step', 10, 3 );
 
 /**
- * Checks if an user is allowed to work on a given points award
+ * Checks if a user is allowed to work on a given points award
  *
  * @since  1.0.0
  *
@@ -270,7 +270,7 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_points_award', 10, 3 );
 
 /**
- * Checks if an user is allowed to work on a given points deduct
+ * Checks if a user is allowed to work on a given points deduct
  *
  * @since  1.3.7
  *
@@ -316,7 +316,7 @@ function gamipress_user_has_access_to_points_deduct( $return = false, $user_id =
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_points_deduct', 10, 3 );
 
 /**
- * Checks if an user is allowed to work on a given rank requirement
+ * Checks if a user is allowed to work on a given rank requirement
  *
  * @since  1.0.0
  *

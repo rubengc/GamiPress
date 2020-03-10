@@ -10,7 +10,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Return an user's points
+ * Return a user's points
  *
  * @since   1.0.0
  * @updated 1.6.9 Added $args argument
@@ -68,7 +68,7 @@ function gamipress_get_user_points( $user_id = 0, $points_type = '', $args = arr
 }
 
 /**
- * Return an user's points awarded
+ * Return a user's points awarded
  *
  * @since 	1.3.7
  * @updated 1.3.9.6 Added $since parameter
@@ -129,7 +129,7 @@ function gamipress_get_user_points_awarded( $user_id = 0, $points_type = '', $si
 }
 
 /**
- * Return an user's points deducted
+ * Return a user's points deducted
  *
  * @since 	1.3.7
  * @updated 1.3.9.6 Added $since parameter
@@ -190,7 +190,7 @@ function gamipress_get_user_points_deducted( $user_id = 0, $points_type = '', $s
 }
 
 /**
- * Return an user's points expended
+ * Return a user's points expended
  *
  * @since 	1.3.7
  * @updated 1.3.9.6 Added $since parameter
@@ -373,7 +373,7 @@ function gamipress_get_site_points_expended( $points_type = '' ) {
 }
 
 /**
- * Award points to an user
+ * Award points to a user
  *
  * @since 1.3.6
  *
@@ -415,7 +415,7 @@ function gamipress_award_points_to_user( $user_id = 0, $points = 0, $points_type
 }
 
 /**
- * Deduct points to an user
+ * Deduct points to a user
  *
  * @since 1.3.6
  *
@@ -523,7 +523,7 @@ function gamipress_update_user_points( $user_id = 0, $new_points = 0, $admin_id 
 }
 
 /**
- * Return an user's latest points awarded or deducted
+ * Return a user's latest points awarded or deducted
  *
  * @since 1.3.9.4
  *

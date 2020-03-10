@@ -134,6 +134,18 @@ function gamipress_ajax_get_users() {
 		 {$where}"
 	);
 
+    /**
+     * Ajax posts results (used on almost every post selector)
+     * Note: Use $_REQUEST for all given parameters
+     *
+     * @since  1.0.0
+     *
+     * @param array $results
+     *
+     * @return array
+     */
+    $results = apply_filters( 'gamipress_ajax_get_posts_results', $results );
+
 	$response = array(
 		'results' => $results,
 		'more_results' => absint( $count ) > $offset,

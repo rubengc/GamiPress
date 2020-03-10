@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-03-10 10:23+0100\n"
+"POT-Creation-Date: 2020-03-10 17:12+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -261,7 +261,7 @@ msgid "Points Awards"
 msgstr ""
 
 #: includes/admin/contextual-help.php:63
-msgid "Points awards are automatic ways an user could retrieve an amount of a points type."
+msgid "Points awards are automatic ways a user could retrieve an amount of a points type."
 msgstr ""
 
 #: includes/admin/contextual-help.php:64 includes/admin/contextual-help.php:72
@@ -277,7 +277,7 @@ msgid "Points Deducts"
 msgstr ""
 
 #: includes/admin/contextual-help.php:71
-msgid "Points deduct are automatic ways an user could lose an amount of a points type."
+msgid "Points deduct are automatic ways a user could lose an amount of a points type."
 msgstr ""
 
 #: includes/admin/contextual-help.php:84
@@ -538,7 +538,7 @@ msgid "Attached post to this log."
 msgstr ""
 
 #: includes/admin/log-extra-data-ui.php:184 includes/admin/requirements.php:41
-#: includes/admin/requirements.php:80 includes/ajax-functions.php:465
+#: includes/admin/requirements.php:80 includes/ajax-functions.php:477
 #: includes/compatibility/1.2.8.php:1000
 #: includes/functions/achievement-types.php:155
 #: includes/functions/achievement-types.php:162
@@ -558,7 +558,7 @@ msgstr ""
 #: includes/admin/tools/bulk-awards.php:191
 #: includes/admin/tools/bulk-revokes.php:191
 #: includes/admin/tools/import-export-points.php:142
-#: includes/ajax-functions.php:665 includes/ajax-functions.php:768
+#: includes/ajax-functions.php:677 includes/ajax-functions.php:780
 #: includes/compatibility/1.2.8.php:1021
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
@@ -598,7 +598,7 @@ msgstr ""
 #: includes/admin/log-extra-data-ui.php:230 includes/admin/requirements.php:43
 #: includes/admin/requirements.php:83
 #: includes/admin/tools/import-export-ranks.php:155
-#: includes/ajax-functions.php:513 includes/functions/rank-types.php:156
+#: includes/ajax-functions.php:525 includes/functions/rank-types.php:156
 #: includes/functions/rank-types.php:163
 #: includes/shortcodes/gamipress_rank.php:27
 #: includes/shortcodes/gamipress_ranks.php:41
@@ -989,7 +989,7 @@ msgid "Priority"
 msgstr ""
 
 #: includes/admin/meta-boxes/ranks.php:113
-msgid "The rank priority defines the order an user can achieve ranks. User will need to get lower priority ranks before get this one."
+msgid "The rank priority defines the order a user can achieve ranks. User will need to get lower priority ranks before get this one."
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements.php:34
@@ -1316,11 +1316,11 @@ msgid "You will be able to set requirements on next ranks. After save this rank,
 msgstr ""
 
 #: includes/admin/requirements-ui.php:89
-msgid "Define the automatic ways an user could retrieve an amount of this points type. Use the \"Label\" field to optionally customize the titles of each one."
+msgid "Define the automatic ways a user could retrieve an amount of this points type. Use the \"Label\" field to optionally customize the titles of each one."
 msgstr ""
 
 #: includes/admin/requirements-ui.php:94
-msgid "Define the automatic ways an user could lose an amount of this points type. Use the \"Label\" field to optionally customize the titles of each one."
+msgid "Define the automatic ways a user could lose an amount of this points type. Use the \"Label\" field to optionally customize the titles of each one."
 msgstr ""
 
 #: includes/admin/requirements-ui.php:99
@@ -1454,8 +1454,8 @@ msgstr ""
 #: includes/admin/tools/import-export-setup.php:355
 #: includes/admin/tools/logs-clean-up.php:111
 #: includes/admin/tools/recount-activity.php:95
-#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:642
-#: includes/ajax-functions.php:744
+#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:654
+#: includes/ajax-functions.php:756
 msgid "You are not allowed to perform this action."
 msgstr ""
 
@@ -1790,7 +1790,7 @@ msgid "Minimum role to administer GamiPress"
 msgstr ""
 
 #: includes/admin/settings/general.php:28
-msgid "Minimum role an user needs to access to GamiPress management areas."
+msgid "Minimum role a user needs to access to GamiPress management areas."
 msgstr ""
 
 #: includes/admin/settings/general.php:32
@@ -1927,8 +1927,8 @@ msgstr ""
 msgid "Used when user expend an amount of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:681
-#: includes/ajax-functions.php:784
+#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:693
+#: includes/ajax-functions.php:796
 msgid "{user} expended {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1974,7 +1974,7 @@ msgid "Points awarded"
 msgstr ""
 
 #: includes/admin/settings/logs.php:83
-msgid "Used when an admin awards an user with points. Available tags:"
+msgid "Used when an admin awards a user with points. Available tags:"
 msgstr ""
 
 #: includes/admin/settings/logs.php:85 includes/functions/points.php:806
@@ -1986,7 +1986,7 @@ msgid "Points revoked"
 msgstr ""
 
 #: includes/admin/settings/logs.php:89
-msgid "Used when an admin revokes points of an user. Available tags:"
+msgid "Used when an admin revokes points of a user. Available tags:"
 msgstr ""
 
 #: includes/admin/settings/logs.php:91 includes/functions/points.php:810
@@ -1998,7 +1998,7 @@ msgid "Achievement awarded"
 msgstr ""
 
 #: includes/admin/settings/logs.php:95
-msgid "Used when an admin awards an user with an achievement. Available tags:"
+msgid "Used when an admin awards a user with an achievement. Available tags:"
 msgstr ""
 
 #: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1293
@@ -2010,7 +2010,7 @@ msgid "Rank awarded"
 msgstr ""
 
 #: includes/admin/settings/logs.php:101
-msgid "Used when an admin ranks an user to a new rank. Available tags:"
+msgid "Used when an admin ranks a user to a new rank. Available tags:"
 msgstr ""
 
 #: includes/admin/settings/logs.php:103 includes/functions/ranks.php:715
@@ -3256,54 +3256,54 @@ msgstr ""
 msgid "Choose a requirement type"
 msgstr ""
 
-#: includes/ajax-functions.php:478 includes/ajax-functions.php:546
+#: includes/ajax-functions.php:490 includes/ajax-functions.php:558
 #, php-format
 msgid "Choose the %s"
 msgstr ""
 
-#: includes/ajax-functions.php:628
+#: includes/ajax-functions.php:640
 msgid "Achievement not found."
 msgstr ""
 
-#: includes/ajax-functions.php:634
+#: includes/ajax-functions.php:646
 msgid "Invalid achievement."
 msgstr ""
 
-#: includes/ajax-functions.php:646 includes/ajax-functions.php:652
-#: includes/ajax-functions.php:748 includes/ajax-functions.php:755
+#: includes/ajax-functions.php:658 includes/ajax-functions.php:664
+#: includes/ajax-functions.php:760 includes/ajax-functions.php:767
 #, php-format
 msgid "You are not allowed to unlock this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:658
+#: includes/ajax-functions.php:670
 #, php-format
 msgid "You already unlocked this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:676 includes/ajax-functions.php:779
+#: includes/ajax-functions.php:688 includes/ajax-functions.php:791
 #, php-format
 msgid "Insufficient %s."
 msgstr ""
 
-#: includes/ajax-functions.php:690
+#: includes/ajax-functions.php:702
 #, php-format
 msgid "Congratulations! You unlocked the %s %s."
 msgstr ""
 
-#: includes/ajax-functions.php:730
+#: includes/ajax-functions.php:742
 msgid "Rank not found."
 msgstr ""
 
-#: includes/ajax-functions.php:736
+#: includes/ajax-functions.php:748
 msgid "Invalid rank."
 msgstr ""
 
-#: includes/ajax-functions.php:761
+#: includes/ajax-functions.php:773
 #, php-format
 msgid "You are already in a higher %s."
 msgstr ""
 
-#: includes/ajax-functions.php:793
+#: includes/ajax-functions.php:805
 #, php-format
 msgid "Congratulations! You reached to the %s %s."
 msgstr ""
@@ -3522,7 +3522,7 @@ msgstr ""
 msgid "No Log Entries found in Trash"
 msgstr ""
 
-#: includes/compatibility/1.2.8.php:591 includes/functions/logs.php:713
+#: includes/compatibility/1.2.8.php:591 includes/functions/logs.php:711
 msgid "points"
 msgstr ""
 
@@ -4610,7 +4610,7 @@ msgid "Select a post"
 msgstr ""
 
 #: includes/scripts.php:305
-msgid "Select an user"
+msgid "Select a user"
 msgstr ""
 
 #: includes/scripts.php:307
@@ -5282,7 +5282,7 @@ msgid "User Points Balance"
 msgstr ""
 
 #: includes/shortcodes/gamipress_points.php:21
-msgid "Output an user points balance."
+msgid "Output a user points balance."
 msgstr ""
 
 #: includes/shortcodes/gamipress_points.php:41
@@ -5560,7 +5560,7 @@ msgid "User Rank"
 msgstr ""
 
 #: includes/shortcodes/gamipress_user_rank.php:26
-msgid "Output previous, current and/or next rank of an user."
+msgid "Output previous, current and/or next rank of a user."
 msgstr ""
 
 #: includes/shortcodes/gamipress_user_rank.php:53
@@ -5834,7 +5834,7 @@ msgid "GamiPress: User Rank"
 msgstr ""
 
 #: includes/widgets/user-rank-widget.php:26
-msgid "Display previous, current and/or next rank of an user."
+msgid "Display previous, current and/or next rank of a user."
 msgstr ""
 
 #: includes/widgets/widget.php:171

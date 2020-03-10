@@ -18,7 +18,7 @@ function gamipress_register_points_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_points', array(
         'name'              => __( 'User Points Balance', 'gamipress' ),
-        'description'       => __( 'Output an user points balance.', 'gamipress' ),
+        'description'       => __( 'Output a user points balance.', 'gamipress' ),
         'icon' 	            => 'star-filled',
         'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_points_shortcode',

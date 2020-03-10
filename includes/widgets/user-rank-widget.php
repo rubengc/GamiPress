@@ -23,7 +23,7 @@ class GamiPress_User_Rank_Widget extends GamiPress_Widget {
         parent::__construct(
             $this->shortcode . '_widget',
             __( 'GamiPress: User Rank', 'gamipress' ),
-            __( 'Display previous, current and/or next rank of an user.', 'gamipress' )
+            __( 'Display previous, current and/or next rank of a user.', 'gamipress' )
         );
 
     }

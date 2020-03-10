@@ -239,6 +239,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.3.2 ###
+
+* **Bug Fixes**
+* Fixed typo on query logs function that causes some awards not get correctly awarded.
+* Fixed typo on several strings related to the word "user" usage.
+* **Developer Notes**
+* Added new filters on ajax post function.
+
 ### 1.8.3.1 ###
 
 * **Improvements**

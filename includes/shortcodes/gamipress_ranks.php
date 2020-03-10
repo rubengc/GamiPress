@@ -283,7 +283,7 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 
 	$gamipress_template_args['template_args'] = $template_args;
 
-	// Setup query args if not is an user ranks
+	// Setup query args if not is a user ranks
 	if( ! $is_user_ranks ) {
 
 		// Turn order by value into the real value

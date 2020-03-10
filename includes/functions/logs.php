@@ -272,6 +272,7 @@ function gamipress_query_logs( $args ) {
                 case 'string':
                 case 'char':
                 case 'varchar':
+                default:
                     $type = 'string';
                     break;
             }
@@ -283,7 +284,7 @@ function gamipress_query_logs( $args ) {
                 if( is_array( $field_value ) ) {
 
                     if( $type === 'integer' ) {
-                        $field_value = "'" . implode( ", ", $field_value ) . "'";
+                        $field_value = implode( ", ", $field_value );
                     } else {
                         $field_value = "'" . implode( "', '", $field_value ) . "'";
                     }
@@ -297,7 +298,6 @@ function gamipress_query_logs( $args ) {
                         $where[] = "l.{$field} {$compare} %s";
                     }
 
-                    $where[] = "l.{$field} {$compare} %s";
                     $query_args[] = $field_value;
                 }
 
@@ -316,12 +316,11 @@ function gamipress_query_logs( $args ) {
                 if( is_array( $field_value ) ) {
 
                     if( $type === 'integer' ) {
-                        $field_value = "'" . implode( ", ", $field_value ) . "'";
+                        $field_value = implode( ", ", $field_value );
                     } else {
                         $field_value = "'" . implode( "', '", $field_value ) . "'";
                     }
 
-                    $field_value = "'" . implode( "', '", $field_value ) . "'";
                     $where[] = "lm{$index}.meta_value {$compare} ({$field_value})";
 
                 } else {
@@ -332,7 +331,6 @@ function gamipress_query_logs( $args ) {
                         $where[] = "lm{$index}.meta_value {$compare} %s";
                     }
 
-                    $where[] = "lm{$index}.meta_value {$compare} %s";
                     $query_args[] = $field_value;
                 }
 

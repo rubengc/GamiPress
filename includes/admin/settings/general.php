@@ -25,7 +25,7 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
         'fields' => apply_filters( 'gamipress_general_settings_fields', array(
             'minimum_role' => array(
                 'name' => __( 'Minimum role to administer GamiPress', 'gamipress' ),
-                'desc' => __( 'Minimum role an user needs to access to GamiPress management areas.', 'gamipress' ),
+                'desc' => __( 'Minimum role a user needs to access to GamiPress management areas.', 'gamipress' ),
                 'type' => 'select',
                 'options' => array(
                     'manage_options' => __( 'Administrator', 'gamipress' ),

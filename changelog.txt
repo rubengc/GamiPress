@@ -179,7 +179,7 @@
 * Prevent to display removed or unpublished achievements on gamipress_get_user_achievements() function.
 * Prevent to add empty shortcode attributes on through the shortcodes editor.
 * **Improvements**
-* Added a confirmation message when revoking an user earning.
+* Added a confirmation message when revoking a user earning.
 * Improvements on the Widgets API that handles much better widget setup of external fields.
 * Style improvements on tools and settings screens.
 * Updated MySQL minimum requirement to meet WordPress recommendations.
@@ -465,7 +465,7 @@
 
 * **Bug Fixes**
 * Fixed wrong CSS selector on achievements template layout.
-* Fixed wrong "Admin revoked 0 points" log entry caused from update an user without change his points balance.
+* Fixed wrong "Admin revoked 0 points" log entry caused from update a user without change his points balance.
 * Fixed subsite post saving when GamiPress is network wide active.
 * Fixed wrong rank type check on achievements earned by reaching a specific rank.
 * **Improvements**
@@ -838,7 +838,7 @@
 
 = 1.3.8 =
 
-* New activity trigger added when an user post gets a comment to award content authors.
+* New activity trigger added when a user post gets a comment to award content authors.
 * Added filters on emails to allow override anything.
 * Added check on [gamipress_logs] shortcode and GamiPress: Logs widget to avoid show logs to guests when showing logs of current user.
 * Fixed wrong variable name on emails.php.
@@ -974,7 +974,7 @@
 
 = 1.2.9 =
 
-* New activity trigger added when an user post gets visited to award content authors.
+* New activity trigger added when a user post gets visited to award content authors.
 * Fixed activation error for missing includes.
 * Fixed wrong form tag on user profile.
 * Fixed undefined index log id warning.

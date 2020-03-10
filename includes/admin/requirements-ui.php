@@ -86,12 +86,12 @@ function gamipress_requirements_ui_meta_box( $post = null, $metabox ) {
     switch( $requirement_type ) {
         case 'points-award':
             echo '<p>' .
-                __( 'Define the automatic ways an user could retrieve an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
+                __( 'Define the automatic ways a user could retrieve an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
             . '</p>';
             break;
         case 'points-deduct':
             echo '<p>' .
-                __( 'Define the automatic ways an user could lose an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
+                __( 'Define the automatic ways a user could lose an amount of this points type. Use the "Label" field to optionally customize the titles of each one.', 'gamipress' )
                 . '</p>';
             break;
         case 'step':

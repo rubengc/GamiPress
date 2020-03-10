@@ -112,7 +112,7 @@ function gamipress_delete_transient( $transient ) {
 }
 
 /**
- * Helper function to get an user meta.
+ * Helper function to get a user meta.
  *
  * @since  1.4.0
  *
@@ -133,7 +133,7 @@ function gamipress_get_user_meta( $user_id, $meta_key = '', $single = true ) {
 }
 
 /**
- * Helper function to update an user meta.
+ * Helper function to update a user meta.
  *
  * @since  1.4.0
  *
@@ -155,7 +155,7 @@ function gamipress_update_user_meta( $user_id, $meta_key, $meta_value, $prev_val
 }
 
 /**
- * Helper function to delete an user meta.
+ * Helper function to delete a user meta.
  *
  * @since  1.4.0
  *

@@ -259,7 +259,7 @@ function gamipress_user_earnings_query_search( $search, $ct_query ) {
     // Check if is search and query is not filtered by an specific user
     if( isset( $qv['s'] ) && ! empty( $qv['s'] ) && ! isset( $qv['user_id'] ) ) {
 
-        // Made an user sub-search to retrieve them
+        // Made a user sub-search to retrieve them
         $users = get_users( array(
             'search' => sprintf( '*%s*', $qv['s'] ),
             'search_columns' => array(

@@ -23,7 +23,7 @@ function gamipress_register_user_rank_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_user_rank', array(
         'name'              => __( 'User Rank', 'gamipress' ),
-        'description'       => __( 'Output previous, current and/or next rank of an user.', 'gamipress' ),
+        'description'       => __( 'Output previous, current and/or next rank of a user.', 'gamipress' ),
         'icon' 	            => 'rank',
         'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_user_rank_shortcode',

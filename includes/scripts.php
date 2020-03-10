@@ -302,7 +302,7 @@ function gamipress_enqueue_admin_functions_script() {
         // Selector placeholders
         'selector_placeholder'      => __( 'Select an option', 'gamipress' ),
         'post_selector_placeholder' => __( 'Select a post', 'gamipress' ),
-        'user_selector_placeholder' => __( 'Select an user', 'gamipress' ),
+        'user_selector_placeholder' => __( 'Select a user', 'gamipress' ),
         // Slug error messages
         'slug_error_special_char'   => __( 'Slug can\'t contain special characters. Only alphanumeric characters are allowed.', 'gamipress' ),
         'slug_error_max_length'     => __( 'Slug supports a maximum of 20 characters.', 'gamipress' ),

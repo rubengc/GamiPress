@@ -1116,7 +1116,7 @@ function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
 }
 
 /**
- * Get the count of the number of times an user has triggered a particular trigger
+ * Get the count of the number of times a user has triggered a particular trigger
  *
  * @since   1.0.0
  * @updated 1.6.2 Added use of gamipress_get_user_triggers() function when $since is 0
@@ -1128,7 +1128,7 @@ function gamipress_get_user_triggers( $user_id = 0, $site_id = 0 ) {
  * @param  int      $site_id    The desired Site ID to check
  * @param  array    $args       The triggered args or requirement object
  *
- * @return int                  The total number of times an user has triggered the trigger
+ * @return int                  The total number of times a user has triggered the trigger
  */
 function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site_id = 0, $args = array() ) {
 
@@ -1186,18 +1186,18 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
     $trigger_count = gamipress_get_user_log_count( absint( $user_id ), $log_meta, $since );
 
     /**
-     * Filter to override the number of times an user has triggered a particular trigger
+     * Filter to override the number of times a user has triggered a particular trigger
      *
      * @since   1.6.3
      *
-     * @param  int      $trigger_count  The total number of times an user has triggered the trigger
+     * @param  int      $trigger_count  The total number of times a user has triggered the trigger
      * @param  int      $user_id        The given user's ID
      * @param  string   $trigger        The given trigger we're checking
      * @param  int      $since 	        The since timestamp where retrieve the logs
      * @param  int      $site_id        The desired Site ID to check
      * @param  array    $args           The triggered args or requirement object
      *
-     * @return int                      The total number of times an user has triggered the trigger
+     * @return int                      The total number of times a user has triggered the trigger
      */
     $trigger_count = apply_filters( 'gamipress_get_user_trigger_count', absint( $trigger_count ), $user_id, $trigger, $since, $site_id, $args );
 

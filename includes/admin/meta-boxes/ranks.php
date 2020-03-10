@@ -110,7 +110,7 @@ function gamipress_ranks_meta_boxes( $post_type ) {
         array(
             'menu_order' => array(
                 'name' 	=> __( 'Priority', 'gamipress' ),
-                'desc' 	=> __( 'The rank priority defines the order an user can achieve ranks. User will need to get lower priority ranks before get this one.', 'gamipress' ),
+                'desc' 	=> __( 'The rank priority defines the order a user can achieve ranks. User will need to get lower priority ranks before get this one.', 'gamipress' ),
                 'type' 	=> 'text_medium',
             ),
             $prefix . 'next_rank' => array(

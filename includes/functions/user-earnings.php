@@ -10,7 +10,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Create an user earning
+ * Create a user earning
  *
  * @since  1.4.3
  *

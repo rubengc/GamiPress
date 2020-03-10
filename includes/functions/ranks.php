@@ -470,7 +470,7 @@ function gamipress_get_lowest_priority_rank_id( $rank_type = null ) {
 }
 
 /**
- * Award rank to an user
+ * Award rank to a user
  *
  * @since 1.4.3
  *
@@ -501,7 +501,7 @@ function gamipress_award_rank_to_user( $rank_id = 0, $user_id = 0, $args = array
 }
 
 /**
- * Revoke rank to an user
+ * Revoke rank to a user
  *
  * @since 1.4.3
  *

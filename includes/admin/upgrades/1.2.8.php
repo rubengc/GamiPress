@@ -245,7 +245,7 @@ function gamipress_ajax_process_128_upgrade() {
 
                 foreach( $user_earnings as $user_earning ) {
 
-                    // Skip if not is an user earning
+                    // Skip if not is a user earning
                     if( ! $user_earning || ! is_object( $user_earning ) ) {
                         continue;
                     }

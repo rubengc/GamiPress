@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.4
-Stable tag: 1.8.3.1
+Stable tag: 1.8.3.2
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -197,7 +197,7 @@ GamiPress comes with the following shortcodes:
 * [[gamipress_points]](https://gamipress.com/docs/shortcodes/gamipress_points/) to display current or specific user points balance.
 * [[gamipress_rank]](https://gamipress.com/docs/shortcodes/gamipress_rank/) to display a desired rank.
 * [[gamipress_ranks]](https://gamipress.com/docs/shortcodes/gamipress_ranks/) to display a list of ranks.
-* [[gamipress_user_rank]](https://gamipress.com/docs/shortcodes/gamipress_user_rank/) to display previous, current and/or next rank of an user.
+* [[gamipress_user_rank]](https://gamipress.com/docs/shortcodes/gamipress_user_rank/) to display previous, current and/or next rank of a user.
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of available shortcodes, including descriptions of all parameters each shortcode supports.
 
@@ -213,7 +213,7 @@ GamiPress comes with the following widgets:
 * User Points: to display current or specific user points balance.
 * Rank: to display a desired rank.
 * Ranks: to display a list of ranks.
-* User Rank: to display previous, current and/or next rank of an user.
+* User Rank: to display previous, current and/or next rank of a user.
 
 = Do you offer custom development services? =
 
@@ -222,6 +222,14 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.8.3.2 =
+
+* **Bug Fixes**
+* Fixed typo on query logs function that causes some awards not get correctly awarded.
+* Fixed typo on several strings related to the word "user" usage.
+* **Developer Notes**
+* Added new filters on ajax post function.
 
 = 1.8.3.1 =
 
