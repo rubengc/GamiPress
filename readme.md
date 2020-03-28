@@ -244,6 +244,8 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * **Bug Fixes**
 * Fixed duplicated awards on unlock a specific achievement and an achievement of specific type.
 * Fixed singular and plural usage on requirements at frontend.
+* **Developer Notes**
+* Increased plugins API transient to 1 week.
 
 ### 1.8.3.2 ###
 

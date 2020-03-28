@@ -326,8 +326,9 @@ function gamipress_render_plugin_card( $plugin ) {
 function gamipress_plugins_api() {
 
     // If a plugins api request has been cached already, then use cached plugins
-    if ( false !== ( $res = get_transient( 'gamipress_plugins_api' ) ) )
+    if ( false !== ( $res = get_transient( 'gamipress_plugins_api' ) ) ) {
         return $res;
+    }
 
     $url = $http_url = 'http://gamipress.com/edd-api/products/?orderby=menu_order&order=ASC&number=999';
 
@@ -366,8 +367,8 @@ function gamipress_plugins_api() {
 
         $res = (array) $res->products;
 
-        // Set a transient of 48 hours with api plugins
-        set_transient( 'gamipress_plugins_api', $res, 48 * HOUR_IN_SECONDS );
+        // Set a transient for 1 week with api plugins
+        set_transient( 'gamipress_plugins_api', $res, ( 24 * 7 ) * HOUR_IN_SECONDS );
     }
 
     return $res;

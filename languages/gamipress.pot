@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-03-28 09:36+0100\n"
+"POT-Creation-Date: 2020-03-28 10:34+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1172,12 +1172,12 @@ msgstr ""
 msgid "More Details"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:347 includes/admin/pages/add-ons.php:359
+#: includes/admin/pages/add-ons.php:348 includes/admin/pages/add-ons.php:360
 #, php-format
 msgid "An unexpected error occurred. Something may be wrong with gamipress.com or this server&#8217;s configuration. If you continue to have problems, please try to <a href=\"%s\">contact us</a>."
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:349
+#: includes/admin/pages/add-ons.php:350
 msgid "(WordPress could not establish a secure connection to gamipress.com. Please contact your server administrator.)"
 msgstr ""
 
