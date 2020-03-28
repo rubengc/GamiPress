@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-03-10 17:12+0100\n"
+"POT-Creation-Date: 2020-03-28 09:36+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1414,9 +1414,12 @@ msgstr ""
 msgid "Earn"
 msgstr ""
 
-#: includes/admin/requirements-ui.php:460
+#: includes/admin/requirements-ui.php:460 includes/filters.php:344
+#: includes/filters.php:346
 msgid "Deduct"
-msgstr ""
+msgid_plural "Deducts"
+msgstr[0] ""
+msgstr[1] ""
 
 #: includes/admin/requirements-ui.php:466
 msgid "with a maximum number of times to earn it of"
@@ -1891,7 +1894,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:488
+#: includes/admin/settings/logs.php:43 includes/triggers.php:493
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -1940,7 +1943,7 @@ msgstr ""
 msgid "Used when user completes a points award or step. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1303
+#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1292
 msgid "{user} completed the {achievement_type} {achievement}"
 msgstr ""
 
@@ -1952,7 +1955,7 @@ msgstr ""
 msgid "Used when user earns an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1305
+#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1294
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
@@ -2001,7 +2004,7 @@ msgstr ""
 msgid "Used when an admin awards a user with an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1293
+#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1282
 msgid "{admin} awarded {user} with the the {achievement} {achievement_type}"
 msgstr ""
 
@@ -3892,87 +3895,78 @@ msgstr ""
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 
-#: includes/filters.php:219
-#, php-format
-msgid "%1$d %2$s Awards"
-msgstr ""
+#: includes/filters.php:218 includes/filters.php:220 includes/filters.php:1554
+#: includes/privacy/exporters/user-earnings.php:164
+msgid "Award"
+msgid_plural "Awards"
+msgstr[0] ""
+msgstr[1] ""
 
-#: includes/filters.php:221 includes/filters.php:347
-#, php-format
-msgid "%1$d %2$s"
-msgstr ""
-
-#: includes/filters.php:345
-#, php-format
-msgid "%1$d %2$s Deducts"
-msgstr ""
-
-#: includes/filters.php:504
+#: includes/filters.php:501
 #, php-format
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/filters.php:654
+#: includes/filters.php:501 includes/filters.php:1544
+#: includes/post-types.php:168
+msgid "Step"
+msgid_plural "Steps"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/filters.php:651
 #, php-format
 msgid "%d times earned"
 msgstr ""
 
-#: includes/filters.php:658
+#: includes/filters.php:655
 #, php-format
 msgid "%d of %d times earned"
 msgstr ""
 
-#: includes/filters.php:802 includes/filters.php:911
+#: includes/filters.php:799 includes/filters.php:908
 #, php-format
 msgid "Unlock using %s"
 msgstr ""
 
-#: includes/filters.php:805 includes/filters.php:914
+#: includes/filters.php:802 includes/filters.php:911
 #, php-format
 msgid "Do you want to unlock %s using %s?"
 msgstr ""
 
-#: includes/filters.php:806 includes/filters.php:915
+#: includes/filters.php:803 includes/filters.php:912
 msgid "Yes"
 msgstr ""
 
-#: includes/filters.php:807 includes/filters.php:916
+#: includes/filters.php:804 includes/filters.php:913
 msgid "No"
 msgstr ""
 
-#: includes/filters.php:996
+#: includes/filters.php:993
 #, php-format
 msgid "You have earned this %s!"
 msgstr ""
 
-#: includes/filters.php:1158
+#: includes/filters.php:1155
 msgid "Next Post"
 msgstr ""
 
-#: includes/filters.php:1160
+#: includes/filters.php:1157
 msgid "Previous Post"
 msgstr ""
 
-#: includes/filters.php:1265 includes/filters.php:1566
+#: includes/filters.php:1262 includes/filters.php:1563
 msgid "Requirement"
 msgid_plural "Requirements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:1381
+#: includes/filters.php:1378
 #, php-format
 msgid "You have reached this %s!"
 msgstr ""
 
-#: includes/filters.php:1547 includes/post-types.php:168
-msgid "Step"
-msgstr ""
-
-#: includes/filters.php:1557 includes/privacy/exporters/user-earnings.php:164
-msgid "Award"
-msgstr ""
-
-#: includes/filters.php:1557 includes/privacy/exporters/user-earnings.php:164
+#: includes/filters.php:1554 includes/privacy/exporters/user-earnings.php:164
 msgid "Deduction"
 msgstr ""
 
@@ -4004,20 +3998,20 @@ msgstr ""
 msgid "Custom"
 msgstr ""
 
-#: includes/functions/achievements.php:892
+#: includes/functions/achievements.php:881
 msgid "People who have earned this:"
 msgstr ""
 
-#: includes/functions/achievements.php:1259
+#: includes/functions/achievements.php:1248
 msgid "Achievement Type saved successfully."
 msgstr ""
 
-#: includes/functions/achievements.php:1260
+#: includes/functions/achievements.php:1249
 #, php-format
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1260 includes/functions/points.php:1283
+#: includes/functions/achievements.php:1249 includes/functions/points.php:1283
 #: includes/functions/ranks.php:1324
 msgid "widgets"
 msgstr ""

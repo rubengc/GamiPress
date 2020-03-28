@@ -239,6 +239,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4 ###
+
+* **Bug Fixes**
+* Fixed duplicated awards on unlock a specific achievement and an achievement of specific type.
+* Fixed singular and plural usage on requirements at frontend.
+
 ### 1.8.3.2 ###
 
 * **Bug Fixes**

@@ -467,7 +467,7 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 	$postmeta 	= GamiPress()->db->postmeta;
 
 	// Grab posts that can be earned by unlocking the given achievement
-    $specific_achievements = $wpdb->get_results( $wpdb->prepare(
+    $achievements = $wpdb->get_results( $wpdb->prepare(
         "SELECT *
 		 FROM {$posts} as posts,
 		      {$postmeta} as meta
@@ -481,22 +481,11 @@ function gamipress_get_dependent_achievements( $achievement_id = 0 ) {
 	$post_parent = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) );
 
 	if( $post_parent !== 0 ) {
-		$specific_achievements[] = gamipress_get_post( $post_parent );
+        $achievements[] = gamipress_get_post( $post_parent );
 	}
 
-	// Grab posts triggered by unlocking any/all of the given achievement's type
-	$type_achievements = $wpdb->get_results( $wpdb->prepare(
-		"SELECT *
-		 FROM {$posts} as posts,
-		     {$postmeta} as meta
-		 WHERE posts.ID = meta.post_id
-		  AND meta.meta_key = '_gamipress_achievement_type'
-		  AND meta.meta_value = %s",
-		gamipress_get_post_type( $achievement_id )
-	) );
-
-	// Merge our dependent achievements together
-	$achievements = array_merge( $specific_achievements, $type_achievements );
+	// Note: Dependent achievements has been removed since it causes duplicated awards
+    // Also, on unlock an achievement of a specific type an event is triggered to handle its awards
 
 	// Available filter to modify an achievement's dependents
 	return apply_filters( 'gamipress_dependent_achievements', $achievements, $achievement_id );

@@ -804,16 +804,19 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	global $wp_filter;
 
 	// Sanity Check: ensure we're working with an achievement or requirement post
-	if ( ! ( gamipress_is_achievement( $achievement_id ) || gamipress_is_requirement( $achievement_id ) ) )
+	if ( ! ( gamipress_is_achievement( $achievement_id ) || gamipress_is_requirement( $achievement_id ) ) ) {
 		return false;
+    }
 
 	// Use the current user ID if none specified
-	if ( $user_id == 0 )
+	if ( $user_id == 0 ) {
 		$user_id = wp_get_current_user()->ID;
+    }
 
 	// Get the current site ID none specified
-	if ( ! $site_id )
+	if ( ! $site_id ) {
 		$site_id = get_current_blog_id();
+    }
 
 	// Setup our achievement object
 	$achievement_object = gamipress_build_achievement_object( $achievement_id );
@@ -833,8 +836,9 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	$current_key = null;
 
 	// Get current position
-	if ( $is_recursive_filter )
+	if ( $is_recursive_filter ) {
 		$current_key = key( $wp_filter[ 'gamipress_award_achievement' ] );
+    }
 
     /**
      * Available hook to do other things with each awarded achievement

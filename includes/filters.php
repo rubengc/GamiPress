@@ -207,7 +207,6 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 
 	// Setup our variables
 	$output = '';
-	$post_type_object = get_post_type_object( 'points-award' );
 	$points_type = gamipress_get_points_award_points_type( $points_awards[0]->ID );
 
 	if( $points_type ) {
@@ -216,9 +215,9 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 		if( ! $plural_name )
 			$plural_name = $points_type->post_title;
 
-		$points_awards_heading = sprintf( __( '%1$d %2$s Awards', 'gamipress' ), $count, $plural_name ); // 2 Credits Awards
+		$points_awards_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Award', 'Awards', $count, 'gamipress' ) ); // 2 Credits Awards
 	} else {
-		$points_awards_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Awards
+		$points_awards_heading = sprintf( '%1$d %2$s', $count, _n( 'Award', 'Awards', $count, 'gamipress' ) ); // 2 Awards
 	}
 
     /**
@@ -342,9 +341,9 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 			$plural_name = $points_type->post_title;
 		}
 
-		$points_deducts_heading = sprintf( __( '%1$d %2$s Deducts', 'gamipress' ), $count, $plural_name ); // 2 Credits Deducts
+		$points_deducts_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Credits Deducts
 	} else {
-		$points_deducts_heading = sprintf( __( '%1$d %2$s', 'gamipress' ), $count, $post_type_object->labels->name ); // 2 Deducts
+		$points_deducts_heading = sprintf( '%1$d %2$s', $count, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Deducts
 	}
 
     /**
@@ -499,9 +498,7 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	$output = '';
 	$container = gamipress_is_achievement_sequential() ? 'ol' : 'ul';
 
-	$post_type_object = get_post_type_object( 'step' );
-
-    $steps_heading =  sprintf( __( '%1$d Required %2$s', 'gamipress' ), $count, $post_type_object->labels->name );
+    $steps_heading =  sprintf( __( '%1$d Required %2$s', 'gamipress' ), $count, _n( 'Step', 'Steps', $count, 'gamipress' ) );
 
     /**
      * Filters the steps heading text
