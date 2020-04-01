@@ -924,19 +924,55 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
 
         }
 
-    } else {
+    } else if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
+        // Check if trigger is for unlocking ANY and ALL posts of an achievement type
 
-        // Store original trigger
-        $original_trigger = $trigger;
+        // Get the trigger type
+        $achievement_type = str_replace( 'gamipress_unlock_all_', '', $trigger );
+        $achievement_type = str_replace( 'gamipress_unlock_', '', $achievement_type );
 
-        // Events for unlock an achievement of type or all requires to change the trigger
-        if( gamipress_starts_with( $trigger, 'gamipress_unlock_all_' ) ) {
-            // Replace "gamipress_unlock_all_{achievement-type}" to "all-achievements"
-            $trigger = 'all-achievements';
-        } else  if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
-            // Replace "gamipress_unlock_{achievement-type}" to "any-achievement"
-            $trigger = 'any-achievement';
+        $cache = gamipress_get_cache( "{$trigger}_triggered_requirements", false );
+
+        // If result already cached, return it
+        if( $cache !== false && is_array( $cache ) ) {
+            $triggered_requirements = $cache;
+        } else {
+
+            // Store original trigger
+            $original_trigger = $trigger;
+
+            // Events for unlock an achievement of type or all requires to change the trigger
+            if( gamipress_starts_with( $trigger, 'gamipress_unlock_all_' ) ) {
+                // Replace "gamipress_unlock_all_{achievement-type}" to "all-achievements"
+                $trigger = 'all-achievements';
+            } else if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
+                // Replace "gamipress_unlock_{achievement-type}" to "any-achievement"
+                $trigger = 'any-achievement';
+            }
+
+            // Get all requirements with this trigger
+            $triggered_requirements = $wpdb->get_results( $wpdb->prepare(
+                "SELECT p.ID
+                 FROM {$posts} AS p
+                 LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
+                 LEFT JOIN {$postmeta} AS pm2 ON ( p.ID = pm2.post_id AND pm2.meta_key = '_gamipress_achievement_type' )
+                 WHERE p.post_status = 'publish'
+                    AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
+                    AND pm.meta_value = %s
+                    AND pm2.meta_value = %s
+                 ORDER BY p.menu_order ASC",
+                $trigger,
+                $achievement_type
+            ) );
+
+            // Cache function result
+            gamipress_save_cache( "{$trigger}_triggered_requirements", $triggered_requirements );
+
+            $trigger = $original_trigger;
         }
+
+    } else {
+        // Standard trigger
 
         $cache = gamipress_get_cache( "{$trigger}_triggered_requirements", false );
 
@@ -959,7 +995,6 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
             // Cache function result
             gamipress_save_cache( "{$trigger}_triggered_requirements", $triggered_requirements );
 
-            $trigger = $original_trigger;
         }
 
     }

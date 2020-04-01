@@ -239,6 +239,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.1 ###
+
+* **Bug Fixes**
+* Fixed undesired awards on unlock an achievement of specific type.
+
 ### 1.8.4 ###
 
 * **Bug Fixes**
