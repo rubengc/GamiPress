@@ -145,28 +145,34 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
     // ---------------------------
 
     // Not type provided
-    if( $atts['type'] === '' )
+    if( $atts['type'] === '' ) {
         return gamipress_shortcode_error( __( 'Please, provide any rank type.', 'gamipress' ), $shortcode );
+    }
 
     // Wrong rank
-    if( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) )
+    if( ! in_array( $atts['type'], gamipress_get_rank_types_slugs() ) ) {
         return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered rank type.', 'gamipress' ), $shortcode );
+    }
 
     // Nothing to show
-    if( $atts['prev_rank'] === 'no' && $atts['current_rank'] === 'no' && $atts['next_rank'] === 'no' )
+    if( $atts['prev_rank'] === 'no' && $atts['current_rank'] === 'no' && $atts['next_rank'] === 'no' ) {
         return gamipress_shortcode_error( __( 'None of the options to be displayed have been selected (previous, current or next). Please, select one.', 'gamipress' ), $shortcode );
+    }
 
     // Force to set current user as user ID
-    if( $atts['current_user'] === 'yes' )
+    if( $atts['current_user'] === 'yes' ) {
         $atts['user_id'] = get_current_user_id();
+    }
 
     // Not user ID provided
-    if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 )
+    if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 ) {
         return gamipress_shortcode_error( __( 'Please, provide the user ID.', 'gamipress' ), $shortcode );
+    }
 
     // Guests not supported
-    if( absint( $atts['user_id'] ) === 0 )
+    if( absint( $atts['user_id'] ) === 0 ) {
         return '';
+    }
 
     // ---------------------------
     // Shortcode Processing

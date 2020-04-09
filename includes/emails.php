@@ -395,28 +395,31 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
     global $gamipress_email_template_args;
 
-    if( ! is_array( $gamipress_email_template_args ) )
+    if( ! is_array( $gamipress_email_template_args ) ) {
         $gamipress_email_template_args = array();
+    }
+
+    // Ensure vars
+    if( ! isset( $gamipress_email_template_args['user_id'] ) ) {
+        $gamipress_email_template_args['user_id'] = get_current_user_id();
+    }
+
+    if( ! isset( $gamipress_email_template_args['type'] ) ) {
+        $gamipress_email_template_args['type'] = '';
+    }
 
     // Shorthand
     $a = $gamipress_email_template_args;
 
-    // Ensure vars
-    if( ! isset( $a['user_id'] ) )
-        $a['user_id'] = 0;
-
-    if( ! isset( $a['type'] ) )
-        $a['type'] = '';
-
     // Setup site replacements
     $replacements = array(
         '{site_title}'  => get_bloginfo( 'name' ),
-        '{site_link}'   =>  '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>',
+        '{site_link}'   => '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>',
     );
 
     // Setup user replacements
-    $user = get_userdata( $a['user_id'] );
-    $user_id = $a['user_id'];
+    $user_id = absint( $a['user_id'] );
+    $user = ( $user_id !== 0 ? get_userdata( $a['user_id'] ) : false );
 
     $replacements['{user_id}']      =  ( $user ? $user->ID : '' );
     $replacements['{user}']         =  ( $user ? $user->display_name : '' );
@@ -519,6 +522,7 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
                 $replacements['{points_type}'] = _n( $singular, $plural, $points );
 
             }
+
         }
 
     } else if( $a['type'] === 'points_deduct_completed' && isset( $a['points_deduct_id'] ) ) {

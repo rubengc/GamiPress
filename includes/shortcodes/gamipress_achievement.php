@@ -180,12 +180,14 @@ function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
     $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
     // Initialize user ID to avoid undefined index errors
-	if( ! isset( $atts['user_id'] ) )
+	if( ! isset( $atts['user_id'] ) ) {
         $atts['user_id'] = get_current_user_id();
+    }
 
     // Get the current user if none wasn't specified
-    if( absint( $atts['user_id'] ) === 0 )
+    if( absint( $atts['user_id'] ) === 0 ) {
         $atts['user_id'] = get_current_user_id();
+    }
 
 	// Get the post content and format the achievement display
 	$output = gamipress_render_achievement( $achievement, $atts );

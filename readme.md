@@ -239,6 +239,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.2 ###
+
+* **Improvements**
+* Prevent PHP warnings on emails functions.
+* **Bug Fixes**
+* Fixed requirements times check for requirements higher configured for more than 1 time.
+* **Developer Notes**
+* Added global flag to meet when is running recount activity tool.
+
 ### 1.8.4.1 ###
 
 * **Bug Fixes**

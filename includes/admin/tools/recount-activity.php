@@ -91,17 +91,23 @@ function gamipress_ajax_recount_activity_tool() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) )
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+    }
 
     // Check parameters received
-    if( ! isset( $_POST['activity'] ) || empty( $_POST['activity'] ) )
+    if( ! isset( $_POST['activity'] ) || empty( $_POST['activity'] ) ) {
         wp_send_json_error( __( 'You need to choose an activity to recount.', 'gamipress' ) );
+    }
 
     ignore_user_abort( true );
 
-    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) )
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
         set_time_limit( 0 );
+    }
+
+    // Setup a global var to make other functions meet that next awards comes from recount activity tool
+    define( 'GAMIPRESS_DOING_ACTIVITY_RECOUNT', true );
 
     $response = array(
         'success' => true,
@@ -136,18 +142,22 @@ function gamipress_ajax_recount_activity_tool() {
      */
     $response = apply_filters( "gamipress_activity_recount_$activity", $response, $loop, $limit, $offset );
 
-    if( ! is_array( $response ) )
+    if( ! is_array( $response ) ) {
         wp_send_json_error( 'Activity recount process has failed!', 'gamipress' );
+    }
 
     // Return the full response
-    if( $response['run_again'] )
+    if( $response['run_again'] ) {
         wp_send_json_success( $response );
+    }
 
     // Return the process response
-    if( $response['success'] === true )
+    if( $response['success'] === true ) {
         wp_send_json_success( $response['message'] );
-    else
+    } else {
         wp_send_json_error( $response['message'] );
+    }
+
 }
 add_action( 'wp_ajax_gamipress_recount_activity_tool', 'gamipress_ajax_recount_activity_tool' );
 

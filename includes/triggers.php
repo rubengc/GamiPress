@@ -1178,8 +1178,9 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 	}
 
 	// Set to current site id
-	if ( ! $site_id )
+	if ( ! $site_id ) {
 		$site_id = get_current_blog_id();
+    }
 
     // Setup the meta data to filter the logs count
     $log_meta = array(

@@ -675,8 +675,9 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 					$achievement = gamipress_get_step_achievement( $achievement_id );
 
 					// If the user has any interaction with this achievement, only get activity since that date
-					if ( $achievement && $date = gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
+					if ( $achievement && $date = gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) ) {
 						$since = $date;
+                    }
 
 				}
 
@@ -717,11 +718,14 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
                     $since = gamipress_achievement_last_user_activity( $achievement_id, $user_id );
 
                     // If user hasn't earned this yet, then get activity count from publish date
-                    if( $since === 0 )
+                    if( $since === 0 ) {
                         $since = strtotime( gamipress_get_post_date( $achievement_id ) );
+                    }
 
-                    // Reduce it in 1 if check comes from the recount activity tool
-                    $since -= 1;
+                    if( defined( 'GAMIPRESS_DOING_ACTIVITY_RECOUNT' ) && GAMIPRESS_DOING_ACTIVITY_RECOUNT ) {
+                        // Reduce it in 1 if check comes from the recount activity tool
+                        $since -= 1;
+                    }
 				}
 
 			}

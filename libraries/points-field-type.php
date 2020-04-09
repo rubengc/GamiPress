@@ -99,9 +99,9 @@ if( ! function_exists( 'cmb2_render_gamipress_points_field_type' ) ) :
         }
 
         if( $ct_cmb2_override === true ) {
-            ct_update_object_meta( $field->object_id, $post_type_meta_key, $_REQUEST[$post_type_meta_key] );
+            ct_update_object_meta( $field->object_id, $post_type_meta_key, sanitize_text_field( $_REQUEST[$post_type_meta_key] ) );
         } else {
-            update_metadata( $field->object_type, $field->object_id, $post_type_meta_key, $_REQUEST[$post_type_meta_key] );
+            update_metadata( $field->object_type, $field->object_id, $post_type_meta_key, sanitize_text_field( $_REQUEST[$post_type_meta_key] ) );
         }
 
     }

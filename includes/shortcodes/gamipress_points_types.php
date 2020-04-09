@@ -152,8 +152,9 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
     if( $is_single_type ) {
 
         // Check if points type is valid
-        if ( ! in_array( $atts['type'], gamipress_get_points_types_slugs() ) )
+        if ( ! in_array( $atts['type'], gamipress_get_points_types_slugs() ) ) {
             return gamipress_shortcode_error( __( 'The type provided isn\'t a valid registered points type.', 'gamipress' ), $shortcode );
+        }
 
     } else if( $atts['type'] !== 'all' ) {
 
@@ -161,13 +162,15 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
         $all_types_wrong = true;
 
         foreach( $types as $type ) {
-            if ( in_array( $type, gamipress_get_points_types_slugs() ) )
+            if ( in_array( $type, gamipress_get_points_types_slugs() ) ) {
                 $all_types_wrong = false;
+            }
         }
 
         // just notify error if all types are wrong
-        if( $all_types_wrong )
+        if( $all_types_wrong ) {
             return gamipress_shortcode_error( __( 'All types provided aren\'t valid registered points types.', 'gamipress' ), $shortcode );
+        }
 
     }
 
