@@ -8,7 +8,7 @@
  * Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * Description: CMB2 field type to store and check EDD Software Licensing licenses.
- * Version: 1.0.5
+ * Version: 1.0.7
  * Author: GamiPress
  * Author URI: https://gamipress.com/
  * License: GPLv2+

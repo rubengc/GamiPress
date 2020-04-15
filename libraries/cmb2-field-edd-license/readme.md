@@ -7,21 +7,24 @@ Custom field for [CMB2](https://github.com/WebDevStudios/CMB2) to automatically 
 
 Field accepts same parameters as field type text, with the addition of the next one:
 
-License fields:
-- server (string, Required) : Server URL to the EDD SL API, for example "http://your-site.com/edd-sl-api" (by default, "")
-- file (string, Required) : Path to the item main file (for example if you call it from your main plugin file, then you can use __FILE__)
-- item_id (string, Optional) : Item ID from the server
-- item_name (string, Optional) : Item name (same as returned by the function plugin_basename(), example my-plugin/my-plugin.php)
-- version (string, Optional) : Item version of the installed one to check for updates (by default will get the one provided in the main file header)
-- author (string, Optional) : Item author (by default will get the one provided in the main file header)
-- wp_override (bool, Optional) : Set it to true to override WordPress plugin information to get the one provided by your server (by default, false)
+License parameters:
+- **server** (string, Required) : Server URL to the EDD SL API, for example "http://your-site.com/edd-sl-api" (by default, "")
+- **file** (string, Required) : Path to the item main file (for example if you call it from your main plugin file, then you can use __FILE__)
+- **item_id** (string, Optional) : Item ID from the server
+- **item_name** (string, Optional) : Item name (same as returned by the function plugin_basename(), example my-plugin/my-plugin.php)
+- **version** (string, Optional) : Item version of the installed one to check for updates (by default will get the one provided in the main file header)
+- **author** (string, Optional) : Item author (by default will get the one provided in the main file header)
+- **wp_override** (bool, Optional) : Set it to true to override WordPress plugin information to get the one provided by your server (by default, false)
 
-Output fields:
-- deactivate_button (string|false, Optional) : Button to deactivate the license (if is valid), set it to false to disable it (by default, "Deactivate License")
-- license_expiration (bool, Optional) : Add a expiration notice with the remaining time (if is valid), set it to false to disable it (by default, true)
-- renew_license (string|false, Optional) : Add a link  (if is valid), set it to false to disable it (by default, "Renew your license key.")
-- renew_license_link (string, Optional) : If you set `renew_license` also you can add a link to your website to allow to your users renew this license (by default, false)
-- renew_license_timestamp (integer|false, Optional) : If you set `renew_license` also you can set when notice to the user the license renew, set it to false to show the renew notice always (by default, DAY_IN_SECONDS * 30 (means 30 days before expiration))
+Output parameters:
+- **deactivate_button** (string|false, Optional) : Button to deactivate the license (if is valid), set it to false to disable it (by default, "Deactivate License")
+- **license_expiration** (bool, Optional) : Add a expiration notice with the remaining time (if is valid), set it to false to disable it (by default, true)
+- **renew_license** (string|false, Optional) : Add a link  (if is valid), set it to false to disable it (by default, "Renew your license key.")
+- **renew_license_link** (string, Optional) : If you set `renew_license` also you can add a link to your website to allow to your users renew this license (by default, false)
+- **renew_license_timestamp** (integer|false, Optional) : If you set `renew_license` also you can set when notice to the user the license renew, set it to false to show the renew notice always (by default, DAY_IN_SECONDS * 30 (means 30 days before expiration))
+- **hide_license** (bool, Optional) : Hide the license key entered (by default, true)
+- **hide_license_character** (string, Optional) : Character used to hide the license key (by default, "*")
+- **hide_license_visible_characters** (integer, Optional) : Number of characters to keep visible, set it to 0 to completely hide the license key (by default, 4)
 
 
 ## Examples
@@ -79,6 +82,10 @@ You can use the function `cmb2_edd_license_data( $license_key )` to see the data
 In Addition, you can use the function `cmb2_edd_license_status( $license_key )` to see the status of this license (valid, invalid or false if not license key or license not checked)
 
 ## Changelog
+
+### 1.0.7
+
+* Make hide_license to work always, indepently of the license status.
 
 ### 1.0.6
 

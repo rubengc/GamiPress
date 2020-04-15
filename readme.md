@@ -239,6 +239,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.3 ###
+
+* **Improvements**
+* Keep license key hidden included if license key is not valid or gets expired.
+
 ### 1.8.4.2 ###
 
 * **Improvements**
