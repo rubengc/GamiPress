@@ -239,6 +239,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.4 ###
+
+* **Bug Fixes**
+* Fixed typo on license fields.
+
 ### 1.8.4.3 ###
 
 * **Improvements**

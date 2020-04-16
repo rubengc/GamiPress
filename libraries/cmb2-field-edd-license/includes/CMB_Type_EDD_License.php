@@ -181,7 +181,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 		// Hide license
         $hidden_field = '';
 
-        if( $field_args['hide_license'] !== false ) {
+        if( $field_args['hide_license'] !== false && ! empty( $args['value'] ) ) {
 
             $character = $field_args['hide_license_character'];
             $visible_characters = absint( $field_args['hide_license_visible_characters'] );
