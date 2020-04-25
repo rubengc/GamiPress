@@ -67,6 +67,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 			'wp_override'                       => false,
 			// Extra settings
 			'deactivate_button'                 => __( 'Deactivate License', 'cmb2-edd-license' ),      // string|false String to set the button text, false to remove it
+			'clear_button'                      => __( 'Clear License', 'cmb2-edd-license' ),           // string|false String to set the button text, false to remove it
 			'license_expiration'                => true,                                                // bool         True to enable license expiration notice, false to deactivate it
 			'renew_license'                     => __( 'Renew your license key.', 'cmb2-edd-license' ), // string|false String to set the renew license text, false to remove it
 			'renew_license_timestamp'           => ( DAY_IN_SECONDS * 30 ),                             // int          Minimum time to show the license renewal text, by default 30 days
@@ -125,6 +126,20 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
                     '<button type="button" class="button deactivate-license-button" name="edd_license_deactivate_license" value="' . $args['value'] . '">' . $field_args['deactivate_button'] . '</button>' .
             '</p>';
 		}
+
+		// Clear button
+        $clear_button = '';
+
+        if( $field_args['clear_button'] !== false && $license_status !== 'valid' && ! empty( $args['value'] ) ) {
+            $clear_button = '<p class="clear-license">' .
+                wp_nonce_field( 'cmb2_edd_license_clear_nonce_action', 'cmb2_edd_license_clear_nonce' ) .
+                '<input type="hidden" name="edd_license_clear_cmb_id" value="' . $this->field->cmb_id . '"/>' .
+                '<input type="hidden" name="edd_license_clear_field_id" value="' . $this->_id() . '"/>' .
+                '<input type="hidden" name="edd_license_clear_object_id" value="' . $this->field->object_id . '"/>' .
+                '<input type="hidden" name="edd_license_clear_object_type" value="' . $this->field->object_type . '"/>' .
+                '<button type="button" class="button clear-license-button" name="edd_license_clear_license" value="' . $args['value'] . '">' . $field_args['clear_button'] . '</button>' .
+                '</p>';
+        }
 
 		// Expiration notice
 		$expiration_notice = '';
@@ -219,6 +234,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
                 $args['desc'] .
 				$error_notice .
 				$deactivation_button .
+                $clear_button .
 				$expiration_notice .
 				$renew_notice .
                 $hidden_field

@@ -1,16 +1,18 @@
 (function( $ ) {
 
+    // Deactivate license
     $('body').on('click', '.deactivate-license-button', function(e) {
         e.preventDefault();
 
-        $(this).prop('disabled', true);
+        var button = $(this);
+        var wrapper = button.parent();
 
-        var wrapper = $(this).parent();
+        button.prop('disabled', true);
 
         var data = {};
 
         // Add the button name and value
-        data[$(this).attr('name')] = $(this).val();
+        data[button.attr('name')] = button.val();
 
         // Add hidden inputs name and value
         wrapper.find('input').each(function() {
@@ -25,14 +27,76 @@
             data: data,
             success: function( response ) {
 
-                $(this).prop('disabled', false);
+                button.prop('disabled', false);
 
                 wrapper.append('<p class="deactivate-license-response deactivate-license-response-' + ( response.success ? 'success' : 'error' ) + '" style="float: none;">' + response.data + '</p>');
 
                 wrapper.find('.spinner').remove();
+
+                // Clear form
+                var form = wrapper.closest( '.cmb-td' );
+
+                form.find('input[type="text"]').val('').removeAttr( 'readonly' );
+                form.find('.license-error').slideUp('fast');
+                form.find('.deactivate-license-button').slideUp('fast');
+                form.find('.clear-license-button').slideUp('fast');
+                form.find('.license-expiration-notice').slideUp('fast');
+                form.find('.renew-license-notice').slideUp('fast');
             },
             error: function( response ) {
-                $(this).prop('disabled', false);
+                button.prop('disabled', false);
+
+                wrapper.find('.spinner').remove();
+            }
+        });
+    });
+
+    // Clear license
+    $('body').on('click', '.clear-license-button', function(e) {
+        e.preventDefault();
+
+        var button = $(this);
+        var wrapper = button.parent();
+
+        button.prop('disabled', true);
+
+        var data = {};
+
+        // Add the button name and value
+        data[button.attr('name')] = button.val();
+
+        // Add hidden inputs name and value
+        wrapper.find('input').each(function() {
+            data[$(this).attr('name')] = $(this).val();
+        });
+
+        wrapper.append('<span class="spinner is-active" style="float: none;"></span>');
+        wrapper.find('.clear-license-response').remove();
+
+        $.ajax({
+            url: window.location.href,
+            data: data,
+            success: function( response ) {
+
+                button.prop('disabled', false);
+
+                wrapper.append('<p class="clear-license-response clear-license-response-' + ( response.success ? 'success' : 'error' ) + '" style="float: none;">' + response.data + '</p>');
+
+                wrapper.find('.spinner').remove();
+
+                // Clear form
+                var form = wrapper.closest( '.cmb-td' );
+
+                form.find('input[type="text"]').val('').removeAttr( 'readonly' );
+                form.find('.license-error').slideUp('fast');
+                form.find('.deactivate-license-button').slideUp('fast');
+                form.find('.clear-license-button').slideUp('fast');
+                form.find('.license-expiration-notice').slideUp('fast');
+                form.find('.renew-license-notice').slideUp('fast');
+
+            },
+            error: function( response ) {
+                button.prop('disabled', false);
 
                 wrapper.find('.spinner').remove();
             }

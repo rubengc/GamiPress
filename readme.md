@@ -239,6 +239,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.5 ###
+
+* **Improvements**
+* Added the ability to clear license fields.
+
 ### 1.8.4.4 ###
 
 * **Bug Fixes**

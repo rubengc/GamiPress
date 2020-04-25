@@ -22,7 +22,7 @@ if ( ! class_exists( 'CT_Ajax_List_Table' ) ) :
          *
          * @access      public
          * @since       1.0.0
-         * @return      object self::$instance The one true CT_Ajax_List_Table
+         * @return      CT_Ajax_List_Table self::$instance The one true CT_Ajax_List_Table
          */
         public static function instance() {
             if( !self::$instance ) {

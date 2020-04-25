@@ -18,6 +18,7 @@ License parameters:
 
 Output parameters:
 - **deactivate_button** (string|false, Optional) : Button to deactivate the license (if is valid), set it to false to disable it (by default, "Deactivate License")
+- **clear_button** (string|false, Optional) : Button to deactivate the license (if is valid), set it to false to disable it (by default, "Deactivate License")
 - **license_expiration** (bool, Optional) : Add a expiration notice with the remaining time (if is valid), set it to false to disable it (by default, true)
 - **renew_license** (string|false, Optional) : Add a link  (if is valid), set it to false to disable it (by default, "Renew your license key.")
 - **renew_license_link** (string, Optional) : If you set `renew_license` also you can add a link to your website to allow to your users renew this license (by default, false)
@@ -58,6 +59,7 @@ function cmb2_edd_license_metabox() {
 		
 		// Extra settings
 		'deactivate_button'                 => __( 'Deactivate License', 'cmb2-edd-license' ),      // string|false String to set the button text, false to remove it
+		'clear_button'                      => __( 'Clear License', 'cmb2-edd-license' ),      // string|false String to set the button text, false to remove it
 		'license_expiration'                => true,                                                // bool         True to enable license expiration notice, false to deactivate it
 		'renew_license'                     => __( 'Renew your license key.', 'cmb2-edd-license' ), // string|false String to set the renew license text, false to remove it
 		'renew_license_timestamp'           => ( DAY_IN_SECONDS * 30 ),                             // int          Minimum time to show the license renewal text, by default 30 days
@@ -82,6 +84,10 @@ You can use the function `cmb2_edd_license_data( $license_key )` to see the data
 In Addition, you can use the function `cmb2_edd_license_status( $license_key )` to see the status of this license (valid, invalid or false if not license key or license not checked)
 
 ## Changelog
+
+### 1.0.8
+
+* Added the ability to clear license.
 
 ### 1.0.7
 
