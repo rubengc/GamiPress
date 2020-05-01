@@ -158,8 +158,10 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
     $locale = get_locale();
 
     $timezone = get_option( 'timezone_string' );
-    if ( ! $timezone )
+
+    if ( ! $timezone ) {
         $timezone = get_option( 'gmt_offset' );
+    }
 
     // Get WordPress Theme info
     $theme_data   = wp_get_theme();
@@ -221,6 +223,16 @@ function gamipress_system_info_tool_meta_boxes( $meta_boxes ) {
                 'name' => __( 'Timezone', 'gamipress' ),
                 'type' => 'display',
                 'value' => $timezone,
+            ),
+            'wp_date' => array(
+                'name' => __( 'Site Date', 'gamipress' ),
+                'type' => 'display',
+                'value' => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+            ),
+            'wp_date_utc' => array(
+                'name' => __( 'Universal Date', 'gamipress' ),
+                'type' => 'display',
+                'value' => date_i18n( 'Y-m-d H:i:s', $timestamp_with_offset = false, $gmt = false ),
             ),
             'wp_permalink' => array(
                 'name' => __( 'Permalink Structure', 'gamipress' ),

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-04-25 11:06+0200\n"
+"POT-Creation-Date: 2020-05-01 14:07+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: includes/admin/pages/settings.php:147 includes/admin/plugins.php:30
 #: includes/admin/plugins.php:33
 #: includes/admin/tools/import-export-settings.php:24
-#: includes/admin/tools/system-info.php:370
+#: includes/admin/tools/system-info.php:382
 msgid "Settings"
 msgstr ""
 
@@ -72,20 +72,20 @@ msgid "Assets"
 msgstr ""
 
 #: includes/admin.php:151 includes/admin/tools/reset-data.php:34
-#: includes/admin/tools/system-info.php:345 includes/post-types.php:23
+#: includes/admin/tools/system-info.php:357 includes/post-types.php:23
 #: includes/post-types.php:29 includes/post-types.php:35
 #: includes/shortcodes/gamipress_points_types.php:20
 msgid "Points Types"
 msgstr ""
 
 #: includes/admin.php:184 includes/admin/tools/reset-data.php:31
-#: includes/admin/tools/system-info.php:350 includes/post-types.php:130
+#: includes/admin/tools/system-info.php:362 includes/post-types.php:130
 #: includes/post-types.php:136 includes/post-types.php:142
 msgid "Achievement Types"
 msgstr ""
 
 #: includes/admin.php:217 includes/admin/tools/reset-data.php:37
-#: includes/admin/tools/system-info.php:355 includes/post-types.php:201
+#: includes/admin/tools/system-info.php:367 includes/post-types.php:201
 #: includes/post-types.php:207 includes/post-types.php:213
 msgid "Rank Types"
 msgstr ""
@@ -630,39 +630,39 @@ msgstr ""
 msgid "No extra data registered"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:320 includes/admin/requirements-ui.php:370
+#: includes/admin/meta-boxes.php:341 includes/admin/requirements-ui.php:370
 #: includes/admin/users.php:488
 msgid "Choose an achievement type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:338 includes/admin/tools/bulk-awards.php:25
+#: includes/admin/meta-boxes.php:359 includes/admin/tools/bulk-awards.php:25
 #: includes/admin/tools/bulk-revokes.php:25
 msgid "Choose a points type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:356
+#: includes/admin/meta-boxes.php:377
 msgid "Choose a rank type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:374
+#: includes/admin/meta-boxes.php:395
 msgid "Choose a log type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:391
+#: includes/admin/meta-boxes.php:412
 #, php-format
 msgid "After (10 %s)"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:392
+#: includes/admin/meta-boxes.php:413
 #, php-format
 msgid "Before (%s 10)"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:407
+#: includes/admin/meta-boxes.php:428
 msgid "Choose an option"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:412
+#: includes/admin/meta-boxes.php:433
 #: includes/custom-tables/user-earnings.php:451
 msgid "All"
 msgstr ""
@@ -2939,7 +2939,7 @@ msgid "PHP Configuration"
 msgstr ""
 
 #: includes/admin/tools/system-info.php:62
-#: includes/admin/tools/system-info.php:241
+#: includes/admin/tools/system-info.php:253
 msgid "Memory Limit"
 msgstr ""
 
@@ -2995,83 +2995,91 @@ msgstr ""
 msgid "User Earnings Meta Database"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:192
+#: includes/admin/tools/system-info.php:194
 msgid "WordPress Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:196
+#: includes/admin/tools/system-info.php:198
 msgid "Site URL"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:201
+#: includes/admin/tools/system-info.php:203
 msgid "Home URL"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:206
+#: includes/admin/tools/system-info.php:208
 msgid "Multisite"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:211
+#: includes/admin/tools/system-info.php:213
 msgid "Version"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:216
+#: includes/admin/tools/system-info.php:218
 msgid "Language"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:221
+#: includes/admin/tools/system-info.php:223
 msgid "Timezone"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:226
+#: includes/admin/tools/system-info.php:228
+msgid "Site Date"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:233
+msgid "Universal Date"
+msgstr ""
+
+#: includes/admin/tools/system-info.php:238
 msgid "Permalink Structure"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:231
+#: includes/admin/tools/system-info.php:243
 msgid "Absolute Path"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:236
+#: includes/admin/tools/system-info.php:248
 msgid "Debug"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:246
+#: includes/admin/tools/system-info.php:258
 msgid "Table Prefix:"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:251
+#: includes/admin/tools/system-info.php:263
 msgid "Active Theme"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:256
+#: includes/admin/tools/system-info.php:268
 msgid "Parent Theme"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:261
+#: includes/admin/tools/system-info.php:273
 msgid "Active Plugins"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:304
+#: includes/admin/tools/system-info.php:316
 msgid "(Event's plugin not installed)"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:341
+#: includes/admin/tools/system-info.php:353
 msgid "GamiPress Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:360
+#: includes/admin/tools/system-info.php:372
 msgid "Events Listeners"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:365
+#: includes/admin/tools/system-info.php:377
 msgid "Installation Date"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:394
+#: includes/admin/tools/system-info.php:406
 msgid "Download System Info"
 msgstr ""
 
-#: includes/admin/tools/system-info.php:397
+#: includes/admin/tools/system-info.php:409
 msgid "Download System Info File"
 msgstr ""
 

@@ -239,6 +239,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.6 ###
+
+* **Improvement**
+* Added site time information on System Info tool.
+* **Developer Notes**
+* Improvements when overriding CMB2 post fields by detecting if is a custom table form.
+
 ### 1.8.4.5 ###
 
 * **Improvements**

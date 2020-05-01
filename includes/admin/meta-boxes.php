@@ -279,6 +279,13 @@ function gamipress_site_name_default_cb( $field_args, $field ) {
  */
 function gamipress_cmb2_override_post_title_display( $data, $post_id ) {
 
+    global $ct_cmb2_override;
+
+    // Prevent to override on custom tables
+    if( $ct_cmb2_override === true ) {
+        return $data;
+    }
+
 	if( get_post_field( 'post_status', $post_id ) === 'auto-draft' ) {
 		return '';
 	}
@@ -290,12 +297,26 @@ add_filter( 'cmb2_override_post_title_meta_value', 'gamipress_cmb2_override_post
 
 function gamipress_cmb2_override_post_name_display( $data, $post_id ) {
 
+    global $ct_cmb2_override;
+
+    // Prevent to override on custom tables
+    if( $ct_cmb2_override === true ) {
+        return $data;
+    }
+
 	return get_post_field( 'post_name', $post_id );
 
 }
 add_filter( 'cmb2_override_post_name_meta_value', 'gamipress_cmb2_override_post_name_display', 10, 2 );
 
 function gamipress_cmb2_override_menu_order_display( $data, $post_id ) {
+
+    global $ct_cmb2_override;
+
+    // Prevent to override on custom tables
+    if( $ct_cmb2_override === true ) {
+        return $data;
+    }
 
 	// Code has been moved to gamipress_get_rank_priority() on 1.3.9
 
