@@ -67,6 +67,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 ### Other integrations ###
 
+* [AutomatorWP](https://gamipress.com/add-ons/automatorwp-integration/)
 * [WooCommerce](https://wordpress.org/plugins/gamipress-woocommerce-integration/)
 * [Easy Digital Downloads](https://wordpress.org/plugins/gamipress-easy-digital-downloads-integration/)
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
@@ -238,6 +239,14 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.8.4.7 ###
+
+* **Improvements**
+* Make GamiPress cache options not get autoloaded.
+* Correctly apply the minimum role to administer GamiPress settings to user earnings and logs capabilities.
+* **Developer Notes**
+* On achievements shortcode, make sure to pass the user ID as integer.
 
 ### 1.8.4.6 ###
 

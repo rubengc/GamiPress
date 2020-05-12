@@ -622,8 +622,9 @@ function gamipress_get_user_points_awarded_in_loop( $user_id = 0, $points_type =
         $last_activity = absint( gamipress_achievement_last_user_activity( $requirement_id, $user_id ) );
 
         // If user hasn't earned this yet, then get activity count from publish date
-        if( $last_activity === 0 )
+        if( $last_activity === 0 ) {
             $last_activity = strtotime( gamipress_get_post_date( $requirement_id ) );
+        }
 
         $args = array(
             'date_query' => array(

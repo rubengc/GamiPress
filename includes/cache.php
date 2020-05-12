@@ -100,7 +100,7 @@ function gamipress_save_cache( $key = '', $value = '' ) {
     if( gamipress_is_network_wide_active() ) {
         return update_site_option( 'gamipress_cache_' . $key, $value );
     } else {
-        return update_option( 'gamipress_cache_' . $key, $value );
+        return update_option( 'gamipress_cache_' . $key, $value, false );
     }
 
 }

@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.4
-Stable tag: 1.8.4.6
+Stable tag: 1.8.4.7
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -74,6 +74,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 = Other integrations =
 
+* [AutomatorWP](https://gamipress.com/add-ons/automatorwp-integration/)
 * [WooCommerce](https://wordpress.org/plugins/gamipress-woocommerce-integration/)
 * [Easy Digital Downloads](https://wordpress.org/plugins/gamipress-easy-digital-downloads-integration/)
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
@@ -223,9 +224,17 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 == Changelog ==
 
+= 1.8.4.7 =
+
+* **Improvements**
+* Make GamiPress cache options not get autoloaded.
+* Correctly apply the minimum role to administer GamiPress settings to user earnings and logs capabilities.
+* **Developer Notes**
+* On achievements shortcode, make sure to pass the user ID as integer.
+
 = 1.8.4.6 =
 
-* **Improvement**
+* **Improvements**
 * Added site time information on System Info tool.
 * **Developer Notes**
 * Improvements when overriding CMB2 post fields by detecting if is a custom table form.

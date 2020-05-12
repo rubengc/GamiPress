@@ -369,19 +369,26 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
     $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
     // Turn no attributes to false
-    if( $current_user === 'no' )
+    if( $current_user === 'no' ) {
         $current_user = false;
+    }
 
-    if( $wpms === 'no' )
+    if( $wpms === 'no' ) {
         $wpms = false;
+    }
 
 	// Force to set current user as user ID
-	if( $current_user )
+	if( $current_user ) {
 		$user_id = get_current_user_id();
+    }
 
 	// Get the current user if one wasn't specified
-	if( ! $user_id )
+	if( ! $user_id ) {
 		$user_id = get_current_user_id();
+    }
+
+	// Ensure user ID as int
+    $user_id = absint( $user_id );
 
 	// Setup template vars
 	$template_args = array(
