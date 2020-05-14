@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-05-12 11:48+0200\n"
+"POT-Creation-Date: 2020-05-14 12:30+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1906,7 +1906,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:49 includes/functions/points.php:819
+#: includes/admin/settings/logs.php:49 includes/functions/points.php:821
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1918,7 +1918,7 @@ msgstr ""
 msgid "Used when user gets a deduction of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:55 includes/functions/points.php:823
+#: includes/admin/settings/logs.php:55 includes/functions/points.php:825
 msgid "{user} deducted {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1980,7 +1980,7 @@ msgstr ""
 msgid "Used when an admin awards a user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:85 includes/functions/points.php:807
+#: includes/admin/settings/logs.php:85 includes/functions/points.php:809
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -1992,7 +1992,7 @@ msgstr ""
 msgid "Used when an admin revokes points of a user. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:91 includes/functions/points.php:811
+#: includes/admin/settings/logs.php:91 includes/functions/points.php:813
 msgid "{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -3120,7 +3120,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/1.4.7.php:213 includes/admin/upgrades/1.4.7.php:241
-#: includes/functions/points.php:861
+#: includes/functions/points.php:863
 msgid "(no trigger)"
 msgstr ""
 
@@ -4019,7 +4019,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1249 includes/functions/points.php:1284
+#: includes/functions/achievements.php:1249 includes/functions/points.php:1286
 #: includes/functions/ranks.php:1324
 msgid "widgets"
 msgstr ""
@@ -4154,11 +4154,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: includes/functions/points.php:1283
+#: includes/functions/points.php:1285
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/functions/points.php:1284
+#: includes/functions/points.php:1286
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
@@ -4562,11 +4562,11 @@ msgstr ""
 msgid "%s Requirement"
 msgstr ""
 
-#: includes/rules-engine.php:40
+#: includes/rules-engine.php:42
 msgid "User hasn't access to this achievement."
 msgstr ""
 
-#: includes/rules-engine.php:44
+#: includes/rules-engine.php:47
 msgid "User hasn't completed this achievement yet."
 msgstr ""
 

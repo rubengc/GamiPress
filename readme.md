@@ -240,6 +240,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.8 ###
+
+* **Improvements**
+* Speed performance improvements of the awards engine by reducing the number of checks.
+* **Bug Fixes**
+* Fixed incorrect checks on points-based ranks using the "Earn an amount of points" event.
+
 ### 1.8.4.7 ###
 
 * **Improvements**
