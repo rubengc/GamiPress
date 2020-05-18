@@ -240,6 +240,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.4.9 ###
+
+* **Bug Fixes**
+* Fixed incorrect last activity time check for ranks, used to determine the exactly date the rank has been unlocked.
+* Fixed incorrect hook name.
+
 ### 1.8.4.8 ###
 
 * **Improvements**

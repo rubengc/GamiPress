@@ -144,7 +144,7 @@ function gamipress_ajax_get_users() {
      *
      * @return array
      */
-    $results = apply_filters( 'gamipress_ajax_get_posts_results', $results );
+    $results = apply_filters( 'gamipress_ajax_get_user_results', $results );
 
 	$response = array(
 		'results' => $results,

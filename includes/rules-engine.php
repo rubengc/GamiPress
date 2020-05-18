@@ -256,8 +256,9 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_step
 function gamipress_user_has_access_to_points_award( $return = false, $user_id = 0, $points_award_id = 0 ) {
 
 	// If we're not working with a points award, bail here
-	if ( 'points-award' !== gamipress_get_post_type( $points_award_id ) )
+	if ( 'points-award' !== gamipress_get_post_type( $points_award_id ) ) {
 		return $return;
+    }
 
 	// Prevent user from earning points awards with no points type
 	$points_type = gamipress_get_points_award_points_type( $points_award_id );

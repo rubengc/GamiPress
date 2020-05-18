@@ -35,8 +35,9 @@ function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id
 		$achievement = $achievements[0];
 
 		// Return the achievement date earned
-		if ( is_object( $achievement ) )
+		if ( is_object( $achievement ) ) {
 			$since = $achievement->date_earned + 1;
+        }
 
     // If hasn't earned it and is a rank requirement, then grab the rank earned date
 	} else if( gamipress_get_post_type( $achievement_id ) === 'rank-requirement' ) {
@@ -49,7 +50,7 @@ function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id
 	        if( ! gamipress_is_lowest_priority_rank( gamipress_get_user_rank_id( $user_id, $rank->post_type ) ) ) {
 
 	            // Set since from previous earned time rank
-                $since = gamipress_get_rank_earned_time( $user_id, $rank->post_type ) - 1;
+                $since = gamipress_get_rank_earned_time( $user_id, $rank->post_type ) + 1;
             }
         }
 
