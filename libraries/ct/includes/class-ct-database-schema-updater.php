@@ -95,8 +95,8 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
 
                 }
 
-                // SQL to be executed at end of checks
-                $sql = '';
+                // Queries to be executed at end of checks
+                $queries = array();
 
                 foreach( $alters as $alter ) {
 
@@ -104,7 +104,7 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
 
                     switch( $alter['action'] ) {
                         case 'ADD':
-                            $sql .= "ALTER TABLE {$this->ct_db->table_name} ADD " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            $queries[] = "ALTER TABLE {$this->ct_db->table_name} ADD " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
                             break;
                         case 'ADD INDEX':
 
@@ -127,10 +127,10 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
                             $this->ct_db->db->query( "ALTER TABLE {$this->ct_db->table_name} ADD INDEX {$add_index_query}" );
                             break;
                         case 'MODIFY':
-                            $sql .= "ALTER TABLE {$this->ct_db->table_name} MODIFY " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            $queries[] = "ALTER TABLE {$this->ct_db->table_name} MODIFY " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
                             break;
                         case 'DROP':
-                            $sql .= "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}; ";
+                            $queries[] = "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}; ";
 
                             // Better use a built-in function here?
                             //maybe_drop_column( $this->ct_db->table_name, $column, "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}" );
@@ -146,9 +146,12 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
                     }
                 }
 
-                if( ! empty( $sql ) ) {
-                    // Execute the SQL
-                    $updated = $this->ct_db->db->query( $sql );
+                if( ! empty( $queries ) ) {
+
+                    // Execute the each SQL query
+                    foreach( $queries as $sql ) {
+                        $updated = $this->ct_db->db->query( $sql );
+                    }
 
                     // Was anything updated?
                     return ! empty( $updated );

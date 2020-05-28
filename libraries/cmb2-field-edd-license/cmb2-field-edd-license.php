@@ -8,7 +8,7 @@
  * Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * Description: CMB2 field type to store and check EDD Software Licensing licenses.
- * Version: 1.0.8
+ * Version: 1.0.9
  * Author: GamiPress
  * Author URI: https://gamipress.com/
  * License: GPLv2+
@@ -28,7 +28,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
         /**
          * Current version number
          */
-        const VERSION = '1.0.8';
+        const VERSION = '1.0.9';
 
         /**
          * Initialize the plugin by hooking into CMB2
@@ -163,10 +163,10 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
                 $api_response = $this->api_request( $args['server'], $args['license'], $args, 'deactivate_license' );
 
-                if( $api_response === true ) {
+                // Clear field value on success
+                $this->clear_field( $field );
 
-                    // Clear field value on success
-                    $this->clear_field( $field );
+                if( $api_response === true ) {
 
                     if( $is_ajax ) {
                         wp_send_json_success( __( 'License deactivated successfully.', 'cmb2-edd-license' ) );
@@ -185,6 +185,9 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
                 }
 
             } else {
+
+                // Clear field value on success
+                $this->clear_field( $field );
 
                 if( $is_ajax ) {
                     wp_send_json_error( __( 'License has not been activated yet.', 'cmb2-edd-license' ) );

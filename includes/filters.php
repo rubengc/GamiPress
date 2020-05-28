@@ -1525,10 +1525,18 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 				// Get the rank thumbnail
 				$column_output = gamipress_get_rank_post_thumbnail( $user_earning->post_id );
 
-			}
+            } else {
+			    // Default
+
+                // Get the points type thumbnail
+                $column_output = gamipress_get_points_type_thumbnail( $user_earning->post_id );
+            }
 
 			break;
 		case 'description':
+
+            $earning_title = $user_earning->title;
+            $earning_description = '';
 
 			if( in_array( $user_earning->post_type, gamipress_get_requirement_types_slugs() ) ) {
 
@@ -1588,6 +1596,22 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 
 			}
 
+			// Default description for custom user earnings with points assigned
+			if( empty( $earning_description ) ) {
+
+                $points = (int) $user_earning->points;
+
+                if( $points !== 0 && isset( $points_types[$user_earning->points_type] ) ) {
+
+                    $earning_description = sprintf( '%s %s',
+                        $points_types[$user_earning->points_type]['plural_name'],
+                        ( $points > 0 ? __( 'Award', 'gamipress' ) : __( 'Deduction', 'gamipress' ) )
+                    );
+
+                }
+
+            }
+
 			$column_output = sprintf( '<strong class="gamipress-earning-title">%s</strong>'
 				. '<br>'
 				. '<span class="gamipress-earning-description">%s</span>',
@@ -1598,9 +1622,9 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 			break;
 		case 'points':
 
-			$points = absint( $user_earning->points );
+			$points = (int) $user_earning->points;
 
-			if( $points > 0 && isset( $points_types[$user_earning->points_type] ) ) {
+			if( $points !== 0 && isset( $points_types[$user_earning->points_type] ) ) {
 
 				// Setup the output as %d point(s)
 				$column_output = gamipress_format_points( $points, $user_earning->points_type );

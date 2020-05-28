@@ -1305,6 +1305,8 @@ function gamipress_get_points_type_thumbnail( $points_type = '', $image_size = '
 
 	if( gettype( $points_type ) === 'integer' ) {
 		$post_id = $points_type;
+	} else if( absint( $points_type ) !== 0 ) {
+        $post_id = $points_type;
 	} else {
 		$points_types = gamipress_get_points_types();
 

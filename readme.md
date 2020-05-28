@@ -240,6 +240,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.5 ###
+
+* **New Features**
+* Added support for custom earnings entries on earnings shortcode, block and widget and at admin area.
+* **Improvements**
+* Clear field when license gets deactivated included when server responds that license has been already deactivated.
+
 ### 1.8.4.9 ###
 
 * **Bug Fixes**

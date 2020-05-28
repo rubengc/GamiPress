@@ -50,7 +50,7 @@ function gamipress_admin_notices() {
             <div class="notice gamipress-review-notice">
                 <p>
                     <?php _e( 'Awesome! You\'ve been using <strong>GamiPress</strong> for a while.', 'gamipress' ); ?><br>
-                    <?php _e( 'May I ask you to give it a <strong>5-star rating</strong> on Wordpress?', 'gamipress' ); ?><br>
+                    <?php _e( 'May I ask you to give it a <strong>5-star rating</strong> on WordPress?', 'gamipress' ); ?><br>
                     <?php _e( 'This will help to spread its popularity and to make this plugin a better one.', 'gamipress' ); ?><br>
                     <br>
                     <?php _e( 'Your help is much appreciated. Thank you very much,', 'gamipress' ); ?><br>

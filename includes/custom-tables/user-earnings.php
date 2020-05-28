@@ -536,9 +536,10 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
 
                         <?php // Points deduct title ?>
                         <strong><?php echo gamipress_get_post_field( 'post_title', $user_earning->post_id ); ?></strong>
+                        <br>
 
                         <?php // Points deduct relationship details ?>
-                        <?php echo ( isset( $requirement_types[$user_earning->post_type] ) ? '<br>' . $requirement_types[$user_earning->post_type]['singular_name'] : '' ); ?>
+                        <?php echo ( isset( $requirement_types[$user_earning->post_type] ) ? $requirement_types[$user_earning->post_type]['singular_name'] : '' ); ?>
                         <?php echo ', ' . ( $can_manage ? '<a href="' . get_edit_post_link( $points_type->ID ) . '">' . gamipress_get_post_field( 'post_title', $points_type->ID ) . '</a>' : gamipress_get_post_field( 'post_title', $points_type->ID ) ); ?>
 
                     <?php elseif( $user_earning->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $user_earning->post_id ) ) : ?>
@@ -550,9 +551,10 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
 
                         <?php // Rank requirement title ?>
                         <strong><?php echo gamipress_get_post_field( 'post_title', $user_earning->post_id ); ?></strong>
+                        <br>
 
                         <?php // Rank relationship details ?>
-                        <?php echo ( isset( $requirement_types[$user_earning->post_type] ) ? '<br>' . $requirement_types[$user_earning->post_type]['singular_name'] : '' ); ?>
+                        <?php echo ( isset( $requirement_types[$user_earning->post_type] ) ? $requirement_types[$user_earning->post_type]['singular_name'] : '' ); ?>
                         <?php echo ( isset( $rank_types[$rank->post_type] ) ? ', ' . $rank_types[$rank->post_type]['singular_name'] . ': ' : '' ); ?>
                         <?php echo '<a href="' . ( $can_manage ? get_edit_post_link( $rank->ID ) : get_post_permalink( $rank->ID ) ) . '">' . gamipress_get_post_field( 'post_title', $rank->ID ) . '</a>'; ?>
 
@@ -579,6 +581,17 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
                     <?php // Rank title ?>
                     <strong><?php echo '<a href="' . ( $can_manage ? get_edit_post_link( $user_earning->post_id ) : get_post_permalink( $user_earning->post_id ) ) . '">' . gamipress_get_post_field( 'post_title', $user_earning->post_id ) . '</a>'; ?></strong>
                     <?php echo ( isset( $rank_types[$user_earning->post_type] ) ? '<br>' . $rank_types[$user_earning->post_type]['singular_name'] : '' ); ?>
+
+                <?php else : ?>
+
+                    <?php // Default output ?>
+
+                    <?php // Thumbnail ?>
+                    <?php echo gamipress_get_points_type_thumbnail( $user_earning->post_id, array( 32, 32 ) ); ?>
+
+                    <strong><?php echo $user_earning->title; ?></strong>
+                    <br>
+                    <?php echo ( $can_manage ? '<a href="' . get_edit_post_link( $user_earning->post_id ) . '">' . gamipress_get_post_field( 'post_title', $user_earning->post_id ) . '</a>' : gamipress_get_post_field( 'post_title', $user_earning->post_id ) ); ?>
 
                 <?php endif; ?>
             <?php else : ?>

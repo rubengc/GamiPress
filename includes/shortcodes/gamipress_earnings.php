@@ -382,6 +382,9 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
             $points_types = explode( ',', $args['points_types'] );
         }
 
+        // For custom earnings points to the points type
+        $types[] = 'points-type';
+
         // Points awards
         if( $args['awards'] === 'yes' ) {
             $types[] = 'points-award';
