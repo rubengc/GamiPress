@@ -26,24 +26,6 @@ function gamipress_get_email_templates() {
 }
 
 /**
- * Get an array of email pattern tags
- *
- * @since 1.3.0
- * @updated 1.8.6 Keep function for backward compatibility
- *
- * @return array The registered email pattern tags
- */
-function gamipress_get_email_pattern_tags() {
-
-    // TODO: Function keep for backward compatibility, will be removed on 1.9.0
-
-    $pattern_tags = gamipress_get_pattern_tags();
-
-    return apply_filters( 'gamipress_email_pattern_tags', $pattern_tags );
-
-}
-
-/**
  * Send the email
  *
  * @since 1.3.0

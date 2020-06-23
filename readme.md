@@ -240,6 +240,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.6.1 ###
+
+* **Improvements**
+* Ensure backward compatibility.
+
 ### 1.8.6 ###
 
 * **New features**
