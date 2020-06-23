@@ -57,6 +57,9 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
                 <?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?>
             <?php endif; ?>
 
+            <?php // Share
+            echo gamipress_achievement_share_markup( get_the_ID(), $a ); ?>
+
         </div><!-- .gamipress-achievement-image -->
 
         <?php
@@ -196,6 +199,11 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
         <?php // Achievement unlock with points
         if ( $a['unlock_button'] === 'yes' ) :
             echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a );
+        endif; ?>
+
+        <?php // If thumbnail is not displayed, place the share buttons at bottom
+        if ( $a['thumbnail'] !== 'yes' ) :
+            echo gamipress_achievement_share_markup( get_the_ID(), $a );
         endif; ?>
 
         <?php // Achievement Earners

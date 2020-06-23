@@ -92,8 +92,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'achievement_earned_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
-                'desc' => __( 'Available tags:', 'gamipress' )
-                    . gamipress_get_email_pattern_tags_html( 'achievement_earned' ),
+                'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'achievement_earned' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
@@ -136,8 +135,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'step_completed_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
-                'desc' => __( 'Available tags:', 'gamipress' )
-                    . gamipress_get_email_pattern_tags_html( 'step_completed' ),
+                'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'step_completed' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
@@ -181,8 +179,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'points_award_completed_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
-                'desc' => __( 'Available tags:', 'gamipress' )
-                    . gamipress_get_email_pattern_tags_html( 'points_award_completed' ),
+                'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'points_award_completed' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
@@ -225,8 +222,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'points_deduct_completed_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
-                'desc' => __( 'Available tags:', 'gamipress' )
-                    . gamipress_get_email_pattern_tags_html( 'points_deduct_completed' ),
+                'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'points_deduct_completed' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Ops {user_first}!', 'gamipress' ) . '</h2>' . "\n"
@@ -269,8 +265,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'rank_earned_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
-                'desc' => __( 'Available tags:', 'gamipress' )
-                    . gamipress_get_email_pattern_tags_html( 'rank_earned' ),
+                'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'rank_earned' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"
@@ -313,8 +308,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'rank_requirement_completed_email_content' => array(
                 'name' => __( 'Content', 'gamipress' ),
-                'desc' => __( 'Available tags:', 'gamipress' )
-                    . gamipress_get_email_pattern_tags_html( 'rank_requirement_completed' ),
+                'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'rank_requirement_completed' ),
                 'type' => 'wysiwyg',
                 'default' =>
                     '<h2>' . __( 'Congratulations {user_first}!', 'gamipress' ) . '</h2>' . "\n"

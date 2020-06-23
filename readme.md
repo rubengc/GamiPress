@@ -36,15 +36,15 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Achievement Types:** Configure as many types of achievement as you like (Quests, Badges, etc).
 * **Rank Types:** Configure as many types of rank as you like (Level, Grade, etc).
 * **Automatic points awards and deductions:** Easily configure automatic ways to award or deduct points to your users.
-* **Achievement steps:** Define conditional steps, thresholds and more.
-* **Rank requirements:** Define conditional requirements to reach any rank.
+* **Custom requirements:** Define conditional requirements the user needs to meet for unlock any achievement or rank.
 * **Time limit requirements:** Limit by time period when the user can complete a specific requirement (daily, weekly, monthly or yearly).
 * **Drag and drop controls:** Powerful controls to setup your gamification environment in minutes.
+* **Social sharing:** Users can share the achievements and ranks they have earned on any social network of their choice.
+* **Unlock achievements and ranks using points:** Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
 * **Emails:** Your users will get notified automatically about new awards.
 * **Logs:** Flexible log system with support for public and private logs.
-* **Unlock achievements and ranks using points:** Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
-* **Gutenberg blocks:** Built-in support for Gutenberg including a great number of blocks to place them anywhere.
-* **Shortcodes & Widgets:** WordPress-friendly shortcodes and widgets to show the user points wallet, earned achievements, latest logs, and more.
+* **Open Badges compatible:** Connect your site achievements with [Badgr](https://gamipress.com/add-ons/gamipress-badgr/) or [Credly](https://gamipress.com/add-ons/gamipress-credly/) to issue open badges as an official recognition of the skills of your users.
+* **Blocks, Shortcodes & Widgets:** WordPress-friendly blocks, shortcodes and widgets to show the user points wallet, earned achievements, latest logs, and more.
 * **Live shortcode editor:** Missing a shortcode parameter? Just press the "GamiPress Shortcode" button and set up any shortcode without a worry.
 * **GDPR Support:** Support for WordPress personal data exports and deletions.
 * **Theme Agnostic:** GamiPress works with just about any standard WordPress theme. No special hooks or theme updates are needed.
@@ -239,6 +239,23 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.8.6 ###
+
+* **New features**
+* Added the ability allow users share they earned achievements and ranks on Twitter, Facebook, LinkedIn and Pinterest.
+* Added the "Social" section on settings with settings to manage the display of the social buttons.
+* Allow register manual balance adjustments on the user earnings table.
+* Allow register bulk award and revoke balance adjustments on the user earnings table.
+* Added the setting "Global Maximum Earnings" on achievements to allow limit an achievement maximum earnings globally.
+* Added the tags {user_username} and {user_email}.
+* **Improvements**
+* Added the user display name on the earners list.
+* Make achievements and ranks congratulations text use the WordPress editor for better format it's content.
+* Style improvements on the tools screen.
+* **Developer Notes**
+* Added filters to override the user URL and display name on the achievement and rank earners list.
+* Added filters to override the "Unlock using points" button text for achievements and ranks.
 
 ### 1.8.5 ###
 

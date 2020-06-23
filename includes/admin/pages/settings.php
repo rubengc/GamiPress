@@ -10,6 +10,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 require_once GAMIPRESS_DIR . 'includes/admin/settings/general.php';
+require_once GAMIPRESS_DIR . 'includes/admin/settings/social.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/style.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/email.php';
 require_once GAMIPRESS_DIR . 'includes/admin/settings/logs.php';
@@ -171,6 +172,10 @@ function gamipress_get_settings_sections() {
         'general' => array(
             'title' => __( 'General', 'gamipress' ),
             'icon' => 'dashicons-admin-settings',
+        ),
+        'social' => array(
+            'title' => __( 'Social', 'gamipress' ),
+            'icon' => 'dashicons-share',
         ),
         'style' => array(
             'title' => __( 'Style', 'gamipress' ),

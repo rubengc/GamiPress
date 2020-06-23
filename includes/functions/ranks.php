@@ -1030,7 +1030,43 @@ function gamipress_get_rank_earners_list( $rank_id = 0, $args = array() ) {
         $output .= '<ul class="gamipress-rank-earners-list rank-' . $rank_id . '-earners-list">';
 
         foreach ( $earners as $user ) {
-            $user_content = '<li><a href="' . get_author_posts_url( $user->ID ) . '">' . get_avatar( $user->ID ) . '</a></li>';
+
+            $user_url = get_author_posts_url( $user->ID );
+
+            /**
+             * Filters the rank earner url
+             *
+             * @since   1.8.6
+             *
+             * @param string    $user_url       The user URl, by default the get_author_posts_url()
+             * @param int       $user_id        The rendered user ID
+             * @param int       $rank_id        The given rank's post ID
+             * @param array     $args           Array of given arguments
+             *
+             * @return string
+             */
+            $user_url = apply_filters( 'gamipress_rank_earner_user_url', $user_url, $user->ID, $rank_id, $args );
+
+            /**
+             * Filters the rank earner display
+             *
+             * @since   1.8.6
+             *
+             * @param string    $user_display   The user display, by default the user display name
+             * @param int       $user_id        The rendered user ID
+             * @param int       $rank_id        The given rank's post ID
+             * @param array     $args           Array of given arguments
+             *
+             * @return string
+             */
+            $user_display = apply_filters( 'gamipress_rank_earner_user_display', $user->display_name, $user->ID, $rank_id, $args );
+
+            $user_content = '<li>'
+                    . '<a href="' . $user_url . '">'
+                        . get_avatar( $user->ID )
+                        . '<span class="earner-display-name">' . $user_display . '</span>'
+                    . '</a>'
+                . '</li>';
 
             /**
              * Filters the earners list user output

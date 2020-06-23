@@ -101,28 +101,52 @@ function gamipress_ajax_profile_update_user_points() {
     // Security check, forces to die if not security passed
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
-    $points         = absint( $_POST['points'] );
-    $points_type    = sanitize_text_field( $_POST['points_type'] );
-    $user_id        = absint( $_POST['user_id'] );
+    $points             = absint( $_POST['points'] );
+    $register_movement  = ( bool ) $_POST['register_movement'];
+    $earnings_text      = sanitize_text_field( $_POST['earnings_text'] );
+    $points_type        = sanitize_text_field( $_POST['points_type'] );
+    $user_id            = absint( $_POST['user_id'] );
 
     // Check if user has permissions
-    if ( ! current_user_can( 'edit_user', $user_id ) )
+    if ( ! current_user_can( 'edit_user', $user_id ) ) {
         wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+    }
 
     // Check if valid user ID
-    if( $user_id === 0 )
+    if( $user_id === 0 ) {
         wp_send_json_error( __( 'Invalid user ID.', 'gamipress' ) );
+    }
 
     // Check if valid amount
-    if( ! is_numeric( $points ) )
+    if( ! is_numeric( $points ) ) {
         wp_send_json_error( __( 'Invalid points amount.', 'gamipress' ) );
+    }
 
     // Check if is valid points type
-    if( $points_type !== '' && ! in_array( $points_type, gamipress_get_points_types_slugs() ) )
+    if( $points_type !== '' && ! in_array( $points_type, gamipress_get_points_types_slugs() ) ) {
         wp_send_json_error( __( 'Invalid points type.', 'gamipress' ) );
+    }
+
+    // Grab the user's current points
+    $current_points = gamipress_get_user_points( $user_id, $points_type );
 
     // Update the user points
-    gamipress_update_user_points( $user_id, absint( $points ), get_current_user_id(), null, $points_type );
+    gamipress_update_user_points( $user_id, $points, get_current_user_id(), null, $points_type );
+
+    if( $register_movement ) {
+
+        // Insert the custom user earning for the manual balance adjustment
+        gamipress_insert_user_earning( $user_id, array(
+            'title'	        => $earnings_text,
+            'user_id'	    => $user_id,
+            'post_id'	    => gamipress_get_points_type_id( $points_type ),
+            'post_type' 	=> 'points-type',
+            'points'	    => $points - $current_points,
+            'points_type'	=> $points_type,
+            'date'	        => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+        ) );
+
+    }
 
     // After update the user points balance, is possible that user unlocks a rank
     // For that, we need to return the current user ranks again and check for differences
@@ -370,9 +394,23 @@ function gamipress_profile_user_points( $user = null ) {
 
                                         <div class="profile-points-form-wrapper">
 
-                                            <input type="number" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo $user_points; ?>" class="regular-text" data-points-type="<?php echo $points_type; ?>" />
+                                            <div class="profile-points-new-balance-input">
+                                                <label for="user_<?php echo $points_type; ?>_points"><?php echo __( 'New balance:', 'gamipress' ); ?></label>
+                                                <input type="number" name="user_<?php echo $points_type; ?>_points" id="user_<?php echo $points_type; ?>_points" value="<?php echo $user_points; ?>" class="regular-text" data-points-type="<?php echo $points_type; ?>" />
+                                                <span class="description"><?php echo __( 'Enter a new total will automatically log the change and difference between totals.', 'gamipress' ); ?></span>
+                                            </div>
 
-                                            <span class="description"><?php echo __( 'Enter a new total will automatically log the change and difference between totals.', 'gamipress' ); ?></span>
+                                            <label for="user_<?php echo $points_type; ?>_register_points_movement" class="profile-points-register-movement-input-label"><?php echo __( 'Register on user earnings:', 'gamipress' ); ?></label>
+                                            <div class="gamipress-switch gamipress-switch-small profile-points-register-movement-input">
+                                                <input type="checkbox" name="user_<?php echo $points_type; ?>_register_points_movement" id="user_<?php echo $points_type; ?>_register_points_movement">
+                                                <label for="user_<?php echo $points_type; ?>_register_points_movement"><?php echo __( 'Check this option to register this balance movement on user earnings.', 'gamipress' ); ?></label>
+                                            </div>
+
+                                            <div class="profile-points-earning-text-input" style="display: none;">
+                                                <label for="user_<?php echo $points_type; ?>_points_earning_text"><?php echo __( 'Earning entry text:', 'gamipress' ); ?></label>
+                                                <input type="text" name="user_<?php echo $points_type; ?>_points_earning_text" id="user_<?php echo $points_type; ?>_points_earning_text" value="<?php echo __( 'Manual balance adjustment', 'gamipress' ); ?>" class="regular-text" />
+                                                <span class="description"><?php echo __( 'Enter the line text to be displayed on user earnings.', 'gamipress' ); ?></span>
+                                            </div>
 
                                             <div class="profile-points-form-buttons">
                                                 <a href="#" class="button button-primary profile-points-save"><?php echo __( 'Save', 'gamipress' ); ?></a>

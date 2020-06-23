@@ -63,3 +63,65 @@ function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = a
     return $user_earning_id;
 
 }
+
+/**
+ * Get a specific earning count
+ *
+ * @since  1.8.6
+ *
+ * @param  array $query User earning query parameters
+ *
+ * @return int          The number of user earnings found
+ */
+function gamipress_get_earnings_count( $query = array() ) {
+
+    global $wpdb;
+
+    // Post data
+    $query = wp_parse_args( $query, array(
+        'user_id'	    => 0,
+        'post_id'	    => 0,
+        'post_type' 	=> '',
+        'points_type'	=> '',
+    ) );
+
+    $where = array(
+        '1 = 1'
+    );
+
+    // User ID
+    if( is_array( $query['user_id'] ) ) {
+        $where[] = 'ue.user_id IN ( ' . implode( ', ', $query['user_id'] ) . ' )';
+    } else if ( absint( $query['user_id'] ) !== 0 ) {
+        $where[] = 'ue.user_id = ' . absint( $query['user_id'] );
+    }
+
+    // Post ID
+    if( is_array( $query['post_id'] ) ) {
+        $where[] = 'ue.post_id IN ( ' . implode( ', ', $query['post_id'] ) . ' )';
+    } else if ( absint( $query['post_id'] ) !== 0 ) {
+        $where[] = 'ue.post_id = ' . absint( $query['post_id'] );
+    }
+
+    // Post type
+    if( is_array( $query['post_type'] ) ) {
+        $where[] = 'ue.post_type IN ( "' . implode( '", "', $query['post_type'] ) . '" )';
+    } else if ( ! empty( $query['post_type'] ) ) {
+        $where[] = 'ue.post_type = "' . $query['post_type'] . '"';
+    }
+
+    // Points type
+    if( is_array( $query['points_type'] ) ) {
+        $where[] = 'ue.points_type IN ( "' . implode( '", "', $query['points_type'] ) . '" )';
+    } else if ( ! empty( $query['points_type'] ) ) {
+        $where[] = 'ue.points_type = "' . $query['points_type'] . '"';
+    }
+
+    // Merge all wheres
+    $where = implode( ' AND ', $where );
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    return absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$user_earnings} AS ue WHERE {$where}" ) );
+
+}

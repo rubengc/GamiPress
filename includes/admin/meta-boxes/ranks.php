@@ -37,7 +37,7 @@ function gamipress_ranks_meta_boxes( $post_type ) {
             $prefix . 'congratulations_text' => array(
                 'name' => __( 'Congratulations Text', 'gamipress' ),
                 'desc' => __( 'Displayed after rank is reached.', 'gamipress' ),
-                'type' => 'textarea',
+                'type' => 'wysiwyg',
             ),
             $prefix . 'unlock_with_points' => array(
                 'name' => __( 'Allow reach with points', 'gamipress' ),

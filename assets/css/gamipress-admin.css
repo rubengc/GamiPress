@@ -197,6 +197,24 @@
 	border-bottom: 1px solid #e9e9e9;
 }
 
+.gamipress-form .cmb2-char-counter,
+.gamipress-page .cmb2-char-counter {
+	border: none;
+	min-height: 24px;
+	padding: 0 4px;
+	text-align: center;
+	font-weight: 500;
+	vertical-align: baseline;
+}
+
+.gamipress-form .cmb2-char-counter:focus,
+.gamipress-page .cmb2-char-counter:focus {
+	background-color: #eee;
+	border: none;
+	outline: none;
+	box-shadow: none;
+}
+
 /* Fix color pickers preview color height */
 .gamipress-form .wp-picker-container .wp-color-result .color-alpha {
 	height: 28px !important;
@@ -510,11 +528,17 @@ li.requirement-row.requirement-disabled {
     }
 }
 
+.profile-points label {
+	font-weight: 500;
+}
+
 .profile-rank select,
 .profile-rank .description,
 .profile-points .description {
 	display: block;
 	margin-top: 5px;
+	color: #757575;
+	font-style: italic;
 }
 
 .profile-points input {
@@ -555,12 +579,33 @@ li.requirement-row.requirement-disabled {
 
 .profile-rank .profile-rank-form-buttons,
 .profile-points .profile-points-form-buttons {
-	margin-top: 5px;
+	margin-top: 12px;
 }
 
 .profile-rank-form-wrapper,
 .profile-points-form-wrapper {
 	display: none;
+}
+
+.profile-points .profile-points-register-movement-input-label {
+	display: block;
+	margin-top: 12px;
+}
+
+.profile-points .profile-points-register-movement-input {
+	position: relative;
+	margin: 5px 0 12px 0;
+}
+
+.profile-points .profile-points-register-movement-input input {
+	top: -2px !important;
+}
+
+.profile-points .profile-points-register-movement-input label {
+	margin-left: 46px;
+	font-weight: 400;
+	color: #757575;
+	font-style: italic;
 }
 
 #gamipress-awards-options td img {
@@ -972,6 +1017,7 @@ body.wp-customizer > .gamipress-select2 {
 
 .gamipress-switch input:checked:before {
 	border-color: transparent;
+	background-color: transparent;
 }
 
 .gamipress-switch input:before {
@@ -1317,7 +1363,7 @@ label[for="_gamipress_sequential"] {
 	left: 10px;
 }
 
-.gamipress-page .gamipress-switch:not(.cmb-type-multicheck) .cmb2-metabox-description {
+.gamipress-page .gamipress-switch:not(.cmb-type-multicheck):not(.cmb-type-multicheck-inline) .cmb2-metabox-description {
 	display: inline-block;
 	margin-left: 50px;
 	margin-top: 7px;
@@ -1354,7 +1400,8 @@ label[for="_gamipress_sequential"] {
 	margin: 0 2px 0 0;
 }
 
-.gamipress_settings .cmb2-metabox > .cmb-row > .cmb-th {
+.gamipress_settings .cmb2-metabox > .cmb-row > .cmb-th,
+.gamipress_tools .cmb2-metabox > .cmb-row > .cmb-th {
     font-weight: 600 !important;
 }
 
@@ -1454,6 +1501,62 @@ label[for="_gamipress_sequential"] {
         margin-bottom: 0;
     }
 
+}
+
+/* -------------------------------------------
+	Social Settings
+   ------------------------------------------- */
+.gamipress-share-buttons-label {
+	margin-top: 0;
+	margin-bottom: 2px;
+}
+
+.gamipress-share-button {
+	display: inline-block;
+	width: 28px;
+	height: 28px;
+	vertical-align: middle;
+	padding: 4px;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: 18px 18px;
+	box-sizing: border-box;
+}
+
+.gamipress-share-button + .gamipress-share-button {
+	margin-left: 4px;
+}
+
+.gamipress-share-button-square {
+	border-radius: 0;
+}
+
+.gamipress-share-button-rounded {
+	border-radius: 6px;
+}
+
+.gamipress-share-button-circle {
+	border-radius: 50%;
+}
+
+.gamipress-share-button-facebook {
+	background-color: #4766a9;
+	background-image: url('../img/social/facebook.svg');
+}
+
+.gamipress-share-button-twitter {
+	background-color: #139ae7;
+	background-image: url('../img/social/twitter.svg');
+}
+
+.gamipress-share-button-linkedin {
+	background-color: #0074b3;
+	background-image: url('../img/social/linkedin.svg');
+}
+
+.gamipress-share-button-pinterest {
+	background-color: #bd081c;
+	background-image: url('../img/social/pinterest.svg');
 }
 
 /* -------------------------------------------

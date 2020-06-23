@@ -67,6 +67,9 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
                 <?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?>
             <?php endif; ?>
 
+            <?php // Share
+            echo gamipress_rank_share_markup( get_the_ID(), $a ); ?>
+
         </div><!-- .gamipress-rank-image -->
 
         <?php
@@ -170,6 +173,11 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
         <?php // Rank unlock with points
         if ( $a['unlock_button'] === 'yes' ) :
             echo gamipress_rank_unlock_with_points_markup( get_the_ID(), $a );
+        endif; ?>
+
+        <?php // If thumbnail is not displayed, place the share buttons at bottom
+        if ( $a['thumbnail'] !== 'yes' ) :
+            echo gamipress_rank_share_markup( get_the_ID(), $a );
         endif; ?>
 
         <?php // Rank Earners

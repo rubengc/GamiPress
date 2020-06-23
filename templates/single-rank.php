@@ -53,7 +53,11 @@ echo gamipress_render_earned_rank_text( get_the_ID(), get_current_user_id() ); ?
     do_action( 'gamipress_before_single_rank', get_the_ID(), $a ); ?>
 
     <div class="gamipress-rank-image">
-        <?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?>
+        <?php // Thumbnail
+        echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?>
+
+        <?php // Share
+        echo gamipress_rank_share_markup( get_the_ID(), $a ); ?>
     </div>
 
     <?php

@@ -256,28 +256,42 @@
     $('body').on('click', '.profile-points .profile-points-toggle', function(e) {
         e.preventDefault();
 
-        $(this).slideUp();
-        $(this).next('.profile-points-form-wrapper').slideDown();
+        var form = $(this).next('.profile-points-form-wrapper');
+		var points_input = form.find('.profile-points-new-balance-input input');
 
-        var input = $(this).next('.profile-points-form-wrapper').find('input');
+        $(this).slideUp();
+		form.slideDown();
 
         // Save current value in a element's data
-        input.data( 'current', input.val() );
-
+		points_input.data( 'current', points_input.val() );
     });
+
+    // On check register points balance movement
+	$('body').on('change', '.profile-points .profile-points-register-movement-input input', function(e) {
+
+		var target = $(this).parent().next();
+
+		if( $(this).prop('checked') ) {
+			target.slideDown('fast');
+		} else {
+			target.slideUp('fast');
+		}
+	});
 
     // Cancel user points edit
     $('body').on('click', '.profile-points .profile-points-cancel', function(e) {
         e.preventDefault();
 
-        var parent = $(this).parent().parent();
-        var input = parent.find('input');
+        var form = $(this).parent().parent();
+		var points_input = form.find('.profile-points-new-balance-input input');
+		var register_movement_input = form.find('.profile-points-register-movement-input input');
 
-        parent.slideUp();
-        parent.prev('.profile-points-toggle').slideDown();
+		form.slideUp();
+		form.prev('.profile-points-toggle').slideDown();
 
         // Restore current value (if user changed the input but won't save it)
-        input.val( input.data('current') );
+		points_input.val( points_input.data('current') );
+		register_movement_input.prop( 'checked', false ).change();
 
     });
 
@@ -287,10 +301,14 @@
 
         var $this = $(this);
         var parent = $this.closest('.profile-points-form-wrapper');
-        var input = parent.find('input');
-        var points = input.val();
-        var current_points = input.data('current');
-        var points_type = input.data('points-type');
+		var points_input = parent.find('.profile-points-new-balance-input input');
+		var register_movement_input = parent.find('.profile-points-register-movement-input input');
+		var earnings_text_input = parent.find('.profile-points-earning-text-input input');
+        var points = points_input.val();
+        var register_movement = register_movement_input.prop('checked');
+        var earnings_text = earnings_text_input.val();
+        var current_points = points_input.data('current');
+        var points_type = points_input.data('points-type');
         var user_id = $('#wpbody-content input[name="user_id"]').val();
 
         // If no changes made, then toggle form visibility
@@ -311,6 +329,8 @@
 				nonce: gamipress_admin.nonce,
                 points: points,
                 points_type: points_type,
+				register_movement: ( register_movement ? 1 : 0 ),
+				earnings_text: earnings_text,
                 user_id: user_id
             },
             success: function( response ) {
@@ -320,9 +340,11 @@
                 // Toggle form visibility
                 parent.slideUp();
                 parent.prev('.profile-points-toggle').slideDown();
+				register_movement_input.prop( 'checked', false );
 
                 // Update the points preview
                 if( response.data !== undefined && response.data.points !== undefined ) {
+
                     $this.closest('.profile-points').find('.profile-points-amount').html( response.data.points );
 
                     // Update the ranks preview
@@ -348,10 +370,13 @@
                         });
 
                     }
+
+					// Force user earnings table to refresh
+					gamipress_refresh_user_earnings_table();
                 }
 
                 // Save current value in a element's data
-                input.data( 'current', points );
+				points_input.data( 'current', points );
 
                 // Force user earnings table to refresh
                 gamipress_refresh_user_earnings_table();
@@ -465,6 +490,22 @@
         } );
 
     });
+
+    // Pattern tags toggle
+	$('body').on('click', '.gamipress-pattern-tags-list-toggle', function(e) {
+		e.preventDefault();
+
+		var $this = $(this);
+		var list = $this.closest('.cmb-td').find('.gamipress-pattern-tags-list');
+
+		if( ! list.hasClass('gamipress-pattern-tags-list-open') ) {
+			list.addClass('gamipress-pattern-tags-list-open').slideDown('fast');
+			$this.text( $this.data('show-text') );
+		} else {
+			list.removeClass('gamipress-pattern-tags-list-open').slideUp('fast');
+			$this.text( $this.data('hide-text') );
+		}
+	});
 
 	// Add-ons page
 	if( $('.gamipress_page_gamipress_add_ons').length ) {

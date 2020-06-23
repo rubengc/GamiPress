@@ -47,6 +47,18 @@ function gamipress_bulk_revokes_tool_meta_boxes( $meta_boxes ) {
                 'type' => 'select',
                 'options' => $points_types_options
             ),
+            'bulk_revoke_points_register_movement' => array(
+                'name' => __( 'Register on user earnings', 'gamipress' ),
+                'desc' => __( 'Check this option to register this balance movement on user earnings.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch'
+            ),
+            'bulk_revoke_points_earnings_text' => array(
+                'name' => __( 'Earning entry text', 'gamipress' ),
+                'desc' => __( 'Enter the line text to be displayed on user earnings.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( 'Manual balance adjustment', 'gamipress' ),
+            ),
             'bulk_revoke_points_all_users' => array(
                 'name' => __( 'Deduct to all users', 'gamipress' ),
                 'desc' => __( 'Check this option to deduct the points amount to all users.', 'gamipress' ),
@@ -192,6 +204,8 @@ function gamipress_bulk_revokes_tool_meta_boxes( $meta_boxes ) {
                 'fields' => array(
                     'bulk_revoke_points',
                     'bulk_revoke_points_type',
+                    'bulk_revoke_points_register_movement',
+                    'bulk_revoke_points_earnings_text',
                     'bulk_revoke_points_all_users',
                     'bulk_revoke_points_users',
                     'bulk_revoke_points_roles',
@@ -384,14 +398,16 @@ function gamipress_ajax_bulk_revokes_tool() {
         $users = $wpdb->get_results( $sql );
 
         // Return a success message if finished, else run again
-        if( empty( $users ) && $loop !== 0 )
+        if( empty( $users ) && $loop !== 0 ) {
             wp_send_json_success( __( 'Bulk revoke process has been done successfully.', 'gamipress' ) );
-        else
+        } else {
             $run_again = true;
+        }
     }
 
-    if( empty( $users ) )
+    if( empty( $users ) ) {
         wp_send_json_error( __( 'Could not find users to revoke.', 'gamipress' ) );
+    }
 
     // Let's to bulk revoke
     foreach( $users as $user ) {
@@ -403,6 +419,24 @@ function gamipress_ajax_bulk_revokes_tool() {
 
             // Deduct points
            gamipress_deduct_points_to_user( $user->ID, $user_points - $points_to_revoke, $points_type_to_revoke, array( 'admin_id' => get_current_user_id() ) );
+
+            $register_movement = isset( $_POST['bulk_revoke_points_register_movement'] ) ? true : false;
+            $earnings_text = isset( $_POST['bulk_revoke_points_earnings_text'] ) ? sanitize_text_field( $_POST['bulk_revoke_points_earnings_text'] ) : '';
+
+            if( $register_movement ) {
+
+                // Insert the custom user earning for the manual balance adjustment
+                gamipress_insert_user_earning( $user->ID, array(
+                    'title'	        => $earnings_text,
+                    'user_id'	    => $user->ID,
+                    'post_id'	    => gamipress_get_points_type_id( $points_type_to_revoke ),
+                    'post_type' 	=> 'points-type',
+                    'points'	    => $points_to_revoke * -1, // Insert as a negative value
+                    'points_type'	=> $points_type_to_revoke,
+                    'date'	        => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+                ) );
+
+            }
 
         } else if( $bulk_revoke === 'achievements' ) {
 

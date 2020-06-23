@@ -460,6 +460,60 @@
 
 	});
 
+	/**
+	 * Share achievement/rank button
+	 *
+	 * @since 1.8.6
+	 */
+	$body.on( 'click', '.gamipress-share-button', function (e) {
+		e.preventDefault();
+
+		var wrapper = $(this).closest('.gamipress-share-buttons');
+		var network = $(this).data('network');
+
+		// URL templates
+		var templates = {
+			facebook: 'https://www.facebook.com/sharer.php?u={url}',
+			twitter: 'https://twitter.com/intent/tweet?text={text}%0A{url}',
+			linkedin: 'https://www.linkedin.com/shareArticle?mini=true&url={url}&title={title}&summary={text}&source={url}',
+			pinterest: 'https://www.pinterest.com/pin/create/button/?url={url}&media={image}',
+		};
+
+		// Default dimensions for the new window
+		var width = 640;
+		var height = 480;
+
+		if( templates[network] !== undefined ) {
+
+			var url = wrapper.data('url');
+			var title = wrapper.data('title');
+			var text = wrapper.data('twitter-text');
+			var image = wrapper.data('image');
+
+			// Replace the template (ensuring each element is correctly encoded)
+			var parsed_url = templates[network]
+				.replace( '{url}', encodeURIComponent( url ) )
+				.replace( '{title}', encodeURIComponent( title ) )
+				.replace( '{image}', encodeURIComponent( image ) )
+				.replace( '{text}', encodeURIComponent( text ) );
+
+			// Center the new window at center of the screen
+			var window_top = ( screen.height / 2 ) - ( height / 2 );
+			var window_left = ( screen.width / 2 ) - ( width / 2 );
+
+			var window_parameters = 'toolbar=0,status=0,width=' + width + ',height=' + height + ',top=' + window_top + ',left=' + window_left;
+
+			var share_window = window.open( parsed_url, network, window_parameters );
+
+			// Force focus to the new window
+			if( window.focus ) {
+				share_window.focus();
+			}
+
+		}
+
+	});
+
     /**
      * Logs ajax pagination
      *

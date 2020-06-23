@@ -739,37 +739,44 @@ function gamipress_achievement_points_markup( $achievement_id = 0, $template_arg
 function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $template_args = array() ) {
 
 	// Grab the current post ID if no achievement_id was specified
-	if ( ! $achievement_id )
+	if ( ! $achievement_id ) {
 		$achievement_id = get_the_ID();
+    }
 
 	$user_id = get_current_user_id();
 
 	// Guest not supported yet (basically because they has not points)
-	if( $user_id === 0 )
+	if( $user_id === 0 ) {
 		return '';
+    }
 
-	if( ! isset( $template_args['user_id'] ) )
+	if( ! isset( $template_args['user_id'] ) ) {
 		$template_args['user_id'] = get_current_user_id();
+    }
 
 	// Return if user is displaying achievements of another user
-	if( $user_id !== absint( $template_args['user_id'] ) )
+	if( $user_id !== absint( $template_args['user_id'] ) ) {
 		return '';
+    }
 
 	// Return if this option not was enabled
-	if( ! (bool) gamipress_get_post_meta( $achievement_id, '_gamipress_unlock_with_points' ) )
+	if( ! (bool) gamipress_get_post_meta( $achievement_id, '_gamipress_unlock_with_points' ) ) {
 		return '';
+    }
 
 	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
-	if( $points === 0 )
+	if( $points === 0 ) {
 		return '';
+    }
 
 	$earned = gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id );
 
 	// Return if user has completely earned this achievement
-	if( $earned )
+	if( $earned ) {
 		return '';
+    }
 
 	// Setup vars
 	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_to_unlock' );
@@ -783,7 +790,7 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
      *
      * @since  1.7.8.1
      *
-     * @param  bool 	    $confirmation   If the given achievement's ID requires confirmation on unlock using points
+     * @param  bool 	$confirmation   If the given achievement's ID requires confirmation on unlock using points
      * @param  int 	    $achievement_id The given achievement's ID
      * @param  int 	    $user_id        The user's ID
      * @param  int 	    $points         Points amount to unlock
@@ -794,9 +801,27 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
      */
 	$confirmation = apply_filters( 'gamipress_achievement_unlock_with_points_confirmation', true, $achievement_id, $user_id, $points, $points_type, $template_args );
 
+	$button_text = sprintf( __( 'Unlock using %s', 'gamipress' ), $points_formatted );
+
+    /**
+     * Filters the achievement unlock with points button text
+     *
+     * @since  1.8.6
+     *
+     * @param  string 	$button_text    The button text, by default "Unlock using 100 points"
+     * @param  int 	    $achievement_id The given achievement's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  int 	    $points         Points amount to unlock
+     * @param  string 	$points_type    Points type of points amount to unlock
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return string                   Whatever if achievement requires confirmation or not
+     */
+    $button_text = apply_filters( 'gamipress_achievement_unlock_with_points_button_text', $button_text, $achievement_id, $user_id, $points, $points_type, $template_args );
+
 	ob_start(); ?>
 		<div class="gamipress-achievement-unlock-with-points" data-id="<?php echo $achievement_id; ?>">
-			<button type="button" class="gamipress-achievement-unlock-with-points-button"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), $points_formatted ); ?></button>
+			<button type="button" class="gamipress-achievement-unlock-with-points-button"><?php echo $button_text; ?></button>
             <?php if( $confirmation ) : ?>
                 <div class="gamipress-achievement-unlock-with-points-confirmation" style="display: none;">
                     <p><?php echo sprintf( __( 'Do you want to unlock %s using %s?', 'gamipress' ), $achievement_title, $points_formatted ); ?></p>
@@ -842,43 +867,51 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args = array() ) {
 
 	// Grab the current post ID if no rank_id was specified
-	if ( ! $rank_id )
+	if ( ! $rank_id ) {
 		$rank_id = get_the_ID();
+    }
 
 	$rank_types = gamipress_get_rank_types();
 	$rank_type = gamipress_get_post_type( $rank_id );
 
-	if( ! isset( $rank_types[$rank_type] ) )
+	if( ! isset( $rank_types[$rank_type] ) ) {
 		return '';
+    }
 
 	$user_id = get_current_user_id();
 
 	// Guest not supported yet (basically because they has not points)
-	if( $user_id === 0 )
+	if( $user_id === 0 ) {
 		return '';
+    }
 
-	if( ! isset( $template_args['user_id'] ) )
+	if( ! isset( $template_args['user_id'] ) ) {
 		$template_args['user_id'] = get_current_user_id();
+    }
 
 	// Return if user is displaying ranks of another user
-	if( $user_id !== absint( $template_args['user_id'] ) )
+	if( $user_id !== absint( $template_args['user_id'] ) ) {
 		return '';
+    }
 
 	// Return if this option not was enabled
-	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) )
+	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) ) {
 		return '';
+    }
 
 	$points = absint( gamipress_get_post_meta( $rank_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
-	if( $points === 0 )
+	if( $points === 0 ) {
 		return '';
+    }
 
 	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
 
 	// Return if user is in a higher rank
-	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) )
+	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) ) {
 		return '';
+    }
 
 	// Setup vars
 	$points_type = gamipress_get_post_meta( $rank_id, '_gamipress_points_type_to_unlock' );
@@ -903,9 +936,27 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
      */
     $confirmation = apply_filters( 'gamipress_rank_unlock_with_points_confirmation', true, $rank_id, $user_id, $points, $points_type, $template_args );
 
-	ob_start(); ?>
+    $button_text = sprintf( __( 'Unlock using %s', 'gamipress' ), $points_formatted );
+
+    /**
+     * Filters the rank unlock with points button text
+     *
+     * @since  1.8.6
+     *
+     * @param  string 	$button_text    The button text, by default "Unlock using 100 points"
+     * @param  int 	    $rank_id        The given rank's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  int 	    $points         Points amount to unlock
+     * @param  string 	$points_type    Points type of points amount to unlock
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return string                   Whatever if achievement requires confirmation or not
+     */
+    $button_text = apply_filters( 'gamipress_rank_unlock_with_points_button_text', $button_text, $rank_id, $user_id, $points, $points_type, $template_args );
+
+    ob_start(); ?>
 	<div class="gamipress-rank-unlock-with-points" data-id="<?php echo $rank_id; ?>">
-		<button type="button" class="gamipress-rank-unlock-with-points-button"><?php echo sprintf( __( 'Unlock using %s', 'gamipress' ), $points_formatted ); ?></button>
+		<button type="button" class="gamipress-rank-unlock-with-points-button"><?php echo $button_text; ?></button>
         <?php if( $confirmation ) : ?>
             <div class="gamipress-rank-unlock-with-points-confirmation" style="display: none;">
                 <p><?php echo sprintf( __( 'Do you want to unlock %s using %s?', 'gamipress' ), $rank_title, $points_formatted ); ?></p>
@@ -931,10 +982,340 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
      *
      * @return string                  The HTML markup for our points
      */
-    $output = apply_filters( 'gamipress_rank_unlock_with_points_markup', $output, $rank_id, $user_id, $template_args );
+    $output = apply_filters( 'gamipress_rank_unlock_with_points_markup', $output, $rank_id, $user_id, $points, $points_type, $template_args );
 
     // Return our markup
 	return $output;
+
+}
+
+/**
+ * Checks if should render open graph meta tags
+ *
+ * @since  1.8.6
+ */
+function gamipress_maybe_render_open_graph_meta_tags() {
+
+    $allowed_types = array_merge( gamipress_get_achievement_types_slugs(), gamipress_get_rank_types_slugs() );
+
+    // Bail if not is a singular achievement type or rank type
+    if( ! is_singular( $allowed_types ) ) {
+        return;
+    }
+
+    $enable_open_graph = (bool) gamipress_get_option( 'enable_open_graph_tags', false );
+
+    // Bail if open graph meta tags option is not enabled
+    if( ! $enable_open_graph ) {
+        return;
+    }
+
+    gamipress_render_open_graph_meta_tags( get_the_ID() );
+
+}
+add_action( 'wp_head', 'gamipress_maybe_render_open_graph_meta_tags' );
+
+
+/**
+ * Render open graph meta tags for the received post ID
+ *
+ * @since  1.8.6
+ *
+ * @param int $post_id
+ */
+function gamipress_render_open_graph_meta_tags( $post_id ) {
+
+    $post = get_post( $post_id );
+
+    // Get the post information
+    $url = get_permalink( $post );
+    $title = $post->post_title;
+    $description = $post->post_content;
+    $image = get_the_post_thumbnail_url( $post );
+
+    // Process the description
+    $description = apply_filters( 'the_content', $description );
+    $description = trim( strip_tags( wp_kses_no_null( $description ) ) );
+    ?>
+    <meta property="og:url" content="<?php echo esc_url( $url ); ?>"/>
+    <meta property="og:title" content="<?php echo esc_attr( $title ); ?>"/>
+    <meta property="og:description" content="<?php echo esc_attr( $description ); ?>"/>
+    <meta property="og:image" content="<?php echo esc_url( $image ); ?>"/>
+    <?php
+}
+
+/**
+ * Generate markup for share an achievement's output
+ *
+ * @since  1.8.6
+ *
+ * @param  int 	    $achievement_id The given achievement's ID
+ * @param  array 	$template_args 	Achievement template args
+ *
+ * @return string                  The HTML markup for our points
+ */
+function gamipress_achievement_share_markup( $achievement_id = 0, $template_args = array() ) {
+
+    // Grab the current post ID if no achievement_id was specified
+    if ( ! $achievement_id ) {
+        $achievement_id = get_the_ID();
+    }
+
+    $user_id = get_current_user_id();
+
+    // Guest not supported yet (basically because they has not earned this)
+    if( $user_id === 0 ) {
+        return '';
+    }
+
+    if( ! isset( $template_args['user_id'] ) ) {
+        $template_args['user_id'] = get_current_user_id();
+    }
+
+    // Return if user is displaying achievements of another user
+    if( $user_id !== absint( $template_args['user_id'] ) ) {
+        return '';
+    }
+
+    // Bail if share is not enable
+    if( ! (bool) gamipress_get_option( 'enable_share', false ) ) {
+        return '';
+    }
+
+    $social_networks = gamipress_get_option( 'social_networks', false );
+
+    // Bail if not social networks enabled
+    if( empty( $social_networks ) ) {
+        return '';
+    }
+
+    $button_style = gamipress_get_option( 'social_button_style', 'square' );
+
+    $titles = array(
+        'facebook' => __( 'Share on Facebook', 'gamipress' ),
+        'twitter' => __( 'Share on Twitter', 'gamipress' ),
+        'linkedin' => __( 'Share on LinkedIn', 'gamipress' ),
+        'pinterest' => __( 'Share on Pinterest', 'gamipress' ),
+    );
+
+    $names = array(
+        'facebook' => __( 'Facebook', 'gamipress' ),
+        'twitter' => __( 'Twitter', 'gamipress' ),
+        'linkedin' => __( 'LinkedIn', 'gamipress' ),
+        'pinterest' => __( 'Pinterest', 'gamipress' ),
+    );
+
+    // Setup vars
+    $url = get_the_permalink( $achievement_id );
+    $title = get_the_title( $achievement_id );
+    $image = get_the_post_thumbnail_url( $achievement_id );
+
+    // Get the achievement twitter text
+    $twitter_text = gamipress_get_option( 'twitter_achievement_text', __( 'I earned the {achievement_type} {achievement_title} on {site_title}', 'gamipress' ) );
+
+    // Parse the text
+    $twitter_text = gamipress_parse_tags( 'achievement_earned', $achievement_id, $user_id, $twitter_text );
+
+    ob_start(); ?>
+
+    <p class="gamipress-share-buttons-label"><?php _e( 'Share:', 'gamipress' ); ?></p>
+
+    <div class="gamipress-share-buttons"
+         data-url="<?php echo esc_attr( $url ); ?>"
+         data-title="<?php echo esc_attr( $title ); ?>"
+         data-image="<?php echo esc_attr( $image ); ?>"
+         data-twitter-text="<?php echo esc_attr( $twitter_text ); ?>">
+
+        <?php
+        /**
+         * Action at top of the share buttons
+         *
+         * @since  1.8.6
+         *
+         * @param  int 	    $achievement_id The given achievement's ID
+         * @param  int 	    $user_id        The user's ID
+         * @param  array 	$template_args 	Achievement template args
+         */
+        do_action( 'gamipress_achievement_share_buttons_top', $achievement_id, $user_id, $template_args ) ?>
+
+        <?php foreach( $social_networks as $social_network ) : ?>
+            <a href="#"
+               title="<?php echo ( isset( $titles[$social_network] ) ? $titles[$social_network] : '' ); ?>"
+               class="gamipress-share-button gamipress-share-button-<?php echo $button_style; ?> gamipress-share-button-<?php echo $social_network; ?>"
+               data-network="<?php echo $social_network; ?>">
+                <span><?php echo ( isset( $names[$social_network] ) ? $names[$social_network] : '' ); ?></span>
+            </a>
+        <?php endforeach; ?>
+
+        <?php
+        /**
+         * Action at bottom of the share buttons
+         *
+         * @since  1.8.6
+         *
+         * @param  int 	    $achievement_id The given achievement's ID
+         * @param  int 	    $user_id        The user's ID
+         * @param  array 	$template_args 	Achievement template args
+         */
+        do_action( 'gamipress_achievement_share_buttons_bottom', $achievement_id, $user_id, $template_args ) ?>
+
+    </div>
+
+    <?php $output = ob_get_clean();
+
+    /**
+     * Filters the achievement share markup
+     *
+     * @since  1.8.6
+     *
+     * @param  string 	$output         The HTML markup for social sharing
+     * @param  int 	    $achievement_id The given achievement's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  array 	$template_args 	Achievement template args
+     *
+     * @return string                  The HTML markup for our points
+     */
+    $output = apply_filters( 'gamipress_achievement_share_markup', $output, $achievement_id, $user_id, $template_args );
+
+    return $output;
+
+}
+
+/**
+ * Generate markup for share an rank's output
+ *
+ * @since  1.8.6
+ *
+ * @param  int 	    $rank_id        The given rank's ID
+ * @param  array 	$template_args 	Rank template args
+ *
+ * @return string                  The HTML markup for our points
+ */
+function gamipress_rank_share_markup( $rank_id = 0, $template_args = array() ) {
+
+    // Grab the current post ID if no rank_id was specified
+    if ( ! $rank_id ) {
+        $rank_id = get_the_ID();
+    }
+
+    $user_id = get_current_user_id();
+
+    // Guest not supported yet (basically because they has not earned this)
+    if( $user_id === 0 ) {
+        return '';
+    }
+
+    if( ! isset( $template_args['user_id'] ) ) {
+        $template_args['user_id'] = get_current_user_id();
+    }
+
+    // Return if user is displaying ranks of another user
+    if( $user_id !== absint( $template_args['user_id'] ) ) {
+        return '';
+    }
+
+    // Bail if share is not enable
+    if( ! (bool) gamipress_get_option( 'enable_share', false ) ) {
+        return '';
+    }
+
+    $social_networks = gamipress_get_option( 'social_networks', false );
+
+    // Bail if not social networks enabled
+    if( empty( $social_networks ) ) {
+        return '';
+    }
+
+    $button_style = gamipress_get_option( 'social_button_style', 'square' );
+
+    $titles = array(
+        'facebook' => __( 'Share on Facebook', 'gamipress' ),
+        'twitter' => __( 'Share on Twitter', 'gamipress' ),
+        'linkedin' => __( 'Share on LinkedIn', 'gamipress' ),
+        'pinterest' => __( 'Share on Pinterest', 'gamipress' ),
+    );
+
+    $names = array(
+        'facebook' => __( 'Facebook', 'gamipress' ),
+        'twitter' => __( 'Twitter', 'gamipress' ),
+        'linkedin' => __( 'LinkedIn', 'gamipress' ),
+        'pinterest' => __( 'Pinterest', 'gamipress' ),
+    );
+
+    // Setup vars
+    $url = get_the_permalink( $rank_id );
+    $title = get_the_title( $rank_id );
+    $image = get_the_post_thumbnail_url( $rank_id );
+
+    // Get the rank twitter text
+    $twitter_text = gamipress_get_option( 'twitter_rank_text', __( 'I reached the {rank_type} {rank_title} on {site_title}', 'gamipress' ) );
+
+    // Parse the text
+    $twitter_text = gamipress_parse_tags( 'rank_earned', $rank_id, $user_id, $twitter_text );
+
+    ob_start(); ?>
+
+    <p class="gamipress-share-buttons-label"><?php _e( 'Share:', 'gamipress' ); ?></p>
+
+    <div class="gamipress-share-buttons"
+         data-url="<?php echo esc_attr( $url ); ?>"
+         data-title="<?php echo esc_attr( $title ); ?>"
+         data-image="<?php echo esc_attr( $image ); ?>"
+         data-twitter-text="<?php echo esc_attr( $twitter_text ); ?>">
+
+        <?php
+        /**
+         * Action at top of the share buttons
+         *
+         * @since  1.8.6
+         *
+         * @param  int 	    $rank_id        The given rank's ID
+         * @param  int 	    $user_id        The user's ID
+         * @param  array 	$template_args 	Rank template args
+         */
+        do_action( 'gamipress_rank_share_buttons_top', $rank_id, $user_id, $template_args ) ?>
+
+        <?php foreach( $social_networks as $social_network ) : ?>
+            <a href="#"
+               title="<?php echo ( isset( $titles[$social_network] ) ? $titles[$social_network] : '' ); ?>"
+               class="gamipress-share-button gamipress-share-button-<?php echo $button_style; ?> gamipress-share-button-<?php echo $social_network; ?>"
+               data-network="<?php echo $social_network; ?>">
+                <span><?php echo ( isset( $names[$social_network] ) ? $names[$social_network] : '' ); ?></span>
+            </a>
+        <?php endforeach; ?>
+
+        <?php
+        /**
+         * Action at bottom of the share buttons
+         *
+         * @since  1.8.6
+         *
+         * @param  int 	    $rank_id        The given rank's ID
+         * @param  int 	    $user_id        The user's ID
+         * @param  array 	$template_args 	Rank template args
+         */
+        do_action( 'gamipress_rank_share_buttons_bottom', $rank_id, $user_id, $template_args ) ?>
+
+    </div>
+
+    <?php $output = ob_get_clean();
+
+    /**
+     * Filters the rank share markup
+     *
+     * @since  1.8.6
+     *
+     * @param  string 	$output         The HTML markup for social sharing
+     * @param  int 	    $rank_id        The given rank's ID
+     * @param  int 	    $user_id        The user's ID
+     * @param  array 	$template_args 	Rank template args
+     *
+     * @return string                  The HTML markup for our points
+     */
+    $output = apply_filters( 'gamipress_rank_share_markup', $output, $rank_id, $user_id, $template_args );
+
+    return $output;
+
 }
 
 /**

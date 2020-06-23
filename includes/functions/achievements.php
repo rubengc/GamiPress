@@ -254,17 +254,44 @@ function gamipress_is_achievement_sequential( $achievement_id = 0 ) {
  */
 function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achievement_id = 0 ) {
 
+    // Global max earnings
+	$global_max_earnings = gamipress_get_post_meta( $achievement_id, '_gamipress_global_maximum_earnings' );
+
+	// -1, 0 or empty means unlimited earnings
+    if( $global_max_earnings === '-1' || $global_max_earnings === '0' || empty( $global_max_earnings ) ) {
+        $global_max_earnings = 0;
+    }
+
+    $global_max_earnings = absint( $global_max_earnings );
+
+    // Only check global max earnings if isn't setup as unlimited
+    if( $global_max_earnings > 0 ) {
+
+        $earned_times = gamipress_get_earnings_count( array( 'post_id' => absint( $achievement_id ) ) );
+
+        // Bail if achievement has exceeded its global max earnings
+        if( $earned_times >= $global_max_earnings ) {
+            return true;
+        }
+
+    }
+
+    // Per user max earnings
 	$max_earnings = gamipress_get_post_meta( $achievement_id, '_gamipress_maximum_earnings' );
 
-	// Infinite maximum earnings check
-    if( $max_earnings === '-1' || $max_earnings === '0' || empty( $max_earnings ) )
+	// Unlimited maximum earnings per user check
+    if( $max_earnings === '-1' || $max_earnings === '0' || empty( $max_earnings ) ) {
 		return false;
+    }
 
-	// If the achievement has an earning limit, and we've earned it before...
+	// If the achievement has an earning limit per user, and we've earned it before...
 	if ( $max_earnings && $user_has_achievement = gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $achievement_id ) ) ) ) {
-		// If we've earned it as many (or more) times than allowed, then we have exceeded maximum earnings, thus true
-		if ( count( $user_has_achievement ) >= $max_earnings )
+
+	    // If we've earned it as many (or more) times than allowed, then we have exceeded maximum earnings, thus true
+		if ( count( $user_has_achievement ) >= $max_earnings ) {
 			return true;
+        }
+
 	}
 
 	// The post has no limit, or we're under it
@@ -277,14 +304,17 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
  * @since  1.0.0
  * @param  integer $achievement_id The given achievement's post ID
  * @param  string  $context        The context in which we're creating this object
- * @return object                  Our object containing only the relevant bits of information we want
+ *
+ * @return false|object            Our object containing only the relevant bits of information we want
  */
 function gamipress_build_achievement_object( $achievement_id = 0, $context = 'earned' ) {
 
 	// Grab the new achievement's $post data, and bail if it doesn't exist
 	$achievement = gamipress_get_post( $achievement_id );
-	if ( is_null( $achievement ) )
+
+	if ( ! $achievement ) {
 		return false;
+    }
 
 	// Setup a new object for the achievement
 	$achievement_object                 = new stdClass;
@@ -884,7 +914,40 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0, $args = ar
 
 		foreach ( $earners as $user ) {
 
-			$user_content = '<li><a href="' . get_author_posts_url( $user->ID ) . '">' . get_avatar( $user->ID ) . '</a></li>';
+            /**
+             * Filters the achievement earner url
+             *
+             * @since   1.8.6
+             *
+             * @param string    $user_url       The user URl, by default the get_author_posts_url()
+             * @param int       $user_id        The rendered user ID
+             * @param int       $achievement_id The given achievement's post ID
+             * @param array     $args           Array of given arguments
+             *
+             * @return string
+             */
+            $user_url = apply_filters( 'gamipress_achievement_earner_user_url', get_author_posts_url( $user->ID ), $user->ID, $achievement_id, $args );
+
+            /**
+             * Filters the achievement earner display
+             *
+             * @since   1.8.6
+             *
+             * @param string    $user_display   The user display, by default the user display name
+             * @param int       $user_id        The rendered user ID
+             * @param int       $achievement_id The given achievement's post ID
+             * @param array     $args           Array of given arguments
+             *
+             * @return string
+             */
+            $user_display = apply_filters( 'gamipress_achievement_earner_user_display', $user->display_name, $user->ID, $achievement_id, $args );
+
+			$user_content = '<li>'
+                    . '<a href="' . $user_url . '">'
+                        . get_avatar( $user->ID )
+                        . '<span class="earner-display-name">' . $user_display . '</span>'
+                    . '</a>'
+                . '</li>';
 
             /**
              * Filters the earners list user output

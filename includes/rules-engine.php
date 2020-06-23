@@ -103,8 +103,9 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
     }
 
 	// If we've exceeded the max earnings, we do not have access
-	if ( $return && gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id ) )
+	if ( $return && gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement_id ) ) {
 		$return = false;
+    }
 
 	// If we have access, and the achievement has a parent...
 	if ( $return && $parent_id = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) ) ) {
@@ -399,6 +400,7 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 
 	// Send back our eligibility
 	return $return;
+
 }
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_rank_requirement', 10, 3 );
 

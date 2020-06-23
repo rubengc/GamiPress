@@ -47,6 +47,18 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
                 'type' => 'select',
                 'options' => $points_types_options
             ),
+            'bulk_award_points_register_movement' => array(
+                'name' => __( 'Register on user earnings', 'gamipress' ),
+                'desc' => __( 'Check this option to register this balance movement on user earnings.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch'
+            ),
+            'bulk_award_points_earnings_text' => array(
+                'name' => __( 'Earning entry text', 'gamipress' ),
+                'desc' => __( 'Enter the line text to be displayed on user earnings.', 'gamipress' ),
+                'type' => 'text',
+                'default' => __( 'Manual balance adjustment', 'gamipress' ),
+            ),
             'bulk_award_points_all_users' => array(
                 'name' => __( 'Award to all users', 'gamipress' ),
                 'desc' => __( 'Check this option to award the points amount to all users.', 'gamipress' ),
@@ -192,6 +204,8 @@ function gamipress_bulk_awards_tool_meta_boxes( $meta_boxes ) {
                 'fields' => array(
                     'bulk_award_points',
                     'bulk_award_points_type',
+                    'bulk_award_points_register_movement',
+                    'bulk_award_points_earnings_text',
                     'bulk_award_points_all_users',
                     'bulk_award_points_users',
                     'bulk_award_points_roles',
@@ -240,12 +254,14 @@ function gamipress_ajax_bulk_awards_tool() {
     global $wpdb;
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) )
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+    }
 
     // Check parameters received
-    if( ! isset( $_POST['bulk_award'] ) || empty( $_POST['bulk_award'] ) )
+    if( ! isset( $_POST['bulk_award'] ) || empty( $_POST['bulk_award'] ) ) {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+    }
 
     $bulk_award = $_POST['bulk_award'];
     $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
@@ -385,10 +401,11 @@ function gamipress_ajax_bulk_awards_tool() {
         $users = $wpdb->get_results( $sql );
 
         // Return a success message if finished, else run again
-        if( empty( $users ) && $loop !== 0 )
+        if( empty( $users ) && $loop !== 0 ) {
             wp_send_json_success( __( 'Bulk award process has been done successfully.', 'gamipress' ) );
-        else
+        } else {
             $run_again = true;
+        }
     }
 
     if( empty( $users ) )
@@ -404,6 +421,24 @@ function gamipress_ajax_bulk_awards_tool() {
 
             // Award points
            gamipress_award_points_to_user( $user->ID, $user_points + $points_to_award, $points_type_to_award, array( 'admin_id' => get_current_user_id() ) );
+
+            $register_movement = isset( $_POST['bulk_award_points_register_movement'] ) ? true : false;
+            $earnings_text = isset( $_POST['bulk_award_points_earnings_text'] ) ? sanitize_text_field( $_POST['bulk_award_points_earnings_text'] ) : '';
+
+            if( $register_movement ) {
+
+                // Insert the custom user earning for the manual balance adjustment
+                gamipress_insert_user_earning( $user->ID, array(
+                    'title'	        => $earnings_text,
+                    'user_id'	    => $user->ID,
+                    'post_id'	    => gamipress_get_points_type_id( $points_type_to_award ),
+                    'post_type' 	=> 'points-type',
+                    'points'	    => $points_to_award,
+                    'points_type'	=> $points_type_to_award,
+                    'date'	        => date( 'Y-m-d H:i:s', current_time( 'timestamp' ) ),
+                ) );
+
+            }
 
         } else if( $bulk_award === 'achievements' ) {
 

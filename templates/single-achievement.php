@@ -49,7 +49,11 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
     do_action( 'gamipress_before_single_achievement', get_the_ID(), $a ); ?>
 
     <div class="gamipress-achievement-image">
-        <?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?>
+        <?php // Thumbnail
+        echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?>
+
+        <?php // Share
+        echo gamipress_achievement_share_markup( get_the_ID(), $a ); ?>
     </div>
 
     <?php

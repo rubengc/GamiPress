@@ -80,16 +80,29 @@ function gamipress_achievements_meta_boxes( $post_type ) {
             $prefix . 'congratulations_text' => array(
                 'name' => __( 'Congratulations Text', 'gamipress' ),
                 'desc' => __( 'Displayed after achievement is earned.', 'gamipress' ),
-                'type' => 'textarea',
+                'type' => 'wysiwyg',
+                'options' => array(
+                    'textarea_rows' => 8,
+                ),
             ),
             $prefix . 'maximum_earnings' => array(
-                'name' => __( 'Maximum Earnings', 'gamipress' ),
+                'name' => __( 'Maximum Earnings Per User', 'gamipress' ),
                 'desc' => __( 'Number of times a user can earn this achievement (set it to 0 for no maximum).', 'gamipress' ),
                 'type' => 'text_small',
                 'attributes' => array(
                     'type' => 'number'
                 ),
                 'default' => '1',
+            ),
+            $prefix . 'global_maximum_earnings' => array(
+                'name' => __( 'Global Maximum Earnings', 'gamipress' ),
+                'desc' => __( 'Number of times this achievement can be earned globally (set it to 0 for no maximum).', 'gamipress' )
+                . '<br>' . '<strong>Note:</strong> This limit decides how many times this achievement can be earned on your site. Setting it to 10, for example, will limit this achievement to only the first 10 users who achieve it.',
+                'type' => 'text_small',
+                'attributes' => array(
+                    'type' => 'number'
+                ),
+                'default' => '0',
             ),
             $prefix . 'hidden' => array(
                 'name'    => __( 'Hidden?', 'gamipress' ),

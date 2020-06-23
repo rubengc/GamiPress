@@ -1,5 +1,62 @@
 (function ( $ ) {
 
+    // Enable social sharing
+    $('body').on('change', '#enable_share', function(e) {
+        var target = $(this).closest('.cmb2-metabox').find('.cmb-row:not(.cmb2-id-enable-share)');
+
+        if( $(this).prop('checked') ) {
+            target.slideDown('fast');
+        } else {
+            target.slideUp('fast');
+        }
+
+    });
+
+    // Initialize social settings visibility
+    if( $('#enable_share').prop('checked') ) {
+        $('#cmb2-metabox-social-settings').find('.cmb-row:not(.cmb2-id-enable-share)').show();
+    } else {
+        $('#cmb2-metabox-social-settings').find('.cmb-row:not(.cmb2-id-enable-share)').hide();
+    }
+
+    // Update social buttons preview
+    function gamipress_update_social_buttons_preview() {
+
+        // Get social networks selected
+        var social_networks = [];
+
+        $('input[name="social_networks[]"]:checked').each(function() {
+            social_networks.push( $(this).val() );
+        });
+
+        // Get style selected
+        var style = $('input[name="social_button_style"]:checked').val();
+
+        $('#social_buttons_preview').find('.gamipress-share-button').each(function() {
+
+            $(this)
+                .removeClass('gamipress-share-button-square')
+                .removeClass('gamipress-share-button-rounded')
+                .removeClass('gamipress-share-button-circle')
+                .addClass('gamipress-share-button-' + style);
+
+            if( social_networks.indexOf( $(this).data('network') ) !== -1 ) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+
+    }
+
+    // Initialize preview
+    gamipress_update_social_buttons_preview();
+
+    // On change a social input, update the buttons preview
+    $('body').on('change', 'input[name="social_networks[]"], input[name="social_button_style"]', function(e) {
+        gamipress_update_social_buttons_preview();
+    });
+
     // Send test email click
     $('#achievement-earned-email-send, #step-completed-email-send, #points-award-completed-email-send, #points-deduct-completed-email-send, #rank-earned-email-send, #rank-requirement-completed-email-send').click(function(e) {
         e.preventDefault();
