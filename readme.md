@@ -240,6 +240,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.6.2 ###
+
+* **Improvements**
+* Ensure to display social buttons on earned achievements and ranks only.
+
 ### 1.8.6.1 ###
 
 * **Improvements**

@@ -1089,6 +1089,13 @@ function gamipress_achievement_share_markup( $achievement_id = 0, $template_args
         return '';
     }
 
+    // Check if user has earned this achievement
+    $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id ) );
+
+    if( ! $earned ) {
+        return '';
+    }
+
     $button_style = gamipress_get_option( 'social_button_style', 'square' );
 
     $titles = array(
@@ -1223,6 +1230,13 @@ function gamipress_rank_share_markup( $rank_id = 0, $template_args = array() ) {
 
     // Bail if not social networks enabled
     if( empty( $social_networks ) ) {
+        return '';
+    }
+
+    // Check if user has earned this achievement
+    $earned = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $rank_id ) );
+
+    if( ! $earned ) {
         return '';
     }
 
