@@ -71,6 +71,7 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [WooCommerce](https://wordpress.org/plugins/gamipress-woocommerce-integration/)
 * [Easy Digital Downloads](https://wordpress.org/plugins/gamipress-easy-digital-downloads-integration/)
 * [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
+* [BuddyBoss](https://wordpress.org/plugins/gamipress-buddyboss-integration/)
 * [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
 * [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
 * [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/) & [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
