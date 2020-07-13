@@ -330,11 +330,11 @@ function gamipress_get_achievement_earned_tags_replacements( $achievement_id, $u
 
             foreach( $steps as $step ) {
                 // check if user has earned this Achievement, and add an 'earned' class
-                $earned = count( gamipress_get_user_achievements( array(
+                $earned = gamipress_get_earnings_count( array(
                         'user_id' => absint( $user_id ),
-                        'achievement_id' => absint( $step->ID ),
+                        'post_id' => absint( $step->ID ),
                         'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
-                    ) ) ) > 0;
+                    ) ) > 0;
 
                 $title = $step->post_title;
 
@@ -525,11 +525,11 @@ function gamipress_get_rank_earned_tags_replacements( $rank_id, $user_id ) {
 
             foreach( $requirements as $requirement ) {
                 // check if user has earned this requirement, and add an 'earned' class
-                $earned = count( gamipress_get_user_achievements( array(
+                $earned = gamipress_get_earnings_count( array(
                         'user_id' => absint( $user_id ),
-                        'achievement_id' => absint( $requirement->ID ),
+                        'post_id' => absint( $requirement->ID ),
                         'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
-                    ) ) ) > 0;
+                    ) ) > 0;
 
                 $title = $requirement->post_title;
 

@@ -450,7 +450,6 @@ function gamipress_profile_user_points( $user = null ) {
  */
 function gamipress_profile_user_earnings( $user = null ) {
 
-    $can_manage = current_user_can( gamipress_get_manager_capability() );
     /**
      * Filter to allow set the number of user earnings to show on user profile
      *
@@ -463,7 +462,7 @@ function gamipress_profile_user_earnings( $user = null ) {
     $items_per_page = apply_filters( 'gamipress_user_profile_earnings_items_per_page', 10 );
     ?>
 
-    <h2><?php echo $can_manage ? __( 'User Earnings', 'gamipress' ) : __( 'Your Achievements', 'gamipress' ); ?></h2>
+    <h2><?php echo current_user_can( gamipress_get_manager_capability() ) ? __( 'User Earnings', 'gamipress' ) : __( 'Your Achievements', 'gamipress' ); ?></h2>
 
     <?php ct_render_ajax_list_table( 'gamipress_user_earnings',
         array(
@@ -492,27 +491,13 @@ function gamipress_profile_user_earnings( $user = null ) {
  */
 function gamipress_profile_award_achievement( $user = null ) {
 
-    $can_manage = current_user_can( gamipress_get_manager_capability() );
-
     // Return if user is not a manager
-    if( ! $can_manage ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         return;
     }
 
     // Grab our types
     $achievement_types = gamipress_get_achievement_types();
-
-    $achievements = gamipress_get_user_achievements( array(
-        'user_id' => absint( $user->ID ),
-        'achievement_type' => gamipress_get_achievement_types_slugs()
-    ) );
-
-    $achievement_ids = array_map( function( $achievement ) {
-        return $achievement->ID;
-    }, $achievements );
-
-    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
     ?>
 
     <h2><?php _e( 'Award Achievement', 'gamipress' ); ?></h2>
@@ -523,7 +508,7 @@ function gamipress_profile_award_achievement( $user = null ) {
             <th><label for="gamipress-award-achievement-type-select"><?php _e( 'Select an achievement type to award:', 'gamipress' ); ?></label></th>
             <td>
                 <select id="gamipress-award-achievement-type-select">
-                    <option><?php _e( 'Choose an achievement type', 'gamipress' ); ?></option>
+                    <option value=""><?php _e( 'Choose an achievement type', 'gamipress' ); ?></option>
                     <?php foreach ( $achievement_types as $slug => $data ) :
                         echo '<option value="'. $slug .'">' . ucwords( $data['singular_name'] ) .'</option>';
                     endforeach; ?>
@@ -535,7 +520,66 @@ function gamipress_profile_award_achievement( $user = null ) {
 
     <div id="gamipress-awards-options">
         <?php foreach ( $achievement_types as $slug => $data ) : ?>
-            <table id="<?php echo esc_attr( $slug ); ?>" class="wp-list-table widefat fixed striped gamipress-table" style="display: none;">
+            <div id="<?php echo esc_attr( $slug ); ?>" data-loaded="false" style="display: none;">
+                <span class="spinner is-active"></span>
+            </div>
+        <?php endforeach; ?>
+
+    </div><!-- #gamipress-awards-options -->
+
+    <hr>
+
+    <?php
+}
+
+/**
+ * Ajax handler to load the award table of the given post type
+ *
+ * @since 1.8.7
+ */
+function gamipress_ajax_profile_load_award_achievement_award() {
+
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
+
+    // Return if user is not a manager
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+    }
+
+    $post_type  = sanitize_text_field( $_POST['post_type'] );
+    $user_id    = absint( $_POST['user_id'] );
+
+    // Check if user has permissions
+    if ( ! current_user_can( 'edit_user', $user_id ) ) {
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+    }
+
+    // Grab our types
+    $achievement_types = gamipress_get_achievement_types();
+
+    $achievements = gamipress_get_user_achievements( array(
+        'user_id' => absint( $user_id ),
+        'achievement_type' => $post_type
+    ) );
+
+    $achievement_ids = array_map( function( $achievement ) {
+        return $achievement->ID;
+    }, $achievements );
+
+    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
+
+    ob_start(); ?>
+
+    <?php foreach ( $achievement_types as $slug => $data ) :
+
+        // Skip if not is the points type to render
+        if( $post_type !== $slug ) {
+            continue;
+        } ?>
+        <div id="<?php echo esc_attr( $slug ); ?>">
+            <table id="<?php echo esc_attr( $slug ); ?>-table" class="wp-list-table widefat fixed striped gamipress-table">
 
                 <thead>
                 <tr>
@@ -562,7 +606,7 @@ function gamipress_profile_award_achievement( $user = null ) {
                         $award_url = add_query_arg( array(
                             'action'         => 'award',
                             'achievement_id' => absint( get_the_ID() ),
-                            'user_id'        => absint( $user->ID )
+                            'user_id'        => absint( $user_id )
                         ) );
                         ?>
                         <tr>
@@ -579,7 +623,7 @@ function gamipress_profile_award_achievement( $user = null ) {
                                     // Setup our revoke URL
                                     $revoke_url = add_query_arg( array(
                                         'action'         => 'revoke',
-                                        'user_id'        => absint( $user->ID ),
+                                        'user_id'        => absint( $user_id ),
                                         'achievement_id' => absint( get_the_ID() ),
                                     ) );
                                     ?>
@@ -598,21 +642,27 @@ function gamipress_profile_award_achievement( $user = null ) {
 
                 </tbody>
 
-            </table><!-- #<?php echo esc_attr( $slug ); ?> -->
+            </table><!-- #<?php echo esc_attr( $slug ); ?>-table -->
+        </div><!-- #<?php echo esc_attr( $slug ); ?> -->
 
-        <?php endforeach; ?>
+    <?php endforeach; ?>
 
-    </div><!-- #gamipress-awards-options -->
-
-    <hr>
-
-    <?php
+    <?php $content = ob_get_clean();
 
     // If switched to blog, return back to que current blog
     if( $blog_id !== get_current_blog_id() && is_multisite() ) {
         restore_current_blog();
     }
+
+    if( empty( $content ) ) {
+        wp_send_json_error( __( 'Couldn\'t load this content.', 'gamipress' ) );
+    }
+
+    // Return the table rendered
+    wp_send_json_success( $content );
+
 }
+add_action( 'wp_ajax_gamipress_profile_load_award_achievement_table', 'gamipress_ajax_profile_load_award_achievement_award' );
 
 /**
  * Generate markup for awarding an achievement to a user
@@ -625,29 +675,14 @@ function gamipress_profile_award_achievement( $user = null ) {
  */
 function gamipress_profile_award_requirement( $user = null ) {
 
-    $can_manage = current_user_can( gamipress_get_manager_capability() );
-
     // Return if user is not a manager
-    if( ! $can_manage ) {
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         return;
     }
 
     // Grab our types
-    $achievement_types = gamipress_get_achievement_types();
-    $rank_types = gamipress_get_rank_types();
     $requirement_types = gamipress_get_requirement_types();
 
-    $achievements = gamipress_get_user_achievements( array(
-        'user_id' => absint( $user->ID ),
-        'achievement_type' => gamipress_get_requirement_types_slugs()
-    ) );
-
-    $achievement_ids = array_map( function( $achievement ) {
-        return $achievement->ID;
-    }, $achievements );
-
-    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
-    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
     ?>
 
     <h2><?php _e( 'Award Requirement', 'gamipress' ); ?></h2>
@@ -658,7 +693,7 @@ function gamipress_profile_award_requirement( $user = null ) {
             <th><label for="gamipress-award-requirement-type-select"><?php _e( 'Select a requirement type to award:', 'gamipress' ); ?></label></th>
             <td>
                 <select id="gamipress-award-requirement-type-select">
-                    <option><?php _e( 'Choose a requirement type', 'gamipress' ); ?></option>
+                    <option value=""><?php _e( 'Choose a requirement type', 'gamipress' ); ?></option>
                     <?php foreach ( $requirement_types as $slug => $data ) :
                         echo '<option value="'. $slug .'">' . ucwords( $data['singular_name'] ) .'</option>';
                     endforeach; ?>
@@ -670,7 +705,68 @@ function gamipress_profile_award_requirement( $user = null ) {
 
     <div id="gamipress-awards-options">
         <?php foreach ( $requirement_types as $slug => $data ) : ?>
-            <table id="<?php echo esc_attr( $slug ); ?>" class="wp-list-table widefat fixed striped gamipress-table" style="display: none;">
+            <div id="<?php echo esc_attr( $slug ); ?>" data-loaded="false" style="display: none;">
+                <span class="spinner is-active"></span>
+            </div>
+        <?php endforeach; ?>
+
+    </div><!-- #gamipress-awards-options -->
+
+    <hr>
+
+    <?php
+}
+
+/**
+ * Ajax handler to load the requiremetn award table of the given post type
+ *
+ * @since 1.8.7
+ */
+function gamipress_ajax_profile_load_award_requirement_table() {
+
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress_admin', 'nonce' );
+
+    // Return if user is not a manager
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+    }
+
+    $post_type  = sanitize_text_field( $_POST['post_type'] );
+    $user_id    = absint( $_POST['user_id'] );
+
+    // Check if user has permissions
+    if ( ! current_user_can( 'edit_user', $user_id ) ) {
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+    }
+
+    // Grab our types
+    $achievement_types = gamipress_get_achievement_types();
+    $rank_types = gamipress_get_rank_types();
+    $requirement_types = gamipress_get_requirement_types();
+
+    $achievements = gamipress_get_user_achievements( array(
+        'user_id' => absint( $user_id ),
+        'achievement_type' => $post_type
+    ) );
+
+    $achievement_ids = array_map( function( $achievement ) {
+        return $achievement->ID;
+    }, $achievements );
+
+    // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
+    $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
+
+    ob_start(); ?>
+
+    <?php foreach ( $requirement_types as $slug => $data ) :
+
+        // Skip if not is the points type to render
+        if( $post_type !== $slug ) {
+            continue;
+        } ?>
+        <div id="<?php echo esc_attr( $slug ); ?>">
+            <table id="<?php echo esc_attr( $slug ); ?>-table" class="wp-list-table widefat fixed striped gamipress-table">
 
                 <thead>
                 <tr>
@@ -708,7 +804,7 @@ function gamipress_profile_award_requirement( $user = null ) {
                         $award_url = add_query_arg( array(
                             'action'         => 'award',
                             'achievement_id' => absint( get_the_ID() ),
-                            'user_id'        => absint( $user->ID )
+                            'user_id'        => absint( $user_id )
                         ) );
                         ?>
                         <tr>
@@ -756,7 +852,7 @@ function gamipress_profile_award_requirement( $user = null ) {
                                     // Setup our revoke URL
                                     $revoke_url = add_query_arg( array(
                                         'action'         => 'revoke',
-                                        'user_id'        => absint( $user->ID ),
+                                        'user_id'        => absint( $user_id ),
                                         'achievement_id' => absint( get_the_ID() ),
                                     ) );
                                     ?>
@@ -776,20 +872,27 @@ function gamipress_profile_award_requirement( $user = null ) {
                 </tbody>
 
             </table><!-- #<?php echo esc_attr( $slug ); ?> -->
+        </div><!-- #<?php echo esc_attr( $slug ); ?> -->
 
-        <?php endforeach; ?>
+    <?php endforeach; ?>
 
-    </div><!-- #gamipress-awards-options -->
-
-    <hr>
-
-    <?php
+    <?php $content = ob_get_clean();
 
     // If switched to blog, return back to que current blog
     if( $blog_id !== get_current_blog_id() && is_multisite() ) {
         restore_current_blog();
     }
+
+    if( empty( $content ) ) {
+        wp_send_json_error( __( 'Couldn\'t load this content.', 'gamipress' ) );
+    }
+
+    // Return the table rendered
+    wp_send_json_success( $content );
+
 }
+add_action( 'wp_ajax_gamipress_profile_load_award_requirement_table', 'gamipress_ajax_profile_load_award_requirement_table' );
+
 
 /**
  * Process the adding/revoking of achievements on the user profile page

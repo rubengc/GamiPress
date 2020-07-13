@@ -11,7 +11,7 @@ global $gamipress_template_args;
 $a = $gamipress_template_args;
 
 // Check if user has earned this Achievement, and add an 'earned' class
-$earned = is_user_logged_in() && gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) );
+$earned = gamipress_has_user_earned_achievement( get_the_ID(), get_current_user_id() );
 
 // Setup achievement classes
 $classes = array(

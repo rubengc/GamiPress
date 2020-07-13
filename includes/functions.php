@@ -303,7 +303,7 @@ function gamipress_get_post( $post_id ) {
 
     if( gamipress_is_network_wide_active() && ! is_main_site() ) {
 
-        $cache = gamipress_get_cache( 'posts', array() );
+        $cache = gamipress_get_cache( 'posts', array(), false );
 
         // If result already cached, return it
         if( isset( $cache[absint( $post_id )] ) ) {

@@ -498,6 +498,8 @@ function gamipress_get_user_last_log( $user_id = 0, $where = array() ) {
  */
 function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $trigger_type = '', $log_meta = array() ) {
 
+    global $wpdb;
+
     // Backward compatibility for functions that called it by the old way
     if( is_array( $trigger_type ) && empty( $log_meta ) ) {
         $log_meta = $trigger_type;
@@ -519,7 +521,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
     }
 
     // Setup table
-    ct_setup_table( 'gamipress_logs' );
+    $ct_table = ct_setup_table( 'gamipress_logs' );
 
     // Post data
     $log_data = array(
@@ -535,15 +537,30 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
     $log_data['title'] = gamipress_parse_log_pattern( $log_meta['pattern'], $log_data, $log_meta );
 
     // Store log entry
-    $log_id = ct_insert_object( $log_data );
+    $log_id = $ct_table->db->insert( $log_data );
 
     // Store log meta data
     if ( $log_id && ! empty( $log_meta ) ) {
 
+        $metas = array();
+
         foreach ( (array) $log_meta as $key => $meta ) {
-            // Update the log meta
-            ct_update_object_meta( $log_id, '_gamipress_' . sanitize_key( $key ), $meta );
+            // Sanitize vars
+            $meta_key = '_gamipress_' . sanitize_key( $key );
+            $meta_key = wp_unslash( $meta_key );
+            $meta_value = wp_unslash( $meta );
+            $meta_value = sanitize_meta( $meta_key, $meta_value, $ct_table->name );
+            $meta_value = maybe_serialize( $meta_value );
+
+            // Setup the insert value
+            $metas[] = "{$log_id}, '{$meta_key}', '{$meta_value}'";
         }
+
+        $logs_meta = GamiPress()->db->logs_meta;
+        $metas = implode( '), (', $metas );
+
+        // Since the log is recently inserted, is faster to run a single query to insert all metas instead of insert them one-by-one
+        $wpdb->query( "INSERT INTO {$logs_meta} (log_id, meta_key, meta_value) VALUES ({$metas})" );
 
     }
 

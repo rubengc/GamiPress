@@ -130,12 +130,14 @@ function gamipress_get_user_achievements( $args = array() ) {
 	$args = wp_parse_args( $args, $defaults );
 
 	// Use current user's ID if none specified
-	if ( ! $args['user_id'] )
+	if ( ! $args['user_id'] ) {
 		$args['user_id'] = get_current_user_id();
+    }
 
 	// Bail if not user provided or current user is not logged in
-	if( absint( $args['user_id'] ) === 0 )
+	if( absint( $args['user_id'] ) === 0 ) {
 	    return array();
+    }
 
 	// Setup CT object
 	ct_setup_table( 'gamipress_user_earnings' );
@@ -184,16 +186,20 @@ function gamipress_get_user_achievements( $args = array() ) {
 		if( isset( $args['display'] ) && $args['display'] ) {
 
 		    // Unset not existent achievements
-		    if( ! gamipress_post_exists( $achievement->post_id ) )
+		    if( ! gamipress_post_exists( $achievement->post_id ) ) {
                 unset( $achievements[$key] );
+            }
 
 		    // Unset not published achievements
-            if( gamipress_get_post_field( 'post_status', $achievement->post_id ) !== 'publish' )
+            if( gamipress_get_post_field( 'post_status', $achievement->post_id ) !== 'publish' ) {
                 unset( $achievements[$key] );
+            }
 
 			// Unset hidden achievements on display context
-			if( gamipress_is_achievement_hidden( $achievement->post_id ) )
+			if( gamipress_is_achievement_hidden( $achievement->post_id ) ) {
 				unset( $achievements[$key] );
+            }
+
 		}
 
 	}

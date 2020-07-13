@@ -20,8 +20,6 @@ require_once GAMIPRESS_DIR . 'includes/admin/plugins.php';
 require_once GAMIPRESS_DIR . 'includes/admin/achievements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/ranks.php';
 require_once GAMIPRESS_DIR . 'includes/admin/requirements.php';
-require_once GAMIPRESS_DIR . 'includes/admin/requirements-ui.php';
-require_once GAMIPRESS_DIR . 'includes/admin/log-extra-data-ui.php';
 require_once GAMIPRESS_DIR . 'includes/admin/users.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
@@ -465,7 +463,7 @@ function gamipress_on_delete_post( $post_id ) {
     } else if( $post_type === 'points-type' ) {
 
         // Get assigned points awards
-        $points_awards = gamipress_get_assigned_requirements( $post_id, 'points-award', 'any' );
+        $points_awards = gamipress_get_points_type_points_awards( $post_id, 'any' );
 
         if( $points_awards ) {
 
@@ -477,7 +475,7 @@ function gamipress_on_delete_post( $post_id ) {
         }
 
         // Get assigned points deducts
-        $points_deducts = gamipress_get_assigned_requirements( $post_id, 'points-deduct', 'any' );
+        $points_deducts = gamipress_get_points_type_points_deducts( $post_id, 'any' );
 
         if( $points_deducts ) {
 

@@ -241,8 +241,16 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
 
     global $wpdb;
 
-    if( $rank_id === null )
+    if( $rank_id === null ) {
         $rank_id = get_the_ID();
+    }
+
+    $cache = gamipress_get_cache( 'next_rank_id', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$rank_id] ) ) {
+        return $cache[$rank_id];
+    }
 
     $rank_type = gamipress_get_post_type( $rank_id );
 
@@ -262,11 +270,20 @@ function gamipress_get_next_rank_id( $rank_id = null ) {
         gamipress_get_post_field( 'menu_order', $rank_id )
     ) );
 
-    if( absint( $next_rank_id ) === $rank_id )
+    $next_rank_id = absint( $next_rank_id );
+
+    if( $next_rank_id === $rank_id ) {
         $next_rank_id = 0;
+    }
 
+    $next_rank_id = apply_filters( 'gamipress_get_next_rank_id', $next_rank_id, $rank_id );
 
-    return apply_filters( 'gamipress_get_next_rank_id', absint( $next_rank_id ), $rank_id );
+    // Cache function result
+    $cache[$rank_id] = $next_rank_id;
+
+    gamipress_set_cache( 'next_rank_id', $cache );
+
+    return $next_rank_id;
 
 }
 
@@ -318,6 +335,13 @@ function gamipress_get_prev_rank_id( $rank_id = null ) {
         $rank_id = get_the_ID();
     }
 
+    $cache = gamipress_get_cache( 'prev_rank_id', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$rank_id] ) ) {
+        return $cache[$rank_id];
+    }
+
     $rank_type = gamipress_get_post_type( $rank_id );
 
     $posts  = GamiPress()->db->posts;
@@ -336,11 +360,20 @@ function gamipress_get_prev_rank_id( $rank_id = null ) {
         gamipress_get_post_field( 'menu_order', $rank_id )
     ) );
 
-    if( absint( $prev_rank_id ) === $rank_id ) {
+    $prev_rank_id = absint( $prev_rank_id );
+
+    if( $prev_rank_id === $rank_id ) {
         $prev_rank_id = 0;
     }
 
-    return apply_filters( 'gamipress_get_prev_rank_id', absint( $prev_rank_id ), $rank_id );
+    $prev_rank_id = apply_filters( 'gamipress_get_prev_rank_id', $prev_rank_id, $rank_id );
+
+    // Cache function result
+    $cache[$rank_id] = $prev_rank_id;
+
+    gamipress_set_cache( 'prev_rank_id', $cache );
+
+    return $prev_rank_id;
 
 }
 
@@ -818,6 +851,13 @@ function gamipress_get_rank_requirements( $rank_id = 0, $post_status = 'publish'
         $rank_id = $post->ID;
     }
 
+    $cache = gamipress_get_cache( 'rank_requirements', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$rank_id] ) && isset( $cache[$rank_id][$post_status] ) ) {
+        return $cache[$rank_id][$post_status];
+    }
+
     $requirements = get_posts( array(
         'post_type'         => 'rank-requirement',
         'post_parent'       => $rank_id,
@@ -827,6 +867,15 @@ function gamipress_get_rank_requirements( $rank_id = 0, $post_status = 'publish'
         'posts_per_page'    => -1,
         'suppress_filters'  => false,
     ) );
+
+    // Cache function result
+    if( ! isset( $cache[$rank_id] ) ){
+        $cache[$rank_id] = array();
+    }
+
+    $cache[$rank_id][$post_status] = $requirements;
+
+    gamipress_set_cache( 'rank_requirements', $cache );
 
     // Return rank requirements array
     return $requirements;

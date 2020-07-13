@@ -14,7 +14,7 @@ $a = $gamipress_template_args;
 if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
     $earned = true;
 } else {
-    $earned = is_user_logged_in() && gamipress_get_user_achievements( array( 'achievement_id' => absint( get_the_ID() ) ) );
+    $earned = gamipress_has_user_earned_achievement( get_the_ID(), get_current_user_id() );
 }
 
 // Setup rank classes

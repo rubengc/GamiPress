@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	1.8.6.2
+ * Version:         	1.8.7
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -84,7 +84,7 @@ final class GamiPress {
 	public $shortcodes = array();
 
 	/**
-	 * @var         stdClass $db GamiPress database object
+	 * @var         GamiPress_Database $db GamiPress database object
 	 * @since       1.4.0
 	 */
 	public $db;
@@ -115,6 +115,7 @@ final class GamiPress {
 			self::$instance = new GamiPress();
 			self::$instance->constants();
 			self::$instance->libraries();
+			self::$instance->classes();
 			self::$instance->compatibility();
 			self::$instance->includes();
 			self::$instance->hooks();
@@ -136,7 +137,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '1.8.6.2' );
+		define( 'GAMIPRESS_VER', '1.8.7' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -175,6 +176,19 @@ final class GamiPress {
 		require_once GAMIPRESS_DIR . 'libraries/button-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/html-field-type.php';
 		require_once GAMIPRESS_DIR . 'libraries/points-field-type.php';
+
+    }
+
+    /**
+     * Include plugin classes
+     *
+     * @access      private
+     * @since       1.0.0
+     * @return      void
+     */
+    private function classes() {
+
+        require_once GAMIPRESS_DIR . 'classes/database.php';
 
     }
 
@@ -269,7 +283,7 @@ final class GamiPress {
 
 		global $wpdb;
 
-		$this->db = new stdClass();
+		$this->db = new GamiPress_Database();
 
 		// Setup WordPress database tables
 		$this->db->posts 				= $wpdb->posts;

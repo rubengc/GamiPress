@@ -18,6 +18,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.3.7.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.3.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.7.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.5.1.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.8.7.php';
 
 /**
  * GamiPress upgrades
@@ -193,7 +194,7 @@ function gamipress_database_table_exists( $table_name ) {
 
     global $wpdb;
 
-    $cache = gamipress_get_cache( 'installed_tables', array() );
+    $cache = gamipress_get_cache( 'installed_tables', array(), false );
 
     // If result already cached, return it
     if( isset( $cache[$table_name] ) ) {
@@ -242,7 +243,7 @@ function gamipress_database_table_has_column( $table_name, $column_name ) {
 
     global $wpdb;
 
-    $cache = gamipress_get_cache( 'installed_table_columns', array() );
+    $cache = gamipress_get_cache( 'installed_table_columns', array(), false );
 
     // If result already cached, return it
     if( isset( $cache[$table_name] ) && isset( $cache[$table_name][$column_name] ) ) {

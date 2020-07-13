@@ -30,14 +30,10 @@ function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id
 		$since = $achievement->date_started - 1;
 
 	// Attempt to grab the achievement earned date
-	} else if ( $achievements = gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => $achievement_id, 'limit' => 1 ) ) ) {
-
-		$achievement = $achievements[0];
+	} else if ( $date_earned = gamipress_get_last_earning_datetime( array( 'user_id' => $user_id, 'post_id' => $achievement_id ) ) ) {
 
 		// Return the achievement date earned
-		if ( is_object( $achievement ) ) {
-			$since = $achievement->date_earned + 1;
-        }
+        $since = $date_earned + 1;
 
     // If hasn't earned it and is a rank requirement, then grab the rank earned date
 	} else if( gamipress_get_post_type( $achievement_id ) === 'rank-requirement' ) {
@@ -72,15 +68,16 @@ function gamipress_achievement_last_user_activity( $achievement_id = 0, $user_id
  */
 function gamipress_user_get_active_achievements( $user_id ) {
 
-	// Get the user's active achievements from meta
-	$achievements = gamipress_get_user_meta( $user_id, '_gamipress_active_achievements' );
+	// Get the user's active achievements
+    $active_achievements = gamipress_get_cache( 'active_achievements', array(), false );
 
-	// If there are no achievements
-	if ( empty( $achievements ) )
-		return array();
+    // If there are no achievements
+    if( ! isset( $active_achievements[$user_id] ) ) {
+        return array();
+    }
 
 	// Otherwise, we DO have achievements and should return them cast as an array
-	return (array) $achievements;
+	return $active_achievements[$user_id];
 }
 
 /**
@@ -95,17 +92,27 @@ function gamipress_user_get_active_achievements( $user_id ) {
  */
 function gamipress_user_update_active_achievements( $user_id = 0, $achievements = array(), $update = false ) {
 
+    // Get the user's active achievements
+    $active_achievements = gamipress_get_cache( 'active_achievements', array(), false );
+
+    // If there are no achievements
+    if( ! isset( $active_achievements[$user_id] ) ) {
+        $active_achievements[$user_id] = array();
+    }
+
 	// If we're not replacing, append the passed array to our existing array
 	if ( true == $update ) {
 		$existing_achievements = gamipress_user_get_active_achievements( $user_id );
-		$achievements = (array) $achievements + (array) $existing_achievements;
-	}
+        $active_achievements[$user_id] = (array) $achievements + (array) $existing_achievements;
+	} else {
+        $active_achievements[$user_id] = (array) $achievements;
+    }
 
-	// Update the user's active achievements meta
-	gamipress_update_user_meta( $user_id, '_gamipress_active_achievements', $achievements );
+	// Update the user's active achievements
+    gamipress_set_cache( 'active_achievements', $active_achievements );
 
 	// Return our updated achievements array
-	return (array) $achievements;
+	return $achievements;
 }
 
 /**
@@ -138,8 +145,9 @@ function gamipress_user_get_active_achievement( $user_id = 0, $achievement_id = 
 function gamipress_user_add_active_achievement( $user_id = 0, $achievement_id = 0 ) {
 
 	// If achievement is a step, bail here
-	if ( 'step' == gamipress_get_post_type( $achievement_id ) )
+	if ( 'step' == gamipress_get_post_type( $achievement_id ) ) {
 		return false;
+    }
 
 	// Get the user's active achievements
 	$achievements = gamipress_user_get_active_achievements( $user_id );
@@ -168,8 +176,9 @@ function gamipress_user_add_active_achievement( $user_id = 0, $achievement_id = 
 function gamipress_user_update_active_achievement( $user_id = 0, $achievement_id = 0, $achievement = null ) {
 
 	// If achievement is a step, bail here
-	if ( 'step' === gamipress_get_post_type( $achievement_id ) )
+	if ( 'step' === gamipress_get_post_type( $achievement_id ) ) {
 		return false;
+    }
 
 	// If we weren't passed an object, get the latest version from meta
 	if ( ! is_object( $achievement ) )

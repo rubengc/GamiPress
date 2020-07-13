@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.4
-Stable tag: 1.8.6.2
+Stable tag: 1.8.7
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -224,6 +224,27 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.8.7 =
+
+* **New Features**
+* Added the earners box on achievements and ranks edit screens.
+* **Improvements**
+* Improve the display of the user on earnings list at admin area.
+* Auto-revoke all requirements on revoke an achievement or rank.
+* Load all user awards tables through ajax to speed up access to the user edit screen.
+* Force custom database tables to use InnoDB on creation.
+* Added internal upgrade process to update custom database tables to InnoDB.
+* Performance improvement on numerous user earnings database calls.
+* Great reduction of the amount of database calls from several functions.
+* Prevent to perform API calls on areas outside the add-ons or licenses pages.
+* Added support to display the rank link on "Reach a rank" requirements.
+* Improvements on the cache functionality.
+* Style improvements on the admin area.
+* **Developer Notes**
+* Added the filter 'gamipress_disable_network_data_centralization' to allow disable data centralization on multisite networks.
+* Added the filter 'gamipress_revoke_requirements_on_revoke_parent' to allow disable the revoke of all requirements when its parent is revoked.
+* Added the ability to force not search in options when retrieving a specific cache element.
 
 = 1.8.6.2 =
 

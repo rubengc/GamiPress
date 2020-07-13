@@ -481,9 +481,9 @@ function gamipress_trigger_event() {
  *
  * @since 1.6.2
  *
- * @param integer 	$user_id
+ * @param int    	$user_id
  * @param string 	$trigger
- * @param integer 	$site_id
+ * @param int    	$site_id
  * @param array 	$args
  */
 function gamipress_log_event_triggered( $user_id, $trigger, $site_id, $args ) {
@@ -512,7 +512,19 @@ function gamipress_log_event_triggered( $user_id, $trigger, $site_id, $args ) {
 
     }
 
-    // Available filter to insert custom meta data
+    /**
+     * Available filter to insert custom meta data
+     *
+     * @since 1.6.2
+     *
+     * @param array 	$log_meta
+     * @param int 	    $user_id
+     * @param string 	$trigger
+     * @param int 	    $site_id
+     * @param array 	$args
+     *
+     * @return array
+     */
     $log_meta = apply_filters( 'gamipress_log_event_trigger_meta_data', $log_meta, $user_id, $trigger, $site_id, $args );
 
     // Mark the count in the log entry
@@ -601,8 +613,9 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 	);
 
 	// On multisite, search for site logs
-	if( is_multisite() && gamipress_is_network_wide_active() )
+	if( is_multisite() && gamipress_is_network_wide_active() ) {
         $log_meta['site_id'] = $site_id;
+    }
 
 	switch ( $trigger ) {
 		case 'gamipress_publish_post':
@@ -1262,8 +1275,9 @@ function gamipress_get_user_trigger_count( $user_id, $trigger, $since = 0, $site
 function gamipress_update_user_trigger_count( $user_id, $trigger, $site_id = 0, $args = array() ) {
 
 	// Set to current site id
-	if ( ! $site_id )
+	if ( ! $site_id ) {
 		$site_id = get_current_blog_id();
+    }
 
 	// Get the user triggered triggers
 	$user_triggers = gamipress_get_user_triggers( $user_id, $site_id );

@@ -51,11 +51,11 @@ function gamipress_achievement_posts_columns( $posts_columns ) {
     }
 
     // Place our column in our desired position
-    $chunks                     = array_chunk( $posts_columns, $pos, true );
-    $chunks[0]['points']   = __( 'Points Awarded', 'gamipress' );
-    $chunks[0]['earned_by']   = __( 'Earned By', 'gamipress' );
-    $chunks[0]['maximum_earnings']   = __( 'Max. Earnings', 'gamipress' );
-    $chunks[0]['unlock_with_points']   = __( 'Unlock with Points', 'gamipress' );
+    $chunks                             = array_chunk( $posts_columns, $pos, true );
+    $chunks[0]['points']                = __( 'Points Awarded', 'gamipress' );
+    $chunks[0]['earned_by']             = __( 'Earned By', 'gamipress' );
+    $chunks[0]['maximum_earnings']      = __( 'Max. Earnings', 'gamipress' );
+    $chunks[0]['unlock_with_points']    = __( 'Unlock with Points', 'gamipress' );
 
     return call_user_func_array( 'array_merge', $chunks );
 

@@ -10,7 +10,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Add Points Awards and Steps meta boxes
+ * Add requirements meta boxes
  *
  * @since  1.0.5
  *
@@ -38,7 +38,7 @@ function gamipress_add_requirements_ui_meta_box() {
 add_action( 'add_meta_boxes', 'gamipress_add_requirements_ui_meta_box' );
 
 /**
- * Renders the HTML for meta box, refreshes whenever a new point award is added
+ * Renders the HTML for meta box, refreshes whenever a new requirement is added
  *
  * @since 1.0.5
  * @updated 1.3.7 Added $metabox

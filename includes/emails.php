@@ -776,11 +776,11 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
             foreach( $steps as $step ) {
                 // check if user has earned this step
-                $earned = count( gamipress_get_user_achievements( array(
+                $earned = gamipress_get_earnings_count( array(
                         'user_id' => absint( $user_id ),
-                        'achievement_id' => absint( $step->ID ),
+                        'post_id' => absint( $step->ID ),
                         'since' => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
-                    ) ) ) > 0;
+                    ) ) > 0;
 
                 if( ! $earned ) {
                     // Not all steps has been earned, so continue
@@ -864,11 +864,11 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
             foreach( $requirements as $requirement ) {
                 // Check if user has earned this requirement
-                $earned = count( gamipress_get_user_achievements( array(
+                $earned = gamipress_get_earnings_count( array(
                         'user_id' => absint( $user_id ),
-                        'achievement_id' => absint( $requirement->ID ),
+                        'post_id' => absint( $requirement->ID ),
                         'since' => absint( gamipress_achievement_last_user_activity( $requirement->ID, $user_id ) )
-                    ) ) ) > 0;
+                    ) ) > 0;
 
                 if( ! $earned ) {
                     // Not all requirements has been earned, so continue

@@ -400,13 +400,40 @@
     if( $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").length ) {
 
         $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").change(function() {
-        	var award_options_wrapper = $(this).closest('.form-table').next();
+        	var $this = $(this);
+        	var award_options_wrapper = $this.closest('.form-table').next();
+        	var post_type = $this.val();
 
-            if ( 'all' == this.value ) {
-				award_options_wrapper.children().show();
-			} else {
-				award_options_wrapper.children().hide();
-                $("#" + this.value).show();
+        	// Hide all tables
+			award_options_wrapper.children().hide();
+
+			if( ! post_type.length ) {
+				return;
+			}
+
+			// Show the option selected
+			$("#" + post_type).show();
+
+			if( ! $("#" + post_type).data('loaded') ) {
+
+				var action = ( $this.attr('id') === 'gamipress-award-achievement-type-select' ? 'achievement' : 'requirement' );
+
+				$("#" + post_type).data('loaded', true);
+
+				$.ajax({
+					url: ajaxurl,
+					method: 'POST',
+					data: {
+						action: 'gamipress_profile_load_award_' + action + '_table',
+						nonce: gamipress_admin.nonce,
+						user_id: $("input#user_id").val(),
+						post_type: post_type,
+					},
+					success: function(response) {
+						$("#" + post_type).html( $(response.data).html() );
+					}
+				});
+
 			}
         }).change();
 
@@ -437,12 +464,29 @@
 
 			var $response = $(response);
 
-            // Update this awards table (don't need to remove the loader and enable the links again since the whole content gets replaced)
-            $this.closest('.gamipress-table').html( $response.find('#' + $this.closest('.gamipress-table').attr('id') + '.gamipress-table').html() );
-
             // Update user ranks and points
             $('.profile-ranks').html( $response.find('.profile-ranks').html() );
             $('.profile-points').html( $response.find('.profile-points').html() );
+
+			// Reload the awards table
+			var post_type = $this.closest('.gamipress-table').attr('id').replace('-table', '');
+			var requirements = [ 'points-award', 'points-deduct', 'step', 'rank-requirement' ];
+
+			var action = ( requirements.indexOf( post_type ) === -1 ? 'achievement' : 'requirement' );
+
+			$.ajax({
+				url: ajaxurl,
+				method: 'POST',
+				data: {
+					action: 'gamipress_profile_load_award_' + action + '_table',
+					nonce: gamipress_admin.nonce,
+					user_id: $("input#user_id").val(),
+					post_type: post_type,
+				},
+				success: function(response) {
+					$("#" + post_type).html( $(response.data).html() );
+				}
+			});
 
             // Force user earnings table to refresh
             gamipress_refresh_user_earnings_table();

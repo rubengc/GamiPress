@@ -61,10 +61,8 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
             $keys = array();
 
             foreach( $this->fields as $field_id => $field_args ) {
-
-
+                // Turn field array to schema
                 $fields_def[] = $this->field_array_to_schema( $field_id, $field_args );
-
             }
 
             // Setup PRIMARY KEY definition

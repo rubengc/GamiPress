@@ -17,16 +17,17 @@ if( !defined( 'ABSPATH' ) ) exit;
  * @since   1.4.7
  * @updated 1.6.1 Added support to return cached value stored in options table
  *
- * @param string    $key
- * @param mixed     $default
+ * @param string    $key        Cache key
+ * @param mixed     $default    Default value in case the cache is not found
+ * @param bool      $stored     Whatever if the cache has been stored previously in the database or not
  *
  * @return mixed
  */
-function gamipress_get_cache( $key = '', $default = null ) {
+function gamipress_get_cache( $key = '', $default = null, $stored = true ) {
 
     if( isset( GamiPress()->cache[$key] ) ) {
         return GamiPress()->cache[$key];
-    } else {
+    } else if( $stored ) {
 
         // If GamiPress is installed network wide, get cache from network options
         if( gamipress_is_network_wide_active() ) {

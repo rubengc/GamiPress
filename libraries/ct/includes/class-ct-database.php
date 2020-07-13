@@ -56,6 +56,11 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
         public $schema = '';
 
         /**
+         * @var string Database engine for table (default InnoDB)
+         */
+        public $engine = '';
+
+        /**
          * @var string Database character-set & collation for table
          */
         public $charset_collation = '';
@@ -99,6 +104,8 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
                 }
 
             }
+
+            $this->engine = ( isset( $args['engine'] ) ) ? $args['engine'] : 'InnoDB';
 
             // Bail if no database object or table name
             if ( empty( $GLOBALS['wpdb'] ) || empty( $this->name ) ) {
@@ -358,7 +365,7 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
         private function create() {
 
             // Run CREATE TABLE query
-            $created = dbDelta( array( "CREATE TABLE {$this->table_name} ( {$this->schema} ) {$this->charset_collation};" ) );
+            $created = dbDelta( "CREATE TABLE {$this->table_name} ( {$this->schema} ) ENGINE={$this->engine} {$this->charset_collation};" );
 
             // Was anything created?
             return ! empty( $created );

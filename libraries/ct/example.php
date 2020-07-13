@@ -54,6 +54,8 @@ function yourprefix_init() {
 //            date datetime NOT NULL,
 //            PRIMARY KEY  (log_id)
 //        ',
+        // Database engine (default to InnoDB)
+        'engine' => 'InnoDB',
         // View args
         'views' => array(
             'add' => array(

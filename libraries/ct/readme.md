@@ -19,6 +19,7 @@ Custom table registration:
 - [x] Easy field definition
 - [x] Schema parser
 - [x] Automatic schema updater (yay!)
+- [x] Database parameters (collate, engine, etc)
 - [x] Ability to show or hide from admin UI (disable UI for a desired table)
 - [x] Custom Capabilities (with support for administrators)
 - [x] Meta data functionality

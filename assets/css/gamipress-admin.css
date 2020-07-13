@@ -352,9 +352,10 @@ li.requirement-row .required-duration {
 	text-align: right;
 }
 
+li.requirement-row .requirement-awards,
 li.requirement-row .requirement-title {
 	display: block;
-	padding-top:5px;
+	padding-top: 5px;
 }
 
 li.requirement-row .points-required {
@@ -397,6 +398,30 @@ li.requirement-row.requirement-disabled {
 	li.requirement-row label:first-child {
 		padding-top: 0;
 	}
+}
+
+/* -------------------------------------------
+	Earners meta box
+   ------------------------------------------- */
+#gamipress-earners .inside {
+	padding: 0;
+}
+
+#gamipress-earners .ct-ajax-list-table {
+	margin: 0;
+}
+
+#gamipress-earners .ct-ajax-list-table .tablenav {
+	margin-right: 12px;
+}
+
+#gamipress-earners .ct-ajax-list-table .tablenav input {
+	vertical-align: baseline;
+}
+
+body:not(.block-editor-page) #gamipress-earners .ct-ajax-list-table .wp-list-table {
+	border-left: 0;
+	border-right: 0;
 }
 
 /* -------------------------------------------
@@ -488,9 +513,14 @@ li.requirement-row.requirement-disabled {
 	color: #a00;
 }
 
-.wp-list-table.gamipress_user_earnings .column-name img {
+.wp-list-table.gamipress_user_earnings .column-name img,
+.wp-list-table.gamipress_user_earnings .column-user_id img {
 	float: left;
 	margin-right: 10px;
+}
+
+.wp-list-table.gamipress_user_earnings .column-user_id img {
+	border-radius: 50%;
 }
 
 .wp-list-table.gamipress_user_earnings .column-action {

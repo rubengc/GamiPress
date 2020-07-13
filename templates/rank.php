@@ -16,7 +16,7 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
 if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
     $earned = true;
 } else {
-    $earned = $user_id !== 0 && gamipress_get_user_achievements( array( 'user_id' => $user_id, 'achievement_id' => get_the_ID() ) );
+    $earned = gamipress_has_user_earned_achievement( get_the_ID(), $user_id );
 }
 
 // Check if this rank is the current one of the user

@@ -22,8 +22,10 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = array() ) {
 
+    global $wpdb;
+
     // Setup table
-    ct_setup_table( 'gamipress_user_earnings' );
+    $ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
     // Post data
     $data = wp_parse_args( $data, array(
@@ -42,16 +44,30 @@ function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = a
     }
 
     // Store user earning entry
-    $user_earning_id = ct_insert_object( $data );
+    $user_earning_id = $ct_table->db->insert( $data );
 
     // Store user earning meta data
     if ( $user_earning_id && ! empty( $meta ) ) {
 
+        $metas = array();
+
         foreach ( (array) $meta as $key => $value ) {
+            // Sanitize vars
+            $meta_key = '_gamipress_' . sanitize_key( $key );
+            $meta_key = wp_unslash( $meta_key );
+            $meta_value = wp_unslash( $meta );
+            $meta_value = sanitize_meta( $meta_key, $meta_value, $ct_table->name );
+            $meta_value = maybe_serialize( $meta_value );
 
-            ct_update_object_meta( $user_earning_id, '_gamipress_' . sanitize_key( $key ), $value );
-
+            // Setup the insert value
+            $metas[] = "{$user_earning_id}, '{$meta_key}', '{$meta_value}'";
         }
+
+        $user_earnings_meta = GamiPress()->db->user_earnings_meta;
+        $metas = implode( '), (', $metas );
+
+        // Since the user earning is recently inserted, is faster to run a single query to insert all metas instead of insert them one-by-one
+        $wpdb->query( "INSERT INTO {$user_earnings_meta} (user_earning_id, meta_key, meta_value) VALUES ({$metas})" );
 
     }
 
@@ -77,13 +93,83 @@ function gamipress_get_earnings_count( $query = array() ) {
 
     global $wpdb;
 
+    $where = gamipress_get_earnings_where( $query );
+
+    // Merge all wheres
+    $where = implode( ' AND ', $where );
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    return absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$user_earnings} AS ue WHERE {$where}" ) );
+
+}
+
+/**
+ * Get the last earning date
+ *
+ * @since  1.8.7
+ *
+ * @param  array $query User earning query parameters
+ *
+ * @return string       The last earning date
+ */
+function gamipress_get_last_earning_date( $query = array() ) {
+
+    global $wpdb;
+
+    $where = gamipress_get_earnings_where( $query );
+
+    // Merge all wheres
+    $where = implode( ' AND ', $where );
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    return $wpdb->get_var( "SELECT ue.date FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT 1" );
+
+}
+
+/**
+ * Get the last earning datetime
+ *
+ * @since  1.8.7
+ *
+ * @param  array $query User earning query parameters
+ *
+ * @return int          The last earning datetime
+ */
+function gamipress_get_last_earning_datetime( $query = array() ) {
+
+    $date = gamipress_get_last_earning_date( $query );
+
+    return ! empty( $date ) ? strtotime( $date ) : 0;
+
+}
+
+/**
+ * Setup a common where conditions for the user earnings queries
+ *
+ * @since  1.8.7
+ *
+ * @param  array $query User earning query parameters
+ *
+ * @return array        Array of where clauses
+ */
+function gamipress_get_earnings_where( $query = array() ) {
+
     // Post data
     $query = wp_parse_args( $query, array(
-        'user_id'	    => 0,
-        'post_id'	    => 0,
-        'post_type' 	=> '',
-        'points_type'	=> '',
+        'user_id'	        => 0,
+        'post_id'	        => 0,
+        'achievement_id'	=> 0,
+        'post_type' 	    => '',
+        'points_type'	    => '',
+        'since'	            => 0,
     ) );
+
+    // Parse mapped keys
+    if( $query['achievement_id'] !== 0 && $query['post_id'] === 0 ) {
+        $query['post_id'] = $query['achievement_id'];
+    }
 
     $where = array(
         '1 = 1'
@@ -117,11 +203,22 @@ function gamipress_get_earnings_count( $query = array() ) {
         $where[] = 'ue.points_type = "' . $query['points_type'] . '"';
     }
 
-    // Merge all wheres
-    $where = implode( ' AND ', $where );
+    // Since
+    if( ! empty( $query['since'] ) ) {
 
-    $user_earnings = GamiPress()->db->user_earnings;
+        $since = $query['since'];
 
-    return absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$user_earnings} AS ue WHERE {$where}" ) );
+        // Turn a string date into time
+        if( gettype( $query['since'] ) === 'string' ) {
+            $since = strtotime( $query['since'] );
+        }
+
+        if( $since > 0 ) {
+            $since = date( 'Y-m-d H:i:s', $since );
+            $where[] = " ue.date > '{$since}'";
+        }
+    }
+
+    return $where;
 
 }

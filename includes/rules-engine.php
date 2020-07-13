@@ -32,7 +32,7 @@ function gamipress_maybe_award_achievement_to_user( $achievement_id = 0, $user_i
 
 	// Grab current user ID if one isn't specified
 	if ( ! $user_id ) {
-		$user_id = wp_get_current_user()->ID;
+		$user_id = get_current_user_id();
     }
 
 	$result = true;
@@ -107,8 +107,13 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
 		$return = false;
     }
 
-	// If we have access, and the achievement has a parent...
-	if ( $return && $parent_id = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) ) ) {
+	// Get the achievement post type to exclude some of them
+	$post_type = gamipress_get_post_type( $achievement_id );
+
+	if ( $return
+        && ! in_array( $post_type, array( 'points-award', 'points-deduct' ) ) // If not is a points award or deduct
+        && $parent_id = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) )  // If achievement has a parent
+    ) {
 
 		// If we don't have access to the parent, we do not have access to this
 		if ( ! gamipress_user_has_access_to_achievement( $user_id, $parent_id, $trigger, $site_id, $args ) ) {
@@ -125,7 +130,7 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
                 }
 
 				// If we haven't earned any previous step, we can't earn this one
-				if ( ! gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $sibling->ID ) ) ) ) {
+				if ( ! gamipress_has_user_earned_achievement( $sibling->ID, $user_id ) ) {
 					$return = false;
 					break;
 				}
@@ -168,6 +173,11 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
  */
 function gamipress_user_has_access_to_specific_requirement( $return = false, $user_id = 0, $requirement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
 
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
 	// If we're not working with a requirement, bail here
 	if ( ! in_array( gamipress_get_post_type( $requirement_id ), gamipress_get_requirement_types_slugs() ) ) {
 		return $return;
@@ -206,6 +216,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_spec
  */
 function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step_id = 0 ) {
 
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
 	// If we're not working with a step, bail here
 	if ( 'step' !== gamipress_get_post_type( $step_id ) ) {
 		return $return;
@@ -225,11 +240,11 @@ function gamipress_user_has_access_to_step( $return = false, $user_id = 0, $step
 
     if( $return ) {
 
-        $earned_times = count( gamipress_get_user_achievements( array(
-            'user_id'        => absint( $user_id ),
-            'achievement_id' => absint( $step_id ),
-            'since'          => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
-        ) ) );
+        $earned_times = gamipress_get_earnings_count( array(
+            'user_id'   => absint( $user_id ),
+            'post_id'   => absint( $step_id ),
+            'since'     => absint( gamipress_achievement_last_user_activity( $achievement->ID, $user_id ) )
+        ) );
 
         // Prevent user from repeatedly earning the same step
         if ( $earned_times > 0 ) {
@@ -256,6 +271,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_step
  */
 function gamipress_user_has_access_to_points_award( $return = false, $user_id = 0, $points_award_id = 0 ) {
 
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
 	// If we're not working with a points award, bail here
 	if ( 'points-award' !== gamipress_get_post_type( $points_award_id ) ) {
 		return $return;
@@ -277,11 +297,11 @@ function gamipress_user_has_access_to_points_award( $return = false, $user_id = 
 
     if ( $return ) {
 
-        $earned_times = count( gamipress_get_user_achievements( array(
-            'user_id'        => absint( $user_id ),
-            'achievement_id' => absint( $points_award_id ),
-            'since'          => absint( gamipress_achievement_last_user_activity( $points_award_id, $user_id ) )
-        ) ) );
+        $earned_times = gamipress_get_earnings_count( array(
+            'user_id'   => absint( $user_id ),
+            'post_id'   => absint( $points_award_id ),
+            'since'     => absint( gamipress_achievement_last_user_activity( $points_award_id, $user_id ) )
+        ) );
 
         // Prevent user to exceed maximum earnings the same points award
         if ( $earned_times >= $maximum_earnings ) {
@@ -309,6 +329,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_poin
  */
 function gamipress_user_has_access_to_points_deduct( $return = false, $user_id = 0, $points_deduct_id = 0 ) {
 
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
 	// If we're not working with a step, bail here
 	if ( 'points-deduct' !== gamipress_get_post_type( $points_deduct_id ) ) {
 		return $return;
@@ -330,11 +355,11 @@ function gamipress_user_has_access_to_points_deduct( $return = false, $user_id =
 
     if ( $return ) {
 
-        $earned_times = count( gamipress_get_user_achievements( array(
-            'user_id'        => absint( $user_id ),
-            'achievement_id' => absint( $points_deduct_id ),
-            'since'          => absint( gamipress_achievement_last_user_activity( $points_deduct_id, $user_id ) )
-        ) ) );
+        $earned_times = gamipress_get_earnings_count( array(
+            'user_id'   => absint( $user_id ),
+            'post_id'   => absint( $points_deduct_id ),
+            'since'     => absint( gamipress_achievement_last_user_activity( $points_deduct_id, $user_id ) )
+        ) );
 
         // Prevent user to exceed maximum earnings the same points deduct
         if ( $earned_times >= $maximum_earnings ) {
@@ -362,6 +387,11 @@ add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_poin
  */
 function gamipress_user_has_access_to_rank_requirement( $return = false, $user_id = 0, $rank_requirement_id = 0 ) {
 
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
 	// If we're not working with a rank requirement, bail here
 	if ( 'rank-requirement' !== gamipress_get_post_type( $rank_requirement_id ) )
 		return $return;
@@ -385,11 +415,11 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 
     if ( $return ) {
 
-        $earned_times = count( gamipress_get_user_achievements( array(
-            'user_id'        => absint( $user_id ),
-            'achievement_id' => absint( $rank_requirement_id ),
-            'since'          => absint( gamipress_achievement_last_user_activity( $rank->ID, $user_id ) )
-        ) ) );
+        $earned_times = gamipress_get_earnings_count( array(
+            'user_id'   => absint( $user_id ),
+            'post_id'   => absint( $rank_requirement_id ),
+            'since'     => absint( gamipress_achievement_last_user_activity( $rank->ID, $user_id ) )
+        ) );
 
         // Prevent user from repeatedly earning the same requirement
         if ( $earned_times > 0 ) {
@@ -427,15 +457,21 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 	$return = true;
 
 	// Set to current site id
-	if ( ! $site_id )
+	if ( ! $site_id ) {
 		$site_id = get_current_blog_id();
+    }
+
+    // Points types can't be earned
+	if( gamipress_get_post_type( $achievement_id ) === 'points-type' ) {
+	    return false;
+    }
 
 	// If the user has not already earned the achievement...
-	if ( ! gamipress_get_user_achievements( array(
-		'user_id' => absint( $user_id ),
-		'achievement_id' => absint( $achievement_id ),
-		'since' => gamipress_achievement_last_user_activity( $achievement_id, $user_id ) + 1
-	) ) ) {
+	if ( gamipress_get_earnings_count( array(
+		'user_id'   => absint( $user_id ),
+		'post_id'   => absint( $achievement_id ),
+		'since'     => gamipress_achievement_last_user_activity( $achievement_id, $user_id ) + 1
+	) ) === 0 ) {
 
 		// Grab published required achievements for this achievement
 		$required_achievements = gamipress_get_required_achievements_for_achievement( $achievement_id, 'publish' );
@@ -445,14 +481,14 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 
 			foreach ( $required_achievements as $requirement ) {
 
-				$requirement_earned = gamipress_get_user_achievements( array(
-					'user_id' => $user_id,
-					'achievement_id' => $requirement->ID,
-					'since' => gamipress_achievement_last_user_activity( $achievement_id, $user_id ) - 1
+				$requirement_earned = gamipress_get_earnings_count( array(
+					'user_id'   => $user_id,
+					'post_id'   => $requirement->ID,
+					'since'     => gamipress_achievement_last_user_activity( $achievement_id, $user_id ) - 1
 				) );
 
 				// Has the user already earned the requirements?
-				if ( empty( $requirement_earned ) ) {
+				if ( $requirement_earned === 0 ) {
 					$return = false;
 					break;
 				}
@@ -494,8 +530,9 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 function gamipress_user_meets_points_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
 
     // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
-    if( ! $return )
+    if( ! $return ) {
         return $return;
+    }
 
 	// First, see if the achievement requires a minimum amount of points
 	if (
@@ -585,8 +622,9 @@ add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requiremen
 function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
 
     // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
-    if( ! $return )
+    if( ! $return ) {
         return $return;
+    }
 
 	// First, see if the achievement requires a minimum rank
 	if (
@@ -635,8 +673,9 @@ add_filter( 'user_deserves_achievement', 'gamipress_user_meets_rank_requirement'
 function gamipress_user_deserves_limit_requirements( $return = false, $user_id = 0, $achievement_id = 0 ) {
 
     // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
-    if( ! $return )
+    if( ! $return ) {
         return $return;
+    }
 
     // If we're not working with a requirement, bail here
     if ( ! in_array( gamipress_get_post_type( $achievement_id ), gamipress_get_requirement_types_slugs() ) )
@@ -724,13 +763,11 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 				}
 
 				// Get our achievement activity
-				$achievements = gamipress_get_user_achievements( array(
-					'user_id'        => absint( $user_id ),
-					'achievement_id' => absint( $requirements['achievement_post'] ),
-					'since'          => $since
+                $activities = gamipress_get_earnings_count( array(
+					'user_id'   => absint( $user_id ),
+					'post_id'   => absint( $requirements['achievement_post'] ),
+					'since'     => $since
 				) );
-
-				$activities = count( $achievements );
 				break;
 			case 'any-achievement' :
 				$trigger = 'gamipress_unlock_' . $requirements['achievement_type'];
@@ -794,8 +831,9 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
 	$limit_type = gamipress_get_post_meta( $achievement_id, '_gamipress_limit_type' );
 
     // No limit
-	if( ! $limit_type || $limit_type === 'unlimited' )
+	if( ! $limit_type || $limit_type === 'unlimited' ) {
 		return 0;
+    }
 
 	$now    = current_time( 'timestamp' );
 	$from   = current_time( 'timestamp' );
@@ -1079,11 +1117,11 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
                 // If maximum earnings is different to 0, we need to set how many times to award it
                 if( $maximum_earnings !== 0 ) {
 
-                    $earned_times = count( gamipress_get_user_achievements( array(
-                        'user_id'        => absint( $user_id ),
-                        'achievement_id' => absint( $achievement_id ),
-                        'since'          => $last_achievement_activity
-                    ) ) );
+                    $earned_times = gamipress_get_earnings_count( array(
+                        'user_id'   => absint( $user_id ),
+                        'post_id'   => absint( $achievement_id ),
+                        'since'     => $last_achievement_activity
+                    ) );
 
                     // If times to award and earned times exceed the maximum earnings
                     if( ( $times_to_award + $earned_times ) >= $maximum_earnings )
@@ -1121,8 +1159,9 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_multiple_point
  */
 function gamipress_maybe_award_rank( $user_id = 0, $achievement_id = 0 ) {
 
-	if( gamipress_get_post_type( $achievement_id ) !== 'rank-requirement' )
+	if( gamipress_get_post_type( $achievement_id ) !== 'rank-requirement' ) {
 		return;
+    }
 
 	// Get the requirement rank
 	$rank = gamipress_get_rank_requirement_rank( $achievement_id );
@@ -1142,15 +1181,17 @@ function gamipress_maybe_award_rank( $user_id = 0, $achievement_id = 0 ) {
 	$completed = true;
 
 	foreach( $requirements as $requirement ) {
+
 		// Check if rank requirement has been earned
-		if( ! gamipress_get_user_achievements( array(
-			'user_id' => $user_id,
-			'achievement_id' => $requirement->ID,
-			'since' => strtotime( $rank->post_date )
-		) ) ) {
+		if( gamipress_get_earnings_count( array(
+			'user_id'   => $user_id,
+			'post_id'   => $requirement->ID,
+			'since'     => strtotime( $rank->post_date )
+		) ) === 0 ) {
 			$completed = false;
 			break;
 		}
+
 	}
 
 	// If all rank requirements has been completed, award the rank
@@ -1179,12 +1220,14 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_award_rank', 10, 2 )
 function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0, $earning_id = 0 ) {
 
 	// Use the current user's ID if none specified
-	if ( ! $user_id )
-		$user_id = wp_get_current_user()->ID;
+	if ( ! $user_id ) {
+		$user_id = get_current_user_id();
+    }
 
 	// Setup CT object
 	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
 
+    // If earning ID not provide, find it
 	if( $earning_id === 0 ) {
 
 		$query = new CT_Query( array(
@@ -1201,7 +1244,52 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 
 	}
 
-	// Available action for triggering other processes
+    // If achievement ID provided, check if requirement should get revoked too
+    if( $achievement_id !== 0 ) {
+
+        /**
+         * Available filter to determine if should revoke requirements when parent element is revoked too
+         *
+         * @since  	1.8.7
+         *
+         * @param bool 	$revoke         Revoke confirmation, bu default true
+         * @param int 	$user_id        The given user's ID
+         * @param int 	$achievement_id The post's ID to revoke
+         * @param int 	$earning_id     The user's earning ID
+         */
+        $revoke_requirements = apply_filters( 'gamipress_revoke_requirements_on_revoke_parent', true, $achievement_id, $user_id, $earning_id );
+
+        if( $revoke_requirements ) {
+
+            $post_type = gamipress_get_post_type( $achievement_id );
+            $requirements = array();
+
+            // If is achievement or rank, revoke also all its requirements
+            if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
+                // Get the achievement steps
+                $requirements = gamipress_get_achievement_steps( $achievement_id );
+            } else if ( in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
+                // Get the rank requirements
+                $requirements = gamipress_get_rank_requirements( $achievement_id );
+            }
+
+            foreach( $requirements as $requirement ) {
+                gamipress_revoke_achievement_to_user( $requirement->ID, $user_id );
+            }
+
+        }
+
+    }
+
+    /**
+     * Available action for triggering other processes
+     *
+     * @since  	1.4.3
+     *
+     * @param int 	$user_id        The given user's ID
+     * @param int 	$achievement_id The given achievement's post ID
+     * @param int 	$earning_id     The user's earning ID
+     */
 	do_action( 'gamipress_revoke_achievement_to_user', $user_id, $achievement_id, $earning_id );
 
 	if( $earning_id ) {

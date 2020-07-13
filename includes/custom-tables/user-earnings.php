@@ -343,16 +343,24 @@ function gamipress_manage_user_earnings_columns( $columns = array() ) {
 
     global $pagenow;
 
-    $columns['name']    = __( 'Name', 'gamipress' );
 
-    if( $pagenow === 'admin.php' ) {
-        $columns['user_id']    = __( 'User', 'gamipress' );
+    if( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
+        // post.php and post-new.php are for the earners meta box
+
+        $columns['user_id'] = __( 'User', 'gamipress' );
+        $columns['date'] = __( 'Date', 'gamipress' );
+    } else if( $pagenow === 'admin.php' ) {
+        // admin.php is for the user earnings screen
+        $columns['name']    = __( 'Name', 'gamipress' );
+        $columns['user_id'] = __( 'User', 'gamipress' );
+        $columns['date']    = __( 'Date', 'gamipress' );
+    } else {
+        $columns['name'] = __( 'Name', 'gamipress' );
+        $columns['date'] = __( 'Date', 'gamipress' );
     }
 
-    $columns['date']    = __( 'Date', 'gamipress' );
-
     if( current_user_can( gamipress_get_manager_capability() ) ) {
-        $columns['action']  = __( 'Action', 'gamipress' );
+        $columns['action'] = __( 'Action', 'gamipress' );
     }
 
     return $columns;
@@ -624,9 +632,10 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
 
                 if( current_user_can( 'edit_users' ) ) {
                     ?>
-
-                    <a href="<?php echo get_edit_user_link( $user_earning->user_id ); ?>"><?php echo $user->display_name . ' (' . $user->user_login . ')'; ?></a>
-
+                    <?php echo get_avatar( $user->ID, 32 ) ?>
+                    <strong><?php echo $user->display_name; ?></strong> (<a href="<?php echo get_edit_user_link( $user_earning->user_id ); ?>"><?php echo $user->user_login; ?></a>)
+                    <br>
+                    <?php echo $user->user_email; ?>
                     <?php
                 } else {
                     echo $user->display_name;

@@ -203,15 +203,31 @@ function gamipress_get_achievement_steps( $achievement_id = 0, $post_status = 'p
         $achievement_id = $post->ID;
     }
 
+    $cache = gamipress_get_cache( 'achievement_steps', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$achievement_id] ) && isset( $cache[$achievement_id][$post_status] ) ) {
+        return $cache[$achievement_id][$post_status];
+    }
+
     $steps = get_posts( array(
-        'post_type'           => 'step',
+        'post_type'         => 'step',
         'post_parent'     	=> $achievement_id,
         'post_status'       => $post_status,
         'orderby'			=> 'menu_order',
         'order'				=> 'ASC',
-        'posts_per_page'      => -1,
-        'suppress_filters'    => false,
+        'posts_per_page'    => -1,
+        'suppress_filters'  => false,
     ));
+
+    // Cache function result
+    if( ! isset( $cache[$achievement_id] ) ){
+        $cache[$achievement_id] = array();
+    }
+
+    $cache[$achievement_id][$post_status] = $steps;
+
+    gamipress_set_cache( 'achievement_steps', $cache );
 
     // Return steps array
     return $steps;
@@ -254,6 +270,10 @@ function gamipress_is_achievement_sequential( $achievement_id = 0 ) {
  */
 function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achievement_id = 0 ) {
 
+    // Sanitize vars
+    $user_id = absint( $user_id );
+    $achievement_id = absint( $achievement_id );
+
     // Global max earnings
 	$global_max_earnings = gamipress_get_post_meta( $achievement_id, '_gamipress_global_maximum_earnings' );
 
@@ -267,7 +287,7 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
     // Only check global max earnings if isn't setup as unlimited
     if( $global_max_earnings > 0 ) {
 
-        $earned_times = gamipress_get_earnings_count( array( 'post_id' => absint( $achievement_id ) ) );
+        $earned_times = gamipress_get_earnings_count( array( 'post_id' => $achievement_id ) );
 
         // Bail if achievement has exceeded its global max earnings
         if( $earned_times >= $global_max_earnings ) {
@@ -285,10 +305,10 @@ function gamipress_achievement_user_exceeded_max_earnings( $user_id = 0, $achiev
     }
 
 	// If the achievement has an earning limit per user, and we've earned it before...
-	if ( $max_earnings && $user_has_achievement = gamipress_get_user_achievements( array( 'user_id' => absint( $user_id ), 'achievement_id' => absint( $achievement_id ) ) ) ) {
+	if ( $max_earnings && $user_has_achievement = gamipress_get_earnings_count( array( 'user_id' => absint( $user_id ), 'post_id' => absint( $achievement_id ) ) ) ) {
 
 	    // If we've earned it as many (or more) times than allowed, then we have exceeded maximum earnings, thus true
-		if ( count( $user_has_achievement ) >= $max_earnings ) {
+		if ( $user_has_achievement >= $max_earnings ) {
 			return true;
         }
 
@@ -350,7 +370,7 @@ function gamipress_get_hidden_achievement_ids( $achievement_type = '' ) {
 		$achievement_type = array( $achievement_type );
 	}
 
-	$cache = gamipress_get_cache( 'hidden_achievements_ids', array() );
+	$cache = gamipress_get_cache( 'hidden_achievements_ids', array(), false );
 	$hidden_ids = array();
 	$all_cached = true;
 
@@ -441,8 +461,9 @@ function gamipress_get_user_earned_achievement_ids( $user_id = 0, $achievement_t
 		'display'           => true
 	) );
 
-	foreach ( $earned_achievements as $achievement )
+	foreach ( $earned_achievements as $achievement ) {
 		$earned_ids[] = $achievement->ID;
+    }
 
 	return $earned_ids;
 

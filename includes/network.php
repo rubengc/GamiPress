@@ -129,6 +129,12 @@ add_filter( 'posts_request', 'gamipress_network_wide_post_request', 10, 2 );
  */
 function gamipress_is_network_wide_active() {
 
+    // Available filter to disable network data centralization
+    if( apply_filters( 'gamipress_disable_network_data_centralization', false ) ) {
+        GamiPress()->network_wide_active = false;
+        return false;
+    }
+
     if( GamiPress()->network_wide_active === null ) {
 
         if( ! is_multisite() ) {

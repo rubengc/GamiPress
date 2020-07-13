@@ -904,6 +904,13 @@ function gamipress_get_points_type_points_awards( $points_type = 0, $post_status
         return gamipress_get_assigned_requirements( $points_type, 'points-award', $post_status );
     }
 
+    $cache = gamipress_get_cache( 'points_type_points_awards', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$points_type] ) && isset( $cache[$points_type][$post_status] ) ) {
+        return $cache[$points_type][$post_status];
+    }
+
 	$points_awards = get_posts( array(
 		'post_type'         => 'points-award',
 		'post_parent'     	=> $points_type,
@@ -913,6 +920,15 @@ function gamipress_get_points_type_points_awards( $points_type = 0, $post_status
 		'posts_per_page'    => -1,
 		'suppress_filters'  => false,
 	) );
+
+    // Cache function result
+    if( ! isset( $cache[$points_type] ) ){
+        $cache[$points_type] = array();
+    }
+
+    $cache[$points_type][$post_status] = $points_awards;
+
+    gamipress_set_cache( 'points_type_points_awards', $cache );
 
 	// If it has a points type, return it, otherwise return false
 	if ( ! empty( $points_awards ) )
@@ -990,6 +1006,13 @@ function gamipress_get_points_type_points_deducts( $points_type = 0, $post_statu
         return gamipress_get_assigned_requirements( $points_type, 'points-deduct', $post_status );
     }
 
+    $cache = gamipress_get_cache( 'points_type_points_deducts', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$points_type] ) && isset( $cache[$points_type][$post_status] ) ) {
+        return $cache[$points_type][$post_status];
+    }
+
 	$points_deducts = get_posts( array(
 		'post_type'         => 'points-deduct',
 		'post_parent'     	=> $points_type,
@@ -999,6 +1022,15 @@ function gamipress_get_points_type_points_deducts( $points_type = 0, $post_statu
 		'posts_per_page'    => -1,
 		'suppress_filters'  => false,
 	) );
+
+    // Cache function result
+    if( ! isset( $cache[$points_type] ) ){
+        $cache[$points_type] = array();
+    }
+
+    $cache[$points_type][$post_status] = $points_deducts;
+
+    gamipress_set_cache( 'points_type_points_deducts', $cache );
 
 	// If it has a points type, return it, otherwise return false
 	if ( ! empty( $points_deducts ) )
