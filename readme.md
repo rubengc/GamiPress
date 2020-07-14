@@ -241,6 +241,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.7.3 ###
+
+* **Bug Fixes**
+* Fixed pagination on achievements and ranks earners box from the edit screen.
+
+### 1.8.7.2 ###
+
+* **Bug Fixes**
+* Fixed incorrect week detection on the first day of the week.
+
 ### 1.8.7.1 ###
 
 * **Bug Fixes**

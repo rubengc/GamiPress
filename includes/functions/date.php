@@ -59,13 +59,13 @@ function gamipress_get_period_range( $period = '' ) {
         switch( $period ) {
             case 'today':
                 $date_range = array(
-                    'start' => date( 'Y-m-d' ),
+                    'start' => date( 'Y-m-d', current_time( 'timestamp' ) ),
                     'end' => '',
                 );
                 break;
             case 'yesterday':
                 $date_range = array(
-                    'start' => date( 'Y-m-d', strtotime( '-1 day' ) ),
+                    'start' => date( 'Y-m-d', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
                     'end' => '',
                 );
                 break;
@@ -73,21 +73,21 @@ function gamipress_get_period_range( $period = '' ) {
                 $date_range = gamipress_get_date_range( 'week' );
                 break;
             case 'past-week':
-                $previous_week = strtotime( '-1 week +1 day' );
+                $previous_week = strtotime( '-1 week +1 day', current_time( 'timestamp' ) );
                 $date_range = gamipress_get_date_range( 'week', $previous_week );
                 break;
             case 'this-month':
                 $date_range = gamipress_get_date_range( 'month' );
                 break;
             case 'past-month':
-                $previous_month = strtotime( '-1 month +1 day' );
+                $previous_month = strtotime( '-1 month +1 day', current_time( 'timestamp' ) );
                 $date_range = gamipress_get_date_range( 'month', $previous_month );
                 break;
             case 'this-year':
                 $date_range = gamipress_get_date_range( 'year' );
                 break;
             case 'past-year':
-                $previous_year = strtotime( '-1 year +1 day' );
+                $previous_year = strtotime( '-1 year +1 day', current_time( 'timestamp' ) );
                 $date_range = gamipress_get_date_range( 'year', $previous_year );
                 break;
             default:
@@ -134,8 +134,8 @@ function gamipress_get_date_range( $range = '', $date = 0 ) {
         case 'week':
 
             // Weekly range
-            $start_date    = strtotime( 'last monday', $date );
-            $end_date      = strtotime( 'midnight', strtotime( 'next sunday', $date ) );
+            $start_date    = strtotime( 'monday this week', $date );
+            $end_date      = strtotime( 'midnight', strtotime( 'sunday this week', $date ) );
 
             break;
         case 'month':

@@ -61,6 +61,7 @@ function gamipress_earners_meta_box( $post = null, $metabox ) {
         array(
             'post_id' => $post->ID,
             'items_per_page' => $items_per_page,
+            'is_earners_box' => 1,
         ),
         array(
             'views' => false,

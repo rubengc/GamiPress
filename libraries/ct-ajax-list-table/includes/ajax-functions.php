@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 
 function ct_ajax_list_table_handle_request() {
 
-    global $ct_table, $ct_query, $ct_list_table;
+    global $ct_table, $ct_query, $ct_list_table, $ct_ajax_list_items_per_page;
 
     if( ! isset( $_GET['object'] ) ) {
         wp_send_json_error();
@@ -40,6 +40,9 @@ function ct_ajax_list_table_handle_request() {
     if( isset( $_GET['paged'] ) ) {
         $query_args['paged'] = $_GET['paged'];
     }
+
+    $ct_ajax_list_items_per_page = $query_args['items_per_page'];
+    add_filter( 'edit_' . $ct_table->name . '_per_page', 'ct_ajax_list_override_items_per_page' );
 
     // Set up vars
     $ct_query = new CT_Query( $query_args );

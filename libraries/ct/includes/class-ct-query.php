@@ -582,8 +582,9 @@ if ( ! class_exists( 'CT_Query' ) ) :
                 $orderby = 'ORDER BY ' . $orderby;
 
             $found_rows = '';
-            if ( !$q['no_found_rows'] && !empty($limits) )
+            if ( ! $q['no_found_rows'] && ! empty( $limits ) ) {
                 $found_rows = 'SQL_CALC_FOUND_ROWS';
+            }
 
             $this->request = $old_request = "SELECT $found_rows $distinct $fields FROM {$ct_table->db->table_name} $join WHERE 1=1 $where $groupby $orderby $limits";
 

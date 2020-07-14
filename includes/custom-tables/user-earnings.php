@@ -341,22 +341,27 @@ add_filter( 'gamipress_user_earnings_bulk_actions', 'custom_gamipress_user_earni
  */
 function gamipress_manage_user_earnings_columns( $columns = array() ) {
 
-    global $pagenow;
+    global $ct_query, $pagenow;
 
+    if( ( isset( $ct_query->query_vars['is_earners_box'] ) && $ct_query->query_vars['is_earners_box'] )
+        || in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
 
-    if( in_array( $pagenow, array( 'post.php', 'post-new.php' ) ) ) {
         // post.php and post-new.php are for the earners meta box
-
         $columns['user_id'] = __( 'User', 'gamipress' );
         $columns['date'] = __( 'Date', 'gamipress' );
+
     } else if( $pagenow === 'admin.php' ) {
+
         // admin.php is for the user earnings screen
         $columns['name']    = __( 'Name', 'gamipress' );
         $columns['user_id'] = __( 'User', 'gamipress' );
         $columns['date']    = __( 'Date', 'gamipress' );
+
     } else {
+
         $columns['name'] = __( 'Name', 'gamipress' );
         $columns['date'] = __( 'Date', 'gamipress' );
+
     }
 
     if( current_user_can( gamipress_get_manager_capability() ) ) {
