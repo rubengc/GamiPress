@@ -241,6 +241,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.7.1 ###
+
+* **Bug Fixes**
+* Fixed issue that causes that some fields from the requirements UI are not editable in some browsers.
+
 ### 1.8.7 ###
 
 * **New Features**

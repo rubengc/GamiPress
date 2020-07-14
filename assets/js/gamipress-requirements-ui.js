@@ -9,7 +9,7 @@
 
     // Make requirements list sortable
     $(".requirements-list").sortable({
-        cancel: '.gamipress-no-grab',
+        cancel: 'input, select, textarea, .gamipress-no-grab',
         // When the list order is updated
         update : function ( e, ui ) {
 
