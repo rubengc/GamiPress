@@ -9,9 +9,10 @@ Author URI:  https://github.com/rogerlos
 Text Domain: cmb2
 License:     GPLv2 or later
  */
-
 if ( ! defined( 'WPINC' ) ) die;
-require 'autoloader.php';
+
+require plugin_dir_path( __FILE__ ) . 'autoloader.php';
+
 spl_autoload_register( 'rnl_autoloader' );
 
 /**

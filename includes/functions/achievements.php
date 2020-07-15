@@ -1129,14 +1129,13 @@ function gamipress_achievement_type_changed( $post_args = array() ) {
  */
 function gamipress_update_achievement_types( $original_type = '', $new_type = '' ) {
 
-	// Sanity check to prevent alterating core posts
+	// Sanity check to prevent altering core posts
 	if ( empty( $original_type ) || in_array( $original_type, array( 'post', 'page', 'attachment', 'revision', 'nav_menu_item' ) ) ) {
 		return $new_type;
 	}
 
 	gamipress_update_achievements_achievement_types( $original_type, $new_type );
 	gamipress_update_earned_meta_achievement_types( $original_type, $new_type );
-	gamipress_update_active_meta_achievement_types( $original_type, $new_type );
 
 	/**
 	 * Action triggered when an achievement type gets updated (called before flush rewrite rules)
@@ -1203,28 +1202,6 @@ function gamipress_update_earned_meta_achievement_types( $original_type = '', $n
 	);
 
 	ct_reset_setup_table();
-
-}
-
-/**
- * Change all active meta from one achievement type to another.
- *
- * @since 1.0.0
- *
- * @param string $original_type Original achievement type.
- * @param string $new_type      New achievement type.
- */
-function gamipress_update_active_meta_achievement_types( $original_type = '', $new_type = '' ) {
-
-	$metas = gamipress_get_unserialized_achievement_metas( '_gamipress_active_achievements', $original_type );
-
-	if ( ! empty( $metas ) ) {
-		foreach ( $metas as $meta ) {
-			$meta->meta_value = gamipress_update_meta_achievement_types( $meta->meta_value, $original_type, $new_type );
-
-			gamipress_update_user_meta( $meta->user_id, $meta->meta_key, $meta->meta_value );
-		}
-	}
 
 }
 

@@ -965,7 +965,6 @@ function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $a
     $achievement_types = gamipress_get_achievement_types_slugs();
     $rank_types = gamipress_get_achievement_types_slugs();
 
-
 	// Get achievements that can be earned from completing this achievement
 	$dependent_achievements = gamipress_get_dependent_achievements( $achievement_id );
 

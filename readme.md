@@ -241,6 +241,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.7.4 ###
+
+* **Bug Fixes**
+* Fixed an error that causes that achievements with multiples steps doesn't gets unlocked.
+* **Improvements**
+* Prevent the use of relative path to avoid errors in some environments
+* **Developer Notes**
+* Removed the user of the active achievement feature on the rules engine and moved to the compatibility folder.
+
 ### 1.8.7.3 ###
 
 * **Bug Fixes**

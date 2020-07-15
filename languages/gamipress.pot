@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-07-14 18:44+0200\n"
+"POT-Creation-Date: 2020-07-15 10:51+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1971,7 +1971,7 @@ msgstr ""
 msgid "Used when user completes a points award or step. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1376
+#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1353
 msgid "{user} completed the {achievement_type} {achievement}"
 msgstr ""
 
@@ -1983,7 +1983,7 @@ msgstr ""
 msgid "Used when user earns an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1378
+#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1355
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
@@ -2032,7 +2032,7 @@ msgstr ""
 msgid "Used when an admin awards a user with an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1366
+#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1343
 msgid "{admin} awarded {user} with the the {achievement} {achievement_type}"
 msgstr ""
 
@@ -3965,16 +3965,16 @@ msgstr ""
 msgid "People who have earned this:"
 msgstr ""
 
-#: includes/functions/achievements.php:1332
+#: includes/functions/achievements.php:1309
 msgid "Achievement Type saved successfully."
 msgstr ""
 
-#: includes/functions/achievements.php:1333
+#: includes/functions/achievements.php:1310
 #, php-format
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1333 includes/functions/points.php:1318
+#: includes/functions/achievements.php:1310 includes/functions/points.php:1318
 #: includes/functions/ranks.php:1409
 msgid "widgets"
 msgstr ""
