@@ -241,6 +241,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.7.5 ###
+
+* **New Features**
+* Added the attribute current_user and user_id to the [gamipress_points_types] shortcode.
+* Added the fields "Current User" and "User ID" to the GamiPress: Points types block and widget.
+* **Improvements**
+* Prevent to display incorrect links on achievement and rank requirements.
+
 ### 1.8.7.4 ###
 
 * **Bug Fixes**

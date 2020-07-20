@@ -93,6 +93,20 @@ function gamipress_register_points_types_shortcode() {
                 'inline' 	  => true,
                 'classes' 	  => 'gamipress-image-options'
             ),
+            'current_user' => array(
+                'name'          => __( 'Current User', 'gamipress' ),
+                'description'   => __( 'Show points awards and deducts earned by the current logged in user.', 'gamipress' ),
+                'type' 		    => 'checkbox',
+                'classes' 	    => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
+            'user_id' => array(
+                'name'          => __( 'User', 'gamipress' ),
+                'description'   => __( 'Show points awards and deducts earned by a specific user.', 'gamipress' ),
+                'type'          => 'select',
+                'default'       => '',
+                'options_cb'    => 'gamipress_options_cb_users'
+            ),
             'wpms' => array(
                 'name'        => __( 'Include Multisite Points Types', 'gamipress' ),
                 'description' => __( 'Show points types from all network sites.', 'gamipress' ),
@@ -125,14 +139,16 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
 
     $atts = shortcode_atts( array(
         // Points atts
-        'type'      => 'all',
-        'columns'   => '1',
-        'thumbnail' => 'yes',
-        'awards'    => 'yes',
-        'deducts'   => 'yes',
-        'toggle'    => 'yes',
-        'layout'    => 'left',
-        'wpms'      => 'no',
+        'type'          => 'all',
+        'columns'       => '1',
+        'thumbnail'     => 'yes',
+        'awards'        => 'yes',
+        'deducts'       => 'yes',
+        'toggle'        => 'yes',
+        'layout'        => 'left',
+        'current_user'  => 'yes',
+        'user_id'       => '0',
+        'wpms'          => 'no',
     ), $atts, $shortcode );
 
     // Single type check to use dynamic template
@@ -143,6 +159,13 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
         $types = gamipress_get_points_types_slugs();
     } else if ( count( $types ) === 1 ) {
         $is_single_type = true;
+    }
+
+    // Force to set current user as user ID
+    if( $atts['current_user'] === 'yes' ) {
+        $atts['user_id'] = get_current_user_id();
+    } else if( absint( $atts['user_id'] ) === 0 ) {
+        $atts['user_id'] = get_current_user_id();
     }
 
     // ---------------------------

@@ -584,6 +584,8 @@ function gamipress_format_requirement_title_with_post_link( $title = '', $requir
 	// Grab our step requirements
     $requirement_object = gamipress_get_requirement_object( $requirement->ID );
     $trigger = $requirement_object['trigger_type'];
+    $post_id = 0;
+    $site_id = get_current_blog_id();
 
     if ( $trigger === 'earn-rank' && ! empty( $requirement_object['rank_required'] ) ) {
 
@@ -595,7 +597,7 @@ function gamipress_format_requirement_title_with_post_link( $title = '', $requir
 
         // Setup the post ID for the post assigned
         $post_id = $requirement_object['achievement_post'];
-        $site_id = $requirement_object['achievement_post'];
+        $site_id = $requirement_object['achievement_post_site_id'];
 
     }
 

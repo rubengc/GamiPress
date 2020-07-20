@@ -181,7 +181,7 @@
     });
 
     // User ajax
-    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_user_rank_user_id, #gamipress_earnings_user_id' ).gamipress_select2({
+    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_points_types_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_user_rank_user_id, #gamipress_earnings_user_id' ).gamipress_select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',
@@ -208,8 +208,10 @@
     // Current user field
     $( '#gamipress_achievements_current_user, '
         + '#gamipress_points_current_user, '
+        + '#gamipress_points_types_current_user, '
         + '#gamipress_logs_current_user, '
-        + '#gamipress_ranks_current_user, #gamipress_user_rank_current_user, '
+        + '#gamipress_ranks_current_user, '
+        + '#gamipress_user_rank_current_user, '
         + '#gamipress_earnings_current_user'
     ).change(function() {
         var target = $(this).closest('.cmb-row').next(); // User ID field

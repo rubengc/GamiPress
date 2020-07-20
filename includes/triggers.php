@@ -298,6 +298,10 @@ function gamipress_get_specific_activity_trigger_permalink( $specific_id, $trigg
         return false;
     }
 
+    if( absint( $specific_id ) === 0 ) {
+        return false;
+    }
+
     if( gamipress_is_network_wide_active() && $site_id !== get_current_blog_id() ) {
 
         // Switch to the given site to get the post title from this site
