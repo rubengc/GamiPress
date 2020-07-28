@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.4
-Stable tag: 1.8.7.5
+Stable tag: 1.8.8
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -224,6 +224,20 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.8.8 =
+
+* **New Features**
+* New event: Get added to any role.
+* New event: Get added to specific role.
+* New event: Get assigned to any role.
+* New event: Get assigned to specific role.
+* New event: Get removed from any role.
+* New event: Get removed from a specific role.
+* **Developer Notes**
+* Initialize everything sooner to get all functions ready as soon as possible.
+* Reworked the events triggered function to make it more extensible.
+* Removed Javascript file not found message on settings screen.
 
 = 1.8.7.5 =
 

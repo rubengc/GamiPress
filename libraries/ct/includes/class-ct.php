@@ -128,11 +128,17 @@ if ( ! class_exists( 'CT' ) ) :
          */
         private function hooks() {
 
-            add_action( 'init', array( $this, 'init' ), 1 );
+            add_action( 'muplugins_loaded', array( $this, 'init' ), 10 );
+            add_action( 'plugins_loaded', array( $this, 'init' ), 10 );
+            add_action( 'after_setup_theme', array( $this, 'init' ), 10 );
 
         }
 
         public function init() {
+
+            if ( did_action( 'ct_init' ) ) {
+                return;
+            }
 
             // Setup role caps for CT capabilities
             ct_populate_roles();

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-07-20 13:34+0200\n"
+"POT-Creation-Date: 2020-07-28 12:49+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,8 +52,8 @@ msgstr ""
 
 #: includes/admin.php:94 includes/admin.php:139 includes/admin/users.php:27
 #: includes/blocks.php:21 includes/shortcodes.php:67
-#: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:47
-#: includes/triggers.php:344 includes/triggers.php:345
+#: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:53
+#: includes/triggers.php:350 includes/triggers.php:351
 msgid "GamiPress"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgid "Admin-awarded Only"
 msgstr ""
 
 #: includes/admin/achievements.php:146
-#: includes/admin/meta-boxes/requirements-ui.php:422
+#: includes/admin/meta-boxes/requirements-ui.php:450
 #: includes/admin/meta-boxes/requirements.php:58
 msgid "Unlimited"
 msgstr ""
@@ -462,7 +462,7 @@ msgid "Nothing to show :)"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:349
-#: includes/admin/meta-boxes/requirements-ui.php:370
+#: includes/admin/meta-boxes/requirements-ui.php:398
 #: includes/admin/users.php:511
 msgid "Choose an achievement type"
 msgstr ""
@@ -1103,82 +1103,82 @@ msgstr ""
 msgid "When"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:316
+#: includes/admin/meta-boxes/requirements-ui.php:325
 msgid "Default points"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:355
+#: includes/admin/meta-boxes/requirements-ui.php:364
 msgid "Choose a rank"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:390
+#: includes/admin/meta-boxes/requirements-ui.php:418
 msgid "Choose an achievement"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:415
+#: includes/admin/meta-boxes/requirements-ui.php:443
 msgid "time(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:419
+#: includes/admin/meta-boxes/requirements-ui.php:447
 msgid "limited to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:423
+#: includes/admin/meta-boxes/requirements-ui.php:451
 #: includes/admin/meta-boxes/requirements.php:59
 msgid "Per Day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:424
+#: includes/admin/meta-boxes/requirements-ui.php:452
 #: includes/admin/meta-boxes/requirements.php:60
 msgid "Per Week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:425
+#: includes/admin/meta-boxes/requirements-ui.php:453
 #: includes/admin/meta-boxes/requirements.php:61
 msgid "Per Month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:426
+#: includes/admin/meta-boxes/requirements-ui.php:454
 #: includes/admin/meta-boxes/requirements.php:62
 msgid "Per Year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:454
+#: includes/admin/meta-boxes/requirements-ui.php:482
 msgid "point(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:460
+#: includes/admin/meta-boxes/requirements-ui.php:488
 msgid "Earn"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:460 includes/filters.php:344
+#: includes/admin/meta-boxes/requirements-ui.php:488 includes/filters.php:344
 #: includes/filters.php:346
 msgid "Deduct"
 msgid_plural "Deducts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:466
+#: includes/admin/meta-boxes/requirements-ui.php:494
 msgid "with a maximum number of times to earn it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:466
+#: includes/admin/meta-boxes/requirements-ui.php:494
 msgid "with a maximum number of times to deduct it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:468
+#: includes/admin/meta-boxes/requirements-ui.php:496
 msgid "(0 for no maximum)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:484
+#: includes/admin/meta-boxes/requirements-ui.php:512
 msgid "Label"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:606
-#: includes/admin/meta-boxes/requirements-ui.php:646
-#: includes/admin/meta-boxes/requirements-ui.php:692
-#: includes/admin/meta-boxes/requirements-ui.php:718
-#: includes/admin/meta-boxes/requirements-ui.php:793
+#: includes/admin/meta-boxes/requirements-ui.php:634
+#: includes/admin/meta-boxes/requirements-ui.php:674
+#: includes/admin/meta-boxes/requirements-ui.php:720
+#: includes/admin/meta-boxes/requirements-ui.php:746
+#: includes/admin/meta-boxes/requirements-ui.php:821
 #: includes/admin/tools/bulk-awards.php:258
 #: includes/admin/tools/bulk-awards.php:263
 #: includes/admin/tools/bulk-revokes.php:258
@@ -1199,82 +1199,102 @@ msgstr ""
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:613
-#: includes/admin/meta-boxes/requirements-ui.php:654
+#: includes/admin/meta-boxes/requirements-ui.php:641
+#: includes/admin/meta-boxes/requirements-ui.php:682
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:937
+#: includes/admin/meta-boxes/requirements-ui.php:969
 #, php-format
 msgid "Earn %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:940
+#: includes/admin/meta-boxes/requirements-ui.php:972
 #, php-format
 msgid "Reach a balance of %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:943
+#: includes/admin/meta-boxes/requirements-ui.php:975
 #, php-format
 msgid "Expend %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:948
+#: includes/admin/meta-boxes/requirements-ui.php:980
 #, php-format
 msgid "Reach %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:952
+#: includes/admin/meta-boxes/requirements-ui.php:983
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:955
+#: includes/admin/meta-boxes/requirements-ui.php:986
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:996
+#: includes/admin/meta-boxes/requirements-ui.php:989
 #, php-format
-msgid "%s for"
+msgid "Unlock \"%s\""
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:992
+#, php-format
+msgid "Get added to %s role"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:995
+#, php-format
+msgid "Get assigned to %s role"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:998
 #, php-format
+msgid "Get removed from %s role"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1036
+#, php-format
+msgid "%s for"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1038
+#, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1002
-#: includes/admin/meta-boxes/requirements-ui.php:1011
-#: includes/admin/meta-boxes/requirements-ui.php:1034
+#: includes/admin/meta-boxes/requirements-ui.php:1042
+#: includes/admin/meta-boxes/requirements-ui.php:1051
+#: includes/admin/meta-boxes/requirements-ui.php:1074
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1011
+#: includes/admin/meta-boxes/requirements-ui.php:1051
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1021
+#: includes/admin/meta-boxes/requirements-ui.php:1061
 msgid "day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1024
+#: includes/admin/meta-boxes/requirements-ui.php:1064
 msgid "week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1027
+#: includes/admin/meta-boxes/requirements-ui.php:1067
 msgid "month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1030
+#: includes/admin/meta-boxes/requirements-ui.php:1070
 msgid "year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1034
+#: includes/admin/meta-boxes/requirements-ui.php:1074
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
@@ -1923,7 +1943,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:497
+#: includes/admin/settings/logs.php:43 includes/triggers.php:503
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -5879,89 +5899,113 @@ msgstr ""
 msgid "Delete a page"
 msgstr ""
 
+#: includes/triggers.php:37
+msgid "Get added to any role"
+msgstr ""
+
+#: includes/triggers.php:38
+msgid "Get added to specific role"
+msgstr ""
+
 #: includes/triggers.php:39
-msgid "Site Interactions"
+msgid "Get assigned to any role"
 msgstr ""
 
 #: includes/triggers.php:40
-msgid "Daily visit the website"
+msgid "Get assigned to specific role"
 msgstr ""
 
 #: includes/triggers.php:41
-msgid "Daily visit any post"
+msgid "Get removed from any role"
 msgstr ""
 
 #: includes/triggers.php:42
-msgid "Daily visit a specific post"
+msgid "Get removed from a specific role"
 msgstr ""
 
-#: includes/triggers.php:43
-msgid "Get visits on any post"
+#: includes/triggers.php:45
+msgid "Site Interactions"
 msgstr ""
 
-#: includes/triggers.php:44
-msgid "Get visits on a specific post"
+#: includes/triggers.php:46
+msgid "Daily visit the website"
+msgstr ""
+
+#: includes/triggers.php:47
+msgid "Daily visit any post"
 msgstr ""
 
 #: includes/triggers.php:48
-msgid "Unlock a specific achievement"
+msgid "Daily visit a specific post"
 msgstr ""
 
 #: includes/triggers.php:49
-msgid "Unlock any achievement of type"
+msgid "Get visits on any post"
 msgstr ""
 
 #: includes/triggers.php:50
-msgid "Unlock all Achievements of type"
-msgstr ""
-
-#: includes/triggers.php:51
-msgid "Earn an amount of points"
-msgstr ""
-
-#: includes/triggers.php:52
-msgid "Reach a points balance"
-msgstr ""
-
-#: includes/triggers.php:53
-msgid "Expend an amount of points"
+msgid "Get visits on a specific post"
 msgstr ""
 
 #: includes/triggers.php:54
+msgid "Unlock a specific achievement"
+msgstr ""
+
+#: includes/triggers.php:55
+msgid "Unlock any achievement of type"
+msgstr ""
+
+#: includes/triggers.php:56
+msgid "Unlock all Achievements of type"
+msgstr ""
+
+#: includes/triggers.php:57
+msgid "Earn an amount of points"
+msgstr ""
+
+#: includes/triggers.php:58
+msgid "Reach a points balance"
+msgstr ""
+
+#: includes/triggers.php:59
+msgid "Expend an amount of points"
+msgstr ""
+
+#: includes/triggers.php:60
 msgid "Reach a rank"
 msgstr ""
 
-#: includes/triggers.php:163 includes/triggers.php:345
+#: includes/triggers.php:169 includes/triggers.php:351
 #, php-format
 msgid "Unlocked all %s"
 msgstr ""
 
-#: includes/triggers.php:165 includes/triggers.php:344
+#: includes/triggers.php:171 includes/triggers.php:350
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:185
+#: includes/triggers.php:191
 #, php-format
 msgid "Comment on %s"
 msgstr ""
 
-#: includes/triggers.php:186
+#: includes/triggers.php:192
 #, php-format
 msgid "Get a comment on %s"
 msgstr ""
 
-#: includes/triggers.php:187
+#: includes/triggers.php:193
 #, php-format
 msgid "Get a comment on %s marked as spam"
 msgstr ""
 
-#: includes/triggers.php:188
+#: includes/triggers.php:194
 #, php-format
 msgid "Visit %s"
 msgstr ""
 
-#: includes/triggers.php:189
+#: includes/triggers.php:195
 #, php-format
 msgid "%s gets visited"
 msgstr ""

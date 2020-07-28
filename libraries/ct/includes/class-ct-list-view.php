@@ -186,8 +186,9 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
             global $ct_table;
 
-            if ( ! $this->per_page )
+            if ( ! $this->per_page ) {
                 return;
+            }
 
             // Set up vars
             $per_page_label = __( 'Number of items per page:' );
@@ -232,6 +233,14 @@ if ( ! class_exists( 'CT_List_View' ) ) :
         public function set_screen_settings( $value_to_set, $option, $value ) {
 
             global $ct_table, $ct_list_table;
+
+            if( ! $ct_table ) {
+                return $value_to_set;
+            }
+
+            if( ! $ct_list_table ) {
+                return $value_to_set;
+            }
 
             $view_settings = array(
                 str_replace( '-', '_', "edit_{$ct_table->name}_per_page" ) // Per page

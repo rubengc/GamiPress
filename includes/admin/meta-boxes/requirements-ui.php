@@ -310,7 +310,16 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <input type="number" name="requirement-points-required" id="requirement-<?php echo $requirement_id; ?>-points-required" class="points-required" value="<?php echo ( $requirements['points_required'] === 0 ? 1 : $requirements['points_required'] ); ?>" />
 
-        <?php do_action( 'gamipress_requirement_ui_html_after_points_required', $requirement_id, $post_id ); ?>
+        <?php
+        /**
+         * Available action to add custom HTML after points required
+         *
+         * @since 1.0.0
+         *
+         * @param integer $requirement_id
+         * @param integer $post_id
+         */
+        do_action( 'gamipress_requirement_ui_html_after_points_required', $requirement_id, $post_id ); ?>
 
         <select class="select-points-type-required select-points-type-required-<?php echo $requirement_id; ?>">
             <option value=""><?php _e( 'Default points', 'gamipress'); ?></option>
@@ -365,6 +374,25 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          * @param integer $post_id
          */
         do_action( 'gamipress_requirement_ui_html_after_rank_required', $requirement_id, $post_id ); ?>
+
+        <select class="select-user-role-required select-user-role-required-<?php echo $requirement_id; ?>">
+            <?php foreach ( gamipress_get_editable_roles() as $role => $details ) :
+
+                echo '<option value="' . $role . '" ' . selected( $requirements['user_role_required'], $role, false ) . '>' . translate_user_role( $details['name'] ) . '</option>';
+
+            endforeach; ?>
+        </select>
+
+        <?php
+        /**
+         * Available action to add custom HTML after user role required
+         *
+         * @since 1.8.8
+         *
+         * @param integer $requirement_id
+         * @param integer $post_id
+         */
+        do_action( 'gamipress_requirement_ui_html_after_user_role_required', $requirement_id, $post_id ); ?>
 
         <select class="select-achievement-type select-achievement-type-<?php echo $requirement_id; ?>">
             <option value=""><?php _e( 'Choose an achievement type', 'gamipress'); ?></option>
@@ -807,6 +835,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
+    $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? $requirement['user_role_required'] : '';
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
     $trigger_type           = $requirement['trigger_type'];
@@ -839,6 +868,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     update_post_meta( $requirement_id, '_gamipress_points_type_required', $points_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_type_required', $rank_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_required', $rank_required );
+    update_post_meta( $requirement_id, '_gamipress_user_role_required', $user_role_required );
     update_post_meta( $requirement_id, '_gamipress_count', $count );
     update_post_meta( $requirement_id, '_gamipress_limit', $limit );
     update_post_meta( $requirement_id, '_gamipress_limit_type', $limit_type );
@@ -925,6 +955,8 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
+    $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? $requirement['user_role_required'] : '';
+    $roles                  = gamipress_get_editable_roles();
     $count                  = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
@@ -947,7 +979,6 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
 
             $title = sprintf( __( 'Reach %s %s', 'gamipress' ), ( $rank ? gamipress_get_rank_type_singular( $rank->post_type, true ) : '' ), ( $rank ? $rank->post_title : '' ) );
             break;
-        // Connect the requirement to ANY of the given achievement type
         case 'any-achievement':
             $title = sprintf( __( 'Unlock any %s', 'gamipress' ), $achievement_type );
             break;
@@ -955,7 +986,16 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
             $title = sprintf( __( 'Unlock all %s', 'gamipress' ), $achievement_type );
             break;
         case 'specific-achievement':
-            $title = 'Unlock "' . gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) . '"';
+            $title = sprintf( __( 'Unlock "%s"', 'gamipress' ), gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) );
+            break;
+        case 'gamipress_add_specific_role':
+            $title = sprintf( __( 'Get added to %s role', 'gamipress' ), translate_user_role( $roles[$user_role_required]['name'] ) );
+            break;
+        case 'gamipress_set_specific_role':
+            $title = sprintf( __( 'Get assigned to %s role', 'gamipress' ), translate_user_role( $roles[$user_role_required]['name'] ) );
+            break;
+        case 'gamipress_remove_specific_role':
+            $title = sprintf( __( 'Get removed from %s role', 'gamipress' ), translate_user_role( $roles[$user_role_required]['name'] ) );
             break;
         default:
             $title = gamipress_get_activity_trigger_label( $trigger_type );

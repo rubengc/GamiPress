@@ -5,12 +5,13 @@
  *
  * GamiPress Team updates:
  *
- * Support to CMB2 2.7.0 by renaming CMB2_hookup instances to CMB2_Hookup
+ * Removed Javascript file checking by using the get_headers() function.
+ * Support to CMB2 2.7.0 by renaming CMB2_hookup instances to CMB2_Hookup.
  * Support for PHP 5.6:
- * - Moved auto-generated id into a object var
- * - Removed all usages of [] to instantiate arrays
- * - Moved all direct callbacks into a reference calls
- * On multisite installs, fixed undefined 'hook' index
+ * - Moved auto-generated id into a object var.
+ * - Removed all usages of [] to instantiate arrays.
+ * - Moved all direct callbacks into a reference calls.
+ * On multisite installs, fixed undefined 'hook' index.
  *
  * General Notes
  *
@@ -541,12 +542,6 @@ class Cmb2_Metatabs_Options {
 		// if self::$props['jsuri'] is empty, throw exception
 		if ( ! self::$props[ $this->id ]['jsuri'] ) {
 			throw new Exception( 'CMB2_Metatabs_Options: Tabs included but JS file not specified.' );
-		}
-		
-		// check to see if file exists, throws exception if it does not
-		$headers = @get_headers( self::$props[ $this->id ]['jsuri'] );
-		if ( $headers[0] == 'HTTP/1.1 404 Not Found' ) {
-			throw new Exception( 'CMB2_Metatabs_Options: Passed Javascript file missing.' );
 		}
 		
 		// enqueue the script

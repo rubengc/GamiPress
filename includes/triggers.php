@@ -34,6 +34,12 @@ function gamipress_get_activity_triggers() {
 				'gamipress_delete_post'     			=> __( 'Delete a post', 'gamipress' ),
 				'gamipress_publish_page'     			=> __( 'Publish a new page', 'gamipress' ),
 				'gamipress_delete_page'     			=> __( 'Delete a page', 'gamipress' ),
+				'gamipress_add_role'     			    => __( 'Get added to any role', 'gamipress' ),
+				'gamipress_add_specific_role'     	    => __( 'Get added to specific role', 'gamipress' ),
+				'gamipress_set_role'     			    => __( 'Get assigned to any role', 'gamipress' ),
+				'gamipress_set_specific_role'     		=> __( 'Get assigned to specific role', 'gamipress' ),
+				'gamipress_remove_role'     			=> __( 'Get removed from any role', 'gamipress' ),
+				'gamipress_remove_specific_role'     	=> __( 'Get removed from a specific role', 'gamipress' ),
 			),
 			// Site Interactions
 			__( 'Site Interactions', 'gamipress' ) => array(
@@ -361,7 +367,7 @@ function gamipress_load_activity_triggers() {
 	}
 
 }
-add_action( 'init', 'gamipress_load_activity_triggers' );
+add_action( 'gamipress_init', 'gamipress_load_activity_triggers' );
 
 /**
  * Get activity triggers excluded to be loaded automatically from gamipress_load_activity_triggers()
@@ -834,8 +840,9 @@ function gamipress_get_triggers_listeners_count() {
     $cache = gamipress_get_cache( 'gamipress_triggers_listeners_count', false );
 
     // If result already cached, return it
-    if( is_array( $cache ) )
+    if( is_array( $cache ) ) {
         return $cache;
+    }
 
     global $wpdb;
 
@@ -883,21 +890,25 @@ function gamipress_get_triggers_listeners_count() {
  * @updated 1.7.9 Improvement on requirements with specific triggers querying them by the specific ID to reduce the amount of triggered requirements
  * @updated 1.7.9 Added $user_id, $site_id and $args parameters
  *
- * @param integer 	$user_id
- * @param string 	$trigger
- * @param integer 	$site_id
- * @param array 	$args
+ * @param int 	    $user_id    The User ID
+ * @param string 	$trigger    The trigger type
+ * @param int 	    $site_id    The site ID where event has been triggered
+ * @param array 	$args       The event arguments
  *
  * @return array
  */
 function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $args ) {
 
-    global $wpdb;
-
-    $posts 		            = GamiPress()->db->posts;
-    $postmeta 	            = GamiPress()->db->postmeta;
-    $requirement_types      = gamipress_get_requirement_types_slugs();
     $triggered_requirements = array();
+    $proceed                = true;
+    $cache_key              = "{$trigger}_triggered_requirements";
+    $query_args             = array(
+        'fields'        => 'ids',
+        'post_status'   => 'publish',
+        'meta_query'    => array(
+            '_gamipress_trigger_type' => $trigger,
+        ),
+    );
 
     // If is specific trigger then try to get the attached id
     if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
@@ -914,103 +925,102 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
         // If there is a specific id, then try to find the count
         if( $specific_id !== 0 ) {
 
-            $cache = gamipress_get_cache( "{$trigger}_{$specific_id}_triggered_requirements", false );
+            $cache_key = "{$trigger}_{$specific_id}_triggered_requirements";
 
-            // If result already cached, return it
-            if( $cache !== false && is_array( $cache ) ) {
-                $triggered_requirements = $cache;
-            } else {
-                // Get all requirements with this trigger and post assigned
-                $triggered_requirements = $wpdb->get_results( $wpdb->prepare(
-                    "SELECT p.ID
-                     FROM {$posts} AS p
-                     LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
-                     LEFT JOIN {$postmeta} AS pm2 ON ( p.ID = pm2.post_id AND pm2.meta_key = '_gamipress_achievement_post' )
-                     WHERE p.post_status = 'publish'
-                        AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
-                        AND pm.meta_value = %s
-                        AND pm2.meta_value = %s
-                     ORDER BY p.menu_order ASC",
-                    $trigger,
-                    $specific_id
-                ) );
+            // Add the achievement post ID
+            $query_args['meta_query']['_gamipress_achievement_post'] = $specific_id;
 
-                // Cache function result
-                gamipress_save_cache( "{$trigger}_{$specific_id}_triggered_requirements", $triggered_requirements );
-            }
-
+        } else {
+            // Set proceed to false since the assigned post is not correctly assigned
+            $proceed = false;
         }
 
     } else if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
         // Check if trigger is for unlocking ANY and ALL posts of an achievement type
 
-        // Get the trigger type
+        $event_trigger = $trigger;
+
+        // Events for unlock an achievement of type or all requires to change the trigger
+        if( gamipress_starts_with( $trigger, 'gamipress_unlock_all_' ) ) {
+            // Replace "gamipress_unlock_all_{achievement-type}" to "all-achievements"
+            $event_trigger = 'all-achievements';
+        } else if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
+            // Replace "gamipress_unlock_{achievement-type}" to "any-achievement"
+            $event_trigger = 'any-achievement';
+        }
+
+        // Update the trigger with the correct trigger
+        $query_args['meta_query']['_gamipress_trigger_type'] = $event_trigger;
+
+        // Get the achievement type
         $achievement_type = str_replace( 'gamipress_unlock_all_', '', $trigger );
         $achievement_type = str_replace( 'gamipress_unlock_', '', $achievement_type );
 
-        $cache = gamipress_get_cache( "{$trigger}_triggered_requirements", false );
+        // Add the achievement type
+        $query_args['meta_query']['_gamipress_achievement_type'] = $achievement_type;
+
+    }
+
+    /**
+     * Filter to modify triggered requirements cache key
+     *
+     * @since   1.8.8
+     *
+     * @param bool 	    $proceed
+     * @param int 	    $user_id    The User ID
+     * @param string 	$trigger    The trigger type
+     * @param int 	    $site_id    The site ID where event has been triggered
+     * @param array 	$args       The event arguments
+     *
+     * @return bool
+     */
+    $proceed = apply_filters( 'gamipress_get_triggered_requirements_proceed', $proceed, $user_id, $trigger, $site_id, $args );
+
+    /**
+     * Filter to modify triggered requirements cache key
+     *
+     * @since   1.8.8
+     *
+     * @param string 	$cache_key  The cache key to store cached results
+     * @param int 	    $user_id    The User ID
+     * @param string 	$trigger    The trigger type
+     * @param int 	    $site_id    The site ID where event has been triggered
+     * @param array 	$args       The event arguments
+     *
+     * @return string
+     */
+    $cache_key = apply_filters( 'gamipress_get_triggered_requirements_cache_key', $cache_key, $user_id, $trigger, $site_id, $args );
+
+    /**
+     * Filter to modify triggered requirements query args
+     *
+     * @since   1.8.8
+     *
+     * @see gamipress_query_requirements()
+     *
+     * @param array 	$query_args The query args to query triggered requirements
+     * @param int 	    $user_id    The User ID
+     * @param string 	$trigger    The trigger type
+     * @param int 	    $site_id    The site ID where event has been triggered
+     * @param array 	$args       The event arguments
+     *
+     * @return array
+     */
+    $query_args = apply_filters( 'gamipress_get_triggered_requirements_query_args', $query_args, $user_id, $trigger, $site_id, $args );
+
+    if( $proceed ) {
+
+        $cache = gamipress_get_cache( $cache_key, false );
 
         // If result already cached, return it
         if( $cache !== false && is_array( $cache ) ) {
             $triggered_requirements = $cache;
         } else {
-
-            // Store original trigger
-            $original_trigger = $trigger;
-
-            // Events for unlock an achievement of type or all requires to change the trigger
-            if( gamipress_starts_with( $trigger, 'gamipress_unlock_all_' ) ) {
-                // Replace "gamipress_unlock_all_{achievement-type}" to "all-achievements"
-                $trigger = 'all-achievements';
-            } else if( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
-                // Replace "gamipress_unlock_{achievement-type}" to "any-achievement"
-                $trigger = 'any-achievement';
-            }
-
-            // Get all requirements with this trigger
-            $triggered_requirements = $wpdb->get_results( $wpdb->prepare(
-                "SELECT p.ID
-                 FROM {$posts} AS p
-                 LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
-                 LEFT JOIN {$postmeta} AS pm2 ON ( p.ID = pm2.post_id AND pm2.meta_key = '_gamipress_achievement_type' )
-                 WHERE p.post_status = 'publish'
-                    AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
-                    AND pm.meta_value = %s
-                    AND pm2.meta_value = %s
-                 ORDER BY p.menu_order ASC",
-                $trigger,
-                $achievement_type
-            ) );
+            // Get requirements with this query args
+            $triggered_requirements = gamipress_query_requirements( $query_args );
 
             // Cache function result
-            gamipress_save_cache( "{$trigger}_triggered_requirements", $triggered_requirements );
-
-            $trigger = $original_trigger;
-        }
-
-    } else {
-        // Standard trigger
-
-        $cache = gamipress_get_cache( "{$trigger}_triggered_requirements", false );
-
-        // If result already cached, return it
-        if( $cache !== false && is_array( $cache ) ) {
-            $triggered_requirements = $cache;
-        } else {
-            // Get all requirements with this trigger
-            $triggered_requirements = $wpdb->get_results( $wpdb->prepare(
-                "SELECT p.ID
-                 FROM {$posts} AS p
-                 LEFT JOIN {$postmeta} AS pm ON ( p.ID = pm.post_id AND pm.meta_key = '_gamipress_trigger_type' )
-                 WHERE p.post_status = 'publish'
-                    AND p.post_type IN ( '" . implode( "', '", $requirement_types ) . "' )
-                    AND pm.meta_value = %s
-                 ORDER BY p.menu_order ASC",
-                $trigger
-            ) );
-
-            // Cache function result
-            gamipress_save_cache( "{$trigger}_triggered_requirements", $triggered_requirements );
+            gamipress_save_cache( $cache_key, $triggered_requirements );
 
         }
 
@@ -1023,10 +1033,10 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
      * @updated 1.7.9 Added $user_id, $site_id and $args parameters
      *
      * @param array 	$triggered_requirements
-     * @param integer 	$user_id
-     * @param string 	$trigger
-     * @param integer 	$site_id
-     * @param array 	$args
+     * @param int 	    $user_id    The User ID
+     * @param string 	$trigger    The trigger type
+     * @param int 	    $site_id    The site ID where event has been triggered
+     * @param array 	$args       The event arguments
      *
      * @return array
      */

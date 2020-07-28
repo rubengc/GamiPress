@@ -151,14 +151,16 @@ if ( ! class_exists( 'CT_View' ) ) :
             if ( isset( $_POST['wp_screen_options'] ) && is_array( $_POST['wp_screen_options'] ) ) {
                 check_admin_referer( 'screen-options-nonce', 'screenoptionnonce' );
 
-                if ( ! $user = wp_get_current_user() )
+                if ( ! $user = wp_get_current_user() ) {
                     return;
+                }
 
                 $option = $_POST['wp_screen_options']['option'];
                 $value = $_POST['wp_screen_options']['value'];
 
-                if ( $option != sanitize_key( $option ) )
+                if ( $option != sanitize_key( $option ) ) {
                     return;
+                }
 
                 $option = str_replace('-', '_', $option);
 

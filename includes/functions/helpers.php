@@ -75,3 +75,24 @@ function gamipress_starts_with( $haystack, $needle ) {
 function gamipress_ends_with( $haystack, $needle ) {
     return $needle === '' || substr_compare( $haystack, $needle, -strlen( $needle ) ) === 0;
 }
+
+/**
+ * Helper function to get all editable roles included if get_editable_roles() doesn't exists
+ *
+ * @since 1.8.8
+ *
+ * @return array[]|mixed|void
+ */
+function gamipress_get_editable_roles() {
+
+    if( function_exists('get_editable_roles' ) ) {
+        $roles = get_editable_roles();
+    } else {
+        $roles = wp_roles()->roles;
+
+        $roles = apply_filters( 'editable_roles', $roles );
+    }
+
+    return $roles;
+
+}

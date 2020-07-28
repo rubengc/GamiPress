@@ -241,6 +241,20 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.8 ###
+
+* **New Features**
+* New event: Get added to any role.
+* New event: Get added to specific role.
+* New event: Get assigned to any role.
+* New event: Get assigned to specific role.
+* New event: Get removed from any role.
+* New event: Get removed from a specific role.
+* **Developer Notes**
+* Initialize everything sooner to get all functions ready as soon as possible.
+* Reworked the events triggered function to make it more extensible.
+* Removed Javascript file not found message on settings screen.
+
 ### 1.8.7.5 ###
 
 * **New Features**

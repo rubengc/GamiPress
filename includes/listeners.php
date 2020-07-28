@@ -400,3 +400,26 @@ function gamipress_expend_points_listener( $post_id, $user_id, $points, $points_
 }
 add_action( 'gamipress_achievement_unlocked_with_points', 'gamipress_expend_points_listener', 10, 4 );
 add_action( 'gamipress_rank_unlocked_with_points', 'gamipress_expend_points_listener', 10, 4 );
+
+/**
+ * Trigger listener
+ *
+ * @since 1.8.8
+ *
+ * @param int      $user_id   The user ID.
+ * @param string   $role      The role.
+ */
+function gamipress_user_role_listener( $user_id, $role ) {
+
+    $action = str_replace( '_user_role', '', current_filter() );
+
+    // Trigger add/set/remove any role
+    do_action( "gamipress_{$action}_role", $user_id, $role );
+
+    // Trigger add/set/remove specific role
+    do_action( "gamipress_{$action}_specific_role", $user_id, $role );
+
+}
+add_action( 'add_user_role', 'gamipress_user_role_listener', 10, 2 );
+add_action( 'set_user_role', 'gamipress_user_role_listener', 10, 2 );
+add_action( 'remove_user_role', 'gamipress_user_role_listener', 10, 2 );

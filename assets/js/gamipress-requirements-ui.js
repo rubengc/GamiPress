@@ -193,6 +193,19 @@
             achievement_post_selector.hide();
         }
 
+        // User role
+        var user_role_selector_required = $(this).siblings('.select-user-role-required');
+
+        if ( trigger_type === 'gamipress_add_specific_role'
+            || trigger_type === 'gamipress_set_specific_role'
+            || trigger_type === 'gamipress_remove_specific_role' ) {
+            // Show required user role field
+            user_role_selector_required.show();
+        } else {
+            // Hide required user role field
+            user_role_selector_required.hide();
+        }
+
         var post_selector = $(this).siblings('.select-post');
 
         // Lets to check if there is a specific activity trigger
@@ -602,6 +615,7 @@ function gamipress_update_requirements( element, loop ) {
             points_type_required        : requirement.find( '.select-points-type-required' ).val(),
             rank_type_required          : requirement.find( '.select-rank-type-required' ).val(),
             rank_required               : requirement.find( '.select-rank-required' ).val(),
+            user_role_required          : requirement.find( '.select-user-role-required' ).val(),
             count                       : requirement.find( '.count' ).val(),
             limit                       : requirement.find( '.limit' ).val(),
             limit_type                  : requirement.find( '.limit-type' ).val(),
