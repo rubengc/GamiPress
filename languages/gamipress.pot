@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-07-28 12:49+0200\n"
+"POT-Creation-Date: 2020-08-12 16:57+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1943,7 +1943,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:503
+#: includes/admin/settings/logs.php:43 includes/triggers.php:520
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -3050,12 +3050,12 @@ msgstr ""
 msgid "%d posts found, recounting..."
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:292
+#: includes/admin/tools/recount-activity.php:297
 #, php-format
 msgid "[Publish a post] Post: %s User: %s Post Type: %s"
 msgstr ""
 
-#: includes/admin/tools/recount-activity.php:304
+#: includes/admin/tools/recount-activity.php:309
 #, php-format
 msgid "%d remaining posts to finish recount"
 msgstr ""
@@ -3797,84 +3797,84 @@ msgstr ""
 msgid "Plain Text"
 msgstr ""
 
-#: includes/emails.php:69
+#: includes/emails.php:73
 #, php-format
 msgid "[GamiPress] Email failed to send to %s with subject: %s"
 msgstr ""
 
-#: includes/emails.php:272
+#: includes/emails.php:289
 msgid "Sample Achievement"
 msgstr ""
 
-#: includes/emails.php:275
+#: includes/emails.php:292
 msgid "Sample Achievement Excerpt"
 msgstr ""
 
-#: includes/emails.php:278
+#: includes/emails.php:295
 msgid "Not earned achievement step."
 msgstr ""
 
-#: includes/emails.php:279
+#: includes/emails.php:296
 msgid "Earned achievement step."
 msgstr ""
 
-#: includes/emails.php:281
+#: includes/emails.php:298
 msgid "Sample Achievement Type"
 msgstr ""
 
-#: includes/emails.php:282
+#: includes/emails.php:299
 msgid "Sample Achievement Congratulations Text"
 msgstr ""
 
-#: includes/emails.php:286
+#: includes/emails.php:303
 msgid "Sample Step Label"
 msgstr ""
 
-#: includes/emails.php:298
+#: includes/emails.php:315
 msgid "Sample Points Award Label"
 msgstr ""
 
-#: includes/emails.php:301 includes/emails.php:308
+#: includes/emails.php:318 includes/emails.php:325
 msgid "Sample Points Type"
 msgstr ""
 
-#: includes/emails.php:305
+#: includes/emails.php:322
 msgid "Sample Points Deduct Label"
 msgstr ""
 
-#: includes/emails.php:313
+#: includes/emails.php:330
 msgid "Sample Rank"
 msgstr ""
 
-#: includes/emails.php:316
+#: includes/emails.php:333
 msgid "Sample Rank Excerpt"
 msgstr ""
 
-#: includes/emails.php:319
+#: includes/emails.php:336
 msgid "Not completed rank requirement."
 msgstr ""
 
-#: includes/emails.php:320
+#: includes/emails.php:337
 msgid "Completed rank requirement."
 msgstr ""
 
-#: includes/emails.php:322
+#: includes/emails.php:339
 msgid "Sample Rank Type"
 msgstr ""
 
-#: includes/emails.php:323
+#: includes/emails.php:340
 msgid "Sample Rank Congratulations Text"
 msgstr ""
 
-#: includes/emails.php:327
+#: includes/emails.php:344
 msgid "Sample Rank Requirement Label"
 msgstr ""
 
-#: includes/emails.php:572
+#: includes/emails.php:589
 msgid "Email sent successfully!"
 msgstr ""
 
-#: includes/emails.php:576
+#: includes/emails.php:593
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 

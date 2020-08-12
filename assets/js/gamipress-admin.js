@@ -528,6 +528,12 @@
 				return;
 			}
 
+			var $response = $(response);
+
+			// Update user ranks and points
+			$('.profile-ranks').html( $response.find('.profile-ranks').html() );
+			$('.profile-points').html( $response.find('.profile-points').html() );
+
 			// Force user earnings table to refresh
 			gamipress_refresh_user_earnings_table();
 

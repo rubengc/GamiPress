@@ -241,6 +241,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.9 ###
+
+* **Improvements**
+* On revoke an element with points assigned, restore the user points balance too.
+* Added wp_mail filters to make emails work with 3rd party email providers like SendGrid.
+* **Bug Fixes**
+* Fixed bug on specific role events checks.
+* **Developer Notes**
+* Added more utility functions to work with the parameters from events triggered.
+
 ### 1.8.8 ###
 
 * **New Features**

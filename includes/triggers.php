@@ -487,6 +487,23 @@ function gamipress_trigger_event() {
 }
 
 /**
+ * Gets the event arg parameter
+ *
+ * @since 1.8.8
+ *
+ * @param array    	$args   Event args
+ * @param string 	$key    The args key to get
+ * @param int    	$index The index key to fallback
+ *
+ * @return mixed
+ */
+function gamipress_get_event_arg( $args = array(), $key = '', $index = 0 ) {
+
+    return ( isset( $args[$key] ) ? $args[$key] : $args[$index] );
+
+}
+
+/**
  * Logs the event triggered ono gamipress_trigger_event() function
  *
  * @since 1.6.2
@@ -565,7 +582,7 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 		case 'gamipress_post_visit':
 		case 'gamipress_specific_post_visit':
 			// Add the published/deleted/visited post ID
-			$log_meta['post_id'] = $args[0];
+			$log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
 			break;
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
@@ -633,7 +650,7 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 		case 'gamipress_delete_post':
 		case 'gamipress_delete_page':
 			// User can not publish/delete same post more times, so check it
-			$log_meta['post_id'] = $args[0];
+			$log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
 			$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
 			break;
 		case 'gamipress_user_post_visit':

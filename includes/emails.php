@@ -53,8 +53,12 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
     // Apply the email template and parses the message to it
     $message = gamipress_get_email_body( $to, $subject, $message, $attachments );
 
+    add_filter( 'wp_mail_content_type', 'gamipress_set_html_content_type' );
+
     // Use WordPress email function
     $sent = wp_mail( $to, $subject, $message, $headers, $attachments );
+
+    remove_filter( 'wp_mail_content_type', 'gamipress_set_html_content_type' );
 
     // Check for log errors
     $log_errors = apply_filters( 'gamipress_log_email_errors', true, $to, $subject, $message );
@@ -78,6 +82,19 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
     // Return WordPress email function response
     return $sent;
 
+}
+
+/**
+ * Function to set the mail content type
+ *
+ * @since 1.0.0
+ *
+ * @param string $content_type
+ *
+ * @return string
+ */
+function gamipress_set_html_content_type( $content_type = 'text/html' ) {
+    return 'text/html';
 }
 
 /**

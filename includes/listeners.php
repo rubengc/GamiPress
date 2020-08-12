@@ -74,7 +74,8 @@ add_action( 'wp_login', 'gamipress_login_listener', 10, 2 );
  *
  * Triggers: gamipress_publish_{$post_type}
  *
- * @since  1.0.0
+ * @since   1.0.0
+ * @updated 1.8.9 Changed event triggering by calling directly to gamipress_trigger_event()
  *
  * @param  string   $new_status The new post status
  * @param  string   $old_status The old post status
@@ -94,7 +95,12 @@ function gamipress_transition_post_status_listener( $new_status, $old_status, $p
     if ( in_array( $old_status, $old_statuses ) && in_array( $new_status, $new_statuses ) ) {
 
         // Trigger content publishing actions
-        do_action( "gamipress_publish_{$post->post_type}", $post->ID, $post->post_author, $post );
+        gamipress_trigger_event( array(
+            'event'     => "gamipress_publish_{$post->post_type}",
+            'post_id'   => $post->ID,
+            'user_id'   => $post->post_author,
+            'post'      => $post,
+        ) );
     }
 
 }
@@ -105,7 +111,8 @@ add_action( 'transition_post_status', 'gamipress_transition_post_status_listener
  *
  * Triggers: gamipress_delete_{$post_type}
  *
- * @since  1.3.7
+ * @since   1.3.7
+ * @updated 1.8.9 Changed event triggering by calling directly to gamipress_trigger_event()
  *
  * @param  integer  $post_id The deleted post ID
  *
@@ -116,7 +123,12 @@ function gamipress_delete_post_listener( $post_id ) {
     $post = get_post( $post_id );
 
     // Trigger content deletion actions
-    do_action( "gamipress_delete_{$post->post_type}", $post->ID, $post->post_author, $post );
+    gamipress_trigger_event( array(
+        'event'     => "gamipress_delete_{$post->post_type}",
+        'post_id'   => $post->ID,
+        'user_id'   => $post->post_author,
+        'post'      => $post,
+    ) );
 
 }
 add_action( 'trashed_post', 'gamipress_delete_post_listener' );

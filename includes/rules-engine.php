@@ -393,15 +393,17 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
     }
 
 	// If we're not working with a rank requirement, bail here
-	if ( 'rank-requirement' !== gamipress_get_post_type( $rank_requirement_id ) )
+	if ( 'rank-requirement' !== gamipress_get_post_type( $rank_requirement_id ) ) {
 		return $return;
+    }
 
 	// If is a rank requirement, we need to check if rank requirement is for next rank and not other
 	$rank = gamipress_get_rank_requirement_rank( $rank_requirement_id );
 
 	// Bail if not rank assigned to this rank requirement
-	if( ! $rank )
+	if( ! $rank ) {
 		return false;
+    }
 
 	$next_user_rank_id = gamipress_get_next_user_rank_id( $user_id, $rank->post_type );
 
@@ -433,6 +435,49 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 
 }
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_rank_requirement', 10, 3 );
+
+/**
+ * Check if user meets the role requirement for a given achievement
+ *
+ * @since  1.8.9
+ *
+ * @param  bool     $return             True if user has access, false otherwise
+ * @param  int      $user_id            The given user's ID
+ * @param  int      $achievement_id     The given achievement ID to possibly award
+ * @param  string   $trigger            The trigger
+ * @param  int      $site_id            The triggered site id
+ * @param  array    $args               The triggered args
+ *
+ * @return bool                         True if user has access to step, false otherwise
+ */
+function gamipress_user_meets_role_requirement( $return = false, $user_id = 0, $achievement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
+
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
+    if( empty( $trigger ) ) {
+        $trigger = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+    }
+
+    if( in_array( $trigger, array(
+        'gamipress_add_specific_role',
+        'gamipress_set_specific_role',
+        'gamipress_remove_specific_role'
+    ) ) ) {
+        $role = gamipress_get_event_arg( $args, 'role', 1 );
+        $role_required = gamipress_get_post_meta( $achievement_id, '_gamipress_user_role_required' );
+
+        // Deserve if role matches
+        $return = (bool) ( $role === $role_required );
+    }
+
+    // Send back our eligibility
+    return $return;
+
+}
+add_filter( 'user_has_access_to_achievement', 'gamipress_user_meets_role_requirement', 10, 6 );
 
 /* --------------------------------------------------
  * Completion Checks
@@ -524,20 +569,27 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
  * @param  bool 	$return 		The current status of whether or not the user deserves this achievement
  * @param  int	    $user_id 		The given user's ID
  * @param  int 	    $achievement_id The given achievement's post ID
+ * @param  string   $trigger_type   The trigger
+ * @param  int      $site_id        The triggered site id
+ * @param  array    $args           The triggered args
  *
  * @return bool Our possibly updated earning status
  */
-function gamipress_user_meets_points_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
+function gamipress_user_meets_points_requirement( $return = false, $user_id = 0, $achievement_id = 0, $trigger_type = '', $site_id = 0, $args = array() ) {
 
     // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
     if( ! $return ) {
         return $return;
     }
 
+    if( empty( $trigger_type ) ) {
+        $trigger_type = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+    }
+
 	// First, see if the achievement requires a minimum amount of points
 	if (
 		'points' === gamipress_get_post_meta( $achievement_id, '_gamipress_earned_by' ) 			// Check for achievements earned by points
-		|| 'earn-points' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' ) 	// Check for requirements with earn points activity
+		|| 'earn-points' === $trigger_type 	                                                        // Check for requirements with earn points activity
 	) {
 
 		// Grab our user's points and see if they at least as many as required
@@ -564,7 +616,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
             $return = false;
         }
 
-	} else if( 'points-balance' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' ) ) {
+	} else if( 'points-balance' === $trigger_type ) {
 
         // Grab our user's points and see if they at least as many as required
         $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
@@ -587,7 +639,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
             $return = false;
         }
 
-	} else if( 'gamipress_expend_points' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' ) ) {
+	} else if( 'gamipress_expend_points' === $trigger_type ) {
 
 		// Grab our user's points expended and see if they at least as many as required
 		$points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
@@ -605,8 +657,7 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 	return $return;
 
 }
-add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requirement', 10, 3 );
-
+add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requirement', 10, 6 );
 
 /**
  * Check if user meets the rank requirement for a given achievement
@@ -616,20 +667,27 @@ add_filter( 'user_deserves_achievement', 'gamipress_user_meets_points_requiremen
  * @param  bool     $return         The current status of whether or not the user deserves this achievement
  * @param  int      $user_id        The given user's ID
  * @param  int      $achievement_id The given achievement's post ID
+ * @param  string   $trigger_type   The trigger
+ * @param  int      $site_id        The triggered site id
+ * @param  array    $args           The triggered args
  *
  * @return bool                    Our possibly updated earning status
  */
-function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $achievement_id = 0 ) {
+function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $achievement_id = 0, $trigger_type = '', $site_id = 0, $args = array() ) {
 
     // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
     if( ! $return ) {
         return $return;
     }
 
+    if( empty( $trigger_type ) ) {
+        $trigger_type = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+    }
+
 	// First, see if the achievement requires a minimum rank
 	if (
 		'rank' === gamipress_get_post_meta( $achievement_id, '_gamipress_earned_by' ) 				// Check for achievements earned by rank
-		|| 'earn-rank' === gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' ) 	// Check for requirements with earn rank activity
+		|| 'earn-rank' === $trigger_type 	                                                        // Check for requirements with earn rank activity
 	) {
 		// Grab our user's rank and compared it with the required one
 		$rank_required   = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_rank_required' ) );
@@ -657,20 +715,23 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 	return $return;
 
 }
-add_filter( 'user_deserves_achievement', 'gamipress_user_meets_rank_requirement', 10, 3 );
+add_filter( 'user_deserves_achievement', 'gamipress_user_meets_rank_requirement', 10, 6 );
 
 /**
  * Validate whether or not the user has completed all requirements for an achievement
  *
  * @since  1.0.0
  *
- * @param  bool $return      		True if user deserves achievement, false otherwise
- * @param  int  $user_id  		The given user's ID
- * @param  int  $achievement_id  The achievement post ID
+ * @param  bool     $return         True if user deserves achievement, false otherwise
+ * @param  int      $user_id  		The given user's ID
+ * @param  int      $achievement_id The achievement post ID
+ * @param  string   $trigger_type   The trigger
+ * @param  int      $site_id        The triggered site id
+ * @param  array    $args           The triggered args
  *
- * @return bool              		True if user deserves step, false otherwise
+ * @return bool              		True if user deserves limit requirements, false otherwise
  */
-function gamipress_user_deserves_limit_requirements( $return = false, $user_id = 0, $achievement_id = 0 ) {
+function gamipress_user_deserves_limit_requirements( $return = false, $user_id = 0, $achievement_id = 0, $trigger_type = '', $site_id = 0, $args = array() ) {
 
     // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
     if( ! $return ) {
@@ -678,14 +739,18 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
     }
 
     // If we're not working with a requirement, bail here
-    if ( ! in_array( gamipress_get_post_type( $achievement_id ), gamipress_get_requirement_types_slugs() ) )
+    if ( ! in_array( gamipress_get_post_type( $achievement_id ), gamipress_get_requirement_types_slugs() ) ) {
         return $return;
+    }
 
-	$trigger_type = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+    if( empty( $trigger_type ) ) {
+        $trigger_type = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+    }
 
 	// Check if activity trigger is excluded from this check
-	if( in_array( $trigger_type, gamipress_get_activity_triggers_excluded_from_activity_limit() ) )
+	if( in_array( $trigger_type, gamipress_get_activity_triggers_excluded_from_activity_limit() ) ) {
 		return $return;
+    }
 
     // Check if is limited over time
     $since = gamipress_get_achievement_limit_timestamp( $achievement_id );
@@ -718,7 +783,7 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 
 	return $return;
 }
-add_filter( 'user_deserves_achievement', 'gamipress_user_deserves_limit_requirements', 10, 3 );
+add_filter( 'user_deserves_achievement', 'gamipress_user_deserves_limit_requirements', 10, 6 );
 
 /**
  * Count the user's relevant actions for a given achievement
@@ -1246,34 +1311,99 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
     // If achievement ID provided, check if requirement should get revoked too
     if( $achievement_id !== 0 ) {
 
-        /**
-         * Available filter to determine if should revoke requirements when parent element is revoked too
-         *
-         * @since  	1.8.7
-         *
-         * @param bool 	$revoke         Revoke confirmation, bu default true
-         * @param int 	$user_id        The given user's ID
-         * @param int 	$achievement_id The post's ID to revoke
-         * @param int 	$earning_id     The user's earning ID
-         */
-        $revoke_requirements = apply_filters( 'gamipress_revoke_requirements_on_revoke_parent', true, $achievement_id, $user_id, $earning_id );
+        // Setup vars
+        $post_type = gamipress_get_post_type( $achievement_id );
+        $points_types = gamipress_get_points_types();
 
-        if( $revoke_requirements ) {
+        // If is achievement or rank, revoke also all its requirements
+        if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) || in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
 
-            $post_type = gamipress_get_post_type( $achievement_id );
-            $requirements = array();
+            /**
+             * Available filter to determine if should revoke requirements when parent element is revoked too
+             *
+             * @since  	1.8.7
+             *
+             * @param bool 	$revoke         Revoke confirmation, by default true
+             * @param int 	$user_id        The given user ID
+             * @param int 	$achievement_id The post ID to revoke
+             * @param int 	$earning_id     The user earning ID
+             */
+            $revoke_requirements = apply_filters( 'gamipress_revoke_requirements_on_revoke_parent', true, $achievement_id, $user_id, $earning_id );
 
-            // If is achievement or rank, revoke also all its requirements
-            if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
-                // Get the achievement steps
-                $requirements = gamipress_get_achievement_steps( $achievement_id );
-            } else if ( in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
-                // Get the rank requirements
-                $requirements = gamipress_get_rank_requirements( $achievement_id );
+            if( $revoke_requirements ) {
+
+                $requirements = array();
+
+                if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
+                    // Get the achievement steps
+                    $requirements = gamipress_get_achievement_steps( $achievement_id );
+                } else if ( in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
+                    // Get the rank requirements
+                    $requirements = gamipress_get_rank_requirements( $achievement_id );
+                }
+
+                foreach( $requirements as $requirement ) {
+                    gamipress_revoke_achievement_to_user( $requirement->ID, $user_id );
+                }
+
             }
 
-            foreach( $requirements as $requirement ) {
-                gamipress_revoke_achievement_to_user( $requirement->ID, $user_id );
+        }
+
+        if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) || $post_type === 'points-award' ) {
+
+            /**
+             * Available filter to determine if should deduct points when an element is revoked
+             *
+             * @since  	1.8.9
+             *
+             * @param bool 	$revoke         Deduct confirmation, by default true
+             * @param int 	$user_id        The given user ID
+             * @param int 	$achievement_id The post ID to revoke (commonly an achievement ID or points award ID)
+             * @param int 	$earning_id     The user earning ID
+             */
+            $deduct_points = apply_filters( 'gamipress_deduct_points_on_revoke', true, $achievement_id, $user_id, $earning_id );
+
+            if( $deduct_points ) {
+
+                // Grab our points from the provided post
+                $points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
+                $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
+
+                if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
+                    // Revoke points awarded from this achievement or points award
+                    gamipress_deduct_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+                }
+
+            }
+
+        }
+
+        if ( $post_type === 'points-deduct' ) {
+
+            /**
+             * Available filter to determine if should award points when an element is revoked
+             *
+             * @since  	1.8.9
+             *
+             * @param bool 	$revoke         Award confirmation, by default true
+             * @param int 	$user_id        The given user ID
+             * @param int 	$achievement_id The post ID to revoke (commonly a points deduct ID)
+             * @param int 	$earning_id     The user earning ID
+             */
+            $award_points = apply_filters( 'gamipress_award_points_on_revoke', true, $achievement_id, $user_id, $earning_id );
+
+            if( $award_points ) {
+
+                // Grab our points from the provided post
+                $points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
+                $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
+
+                if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
+                    // Restore points deducted from this points deduct
+                    gamipress_award_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+                }
+
             }
 
         }
