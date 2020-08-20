@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-08-12 16:57+0200\n"
+"POT-Creation-Date: 2020-08-20 16:47+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -72,21 +72,21 @@ msgid "Assets"
 msgstr ""
 
 #: includes/admin.php:149 includes/admin/tools/reset-data.php:34
-#: includes/admin/tools/system-info.php:357 includes/post-types.php:23
-#: includes/post-types.php:29 includes/post-types.php:35
+#: includes/admin/tools/system-info.php:357 includes/post-types.php:254
+#: includes/post-types.php:260 includes/post-types.php:266
 #: includes/shortcodes/gamipress_points_types.php:20
 msgid "Points Types"
 msgstr ""
 
 #: includes/admin.php:182 includes/admin/tools/reset-data.php:31
-#: includes/admin/tools/system-info.php:362 includes/post-types.php:130
-#: includes/post-types.php:136 includes/post-types.php:142
+#: includes/admin/tools/system-info.php:362 includes/post-types.php:357
+#: includes/post-types.php:363 includes/post-types.php:369
 msgid "Achievement Types"
 msgstr ""
 
 #: includes/admin.php:215 includes/admin/tools/reset-data.php:37
-#: includes/admin/tools/system-info.php:367 includes/post-types.php:201
-#: includes/post-types.php:207 includes/post-types.php:213
+#: includes/admin/tools/system-info.php:367 includes/post-types.php:426
+#: includes/post-types.php:432 includes/post-types.php:438
 msgid "Rank Types"
 msgstr ""
 
@@ -212,7 +212,7 @@ msgid "Visit the <a href=\"%s\">documentation</a> on the GamiPress website."
 msgstr ""
 
 #: includes/admin/contextual-help.php:37
-#: includes/admin/meta-boxes/requirements.php:66 includes/post-types.php:131
+#: includes/admin/meta-boxes/requirements.php:66 includes/post-types.php:358
 msgid "Achievement Type"
 msgstr ""
 
@@ -221,11 +221,11 @@ msgstr ""
 #: includes/admin/requirements.php:39 includes/admin/requirements.php:74
 #: includes/admin/requirements.php:77 includes/admin/tools/bulk-awards.php:45
 #: includes/admin/tools/bulk-revokes.php:45
-#: includes/compatibility/1.2.8.php:1027 includes/post-types.php:24
+#: includes/compatibility/1.2.8.php:1027 includes/post-types.php:255
 msgid "Points Type"
 msgstr ""
 
-#: includes/admin/contextual-help.php:43 includes/post-types.php:202
+#: includes/admin/contextual-help.php:43 includes/post-types.php:427
 #: includes/shortcodes/gamipress_user_rank.php:52
 msgid "Rank Type"
 msgstr ""
@@ -256,8 +256,8 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:61 includes/admin/settings/email.php:346
 #: includes/admin/tools/reset-data.php:35
-#: includes/custom-tables/user-earnings.php:420 includes/post-types.php:60
-#: includes/post-types.php:66 includes/post-types.php:72
+#: includes/custom-tables/user-earnings.php:420 includes/post-types.php:291
+#: includes/post-types.php:297 includes/post-types.php:303
 msgid "Points Awards"
 msgstr ""
 
@@ -272,8 +272,8 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:69 includes/admin/settings/email.php:356
 #: includes/admin/tools/reset-data.php:36
-#: includes/custom-tables/user-earnings.php:421 includes/post-types.php:96
-#: includes/post-types.php:102 includes/post-types.php:108
+#: includes/custom-tables/user-earnings.php:421 includes/post-types.php:325
+#: includes/post-types.php:331 includes/post-types.php:337
 msgid "Points Deducts"
 msgstr ""
 
@@ -336,8 +336,8 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:103 includes/admin/settings/email.php:336
 #: includes/admin/tools/reset-data.php:33
-#: includes/custom-tables/user-earnings.php:414 includes/post-types.php:167
-#: includes/post-types.php:173 includes/post-types.php:179
+#: includes/custom-tables/user-earnings.php:414 includes/post-types.php:394
+#: includes/post-types.php:400 includes/post-types.php:406
 msgid "Steps"
 msgstr ""
 
@@ -387,8 +387,8 @@ msgstr ""
 #: includes/admin/contextual-help.php:134
 #: includes/admin/meta-boxes/requirements-ui.php:34
 #: includes/admin/settings/email.php:376 includes/admin/tools/reset-data.php:39
-#: includes/custom-tables/user-earnings.php:427 includes/post-types.php:238
-#: includes/post-types.php:244 includes/post-types.php:250
+#: includes/custom-tables/user-earnings.php:427 includes/post-types.php:463
+#: includes/post-types.php:469 includes/post-types.php:475
 msgid "Rank Requirements"
 msgstr ""
 
@@ -1069,7 +1069,7 @@ msgid "Check this option to force users to complete requirements in order."
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:141
-#: includes/post-types.php:408 includes/post-types.php:532
+#: includes/post-types.php:514 includes/post-types.php:589
 #, php-format
 msgid "Add New %s"
 msgstr ""
@@ -3702,11 +3702,11 @@ msgstr ""
 msgid "Log"
 msgstr ""
 
-#: includes/compatibility/1.2.8.php:252 includes/post-types.php:25
-#: includes/post-types.php:62 includes/post-types.php:98
-#: includes/post-types.php:132 includes/post-types.php:169
-#: includes/post-types.php:203 includes/post-types.php:240
-#: includes/post-types.php:407 includes/post-types.php:531
+#: includes/compatibility/1.2.8.php:252 includes/post-types.php:256
+#: includes/post-types.php:293 includes/post-types.php:327
+#: includes/post-types.php:359 includes/post-types.php:396
+#: includes/post-types.php:428 includes/post-types.php:465
+#: includes/post-types.php:513 includes/post-types.php:588
 msgid "Add New"
 msgstr ""
 
@@ -3891,7 +3891,7 @@ msgid "%1$d Required %2$s"
 msgstr ""
 
 #: includes/filters.php:501 includes/filters.php:2024
-#: includes/post-types.php:168
+#: includes/post-types.php:395
 msgid "Step"
 msgid_plural "Steps"
 msgstr[0] ""
@@ -4045,7 +4045,7 @@ msgstr ""
 msgid "Points Earn"
 msgstr ""
 
-#: includes/functions/logs.php:26 includes/post-types.php:97
+#: includes/functions/logs.php:26 includes/post-types.php:326
 msgid "Points Deduct"
 msgstr ""
 
@@ -4053,7 +4053,7 @@ msgstr ""
 msgid "Points Expend"
 msgstr ""
 
-#: includes/functions/logs.php:28 includes/post-types.php:61
+#: includes/functions/logs.php:28 includes/post-types.php:292
 msgid "Points Award"
 msgstr ""
 
@@ -4156,300 +4156,300 @@ msgstr ""
 msgid "Rank Type renamed successfully. <p>All ranks of this type, and all active and earned user ranks, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old rank type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/post-types.php:26
+#: includes/post-types.php:257
 msgid "Add New Points Type"
 msgstr ""
 
-#: includes/post-types.php:27
+#: includes/post-types.php:258
 msgid "Edit Points Type"
 msgstr ""
 
-#: includes/post-types.php:28
+#: includes/post-types.php:259
 msgid "New Points Type"
 msgstr ""
 
-#: includes/post-types.php:30
+#: includes/post-types.php:261
 msgid "View Points Type"
 msgstr ""
 
-#: includes/post-types.php:31
+#: includes/post-types.php:262
 msgid "Search Points Types"
 msgstr ""
 
-#: includes/post-types.php:32
+#: includes/post-types.php:263
 msgid "No points types found"
 msgstr ""
 
-#: includes/post-types.php:33
+#: includes/post-types.php:264
 msgid "No points types found in Trash"
 msgstr ""
 
-#: includes/post-types.php:36
+#: includes/post-types.php:267
 msgid "Points Type Image"
 msgstr ""
 
-#: includes/post-types.php:37
+#: includes/post-types.php:268
 msgid "Set points type image"
 msgstr ""
 
-#: includes/post-types.php:38
+#: includes/post-types.php:269
 msgid "Remove points type image"
 msgstr ""
 
-#: includes/post-types.php:39
+#: includes/post-types.php:270
 msgid "Use points type image"
 msgstr ""
 
-#: includes/post-types.php:63
+#: includes/post-types.php:294
 msgid "Add New Points Award"
 msgstr ""
 
-#: includes/post-types.php:64
+#: includes/post-types.php:295
 msgid "Edit Points Award"
 msgstr ""
 
-#: includes/post-types.php:65
+#: includes/post-types.php:296
 msgid "New Points Award"
 msgstr ""
 
-#: includes/post-types.php:67
+#: includes/post-types.php:298
 msgid "View Points Award"
 msgstr ""
 
-#: includes/post-types.php:68
+#: includes/post-types.php:299
 msgid "Search Points Awards"
 msgstr ""
 
-#: includes/post-types.php:69
+#: includes/post-types.php:300
 msgid "No points awards found"
 msgstr ""
 
-#: includes/post-types.php:70
+#: includes/post-types.php:301
 msgid "No points awards found in Trash"
 msgstr ""
 
-#: includes/post-types.php:99
+#: includes/post-types.php:328
 msgid "Add New Points Deduct"
 msgstr ""
 
-#: includes/post-types.php:100
+#: includes/post-types.php:329
 msgid "Edit Points Deduct"
 msgstr ""
 
-#: includes/post-types.php:101
+#: includes/post-types.php:330
 msgid "New Points Deduct"
 msgstr ""
 
-#: includes/post-types.php:103
+#: includes/post-types.php:332
 msgid "View Points Deduct"
 msgstr ""
 
-#: includes/post-types.php:104
+#: includes/post-types.php:333
 msgid "Search Points Deducts"
 msgstr ""
 
-#: includes/post-types.php:105
+#: includes/post-types.php:334
 msgid "No points deducts found"
 msgstr ""
 
-#: includes/post-types.php:106
+#: includes/post-types.php:335
 msgid "No points deducts found in Trash"
 msgstr ""
 
-#: includes/post-types.php:133
+#: includes/post-types.php:360
 msgid "Add New Achievement Type"
 msgstr ""
 
-#: includes/post-types.php:134
+#: includes/post-types.php:361
 msgid "Edit Achievement Type"
 msgstr ""
 
-#: includes/post-types.php:135
+#: includes/post-types.php:362
 msgid "New Achievement Type"
 msgstr ""
 
-#: includes/post-types.php:137
+#: includes/post-types.php:364
 msgid "View Achievement Type"
 msgstr ""
 
-#: includes/post-types.php:138
+#: includes/post-types.php:365
 msgid "Search Achievement Types"
 msgstr ""
 
-#: includes/post-types.php:139
+#: includes/post-types.php:366
 msgid "No achievement types found"
 msgstr ""
 
-#: includes/post-types.php:140
+#: includes/post-types.php:367
 msgid "No achievement types found in Trash"
 msgstr ""
 
-#: includes/post-types.php:143
+#: includes/post-types.php:370
 msgid "Default Achievement Image"
 msgstr ""
 
-#: includes/post-types.php:144
+#: includes/post-types.php:371
 msgid "Set default achievement image"
 msgstr ""
 
-#: includes/post-types.php:145
+#: includes/post-types.php:372
 msgid "Remove default achievement image"
 msgstr ""
 
-#: includes/post-types.php:146
+#: includes/post-types.php:373
 msgid "Use default achievement image"
 msgstr ""
 
-#: includes/post-types.php:170
+#: includes/post-types.php:397
 msgid "Add New Step"
 msgstr ""
 
-#: includes/post-types.php:171
+#: includes/post-types.php:398
 msgid "Edit Step"
 msgstr ""
 
-#: includes/post-types.php:172
+#: includes/post-types.php:399
 msgid "New Step"
 msgstr ""
 
-#: includes/post-types.php:174
+#: includes/post-types.php:401
 msgid "View Step"
 msgstr ""
 
-#: includes/post-types.php:175
+#: includes/post-types.php:402
 msgid "Search Steps"
 msgstr ""
 
-#: includes/post-types.php:176
+#: includes/post-types.php:403
 msgid "No steps found"
 msgstr ""
 
-#: includes/post-types.php:177
+#: includes/post-types.php:404
 msgid "No steps found in Trash"
 msgstr ""
 
-#: includes/post-types.php:204
+#: includes/post-types.php:429
 msgid "Add New Rank Type"
 msgstr ""
 
-#: includes/post-types.php:205
+#: includes/post-types.php:430
 msgid "Edit Rank Type"
 msgstr ""
 
-#: includes/post-types.php:206
+#: includes/post-types.php:431
 msgid "New Rank Type"
 msgstr ""
 
-#: includes/post-types.php:208
+#: includes/post-types.php:433
 msgid "View Rank Type"
 msgstr ""
 
-#: includes/post-types.php:209
+#: includes/post-types.php:434
 msgid "Search Rank Types"
 msgstr ""
 
-#: includes/post-types.php:210
+#: includes/post-types.php:435
 msgid "No rank types found"
 msgstr ""
 
-#: includes/post-types.php:211
+#: includes/post-types.php:436
 msgid "No rank types found in Trash"
 msgstr ""
 
-#: includes/post-types.php:214
+#: includes/post-types.php:439
 msgid "Default Rank Image"
 msgstr ""
 
-#: includes/post-types.php:215
+#: includes/post-types.php:440
 msgid "Set default rank image"
 msgstr ""
 
-#: includes/post-types.php:216
+#: includes/post-types.php:441
 msgid "Remove default rank image"
 msgstr ""
 
-#: includes/post-types.php:217
+#: includes/post-types.php:442
 msgid "Use default rank image"
 msgstr ""
 
-#: includes/post-types.php:239
+#: includes/post-types.php:464
 msgid "Rank Requirement"
 msgstr ""
 
-#: includes/post-types.php:241
+#: includes/post-types.php:466
 msgid "Add New Rank Requirement"
 msgstr ""
 
-#: includes/post-types.php:242
+#: includes/post-types.php:467
 msgid "Edit Rank Requirement"
 msgstr ""
 
-#: includes/post-types.php:243
+#: includes/post-types.php:468
 msgid "New Rank Requirement"
 msgstr ""
 
-#: includes/post-types.php:245
+#: includes/post-types.php:470
 msgid "View Rank Requirement"
 msgstr ""
 
-#: includes/post-types.php:246
+#: includes/post-types.php:471
 msgid "Search Rank Requirements"
 msgstr ""
 
-#: includes/post-types.php:247
+#: includes/post-types.php:472
 msgid "No rank requirements found"
 msgstr ""
 
-#: includes/post-types.php:248
+#: includes/post-types.php:473
 msgid "No rank requirements found in Trash"
 msgstr ""
 
-#: includes/post-types.php:409 includes/post-types.php:533
+#: includes/post-types.php:515 includes/post-types.php:590
 #, php-format
 msgid "Edit %s"
 msgstr ""
 
-#: includes/post-types.php:410 includes/post-types.php:534
+#: includes/post-types.php:516 includes/post-types.php:591
 #, php-format
 msgid "New %s"
 msgstr ""
 
-#: includes/post-types.php:412 includes/post-types.php:536
+#: includes/post-types.php:518 includes/post-types.php:593
 #, php-format
 msgid "View %s"
 msgstr ""
 
-#: includes/post-types.php:413 includes/post-types.php:537
+#: includes/post-types.php:519 includes/post-types.php:594
 #, php-format
 msgid "Search %s"
 msgstr ""
 
-#: includes/post-types.php:414 includes/post-types.php:538
+#: includes/post-types.php:520 includes/post-types.php:595
 #, php-format
 msgid "No %s found"
 msgstr ""
 
-#: includes/post-types.php:415 includes/post-types.php:539
+#: includes/post-types.php:521 includes/post-types.php:596
 #, php-format
 msgid "No %s found in Trash"
 msgstr ""
 
-#: includes/post-types.php:418 includes/post-types.php:542
+#: includes/post-types.php:524 includes/post-types.php:599
 #, php-format
 msgid "%s Image"
 msgstr ""
 
-#: includes/post-types.php:419 includes/post-types.php:543
+#: includes/post-types.php:525 includes/post-types.php:600
 #, php-format
 msgid "Set %s image"
 msgstr ""
 
-#: includes/post-types.php:420 includes/post-types.php:544
+#: includes/post-types.php:526 includes/post-types.php:601
 #, php-format
 msgid "Remove %s image"
 msgstr ""
 
-#: includes/post-types.php:421 includes/post-types.php:545
+#: includes/post-types.php:527 includes/post-types.php:602
 #, php-format
 msgid "Use %s image"
 msgstr ""

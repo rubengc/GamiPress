@@ -59,14 +59,14 @@ function gamipress_get_period_range( $period = '' ) {
         switch( $period ) {
             case 'today':
                 $date_range = array(
-                    'start' => date( 'Y-m-d', current_time( 'timestamp' ) ),
+                    'start' => date( 'Y-m-d 00:00:00', current_time( 'timestamp' ) ),
                     'end' => '',
                 );
                 break;
             case 'yesterday':
                 $date_range = array(
-                    'start' => date( 'Y-m-d', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
-                    'end' => '',
+                    'start' => date( 'Y-m-d 00:00:00', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
+                    'end' => date( 'Y-m-d 23:59:59', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
                 );
                 break;
             case 'this-week':

@@ -241,6 +241,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.9.1 ###
+
+* **Improvements**
+* Initialize types sooner to get types based functions ready as soon as possible.
+* **Bug Fixes**
+* Fixed date range for the "yesterday" period option.
+
 ### 1.8.9 ###
 
 * **Improvements**
