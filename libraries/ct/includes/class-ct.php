@@ -128,7 +128,6 @@ if ( ! class_exists( 'CT' ) ) :
          */
         private function hooks() {
 
-            add_action( 'muplugins_loaded', array( $this, 'init' ), 10 );
             add_action( 'plugins_loaded', array( $this, 'init' ), 10 );
             add_action( 'after_setup_theme', array( $this, 'init' ), 10 );
 

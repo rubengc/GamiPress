@@ -241,6 +241,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.9.2 ###
+
+* **Bug Fixes**
+* Fixed issues on multisite installs.
+
 ### 1.8.9.1 ###
 
 * **Improvements**

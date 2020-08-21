@@ -20,8 +20,6 @@ function gamipress_init_multisite() {
 
     if( is_multisite() ) {
 
-        $blog_id = get_current_blog_id();
-
         // Update GamiPress database if network wide active
         if( gamipress_is_network_wide_active() ) {
 
@@ -42,7 +40,7 @@ function gamipress_init_multisite() {
     }
 
 }
-add_action( 'gamipress_init', 'gamipress_init_multisite' );
+add_action( 'gamipress_init', 'gamipress_init_multisite', 1 );
 
 /**
  * Create array of blog ids in network
