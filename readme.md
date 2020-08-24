@@ -241,6 +241,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.9.3 ###
+
+* **Improvements**
+* Force email from address and name to prevent get overwritten by other plugins.
+* **Bug Fixes**
+* Fixed date range for past week/month/year periods option when is the last day of previous period.
+
 ### 1.8.9.2 ###
 
 * **Bug Fixes**

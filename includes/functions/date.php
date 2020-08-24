@@ -69,25 +69,28 @@ function gamipress_get_period_range( $period = '' ) {
                     'end' => date( 'Y-m-d 23:59:59', strtotime( '-1 day', current_time( 'timestamp' ) ) ),
                 );
                 break;
+            case 'current-week':
             case 'this-week':
                 $date_range = gamipress_get_date_range( 'week' );
                 break;
             case 'past-week':
-                $previous_week = strtotime( '-1 week +1 day', current_time( 'timestamp' ) );
+                $previous_week = strtotime( '-1 week', current_time( 'timestamp' ) );
                 $date_range = gamipress_get_date_range( 'week', $previous_week );
                 break;
+            case 'current-month':
             case 'this-month':
                 $date_range = gamipress_get_date_range( 'month' );
                 break;
             case 'past-month':
-                $previous_month = strtotime( '-1 month +1 day', current_time( 'timestamp' ) );
+                $previous_month = strtotime( '-1 month', current_time( 'timestamp' ) );
                 $date_range = gamipress_get_date_range( 'month', $previous_month );
                 break;
+            case 'current-year':
             case 'this-year':
                 $date_range = gamipress_get_date_range( 'year' );
                 break;
             case 'past-year':
-                $previous_year = strtotime( '-1 year +1 day', current_time( 'timestamp' ) );
+                $previous_year = strtotime( '-1 year', current_time( 'timestamp' ) );
                 $date_range = gamipress_get_date_range( 'year', $previous_year );
                 break;
             default:

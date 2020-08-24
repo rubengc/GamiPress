@@ -53,12 +53,16 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
     // Apply the email template and parses the message to it
     $message = gamipress_get_email_body( $to, $subject, $message, $attachments );
 
-    add_filter( 'wp_mail_content_type', 'gamipress_set_html_content_type' );
+    add_filter( 'wp_mail_from', 'gamipress_get_email_from_address' );
+    add_filter( 'wp_mail_from_name', 'gamipress_get_email_from_name' );
+    add_filter( 'wp_mail_content_type', 'gamipress_get_email_content_type' );
 
     // Use WordPress email function
     $sent = wp_mail( $to, $subject, $message, $headers, $attachments );
 
-    remove_filter( 'wp_mail_content_type', 'gamipress_set_html_content_type' );
+    remove_filter( 'wp_mail_from', 'gamipress_get_email_from_address' );
+    remove_filter( 'wp_mail_from_name', 'gamipress_get_email_from_name' );
+    remove_filter( 'wp_mail_content_type', 'gamipress_get_email_content_type' );
 
     // Check for log errors
     $log_errors = apply_filters( 'gamipress_log_email_errors', true, $to, $subject, $message );
@@ -85,7 +89,39 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
 }
 
 /**
- * Function to set the mail content type
+ * Function to get the mail from email address
+ *
+ * @since 1.0.0
+ *
+ * @param string $from
+ *
+ * @return string
+ */
+function gamipress_get_email_from_address( $from = '' ) {
+
+    $from_address = gamipress_get_option( 'email_from_address', get_bloginfo( 'admin_email' ) );
+
+    return sanitize_email( $from_address );
+}
+
+/**
+ * Function to get the mail from name
+ *
+ * @since 1.0.0
+ *
+ * @param string $from_name
+ *
+ * @return string
+ */
+function gamipress_get_email_from_name( $from_name = '' ) {
+
+    $from_name = gamipress_get_option( 'email_from_name', get_bloginfo( 'name' ) );
+
+    return wp_specialchars_decode( $from_name );
+}
+
+/**
+ * Function to get the mail content type
  *
  * @since 1.0.0
  *
@@ -93,7 +129,7 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
  *
  * @return string
  */
-function gamipress_set_html_content_type( $content_type = 'text/html' ) {
+function gamipress_get_email_content_type( $content_type = 'text/html' ) {
     return 'text/html';
 }
 

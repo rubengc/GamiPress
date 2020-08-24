@@ -399,7 +399,6 @@ function gamipress_query_logs( $args ) {
         $logs = $wpdb->get_results( $sql, $args['output'] );
     }
 
-
     return $logs;
 
 }

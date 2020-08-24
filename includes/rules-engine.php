@@ -606,10 +606,11 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 			// This prevents an infinite loop if the achievement has no maximum earnings limit
 			$minimum_time  	= current_time( 'timestamp' ) - 1;
 
-			if ( $last_activity > $minimum_time )
+			if ( $last_activity > $minimum_time ) {
 				$return = false;
+            }
 
-            // Increase the points awarded of this loop
+            // Increase the points awarded of this loop since the achievement will be awarded
             gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id );
 
 		} else {
