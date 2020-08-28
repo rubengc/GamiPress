@@ -241,6 +241,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.8.9.4 ###
+
+* **Bug Fixes**
+* Fixed user assigned for role changes events.
+
 ### 1.8.9.3 ###
 
 * **Improvements**

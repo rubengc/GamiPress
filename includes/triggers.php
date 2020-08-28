@@ -702,6 +702,12 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 		case 'gamipress_login':
 		case 'gamipress_register':
 		case 'gamipress_site_visit':
+        case 'gamipress_add_role':
+        case 'gamipress_add_specific_role':
+        case 'gamipress_set_role':
+        case 'gamipress_set_specific_role':
+        case 'gamipress_remove_role':
+        case 'gamipress_remove_specific_role':
 		case gamipress_starts_with( $trigger, 'gamipress_unlock_' ):
 			$user_id = $args[0];
 			break;
