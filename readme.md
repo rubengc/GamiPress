@@ -37,7 +37,7 @@ GamiPress combines three of the most powerful award systems you could add to you
 * **Rank Types:** Configure as many types of rank as you like (Level, Grade, etc).
 * **Automatic points awards and deductions:** Easily configure automatic ways to award or deduct points to your users.
 * **Custom requirements:** Define conditional requirements the user needs to meet for unlock any achievement or rank.
-* **Time limit requirements:** Limit by time period when the user can complete a specific requirement (daily, weekly, monthly or yearly).
+* **Time limit requirements:** Limit by time period when the user can complete a specific requirement (minutely, hourly, daily, weekly, monthly or yearly).
 * **Drag and drop controls:** Powerful controls to setup your gamification environment in minutes.
 * **Social sharing:** Users can share the achievements and ranks they have earned on any social network of their choice.
 * **Unlock achievements and ranks using points:** Let users to optionally unlock any achievement or rank by expending an amount of points without meet the requirements.
@@ -240,6 +240,20 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 1.9.0 ###
+
+* **New Features**
+* Added the ability to limit requirements per hour and per minute.
+* **Improvements**
+* Improved the way to determine if user is able to earn a requirement or not.
+* For achievements that can be earned multiples times, now its steps will be marked correctly as completed or not based on if user is able to earn them again.
+* For requirements limited in a time period, now will appear as completed until the user is able to earn them again.
+* **Bug Fixes**
+* Fixed alignment of box titles on settings and tools screens.
+* Prevent any PHP warnings while migrating GamiPress database tables to InnoDB engine.
+* **Developer Notes**
+* Added new filters to extend requirements limit intervals to custom ones.
 
 ### 1.8.9.4 ###
 

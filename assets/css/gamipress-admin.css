@@ -1435,6 +1435,10 @@ label[for="_gamipress_sequential"] {
     font-weight: 600 !important;
 }
 
+.gamipress-page .postbox .hndle {
+	justify-content: flex-start;
+}
+
 .gamipress-page .postbox .hndle .dashicons {
 	height: 18px;
 	line-height: 18px;

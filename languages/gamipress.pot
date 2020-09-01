@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-08-28 11:47+0200\n"
+"POT-Creation-Date: 2020-09-01 16:46+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -197,7 +197,7 @@ msgid "Admin-awarded Only"
 msgstr ""
 
 #: includes/admin/achievements.php:146
-#: includes/admin/meta-boxes/requirements-ui.php:450
+#: includes/admin/meta-boxes/requirements-ui.php:451
 #: includes/admin/meta-boxes/requirements.php:58
 msgid "Unlimited"
 msgstr ""
@@ -1123,62 +1123,66 @@ msgstr ""
 msgid "limited to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:451
-#: includes/admin/meta-boxes/requirements.php:59
-msgid "Per Day"
-msgstr ""
-
 #: includes/admin/meta-boxes/requirements-ui.php:452
-#: includes/admin/meta-boxes/requirements.php:60
-msgid "Per Week"
+msgid "Per minute"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:453
-#: includes/admin/meta-boxes/requirements.php:61
-msgid "Per Month"
+msgid "Per hour"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:454
-#: includes/admin/meta-boxes/requirements.php:62
-msgid "Per Year"
+msgid "Per day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:482
+#: includes/admin/meta-boxes/requirements-ui.php:455
+msgid "Per week"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:456
+msgid "Per month"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:457
+msgid "Per year"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:504
 msgid "point(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:488
+#: includes/admin/meta-boxes/requirements-ui.php:510
 msgid "Earn"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:488 includes/filters.php:344
-#: includes/filters.php:346
+#: includes/admin/meta-boxes/requirements-ui.php:510 includes/filters.php:331
+#: includes/filters.php:333
 msgid "Deduct"
 msgid_plural "Deducts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:494
+#: includes/admin/meta-boxes/requirements-ui.php:516
 msgid "with a maximum number of times to earn it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:494
+#: includes/admin/meta-boxes/requirements-ui.php:516
 msgid "with a maximum number of times to deduct it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:496
+#: includes/admin/meta-boxes/requirements-ui.php:518
 msgid "(0 for no maximum)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:512
+#: includes/admin/meta-boxes/requirements-ui.php:534
 msgid "Label"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:634
-#: includes/admin/meta-boxes/requirements-ui.php:674
-#: includes/admin/meta-boxes/requirements-ui.php:720
-#: includes/admin/meta-boxes/requirements-ui.php:746
-#: includes/admin/meta-boxes/requirements-ui.php:821
+#: includes/admin/meta-boxes/requirements-ui.php:656
+#: includes/admin/meta-boxes/requirements-ui.php:696
+#: includes/admin/meta-boxes/requirements-ui.php:742
+#: includes/admin/meta-boxes/requirements-ui.php:768
+#: includes/admin/meta-boxes/requirements-ui.php:843
 #: includes/admin/tools/bulk-awards.php:258
 #: includes/admin/tools/bulk-awards.php:263
 #: includes/admin/tools/bulk-revokes.php:258
@@ -1199,102 +1203,110 @@ msgstr ""
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:641
-#: includes/admin/meta-boxes/requirements-ui.php:682
+#: includes/admin/meta-boxes/requirements-ui.php:663
+#: includes/admin/meta-boxes/requirements-ui.php:704
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:969
+#: includes/admin/meta-boxes/requirements-ui.php:991
 #, php-format
 msgid "Earn %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:972
+#: includes/admin/meta-boxes/requirements-ui.php:994
 #, php-format
 msgid "Reach a balance of %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:975
+#: includes/admin/meta-boxes/requirements-ui.php:997
 #, php-format
 msgid "Expend %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:980
+#: includes/admin/meta-boxes/requirements-ui.php:1002
 #, php-format
 msgid "Reach %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:983
+#: includes/admin/meta-boxes/requirements-ui.php:1005
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:986
+#: includes/admin/meta-boxes/requirements-ui.php:1008
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:989
+#: includes/admin/meta-boxes/requirements-ui.php:1011
 #, php-format
 msgid "Unlock \"%s\""
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:992
+#: includes/admin/meta-boxes/requirements-ui.php:1014
 #, php-format
 msgid "Get added to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:995
+#: includes/admin/meta-boxes/requirements-ui.php:1017
 #, php-format
 msgid "Get assigned to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:998
+#: includes/admin/meta-boxes/requirements-ui.php:1020
 #, php-format
 msgid "Get removed from %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1036
+#: includes/admin/meta-boxes/requirements-ui.php:1058
 #, php-format
 msgid "%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1038
+#: includes/admin/meta-boxes/requirements-ui.php:1060
 #, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1042
-#: includes/admin/meta-boxes/requirements-ui.php:1051
-#: includes/admin/meta-boxes/requirements-ui.php:1074
+#: includes/admin/meta-boxes/requirements-ui.php:1064
+#: includes/admin/meta-boxes/requirements-ui.php:1073
+#: includes/admin/meta-boxes/requirements-ui.php:1102
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1051
+#: includes/admin/meta-boxes/requirements-ui.php:1073
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1061
+#: includes/admin/meta-boxes/requirements-ui.php:1083
+msgid "minute"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1086
+msgid "hour"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1089
 msgid "day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1064
+#: includes/admin/meta-boxes/requirements-ui.php:1092
 msgid "week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1067
+#: includes/admin/meta-boxes/requirements-ui.php:1095
 msgid "month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1070
+#: includes/admin/meta-boxes/requirements-ui.php:1098
 msgid "year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1074
+#: includes/admin/meta-boxes/requirements-ui.php:1102
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
@@ -1316,6 +1328,22 @@ msgstr ""
 
 #: includes/admin/meta-boxes/requirements.php:54
 msgid "Limit Type"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements.php:59
+msgid "Per Day"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements.php:60
+msgid "Per Week"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements.php:61
+msgid "Per Month"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements.php:62
+msgid "Per Year"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements.php:71
@@ -2093,28 +2121,28 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: includes/admin/settings/social.php:36 includes/filters.php:1142
-#: includes/filters.php:1286
+#: includes/admin/settings/social.php:36 includes/filters.php:1123
+#: includes/filters.php:1267
 msgid "Share:"
 msgstr ""
 
-#: includes/admin/settings/social.php:37 includes/filters.php:1116
-#: includes/filters.php:1260
+#: includes/admin/settings/social.php:37 includes/filters.php:1097
+#: includes/filters.php:1241
 msgid "Share on Facebook"
 msgstr ""
 
-#: includes/admin/settings/social.php:38 includes/filters.php:1117
-#: includes/filters.php:1261
+#: includes/admin/settings/social.php:38 includes/filters.php:1098
+#: includes/filters.php:1242
 msgid "Share on Twitter"
 msgstr ""
 
-#: includes/admin/settings/social.php:39 includes/filters.php:1118
-#: includes/filters.php:1262
+#: includes/admin/settings/social.php:39 includes/filters.php:1099
+#: includes/filters.php:1243
 msgid "Share on LinkedIn"
 msgstr ""
 
-#: includes/admin/settings/social.php:40 includes/filters.php:1119
-#: includes/filters.php:1263
+#: includes/admin/settings/social.php:40 includes/filters.php:1100
+#: includes/filters.php:1244
 msgid "Share on Pinterest"
 msgstr ""
 
@@ -2122,23 +2150,23 @@ msgstr ""
 msgid "Social Networks"
 msgstr ""
 
-#: includes/admin/settings/social.php:48 includes/filters.php:1123
-#: includes/filters.php:1267
+#: includes/admin/settings/social.php:48 includes/filters.php:1104
+#: includes/filters.php:1248
 msgid "Facebook"
 msgstr ""
 
-#: includes/admin/settings/social.php:49 includes/filters.php:1124
-#: includes/filters.php:1268
+#: includes/admin/settings/social.php:49 includes/filters.php:1105
+#: includes/filters.php:1249
 msgid "Twitter"
 msgstr ""
 
-#: includes/admin/settings/social.php:50 includes/filters.php:1125
-#: includes/filters.php:1269
+#: includes/admin/settings/social.php:50 includes/filters.php:1106
+#: includes/filters.php:1250
 msgid "LinkedIn"
 msgstr ""
 
-#: includes/admin/settings/social.php:51 includes/filters.php:1126
-#: includes/filters.php:1270
+#: includes/admin/settings/social.php:51 includes/filters.php:1107
+#: includes/filters.php:1251
 msgid "Pinterest"
 msgstr ""
 
@@ -2166,7 +2194,7 @@ msgstr ""
 msgid "Default text when sharing an earned achievement on Twitter. Maximum 280 characters (leave at least 24 characters empty for the achievement URL)."
 msgstr ""
 
-#: includes/admin/settings/social.php:72 includes/filters.php:1135
+#: includes/admin/settings/social.php:72 includes/filters.php:1116
 msgid "I earned the {achievement_type} {achievement_title} on {site_title}"
 msgstr ""
 
@@ -2178,7 +2206,7 @@ msgstr ""
 msgid "Default text when sharing an earned rank on Twitter. Maximum 280 characters (leave at least 24 characters empty for the rank URL)."
 msgstr ""
 
-#: includes/admin/settings/social.php:81 includes/filters.php:1279
+#: includes/admin/settings/social.php:81 includes/filters.php:1260
 msgid "I reached the {rank_type} {rank_title} on {site_title}"
 msgstr ""
 
@@ -3878,78 +3906,78 @@ msgstr ""
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 
-#: includes/filters.php:218 includes/filters.php:220 includes/filters.php:2034
-#: includes/filters.php:2080 includes/privacy/exporters/user-earnings.php:164
+#: includes/filters.php:218 includes/filters.php:220 includes/filters.php:2017
+#: includes/filters.php:2063 includes/privacy/exporters/user-earnings.php:164
 msgid "Award"
 msgid_plural "Awards"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:501
+#: includes/filters.php:475
 #, php-format
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/filters.php:501 includes/filters.php:2024
+#: includes/filters.php:475 includes/filters.php:2007
 #: includes/post-types.php:395
 msgid "Step"
 msgid_plural "Steps"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:665
+#: includes/filters.php:646
 #, php-format
 msgid "%d times earned"
 msgstr ""
 
-#: includes/filters.php:669
+#: includes/filters.php:650
 #, php-format
 msgid "%d of %d times earned"
 msgstr ""
 
-#: includes/filters.php:818 includes/filters.php:953
+#: includes/filters.php:799 includes/filters.php:934
 #, php-format
 msgid "Unlock using %s"
 msgstr ""
 
-#: includes/filters.php:841 includes/filters.php:976
+#: includes/filters.php:822 includes/filters.php:957
 #, php-format
 msgid "Do you want to unlock %s using %s?"
 msgstr ""
 
-#: includes/filters.php:842 includes/filters.php:977
+#: includes/filters.php:823 includes/filters.php:958
 msgid "Yes"
 msgstr ""
 
-#: includes/filters.php:843 includes/filters.php:978
+#: includes/filters.php:824 includes/filters.php:959
 msgid "No"
 msgstr ""
 
-#: includes/filters.php:1402
+#: includes/filters.php:1383
 #, php-format
 msgid "You have earned this %s!"
 msgstr ""
 
-#: includes/filters.php:1597
+#: includes/filters.php:1578
 msgid "Next Post"
 msgstr ""
 
-#: includes/filters.php:1599
+#: includes/filters.php:1580
 msgid "Previous Post"
 msgstr ""
 
-#: includes/filters.php:1704 includes/filters.php:2043
+#: includes/filters.php:1685 includes/filters.php:2026
 msgid "Requirement"
 msgid_plural "Requirements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:1817
+#: includes/filters.php:1800
 #, php-format
 msgid "You have reached this %s!"
 msgstr ""
 
-#: includes/filters.php:2034 includes/filters.php:2080
+#: includes/filters.php:2017 includes/filters.php:2063
 #: includes/privacy/exporters/user-earnings.php:164
 msgid "Deduction"
 msgstr ""

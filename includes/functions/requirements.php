@@ -229,3 +229,118 @@ function gamipress_query_requirements( $query_args = array() ) {
     return $results;
 
 }
+
+/**
+ * Helper function to determine if user is able to earn a requirement
+ *
+ * @since 1.9.0
+ *
+ * @param int $requirement_id   The requirement ID
+ * @param int $user_id          The user ID
+ *
+ * @return bool
+ */
+function gamipress_can_user_earn_requirement( $requirement_id = 0, $user_id = 0 ) {
+
+    if( $user_id === 0 ) {
+        $user_id = get_current_user_id();
+    }
+
+    $post_type = gamipress_get_post_type( $requirement_id );
+    $can_earn = false;
+
+    switch( $post_type ) {
+        case 'points-award':
+        case 'points-deduct':
+            $maximum_earnings = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_maximum_earnings' ) );
+
+            // An unlimited maximum of earnings means points deducts could be earned anyway
+            if( $maximum_earnings > 0 ) {
+                $earned_times = gamipress_get_earnings_count( array(
+                    'user_id' => absint( $user_id ),
+                    'post_id' => absint( $requirement_id ),
+                ) );
+
+                // User has earned it more times than required times, so is earned
+                if( $earned_times < $maximum_earnings ) {
+                    $can_earn = true;
+                }
+            } else {
+                // If maximum earnings is unlimited, then can be earned
+                $can_earn = true;
+            }
+            break;
+        case 'step':
+            $achievement = gamipress_get_step_achievement( $requirement_id );
+
+            // First check if user has not exceeded the maximum earnings allowed for this achievement
+            if( $achievement && ! gamipress_achievement_user_exceeded_max_earnings( $user_id, $achievement->ID ) ) {
+
+                // Next, check if user has earned the step based on the last time he has completed the achievement
+                if( gamipress_get_earnings_count( array(
+                        'user_id'   => $user_id,
+                        'post_id'   => $requirement_id,
+                        'since'     => gamipress_achievement_last_user_activity( $achievement->ID, $user_id )
+                    ) ) === 0 ) {
+                    $can_earn = true;
+                }
+
+            }
+            break;
+        case 'rank-requirement':
+            $rank = gamipress_get_rank_requirement_rank( $requirement_id );
+
+            // First check if user has earned the rank
+            if( $rank && ! gamipress_has_user_earned_achievement( $rank->ID, $user_id ) ) {
+
+                // Next, check if has earned the rank requirement
+                if( ! gamipress_has_user_earned_achievement( $requirement_id, $user_id ) ) {
+                    $can_earn = true;
+                }
+            }
+            break;
+    }
+
+    // Check if user deserves limit requirements for this requirement
+    if( $can_earn ) {
+
+        $trigger_type = gamipress_get_post_meta( $requirement_id, '_gamipress_trigger_type' );
+
+        if( ! in_array( $trigger_type, gamipress_get_activity_triggers_excluded_from_activity_limit() ) ) {
+
+            // Check if is limited over time
+            $since = gamipress_get_achievement_limit_timestamp( $requirement_id );
+
+            if( $since > 0 ) {
+
+                // Activity count limit over time
+                $limit = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) );
+
+                // Activity count limited to a timestamp
+                $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $requirement_id, $since ) );
+
+                // Force bail if user exceeds the limit over time
+                if( $activity_count >= $limit ) {
+                    $can_earn = false;
+                }
+
+            }
+
+        }
+
+    }
+
+    /**
+     * Filter available to override if user is able to earn a requirement
+     *
+     * @since 1.9.0
+     *
+     * @param bool  $can_earn           If user can earn this requirement or not
+     * @param int   $requirement_id     The requirement ID
+     * @param int   $user_id            The user ID
+     *
+     * @return bool
+     */
+    return apply_filters( 'gamipress_can_user_earn_requirement', $can_earn, $requirement_id, $user_id );
+
+}

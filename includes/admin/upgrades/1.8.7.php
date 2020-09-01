@@ -34,11 +34,14 @@ function gamipress_187_upgrades( $stored_version ) {
         return $stored_version;
     }
 
-    // Process 1.8.7 upgrade
-    gamipress_process_187_upgrade();
+    // Ensure that GamiPress tables have been created
+    if( gamipress_database_table_exists( GamiPress()->db->logs ) ) {
+        // Process 1.8.7 upgrade
+        gamipress_process_187_upgrade();
 
-    // There is nothing to update, so upgrade
-    $stored_version = '1.8.7';
+        // There is nothing to update, so upgrade
+        $stored_version = '1.8.7';
+    }
 
     return $stored_version;
 
@@ -55,6 +58,11 @@ function gamipress_process_187_upgrade() {
     ignore_user_abort( true );
     set_time_limit( 0 );
 
+    // Bail if GamiPress tables haven't been created yet
+    if( ! gamipress_database_table_exists( GamiPress()->db->logs ) ) {
+        return;
+    }
+
     // Setup tables to update
     $tables = array(
         GamiPress()->db->logs,
@@ -62,6 +70,7 @@ function gamipress_process_187_upgrade() {
         GamiPress()->db->user_earnings,
         GamiPress()->db->user_earnings_meta,
     );
+
     foreach( $tables as $table ) {
         // Alter table to use InnoDB
         $wpdb->query( "ALTER TABLE {$table} ENGINE = InnoDB;" );

@@ -240,29 +240,16 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 	// Concatenate our output
 	foreach ( $points_awards as $points_award ) {
 
-		// Check if user has earned this points award, and add an 'earned' class
-		$earned_status = 'user-has-not-earned';
-
-		$maximum_earnings = absint( gamipress_get_post_meta( $points_award->ID, '_gamipress_maximum_earnings' ) );
-
-		// An unlimited maximum of earnings means points awards could be earned anyway
-		if( $maximum_earnings > 0 ) {
-			$earned_times = gamipress_get_earnings_count( array(
-				'user_id' => absint( $user_id ),
-				'post_id' => absint( $points_award->ID ),
-			) );
-
-			// User has earned it more times than required times, so is earned
-			if( $earned_times >= $maximum_earnings ) {
-				$earned_status = 'user-has-earned';
-			}
-		}
+        // Check if user can earn this points award and add the earned class
+        $can_earn = gamipress_can_user_earn_requirement( $points_award->ID, $user_id );
+        $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
 
 		$title = $points_award->post_title;
 
 		// If points award doesn't have a title, then try to build one
-		if( empty( $title ) )
+		if( empty( $title ) ) {
 			$title = gamipress_build_requirement_title( $points_award->ID );
+        }
 
         /**
          * Filters the points award CSS class
@@ -366,29 +353,16 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 	// Concatenate our output
 	foreach ( $points_deducts as $points_deduct ) {
 
-		// Check if user has earned this points deduct, and add an 'earned' class
-		$earned_status = 'user-has-not-earned';
-
-		$maximum_earnings = absint( gamipress_get_post_meta( $points_deduct->ID, '_gamipress_maximum_earnings' ) );
-
-		// An unlimited maximum of earnings means points deducts could be earned anyway
-		if( $maximum_earnings > 0 ) {
-			$earned_times = gamipress_get_earnings_count( array(
-				'user_id' => absint( $user_id ),
-				'post_id' => absint( $points_deduct->ID ),
-			) );
-
-			// User has earned it more times than required times, so is earned
-			if( $earned_times >= $maximum_earnings ) {
-				$earned_status = 'user-has-earned';
-			}
-		}
+        // Check if user can earn this points deduct and add the earned class
+        $can_earn = gamipress_can_user_earn_requirement( $points_deduct->ID, $user_id );
+        $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
 
 		$title = $points_deduct->post_title;
 
 		// If points deduct doesn't have a title, then try to build one
-		if( empty( $title ) )
+		if( empty( $title ) ) {
 			$title = gamipress_build_requirement_title( $points_deduct->ID );
+        }
 
         /**
          * Filters the points deduct CSS class
@@ -520,14 +494,21 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	// Concatenate our output
 	foreach ( $steps as $step ) {
 
-		// Check if user has earned this step, and add an 'earned' class
-		$earned_status = gamipress_has_user_earned_achievement( $step->ID, $user_id ) ? 'user-has-earned' : 'user-has-not-earned';
+		// Check if user can earn this step and add the earned class
+        $can_earn = gamipress_can_user_earn_requirement( $step->ID, $user_id );
+		$earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+
+		// Force earned class if user can't earn this step but has earned it in the past
+		if( ! $can_earn && gamipress_has_user_earned_achievement( $step->ID, $user_id ) ) {
+            $earned_status = 'user-has-earned';
+        }
 
 		$title = $step->post_title;
 
 		// If step doesn't have a title, then try to build one
-		if( empty( $title ) )
+		if( empty( $title ) ) {
 			$title = gamipress_build_requirement_title( $step->ID );
+        }
 
         /**
          * Filters the step CSS class
@@ -1723,14 +1704,16 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	// Concatenate our output
 	foreach ( $requirements as $requirement ) {
 
-		// Check if user has earned this requirement, and add an 'earned' class
-		$earned_status = gamipress_has_user_earned_achievement( $requirement->ID, $user_id ) ? 'user-has-earned' : 'user-has-not-earned';
+        // Check if user can earn this requirement and add the earned class
+        $can_earn = gamipress_can_user_earn_requirement( $requirement->ID, $user_id );
+        $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
 
 		$title = $requirement->post_title;
 
 		// If step doesn't have a title, then try to build one
-		if( empty( $title ) )
+		if( empty( $title ) ) {
 			$title = gamipress_build_requirement_title( $requirement->ID );
+        }
 
         /**
          * Filters the rank requirement CSS class

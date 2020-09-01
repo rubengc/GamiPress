@@ -278,8 +278,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_require_text', $requirement_id, $post_id ); ?>
 
@@ -303,8 +303,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_trigger_type', $requirement_id, $post_id ); ?>
 
@@ -316,8 +316,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_points_required', $requirement_id, $post_id ); ?>
 
@@ -336,8 +336,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_points_type_required', $requirement_id, $post_id ); ?>
 
@@ -355,8 +355,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.2.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_rank_type_required', $requirement_id, $post_id ); ?>
 
@@ -370,8 +370,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.2.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_rank_required', $requirement_id, $post_id ); ?>
 
@@ -389,8 +389,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.8.8
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_user_role_required', $requirement_id, $post_id ); ?>
 
@@ -409,8 +409,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_achievement_type', $requirement_id, $post_id ); ?>
 
@@ -434,8 +434,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_achievement_post', $requirement_id, $post_id ); ?>
 
@@ -446,12 +446,34 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <span class="limit-text"><?php _e( 'limited to', 'gamipress' ); ?></span>
         <input class="limit" type="number" min="1" value="<?php echo $limit; ?>" placeholder="1">
+        <?php
+        $limit_intervals = array(
+            'unlimited' => __( 'Unlimited', 'gamipress' ),
+            'minutely' => __( 'Per minute', 'gamipress' ),
+            'hourly' => __( 'Per hour', 'gamipress' ),
+            'daily' => __( 'Per day', 'gamipress' ),
+            'weekly' => __( 'Per week', 'gamipress' ),
+            'monthly' => __( 'Per month', 'gamipress' ),
+            'yearly' => __( 'Per year', 'gamipress' ),
+        );
+
+        /**
+         * Filter available to override limit intervals available
+         *
+         * @since 1.9.0
+         *
+         * @param array $limit_intervals    Default limit intervals (unlimited, hourly, daily, weekly, monthly and yearly)
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         *
+         * @return array
+         */
+        $limit_intervals = apply_filters( 'gamipress_requirement_limit_intervals', $limit_intervals, $requirement_id, $post_id );
+        ?>
         <select class="limit-type">
-            <option value="unlimited" <?php selected( $limit_type, 'unlimited' ); ?>><?php _e( 'Unlimited', 'gamipress' ); ?></option>
-            <option value="daily" <?php selected( $limit_type, 'daily' ); ?>><?php _e( 'Per Day', 'gamipress' ); ?></option>
-            <option value="weekly" <?php selected( $limit_type, 'weekly' ); ?>><?php _e( 'Per Week', 'gamipress' ); ?></option>
-            <option value="monthly" <?php selected( $limit_type, 'monthly' ); ?>><?php _e( 'Per Month', 'gamipress' ); ?></option>
-            <option value="yearly" <?php selected( $limit_type, 'yearly' ); ?>><?php _e( 'Per Year', 'gamipress' ); ?></option>
+            <?php foreach( $limit_intervals as $limit_interval => $limit_interval_label ) : ?>
+                <option value="<?php echo $limit_interval; ?>>" <?php selected( $limit_type, $limit_interval ); ?>><?php echo $limit_interval_label; ?></option>
+            <?php endforeach; ?>
         </select>
 
         <?php
@@ -460,8 +482,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_limit', $requirement_id, $post_id ); ?>
 
@@ -502,8 +524,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
              *
              * @since 1.0.0
              *
-             * @param integer $requirement_id
-             * @param integer $post_id
+             * @param int   $requirement_id     The requirement ID
+             * @param int   $post_id            The post ID where requirements are displayed
              */
             do_action( 'gamipress_requirement_ui_html_after_points', $requirement_id, $post_id ); ?>
         <?php endif; ?>
@@ -519,8 +541,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          *
          * @since 1.0.0
          *
-         * @param integer $requirement_id
-         * @param integer $post_id
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_requirement_title', $requirement_id, $post_id ); ?>
 
@@ -808,7 +830,7 @@ add_action( 'wp_ajax_gamipress_update_requirements', 'gamipress_update_requireme
  * @since 1.4.6
  *
  * @param array     $requirement
- * @param integer   $order
+ * @param int   $order
  *
  * @return array                    The updated requirement object
  */
@@ -914,7 +936,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
  *
  * @since 1.4.6
  *
- * @param integer   $post_id
+ * @param int   $post_id
  */
 function gamipress_on_save_requirements_post_parent( $post_id ) {
 
@@ -1057,6 +1079,12 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         $limit_type_label = '';
 
         switch( $limit_type ) {
+            case 'minutely':
+                $limit_type_label = __( 'minute', 'gamipress' );
+                break;
+            case 'hourly':
+                $limit_type_label = __( 'hour', 'gamipress' );
+                break;
             case 'daily':
                 $limit_type_label = __( 'day', 'gamipress' );
                 break;

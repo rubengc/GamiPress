@@ -759,28 +759,28 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
     if( $since > 0 ) {
 
         // Activity count limit over time
-        $activity_count_limit = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_limit' ) );
+        $limit = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_limit' ) );
 
         // Activity count limited to a timestamp
         $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id, $since ) );
 
         // Force bail if user exceeds the limit over time
-        if( $activity_count > $activity_count_limit )
+        if( $activity_count > $limit ) {
             return false;
+        }
 
     }
 
     // Get the required number of check-ins
-    $required_activity_count = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_count' ) );
+    $count = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_count' ) );
 
     // Grab the relevant activity count
     $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id ) );
 
-    // If we meet or exceed the required number of check-ins, then deserve the achievement
-    if ( $activity_count >= $required_activity_count )
-        $return = true;
-    else
-        $return = false;
+    // If exceed the required number of check-ins, then deserve the achievement
+    if ( $activity_count < $count ) {
+        return false;
+    }
 
 	return $return;
 }
@@ -809,11 +809,11 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 
 	if ( in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
 
-		// Grab the requirements
-		$requirements = gamipress_get_requirement_object( $achievement_id );
+		// Grab the requirement object
+		$requirement = gamipress_get_requirement_object( $achievement_id );
 
 		// Determine which type of trigger we're using and return the corresponding activities
-		switch( $requirements['trigger_type'] ) {
+		switch( $requirement['trigger_type'] ) {
 			case 'specific-achievement':
 
 				if( $post_type === 'step' && $since === 0 ) {
@@ -831,18 +831,18 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 				// Get our achievement activity
                 $activities = gamipress_get_earnings_count( array(
 					'user_id'   => absint( $user_id ),
-					'post_id'   => absint( $requirements['achievement_post'] ),
+					'post_id'   => absint( $requirement['achievement_post'] ),
 					'since'     => $since
 				) );
 				break;
 			case 'any-achievement' :
-				$trigger = 'gamipress_unlock_' . $requirements['achievement_type'];
+				$trigger = 'gamipress_unlock_' . $requirement['achievement_type'];
 				break;
 			case 'all-achievements' :
-				$trigger = 'gamipress_unlock_all_' . $requirements['achievement_type'];
+				$trigger = 'gamipress_unlock_all_' . $requirement['achievement_type'];
 				break;
 			default :
-				$trigger = $requirements['trigger_type'];
+				$trigger = $requirement['trigger_type'];
 				break;
 		}
 
@@ -875,7 +875,7 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 
 			}
 
-            $activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirements );
+            $activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirement );
 
 		}
 
@@ -904,30 +904,46 @@ function gamipress_get_achievement_limit_timestamp( $achievement_id = 0 ) {
 	$now    = current_time( 'timestamp' );
 	$from   = current_time( 'timestamp' );
 
+	$hour   = date( 'H', $now );
+	$minute = date( 'i', $now );
+	$second = date( 's', $now );
+	$day    = date( 'n', $now );
+	$month  = date( 'j', $now );
+	$year   = date( 'Y', $now );
+
 	switch( $limit_type ) {
+        case 'minutely':
+            $from = mktime( $hour, $minute - 1, $second, $day, $month, $year );
+            break;
+        case 'hourly':
+            $from = mktime( $hour - 1, $minute, $second, $day, $month, $year );
+            break;
 		case 'daily':
-			$from = mktime( 0, 0, 0, date( 'n', $now ), date( 'j', $now ), date( 'Y', $now ) );
+			$from = mktime( 0, 0, 0, $day, $month, $year );
 			break;
 		case 'weekly':
-			$from = mktime( 0, 0, 0, date( "n", $now ), date( "j", $now ) - date( "N", $now ) + 1 );
+			$from = mktime( 0, 0, 0, $day, $month - date( 'N', $now ) + 1 );
 			break;
 		case 'monthly':
-			$from =  mktime( 0, 0, 0, date( "n", $now ), 1, date( 'Y', $now ) );
+			$from =  mktime( 0, 0, 0, $day, 1, $year );
 			break;
 		case 'yearly':
-			$from =  mktime( 0, 0, 0, 1, 1, date( 'Y', $now ) );
+			$from =  mktime( 0, 0, 0, 1, 1, $year );
 			break;
 	}
 
     /**
      * Available filter to override the start date where an achievement is limiting
      *
-     * @param int $from	            The start date where an achievement is limiting
-     * @param int $achievement_id	The achievement ID
+     * @since 1.0.0
      *
-     * @return int 					Timestamp from the limit starts
+     * @param int       $from	        The start date where an achievement is limiting
+     * @param int       $achievement_id	The achievement ID
+     * @param string    $limit_type	    The achievement limit type
+     *
+     * @return int 					    Timestamp from the limit starts
      */
-	return apply_filters( 'gamipress_get_achievement_limit_timestamp', $from, $achievement_id );
+	return apply_filters( 'gamipress_get_achievement_limit_timestamp', $from, $achievement_id, $limit_type );
 
 }
 
