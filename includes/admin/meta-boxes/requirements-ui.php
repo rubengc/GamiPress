@@ -472,7 +472,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
         ?>
         <select class="limit-type">
             <?php foreach( $limit_intervals as $limit_interval => $limit_interval_label ) : ?>
-                <option value="<?php echo $limit_interval; ?>>" <?php selected( $limit_type, $limit_interval ); ?>><?php echo $limit_interval_label; ?></option>
+                <option value="<?php echo $limit_interval; ?>" <?php selected( $limit_type, $limit_interval ); ?>><?php echo $limit_interval_label; ?></option>
             <?php endforeach; ?>
         </select>
 

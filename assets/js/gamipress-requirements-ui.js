@@ -138,7 +138,13 @@
             count.show();
             count_text.show();
             limit_text.show();
-            if( limit_type.val() !== 'unlimited' ) { limit.show(); }
+
+            if( limit_type.val() !== 'unlimited' ) {
+                limit.show();
+            } else {
+                limit.hide();
+            }
+
             limit_type.show();
         }
 
@@ -356,12 +362,12 @@
 
     // Limit inputs
     $('.requirements-list').on( 'change', '.limit-type', function() {
-        var limit_type_selector = $(this);
+        var $this = $(this);
 
-        if( limit_type_selector.val() === 'unlimited' ) {
-            limit_type_selector.siblings('.limit').hide();
+        if( $this.val() === 'unlimited' ) {
+            $this.siblings('.limit').hide();
         } else {
-            limit_type_selector.siblings('.limit').show();
+            $this.siblings('.limit').show();
         }
     });
 

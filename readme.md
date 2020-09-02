@@ -241,6 +241,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.0.1 ###
+
+* **Improvements**
+* Improved Javascript checks to decide the visibility of requirement limit fields.
+* **Bug Fixes**
+* Fixed typo on requirements limit field values.
+
 ### 1.9.0 ###
 
 * **New Features**
