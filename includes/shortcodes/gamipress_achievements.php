@@ -547,7 +547,7 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 			$current = current( $type );
 
 			// If we have exactly one achievement type, get its plural name, otherwise use "achievements"
-			$post_type_plural = ( count( $type ) == 1 && ! empty( $current ) ) ? get_post_type_object( $current )->labels->name : __( 'achievements' , 'gamipress' );
+			$post_type_plural = ( count( $type ) == 1 && ! empty( $current ) ) ? gamipress_get_achievement_type_plural( $current ) : __( 'achievements' , 'gamipress' );
 
 			// Setup our completion message
 			$achievements .= '<div class="gamipress-no-results">';

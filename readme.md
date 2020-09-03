@@ -241,6 +241,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.0.2 ###
+
+* **Bug Fixes**
+* Fixed event detection on unlock any or all achievements of a specific type.
+
 ### 1.9.0.1 ###
 
 * **Improvements**

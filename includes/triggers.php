@@ -160,15 +160,13 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
 	    $achievement_type = $activity_trigger;
 	    $achievement_type = str_replace( 'gamipress_unlock_all_', '', $achievement_type );
 	    $achievement_type = str_replace( 'gamipress_unlock_', '', $achievement_type );
+	    $data = gamipress_get_achievement_type( $achievement_type );
 
-        // Grab the post type object
-        $post_type_object = get_post_type_object( $achievement_type );
-
-        if ( is_object( $post_type_object ) ) {
+        if ( $data ) {
             if( gamipress_starts_with( $activity_trigger, 'gamipress_unlock_all_' ) )
-                return sprintf( __( 'Unlocked all %s', 'gamipress' ), $post_type_object->labels->name );
+                return sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
             else
-                return sprintf( __( 'Unlocked a %s', 'gamipress' ), $post_type_object->labels->singular_name );
+                return sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
         }
     }
 
@@ -338,17 +336,11 @@ function gamipress_load_activity_triggers() {
     $excluded_to_load = gamipress_get_activity_triggers_excluded_to_load();
 
 	// Loop through each achievement type and add triggers for unlocking them
-	foreach ( gamipress_get_achievement_types_slugs() as $achievement_type ) {
-
-		// Grab the post type object, and bail if it's not actually an object
-		$post_type_object = get_post_type_object( $achievement_type );
-
-		if ( ! is_object( $post_type_object ) )
-			continue;
+	foreach ( gamipress_get_achievement_types() as $achievement_type => $data ) {
 
 		// Add trigger for unlocking ANY and ALL posts for each achievement type
-		$activity_triggers[__( 'GamiPress', 'gamipress' )]['gamipress_unlock_' . $achievement_type] = sprintf( __( 'Unlocked a %s', 'gamipress' ), $post_type_object->labels->singular_name );
-		$activity_triggers[__( 'GamiPress', 'gamipress' )]['gamipress_unlock_all_' . $achievement_type] = sprintf( __( 'Unlocked all %s', 'gamipress' ), $post_type_object->labels->name );
+		$activity_triggers[__( 'GamiPress', 'gamipress' )]['gamipress_unlock_' . $achievement_type] = sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
+		$activity_triggers[__( 'GamiPress', 'gamipress' )]['gamipress_unlock_all_' . $achievement_type] = sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
 
 	}
 

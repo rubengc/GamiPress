@@ -318,7 +318,6 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 
 	// Setup our variables
 	$output = '';
-	$post_type_object = get_post_type_object( 'points-deduct' );
 	$points_type = gamipress_get_points_deduct_points_type( $points_deducts[0]->ID );
 
 	if( $points_type ) {

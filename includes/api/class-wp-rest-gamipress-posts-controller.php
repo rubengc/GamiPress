@@ -465,9 +465,11 @@ class WP_REST_GamiPress_Posts_Controller extends WP_REST_Controller {
             return true;
         }
 
-        foreach ($request["type"] as $post_type) {
-            $post_type_obj = get_post_type_object($post_type);
-            if (!current_user_can($post_type_obj->cap->edit_posts)) {
+        foreach ( $request["type"] as $post_type ) {
+
+            $post_type_obj = get_post_type_object( $post_type );
+
+            if ( ! current_user_can( $post_type_obj->cap->edit_posts ) ) {
                 return new WP_Error('rest_forbidden_status', __('Status is forbidden'), array(
                     'status'    => rest_authorization_required_code(),
                     'post_type' => $post_type_obj->name,
