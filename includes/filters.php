@@ -240,9 +240,13 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 	// Concatenate our output
 	foreach ( $points_awards as $points_award ) {
 
-        // Check if user can earn this points award and add the earned class
-        $can_earn = gamipress_can_user_earn_requirement( $points_award->ID, $user_id );
-        $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        if( $user_id === 0 ) {
+            $earned_status = 'user-has-not-earned';
+        } else {
+            // Check if user can earn this points award and add the earned class
+            $can_earn = gamipress_can_user_earn_requirement( $points_award->ID, $user_id );
+            $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        }
 
 		$title = $points_award->post_title;
 
@@ -352,9 +356,13 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
 	// Concatenate our output
 	foreach ( $points_deducts as $points_deduct ) {
 
-        // Check if user can earn this points deduct and add the earned class
-        $can_earn = gamipress_can_user_earn_requirement( $points_deduct->ID, $user_id );
-        $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        if( $user_id === 0 ) {
+            $earned_status = 'user-has-not-earned';
+        } else {
+            // Check if user can earn this points deduct and add the earned class
+            $can_earn = gamipress_can_user_earn_requirement( $points_deduct->ID, $user_id );
+            $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        }
 
 		$title = $points_deduct->post_title;
 
@@ -493,9 +501,13 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	// Concatenate our output
 	foreach ( $steps as $step ) {
 
-		// Check if user can earn this step and add the earned class
-        $can_earn = gamipress_can_user_earn_requirement( $step->ID, $user_id );
-		$earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        if( $user_id === 0 ) {
+            $earned_status = 'user-has-not-earned';
+        } else {
+            // Check if user can earn this step and add the earned class
+            $can_earn = gamipress_can_user_earn_requirement( $step->ID, $user_id );
+            $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        }
 
 		// Force earned class if user can't earn this step but has earned it in the past
 		if( ! $can_earn && gamipress_has_user_earned_achievement( $step->ID, $user_id ) ) {
@@ -1670,12 +1682,14 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	$count = count( $requirements );
 
 	// If we have no steps, return nothing
-	if ( ! $count )
+	if ( ! $count ) {
 		return null;
+    }
 
 	// Grab the current user's ID if none was specified
-	if ( ! $user_id )
+	if ( ! $user_id ) {
 		$user_id = get_current_user_id();
+    }
 
 	// Setup our variables
 	$output = '';
@@ -1703,9 +1717,13 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 	// Concatenate our output
 	foreach ( $requirements as $requirement ) {
 
-        // Check if user can earn this requirement and add the earned class
-        $can_earn = gamipress_can_user_earn_requirement( $requirement->ID, $user_id );
-        $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+	    if( $user_id === 0 ) {
+            $earned_status = 'user-has-not-earned';
+        } else {
+            // Check if user can earn this requirement and add the earned class
+            $can_earn = gamipress_can_user_earn_requirement( $requirement->ID, $user_id );
+            $earned_status = $can_earn ? 'user-has-not-earned' : 'user-has-earned';
+        }
 
 		$title = $requirement->post_title;
 

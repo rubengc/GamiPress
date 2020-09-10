@@ -158,8 +158,8 @@ function gamipress_get_date_range( $range = '', $date = 0 ) {
     }
 
     return array(
-        'start'    => date( 'Y-m-d', $start_date ),
-        'end'      => date( 'Y-m-d', $end_date )
+        'start'    => date( 'Y-m-d 00:00:00', $start_date ),
+        'end'      => date( 'Y-m-d 23:59:59', $end_date )
     );
 
 }

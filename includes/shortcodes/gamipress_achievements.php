@@ -406,26 +406,31 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
 	}
 
 	// Convert $type to properly support multiple achievement types
-	if ( $type === 'all')
+	if ( $type === 'all') {
 		$type = gamipress_get_achievement_types_slugs();
-	else
+    } else {
 		$type = explode( ',', $type );
+    }
 
 	// Prevent empty strings to be turned an array by explode()
-	if ( ! is_array( $include ) && empty( $include ) )
+	if ( ! is_array( $include ) && empty( $include ) ) {
 		$include = array();
+    }
 
 	// Build $exclude array
-	if ( ! is_array( $exclude ) && empty( $exclude ) )
+	if ( ! is_array( $exclude ) && empty( $exclude ) ) {
 		$exclude = array();
+    }
 
 	// Build $include array
-	if ( ! is_array( $include ) )
+	if ( ! is_array( $include ) ) {
 		$include = explode( ',', $include );
+    }
 
 	// Build $exclude array
-	if ( ! is_array( $exclude ) )
+	if ( ! is_array( $exclude ) ) {
 		$exclude = explode( ',', $exclude );
+    }
 
 	// Initialize our output and counters
 	$achievements = '';
@@ -490,12 +495,14 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
             }
 
             // Exclude certain achievements
-            if( ! empty( $exclude ) )
+            if( ! empty( $exclude ) ) {
                 $query_args[ 'post__not_in' ] = array_merge( $query_args[ 'post__not_in' ], $exclude );
+            }
 
             // Search
-            if( $search )
+            if( $search ) {
                 $query_args[ 's' ] = $search;
+            }
 
 			// Order By
 			if( in_array( $orderby, array( 'points_awarded', 'points_to_unlock' ) ) ) {
@@ -510,6 +517,11 @@ function gamipress_achievements_shortcode_query( $args = array() ) {
                 $query_args[ 'post__not_in' ] = array_merge( $query_args[ 'post__not_in' ], $showed_ids );
                 // Offset not needed since displayed post are getting already excluded
                 unset( $query_args['offset'] );
+            }
+
+            // Prevent to display posts excluded
+            if( ! empty( $query_args[ 'post__in' ] ) && ! empty( $query_args[ 'post__not_in' ] ) ) {
+                $query_args[ 'post__in' ] = array_diff( $query_args[ 'post__in' ], $query_args[ 'post__not_in' ]  );
             }
 
             /**

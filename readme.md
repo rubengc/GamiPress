@@ -241,6 +241,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.1 ###
+
+* **Improvements**
+* Correctly apply the exclude clause on the Achievements List block when displaying earned achievements.
+* Improved the way to calculate the period ranges.
+* Added the date time on period ranges.
+* **Bug Fixes**
+* Prevent to display requirements as earned for not logged in users.
+
 ### 1.9.0.2 ###
 
 * **Bug Fixes**

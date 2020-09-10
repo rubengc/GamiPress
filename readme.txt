@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.5
-Stable tag: 1.9.0.2
+Stable tag: 1.9.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -224,6 +224,15 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.9.1 =
+
+* **Improvements**
+* Correctly apply the exclude clause on the Achievements List block when displaying earned achievements.
+* Improved the way to calculate the period ranges.
+* Added the date time on period ranges.
+* **Bug Fixes**
+* Prevent to display requirements as earned for not logged in users.
 
 = 1.9.0.2 =
 
