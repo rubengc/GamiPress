@@ -461,18 +461,24 @@ function gamipress_achievement_post_ajax_handler() {
 		$selected = $_REQUEST['selected'];
 	}
 
-	$achievement_type = $_REQUEST['achievement_type'];
+	$achievement_type = sanitize_text_field( $_REQUEST['achievement_type'] );
 	$exclude_posts = isset( $_REQUEST['excluded_posts'] ) ? (array) $_REQUEST['excluded_posts'] : array();
 
     // If we don't have an achievement type, bail now
-    if ( empty( $achievement_type ) )
+    if ( empty( $achievement_type ) ) {
         die();
+    }
 
 	$achievement_types = gamipress_get_achievement_types();
 
 	if( ! isset( $achievement_types[$achievement_type] ) ) {
 		return;
 	}
+
+	// Sanitize excluded posts
+    foreach( $exclude_posts as $i => $exclude_post ) {
+        $exclude_posts[$i] = absint( $exclude_post );
+    }
 
 	$singular_name = ! empty( $achievement_types[$achievement_type]['singular_name'] ) ? $achievement_types[$achievement_type]['singular_name'] : __( 'Achievement', 'gamipress' );
 

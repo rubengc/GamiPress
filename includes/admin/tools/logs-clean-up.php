@@ -107,17 +107,20 @@ function gamipress_ajax_logs_clean_up_tool_checks() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) )
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+    }
 
     // Check parameters given
-    if( ! isset( $_POST['log_types'] ) || empty( $_POST['log_types'] ) )
+    if( ! isset( $_POST['log_types'] ) || empty( $_POST['log_types'] ) ) {
         wp_send_json_error( __( 'Please, choose at least 1 log type.', 'gamipress' ) );
+    }
 
     ignore_user_abort( true );
 
-    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) )
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
         set_time_limit( 0 );
+    }
 }
 
 /**
@@ -134,7 +137,7 @@ function gamipress_ajax_logs_clean_up_tool_where() {
     $logs_meta  = GamiPress()->db->logs_meta;
 
     // Setup vars
-    $log_types = $_POST['log_types'];
+    $log_types = esc_sql( $_POST['log_types'] );
     $from = strtotime($_POST['from'] );
     $to = strtotime( $_POST['to'] );
 

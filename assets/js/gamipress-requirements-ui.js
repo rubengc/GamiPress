@@ -119,14 +119,8 @@
         var limit_text = $(this).siblings('.limit-text');
         var limit = $(this).siblings('.limit');
         var limit_type = $(this).siblings('.limit-type');
-        var limit_excluded_triggers = [
-            'gamipress_register',
-            'earn-points',
-            'points-balance',
-            'earn-rank',
-        ];
 
-        if ( limit_excluded_triggers.indexOf( trigger_type ) !== -1 ) {
+        if ( gamipress_requirements_ui.triggers_excluded_from_limit.indexOf( trigger_type ) !== -1 ) {
             // Hide limit fields
             count.hide();
             count_text.hide();

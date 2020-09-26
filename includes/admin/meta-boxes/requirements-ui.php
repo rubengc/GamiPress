@@ -780,7 +780,7 @@ function gamipress_update_requirements_ajax_handler() {
     }
 
     // Only continue if we have any requirements
-    if ( isset( $_POST['requirements'] ) ) {
+    if ( isset( $_POST['requirements'] ) && is_array( $_POST['requirements'] ) ) {
 
         // Setup an array for storing all our requirement titles
         // This let's us dynamically update the Label field when requirements are saved
@@ -850,18 +850,18 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     global $wpdb;
 
     // Grab all of the relevant values of that requirement
-    $requirement_id         = isset( $requirement['ID'] ) ? $requirement['ID'] : $requirement['requirement_id'];
+    $requirement_id         = isset( $requirement['ID'] ) ? absint( $requirement['ID'] ) : absint( $requirement['requirement_id'] );
     $requirement_type       = gamipress_get_post_type( $requirement_id );
     $count                  = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
     $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
-    $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
-    $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
+    $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? sanitize_text_field( $requirement['points_type_required'] ) : '';
+    $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? sanitize_text_field( $requirement['rank_type_required'] ) : '';
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
-    $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? $requirement['user_role_required'] : '';
+    $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? sanitize_text_field( $requirement['user_role_required'] ) : '';
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
-    $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
-    $trigger_type           = $requirement['trigger_type'];
-    $achievement_type       = $requirement['achievement_type'];
+    $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? sanitize_text_field( $requirement['limit_type'] ) : 'unlimited';
+    $trigger_type           = sanitize_text_field( $requirement['trigger_type'] );
+    $achievement_type       = sanitize_text_field( $requirement['achievement_type'] );
 
     // Connect the achievement with the requirement
     if( $trigger_type === 'specific-achievement' ) {
@@ -900,7 +900,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     // Specific points award data
     if( $requirement_type === 'points-award' || $requirement_type === 'points-deduct' ) {
         $points           = ( ! empty( $requirement['points'] ) ) ? absint( $requirement['points'] ) : 1;
-        $points_type      = ( ! empty( $requirement['points_type'] ) ) ? $requirement['points_type'] : '';
+        $points_type      = ( ! empty( $requirement['points_type'] ) ) ? sanitize_text_field( $requirement['points_type'] ) : '';
         $maximum_earnings = ( ! $requirement['maximum_earnings'] !== "" ) ? absint( $requirement['maximum_earnings'] ) : 1;
 
         update_post_meta( $requirement_id, '_gamipress_points', $points );

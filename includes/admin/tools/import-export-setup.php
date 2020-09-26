@@ -128,8 +128,15 @@ function gamipress_ajax_export_setup_tool() {
 
     $postmeta = GamiPress()->db->postmeta;
 
+    $items = $_POST['items'];
+
     // Check parameters received
-    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) ) {
+    if( ! isset( $items ) || empty( $items ) ) {
+        wp_send_json_error( __( 'No items selected.', 'gamipress' ) );
+    }
+
+    // Check parameters received
+    if( ! is_array( $items ) ) {
         wp_send_json_error( __( 'No items selected.', 'gamipress' ) );
     }
 
@@ -177,7 +184,7 @@ function gamipress_ajax_export_setup_tool() {
         'suppress_filters'  => false,
     );
 
-    foreach( $_POST['items'] as $item_to_export ) {
+    foreach( $items as $item_to_export ) {
 
         foreach( $suffixes as $suffix ) {
 

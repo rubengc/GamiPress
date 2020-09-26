@@ -1137,6 +1137,7 @@ function gamipress_delete_trigger_cache( $trigger ) {
         global $wpdb;
 
         // Cache prefix and suffix
+        $trigger = sanitize_text_field( $trigger );
         $prefix = "gamipress_cache_{$trigger}_";
         $triggered_suffix = '_triggered_requirements';
         $listeners_suffix = '_listeners_count';

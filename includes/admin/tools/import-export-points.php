@@ -149,6 +149,10 @@ function gamipress_import_export_points_tool_ajax_export() {
         wp_send_json_error( __( 'You need to choose at least 1 points type to export.', 'gamipress' ) );
     }
 
+    if( ! is_array( $desired_points_types ) ) {
+        wp_send_json_error( __( 'You need to choose at least 1 points type to export.', 'gamipress' ) );
+    }
+
     ignore_user_abort( true );
 
     if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {

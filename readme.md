@@ -241,6 +241,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.1.1 ###
+
+* **Improvements**
+* Make registration of triggers excluded from limits more flexible.
+* Parameters sanitization in some requests.
+
 ### 1.9.1 ###
 
 * **Improvements**

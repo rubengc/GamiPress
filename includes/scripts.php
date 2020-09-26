@@ -142,7 +142,8 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         wp_localize_script( 'gamipress-requirements-ui-js', 'gamipress_requirements_ui', array(
             'nonce'                         => gamipress_get_admin_nonce(),
             'post_placeholder'              => __( 'Select a Post', 'gamipress' ),
-            'specific_activity_triggers'    => gamipress_get_specific_activity_triggers()
+            'specific_activity_triggers'    => gamipress_get_specific_activity_triggers(),
+            'triggers_excluded_from_limit'  => gamipress_get_activity_triggers_excluded_from_activity_limit(),
         ) );
 
         wp_enqueue_script( 'gamipress-requirements-ui-js' );

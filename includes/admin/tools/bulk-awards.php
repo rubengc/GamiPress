@@ -292,7 +292,7 @@ function gamipress_ajax_bulk_awards_tool() {
             wp_send_json_error( __( 'Choose a valid points amount to award.', 'gamipress' ) );
         }
 
-        $points_type_to_award = $_POST['bulk_award_points_type'];
+        $points_type_to_award = sanitize_text_field( $_POST['bulk_award_points_type'] );
 
         if( $points_type_to_award === '' || ! isset( $points_types[$points_type_to_award] ) ) {
             wp_send_json_error( __( 'Choose a valid points type.', 'gamipress' ) );
@@ -374,8 +374,15 @@ function gamipress_ajax_bulk_awards_tool() {
         // Get specific stored users
 
         // Setup specific users where
-        if( ! empty( $specific_users ) && count( $specific_users ) > 0 )
+        if( ! empty( $specific_users ) && count( $specific_users ) > 0 ) {
+
+            // Sanitize user IDs
+            foreach ( $specific_users as $i => $user_id ) {
+                $specific_users[$i] = absint( $user_id );
+            }
+
             $where[] = "u.ID IN( " . implode( ', ', $specific_users ) . " )";
+        }
 
         // Setup specific users join
         if( ! empty( $specific_roles ) && count( $specific_roles ) > 0 ) {
@@ -383,6 +390,8 @@ function gamipress_ajax_bulk_awards_tool() {
             $join[] = "LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID AND umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities' )";
 
             foreach( $specific_roles as $role ) {
+                $role = esc_sql( $role );
+
                 $where[] = "umcap.meta_value LIKE '%\\\"{$role}\\\"%'";
             }
 

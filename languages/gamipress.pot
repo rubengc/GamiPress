@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-09-10 12:17+0200\n"
+"POT-Creation-Date: 2020-09-26 11:43+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -781,7 +781,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/log-extra-data-ui.php:184
 #: includes/admin/requirements.php:41 includes/admin/requirements.php:80
-#: includes/ajax-functions.php:477 includes/compatibility/1.2.8.php:1000
+#: includes/ajax-functions.php:483 includes/compatibility/1.2.8.php:1000
 #: includes/functions/achievement-types.php:155
 #: includes/functions/achievement-types.php:162
 #: includes/shortcodes/gamipress_achievement.php:27
@@ -800,7 +800,7 @@ msgstr ""
 #: includes/admin/tools/bulk-awards.php:203
 #: includes/admin/tools/bulk-revokes.php:203
 #: includes/admin/tools/import-export-points.php:142
-#: includes/ajax-functions.php:677 includes/ajax-functions.php:780
+#: includes/ajax-functions.php:683 includes/ajax-functions.php:786
 #: includes/compatibility/1.2.8.php:1021
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
@@ -840,7 +840,7 @@ msgstr ""
 #: includes/admin/meta-boxes/log-extra-data-ui.php:230
 #: includes/admin/requirements.php:43 includes/admin/requirements.php:83
 #: includes/admin/tools/import-export-ranks.php:155
-#: includes/ajax-functions.php:525 includes/functions/rank-types.php:156
+#: includes/ajax-functions.php:531 includes/functions/rank-types.php:156
 #: includes/functions/rank-types.php:163
 #: includes/shortcodes/gamipress_rank.php:27
 #: includes/shortcodes/gamipress_ranks.php:41
@@ -1190,16 +1190,16 @@ msgstr ""
 #: includes/admin/tools/import-export-achievements.php:138
 #: includes/admin/tools/import-export-achievements.php:279
 #: includes/admin/tools/import-export-points.php:126
-#: includes/admin/tools/import-export-points.php:235
+#: includes/admin/tools/import-export-points.php:239
 #: includes/admin/tools/import-export-ranks.php:138
 #: includes/admin/tools/import-export-ranks.php:267
 #: includes/admin/tools/import-export-settings.php:97
-#: includes/admin/tools/import-export-setup.php:138
-#: includes/admin/tools/import-export-setup.php:355
+#: includes/admin/tools/import-export-setup.php:145
+#: includes/admin/tools/import-export-setup.php:362
 #: includes/admin/tools/logs-clean-up.php:111
 #: includes/admin/tools/recount-activity.php:95
-#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:654
-#: includes/ajax-functions.php:756
+#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:660
+#: includes/ajax-functions.php:762
 msgid "You are not allowed to perform this action."
 msgstr ""
 
@@ -2007,8 +2007,8 @@ msgstr ""
 msgid "Used when user expend an amount of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:693
-#: includes/ajax-functions.php:796
+#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:699
+#: includes/ajax-functions.php:802
 msgid "{user} expended {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2416,19 +2416,19 @@ msgid "Choose at least one user to award."
 msgstr ""
 
 #: includes/admin/tools/bulk-awards.php:369
-#: includes/admin/tools/bulk-awards.php:405
-#: includes/admin/tools/bulk-awards.php:485
+#: includes/admin/tools/bulk-awards.php:414
+#: includes/admin/tools/bulk-awards.php:494
 msgid "Bulk award process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/bulk-awards.php:412
+#: includes/admin/tools/bulk-awards.php:421
 msgid "Could not find users to award."
 msgstr ""
 
-#: includes/admin/tools/bulk-awards.php:480
-#: includes/admin/tools/bulk-revokes.php:480
+#: includes/admin/tools/bulk-awards.php:489
+#: includes/admin/tools/bulk-revokes.php:489
 #: includes/admin/tools/import-export-achievements.php:251
-#: includes/admin/tools/import-export-points.php:209
+#: includes/admin/tools/import-export-points.php:213
 #: includes/admin/tools/import-export-ranks.php:239
 #, php-format
 msgid "%d remaining users"
@@ -2558,12 +2558,12 @@ msgid "Choose at least one user to revoke."
 msgstr ""
 
 #: includes/admin/tools/bulk-revokes.php:366
-#: includes/admin/tools/bulk-revokes.php:402
-#: includes/admin/tools/bulk-revokes.php:485
+#: includes/admin/tools/bulk-revokes.php:411
+#: includes/admin/tools/bulk-revokes.php:494
 msgid "Bulk revoke process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/bulk-revokes.php:409
+#: includes/admin/tools/bulk-revokes.php:418
 msgid "Could not find users to revoke."
 msgstr ""
 
@@ -2676,19 +2676,19 @@ msgid "User's achievements export process has been done successfully."
 msgstr ""
 
 #: includes/admin/tools/import-export-achievements.php:284
-#: includes/admin/tools/import-export-points.php:240
+#: includes/admin/tools/import-export-points.php:244
 #: includes/admin/tools/import-export-ranks.php:272
 msgid "No file to import."
 msgstr ""
 
 #: includes/admin/tools/import-export-achievements.php:290
-#: includes/admin/tools/import-export-points.php:246
+#: includes/admin/tools/import-export-points.php:250
 #: includes/admin/tools/import-export-ranks.php:278
 msgid "Can't retrieve the file to import, check server file permissions."
 msgstr ""
 
 #: includes/admin/tools/import-export-achievements.php:303
-#: includes/admin/tools/import-export-points.php:259
+#: includes/admin/tools/import-export-points.php:263
 #: includes/admin/tools/import-export-ranks.php:291
 msgid "Empty file, so nothing to import."
 msgstr ""
@@ -2722,15 +2722,16 @@ msgid "Points Type (slug)"
 msgstr ""
 
 #: includes/admin/tools/import-export-points.php:149
+#: includes/admin/tools/import-export-points.php:153
 msgid "You need to choose at least 1 points type to export."
 msgstr ""
 
-#: includes/admin/tools/import-export-points.php:163
-#: includes/admin/tools/import-export-points.php:216
+#: includes/admin/tools/import-export-points.php:167
+#: includes/admin/tools/import-export-points.php:220
 msgid "User's points balances export process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/import-export-points.php:354
+#: includes/admin/tools/import-export-points.php:358
 msgid "User's points balances has been updated successfully."
 msgstr ""
 
@@ -2796,7 +2797,7 @@ msgid "No settings to import."
 msgstr ""
 
 #: includes/admin/tools/import-export-settings.php:93
-#: includes/admin/tools/import-export-setup.php:350
+#: includes/admin/tools/import-export-setup.php:357
 msgid "Can not retrieve the file to import, check server file permissions."
 msgstr ""
 
@@ -2871,24 +2872,25 @@ msgstr ""
 msgid "Import Setup"
 msgstr ""
 
-#: includes/admin/tools/import-export-setup.php:133
+#: includes/admin/tools/import-export-setup.php:135
+#: includes/admin/tools/import-export-setup.php:140
 #: includes/admin/tools/reset-data.php:104
 msgid "No items selected."
 msgstr ""
 
-#: includes/admin/tools/import-export-setup.php:329
+#: includes/admin/tools/import-export-setup.php:336
 msgid "Setup export process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/import-export-setup.php:344
+#: includes/admin/tools/import-export-setup.php:351
 msgid "No setup to import."
 msgstr ""
 
-#: includes/admin/tools/import-export-setup.php:362
+#: includes/admin/tools/import-export-setup.php:369
 msgid "Empty setup, so nothing to import."
 msgstr ""
 
-#: includes/admin/tools/import-export-setup.php:483
+#: includes/admin/tools/import-export-setup.php:490
 msgid "Setup has been imported successfully."
 msgstr ""
 
@@ -2977,16 +2979,16 @@ msgstr ""
 msgid "Clean Logs"
 msgstr ""
 
-#: includes/admin/tools/logs-clean-up.php:115
+#: includes/admin/tools/logs-clean-up.php:116
 msgid "Please, choose at least 1 log type."
 msgstr ""
 
-#: includes/admin/tools/logs-clean-up.php:178
+#: includes/admin/tools/logs-clean-up.php:181
 #, php-format
 msgid "%d logs will be deleted."
 msgstr ""
 
-#: includes/admin/tools/logs-clean-up.php:206
+#: includes/admin/tools/logs-clean-up.php:209
 msgid "Logs clean up process has been done successfully."
 msgstr ""
 
@@ -3500,54 +3502,54 @@ msgstr ""
 msgid "Choose a requirement type"
 msgstr ""
 
-#: includes/ajax-functions.php:490 includes/ajax-functions.php:558
+#: includes/ajax-functions.php:496 includes/ajax-functions.php:564
 #, php-format
 msgid "Choose the %s"
 msgstr ""
 
-#: includes/ajax-functions.php:640
+#: includes/ajax-functions.php:646
 msgid "Achievement not found."
 msgstr ""
 
-#: includes/ajax-functions.php:646
+#: includes/ajax-functions.php:652
 msgid "Invalid achievement."
 msgstr ""
 
-#: includes/ajax-functions.php:658 includes/ajax-functions.php:664
-#: includes/ajax-functions.php:760 includes/ajax-functions.php:767
+#: includes/ajax-functions.php:664 includes/ajax-functions.php:670
+#: includes/ajax-functions.php:766 includes/ajax-functions.php:773
 #, php-format
 msgid "You are not allowed to unlock this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:670
+#: includes/ajax-functions.php:676
 #, php-format
 msgid "You already unlocked this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:688 includes/ajax-functions.php:791
+#: includes/ajax-functions.php:694 includes/ajax-functions.php:797
 #, php-format
 msgid "Insufficient %s."
 msgstr ""
 
-#: includes/ajax-functions.php:702
+#: includes/ajax-functions.php:708
 #, php-format
 msgid "Congratulations! You unlocked the %s %s."
 msgstr ""
 
-#: includes/ajax-functions.php:742
+#: includes/ajax-functions.php:748
 msgid "Rank not found."
 msgstr ""
 
-#: includes/ajax-functions.php:748
+#: includes/ajax-functions.php:754
 msgid "Invalid rank."
 msgstr ""
 
-#: includes/ajax-functions.php:773
+#: includes/ajax-functions.php:779
 #, php-format
 msgid "You are already in a higher %s."
 msgstr ""
 
-#: includes/ajax-functions.php:805
+#: includes/ajax-functions.php:811
 #, php-format
 msgid "Congratulations! You reached to the %s %s."
 msgstr ""
@@ -4578,20 +4580,20 @@ msgstr ""
 msgid "User hasn't completed this achievement yet."
 msgstr ""
 
-#: includes/scripts.php:144 includes/scripts.php:168
+#: includes/scripts.php:144 includes/scripts.php:169
 #: includes/shortcodes/shortcodes-editor.php:66
 msgid "Select a Post"
 msgstr ""
 
-#: includes/scripts.php:169 includes/shortcodes/shortcodes-editor.php:67
+#: includes/scripts.php:170 includes/shortcodes/shortcodes-editor.php:67
 msgid "Select Post(s)"
 msgstr ""
 
-#: includes/scripts.php:170 includes/shortcodes/shortcodes-editor.php:68
+#: includes/scripts.php:171 includes/shortcodes/shortcodes-editor.php:68
 msgid "Select an User"
 msgstr ""
 
-#: includes/scripts.php:171 includes/shortcodes/gamipress_achievements.php:71
+#: includes/scripts.php:172 includes/shortcodes/gamipress_achievements.php:71
 #: includes/shortcodes/gamipress_earnings.php:130
 #: includes/shortcodes/gamipress_earnings.php:167
 #: includes/shortcodes/gamipress_earnings.php:197
@@ -4603,40 +4605,40 @@ msgstr ""
 msgid "Default: All"
 msgstr ""
 
-#: includes/scripts.php:172 includes/shortcodes/shortcodes-editor.php:70
+#: includes/scripts.php:173 includes/shortcodes/shortcodes-editor.php:70
 msgid "Select a Rank"
 msgstr ""
 
-#: includes/scripts.php:191
+#: includes/scripts.php:192
 msgid "Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed."
 msgstr ""
 
-#: includes/scripts.php:303
+#: includes/scripts.php:304
 msgid "Select an option"
 msgstr ""
 
-#: includes/scripts.php:304
+#: includes/scripts.php:305
 msgid "Select a post"
 msgstr ""
 
-#: includes/scripts.php:305
+#: includes/scripts.php:306
 msgid "Select a user"
 msgstr ""
 
-#: includes/scripts.php:307
+#: includes/scripts.php:308
 msgid "Slug can't contain special characters. Only alphanumeric characters are allowed."
 msgstr ""
 
-#: includes/scripts.php:308
+#: includes/scripts.php:309
 msgid "Slug supports a maximum of 20 characters."
 msgstr ""
 
-#: includes/scripts.php:309
+#: includes/scripts.php:310
 #, php-format
 msgid "The %s post type already uses this slug."
 msgstr ""
 
-#: includes/scripts.php:310
+#: includes/scripts.php:311
 msgid "Slug can't match any <a href=\"https://codex.wordpress.org/Reserved_Terms\">WordPress reserved term</a>."
 msgstr ""
 
