@@ -128,8 +128,8 @@ if ( ! class_exists( 'CT' ) ) :
          */
         private function hooks() {
 
-            add_action( 'plugins_loaded', array( $this, 'init' ), 10 );
-            add_action( 'after_setup_theme', array( $this, 'init' ), 10 );
+            add_action( 'plugins_loaded', array( $this, 'init' ), 11 );
+            add_action( 'after_setup_theme', array( $this, 'init' ), 11 );
 
         }
 

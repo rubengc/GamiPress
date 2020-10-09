@@ -431,7 +431,7 @@ function gamipress_trigger_event() {
 		// Check if log all events is enabled, if checked then function won't
 		if( ! (bool) gamipress_get_option( 'log_all_events', false ) ) {
 
-			// If not achievements listening it, then return
+            // If not achievements listening it, then return
 			if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
 				return false;
             }

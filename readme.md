@@ -241,6 +241,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.1.2 ###
+
+* **Developer Notes**
+* Delayed the initialization of the Custom Tables library.
+
 ### 1.9.1.1 ###
 
 * **Improvements**
