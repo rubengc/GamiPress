@@ -431,7 +431,7 @@ function gamipress_get_points_award_completed_tags_replacements( $points_award_i
             $plural = gamipress_get_post_meta( $points_type->ID, '_gamipress_plural_name' );
             $points_balance = gamipress_get_user_points( $user_id, $points_type->post_name );
 
-            $replacements['{points}'] = $points;
+            $replacements['{points}'] = gamipress_format_amount( $points, $points_type->post_name );
             $replacements['{points_balance}'] = $points_balance;
             $replacements['{points_type}'] = _n( $singular, $plural, $points );
 
@@ -478,7 +478,7 @@ function gamipress_get_points_deduct_completed_tags_replacements( $points_deduct
             $plural = gamipress_get_post_meta( $points_type->ID, '_gamipress_plural_name' );
             $points_balance = gamipress_get_user_points( $user_id, $points_type->post_name );
 
-            $replacements['{points}'] = $points;
+            $replacements['{points}'] = gamipress_format_amount( $points, $points_type->post_name );
             $replacements['{points_balance}'] = $points_balance;
             $replacements['{points_type}'] = _n( $singular, $plural, $points );
 

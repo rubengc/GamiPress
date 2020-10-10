@@ -192,3 +192,36 @@ function gamipress_tools_page_bottom( $content, $page ) {
     return $content;
 }
 add_filter( 'cmb2metatabs_after_form', 'gamipress_tools_page_bottom', 10, 2 );
+
+/**
+ * Adds a custom nonce on the tools page
+ *
+ * @since 1.9.1.3
+ *
+ * @param array  $cmb_id      The current box ID.
+ * @param int    $object_id   The ID of the current object.
+ * @param string $object_type The type of object you are working with.
+ *                            Usually `post` (this applies to all post-types).
+ *                            Could also be `comment`, `user` or `options-page`.
+ * @param array  $cmb         This CMB2 object.
+ */
+function gamipress_tools_nonce( $cmb_id, $object_id, $object_type, $cmb ) {
+
+    global $gamipress_tools_nonce;
+
+    if( $object_id !== 'gamipress_tools' ) {
+        return;
+    }
+
+    if( $object_type !== 'options-page' ) {
+        return;
+    }
+
+    if( $gamipress_tools_nonce ) {
+        return;
+    }
+
+    wp_nonce_field( 'gamipress_admin' );
+
+}
+add_action( 'cmb2_before_form', 'gamipress_tools_nonce', 10, 4 );

@@ -732,7 +732,7 @@ function gamipress_parse_points_log_pattern( $log_data, $log_meta ) {
         }
 
         // {points} tag, absint ensures a positive amount to build a pattern like "User expended 100 points" instead of "User expended -100 points"
-        $gamipress_pattern_replacements['{points}'] = number_format( absint( $log_meta['points'] ) );
+        $gamipress_pattern_replacements['{points}'] = gamipress_format_amount( absint( $log_meta['points'] ), $points_type );
 
         // {points_type} tag
         $gamipress_pattern_replacements['{points_type}'] = $points_label;

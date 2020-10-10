@@ -241,6 +241,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.1.3 ###
+
+* **Improvements**
+* Apply points format on templates.
+* **Bug Fixes**
+* Fixed export settings button.
+
 ### 1.9.1.2 ###
 
 * **Developer Notes**
