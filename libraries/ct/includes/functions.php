@@ -96,7 +96,7 @@ function ct_reset_setup_table() {
  */
 function ct_get_table_object( $name ) {
 
-    global $ct_registered_tables, $ct_table;
+    global $ct_registered_tables;
 
     if( is_object( $name ) ) {
         $ct_table = $name;

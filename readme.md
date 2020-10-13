@@ -241,6 +241,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.1.4 ###
+
+* **Bug Fixes**
+* Fixed plugin conflict with Yoast SEO Premium.
+
 ### 1.9.1.3 ###
 
 * **Improvements**

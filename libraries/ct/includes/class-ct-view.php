@@ -79,6 +79,10 @@ if ( ! class_exists( 'CT_View' ) ) :
 
         public function show_screen_options( $show_screen, $screen ) {
 
+            if( ! $this->is_current_view() ) {
+                return $show_screen;
+            }
+
             $screen_slug = explode( '_page_', $screen->id );
 
             if( isset( $screen_slug[1] ) &&  $screen_slug[1] === $this->args['menu_slug'] ) {
@@ -100,6 +104,10 @@ if ( ! class_exists( 'CT_View' ) ) :
          * @return string   $screen_settings
          */
         public function maybe_screen_settings( $screen_settings, $screen ) {
+
+            if( ! $this->is_current_view() ) {
+                return $screen_settings;
+            }
 
             $screen_slug = explode( '_page_', $screen->id );
 
@@ -147,6 +155,10 @@ if ( ! class_exists( 'CT_View' ) ) :
          * @see set_screen_options()
          */
         function maybe_set_screen_settings() {
+
+            if( ! $this->is_current_view() ) {
+                return;
+            }
 
             if ( isset( $_POST['wp_screen_options'] ) && is_array( $_POST['wp_screen_options'] ) ) {
                 check_admin_referer( 'screen-options-nonce', 'screenoptionnonce' );

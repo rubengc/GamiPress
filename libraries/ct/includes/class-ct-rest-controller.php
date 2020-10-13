@@ -257,6 +257,8 @@ class CT_REST_Controller extends WP_REST_Controller {
         $max_pages = ceil( $total_items / (int) $ct_query->query_vars['items_per_page'] );
 
         if ( $page > $max_pages && $total_items > 0 ) {
+            ct_reset_setup_table();
+
             return new WP_Error( 'rest_item_invalid_page_number', __( 'The page number requested is larger than the number of pages available.' ), array( 'status' => 400 ) );
         }
 
