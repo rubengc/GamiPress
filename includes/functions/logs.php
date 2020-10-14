@@ -548,6 +548,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
             $meta_key = '_gamipress_' . sanitize_key( $key );
             $meta_key = wp_unslash( $meta_key );
             $meta_value = wp_unslash( $meta );
+            $meta_value = esc_sql( $meta_value );
             $meta_value = sanitize_meta( $meta_key, $meta_value, $ct_table->name );
             $meta_value = maybe_serialize( $meta_value );
 

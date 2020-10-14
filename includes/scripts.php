@@ -61,6 +61,7 @@ function gamipress_enqueue_scripts( $hook = null ) {
         'nonce'         => gamipress_get_nonce(),
         'user_id'       => get_current_user_id(),
         'post_id'       => get_the_ID(),
+        'server_date'   => date( 'Y-m-d', current_time( 'timestamp' ) ),
         'debug_mode'    => gamipress_is_debug_mode()
     ) );
 

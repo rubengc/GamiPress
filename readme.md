@@ -241,6 +241,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.2 ###
+
+* **Improvements**
+* Added more sanitization when inserting logs and user earnings.
+* Ensure to only track visits one time daily to reduce the server work.
+
 ### 1.9.1.4 ###
 
 * **Bug Fixes**

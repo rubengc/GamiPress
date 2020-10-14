@@ -315,7 +315,7 @@ function gamipress_site_visit_listener() {
         );
 
         // Get the trigger count
-        $count = absint( gamipress_get_user_log_count( $user_id, $log_meta, $now ) );
+        $count = gamipress_get_user_log_count( $user_id, $log_meta, $now );
 
         // Trigger daily post visit action if not triggered today
         if( $count === 0 ) {
