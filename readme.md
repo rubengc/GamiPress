@@ -241,6 +241,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.3 ###
+
+* **Improvements**
+* Added cache to more functions to prevent duplicated database calls.
+* **Bug Fixes**
+* Fixed tabs on tools screen.
+* Fixed database warnings on first installation.
+
 ### 1.9.2 ###
 
 * **Improvements**

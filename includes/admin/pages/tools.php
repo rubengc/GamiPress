@@ -224,4 +224,4 @@ function gamipress_tools_nonce( $cmb_id, $object_id, $object_type, $cmb ) {
     wp_nonce_field( 'gamipress_admin' );
 
 }
-add_action( 'cmb2_before_form', 'gamipress_tools_nonce', 10, 4 );
+add_action( 'cmb2_after_form', 'gamipress_tools_nonce', 10, 4 );

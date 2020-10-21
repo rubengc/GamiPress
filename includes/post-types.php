@@ -67,10 +67,20 @@ function gamipress_register_points_types() {
 
     global $wpdb;
 
-    $posts = GamiPress()->db->posts;
+    $cache = gamipress_get_cache( 'gamipress_points_types', false, false );
 
-    // Grab all points type posts
-    $points_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'points-type'");
+    // If result already cached, return it
+    if( is_array( $cache ) ) {
+        $points_types = $cache;
+    } else {
+
+        $posts = GamiPress()->db->posts;
+
+        // Grab all points type posts
+        $points_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'points-type'");
+
+        gamipress_set_cache( 'gamipress_points_types', $points_types );
+    }
 
     // Loop through each points type post and register it as a CPT
     foreach ( $points_types as $points_type ) {
@@ -131,10 +141,19 @@ function gamipress_register_achievement_types() {
 
     global $wpdb;
 
-    $posts = GamiPress()->db->posts;
+    $cache = gamipress_get_cache( 'gamipress_achievement_types', false, false );
 
-    // Grab all achievement type posts
-    $achievement_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'achievement-type'");
+    // If result already cached, return it
+    if( is_array( $cache ) ) {
+        $achievement_types = $cache;
+    } else {
+        $posts = GamiPress()->db->posts;
+
+        // Grab all achievement type posts
+        $achievement_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'achievement-type'");
+
+        gamipress_set_cache( 'gamipress_achievement_types', $achievement_types );
+    }
 
 	// Loop through each achievement type post and register it as a CPT
 	foreach ( $achievement_types as $achievement_type ) {
@@ -187,10 +206,19 @@ function gamipress_register_rank_types() {
 
     global $wpdb;
 
-    $posts = GamiPress()->db->posts;
+    $cache = gamipress_get_cache( 'gamipress_rank_types', false, false );
 
-    // Grab all rank type posts
-    $rank_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'rank-type'");
+    // If result already cached, return it
+    if( is_array( $cache ) ) {
+        $rank_types = $cache;
+    } else {
+        $posts = GamiPress()->db->posts;
+
+        // Grab all rank type posts
+        $rank_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'rank-type'");
+
+        gamipress_set_cache( 'gamipress_rank_types', $rank_types );
+    }
 
 	// Loop through each rank type post and register it as a CPT
 	foreach ( $rank_types as $rank_type ) {

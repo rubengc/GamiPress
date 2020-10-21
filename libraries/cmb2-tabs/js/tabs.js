@@ -21,7 +21,6 @@
             var tabs = tab.closest('.cmb-tabs');
             var form = tabs.next('.cmb2-wrap');
 
-
             // Hide current active tab fields
             form.find(tabs.find('.cmb-tab.active').data('fields')).fadeOut('fast', function() {
                 $(this).removeClass('cmb-tab-active-item');

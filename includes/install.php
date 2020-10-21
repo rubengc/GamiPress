@@ -51,6 +51,11 @@ function gamipress_install() {
     // Register GamiPress custom DB tables
     gamipress_register_custom_tables();
 
+    if( ! GamiPress()->db instanceof GamiPress_Database ) {
+        GamiPress()->pre_init();
+        gamipress_init_multisite();
+    }
+
     // Register GamiPress post types and flush rewrite rules
     gamipress_flush_rewrite_rules();
 }
