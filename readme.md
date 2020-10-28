@@ -241,6 +241,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.4 ###
+
+* **Improvements**
+* Improved activity count checks.
+* Performance improvements on the awards engine reducing the metas queried.
+
 ### 1.9.3 ###
 
 * **Improvements**

@@ -758,28 +758,36 @@ function gamipress_user_deserves_limit_requirements( $return = false, $user_id =
 
     if( $since > 0 ) {
 
-        // Activity count limit over time
-        $limit = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_limit' ) );
-
         // Activity count limited to a timestamp
         $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id, $since ) );
 
-        // Force bail if user exceeds the limit over time
-        if( $activity_count > $limit ) {
-            return false;
+        if ( $activity_count !== 0 ) {
+
+            // Activity count limit over time
+            $limit = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_limit' ) );
+
+            // Force bail if user exceeds the limit over time
+            if( $activity_count > $limit ) {
+                return false;
+            }
+
         }
 
     }
 
-    // Get the required number of check-ins
-    $count = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_count' ) );
-
     // Grab the relevant activity count
     $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id ) );
 
-    // If exceed the required number of check-ins, then deserve the achievement
-    if ( $activity_count < $count ) {
-        return false;
+    if ( $activity_count !== 0 ) {
+
+        // Get the required number of check-ins
+        $count = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_count' ) );
+
+        // If exceed the required number of check-ins, then deserve the achievement
+        if ( $activity_count < $count ) {
+            return false;
+        }
+
     }
 
 	return $return;
