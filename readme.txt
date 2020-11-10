@@ -17,6 +17,8 @@ The most flexible and powerful gamification system for WordPress.
 
 Easily define the achievements, organize requirements, and choose from a range of assessment options to determine whether each task or requirement has been successfully achieved.
 
+https://youtu.be/sinW2JjxsdA
+
 GamiPress is extremely powerful and infinitely extensible. Check out some of the built in features:
 
 = 3 powerful ways to award your users =
