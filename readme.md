@@ -243,6 +243,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.5 ###
+
+* **Improvements**
+* Let WordPress decide SSL verification in some API requests.
+* Updated add-on updater class.
+* Ensure correct server URL for GamiPress add-ons.
+
 ### 1.9.4 ###
 
 * **Improvements**
