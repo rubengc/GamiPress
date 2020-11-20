@@ -8,7 +8,7 @@
  * Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-field-edd-license
  * Description: CMB2 field type to store and check EDD Software Licensing licenses.
- * Version: 1.0.9
+ * Version: 1.1.0
  * Author: GamiPress
  * Author URI: https://gamipress.com/
  * License: GPLv2+
@@ -58,7 +58,9 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
             }
 
             // Field type
-            require_once __DIR__ . '/includes/CMB_Type_EDD_License.php';
+            if ( ! class_exists( 'CMB_Type_EDD_License' ) ) {
+                require_once __DIR__ . '/includes/CMB_Type_EDD_License.php';
+            }
         }
 
         public function render_class( $render_class_name, $field_type_object ) {
@@ -353,6 +355,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
                 // Loop all fields
                 foreach( $cmb->meta_box['fields'] as $field ) {
+
                     if( $field['type'] === 'edd_license' ) {
 
                         $args = $field;
@@ -394,7 +397,9 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
                         $this->check_item_updates( $args );
                     }
+
                 }
+
             }
 
         }
@@ -555,7 +560,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
             // Call the API.
             $response = wp_remote_post( $server, array(
                 'timeout'   => 15,
-                'sslverify' => false,
+                //'sslverify' => false, // Handled by https_ssl_verify filter: https://developer.wordpress.org/reference/hooks/https_ssl_verify/
                 'body'      => $api_params
             ) );
 

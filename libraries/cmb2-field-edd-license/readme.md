@@ -85,6 +85,11 @@ In Addition, you can use the function `cmb2_edd_license_status( $license_key )` 
 
 ## Changelog
 
+### 1.1.0
+
+* Prevent to override WordPress sslverify on requests.
+* Updated EDD SL Plugin Updater class to version 1.8.0.
+
 ### 1.0.9
 
 * Clear field when license gets deactivated included when server responds that license has been already deactivated.
