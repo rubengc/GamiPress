@@ -983,8 +983,8 @@ function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank
     $user = get_userdata( $user_id );
 
     // Available filters to allow override subject
-    $subject = apply_filters( 'gamipress_rank_earned_email_subject', gamipress_get_option( 'rank_earned_email_subject' ), $user_id, $new_rank );
-    $message = apply_filters( 'gamipress_rank_earned_email_content', gamipress_get_option( 'rank_earned_email_content' ), $user_id, $new_rank );
+    $subject = apply_filters( 'gamipress_rank_earned_email_subject', gamipress_get_option( 'rank_earned_email_subject' ), $user_id, $new_rank->ID );
+    $message = apply_filters( 'gamipress_rank_earned_email_content', gamipress_get_option( 'rank_earned_email_content' ), $user_id, $new_rank->ID );
 
     gamipress_send_email( $user->user_email, $subject, $message );
 }

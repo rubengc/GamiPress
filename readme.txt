@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs, flabernardez
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.5
-Stable tag: 1.9.5
+Stable tag: 1.9.6
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -226,6 +226,14 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.9.6 =
+
+* **Bug Fixes**
+* Fixed date format on the dashboard widget.
+* Correctly pass the rank ID on email subject and content filters instead of the rank object.
+* **Improvements**
+* Style improvements on the dashboard widget.
 
 = 1.9.5 =
 

@@ -46,11 +46,15 @@
 	line-height: 18px !important;
 }
 
+#dashboard-widgets #gamipress h2 {
+	justify-content: flex-start;
+}
+
 #dashboard-widgets #gamipress h2:before,
 .widget[id*="_gamipress_"] .widget-title h3:before {
 	display: inline-block;
 	width: 20px;
-	height: 14px;
+	height: 10px;
 	font-size: 20px;
 	line-height: 8px;
 	vertical-align: middle;

@@ -139,9 +139,9 @@ function gamipress_dashboard_widget() {
 
             $time = strtotime( $log->date );
 
-            if ( date( 'Y-m-d', $time ) == $today ) {
+            if ( date( 'Y-m-d', $time ) === $today ) {
                 $relative = __( 'Today', 'gamipress' );
-            } elseif ( date( 'Y-m-d', $time ) == $yesterday ) {
+            } elseif ( date( 'Y-m-d', $time ) === $yesterday ) {
                 $relative = __( 'Yesterday', 'gamipress' );
             } elseif ( date( 'Y', $time ) !== date( 'Y', current_time( 'timestamp' ) ) ) {
                 /* translators: date and time format for recent posts on the dashboard, from a different calendar year, see https://secure.php.net/date */
@@ -157,7 +157,7 @@ function gamipress_dashboard_widget() {
                 '<li><a href="%1$s">%2$s</a> <span>%3$s</span></li>',
                 $edit_post_link,
                 apply_filters( 'gamipress_render_log_title', $log->title, $log->log_id ),
-                sprintf( _x( '%1$s, %2$s', 'dashboard' ), $relative, mysql2date( get_option('time_format'), $time ) )
+                sprintf( _x( '%1$s, %2$s', 'dashboard' ), $relative, mysql2date( get_option( 'time_format' ), $log->date ) )
             );
         }
 

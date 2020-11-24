@@ -243,6 +243,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.6 ###
+
+* **Bug Fixes**
+* Fixed date format on the dashboard widget.
+* Correctly pass the rank ID on email subject and content filters instead of the rank object.
+* **Improvements**
+* Style improvements on the dashboard widget.
+
 ### 1.9.5 ###
 
 * **Improvements**
