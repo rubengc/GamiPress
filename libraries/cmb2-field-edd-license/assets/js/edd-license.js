@@ -35,8 +35,15 @@
 
                 // Clear form
                 var form = wrapper.closest( '.cmb-td' );
+                var input = form.find('input[type="text"]');
 
-                form.find('input[type="text"]').val('').removeAttr( 'readonly' );
+                // Clear the false input and update its name
+                input.val('').removeAttr( 'readonly' ).attr('name', input.attr('id'));
+
+                // Remove the hidden input with the real value
+                form.find('#' + input.attr('id') + '[type="hidden"]').remove();
+
+                // Hide notices
                 form.find('.license-error').slideUp('fast');
                 form.find('.deactivate-license-button').slideUp('fast');
                 form.find('.clear-license-button').slideUp('fast');
@@ -86,8 +93,15 @@
 
                 // Clear form
                 var form = wrapper.closest( '.cmb-td' );
+                var input = form.find('input[type="text"]');
 
-                form.find('input[type="text"]').val('').removeAttr( 'readonly' );
+                // Clear the false input and update its name
+                input.val('').removeAttr( 'readonly' ).attr('name', input.attr('id'));
+
+                // Remove the hidden input with the real value
+                form.find('#' + input.attr('id') + '[type="hidden"]').remove();
+
+                // Hide notices
                 form.find('.license-error').slideUp('fast');
                 form.find('.deactivate-license-button').slideUp('fast');
                 form.find('.clear-license-button').slideUp('fast');

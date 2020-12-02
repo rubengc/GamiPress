@@ -85,6 +85,10 @@ In Addition, you can use the function `cmb2_edd_license_status( $license_key )` 
 
 ## Changelog
 
+### 1.1.1
+
+* Fixed a bug with the license clear and deactivate functions causing that previous value gets back after save the licenses again.
+
 ### 1.1.0
 
 * Prevent to override WordPress sslverify on requests.

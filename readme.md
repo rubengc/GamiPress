@@ -243,6 +243,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.7 ###
+
+* **Bug Fixes**
+* Fixed a bug on license clear and deactivation functions causing that previous value gets back after save the licenses again.
+
 ### 1.9.6 ###
 
 * **Bug Fixes**
