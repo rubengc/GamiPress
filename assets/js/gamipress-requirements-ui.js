@@ -1,11 +1,11 @@
 (function($) {
     // Hide requirements meta box if unnecessary
-    $("#_gamipress_earned_by").change( function() {
+    $("#_gamipress_earned_by").on('change', function() {
         if ( 'triggers' == $(this).val() )
             $('#gamipress-requirements-ui').show();
         else
             $('#gamipress-requirements-ui').hide();
-    }).change();
+    }).trigger('change');
 
     // Make requirements list sortable
     $(".requirements-list").sortable({
@@ -22,13 +22,13 @@
             });
 
             // Trigger change on sequential input to update the requirements order display
-            $("#_gamipress_sequential").change();
+            $("#_gamipress_sequential").trigger('change');
 
         }
     });
 
     // On change sequential requirements, add order display on all requirements
-    $("#_gamipress_sequential").change( function() {
+    $("#_gamipress_sequential").on('change', function() {
 
         $('.requirements-list .requirement-header-title .requirement-order').remove();
 
@@ -42,7 +42,7 @@
             });
         }
 
-    }).change();
+    }).trigger('change');
 
     // Change status action
     $('.requirements-list').on( 'change', '.requirement-action.requirement-action-change-status input', function() {
@@ -70,7 +70,7 @@
         }
 
         // Trigger change event on sequential input to update the order again
-        $("#_gamipress_sequential").change();
+        $("#_gamipress_sequential").trigger('change');
     });
 
     // Duplicate action
@@ -170,7 +170,7 @@
             rank_type_selector_required.show();
             //rank_selector_required.show();
 
-            rank_type_selector_required.change();
+            rank_type_selector_required.trigger('change');
         } else {
             // Hide required rank fields
             rank_type_selector_required.hide();
@@ -186,7 +186,7 @@
             achievement_type_selector.show();
 
             // Trigger a change for our achievement type post selector to determine if it should show
-            achievement_type_selector.change();
+            achievement_type_selector.trigger('change');
         } else {
             // Hide achievement type and post selector
             achievement_type_selector.hide();
@@ -220,7 +220,7 @@
             // Check if post selector Select2 has been initialized
             if( post_selector.hasClass('select2-hidden-accessible') ) {
                 post_selector
-                    .val('').change()   // Reset value
+                    .val('').trigger('change')   // Reset value
                     .next().show();     // Show Select2 container
             } else {
                 post_selector.gamipress_select2({
@@ -366,13 +366,13 @@
     });
 
     // Trigger a change for our trigger type post selector to determine if it should show
-    $( '.select-trigger-type' ).change();
+    $( '.select-trigger-type' ).trigger('change');
 
     // Trigger a change for our limit type to determine if limit should show
-    $( '.limit-type' ).change();
+    $( '.limit-type' ).trigger('change');
 
     // Trigger a change for our change status input
-    $( '.requirement-action-change-status input' ).change();
+    $( '.requirement-action-change-status input' ).trigger('change');
 
     // Add a custom data with current fields values to check their changes
     $('.requirements-list input, .requirements-list select, .requirements-list textarea').each( function() {
@@ -404,7 +404,7 @@
         }
 
         // Trigger change on sequential input to update the requirements order display
-        $("#_gamipress_sequential").change();
+        $("#_gamipress_sequential").trigger('change');
 
     });
 })(jQuery);
@@ -444,8 +444,8 @@ function gamipress_add_requirement( element, post_id, requirement_type ) {
             requirements_list.find( 'li.requirement-row:last' ).find( 'input[name="order"]' ).val( new_requirement_menu_order );
 
             // Trigger a change for the new trigger type and limit type elements
-            requirements_list.find( 'li.requirement-row:last' ).find( '.select-trigger-type' ).change();
-            requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).change();
+            requirements_list.find( 'li.requirement-row:last' ).find( '.select-trigger-type' ).trigger('change');
+            requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).trigger('change');
 
             // Hide the spinner
             requirements_list.siblings( '.requirements-spinner' ).removeClass('is-active');
@@ -459,7 +459,7 @@ function gamipress_add_requirement( element, post_id, requirement_type ) {
             });
 
             // Trigger change event on sequential input to update the order again
-            $("#_gamipress_sequential").change();
+            $("#_gamipress_sequential").trigger('change');
         }
     );
 }
@@ -498,8 +498,8 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
             requirements_list.find( 'li.requirement-row:last' ).find( 'input[name="order"]' ).val( new_requirement_menu_order );
 
             // Trigger a change for the new trigger type and limit type elements
-            requirements_list.find( 'li.requirement-row:last' ).find( '.select-trigger-type' ).change();
-            requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).change();
+            requirements_list.find( 'li.requirement-row:last' ).find( '.select-trigger-type' ).trigger('change');
+            requirements_list.find( 'li.requirement-row:last' ).find( '.limit-type' ).trigger('change');
 
             // Hide the spinner
             requirements_list.siblings( '.requirements-spinner' ).removeClass('is-active');
@@ -513,7 +513,7 @@ function gamipress_duplicate_requirement( element, requirement_id ) {
             });
 
             // Trigger change event on sequential input to update the order again
-            $("#_gamipress_sequential").change();
+            $("#_gamipress_sequential").trigger('change');
 
             // If current element has a custom class for requirement actions, remove it
             if( $(element).hasClass('requirement-action-active') )
@@ -542,7 +542,7 @@ function gamipress_delete_requirement( element, requirement_id ) {
     requirements_list.find( '.requirement-' + requirement_id).removeClass('requirement-published')
 
     // Trigger change event on sequential input to update the order again
-    $("#_gamipress_sequential").change();
+    $("#_gamipress_sequential").trigger('change');
 
     $.post(
         ajaxurl,
@@ -666,7 +666,7 @@ function gamipress_update_requirements( element, loop ) {
         requirement_data,
         function( response ) {
             // Parse response
-            var titles = $.parseJSON( response );
+            var titles = JSON.parse( response );
 
             // Loop all given titles
             $.each( titles, function( id, value ) {

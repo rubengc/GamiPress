@@ -36,7 +36,7 @@
 
     gamipress_update_log_tags_list();
 
-    $('#log-data .cmb2-id-type select').change(function() {
+    $('#log-data .cmb2-id-type select').on('change', function() {
         var type = $(this).val();
 
         gamipress_update_log_tags_list();

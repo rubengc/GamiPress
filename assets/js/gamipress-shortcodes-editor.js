@@ -164,7 +164,7 @@
     $( '#select_shortcode' ).on( 'change', function() {
         gamipress_shortcode_hide_all_sections();
         gamipress_shortcode_show_section( gamipress_get_selected_shortcode() );
-    }).change();
+    }).trigger('change');
 
     // Listen for clicks on the "insert" button
     $( '#gamipress_insert' ).on( 'click', function( e ) {
@@ -213,7 +213,7 @@
         + '#gamipress_ranks_current_user, '
         + '#gamipress_user_rank_current_user, '
         + '#gamipress_earnings_current_user'
-    ).change(function() {
+    ).on('change', function() {
         var target = $(this).closest('.cmb-row').next(); // User ID field
 
         if( $(this).prop('checked') ) {
@@ -231,12 +231,12 @@
 
             target.removeClass('cmb2-tab-ignore');
         }
-    }).change();
+    }).trigger('change');
 
     // Earners field
     $( '#gamipress_achievement_earners, #gamipress_achievements_earners, '
         + '#gamipress_rank_earners, #gamipress_ranks_earners, #gamipress_user_rank_earners'
-    ).change(function() {
+    ).on('change', function() {
         var target = $(this).closest('.cmb-row').next(); // Earners limit field
 
         if( ! $(this).prop('checked') ) {
@@ -254,10 +254,10 @@
 
             target.removeClass('cmb2-tab-ignore');
         }
-    }).change();
+    }).trigger('change');
 
     // Period field
-    $( '#gamipress_points_period').change(function() {
+    $( '#gamipress_points_period').on('change', function() {
         // Get the period start and end fields
         var target = $(this).closest('.cmb2-wrap').find(
             '.cmb2-id-gamipress-points-period-start, '
@@ -271,10 +271,10 @@
             // Show the target
             target.slideDown().removeClass('cmb2-tab-ignore');
         }
-    }).change();
+    }).trigger('change');
 
     // Inline field
-    $( '#gamipress_points_inline').change(function() {
+    $( '#gamipress_points_inline').on('change', function() {
         // Get the columns and layout fields
         var target = $(this).closest('.cmb2-wrap').find(
             '.cmb2-id-gamipress-points-columns, '
@@ -299,7 +299,7 @@
     });
 
     // User earnings
-    $( '#gamipress_earnings_points, #gamipress_earnings_achievements, #gamipress_earnings_ranks' ).change(function() {
+    $( '#gamipress_earnings_points, #gamipress_earnings_achievements, #gamipress_earnings_ranks' ).on('change', function() {
 
         var id = $(this).attr('id');
         var target;
@@ -338,10 +338,10 @@
             $('#TB_window').addClass('gamipress-shortcode-thickbox');
 
             // Clear all select2 fields
-            $( 'select.select2-hidden-accessible', '.gamipress-shortcode-thickbox .cmb2-wrap').val('').change();
+            $( 'select.select2-hidden-accessible', '.gamipress-shortcode-thickbox .cmb2-wrap').val('').trigger('change');
 
             // Trigger change on all checkboxes to initialize visibility
-            $( 'input[type="checkbox"]', '.gamipress-shortcode-thickbox .cmb2-wrap').change();
+            $( 'input[type="checkbox"]', '.gamipress-shortcode-thickbox .cmb2-wrap').trigger('change');
         }, 0 );
     }
 

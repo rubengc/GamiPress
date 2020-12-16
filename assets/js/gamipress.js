@@ -507,7 +507,7 @@
 
 			// Force focus to the new window
 			if( window.focus ) {
-				share_window.focus();
+				share_window.trigger('focus');
 			}
 
 		}

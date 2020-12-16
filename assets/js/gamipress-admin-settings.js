@@ -58,7 +58,7 @@
     });
 
     // Send test email click
-    $('#achievement-earned-email-send, #step-completed-email-send, #points-award-completed-email-send, #points-deduct-completed-email-send, #rank-earned-email-send, #rank-requirement-completed-email-send').click(function(e) {
+    $('#achievement-earned-email-send, #step-completed-email-send, #points-award-completed-email-send, #points-deduct-completed-email-send, #rank-earned-email-send, #rank-requirement-completed-email-send').on('click', function(e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -93,7 +93,7 @@
     });
 
     // Disable achievement earned email
-    $('#disable_achievement_earned_email').change( function() {
+    $('#disable_achievement_earned_email').on('change', function() {
         var target = $('.cmb2-id-achievement-earned-email-subject, .cmb2-id-achievement-earned-email-content');
 
         if( $(this).prop('checked') ) {
@@ -108,7 +108,7 @@
     }
 
     // Disable step completed email
-    $('#disable_step_completed_email').change( function() {
+    $('#disable_step_completed_email').on('change', function() {
         var target = $('.cmb2-id-step-completed-email-subject, .cmb2-id-step-completed-email-content');
 
         if( $(this).prop('checked') ) {
@@ -123,7 +123,7 @@
     }
 
     // Disable points awards completed email
-    $('#disable_points_award_completed_email').change( function() {
+    $('#disable_points_award_completed_email').on('change', function() {
         var target = $('.cmb2-id-points-award-completed-email-subject, .cmb2-id-points-award-completed-email-content');
 
         if( $(this).prop('checked') ) {
@@ -138,7 +138,7 @@
     }
 
     // Disable points deducts completed email
-    $('#disable_points_deduct_completed_email').change( function() {
+    $('#disable_points_deduct_completed_email').on('change', function() {
         var target = $('.cmb2-id-points-deduct-completed-email-subject, .cmb2-id-points-deduct-completed-email-content');
 
         if( $(this).prop('checked') ) {
@@ -153,7 +153,7 @@
     }
 
     // Disable rank earned email
-    $('#disable_rank_earned_email').change( function() {
+    $('#disable_rank_earned_email').on('change', function() {
         var target = $('.cmb2-id-rank-earned-email-subject, .cmb2-id-rank-earned-email-content');
 
         if( $(this).prop('checked') ) {
@@ -168,7 +168,7 @@
     }
 
     // Disable rank requirement completed email
-    $('#disable_rank_requirement_completed_email').change( function() {
+    $('#disable_rank_requirement_completed_email').on('change', function() {
         var target = $('.cmb2-id-rank-requirement-completed-email-subject, .cmb2-id-rank-requirement-completed-email-content');
 
         if( $(this).prop('checked') ) {
@@ -183,7 +183,7 @@
     }
 
     // Automatic updates
-    $('#automatic_updates').change( function() {
+    $('#automatic_updates').on('change', function() {
         var target = $('.cmb2-id-automatic-updates-plugins');
 
         if( target.length ) {

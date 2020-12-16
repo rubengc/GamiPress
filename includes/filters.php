@@ -501,6 +501,8 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	// Concatenate our output
 	foreach ( $steps as $step ) {
 
+        $can_earn = true;
+
         if( $user_id === 0 ) {
             $earned_status = 'user-has-not-earned';
         } else {

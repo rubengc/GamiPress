@@ -133,6 +133,11 @@ function gamipress_admin_bar_menu( $wp_admin_bar ) {
         return;
     }
 
+    // Bail if admin bar menu disabled
+    if( (bool) gamipress_get_option( 'disable_admin_bar_menu', false ) ) {
+        return;
+    }
+
     // GamiPress
     $wp_admin_bar->add_node( array(
         'id'    => 'gamipress',
@@ -259,6 +264,11 @@ function gamipress_admin_bar_custom_tables_menu( $wp_admin_bar ) {
         return;
     }
 
+    // Bail if admin bar menu disabled
+    if( (bool) gamipress_get_option( 'disable_admin_bar_menu', false ) ) {
+        return;
+    }
+
     // User Earnings
     $wp_admin_bar->add_node( array(
         'id'     => 'gamipress-user-earnings',
@@ -292,6 +302,11 @@ function gamipress_admin_bar_submenu( $wp_admin_bar ) {
 
     // Bail if current user can't manage GamiPress
     if ( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    // Bail if admin bar menu disabled
+    if( (bool) gamipress_get_option( 'disable_admin_bar_menu', false ) ) {
         return;
     }
 

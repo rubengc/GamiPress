@@ -146,7 +146,7 @@
     }
 
     $('#bulk_award_points_button, #bulk_award_achievements_button, #bulk_award_rank_button, '
-        + '#bulk_revoke_points_button, #bulk_revoke_achievements_button, #bulk_revoke_rank_button').click(function(e) {
+        + '#bulk_revoke_points_button, #bulk_revoke_achievements_button, #bulk_revoke_rank_button').on('click', function(e) {
         e.preventDefault();
 
         gamipress_run_bulk_tool( $(this) );
@@ -238,7 +238,7 @@
         });
     }
 
-    $("#recount_activity").click(function(e) {
+    $("#recount_activity").on('click', function(e) {
         e.preventDefault();
 
         $('#recount-activity-warning').remove();
@@ -297,7 +297,7 @@
     // Logs Clean Up Tool
     // ----------------------------------
 
-    $('#logs_clean_up_count, #logs_clean_up').click(function(e) {
+    $('#logs_clean_up_count, #logs_clean_up').on('click', function(e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -445,7 +445,7 @@
         ]
     });
 
-    $("#reset_data").click(function(e) {
+    $("#reset_data").on('click', function(e) {
         e.preventDefault();
 
         $('#reset-data-warning').remove();
@@ -628,7 +628,7 @@
 
     }
 
-    $('#export_achievements, #export_points, #export_ranks').click(function(e) {
+    $('#export_achievements, #export_points, #export_ranks').on('click', function(e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -685,7 +685,7 @@
     // Import Achievements, Points and Ranks Tool
     // ----------------------------------
 
-    $('#import_achievements, #import_points, #import_ranks').click(function(e) {
+    $('#import_achievements, #import_points, #import_ranks').on('click', function(e) {
         e.preventDefault();
 
         var $this = $(this);
@@ -763,7 +763,7 @@
     // Download Achievements, Points and Ranks CSV Template
     // ----------------------------------
 
-    $('#download_achievements_csv_template, #download_points_csv_template, #download_ranks_csv_template').click(function(e) {
+    $('#download_achievements_csv_template, #download_points_csv_template, #download_ranks_csv_template').on('click', function(e) {
         e.preventDefault();
 
         var type, sample_data;
@@ -940,7 +940,7 @@
 
     });
 
-    $("#export_setup").click(function(e) {
+    $("#export_setup").on('click', function(e) {
         e.preventDefault();
 
         $('#export-setup-warning').remove();
@@ -996,7 +996,7 @@
     // Import Setup Tool
     // ----------------------------------
 
-    $('#import_setup').click(function(e) {
+    $('#import_setup').on('click', function(e) {
         e.preventDefault();
 
         $('#import-setup-warning').remove();
@@ -1047,7 +1047,7 @@
     // Import Settings Tool
     // ----------------------------------
 
-    $('#import_settings').click(function(e) {
+    $('#import_settings').on('click', function(e) {
         e.preventDefault();
 
         $('#import-settings-warning').remove();

@@ -52,6 +52,12 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
                 'desc' => __( 'Maximum dimensions for ranks featured image.', 'gamipress' ),
                 'type' => 'size',
             ),
+            'disable_admin_bar_menu' => array(
+                'name' => __( 'Disable Top Bar Menu', 'gamipress' ),
+                'desc' => __( 'Check this option to disable the GamiPress top bar menu.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch',
+            ),
             'disable_shortcodes_editor' => array(
                 'name' => __( 'Disable Shortcodes Editor', 'gamipress' ),
                 'desc' => __( 'Check this option to disable the shortcodes editor.', 'gamipress' ) . '<br>'

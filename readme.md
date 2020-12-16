@@ -243,6 +243,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.8 ###
+
+* **New Features**
+* Added the setting "Disable top bar menu".
+* **Bug Fixes**
+* Fixed undefined $can_earn var on filters.php.
+* **Improvements**
+* Updated deprecated jQuery functions.
+
 ### 1.9.7 ###
 
 * **Bug Fixes**

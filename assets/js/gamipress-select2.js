@@ -3614,7 +3614,7 @@
 
                         if (self.options.get('debug') && window.console && console.error) {
                             // Check to make sure that the response included a `results` key.
-                            if (!results || !results.results || !$.isArray(results.results)) {
+                            if (!results || !results.results || !Array.isArray(results.results)) {
                                 console.error(
                                     'Select2: The AJAX results did not return an array in the ' +
                                     '`results` key of the response.'
@@ -3673,7 +3673,7 @@
 
                 decorated.call(this, $element, options);
 
-                if ($.isArray(tags)) {
+                if (Array.isArray(tags)) {
                     for (var t = 0; t < tags.length; t++) {
                         var tag = tags[t];
                         var item = this._normalizeItem(tag);
@@ -5121,7 +5121,7 @@
 
                 var languages;
 
-                if (!$.isArray(language)) {
+                if (!Array.isArray(language)) {
                     languages = [language];
                 } else {
                     languages = language;
@@ -5896,7 +5896,7 @@
 
                 var newVal = args[0];
 
-                if ($.isArray(newVal)) {
+                if (Array.isArray(newVal)) {
                     newVal = $.map(newVal, function (obj) {
                         return obj.toString();
                     });
@@ -6159,7 +6159,7 @@
                 this.initSelection.call(null, this.$element, function (data) {
                     self._isInitialized = true;
 
-                    if (!$.isArray(data)) {
+                    if (!Array.isArray(data)) {
                         data = [data];
                     }
 

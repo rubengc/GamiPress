@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2020-12-02 17:13+0100\n"
+"POT-Creation-Date: 2020-12-16 18:08+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +21,7 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: libraries\n"
 
 #: assets/js/gamipress-blocks.js:1 assets/js/gamipress-blocks.min.js:1
-#: includes/admin.php:341 includes/admin/pages/settings.php:142
+#: includes/admin.php:356 includes/admin/pages/settings.php:142
 #: includes/admin/pages/settings.php:148 includes/admin/plugins.php:30
 #: includes/admin/plugins.php:33
 #: includes/admin/tools/import-export-settings.php:24
@@ -50,47 +50,47 @@ msgstr ""
 msgid "Ranks"
 msgstr ""
 
-#: includes/admin.php:94 includes/admin.php:139 includes/admin/users.php:27
+#: includes/admin.php:94 includes/admin.php:144 includes/admin/users.php:27
 #: includes/blocks.php:21 includes/shortcodes.php:67
 #: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:53
 #: includes/triggers.php:342 includes/triggers.php:343
 msgid "GamiPress"
 msgstr ""
 
-#: includes/admin.php:110 includes/admin.php:301
+#: includes/admin.php:110 includes/admin.php:316
 #: includes/admin/pages/support.php:42
 msgid "Help / Support"
 msgstr ""
 
-#: includes/admin.php:111 includes/admin.php:309
+#: includes/admin.php:111 includes/admin.php:324
 #: includes/admin/pages/settings.php:193 includes/admin/plugins.php:67
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin.php:112 includes/admin.php:317
+#: includes/admin.php:112 includes/admin.php:332
 msgid "Assets"
 msgstr ""
 
-#: includes/admin.php:149 includes/admin/tools/reset-data.php:34
+#: includes/admin.php:154 includes/admin/tools/reset-data.php:34
 #: includes/admin/tools/system-info.php:357 includes/post-types.php:282
 #: includes/post-types.php:288 includes/post-types.php:294
 #: includes/shortcodes/gamipress_points_types.php:20
 msgid "Points Types"
 msgstr ""
 
-#: includes/admin.php:182 includes/admin/tools/reset-data.php:31
+#: includes/admin.php:187 includes/admin/tools/reset-data.php:31
 #: includes/admin/tools/system-info.php:362 includes/post-types.php:385
 #: includes/post-types.php:391 includes/post-types.php:397
 msgid "Achievement Types"
 msgstr ""
 
-#: includes/admin.php:215 includes/admin/tools/reset-data.php:37
+#: includes/admin.php:220 includes/admin/tools/reset-data.php:37
 #: includes/admin/tools/system-info.php:367 includes/post-types.php:454
 #: includes/post-types.php:460 includes/post-types.php:466
 msgid "Rank Types"
 msgstr ""
 
-#: includes/admin.php:265 includes/admin/users.php:465
+#: includes/admin.php:275 includes/admin/users.php:465
 #: includes/custom-tables.php:35 includes/custom-tables.php:47
 #: includes/privacy/erasers/user-earnings.php:24
 #: includes/privacy/exporters/user-earnings.php:24
@@ -99,7 +99,7 @@ msgstr ""
 msgid "User Earnings"
 msgstr ""
 
-#: includes/admin.php:273 includes/admin/pages/settings.php:189
+#: includes/admin.php:283 includes/admin/pages/settings.php:189
 #: includes/admin/settings/logs.php:25 includes/admin/tools/reset-data.php:40
 #: includes/compatibility/1.2.8.php:250 includes/compatibility/1.2.8.php:256
 #: includes/compatibility/1.2.8.php:262 includes/custom-tables.php:97
@@ -107,34 +107,34 @@ msgstr ""
 msgid "Logs"
 msgstr ""
 
-#: includes/admin.php:325 includes/admin/pages/licenses.php:254
+#: includes/admin.php:340 includes/admin/pages/licenses.php:254
 #: includes/admin/pages/licenses.php:261
 msgid "Licenses"
 msgstr ""
 
-#: includes/admin.php:333 includes/admin/pages/add-ons.php:41
+#: includes/admin.php:348 includes/admin/pages/add-ons.php:41
 #: includes/admin/pages/tools.php:126 includes/admin/pages/tools.php:132
 msgid "Tools"
 msgstr ""
 
-#: includes/admin.php:367 includes/admin/meta-boxes/achievement-type.php:29
+#: includes/admin.php:382 includes/admin/meta-boxes/achievement-type.php:29
 #: includes/admin/meta-boxes/points-type.php:32
 #: includes/admin/meta-boxes/rank-type.php:29
 msgid "Singular Name"
 msgstr ""
 
-#: includes/admin.php:371 includes/admin/achievements.php:42
+#: includes/admin.php:386 includes/admin/achievements.php:42
 #: includes/admin/ranks.php:67
 msgid "Image"
 msgstr ""
 
-#: includes/admin.php:384 includes/admin/meta-boxes/achievement-type.php:34
+#: includes/admin.php:399 includes/admin/meta-boxes/achievement-type.php:34
 #: includes/admin/meta-boxes/points-type.php:37
 #: includes/admin/meta-boxes/rank-type.php:34
 msgid "Plural Name"
 msgstr ""
 
-#: includes/admin.php:385 includes/admin/meta-boxes/achievement-type.php:39
+#: includes/admin.php:400 includes/admin/meta-boxes/achievement-type.php:39
 #: includes/admin/meta-boxes/points-type.php:42
 #: includes/admin/meta-boxes/rank-type.php:39
 #: includes/admin/tools/import-export-achievements.php:55
@@ -142,13 +142,13 @@ msgstr ""
 msgid "Slug"
 msgstr ""
 
-#: includes/admin.php:415 includes/admin/achievements.php:85
+#: includes/admin.php:430 includes/admin/achievements.php:85
 #: includes/admin/ranks.php:127
 #, php-format
 msgid "&#8220;%s&#8221; (Edit)"
 msgstr ""
 
-#: includes/admin.php:578
+#: includes/admin.php:593
 #, php-format
 msgid "Thank you for using <a href=\"%1$s\" target=\"_blank\">GamiPress</a>! Please leave us a <a href=\"%2$s\" target=\"_blank\">%3$s</a> rating on WordPress.org"
 msgstr ""
@@ -1907,39 +1907,47 @@ msgid "Maximum dimensions for ranks featured image."
 msgstr ""
 
 #: includes/admin/settings/general.php:56
-msgid "Disable Shortcodes Editor"
+msgid "Disable Top Bar Menu"
 msgstr ""
 
 #: includes/admin/settings/general.php:57
-msgid "Check this option to disable the shortcodes editor."
+msgid "Check this option to disable the GamiPress top bar menu."
 msgstr ""
 
-#: includes/admin/settings/general.php:58
-msgid "Check this option if you are experiencing black screens in your theme settings or in your page builder forms."
+#: includes/admin/settings/general.php:62
+msgid "Disable Shortcodes Editor"
 msgstr ""
 
 #: includes/admin/settings/general.php:63
-msgid "Debug Mode"
+msgid "Check this option to disable the shortcodes editor."
 msgstr ""
 
 #: includes/admin/settings/general.php:64
+msgid "Check this option if you are experiencing black screens in your theme settings or in your page builder forms."
+msgstr ""
+
+#: includes/admin/settings/general.php:69
+msgid "Debug Mode"
+msgstr ""
+
+#: includes/admin/settings/general.php:70
 msgid "Check this option to enable the debug mode."
 msgstr ""
 
-#: includes/admin/settings/general.php:83
-#: includes/admin/settings/general.php:86
+#: includes/admin/settings/general.php:89
+#: includes/admin/settings/general.php:92
 msgid "Automatic Updates"
 msgstr ""
 
-#: includes/admin/settings/general.php:87
+#: includes/admin/settings/general.php:93
 msgid "Check this option to automatically get the latest features, bugfixes and security updates as they are released."
 msgstr ""
 
-#: includes/admin/settings/general.php:92
+#: includes/admin/settings/general.php:98
 msgid "Plugins"
 msgstr ""
 
-#: includes/admin/settings/general.php:93
+#: includes/admin/settings/general.php:99
 msgid "Check GamiPress add-ons you want to automatically update."
 msgstr ""
 
@@ -2121,28 +2129,28 @@ msgstr ""
 msgid "Preview"
 msgstr ""
 
-#: includes/admin/settings/social.php:36 includes/filters.php:1134
-#: includes/filters.php:1278
+#: includes/admin/settings/social.php:36 includes/filters.php:1136
+#: includes/filters.php:1280
 msgid "Share:"
 msgstr ""
 
-#: includes/admin/settings/social.php:37 includes/filters.php:1108
-#: includes/filters.php:1252
+#: includes/admin/settings/social.php:37 includes/filters.php:1110
+#: includes/filters.php:1254
 msgid "Share on Facebook"
 msgstr ""
 
-#: includes/admin/settings/social.php:38 includes/filters.php:1109
-#: includes/filters.php:1253
+#: includes/admin/settings/social.php:38 includes/filters.php:1111
+#: includes/filters.php:1255
 msgid "Share on Twitter"
 msgstr ""
 
-#: includes/admin/settings/social.php:39 includes/filters.php:1110
-#: includes/filters.php:1254
+#: includes/admin/settings/social.php:39 includes/filters.php:1112
+#: includes/filters.php:1256
 msgid "Share on LinkedIn"
 msgstr ""
 
-#: includes/admin/settings/social.php:40 includes/filters.php:1111
-#: includes/filters.php:1255
+#: includes/admin/settings/social.php:40 includes/filters.php:1113
+#: includes/filters.php:1257
 msgid "Share on Pinterest"
 msgstr ""
 
@@ -2150,23 +2158,23 @@ msgstr ""
 msgid "Social Networks"
 msgstr ""
 
-#: includes/admin/settings/social.php:48 includes/filters.php:1115
-#: includes/filters.php:1259
+#: includes/admin/settings/social.php:48 includes/filters.php:1117
+#: includes/filters.php:1261
 msgid "Facebook"
 msgstr ""
 
-#: includes/admin/settings/social.php:49 includes/filters.php:1116
-#: includes/filters.php:1260
+#: includes/admin/settings/social.php:49 includes/filters.php:1118
+#: includes/filters.php:1262
 msgid "Twitter"
 msgstr ""
 
-#: includes/admin/settings/social.php:50 includes/filters.php:1117
-#: includes/filters.php:1261
+#: includes/admin/settings/social.php:50 includes/filters.php:1119
+#: includes/filters.php:1263
 msgid "LinkedIn"
 msgstr ""
 
-#: includes/admin/settings/social.php:51 includes/filters.php:1118
-#: includes/filters.php:1262
+#: includes/admin/settings/social.php:51 includes/filters.php:1120
+#: includes/filters.php:1264
 msgid "Pinterest"
 msgstr ""
 
@@ -2194,7 +2202,7 @@ msgstr ""
 msgid "Default text when sharing an earned achievement on Twitter. Maximum 280 characters (leave at least 24 characters empty for the achievement URL)."
 msgstr ""
 
-#: includes/admin/settings/social.php:72 includes/filters.php:1127
+#: includes/admin/settings/social.php:72 includes/filters.php:1129
 msgid "I earned the {achievement_type} {achievement_title} on {site_title}"
 msgstr ""
 
@@ -2206,7 +2214,7 @@ msgstr ""
 msgid "Default text when sharing an earned rank on Twitter. Maximum 280 characters (leave at least 24 characters empty for the rank URL)."
 msgstr ""
 
-#: includes/admin/settings/social.php:81 includes/filters.php:1271
+#: includes/admin/settings/social.php:81 includes/filters.php:1273
 msgid "I reached the {rank_type} {rank_title} on {site_title}"
 msgstr ""
 
@@ -3908,8 +3916,8 @@ msgstr ""
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 
-#: includes/filters.php:218 includes/filters.php:220 includes/filters.php:2034
-#: includes/filters.php:2080 includes/privacy/exporters/user-earnings.php:164
+#: includes/filters.php:218 includes/filters.php:220 includes/filters.php:2036
+#: includes/filters.php:2082 includes/privacy/exporters/user-earnings.php:164
 msgid "Award"
 msgid_plural "Awards"
 msgstr[0] ""
@@ -3920,66 +3928,66 @@ msgstr[1] ""
 msgid "%1$d Required %2$s"
 msgstr ""
 
-#: includes/filters.php:482 includes/filters.php:2024
+#: includes/filters.php:482 includes/filters.php:2026
 #: includes/post-types.php:423
 msgid "Step"
 msgid_plural "Steps"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:657
+#: includes/filters.php:659
 #, php-format
 msgid "%d times earned"
 msgstr ""
 
-#: includes/filters.php:661
+#: includes/filters.php:663
 #, php-format
 msgid "%d of %d times earned"
 msgstr ""
 
-#: includes/filters.php:810 includes/filters.php:945
+#: includes/filters.php:812 includes/filters.php:947
 #, php-format
 msgid "Unlock using %s"
 msgstr ""
 
-#: includes/filters.php:833 includes/filters.php:968
+#: includes/filters.php:835 includes/filters.php:970
 #, php-format
 msgid "Do you want to unlock %s using %s?"
 msgstr ""
 
-#: includes/filters.php:834 includes/filters.php:969
+#: includes/filters.php:836 includes/filters.php:971
 msgid "Yes"
 msgstr ""
 
-#: includes/filters.php:835 includes/filters.php:970
+#: includes/filters.php:837 includes/filters.php:972
 msgid "No"
 msgstr ""
 
-#: includes/filters.php:1394
+#: includes/filters.php:1396
 #, php-format
 msgid "You have earned this %s!"
 msgstr ""
 
-#: includes/filters.php:1589
+#: includes/filters.php:1591
 msgid "Next Post"
 msgstr ""
 
-#: includes/filters.php:1591
+#: includes/filters.php:1593
 msgid "Previous Post"
 msgstr ""
 
-#: includes/filters.php:1698 includes/filters.php:2043
+#: includes/filters.php:1700 includes/filters.php:2045
 msgid "Requirement"
 msgid_plural "Requirements"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/filters.php:1817
+#: includes/filters.php:1819
 #, php-format
 msgid "You have reached this %s!"
 msgstr ""
 
-#: includes/filters.php:2034 includes/filters.php:2080
+#: includes/filters.php:2036 includes/filters.php:2082
 #: includes/privacy/exporters/user-earnings.php:164
 msgid "Deduction"
 msgstr ""

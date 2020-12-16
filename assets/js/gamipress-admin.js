@@ -30,7 +30,7 @@
 	});
 
 	// Dynamically show/hide achievement meta inputs based on "Earned By" selection
-	$("#_gamipress_earned_by").change( function() {
+	$("#_gamipress_earned_by").on('change', function() {
 
 		// Define our potentially unnecessary inputs
 		var gamipress_points_required = $('#_gamipress_points_required').closest('.cmb-row');
@@ -47,12 +47,12 @@
 			gamipress_points_required.show();
 		} else if ( $(this).val() === 'rank' ) {
 			gamipress_rank_type_required.show();
-			$('#_gamipress_rank_type_required').change();
+			$('#_gamipress_rank_type_required').trigger('change');
 			//gamipress_rank_required.show();
 		}
-	}).change();
+	}).trigger('change');
 
-	$('#_gamipress_rank_type_required').change(function() {
+	$('#_gamipress_rank_type_required').on('change', function() {
 
 		var $this = $(this);
 
@@ -98,7 +98,7 @@
 	});
 
 	// Dynamically show/hide achievement meta inputs based on "Unlock with Points" checkbox
-	$('#_gamipress_unlock_with_points').change(function() {
+	$('#_gamipress_unlock_with_points').on('change', function() {
 		var target = $('.cmb2-id--gamipress-points-to-unlock');
 
 		if( $(this).prop('checked') ) {
@@ -113,7 +113,7 @@
 	}
 
 	// Toggle visibility of maximum earners based on show earners checked status
-	$('#_gamipress_show_earners').change(function() {
+	$('#_gamipress_show_earners').on('change', function() {
 		var target = $('.cmb2-id--gamipress-maximum-earners');
 
 		if( $(this).prop('checked') ) {
@@ -291,7 +291,7 @@
 
         // Restore current value (if user changed the input but won't save it)
 		points_input.val( points_input.data('current') );
-		register_movement_input.prop( 'checked', false ).change();
+		register_movement_input.prop( 'checked', false ).trigger('change');
 
     });
 
@@ -399,7 +399,7 @@
     // Award type select
     if( $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").length ) {
 
-        $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").change(function() {
+        $("#gamipress-award-achievement-type-select, #gamipress-award-requirement-type-select").on('change', function() {
         	var $this = $(this);
         	var award_options_wrapper = $this.closest('.form-table').next();
         	var post_type = $this.val();
@@ -435,7 +435,7 @@
 				});
 
 			}
-        }).change();
+        }).trigger('change');
 
     }
 
@@ -561,7 +561,7 @@
 	if( $('.gamipress_page_gamipress_add_ons').length ) {
 
 		// Add-ons tabs
-		$('.gamipress_page_gamipress_add_ons .wp-filter a').click(function(e) {
+		$('.gamipress_page_gamipress_add_ons .wp-filter a').on('click', function(e) {
 			e.preventDefault();
 
 			if( $(this).hasClass('current') ) {
@@ -655,7 +655,7 @@ function gamipress_start_upgrade( version ) {
 
             // Add a click event on the upgrade cancel button
             // Note: Function is placed here because clicking fast on start upgrade could provoke cancelling it at start
-            $('body').click('#gamipress-cancel-upgrade', function(e) {
+            $('body').on('click', '#gamipress-cancel-upgrade', function(e) {
                 e.preventDefault();
 
                 $('#gamipress-upgrade-notice').html('<p>Cancelling upgrade...</p>');

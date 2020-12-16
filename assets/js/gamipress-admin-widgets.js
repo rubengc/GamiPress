@@ -48,7 +48,7 @@
         }
     });
 
-    $('input[id^="widget-gamipress"][id$="[current_user]"]').change();
+    $('input[id^="widget-gamipress"][id$="[current_user]"]').trigger('change');
 
     // Earners user field
     $('body').on('change', 'input[id^="widget-gamipress"][id$="[earners]"]', function() {
@@ -71,7 +71,7 @@
         }
     });
 
-    $('input[id^="widget-gamipress"][id$="[earners]"]').change();
+    $('input[id^="widget-gamipress"][id$="[earners]"]').trigger('change');
 
     // Period field
     $('body').on('change', 'select[id^="widget-gamipress_points"][id$="[period]"]', function() {
@@ -90,7 +90,7 @@
         }
     });
 
-    $('select[id^="widget-gamipress_points"][id$="[period]"]').change();
+    $('select[id^="widget-gamipress_points"][id$="[period]"]').trigger('change');
 
     // Inline field
     $('body').on('change', 'input[id^="widget-gamipress_points"][id$="[inline]"]', function() {
@@ -139,7 +139,7 @@
 
     $('input[id^="widget-gamipress_earnings"][id$="[points]"], '
         + 'input[id^="widget-gamipress_earnings"][id$="[achievements]"], '
-        + 'input[id^="widget-gamipress_earnings"][id$="[ranks]"]').change();
+        + 'input[id^="widget-gamipress_earnings"][id$="[ranks]"]').trigger('change');
 
     // Initialize on widgets area
     $(document).on('widget-updated widget-added', function(e, widget) {
