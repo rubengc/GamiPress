@@ -243,6 +243,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.8.1 ###
+
+* **Bug Fixes**
+* Fixed click trigger for some HTML elements in Javascript.
+
 ### 1.9.8 ###
 
 * **New Features**

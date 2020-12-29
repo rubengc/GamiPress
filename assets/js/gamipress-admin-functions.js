@@ -452,7 +452,8 @@ function gamipress_download_file( content, filename, extension, mime_type = '', 
 
             // Append the link element and trigger the click event
             document.body.appendChild( link );
-            link.trigger('click');
+
+            link.click(); // NOTE: Is not a jQuery element, so is safe to use click()
 
             // Finally remove the link element
             document.body.removeChild( link );
