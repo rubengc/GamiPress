@@ -1070,7 +1070,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     // Check if trigger is excluded from activity limits
     if( ! in_array( $trigger_type, gamipress_get_activity_triggers_excluded_from_activity_limit() ) ) {
         // Add "%d time(s)" to title
-        $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( _n( '%d time', '%d times', $count ), $count ) );
+        $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( _n( '%d time', '%d times', $count, 'gamipress' ), $count ) );
     }
 
     // Add "(limited to %d per %s)" to title if is limited

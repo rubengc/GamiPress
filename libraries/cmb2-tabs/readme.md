@@ -74,6 +74,10 @@ function cmb2_sample_metabox() {
 
 ## Changelog
 
+### 1.0.4
+
+* Ensure that all tab parameters has been passed correctly.
+
 ### 1.0.3
 
 * Added support for dark mode.

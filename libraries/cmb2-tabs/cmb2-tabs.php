@@ -1,14 +1,14 @@
 <?php
 /**
  * @package      CMB2\Tabs
- * @author       Tsunoa
- * @copyright    Copyright (c) Tsunoa
+ * @author       Ruben Garcia <rubengcdev@gmail.com>, GamiPress <contact@gamipress.com>, AutomatorWP <contact@automatorwp.com>
+ * @copyright    Copyright (c) Ruben Garcia
  *
  * Plugin Name: CMB2 Tabs
  * Plugin URI: https://github.com/rubengc/cmb2-tabs
  * GitHub Plugin URI: https://github.com/rubengc/cmb2-tabs
  * Description: Tabs for CMB2 boxes.
- * Version: 1.0.3
+ * Version: 1.0.4
  * Author: Ruben Garcia
  * Author URI: http://rubengc.com/
  * License: GPLv2+
@@ -27,7 +27,7 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
         /**
          * Current version number
          */
-        const VERSION = '1.0.3';
+        const VERSION = '1.0.4';
 
         /**
          * Initialize the plugin by hooking into CMB2
@@ -55,6 +55,18 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
                         <?php foreach( $cmb->prop( 'tabs' ) as $tab ) :
                             $fields_selector = array();
 
+                            if( ! isset( $tab['id'] ) ) {
+                                continue;
+                            }
+
+                            if( ! isset( $tab['fields'] ) ) {
+                                $tab['fields'] = array();
+                            }
+
+                            if( ! is_array( $tab['fields'] ) ) {
+                                $tab['fields'] = array();
+                            }
+
                             foreach( $tab['fields'] as $tab_field )  :
                                 $fields_selector[] = '.' . 'cmb2-id-' . str_replace( '_', '-', sanitize_html_class( $tab_field ) ) . ':not(.cmb2-tab-ignore)';
                             endforeach;
@@ -76,7 +88,7 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
                             </div>
                         <?php endforeach; ?>
 
-                    </div>
+                    </div> <!-- .cmb-tabs -->
             <?php endif;
         }
 
@@ -89,7 +101,9 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
          * @param array  $cmb         This CMB2 object
          */
         public function after_form( $cmb_id, $object_id, $object_type, $cmb ) {
-            if( $cmb->prop( 'tabs' ) && is_array( $cmb->prop( 'tabs' ) ) ) : ?></div><?php endif;
+            if( $cmb->prop( 'tabs' ) && is_array( $cmb->prop( 'tabs' ) ) ) : ?>
+                </div> <!-- .cmb-tabs-wrap -->
+            <?php endif;
         }
 
         /**

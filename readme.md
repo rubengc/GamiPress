@@ -243,6 +243,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.8.2 ###
+
+* **Improvements**
+* Added blocks compatibility functions to support installations without the Gutenberg editor (like ClassicPress).
+* Added extra checks to ensure that all tab parameters has been passed correctly.
+* **Bug Fixes**
+* Added translation domain to some strings.
+
 ### 1.9.8.1 ###
 
 * **Bug Fixes**
