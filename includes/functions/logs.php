@@ -553,7 +553,7 @@ function gamipress_insert_log( $type = '', $user_id = 0, $access = 'public', $tr
             $meta_value = maybe_serialize( $meta_value );
 
             // Setup the insert value
-            $metas[] = "{$log_id}, '{$meta_key}', '{$meta_value}'";
+            $metas[] = $wpdb->prepare( '%d, %s, %s', array( $log_id, $meta_key, $meta_value ) );
         }
 
         $logs_meta = GamiPress()->db->logs_meta;

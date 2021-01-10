@@ -61,7 +61,7 @@ function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = a
             $meta_value = maybe_serialize( $meta_value );
 
             // Setup the insert value
-            $metas[] = "{$user_earning_id}, '{$meta_key}', '{$meta_value}'";
+            $metas[] = $wpdb->prepare( '%d, %s, %s', array( $user_earning_id, $meta_key, $meta_value ) );
         }
 
         $user_earnings_meta = GamiPress()->db->user_earnings_meta;

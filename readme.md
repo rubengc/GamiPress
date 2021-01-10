@@ -243,6 +243,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.8.3 ###
+
+* **Improvements**
+* Added stronger escaping functions when inserting logs and user earnings metas.
+
 ### 1.9.8.2 ###
 
 * **Improvements**
