@@ -375,6 +375,26 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          */
         do_action( 'gamipress_requirement_ui_html_after_rank_required', $requirement_id, $post_id ); ?>
 
+        <?php $post_types = get_post_types( array( 'public' => true ), 'objects' ); ?>
+
+        <select class="select-post-type-required select-post-type-required-<?php echo $requirement_id; ?>">
+            <option value=""><?php _e( 'Choose a post type', 'gamipress'); ?></option>
+            <?php foreach( $post_types as $post_type => $post_type_args ) : ?>
+                <option value="<?php echo esc_attr( $post_type ); ?>" <?php selected( $requirements['post_type_required'], $post_type, false ); ?>><?php echo $post_type_args->labels->singular_name ; ?></option>
+            <?php endforeach; ?>
+        </select>
+
+        <?php
+        /**
+         * Available action to add custom HTML after post type field
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_after_post_type_required', $requirement_id, $post_id ); ?>
+
         <select class="select-user-role-required select-user-role-required-<?php echo $requirement_id; ?>">
             <?php foreach ( gamipress_get_editable_roles() as $role => $details ) :
 
@@ -430,7 +450,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <?php
         /**
-         * Available action to add custom HTML after achievement post
+         * Available action to add custom HTML after achievement post field
          *
          * @since 1.0.0
          *
@@ -857,6 +877,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? sanitize_text_field( $requirement['points_type_required'] ) : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? sanitize_text_field( $requirement['rank_type_required'] ) : '';
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
+    $post_type_required     = ( ! empty( $requirement['post_type_required'] ) ) ? sanitize_text_field( $requirement['post_type_required'] ) : '';
     $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? sanitize_text_field( $requirement['user_role_required'] ) : '';
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? sanitize_text_field( $requirement['limit_type'] ) : 'unlimited';
@@ -890,6 +911,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     update_post_meta( $requirement_id, '_gamipress_points_type_required', $points_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_type_required', $rank_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_required', $rank_required );
+    update_post_meta( $requirement_id, '_gamipress_post_type_required', $post_type_required );
     update_post_meta( $requirement_id, '_gamipress_user_role_required', $user_role_required );
     update_post_meta( $requirement_id, '_gamipress_count', $count );
     update_post_meta( $requirement_id, '_gamipress_limit', $limit );
@@ -977,6 +999,9 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
+    $post_type_required     = ( ! empty( $requirement['post_type_required'] ) ) ? $requirement['post_type_required'] : '';
+    $post_types             = get_post_types( array(), 'objects' );
+    $post_type_label        = ( isset( $post_types[$post_type_required] ) ? strtolower( $post_types[$post_type_required]->labels->singular_name ) : __( 'post', 'gamipress' ) );
     $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? $requirement['user_role_required'] : '';
     $roles                  = gamipress_get_editable_roles();
     $count                  = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
@@ -987,6 +1012,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
 
     // Flip between our requirement types and make an appropriate connection
     switch ( $trigger_type ) {
+        // Points triggers
         case 'earn-points':
             $title = sprintf( __( 'Earn %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
             break;
@@ -996,11 +1022,13 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         case 'gamipress_expend_points':
             $title = sprintf( __( 'Expend %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
             break;
+        // Rank triggers
         case 'earn-rank':
             $rank = gamipress_get_post( $rank_required );
 
             $title = sprintf( __( 'Reach %s %s', 'gamipress' ), ( $rank ? gamipress_get_rank_type_singular( $rank->post_type, true ) : '' ), ( $rank ? $rank->post_title : '' ) );
             break;
+        // Achievement triggers
         case 'any-achievement':
             $title = sprintf( __( 'Unlock any %s', 'gamipress' ), $achievement_type );
             break;
@@ -1010,6 +1038,29 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         case 'specific-achievement':
             $title = sprintf( __( 'Unlock "%s"', 'gamipress' ), gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) );
             break;
+        // Post type triggers
+        case 'gamipress_new_comment_post_type':
+            $title = sprintf( __( 'Comment on a %s', 'gamipress' ), $post_type_label );
+            break;
+        case 'gamipress_user_post_comment_post_type':
+            $title = sprintf( __( 'Get a comment on a %s', 'gamipress' ), $post_type_label );
+            break;
+        case 'gamipress_spam_comment_post_type':
+            $title = sprintf( __( 'Get a comment on a %s marked as spam', 'gamipress' ), $post_type_label );
+            break;
+        case 'gamipress_publish_post_type':
+            $title = sprintf( __( 'Publish a new %s', 'gamipress' ), $post_type_label );
+            break;
+        case 'gamipress_delete_post_type':
+            $title = sprintf( __( 'Delete a %s', 'gamipress' ), $post_type_label );
+            break;
+        case 'gamipress_post_type_visit':
+            $title = sprintf( __( 'Daily visit a %s', 'gamipress' ), $post_type_label );
+            break;
+        case 'gamipress_user_post_type_visit':
+            $title = sprintf( __( 'Get visits on a %s', 'gamipress' ), $post_type_label );
+            break;
+        // Role triggers
         case 'gamipress_add_specific_role':
             $title = sprintf( __( 'Get added to %s role', 'gamipress' ), translate_user_role( $roles[$user_role_required]['name'] ) );
             break;
@@ -1019,6 +1070,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         case 'gamipress_remove_specific_role':
             $title = sprintf( __( 'Get removed from %s role', 'gamipress' ), translate_user_role( $roles[$user_role_required]['name'] ) );
             break;
+        // Default
         default:
             $title = gamipress_get_activity_trigger_label( $trigger_type );
             break;

@@ -437,6 +437,64 @@ function gamipress_user_has_access_to_rank_requirement( $return = false, $user_i
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_has_access_to_rank_requirement', 10, 3 );
 
 /**
+ * Check if user meets the post type requirement for a given achievement
+ *
+ * @since  1.9.9
+ *
+ * @param  bool     $return             True if user has access, false otherwise
+ * @param  int      $user_id            The given user's ID
+ * @param  int      $achievement_id     The given achievement ID to possibly award
+ * @param  string   $trigger            The trigger
+ * @param  int      $site_id            The triggered site id
+ * @param  array    $args               The triggered args
+ *
+ * @return bool                         True if user has access to step, false otherwise
+ */
+function gamipress_user_meets_post_type_requirement( $return = false, $user_id = 0, $achievement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
+
+    // Bail if access is not already granted
+    if( ! $return ) {
+        return $return;
+    }
+
+    if( empty( $trigger ) ) {
+        $trigger = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
+    }
+
+    if( in_array( $trigger, array(
+        'gamipress_new_comment_post_type',
+        'gamipress_user_post_comment_post_type',
+        'gamipress_spam_comment_post_type',
+        'gamipress_publish_post_type',
+        'gamipress_delete_post_type',
+        'gamipress_post_type_visit',
+        'gamipress_user_post_type_visit',
+    ) ) ) {
+
+        $index = 2;
+
+        if( in_array( $trigger, array(
+            'gamipress_new_comment_post_type',
+            'gamipress_user_post_comment_post_type',
+            'gamipress_spam_comment_post_type',
+        ) ) ) {
+            $index = 3;
+        }
+
+        $post_type = gamipress_get_event_arg( $args, 'post_type', $index );
+        $post_type_required = gamipress_get_post_meta( $achievement_id, '_gamipress_post_type_required' );
+
+        // Deserve if post type matches
+        $return = (bool) ( $post_type === $post_type_required );
+    }
+
+    // Send back our eligibility
+    return $return;
+
+}
+add_filter( 'user_has_access_to_achievement', 'gamipress_user_meets_post_type_requirement', 10, 6 );
+
+/**
  * Check if user meets the role requirement for a given achievement
  *
  * @since  1.8.9

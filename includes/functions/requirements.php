@@ -85,21 +85,23 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
 
     // Setup our default requirements array, assume we require nothing
     $requirement = array(
-        'ID'               => $requirement_id,
-        'title'            => gamipress_get_post_field( 'post_title', $requirement_id ),
-        'order'            => gamipress_get_post_field( 'menu_order', $requirement_id ),
-        'count'            => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_count' ) ),
-        'limit'            => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) ),
-        'limit_type'       => gamipress_get_post_meta( $requirement_id, '_gamipress_limit_type' ),
-        'trigger_type'     => gamipress_get_post_meta( $requirement_id, '_gamipress_trigger_type' ),
+        'ID'                        => $requirement_id,
+        'title'                     => gamipress_get_post_field( 'post_title', $requirement_id ),
+        'order'                     => gamipress_get_post_field( 'menu_order', $requirement_id ),
+        'count'                     => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_count' ) ),
+        'limit'                     => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) ),
+        'limit_type'                => gamipress_get_post_meta( $requirement_id, '_gamipress_limit_type' ),
+        'trigger_type'              => gamipress_get_post_meta( $requirement_id, '_gamipress_trigger_type' ),
         // Points vars
-        'points_required'       => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_points_required' ) ),
-        'points_type_required'  => gamipress_get_post_meta( $requirement_id, '_gamipress_points_type_required' ),
+        'points_required'           => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_points_required' ) ),
+        'points_type_required'      => gamipress_get_post_meta( $requirement_id, '_gamipress_points_type_required' ),
         // Rank vars
-        'rank_required'         => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_rank_required' ) ),
-        'rank_type_required'    => gamipress_get_post_meta( $requirement_id, '_gamipress_rank_type_required' ),
+        'rank_required'             => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_rank_required' ) ),
+        'rank_type_required'        => gamipress_get_post_meta( $requirement_id, '_gamipress_rank_type_required' ),
+        // Post type vars
+        'post_type_required'        => gamipress_get_post_meta( $requirement_id, '_gamipress_post_type_required' ),
         // User role vars
-        'user_role_required'    => gamipress_get_post_meta( $requirement_id, '_gamipress_user_role_required' ),
+        'user_role_required'        => gamipress_get_post_meta( $requirement_id, '_gamipress_user_role_required' ),
         // Achievement vars
         'achievement_type'          => gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_type' ),
         'achievement_post'          => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_post' ) ),

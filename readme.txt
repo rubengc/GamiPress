@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs, flabernardez
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.6
-Stable tag: 1.9.8.3
+Stable tag: 1.9.9
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -226,6 +226,21 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 1.9.9 =
+
+* **New Features**
+* New event: Comment on a post of a type.
+* New event: Get a comment on a post of a type.
+* New event: Get a comment on a post of a type marked as spam.
+* New event: Publish a new post of a type.
+* New event: Delete a post of a type.
+* New event: Daily visit a post of a type.
+* New event: Get visits on a post of a type.
+* Added the attribute "achievements_without_points" to the [gamipress_earnings] shortcode.
+* Added the field "Show Achievements Without Points" to the User Earnings block and widget.
+* **Improvements**
+* Improved the way that User Earnings shortcode, block and widget limits the results based on the parameters configured.
 
 = 1.9.8.3 =
 

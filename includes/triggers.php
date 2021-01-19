@@ -26,14 +26,19 @@ function gamipress_get_activity_triggers() {
 				'gamipress_login'             	    	=> __( 'Log in to website', 'gamipress' ),
 				'gamipress_new_comment'  				=> __( 'Comment on a post', 'gamipress' ),
 				'gamipress_specific_new_comment' 		=> __( 'Comment on a specific post', 'gamipress' ),
+                'gamipress_new_comment_post_type'       => __( 'Comment on a post of a type', 'gamipress' ),
 				'gamipress_user_post_comment'  			=> __( 'Get a comment on a post', 'gamipress' ),
 				'gamipress_user_specific_post_comment' 	=> __( 'Get a comment on a specific post', 'gamipress' ),
+                'gamipress_user_post_comment_post_type' => __( 'Get a comment on a post of a type', 'gamipress' ),
                 'gamipress_spam_comment'  				=> __( 'Get a comment marked as spam', 'gamipress' ),
                 'gamipress_specific_spam_comment' 		=> __( 'Get a comment of a specific post marked as spam', 'gamipress' ),
+                'gamipress_spam_comment_post_type'  	=> __( 'Get a comment on a post of a type marked as spam', 'gamipress' ),
 				'gamipress_publish_post'     			=> __( 'Publish a new post', 'gamipress' ),
 				'gamipress_delete_post'     			=> __( 'Delete a post', 'gamipress' ),
 				'gamipress_publish_page'     			=> __( 'Publish a new page', 'gamipress' ),
 				'gamipress_delete_page'     			=> __( 'Delete a page', 'gamipress' ),
+                'gamipress_publish_post_type'     	    => __( 'Publish a new post of a type', 'gamipress' ),
+                'gamipress_delete_post_type'     	    => __( 'Delete a post of a type', 'gamipress' ),
 				'gamipress_add_role'     			    => __( 'Get added to any role', 'gamipress' ),
 				'gamipress_add_specific_role'     	    => __( 'Get added to specific role', 'gamipress' ),
 				'gamipress_set_role'     			    => __( 'Get assigned to any role', 'gamipress' ),
@@ -46,8 +51,10 @@ function gamipress_get_activity_triggers() {
 				'gamipress_site_visit'  				=> __( 'Daily visit the website', 'gamipress' ),
 				'gamipress_post_visit'  				=> __( 'Daily visit any post', 'gamipress' ),
 				'gamipress_specific_post_visit'  		=> __( 'Daily visit a specific post', 'gamipress' ),
+                'gamipress_post_type_visit'  		    => __( 'Daily visit a post of a type', 'gamipress' ),
 				'gamipress_user_post_visit'  			=> __( 'Get visits on any post', 'gamipress' ),
 				'gamipress_user_specific_post_visit'	=> __( 'Get visits on a specific post', 'gamipress' ),
+                'gamipress_user_post_type_visit'  	    => __( 'Get visits on a post of a type', 'gamipress' ),
 			),
 			// GamiPress
 			__( 'GamiPress', 'gamipress' ) => array(
@@ -147,11 +154,13 @@ function gamipress_get_specific_activity_triggers_query_args( $query_args, $acti
  */
 function gamipress_get_activity_trigger_label( $activity_trigger ) {
 
+    $label = '';
 	$activity_triggers = gamipress_get_activity_triggers();
 
 	foreach( $activity_triggers as $group => $group_triggers ) {
-		if( isset( $group_triggers[$activity_trigger] ) )
-			return $group_triggers[$activity_trigger];
+		if( isset( $group_triggers[$activity_trigger] ) ) {
+            $label = $group_triggers[$activity_trigger];
+        }
 	}
 
 	// Check if trigger is for unlocking ANY and ALL posts of an achievement type
@@ -164,13 +173,23 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
 
         if ( $data ) {
             if( gamipress_starts_with( $activity_trigger, 'gamipress_unlock_all_' ) )
-                return sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
+                $label = sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
             else
-                return sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
+                $label = sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
         }
     }
 
-	return '';
+    /**
+     * Available filter to override an activity trigger label
+     *
+     * @since  1.9.9
+     *
+     * @param string $label
+     * @param string $activity_trigger
+     *
+     * @return string
+     */
+	return apply_filters( 'gamipress_get_activity_trigger_label', $label, $activity_trigger );
 
 }
 
@@ -576,6 +595,14 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 			// Add the published/deleted/visited post ID
 			$log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
 			break;
+        case 'gamipress_publish_post_type':
+        case 'gamipress_delete_post_type':
+        case 'gamipress_post_type_visit':
+        case 'gamipress_user_post_type_visit':
+            // Add the post ID and type
+            $log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
+            $log_meta['post_type'] = gamipress_get_event_arg( $args, 'post_type', 2 );
+            break;
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
 			// Add the visited post ID
@@ -592,6 +619,14 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 			$log_meta['comment_id'] = $args[0];
 			$log_meta['comment_post_id'] = $args[2];
 			break;
+        case 'gamipress_new_comment_post_type':
+        case 'gamipress_user_post_comment_post_type':
+        case 'gamipress_spam_comment_post_type':
+            // Add the comment ID, post commented ID and type
+            $log_meta['comment_id'] = $args[0];
+            $log_meta['comment_post_id'] = $args[2];
+            $log_meta['comment_post_type'] = $args[3];
+            break;
 		case 'gamipress_expend_points':
 			// Add the post ID, the amount of points and the points type
 			$log_meta['post_id'] = $args[0];
@@ -639,8 +674,10 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 	switch ( $trigger ) {
 		case 'gamipress_publish_post':
 		case 'gamipress_publish_page':
+		case 'gamipress_publish_post_type':
 		case 'gamipress_delete_post':
 		case 'gamipress_delete_page':
+		case 'gamipress_delete_post_type':
 			// User can not publish/delete same post more times, so check it
 			$log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
 			$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
@@ -658,10 +695,13 @@ function gamipress_trigger_duplicity_check( $return, $user_id, $trigger, $site_i
 			break;
 		case 'gamipress_new_comment':
 		case 'gamipress_specific_new_comment':
+		case 'gamipress_new_comment_post_type':
 		case 'gamipress_user_post_comment':
 		case 'gamipress_user_specific_post_comment':
+		case 'gamipress_user_post_comment_post_type':
         case 'gamipress_spam_comment':
         case 'gamipress_specific_spam_comment':
+        case 'gamipress_spam_comment_post_type':
 			// User can not publish same comment more times, so check it
 			$log_meta['comment_id'] = $args[0];
 			$return = (bool) ( gamipress_get_user_last_log( $user_id, $log_meta ) === false );
@@ -705,18 +745,25 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
 			break;
 		case 'gamipress_publish_post':
 		case 'gamipress_publish_page':
+		case 'gamipress_publish_post_type':
 		case 'gamipress_delete_post':
 		case 'gamipress_delete_page':
+		case 'gamipress_delete_post_type':
 		case 'gamipress_new_comment':
 		case 'gamipress_specific_new_comment':
+		case 'gamipress_new_comment_post_type':
 		case 'gamipress_user_post_comment':
 		case 'gamipress_user_specific_post_comment':
+		case 'gamipress_user_post_comment_post_type':
         case 'gamipress_spam_comment':
         case 'gamipress_specific_spam_comment':
+        case 'gamipress_spam_comment_post_type':
 		case 'gamipress_post_visit':
 		case 'gamipress_specific_post_visit':
+		case 'gamipress_post_type_visit':
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
+		case 'gamipress_user_post_type_visit':
 		case 'gamipress_expend_points':
 			$user_id = $args[1];
 			break;

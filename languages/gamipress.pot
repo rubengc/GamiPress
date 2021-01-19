@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2021-01-09 10:28+0100\n"
+"POT-Creation-Date: 2021-01-19 10:52+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -52,8 +52,8 @@ msgstr ""
 
 #: includes/admin.php:94 includes/admin.php:144 includes/admin/users.php:27
 #: includes/blocks.php:21 includes/shortcodes.php:67
-#: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:53
-#: includes/triggers.php:342 includes/triggers.php:343
+#: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:60
+#: includes/triggers.php:361 includes/triggers.php:362
 msgid "GamiPress"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgid "Admin-awarded Only"
 msgstr ""
 
 #: includes/admin/achievements.php:146
-#: includes/admin/meta-boxes/requirements-ui.php:451
+#: includes/admin/meta-boxes/requirements-ui.php:471
 #: includes/admin/meta-boxes/requirements.php:58
 msgid "Unlimited"
 msgstr ""
@@ -462,7 +462,7 @@ msgid "Nothing to show :)"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:349
-#: includes/admin/meta-boxes/requirements-ui.php:398
+#: includes/admin/meta-boxes/requirements-ui.php:418
 #: includes/admin/users.php:511
 msgid "Choose an achievement type"
 msgstr ""
@@ -805,7 +805,7 @@ msgstr ""
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:40
-#: includes/shortcodes/gamipress_earnings.php:304 templates/points.php:18
+#: includes/shortcodes/gamipress_earnings.php:312 templates/points.php:18
 msgid "Points"
 msgstr ""
 
@@ -885,7 +885,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:357
 #: includes/shortcodes/gamipress_achievements.php:166
 #: includes/shortcodes/gamipress_earnings.php:76
-#: includes/shortcodes/gamipress_earnings.php:298
+#: includes/shortcodes/gamipress_earnings.php:306
 #: includes/shortcodes/gamipress_logs.php:46
 #: includes/shortcodes/gamipress_points.php:60
 #: includes/shortcodes/gamipress_points_types.php:104
@@ -1111,78 +1111,82 @@ msgstr ""
 msgid "Choose a rank"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:418
+#: includes/admin/meta-boxes/requirements-ui.php:381
+msgid "Choose a post type"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:438
 msgid "Choose an achievement"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:443
+#: includes/admin/meta-boxes/requirements-ui.php:463
 msgid "time(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:447
+#: includes/admin/meta-boxes/requirements-ui.php:467
 msgid "limited to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:452
+#: includes/admin/meta-boxes/requirements-ui.php:472
 msgid "Per minute"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:453
+#: includes/admin/meta-boxes/requirements-ui.php:473
 msgid "Per hour"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:454
+#: includes/admin/meta-boxes/requirements-ui.php:474
 msgid "Per day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:455
+#: includes/admin/meta-boxes/requirements-ui.php:475
 msgid "Per week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:456
+#: includes/admin/meta-boxes/requirements-ui.php:476
 msgid "Per month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:457
+#: includes/admin/meta-boxes/requirements-ui.php:477
 msgid "Per year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:504
+#: includes/admin/meta-boxes/requirements-ui.php:524
 msgid "point(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:510
+#: includes/admin/meta-boxes/requirements-ui.php:530
 msgid "Earn"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:510 includes/filters.php:334
+#: includes/admin/meta-boxes/requirements-ui.php:530 includes/filters.php:334
 #: includes/filters.php:336
 msgid "Deduct"
 msgid_plural "Deducts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:516
+#: includes/admin/meta-boxes/requirements-ui.php:536
 msgid "with a maximum number of times to earn it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:516
+#: includes/admin/meta-boxes/requirements-ui.php:536
 msgid "with a maximum number of times to deduct it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:518
+#: includes/admin/meta-boxes/requirements-ui.php:538
 msgid "(0 for no maximum)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:534
+#: includes/admin/meta-boxes/requirements-ui.php:554
 msgid "Label"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:656
-#: includes/admin/meta-boxes/requirements-ui.php:696
-#: includes/admin/meta-boxes/requirements-ui.php:742
-#: includes/admin/meta-boxes/requirements-ui.php:768
-#: includes/admin/meta-boxes/requirements-ui.php:843
+#: includes/admin/meta-boxes/requirements-ui.php:676
+#: includes/admin/meta-boxes/requirements-ui.php:716
+#: includes/admin/meta-boxes/requirements-ui.php:762
+#: includes/admin/meta-boxes/requirements-ui.php:788
+#: includes/admin/meta-boxes/requirements-ui.php:863
 #: includes/admin/tools/bulk-awards.php:258
 #: includes/admin/tools/bulk-awards.php:263
 #: includes/admin/tools/bulk-revokes.php:258
@@ -1203,110 +1207,149 @@ msgstr ""
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:663
-#: includes/admin/meta-boxes/requirements-ui.php:704
+#: includes/admin/meta-boxes/requirements-ui.php:683
+#: includes/admin/meta-boxes/requirements-ui.php:724
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:991
-#, php-format
-msgid "Earn %s"
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:994
-#, php-format
-msgid "Reach a balance of %s"
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:997
-#, php-format
-msgid "Expend %s"
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:1002
-#, php-format
-msgid "Reach %s %s"
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:1005
-#, php-format
-msgid "Unlock any %s"
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:1008
-#, php-format
-msgid "Unlock all %s"
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:1011
-#, php-format
-msgid "Unlock \"%s\""
-msgstr ""
-
-#: includes/admin/meta-boxes/requirements-ui.php:1014
-#, php-format
-msgid "Get added to %s role"
+#: includes/admin/meta-boxes/requirements-ui.php:1004
+msgid "post"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:1017
 #, php-format
-msgid "Get assigned to %s role"
+msgid "Earn %s"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:1020
 #, php-format
-msgid "Get removed from %s role"
+msgid "Reach a balance of %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1023
+#, php-format
+msgid "Expend %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1029
+#, php-format
+msgid "Reach %s %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1033
+#, php-format
+msgid "Unlock any %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1036
+#, php-format
+msgid "Unlock all %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1039
+#, php-format
+msgid "Unlock \"%s\""
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1043
+#, php-format
+msgid "Comment on a %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1046
+#, php-format
+msgid "Get a comment on a %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1049
+#, php-format
+msgid "Get a comment on a %s marked as spam"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1052
+#, php-format
+msgid "Publish a new %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1055
+#, php-format
+msgid "Delete a %s"
 msgstr ""
 
 #: includes/admin/meta-boxes/requirements-ui.php:1058
 #, php-format
+msgid "Daily visit a %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1061
+#, php-format
+msgid "Get visits on a %s"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1065
+#, php-format
+msgid "Get added to %s role"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1068
+#, php-format
+msgid "Get assigned to %s role"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1071
+#, php-format
+msgid "Get removed from %s role"
+msgstr ""
+
+#: includes/admin/meta-boxes/requirements-ui.php:1110
+#, php-format
 msgid "%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1060
+#: includes/admin/meta-boxes/requirements-ui.php:1112
 #, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1064
-#: includes/admin/meta-boxes/requirements-ui.php:1073
-#: includes/admin/meta-boxes/requirements-ui.php:1102
+#: includes/admin/meta-boxes/requirements-ui.php:1116
+#: includes/admin/meta-boxes/requirements-ui.php:1125
+#: includes/admin/meta-boxes/requirements-ui.php:1154
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1073
+#: includes/admin/meta-boxes/requirements-ui.php:1125
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1083
+#: includes/admin/meta-boxes/requirements-ui.php:1135
 msgid "minute"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1086
+#: includes/admin/meta-boxes/requirements-ui.php:1138
 msgid "hour"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1089
+#: includes/admin/meta-boxes/requirements-ui.php:1141
 msgid "day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1092
+#: includes/admin/meta-boxes/requirements-ui.php:1144
 msgid "week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1095
+#: includes/admin/meta-boxes/requirements-ui.php:1147
 msgid "month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1098
+#: includes/admin/meta-boxes/requirements-ui.php:1150
 msgid "year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1102
+#: includes/admin/meta-boxes/requirements-ui.php:1154
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
@@ -1979,7 +2022,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:512
+#: includes/admin/settings/logs.php:43 includes/triggers.php:531
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -3798,7 +3841,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:363
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:251
-#: includes/shortcodes/gamipress_earnings.php:303
+#: includes/shortcodes/gamipress_earnings.php:311
 #: includes/shortcodes/gamipress_logs.php:81
 msgid "Date"
 msgstr ""
@@ -4604,7 +4647,7 @@ msgstr ""
 #: includes/scripts.php:173 includes/shortcodes/gamipress_achievements.php:71
 #: includes/shortcodes/gamipress_earnings.php:130
 #: includes/shortcodes/gamipress_earnings.php:167
-#: includes/shortcodes/gamipress_earnings.php:197
+#: includes/shortcodes/gamipress_earnings.php:204
 #: includes/shortcodes/gamipress_logs.php:34
 #: includes/shortcodes/gamipress_points.php:34
 #: includes/shortcodes/gamipress_points_types.php:34
@@ -5197,40 +5240,48 @@ msgstr ""
 msgid "Show steps completed."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:183
-msgid "Show Ranks"
+#: includes/shortcodes/gamipress_earnings.php:180
+msgid "Show Achievements Without Points"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:184
-msgid "Show ranks reached."
+#: includes/shortcodes/gamipress_earnings.php:181
+msgid "Show achievements that do not award points."
 msgstr ""
 
 #: includes/shortcodes/gamipress_earnings.php:190
+msgid "Show Ranks"
+msgstr ""
+
+#: includes/shortcodes/gamipress_earnings.php:191
+msgid "Show ranks reached."
+msgstr ""
+
+#: includes/shortcodes/gamipress_earnings.php:197
 #: includes/shortcodes/gamipress_ranks.php:60
 msgid "Rank Type(s)"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:191
+#: includes/shortcodes/gamipress_earnings.php:198
 msgid "Ranks type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:192
+#: includes/shortcodes/gamipress_earnings.php:199
 msgid "Single or comma-separated list of ranks type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:203
+#: includes/shortcodes/gamipress_earnings.php:210
 msgid "Show Rank Requirements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:204
+#: includes/shortcodes/gamipress_earnings.php:211
 msgid "Show rank requirements completed."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:301
+#: includes/shortcodes/gamipress_earnings.php:309
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:302
+#: includes/shortcodes/gamipress_earnings.php:310
 msgid "Description"
 msgstr ""
 
@@ -5906,144 +5957,172 @@ msgid "Comment on a specific post"
 msgstr ""
 
 #: includes/triggers.php:29
-msgid "Get a comment on a post"
+msgid "Comment on a post of a type"
 msgstr ""
 
 #: includes/triggers.php:30
-msgid "Get a comment on a specific post"
+msgid "Get a comment on a post"
 msgstr ""
 
 #: includes/triggers.php:31
-msgid "Get a comment marked as spam"
+msgid "Get a comment on a specific post"
 msgstr ""
 
 #: includes/triggers.php:32
-msgid "Get a comment of a specific post marked as spam"
+msgid "Get a comment on a post of a type"
 msgstr ""
 
 #: includes/triggers.php:33
-msgid "Publish a new post"
+msgid "Get a comment marked as spam"
 msgstr ""
 
 #: includes/triggers.php:34
-msgid "Delete a post"
+msgid "Get a comment of a specific post marked as spam"
 msgstr ""
 
 #: includes/triggers.php:35
-msgid "Publish a new page"
+msgid "Get a comment on a post of a type marked as spam"
 msgstr ""
 
 #: includes/triggers.php:36
-msgid "Delete a page"
+msgid "Publish a new post"
 msgstr ""
 
 #: includes/triggers.php:37
-msgid "Get added to any role"
+msgid "Delete a post"
 msgstr ""
 
 #: includes/triggers.php:38
-msgid "Get added to specific role"
+msgid "Publish a new page"
 msgstr ""
 
 #: includes/triggers.php:39
-msgid "Get assigned to any role"
+msgid "Delete a page"
 msgstr ""
 
 #: includes/triggers.php:40
-msgid "Get assigned to specific role"
+msgid "Publish a new post of a type"
 msgstr ""
 
 #: includes/triggers.php:41
-msgid "Get removed from any role"
+msgid "Delete a post of a type"
 msgstr ""
 
 #: includes/triggers.php:42
-msgid "Get removed from a specific role"
+msgid "Get added to any role"
+msgstr ""
+
+#: includes/triggers.php:43
+msgid "Get added to specific role"
+msgstr ""
+
+#: includes/triggers.php:44
+msgid "Get assigned to any role"
 msgstr ""
 
 #: includes/triggers.php:45
-msgid "Site Interactions"
+msgid "Get assigned to specific role"
 msgstr ""
 
 #: includes/triggers.php:46
-msgid "Daily visit the website"
+msgid "Get removed from any role"
 msgstr ""
 
 #: includes/triggers.php:47
-msgid "Daily visit any post"
-msgstr ""
-
-#: includes/triggers.php:48
-msgid "Daily visit a specific post"
-msgstr ""
-
-#: includes/triggers.php:49
-msgid "Get visits on any post"
+msgid "Get removed from a specific role"
 msgstr ""
 
 #: includes/triggers.php:50
-msgid "Get visits on a specific post"
+msgid "Site Interactions"
+msgstr ""
+
+#: includes/triggers.php:51
+msgid "Daily visit the website"
+msgstr ""
+
+#: includes/triggers.php:52
+msgid "Daily visit any post"
+msgstr ""
+
+#: includes/triggers.php:53
+msgid "Daily visit a specific post"
 msgstr ""
 
 #: includes/triggers.php:54
-msgid "Unlock a specific achievement"
+msgid "Daily visit a post of a type"
 msgstr ""
 
 #: includes/triggers.php:55
-msgid "Unlock any achievement of type"
+msgid "Get visits on any post"
 msgstr ""
 
 #: includes/triggers.php:56
-msgid "Unlock all Achievements of type"
+msgid "Get visits on a specific post"
 msgstr ""
 
 #: includes/triggers.php:57
+msgid "Get visits on a post of a type"
+msgstr ""
+
+#: includes/triggers.php:61
+msgid "Unlock a specific achievement"
+msgstr ""
+
+#: includes/triggers.php:62
+msgid "Unlock any achievement of type"
+msgstr ""
+
+#: includes/triggers.php:63
+msgid "Unlock all Achievements of type"
+msgstr ""
+
+#: includes/triggers.php:64
 msgid "Earn an amount of points"
 msgstr ""
 
-#: includes/triggers.php:58
+#: includes/triggers.php:65
 msgid "Reach a points balance"
 msgstr ""
 
-#: includes/triggers.php:59
+#: includes/triggers.php:66
 msgid "Expend an amount of points"
 msgstr ""
 
-#: includes/triggers.php:60
+#: includes/triggers.php:67
 msgid "Reach a rank"
 msgstr ""
 
-#: includes/triggers.php:167 includes/triggers.php:343
+#: includes/triggers.php:176 includes/triggers.php:362
 #, php-format
 msgid "Unlocked all %s"
 msgstr ""
 
-#: includes/triggers.php:169 includes/triggers.php:342
+#: includes/triggers.php:178 includes/triggers.php:361
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:189
+#: includes/triggers.php:208
 #, php-format
 msgid "Comment on %s"
 msgstr ""
 
-#: includes/triggers.php:190
+#: includes/triggers.php:209
 #, php-format
 msgid "Get a comment on %s"
 msgstr ""
 
-#: includes/triggers.php:191
+#: includes/triggers.php:210
 #, php-format
 msgid "Get a comment on %s marked as spam"
 msgstr ""
 
-#: includes/triggers.php:192
+#: includes/triggers.php:211
 #, php-format
 msgid "Visit %s"
 msgstr ""
 
-#: includes/triggers.php:193
+#: includes/triggers.php:212
 #, php-format
 msgid "%s gets visited"
 msgstr ""

@@ -243,6 +243,21 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.9 ###
+
+* **New Features**
+* New event: Comment on a post of a type.
+* New event: Get a comment on a post of a type.
+* New event: Get a comment on a post of a type marked as spam.
+* New event: Publish a new post of a type.
+* New event: Delete a post of a type.
+* New event: Daily visit a post of a type.
+* New event: Get visits on a post of a type.
+* Added the attribute "achievements_without_points" to the [gamipress_earnings] shortcode.
+* Added the field "Show Achievements Without Points" to the User Earnings block and widget.
+* **Improvements**
+* Improved the way that User Earnings shortcode, block and widget limits the results based on the parameters configured.
+
 ### 1.9.8.3 ###
 
 * **Improvements**

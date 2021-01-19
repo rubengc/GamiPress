@@ -101,6 +101,15 @@ function gamipress_transition_post_status_listener( $new_status, $old_status, $p
             'user_id'   => $post->post_author,
             'post'      => $post,
         ) );
+
+        // Trigger post type publishing actions
+        gamipress_trigger_event( array(
+            'event'     => 'gamipress_publish_post_type',
+            'post_id'   => $post->ID,
+            'user_id'   => $post->post_author,
+            'post_type' => $post->post_type,
+            'post'      => $post,
+        ) );
     }
 
 }
@@ -130,6 +139,15 @@ function gamipress_delete_post_listener( $post_id ) {
         'post'      => $post,
     ) );
 
+    // Trigger post type deletion actions
+    gamipress_trigger_event( array(
+        'event'     => 'gamipress_delete_post_type',
+        'post_id'   => $post->ID,
+        'user_id'   => $post->post_author,
+        'post_type' => $post->post_type,
+        'post'      => $post,
+    ) );
+
 }
 add_action( 'trashed_post', 'gamipress_delete_post_listener' );
 add_action( 'before_delete_post', 'gamipress_delete_post_listener' );
@@ -149,12 +167,14 @@ add_action( 'before_delete_post', 'gamipress_delete_post_listener' );
 function gamipress_approved_comment_listener( $comment_ID, $comment ) {
 
     // Ensure comment as array (wp_insert_comment uses object, comment_{status}_comment uses array)
-    if ( is_object( $comment ) )
+    if ( is_object( $comment ) ) {
         $comment = get_object_vars( $comment );
+    }
 
     // Check if comment is approved
-    if ( (int) $comment['comment_approved'] !== 1 )
+    if ( (int) $comment['comment_approved'] !== 1 ) {
         return;
+    }
 
     // Setup vars
     $comment_id = (int) $comment_ID;
@@ -164,6 +184,7 @@ function gamipress_approved_comment_listener( $comment_ID, $comment ) {
     // Trigger comment actions
     do_action( 'gamipress_new_comment', $comment_id, $user_id, $post_id, $comment );
     do_action( 'gamipress_specific_new_comment', $comment_id, $user_id, $post_id, $comment );
+    do_action( 'gamipress_new_comment_post_type', $comment_id, $user_id, $post_id, get_post_type( $post_id ), $comment );
 
     if( $post_id !== 0 ) {
 
@@ -172,6 +193,7 @@ function gamipress_approved_comment_listener( $comment_ID, $comment ) {
         // Trigger comment actions to author
         do_action( 'gamipress_user_post_comment', $comment_id, $post_author, $post_id, $comment );
         do_action( 'gamipress_user_specific_post_comment', $comment_id, $post_author, $post_id, $comment );
+        do_action( 'gamipress_user_post_comment_post_type', $comment_id, $post_author, $post_id, get_post_type( $post_id ), $comment );
     }
 
 }
@@ -194,8 +216,9 @@ add_action( 'wp_insert_comment', 'gamipress_approved_comment_listener', 10, 2 );
 function gamipress_spam_comment_listener( $comment_ID, $comment ) {
 
     // Ensure comment as array
-    if ( is_object( $comment ) )
+    if ( is_object( $comment ) ) {
         $comment = get_object_vars( $comment );
+    }
 
     // Setup vars
     $comment_id = (int) $comment_ID;
@@ -205,6 +228,7 @@ function gamipress_spam_comment_listener( $comment_ID, $comment ) {
     // Trigger comment actions
     do_action( 'gamipress_spam_comment', $comment_id, $user_id, $post_id, $comment );
     do_action( 'gamipress_specific_spam_comment', $comment_id, $user_id, $post_id, $comment );
+    do_action( 'gamipress_spam_comment_post_type', $comment_id, $user_id, $post_id, get_post_type( $post_id ), $comment );
 
 }
 add_action( 'comment_spam_', 'gamipress_spam_comment_listener', 10, 2 );
@@ -262,7 +286,6 @@ function gamipress_site_visit_listener() {
         // Trigger daily visit action if not triggered today
         if( $count === 0 ) {
             do_action( 'gamipress_site_visit', $user_id );
-
             $events_triggered['gamipress_site_visit'] = array( $user_id );
         }
 
@@ -322,8 +345,11 @@ function gamipress_site_visit_listener() {
 
             // Trigger any post visit
             do_action( 'gamipress_post_visit', $post->ID, $user_id, $post );
-
             $events_triggered['gamipress_post_visit'] = array( $post->ID, $user_id, $post );
+
+            // Trigger post of type visit
+            do_action( 'gamipress_post_type_visit', $post->ID, $user_id, $post->post_type, $post );
+            $events_triggered['gamipress_post_type_visit'] = array( $post->ID, $user_id, $post->post_type, $post );
 
         }
 
@@ -334,7 +360,6 @@ function gamipress_site_visit_listener() {
 
             // Trigger specific post visit
             do_action( 'gamipress_specific_post_visit', $post->ID, $user_id, $post );
-
             $events_triggered['gamipress_specific_post_visit'] = array( $post->ID, $user_id, $post );
 
         }
@@ -371,13 +396,15 @@ function gamipress_site_visit_listener() {
 
             // Trigger user post visit
             do_action( 'gamipress_user_post_visit', $post->ID, $post_author, $user_id, $post );
-
             $events_triggered['gamipress_user_post_visit'] = array( $post->ID, $post_author, $user_id, $post );
 
             // Trigger user specific post visit
             do_action( 'gamipress_user_specific_post_visit', $post->ID, $post_author, $user_id, $post );
-
             $events_triggered['gamipress_user_specific_post_visit'] = array( $post->ID, $post_author, $user_id, $post );
+
+            // Trigger user post of type visit
+            do_action( 'gamipress_user_post_type_visit', $post->ID, $post_author, $user_id, $post->post_type, $post );
+            $events_triggered['gamipress_user_post_type_visit'] = array( $post->ID, $post_author, $user_id, $post->post_type, $post );
 
         }
 

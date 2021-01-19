@@ -176,6 +176,13 @@ function gamipress_register_earnings_shortcode() {
                 'classes' 	  => 'gamipress-switch',
                 'default' 	  => 'yes',
             ),
+            'achievements_without_points' => array(
+                'name'        => __( 'Show Achievements Without Points', 'gamipress' ),
+                'description' => __( 'Show achievements that do not award points.', 'gamipress' ),
+                'type' 		  => 'checkbox',
+                'classes' 	  => 'gamipress-switch',
+                'default' 	  => 'yes',
+            ),
 
             // Rank types
 
@@ -232,26 +239,27 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
     $shortcode = 'gamipress_earnings';
 
     $atts = shortcode_atts( array(
-        'current_user'      => 'yes',
-        'user_id'           => '0',
-        'limit'             => '10',
-        'pagination'        => 'yes',
-        'order'             => 'DESC',
-        'include'       => '',
-        'exclude'       => '',
+        'current_user'                  => 'yes',
+        'user_id'                       => '0',
+        'limit'                         => '10',
+        'pagination'                    => 'yes',
+        'order'                         => 'DESC',
+        'include'                       => '',
+        'exclude'                       => '',
 
-        'points'            => 'yes',
-        'points_types'      => 'all',
-        'awards'            => 'yes',
-        'deducts'           => 'yes',
+        'points'                        => 'yes',
+        'points_types'                  => 'all',
+        'awards'                        => 'yes',
+        'deducts'                       => 'yes',
 
-        'achievements'      => 'yes',
-        'achievement_types' => 'all',
-        'steps'             => 'yes',
+        'achievements'                  => 'yes',
+        'achievement_types'             => 'all',
+        'steps'                         => 'yes',
+        'achievements_without_points'   => 'yes',
 
-        'ranks'             => 'yes',
-        'rank_types'        => 'all',
-        'rank_requirements' => 'yes',
+        'ranks'                         => 'yes',
+        'rank_types'                    => 'all',
+        'rank_requirements'             => 'yes',
     ), $atts, $shortcode );
 
     gamipress_enqueue_scripts();
@@ -446,16 +454,17 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
     }
 
     $query_args['post_type'] = $types;
+    $query_args['points_type'] = array();
 
     if( ! empty( $points_types ) ) {
         $query_args['points_type'] = $points_types;
+        $query_args['force_types'] = true;
 
-        // If looking to show achievements or ranks, some of them do not award any points so wee need to add the empty points type value
-        if( $args['achievements'] === 'yes' || $args['ranks'] === 'yes' ) {
-            $points_types[] = '';
-        } else if( $args['achievements'] === 'no' && $args['ranks'] === 'no' ) {
-            $query_args['force_types'] = true;
-        }
+    }
+
+    // If looking to show achievements that do not award any points, then need to add the empty points type value
+    if( $args['achievements_without_points'] === 'yes' ) {
+        $query_args['points_type'][] = '';
     }
 
     // Setup table

@@ -180,9 +180,14 @@
         // Achievement type
         var achievement_type_selector = $(this).siblings('.select-achievement-type');
         var achievement_post_selector = $(this).siblings('.select-achievement-post');
+        var achievement_type_triggers = [
+            'any-achievement',
+            'all-achievements',
+            'specific-achievement',
+        ];
 
         // If we're working with achievements, show the achievement type selector (otherwise, hide it)
-        if ( trigger_type === 'any-achievement' || trigger_type === 'all-achievements' || trigger_type === 'specific-achievement') {
+        if ( achievement_type_triggers.indexOf( trigger_type ) !== -1 ) {
             achievement_type_selector.show();
 
             // Trigger a change for our achievement type post selector to determine if it should show
@@ -193,16 +198,36 @@
             achievement_post_selector.hide();
         }
 
+        // Post type
+        var post_type_selector_required = $(this).siblings('.select-post-type-required');
+        var post_type_triggers = [
+            'gamipress_new_comment_post_type',
+            'gamipress_user_post_comment_post_type',
+            'gamipress_spam_comment_post_type',
+            'gamipress_spam_comment_post_type',
+            'gamipress_publish_post_type',
+            'gamipress_delete_post_type',
+            'gamipress_post_type_visit',
+            'gamipress_user_post_type_visit',
+        ];
+
+        if ( post_type_triggers.indexOf( trigger_type ) !== -1 ) {
+            post_type_selector_required.show();
+        } else {
+            post_type_selector_required.hide();
+        }
+
         // User role
         var user_role_selector_required = $(this).siblings('.select-user-role-required');
+        var user_role_triggers = [
+            'gamipress_add_specific_role',
+            'gamipress_set_specific_role',
+            'gamipress_remove_specific_role',
+        ];
 
-        if ( trigger_type === 'gamipress_add_specific_role'
-            || trigger_type === 'gamipress_set_specific_role'
-            || trigger_type === 'gamipress_remove_specific_role' ) {
-            // Show required user role field
+        if ( user_role_triggers.indexOf( trigger_type ) !== -1 ) {
             user_role_selector_required.show();
         } else {
-            // Hide required user role field
             user_role_selector_required.hide();
         }
 
@@ -615,6 +640,7 @@ function gamipress_update_requirements( element, loop ) {
             points_type_required        : requirement.find( '.select-points-type-required' ).val(),
             rank_type_required          : requirement.find( '.select-rank-type-required' ).val(),
             rank_required               : requirement.find( '.select-rank-required' ).val(),
+            post_type_required          : requirement.find( '.select-post-type-required' ).val(),
             user_role_required          : requirement.find( '.select-user-role-required' ).val(),
             count                       : requirement.find( '.count' ).val(),
             limit                       : requirement.find( '.limit' ).val(),
