@@ -380,7 +380,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
         <select class="select-post-type-required select-post-type-required-<?php echo $requirement_id; ?>">
             <option value=""><?php _e( 'Choose a post type', 'gamipress'); ?></option>
             <?php foreach( $post_types as $post_type => $post_type_args ) : ?>
-                <option value="<?php echo esc_attr( $post_type ); ?>" <?php selected( $requirements['post_type_required'], $post_type, false ); ?>><?php echo $post_type_args->labels->singular_name ; ?></option>
+                <option value="<?php echo esc_attr( $post_type ); ?>" <?php selected( $requirements['post_type_required'], $post_type ); ?>><?php echo $post_type_args->labels->singular_name ; ?></option>
             <?php endforeach; ?>
         </select>
 

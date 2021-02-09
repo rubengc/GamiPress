@@ -243,6 +243,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.9.1 ###
+
+* **Bug Fixes**
+* Correctly load post type fields value.
+
 ### 1.9.9 ###
 
 * **New Features**
