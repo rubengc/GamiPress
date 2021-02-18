@@ -42,7 +42,7 @@ add_action( 'add_meta_boxes', 'gamipress_add_earners_meta_box' );
  *
  * @return void
  */
-function gamipress_earners_meta_box( $post = null, $metabox ) {
+function gamipress_earners_meta_box( $post = null, $metabox = array() ) {
 
     /**
      * Filter to allow set the number of user earnings to show on the earners meta box

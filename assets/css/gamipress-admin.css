@@ -527,6 +527,10 @@ body:not(.block-editor-page) #gamipress-earners .ct-ajax-list-table .wp-list-tab
 	border-radius: 50%;
 }
 
+.wp-list-table.gamipress_user_earnings .column-points {
+	width: 12%;
+}
+
 .wp-list-table.gamipress_user_earnings .column-action {
 	width: 10%;
 }
@@ -1137,6 +1141,11 @@ body.wp-customizer > .gamipress-select2 {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.edit-post-meta-boxes-area .metabox-location-side .postbox .gamipress-switch input[type="checkbox"]::before {
+	margin: 8px 0 0 32px !important;
+	box-sizing: content-box;
 }
 
 li.requirement-row .requirement-header .requirement-actions .requirement-action .gamipress-switch {

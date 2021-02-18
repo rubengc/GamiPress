@@ -52,7 +52,7 @@ msgstr "Inställningar uppdaterade."
 msgid "Theme Options"
 msgstr "Themainställningar"
 
-#: includes/CMB2_Hookup.php:458
+#: includes/CMB2_hookup.php:458
 msgid "Toggle panel: %s"
 msgstr "Växla panel: %s"
 
@@ -228,11 +228,11 @@ msgstr "Ledsen, detta fält har inte något angivet cmb_id."
 msgid "Custom Rendered Field"
 msgstr ""
 
-#: includes/CMB2_Hookup.php:185
+#: includes/CMB2_hookup.php:185
 msgid "Term metaboxes configuration requires a \"taxonomies\" parameter."
 msgstr "Konfigurationen av metaboxar för termer kräver en \"taxonomi\"-parameter."
 
-#: includes/CMB2_Hookup.php:181
+#: includes/CMB2_hookup.php:181
 msgid "Term Metadata is a WordPress 4.4+ feature. Please upgrade your WordPress install."
 msgstr ""
 

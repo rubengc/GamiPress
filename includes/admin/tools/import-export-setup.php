@@ -486,6 +486,9 @@ function gamipress_ajax_import_setup_tool() {
         }
     }
 
+    // Flush the GamiPress cache
+    gamipress_flush_cache();
+
     // Return a success message
     wp_send_json_success( __( 'Setup has been imported successfully.', 'gamipress' ) );
 

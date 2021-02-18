@@ -16,6 +16,8 @@ class GamiPress_Widget extends WP_Widget {
      *
      * Will also serve as the widget class.
      *
+     * @since 1.0.0
+     *
      * @var string
      */
     protected $widget_slug;
@@ -23,12 +25,16 @@ class GamiPress_Widget extends WP_Widget {
     /**
      * Array of default values for widget settings.
      *
+     * @since 1.0.0
+     *
      * @var array
      */
     protected $defaults = array();
 
     /**
-     * Store the instance properties as property
+     * Store the instance properties as property.
+     *
+     * @since 1.0.0
      *
      * @var array
      */
@@ -36,6 +42,8 @@ class GamiPress_Widget extends WP_Widget {
 
     /**
      * Array of CMB2 fields args.
+     *
+     * @since 1.0.0
      *
      * @var array
      */
@@ -58,6 +66,8 @@ class GamiPress_Widget extends WP_Widget {
 
     /**
      * Front-end display of widget.
+     *
+     * @since 1.0.0
      *
      * @param  array  $args      The widget arguments set up when a sidebar is registered.
      * @param  array  $instance  The widget settings as set by user.
@@ -136,6 +146,8 @@ class GamiPress_Widget extends WP_Widget {
     /**
      * Return the widget/shortcode output
      *
+     * @since 1.0.0
+     *
      * @param  array  $args      The widget arguments set up when a sidebar is registered.
      * @param  array  $instance  The widget settings as set by user.
      * @return string            The widget output.
@@ -145,6 +157,10 @@ class GamiPress_Widget extends WP_Widget {
     }
 
     /**
+     * The widget tabs.
+     *
+     * @since 1.0.0
+     *
      * @return array
      */
     public function get_tabs() {
@@ -152,6 +168,10 @@ class GamiPress_Widget extends WP_Widget {
     }
 
     /**
+     * The widget form fields.
+     *
+     * @since 1.0.0
+     *
      * @return array
      */
     public function get_fields() {
@@ -159,6 +179,10 @@ class GamiPress_Widget extends WP_Widget {
     }
 
     /**
+     * Setup the widget form fields.
+     *
+     * @since 1.0.0
+     *
      * @return array
      */
     public function setup_fields() {
@@ -174,6 +198,18 @@ class GamiPress_Widget extends WP_Widget {
                     ),
                 ) + $this->fields;
         }
+
+        /**
+         * Available filter to extend the widget form fields
+         *
+         * @since 1.9.9.2
+         *
+         * @param array $fields
+         * @param array $widget_slug
+         *
+         * @return array
+         */
+        $this->fields = apply_filters( 'gamipress_setup_widget_fields', $this->fields, $this->widget_slug );
 
         $this->defaults = array();
 
@@ -229,6 +265,7 @@ class GamiPress_Widget extends WP_Widget {
      * Creates a new instance of CMB2 and adds the fields
      *
      * @since  1.0.0
+     *
      * @return CMB2
      */
     public function cmb2( $saving = false ) {
@@ -241,7 +278,7 @@ class GamiPress_Widget extends WP_Widget {
 
             foreach( $tab['fields'] as $tab_field_index => $tab_field ) {
                 // Update the id of the tab field based on shortcode slug
-                $tab['fields'][$tab_field_index] =$this->get_field_name( $tab_field );
+                $tab['fields'][$tab_field_index] = $this->get_field_name( $tab_field );
             }
 
             $tabs[$tab_id] = $tab;

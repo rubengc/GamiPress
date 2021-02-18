@@ -48,7 +48,7 @@ add_action( 'add_meta_boxes', 'gamipress_add_requirements_ui_meta_box' );
  *
  * @return void
  */
-function gamipress_requirements_ui_meta_box( $post = null, $metabox ) {
+function gamipress_requirements_ui_meta_box( $post = null, $metabox = array() ) {
 
     // Define the requirement type to use
     $requirement_type = gamipress_requirements_ui_get_requirement_type( $post, $metabox );
@@ -156,7 +156,7 @@ function gamipress_requirements_ui_meta_box( $post = null, $metabox ) {
  *
  * @return array|bool
  */
-function gamipress_get_assigned_requirements( $post_id = null, $requirement_type, $post_status = 'publish' ) {
+function gamipress_get_assigned_requirements( $post_id = null, $requirement_type = '', $post_status = 'publish' ) {
 
     // If not properly upgrade to required version fallback to compatibility function
     if( ! is_gamipress_upgraded_to( '1.5.1' ) ) {

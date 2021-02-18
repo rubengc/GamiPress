@@ -305,7 +305,7 @@ function gamipress_get_requirement_connected_id( $requirement_id = 0 ) {
  *
  * @return array|bool
  */
-function gamipress_get_assigned_requirements_old( $post_id = null, $requirement_type, $post_status = 'publish' ) {
+function gamipress_get_assigned_requirements_old( $post_id = null, $requirement_type = '', $post_status = 'publish' ) {
 
     global $post, $wpdb;
 
@@ -946,7 +946,7 @@ function gamipress_get_ranks_children_join( $join = '', $query_object = null ) {
  *
  * @return string 				The updated query "where" string
  */
-function gamipress_get_ranks_children_where( $where = '', $query_object ) {
+function gamipress_get_ranks_children_where( $where = '', $query_object = null ) {
 
     global $wpdb;
 

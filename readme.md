@@ -243,6 +243,19 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.9.2 ###
+
+* **New Features**
+* Added the points column to the user earnings at admin area.
+* **Improvements**
+* Ensure to flush the plugin cache after import a new setup.
+* **Bug Fixes**
+* Fixed style issue on GamiPress switches caused by WordPress 5.6 update.
+* **Developer Notes**
+* Added several filters to the GamiPress_Widget class.
+* Ensure compatibility with PHP 8.
+* Updated internal libraries.
+
 ### 1.9.9.1 ###
 
 * **Bug Fixes**

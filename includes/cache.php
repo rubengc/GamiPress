@@ -125,3 +125,22 @@ function gamipress_delete_cache( $key = '' ) {
     }
 
 }
+
+/**
+ * Flush the entire GamiPress cache
+ *
+ * @since 1.9.9.2
+ */
+function gamipress_flush_cache() {
+
+    global $wpdb;
+
+    if( gamipress_is_network_wide_active() ) {
+        // Multi site installs
+        $wpdb->query( "DELETE FROM {$wpdb->sitemeta} WHERE meta_key LIKE 'gamipress_cache_%'");
+    } else {
+        // Single site installs
+        $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE 'gamipress_cache_%'" );
+    }
+
+}

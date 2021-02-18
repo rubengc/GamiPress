@@ -348,19 +348,21 @@ function gamipress_manage_user_earnings_columns( $columns = array() ) {
 
         // post.php and post-new.php are for the earners meta box
         $columns['user_id'] = __( 'User', 'gamipress' );
-        $columns['date'] = __( 'Date', 'gamipress' );
+        $columns['date']    = __( 'Date', 'gamipress' );
 
     } else if( $pagenow === 'admin.php' ) {
 
         // admin.php is for the user earnings screen
         $columns['name']    = __( 'Name', 'gamipress' );
         $columns['user_id'] = __( 'User', 'gamipress' );
+        $columns['points']  = __( 'Points', 'gamipress' );
         $columns['date']    = __( 'Date', 'gamipress' );
 
     } else {
 
-        $columns['name'] = __( 'Name', 'gamipress' );
-        $columns['date'] = __( 'Date', 'gamipress' );
+        $columns['name']    = __( 'Name', 'gamipress' );
+        $columns['points']  = __( 'Points', 'gamipress' );
+        $columns['date']    = __( 'Date', 'gamipress' );
 
     }
 
@@ -389,6 +391,7 @@ function gamipress_manage_user_earnings_sortable_columns( $sortable_columns ) {
         $sortable_columns['name']       = array( 'title', false );
         $sortable_columns['date']       = array( 'date', true );
         $sortable_columns['user_id']    = array( 'user_id', false );
+        $sortable_columns['points']    = array( 'points', false );
     }
 
     return $sortable_columns;
@@ -647,6 +650,21 @@ function gamipress_manage_user_earnings_custom_column( $column_name, $object_id 
                 }
 
             endif;
+            break;
+        case 'points':
+            $points = (int) $user_earning->points;
+
+            if( $points !== 0 && gamipress_get_points_type( $user_earning->points_type ) ) {
+
+                // For points deducts turn amount to negative
+                if( $user_earning->post_type === 'points-deduct' && $points > 0 ) {
+                    $negative_points = $points * -1;
+                    echo gamipress_format_points( $negative_points, $user_earning->points_type );;
+                } else {
+                    echo gamipress_format_points( $points, $user_earning->points_type );
+                }
+
+            }
             break;
         case 'date':
             $time = strtotime( $user_earning->date );

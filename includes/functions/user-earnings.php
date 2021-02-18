@@ -72,7 +72,16 @@ function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = a
 
     }
 
-    // Hook to add custom data
+    /**
+     * Action triggered after insert a user earning
+     *
+     * @since  1.4.3
+     *
+     * @param  int      $user_earning_id  	The user earning ID
+     * @param  array    $data               User earning data
+     * @param  array    $meta               User earning meta data
+     * @param  int      $user_id  	        The user ID
+     */
     do_action( 'gamipress_insert_user_earning', $user_earning_id, $data, $meta, $user_id );
 
     ct_reset_setup_table();

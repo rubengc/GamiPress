@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2021-02-09 10:07+0100\n"
+"POT-Creation-Date: 2021-02-18 15:21+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -155,7 +155,7 @@ msgstr ""
 
 #: includes/admin/achievements.php:38 includes/admin/ranks.php:61
 #: includes/custom-tables/user-earnings.php:356
-#: includes/custom-tables/user-earnings.php:362
+#: includes/custom-tables/user-earnings.php:363
 msgid "Name"
 msgstr ""
 
@@ -256,7 +256,7 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:61 includes/admin/settings/email.php:346
 #: includes/admin/tools/reset-data.php:35
-#: includes/custom-tables/user-earnings.php:420 includes/post-types.php:319
+#: includes/custom-tables/user-earnings.php:423 includes/post-types.php:319
 #: includes/post-types.php:325 includes/post-types.php:331
 msgid "Points Awards"
 msgstr ""
@@ -272,7 +272,7 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:69 includes/admin/settings/email.php:356
 #: includes/admin/tools/reset-data.php:36
-#: includes/custom-tables/user-earnings.php:421 includes/post-types.php:353
+#: includes/custom-tables/user-earnings.php:424 includes/post-types.php:353
 #: includes/post-types.php:359 includes/post-types.php:365
 msgid "Points Deducts"
 msgstr ""
@@ -336,7 +336,7 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:103 includes/admin/settings/email.php:336
 #: includes/admin/tools/reset-data.php:33
-#: includes/custom-tables/user-earnings.php:414 includes/post-types.php:422
+#: includes/custom-tables/user-earnings.php:417 includes/post-types.php:422
 #: includes/post-types.php:428 includes/post-types.php:434
 msgid "Steps"
 msgstr ""
@@ -387,7 +387,7 @@ msgstr ""
 #: includes/admin/contextual-help.php:134
 #: includes/admin/meta-boxes/requirements-ui.php:34
 #: includes/admin/settings/email.php:376 includes/admin/tools/reset-data.php:39
-#: includes/custom-tables/user-earnings.php:427 includes/post-types.php:491
+#: includes/custom-tables/user-earnings.php:430 includes/post-types.php:491
 #: includes/post-types.php:497 includes/post-types.php:503
 msgid "Rank Requirements"
 msgstr ""
@@ -495,7 +495,7 @@ msgid "Choose an option"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:441
-#: includes/custom-tables/user-earnings.php:464
+#: includes/custom-tables/user-earnings.php:467
 msgid "All"
 msgstr ""
 
@@ -802,6 +802,8 @@ msgstr ""
 #: includes/admin/tools/import-export-points.php:142
 #: includes/ajax-functions.php:683 includes/ajax-functions.php:786
 #: includes/compatibility/1.2.8.php:1021
+#: includes/custom-tables/user-earnings.php:358
+#: includes/custom-tables/user-earnings.php:364
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:40
@@ -2941,7 +2943,7 @@ msgstr ""
 msgid "Empty setup, so nothing to import."
 msgstr ""
 
-#: includes/admin/tools/import-export-setup.php:490
+#: includes/admin/tools/import-export-setup.php:493
 msgid "Setup has been imported successfully."
 msgstr ""
 
@@ -3528,7 +3530,7 @@ msgid "Award %s"
 msgstr ""
 
 #: includes/admin/users.php:630 includes/admin/users.php:859
-#: includes/custom-tables/user-earnings.php:675
+#: includes/custom-tables/user-earnings.php:693
 msgid "Revoke Award"
 msgstr ""
 
@@ -3837,8 +3839,8 @@ msgstr ""
 
 #: includes/custom-tables/logs.php:271
 #: includes/custom-tables/user-earnings.php:351
-#: includes/custom-tables/user-earnings.php:358
-#: includes/custom-tables/user-earnings.php:363
+#: includes/custom-tables/user-earnings.php:359
+#: includes/custom-tables/user-earnings.php:365
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:251
 #: includes/shortcodes/gamipress_earnings.php:311
@@ -3862,11 +3864,11 @@ msgstr ""
 msgid "Rank Requirement Award"
 msgstr ""
 
-#: includes/custom-tables/user-earnings.php:368
+#: includes/custom-tables/user-earnings.php:370
 msgid "Action"
 msgstr ""
 
-#: includes/custom-tables/user-earnings.php:623
+#: includes/custom-tables/user-earnings.php:626
 msgid "Show more details"
 msgstr ""
 
@@ -6209,7 +6211,7 @@ msgstr ""
 msgid "Display previous, current and/or next rank of a user."
 msgstr ""
 
-#: includes/widgets/widget.php:171
+#: includes/widgets/widget.php:195
 msgid "Title:"
 msgstr ""
 
