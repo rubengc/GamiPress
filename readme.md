@@ -243,6 +243,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.9.3 ###
+
+* **Bug Fixes**
+* Fixed incorrect meta value when inserting logs and user earnings (thanks to @persiliao).
+
 ### 1.9.9.2 ###
 
 * **New Features**
