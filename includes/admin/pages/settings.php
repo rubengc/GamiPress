@@ -106,6 +106,7 @@ function gamipress_register_settings_page() {
 
                         $meta_box['display_cb'] = false;
                         $meta_box['admin_menu_hook'] = false;
+                        $meta_box['priority'] = 'high'; // Fixes issue with CMB2 2.9.0
 
                         $meta_box['show_on'] = array(
                             'key'   => 'options-page',

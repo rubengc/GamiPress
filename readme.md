@@ -243,6 +243,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 1.9.10 ###
+
+* **Improvements**
+* Prevent incompatibility issues caused by others plugins to the GamiPress settings screen.
+* **Developer Notes**
+* Updated internal libraries.
+
 ### 1.9.9.3 ###
 
 * **Bug Fixes**
