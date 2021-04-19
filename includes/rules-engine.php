@@ -678,13 +678,18 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
 	} else if( 'points-balance' === $trigger_type ) {
 
         // Grab our user's points and see if they at least as many as required
+        $points_condition       = gamipress_get_post_meta( $achievement_id, '_gamipress_points_condition' );
         $points_required        = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points_required' ) );
         $points_type_required   = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type_required' );
 
         // Get user points balance
-        $points_balance    		= gamipress_get_user_points( $user_id, $points_type_required );
+        $points_balance    		= absint( gamipress_get_user_points( $user_id, $points_type_required ) );
 
-        if( $points_balance >= $points_required ) {
+        if( empty( $points_condition ) ) {
+            $points_condition = 'greater_or_equal';
+        }
+
+        if( gamipress_number_condition_matches( $points_balance, $points_required, $points_condition ) ) {
 
             // If the user just earned the achievement, though, don't let them earn it again
             // This prevents an infinite loop if the achievement has no maximum earnings limit

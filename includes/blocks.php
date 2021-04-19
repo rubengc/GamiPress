@@ -183,6 +183,8 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
             $fields['exclude']['post_type'] = gamipress_get_rank_types_slugs();
             break;
         case 'gamipress_points':
+        case 'gamipress_user_points':
+        case 'gamipress_site_points':
             // Period start and end visibility
             $fields['period_start']['conditions'] = array(
                 'period' => 'custom',

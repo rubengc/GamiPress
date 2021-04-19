@@ -18,7 +18,8 @@ $classes = array(
     'single-achievement',
     'achievement-wrap',
     ( $earned ? 'user-has-earned' : '' ),
-    'gamipress-layout-' . $a['layout']
+    'gamipress-layout-' . $a['layout'],
+    'gamipress-align-' . $a['align']
 );
 
 /**
@@ -89,18 +90,38 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
         endif; ?>
 
         <?php // Times earned
-        echo gamipress_achievement_times_earned_markup( get_the_ID(), $a ); ?>
+        if ( (bool) gamipress_get_post_meta( get_the_ID(), '_gamipress_show_times_earned' ) ) :
 
-        <?php
-        /**
-         * After achievement times earned
-         *
-         * @since 1.5.9
-         *
-         * @param integer $achievement_id   The Achievement ID
-         * @param array   $template_args    Template received arguments
-         */
-        do_action( 'gamipress_after_single_achievement_times_earned', get_the_ID(), $a ); ?>
+            echo gamipress_achievement_times_earned_markup( get_the_ID(), $a );
+
+            /**
+             * After achievement times earned
+             *
+             * @since 1.5.9
+             *
+             * @param integer $achievement_id   The Achievement ID
+             * @param array   $template_args    Template received arguments
+             */
+            do_action( 'gamipress_after_single_achievement_times_earned', get_the_ID(), $a );
+
+        endif; ?>
+
+        <?php // Global Times earned
+        if ( (bool) gamipress_get_post_meta( get_the_ID(), '_gamipress_show_global_times_earned' ) ) :
+
+            echo gamipress_achievement_global_times_earned_markup( get_the_ID(), $a );
+
+            /**
+             * After achievement times earned by all users
+             *
+             * @since 2.0.0
+             *
+             * @param integer $achievement_id   The Achievement ID
+             * @param array   $template_args    Template received arguments
+             */
+            do_action( 'gamipress_after_single_achievement_global_times_earned', get_the_ID(), $a );
+
+        endif; ?>
 
         <?php
         /**
@@ -131,7 +152,7 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
         echo gamipress_achievement_unlock_with_points_markup( get_the_ID(), $a ); ?>
 
         <?php // Include achievement earners, if this achievement supports it
-        if ( $show_earners = gamipress_get_post_meta( get_the_ID(), '_gamipress_show_earners' ) ) {
+        if ( (bool) gamipress_get_post_meta( get_the_ID(), '_gamipress_show_earners' ) ) :
 
             $maximum_earners = absint( gamipress_get_post_meta( get_the_ID(), '_gamipress_maximum_earners' ) );
 
@@ -147,7 +168,7 @@ echo gamipress_render_earned_achievement_text( get_the_ID(), get_current_user_id
              */
             do_action( 'gamipress_after_single_achievement_earners', get_the_ID(), $a );
 
-        } ?>
+        endif; ?>
 
         <?php
         /**

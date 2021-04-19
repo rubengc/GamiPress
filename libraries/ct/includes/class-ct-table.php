@@ -292,7 +292,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
         public $delete_with_user = null;
 
         /**
-         * Whether this post type is a native or "built-in" post_type.
+         * Whether this table is a native or "built-in" post_type.
          *
          * Default false.
          *
@@ -303,7 +303,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
         public $_builtin = false;
 
         /**
-         * URL segment to use for edit link of this post type.
+         * URL segment to use for edit link of this table.
          *
          * Default 'post.php?post=%d'.
          *
@@ -314,13 +314,22 @@ if ( ! class_exists( 'CT_Table' ) ) :
         public $_edit_link = 'post.php?post=%d';
 
         /**
-         * Post type capabilities.
+         * Table capabilities.
          *
          * @since 1.0.0
          * @access public
          * @var object $cap
          */
         public $cap;
+
+        /**
+         * Table capability to access.
+         *
+         * @since 1.0.0
+         * @access public
+         * @var string $capability
+         */
+        public $capability;
 
         /**
          * Triggers the handling of rewrites for this post type.
@@ -448,11 +457,20 @@ if ( ! class_exists( 'CT_Table' ) ) :
                 'query_var'             => true,
                 'can_export'            => true,
                 'delete_with_user'      => null,
+                //'_builtin'              => false,
+                //'_edit_link'            => 'post.php?post=%d',
+                // Rest defaults
                 'show_in_rest'          => false,
                 'rest_base'             => false,
                 'rest_controller_class' => false,
-                //'_builtin'              => false,
-                //'_edit_link'            => 'post.php?post=%d',
+                // Database defaults
+                'primary_key' => '',
+                'version' => 1,
+                'global' => false,
+                //'schema' => '',
+                'engine' => 'InnoDB',
+                // Shortcuts
+                'capability' => '',
             );
 
             $args = array_merge( $defaults, $args );
@@ -505,6 +523,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
             }
 
             $this->cap = ct_get_table_capabilities( (object) $args );
+            $this->capability = $args['capability'];
 
             unset( $args['capabilities'] );
 

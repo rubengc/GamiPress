@@ -77,7 +77,7 @@ function gamipress_register_points_types() {
         $posts = GamiPress()->db->posts;
 
         // Grab all points type posts
-        $points_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'points-type'");
+        $points_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'points-type' AND post_status = 'publish'");
 
         gamipress_set_cache( 'gamipress_points_types', $points_types );
     }
@@ -150,7 +150,7 @@ function gamipress_register_achievement_types() {
         $posts = GamiPress()->db->posts;
 
         // Grab all achievement type posts
-        $achievement_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'achievement-type'");
+        $achievement_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'achievement-type' AND post_status = 'publish'");
 
         gamipress_set_cache( 'gamipress_achievement_types', $achievement_types );
     }
@@ -215,7 +215,7 @@ function gamipress_register_rank_types() {
         $posts = GamiPress()->db->posts;
 
         // Grab all rank type posts
-        $rank_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'rank-type'");
+        $rank_types = $wpdb->get_results("SELECT * FROM {$posts} WHERE post_type = 'rank-type' AND post_status = 'publish'");
 
         gamipress_set_cache( 'gamipress_rank_types', $rank_types );
     }

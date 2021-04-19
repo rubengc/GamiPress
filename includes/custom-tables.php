@@ -41,12 +41,12 @@ function gamipress_register_custom_tables() {
         'rest_base' => 'gamipress-user-earnings',
         'version' => 2,
         'global' => gamipress_is_network_wide_active(),
+        'capability' => gamipress_get_manager_capability(),
         'supports' => array( 'meta' ),
         'views' => array(
             'list' => array(
                 'menu_title' => __( 'User Earnings', 'gamipress' ),
                 'parent_slug' => 'gamipress',
-                'capability' => gamipress_get_manager_capability(),
             ),
             'add' => false,
             'edit' => array(
@@ -100,12 +100,12 @@ function gamipress_register_custom_tables() {
         'rest_base' => 'gamipress-logs',
         'version' => 3,
         'global' => gamipress_is_network_wide_active(),
+        'capability' => gamipress_get_manager_capability(),
         'supports' => array( 'meta' ),
         'views' => array(
             'list' => array(
                 'menu_title' => __( 'Logs', 'gamipress' ),
                 'parent_slug' => 'gamipress',
-                'capability' => gamipress_get_manager_capability(),
             ),
             'add' => false,
             'edit' => array(

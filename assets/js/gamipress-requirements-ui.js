@@ -142,6 +142,17 @@
             limit_type.show();
         }
 
+        // Points condition
+        var points_condition_selector = $(this).siblings('.select-points-condition');
+
+        if ( trigger_type === 'points-balance' ) {
+            // Show points condition field
+            points_condition_selector.show();
+        } else {
+            // Hide points condition field
+            points_condition_selector.hide();
+        }
+
         // Required points
         var points_selector_required = $(this).siblings('.points-required');
         var points_type_selector_required = $(this).siblings('.select-points-type-required');
@@ -151,7 +162,7 @@
             'gamipress_expend_points',
         ];
 
-        if (required_points_triggers.indexOf( trigger_type ) !== -1 ) {
+        if ( required_points_triggers.indexOf( trigger_type ) !== -1 ) {
             // Show required points fields
             points_selector_required.show();
             points_type_selector_required.show();
@@ -636,6 +647,7 @@ function gamipress_update_requirements( element, loop ) {
             requirement_type            : requirement.find( 'input[name="requirement_type"]').val(),
             order                       : requirement.find( 'input[name="order"]' ).val(),
             status                      : ( requirement.find( '.requirement-action-change-status input' ).prop('checked') ? 'publish' : 'pending' ),
+            points_condition            : requirement.find( '.select-points-condition' ).val(),
             points_required             : requirement.find( '.points-required' ).val(),
             points_type_required        : requirement.find( '.select-points-type-required' ).val(),
             rank_type_required          : requirement.find( '.select-rank-type-required' ).val(),

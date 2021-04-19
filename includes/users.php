@@ -145,9 +145,12 @@ function gamipress_get_user_achievements( $args = array() ) {
 	// Setup query args
 	$query_args = array(
 		'user_id' 			=> $args['user_id'],
-		'nopaging' 			=> true,
 		'items_per_page' 	=> $args['limit'],
 	);
+
+	if( $args['limit'] === -1 ) {
+        $query_args['nopaging'] = true;
+    }
 
 	if( $args['achievement_id'] !== false ) {
 		$query_args['post_id'] = $args['achievement_id'];

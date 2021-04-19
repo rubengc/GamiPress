@@ -242,6 +242,13 @@ if ( ! class_exists( 'CT_View' ) ) :
          */
         public function admin_menu() {
 
+            // Override capability by the table capability
+            $ct_table = ct_get_table_object( $this->name );
+
+            if( ! empty( $ct_table->capability ) ) {
+                $this->args['capability'] = $ct_table->capability;
+            }
+
             if( ! $this->args['show_in_menu'] ) {
 
                 add_submenu_page( null, $this->args['page_title'], $this->args['menu_title'], $this->args['capability'], $this->args['menu_slug'], array( $this, 'render' ) );

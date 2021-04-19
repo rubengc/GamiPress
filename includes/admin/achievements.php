@@ -141,12 +141,15 @@ function gamipress_achievement_posts_custom_columns( $column_name, $post_id ) {
             break;
         case 'maximum_earnings':
             $maximum_earnings = absint( gamipress_get_post_meta( $post_id, $prefix . 'maximum_earnings' ) );
+            $label = '<strong>' . ( $maximum_earnings === 0 ? __( 'Unlimited', 'gamipress' ) : $maximum_earnings ) . '</strong>';
 
-            if( $maximum_earnings === 0 ) {
-                echo __( 'Unlimited', 'gamipress' );
-            } else {
-                echo $maximum_earnings;
-            }
+            echo sprintf( __( '%s time(s) per user', 'gamipress' ), $label );
+            echo "<br>";
+
+            $global_maximum_earnings = absint( gamipress_get_post_meta( $post_id, $prefix . 'global_maximum_earnings' ) );
+            $label = '<strong>' . ( $global_maximum_earnings === 0 ? __( 'Unlimited', 'gamipress' ) : $global_maximum_earnings ) . '</strong>';
+
+            echo sprintf( __( '%s time(s) for all users', 'gamipress' ), $label );
             break;
         case 'unlock_with_points':
 

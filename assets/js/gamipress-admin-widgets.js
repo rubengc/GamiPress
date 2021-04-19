@@ -74,7 +74,9 @@
     $('input[id^="widget-gamipress"][id$="[earners]"]').trigger('change');
 
     // Period field
-    $('body').on('change', 'select[id^="widget-gamipress_points"][id$="[period]"]', function() {
+    $('body').on('change', 'select[id^="widget-gamipress_points"][id$="[period]"], ' +
+        'select[id^="widget-gamipress_user_points"][id$="[period]"], ' +
+        'select[id^="widget-gamipress_site_points"][id$="[period]"]', function() {
         // Get the period start and end fields
         var target = $(this).closest('.cmb2-wrap').find(
             '.cmb-row[class*="period-start"], '
@@ -91,9 +93,13 @@
     });
 
     $('select[id^="widget-gamipress_points"][id$="[period]"]').trigger('change');
+    $('select[id^="widget-gamipress_user_points"][id$="[period]"]').trigger('change');
+    $('select[id^="widget-gamipress_site_points"][id$="[period]"]').trigger('change');
 
     // Inline field
-    $('body').on('change', 'input[id^="widget-gamipress_points"][id$="[inline]"]', function() {
+    $('body').on('change', 'input[id^="widget-gamipress_points"][id$="[inline]"], ' +
+        'input[id^="widget-gamipress_user_points"][id$="[inline]"], ' +
+        'input[id^="widget-gamipress_site_points"][id$="[inline]"]', function() {
         // Get the columns and layout fields
         var target = $(this).closest('.cmb2-wrap').find(
             '.cmb-row[class*="columns"], '
@@ -186,7 +192,9 @@
         }
 
         // Period field
-        var period = widget.find( 'input[id^="widget-gamipress_points"][id$="[period]"]');
+        var period = widget.find( 'input[id^="widget-gamipress_points"][id$="[period]"], ' +
+            'input[id^="widget-gamipress_user_points"][id$="[period]"], ' +
+            'input[id^="widget-gamipress_site_points"][id$="[period]"]');
 
         // Get the period start and end fields
         var period_target = period.closest('.cmb2-wrap').find(
@@ -200,9 +208,10 @@
             period_target.show().removeClass('cmb2-tab-ignore');
         }
 
-
         // Inline field
-        var inline = widget.find( 'input[id^="widget-gamipress_points"][id$="[inline]"]');
+        var inline = widget.find( 'input[id^="widget-gamipress_points"][id$="[inline]"], ' +
+            'input[id^="widget-gamipress_user_points"][id$="[inline]"], ' +
+            'input[id^="widget-gamipress_site_points"][id$="[inline]"]');
 
         // Get the columns and layout fields
         var inline_target = inline.closest('.cmb2-wrap').find(

@@ -96,3 +96,56 @@ function gamipress_get_editable_roles() {
     return $roles;
 
 }
+
+/**
+ * Utility function to get the condition option parameter
+ *
+ * @since 2.0.0
+ *
+ * @param int|float $to_match   Number to match
+ * @param int|float $to_compare Number to compare
+ * @param string    $condition  The condition to compare numbers
+ *
+ * @return bool
+ */
+function gamipress_number_condition_matches( $to_match, $to_compare, $condition ) {
+
+    if( empty( $condition ) ) {
+        $condition = 'equal';
+    }
+
+    $matches = false;
+
+    switch( $condition ) {
+        case 'equal':
+        case '=':
+        case '==':
+        case '===':
+            $matches = ( $to_match == $to_compare );
+            break;
+        case 'not_equal':
+        case '!=':
+        case '!==':
+            $matches = ( $to_match != $to_compare );
+            break;
+        case 'less_than':
+        case '<':
+            $matches = ( $to_match < $to_compare );
+            break;
+        case 'greater_than':
+        case '>':
+            $matches = ( $to_match > $to_compare );
+            break;
+        case 'less_or_equal':
+        case '<=':
+            $matches = ( $to_match <= $to_compare );
+            break;
+        case 'greater_or_equal':
+        case '>=':
+            $matches = ( $to_match >= $to_compare );
+            break;
+    }
+
+    return $matches;
+
+}

@@ -292,7 +292,7 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 			foreach ( (array) $object_ids as $object_id ) {
 
                 // If not current user can delete, die
-                if ( ! current_user_can( 'delete_item', $object_id ) ) {
+                if ( ! current_user_can( $ct_table->cap->delete_item, $object_id ) ) {
                     wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
                 }
 
@@ -331,7 +331,7 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             $object_id = (int) $_GET[$primary_key];
 
             // If not current user can delete, die
-            if ( ! current_user_can( 'delete_item', $object_id ) ) {
+            if ( ! current_user_can( $ct_table->cap->delete_item, $object_id ) ) {
                 wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
             }
 

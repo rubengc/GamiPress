@@ -96,17 +96,20 @@ function gamipress_ajax_reset_data_tool() {
     check_ajax_referer( 'gamipress_admin', 'nonce' );
 
     // Check user capabilities
-    if( ! current_user_can( gamipress_get_manager_capability() ) )
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+    }
 
     // Check parameters received
-    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) )
+    if( ! isset( $_POST['items'] ) || empty( $_POST['items'] ) ) {
         wp_send_json_error( __( 'No items selected.', 'gamipress' ) );
+    }
 
     ignore_user_abort( true );
 
-    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) )
+    if ( ! gamipress_is_function_disabled( 'set_time_limit' ) ) {
         set_time_limit( 0 );
+    }
 
     global $wpdb;
 
@@ -271,6 +274,9 @@ function gamipress_ajax_reset_data_tool() {
         }
 
     }
+
+    // Flush the GamiPress cache
+    gamipress_flush_cache();
 
     // Return a success message
     wp_send_json_success( __( 'Data has been reset successfully.', 'gamipress' ) );

@@ -171,12 +171,6 @@
 .gamipress-points-types.gamipress-layout-top .gamipress-points-type-image,
 .gamipress-points-types.gamipress-layout-bottom .gamipress-points-type-image {
 	width: 100%;
-	text-align: center;
-}
-
-.gamipress-layout-top .gamipress-share-buttons,
-.gamipress-layout-bottom .gamipress-share-buttons {
-	justify-content: center;
 }
 
 .gamipress-achievement.gamipress-layout-top .gamipress-achievement-image,
@@ -225,6 +219,37 @@
 .gamipress-user-points.gamipress-layout-top .gamipress-user-points-image,
 .gamipress-user-points.gamipress-layout-bottom .gamipress-user-points-image {
 	width: 100%;
+}
+
+/* --------------------------------------
+	Align Utility
+   -------------------------------------- */
+.gamipress-align-left {
+	text-align: left;
+}
+
+.gamipress-align-left .gamipress-share-buttons {
+	justify-content: flex-start;
+}
+
+.gamipress-align-center {
+	text-align: center;
+}
+
+.gamipress-align-center .gamipress-share-buttons {
+	justify-content: center;
+}
+
+.gamipress-align-right {
+	text-align: right;
+}
+
+.gamipress-align-right .gamipress-share-buttons {
+	justify-content: flex-end;
+}
+
+.gamipress-align-justify {
+	text-align: justify;
 }
 
 /* --------------------------------------

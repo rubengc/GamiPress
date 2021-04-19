@@ -728,3 +728,60 @@ function gamipress_get_reserved_terms() {
 
 }
 
+/**
+ * Get registered layout options
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function gamipress_get_layout_options() {
+
+    /**
+     * Filter registered layout options
+     *
+     * @since 2.0.0
+     *
+     * @param array $layout_options
+     *
+     * @return array
+     */
+    return apply_filters( 'gamipress_layout_options', array(
+        'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
+        'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
+        'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
+        'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
+        'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
+    ) );
+
+}
+
+/**
+ * Get registered alignment options
+ *
+ * @since 2.0.0
+ *
+ * @return array
+ */
+function gamipress_get_alignment_options() {
+
+    /**
+     * Filter registered layout options
+     *
+     * @since 2.0.0
+     *
+     * @param array $layout_options
+     *
+     * @return array
+     */
+    return apply_filters( 'gamipress_alignment_options', array(
+        'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/align-' . ( is_rtl() ? 'right' : 'left' ) . '.svg">' . __( 'None', 'gamipress' ),
+        'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/align-left.svg">' . __( 'Left', 'gamipress' ),
+        'center'    => '<img src="' . GAMIPRESS_URL . 'assets/img/align-center.svg">' . __( 'Center', 'gamipress' ),
+        'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/align-right.svg">' . __( 'Right', 'gamipress' ),
+        'justify' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/align-justify.svg">' . __( 'Justify', 'gamipress' ),
+
+    ) );
+
+}
+

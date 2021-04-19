@@ -405,3 +405,28 @@ function gamipress_licenses_option_key( $option_key, $cmb ) {
 
 }
 add_filter( 'cmb2_edd_license_option_key', 'gamipress_licenses_option_key', 10, 2 );
+
+/**
+ * Before licenses form
+ *
+ * @since 1.0.0
+ *
+ * @param string $filterable
+ * @param string $page
+ *
+ * @return string
+ */
+function gamipress_licenses_before_form( $filterable, $page ) {
+
+    if( $page !== 'gamipress_licenses' ) {
+        return $filterable;
+    }
+
+    $output = '<em class="gamipress-licenses-intructions">'
+        . sprintf( __( 'Looking to install a pro add-on? Check the <a href="%s" target="_blank">installation instructions</a>.', 'gamipress' ), 'https://gamipress.com/docs/getting-started/installing-pro-add-ons/' )
+        . '</em>';
+
+    return $filterable . $output;
+
+}
+add_filter( 'cmb2metatabs_before_form', 'gamipress_licenses_before_form', 10, 2 );

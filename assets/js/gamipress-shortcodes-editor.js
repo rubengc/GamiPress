@@ -181,7 +181,15 @@
     });
 
     // User ajax
-    $( '#gamipress_achievements_user_id, #gamipress_logs_user_id, #gamipress_points_user_id, #gamipress_points_types_user_id, #gamipress_rank_user_id, #gamipress_ranks_user_id, #gamipress_user_rank_user_id, #gamipress_earnings_user_id' ).gamipress_select2({
+    $( '#gamipress_achievements_user_id, ' +
+        '#gamipress_logs_user_id, ' +
+        '#gamipress_points_user_id, ' +
+        '#gamipress_user_points_user_id, ' +
+        '#gamipress_points_types_user_id, ' +
+        '#gamipress_rank_user_id, ' +
+        '#gamipress_ranks_user_id, ' +
+        '#gamipress_user_rank_user_id, ' +
+        '#gamipress_earnings_user_id' ).gamipress_select2({
         ajax: {
             url: ajaxurl,
             dataType: 'json',
@@ -208,6 +216,7 @@
     // Current user field
     $( '#gamipress_achievements_current_user, '
         + '#gamipress_points_current_user, '
+        + '#gamipress_user_points_current_user, '
         + '#gamipress_points_types_current_user, '
         + '#gamipress_logs_current_user, '
         + '#gamipress_ranks_current_user, '
@@ -257,11 +266,13 @@
     }).trigger('change');
 
     // Period field
-    $( '#gamipress_points_period').on('change', function() {
+    $( '#gamipress_points_period, #gamipress_user_points_period, #gamipress_site_points_period').on('change', function() {
+        var selector = $(this).attr('id').replace('_period', '').replaceAll('_', '-');
+
         // Get the period start and end fields
         var target = $(this).closest('.cmb2-wrap').find(
-            '.cmb2-id-gamipress-points-period-start, '
-            + '.cmb2-id-gamipress-points-period-end'
+            '.cmb2-id-' + selector + '-period-start, '
+            + '.cmb2-id-' + selector + '-period-end'
         );
 
         if( $(this).val() !== 'custom' ) {
@@ -274,11 +285,13 @@
     }).trigger('change');
 
     // Inline field
-    $( '#gamipress_points_inline').on('change', function() {
+    $( '#gamipress_points_inline, #gamipress_user_points_inline, #gamipress_site_points_inline').on('change', function() {
+        var selector = $(this).attr('id').replace('_inline', '').replaceAll('_', '-');
+
         // Get the columns and layout fields
         var target = $(this).closest('.cmb2-wrap').find(
-            '.cmb2-id-gamipress-points-columns, '
-            + '.cmb2-id-gamipress-points-layout'
+            '.cmb2-id-' + selector + '-columns, '
+            + '.cmb2-id-' + selector + '-layout'
         );
 
         if( $(this).prop('checked') ) {
@@ -288,7 +301,7 @@
         }
     });
 
-    $('body').on('gamipress_shortcode_attributes', '#gamipress_points_wrapper', function( e, args ) {
+    $('body').on('gamipress_shortcode_attributes', '#gamipress_points_wrapper, #gamipress_user_points_wrapper, #gamipress_site_points_wrapper', function( e, args ) {
 
         // If user checks inline, then columns and layout has no sense
         if( args.attributes.inline === 'yes' ) {

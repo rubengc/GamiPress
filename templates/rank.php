@@ -27,7 +27,8 @@ $classes = array(
     'gamipress-rank',
     ( $earned ? 'user-has-earned' : 'user-has-not-earned' ),
     ( $current ? 'current-user-rank' : '' ),
-    'gamipress-layout-' . $a['layout']
+    'gamipress-layout-' . $a['layout'],
+    'gamipress-align-' . $a['align']
 );
 
 /**

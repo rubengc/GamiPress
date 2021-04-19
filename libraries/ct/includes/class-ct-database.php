@@ -91,18 +91,12 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
 
             // If not primary key given, then look at out schema
             if( $this->schema && ! $this->primary_key ) {
-
                 foreach( $this->schema->fields as $field_id => $field_args ) {
-
                     if( $field_args['primary_key'] === true ) {
-
                         $this->primary_key = $field_id;
                         break;
-
                     }
-
                 }
-
             }
 
             $this->engine = ( isset( $args['engine'] ) ) ? $args['engine'] : 'InnoDB';

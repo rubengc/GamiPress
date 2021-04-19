@@ -1234,7 +1234,7 @@ label[for="_gamipress_sequential"] {
 
 .gamipress-image-options .cmb2-radio-list img {
 	display: block;
-	width: 75px;
+	width: 55px;
 	border: 3px solid #efefef;
 	margin-bottom: 2px;
 }
@@ -1245,10 +1245,6 @@ label[for="_gamipress_sequential"] {
 
 .gamipress-widget-form .gamipress-image-options .cmb2-radio-list li {
 	padding-right: 1px;
-}
-
-.gamipress-widget-form .gamipress-image-options .cmb2-radio-list img {
-	width: 70px;
 }
 
 @media only screen and (min-width: 850px) {
@@ -2204,4 +2200,22 @@ label[for="_gamipress_sequential"] {
 	border-color: #37863e;
 	box-shadow: inset 0 2px 0 #37863e;
 	vertical-align: top;
+}
+
+/* -------------------------------------------
+    Admin Menu
+   ------------------------------------------- */
+
+.gamipress-admin-menu-badge {
+	display: inline-block;
+	float: right;
+	vertical-align: top;
+	margin: 1px -5px -1px 2px;
+	padding: 0 5px;
+	height: 18px;
+	border-radius: 9px;
+	background-color: #d63638;
+	color: #fff;
+	font-size: 11px;
+	line-height: 1.6;
 }

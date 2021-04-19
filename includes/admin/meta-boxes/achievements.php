@@ -138,6 +138,18 @@ function gamipress_achievements_meta_boxes( $post_type ) {
         __( 'Achievement Template', 'gamipress' ),
         $achievement_types,
         array(
+            $prefix . 'show_times_earned' => array(
+                'name' => __( 'Show Times Earned', 'gamipress' ),
+                'desc' => __( 'Check this option to display the times the user has earned this achievement (only if the achievement can be earned more that 1 time).', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch'
+            ),
+            $prefix . 'show_global_times_earned' => array(
+                'name' => __( 'Show Times Earned By All Users', 'gamipress' ),
+                'desc' => __( 'Check this option to display the times that all users have earned this achievement.', 'gamipress' ),
+                'type' => 'checkbox',
+                'classes' => 'gamipress-switch'
+            ),
             $prefix . 'show_earners' => array(
                 'name' => __( 'Show Earners', 'gamipress' ),
                 'desc' => __( 'Check this option to display a list of users who have earned this achievement.', 'gamipress' ),
@@ -158,14 +170,17 @@ function gamipress_achievements_meta_boxes( $post_type ) {
                 'name'        => __( 'Layout', 'gamipress' ),
                 'description' => __( 'Layout to show the achievement.', 'gamipress' ),
                 'type' 		  => 'radio',
-                'options' 	  => array(
-                    'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
-                    'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
-                    'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
-                    'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
-                    'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
-                ),
+                'options' 	  => gamipress_get_layout_options(),
                 'default' 	  => 'left',
+                'inline' 	  => true,
+                'classes' 	  => 'gamipress-image-options'
+            ),
+            $prefix . 'align' => array(
+                'name'        => __( 'Alignment', 'gamipress' ),
+                'description' => __( 'Alignment to show the achievement.', 'gamipress' ),
+                'type' 		  => 'radio',
+                'options' 	  => gamipress_get_alignment_options(),
+                'default' 	  => 'none',
                 'inline' 	  => true,
                 'classes' 	  => 'gamipress-image-options'
             ),

@@ -18,7 +18,8 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
 $classes = array(
     'gamipress-points-types',
     'gamipress-columns-' . $a['columns'],
-    'gamipress-layout-' . $a['layout']
+    'gamipress-layout-' . $a['layout'],
+    'gamipress-align-' . $a['align']
 );
 
 /**

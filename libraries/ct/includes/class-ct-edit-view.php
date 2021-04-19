@@ -72,7 +72,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                 }
 
                 // If not current user can edit, die
-                if ( ! current_user_can( 'edit_item', $this->object_id ) ) {
+                if ( ! current_user_can( $ct_table->cap->edit_item, $this->object_id ) ) {
                     wp_die( __( 'Sorry, you are not allowed to edit this item.' ) );
                 }
 
@@ -93,7 +93,8 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                     wp_die( __( 'Unable to create the draft item.' ) );
 
                 // If not current user can create, die
-                if ( ! current_user_can( 'create_item', $this->object_id ) && ! current_user_can( 'edit_item', $this->object_id ) ) {
+                if ( ! current_user_can( $ct_table->cap->create_items, $this->object_id )
+                    && ! current_user_can( $ct_table->cap->edit_item, $this->object_id ) ) {
                     wp_die( __( 'Sorry, you are not allowed to create items of this type.' ) );
                 }
 

@@ -308,6 +308,33 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          */
         do_action( 'gamipress_requirement_ui_html_after_trigger_type', $requirement_id, $post_id ); ?>
 
+        <?php
+        $points_conditions = array(
+            'equal'             => __( 'equal to', 'gamipress'),
+            'not_equal'         => __( 'not equal to', 'gamipress'),
+            'less_than'         => __( 'less than', 'gamipress' ),
+            'greater_than'      => __( 'greater than', 'gamipress' ),
+            'less_or_equal'     => __( 'less or equal to', 'gamipress' ),
+            'greater_or_equal'  => __( 'greater or equal to', 'gamipress' ),
+        ); ?>
+
+        <select class="select-points-condition select-points-condition-<?php echo $requirement_id; ?>">
+            <?php foreach ( $points_conditions as $value => $label ) :
+                echo '<option value="' . $value . '" ' . selected( $requirements['points_condition'], $value, false ) . '>' . $label . '</option>';
+            endforeach; ?>
+        </select>
+
+        <?php
+        /**
+         * Available action to add custom HTML after points condition
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_after_points_condition', $requirement_id, $post_id ); ?>
+
         <input type="number" name="requirement-points-required" id="requirement-<?php echo $requirement_id; ?>-points-required" class="points-required" value="<?php echo ( $requirements['points_required'] === 0 ? 1 : $requirements['points_required'] ); ?>" />
 
         <?php
@@ -552,7 +579,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <div class="requirement-title">
             <label for="requirement-<?php echo $requirement_id; ?>-title"><?php _e( 'Label', 'gamipress' ); ?>:</label>
-            <input type="text" name="requirement-title" id="requirement-<?php echo $requirement_id; ?>-title" class="title" value="<?php echo get_the_title( $requirement_id ); ?>" />
+            <input type="text" name="requirement-title" id="requirement-<?php echo $requirement_id; ?>-title" class="title" value="<?php echo esc_attr( get_the_title( $requirement_id ) ); ?>" />
         </div>
 
         <?php
@@ -873,6 +900,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     $requirement_id         = isset( $requirement['ID'] ) ? absint( $requirement['ID'] ) : absint( $requirement['requirement_id'] );
     $requirement_type       = gamipress_get_post_type( $requirement_id );
     $count                  = ( ! empty( $requirement['count'] ) ) ? absint( $requirement['count'] ) : 1;
+    $points_condition       = ( ! empty( $requirement['points_condition'] ) ) ? sanitize_text_field( $requirement['points_condition'] ) : 'greater_or_equal';
     $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? sanitize_text_field( $requirement['points_type_required'] ) : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? sanitize_text_field( $requirement['rank_type_required'] ) : '';
@@ -907,6 +935,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     }
 
     // Update our relevant meta
+    update_post_meta( $requirement_id, '_gamipress_points_condition', $points_condition );
     update_post_meta( $requirement_id, '_gamipress_points_required', $points_required );
     update_post_meta( $requirement_id, '_gamipress_points_type_required', $points_type_required );
     update_post_meta( $requirement_id, '_gamipress_rank_type_required', $rank_type_required );
@@ -995,6 +1024,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         $requirement = gamipress_get_requirement_object( $requirement_id );
 
     $requirement_type       = gamipress_get_post_type( $requirement_id );
+    $points_condition       = ( ! empty( $requirement['points_condition'] ) ) ? $requirement['points_condition'] : 'greater_or_equal';
     $points_required        = ( ! empty( $requirement['points_required'] ) ) ? absint( $requirement['points_required'] ) : 1;
     $points_type_required   = ( ! empty( $requirement['points_type_required'] ) ) ? $requirement['points_type_required'] : '';
     $rank_type_required     = ( ! empty( $requirement['rank_type_required'] ) ) ? $requirement['rank_type_required'] : '';
@@ -1017,7 +1047,16 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
             $title = sprintf( __( 'Earn %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
             break;
         case 'points-balance':
-            $title = sprintf( __( 'Reach a balance of %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
+            $points_conditions = array(
+                'equal'             => __( 'equal to', 'gamipress'),
+                'not_equal'         => __( 'not equal to', 'gamipress'),
+                'less_than'         => __( 'less than', 'gamipress' ),
+                'greater_than'      => __( 'greater than', 'gamipress' ),
+                'less_or_equal'     => __( 'less or equal to', 'gamipress' ),
+                'greater_or_equal'  => __( 'greater or equal to', 'gamipress' ),
+            );
+
+            $title = sprintf( __( 'Reach a balance %s %s', 'gamipress' ), $points_conditions[$points_condition], gamipress_format_points( $points_required, $points_type_required ) );
             break;
         case 'gamipress_expend_points':
             $title = sprintf( __( 'Expend %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );

@@ -254,8 +254,9 @@ function ct_populate_roles() {
  * @return object object with all the capabilities as member variables.
  */
 function ct_get_table_capabilities( $args ) {
-    if ( ! is_array( $args->capability_type ) )
+    if ( ! is_array( $args->capability_type ) ) {
         $args->capability_type = array( $args->capability_type, $args->capability_type . 's' );
+    }
 
     // Singular base for meta capabilities, plural base for primitive capabilities.
     list( $singular_base, $plural_base ) = $args->capability_type;
@@ -283,6 +284,9 @@ function ct_get_table_capabilities( $args ) {
             'delete_others_items'    => 'delete_others_'    . $plural_base,
             'edit_private_items'     => 'edit_private_'     . $plural_base,
             'edit_published_items'   => 'edit_published_'   . $plural_base,
+            'add_post_meta'          => 'add_'   . $singular_base . '_meta',
+            'edit_post_meta'         => 'edit_'   . $singular_base . '_meta',
+            'delete_post_meta'       => 'delete_'   . $singular_base . '_meta',
         );
         $default_capabilities = array_merge( $default_capabilities, $default_capabilities_for_mapping );
     }
@@ -290,12 +294,21 @@ function ct_get_table_capabilities( $args ) {
     $capabilities = array_merge( $default_capabilities, $args->capabilities );
 
     // Post creation capability simply maps to edit_items by default:
-    if ( ! isset( $capabilities['create_items'] ) )
+    if ( ! isset( $capabilities['create_items'] ) ) {
         $capabilities['create_items'] = $capabilities['edit_items'];
+    }
 
     // Remember meta capabilities for future reference.
-    if ( $args->map_meta_cap )
+    if ( $args->map_meta_cap ) {
         _ct_meta_capabilities( $capabilities );
+    }
+
+    // Shortcut to override all capabilities by a specific capability
+    if( property_exists( $args, 'capability' ) && ! empty( $args->capability ) ) {
+        foreach ( $capabilities as $key => $value ) {
+            $capabilities[$key] = $args->capability;
+        }
+    }
 
     return (object) $capabilities;
 }
@@ -1527,7 +1540,7 @@ function ct_meta_form( $object = null ) {
                         <?php
 
                         foreach ( $keys as $key ) {
-                            if ( is_protected_meta( $key, 'post' ) || ! current_user_can( 'add_post_meta', $object->$primary_key, $key ) )
+                            if ( is_protected_meta( $key, 'post' ) || ! current_user_can( $ct_table->cap->add_post_meta, $object->$primary_key, $key ) )
                                 continue;
                             echo "\n<option value='" . esc_attr($key) . "'>" . esc_html($key) . "</option>";
                         }

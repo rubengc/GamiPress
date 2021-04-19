@@ -1,8 +1,8 @@
 <?php
 /**
- * GamiPress Points Shortcode
+ * GamiPress Site Points Shortcode
  *
- * @package     GamiPress\Shortcodes\Shortcode\GamiPress_Points
+ * @package     GamiPress\Shortcodes\Shortcode\GamiPress_Site_Points
  * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
@@ -10,18 +10,18 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register [gamipress_points] shortcode
+ * Register [gamipress_site_points] shortcode
  *
  * @since 1.0.0
  */
-function gamipress_register_points_shortcode() {
+function gamipress_register_site_points_shortcode() {
 
-    gamipress_register_shortcode( 'gamipress_points', array(
-        'name'              => __( 'Points (Old)', 'gamipress' ),
-        'description'       => __( 'Output a user or site points balance.', 'gamipress' ),
+    gamipress_register_shortcode( 'gamipress_site_points', array(
+        'name'              => __( 'Site Points', 'gamipress' ),
+        'description'       => __( 'Output a sum of all site points.', 'gamipress' ),
         'icon' 	            => 'star-filled',
         'group' 	        => 'gamipress',
-        'output_callback'   => 'gamipress_points_shortcode',
+        'output_callback'   => 'gamipress_site_points_shortcode',
         'fields'      => array(
             'type' => array(
                 'name'              => __( 'Points Type(s)', 'gamipress' ),
@@ -50,22 +50,9 @@ function gamipress_register_points_shortcode() {
                 'classes'       => 'gamipress-switch',
                 'default'       => 'yes'
             ),
-            'current_user' => array(
-                'name'          => __( 'Current User', 'gamipress' ),
-                'description'   => __( 'Show only points earned by the current logged in user.', 'gamipress' ),
-                'type' 		    => 'checkbox',
-                'classes' 	    => 'gamipress-switch',
-            ),
-            'user_id' => array(
-                'name'          => __( 'User', 'gamipress' ),
-                'description'   => __( 'Show only points earned by a specific user. Leave blank to show the site points (points sum of all users).', 'gamipress' ),
-                'type'          => 'select',
-                'default'       => '',
-                'options_cb'    => 'gamipress_options_cb_users'
-            ),
             'period' => array(
                 'name'          => __( 'Period', 'gamipress' ),
-                'desc' 	        => __( 'Filter points balance based on a specific period selected. By default "None" that will display user or site current points balance.', 'gamipress' ),
+                'desc' 	        => __( 'Filter points balance based on a specific period selected. By default "None" that will display site current points balance.', 'gamipress' ),
                 'type' 	        => 'select',
                 'options_cb' 	=> 'gamipress_get_time_periods',
             ),
@@ -129,10 +116,10 @@ function gamipress_register_points_shortcode() {
     ) );
 
 }
-add_action( 'init', 'gamipress_register_points_shortcode' );
+add_action( 'init', 'gamipress_register_site_points_shortcode' );
 
 /**
- * Points Shortcode.
+ * Site Points Shortcode.
  *
  * @since  1.0.0
  *
@@ -141,22 +128,20 @@ add_action( 'init', 'gamipress_register_points_shortcode' );
  *
  * @return string 	   HTML markup
  */
-function gamipress_points_shortcode( $atts = array(), $content = '' ) {
+function gamipress_site_points_shortcode( $atts = array(), $content = '' ) {
 
     global $gamipress_template_args;
 
     // Initialize GamiPress template args global
     $gamipress_template_args = array();
 
-    $shortcode = 'gamipress_points';
+    $shortcode = 'gamipress_site_points';
 
     $atts = shortcode_atts( array(
         // Points atts
         'type'          => 'all',
         'thumbnail'     => 'yes',
         'label'         => 'yes',
-        'current_user'  => 'no',
-        'user_id'       => '0',
         'period'        => '',
         'period_start'  => '',
         'period_end'    => '',
@@ -228,11 +213,6 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
     // On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
     $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
-    // Force to set current user as user ID
-    if( $atts['current_user'] === 'yes' ) {
-        $atts['user_id'] = get_current_user_id();
-    }
-
     if( $atts['wpms'] === 'yes' && ! gamipress_is_network_wide_active() ) {
         // If we're polling all sites, grab an array of site IDs
         $sites = gamipress_get_network_site_ids();
@@ -243,6 +223,7 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
 
     // GamiPress template args global
     $gamipress_template_args = $atts;
+    $gamipress_template_args['user_id'] = 0;
 
     // Get the points count of all registered network sites
     $gamipress_template_args['points'] = array();
@@ -272,13 +253,8 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
                 )
             );
 
-            if( $atts['current_user'] === 'no' && absint( $atts['user_id'] ) === 0 ) {
-                // Site points
-                $points = gamipress_get_site_points( $points_type, $args );
-            } else {
-                // User points
-                $points = gamipress_get_user_points( $atts['user_id'], $points_type, $args );
-            }
+            // Site points
+            $points = gamipress_get_site_points( $points_type, $args );
 
             $gamipress_template_args['points'][$points_type] += $points;
 
@@ -339,6 +315,6 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
      * @param array     $atts       Shortcode attributes
      * @param string    $content    Shortcode content
      */
-    return apply_filters( 'gamipress_points_shortcode_output', $output, $atts, $content );
+    return apply_filters( 'gamipress_site_points_shortcode_output', $output, $atts, $content );
 
 }

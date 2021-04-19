@@ -46,10 +46,19 @@ function gamipress_enqueue_scripts( $hook = null ) {
 
     // Scripts
     if( ! (bool) gamipress_get_option( 'disable_js', false ) ) {
+
+        $achievement_fields = array();
+
+        if( isset( GamiPress()->shortcodes['gamipress_achievement'] ) && is_array( GamiPress()->shortcodes['gamipress_achievement']->fields ) ) {
+            $achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
+
+            $achievement_fields = array_keys( GamiPress()->shortcodes['gamipress_achievement']->fields );
+        }
+
         wp_localize_script( 'gamipress-js', 'gamipress', array(
             'ajaxurl'               => esc_url( admin_url( 'admin-ajax.php', 'relative' ) ),
             'nonce'                 => gamipress_get_nonce(),
-            'achievement_fields'    => array_keys( GamiPress()->shortcodes['gamipress_achievement']->fields )
+            'achievement_fields'    => $achievement_fields
         ) );
 
         wp_enqueue_script( 'gamipress-js' );

@@ -115,6 +115,26 @@ function gamipress_admin_submenu() {
 add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
 
 /**
+ * Add Try AutomatorWP submenus
+ *
+ * @since 2.0.0
+ */
+function gamipress_try_automatorwp_admin_submenu() {
+
+    if( class_exists( 'AutomatorWP' ) ) {
+        return;
+    }
+
+    // Set minimum role setting for menus
+    $minimum_role = gamipress_get_manager_capability();
+
+    $badge = '<span class="gamipress-admin-menu-badge">' . __( 'New', 'gamipress' ) . '</span>';
+
+    add_submenu_page( 'gamipress', __( 'Try AutomatorWP!', 'gamipress' ), __( 'Try AutomatorWP!', 'gamipress' ) . $badge, $minimum_role, 'https://wordpress.org/plugins/automatorwp/', null );
+}
+add_action( 'admin_menu', 'gamipress_try_automatorwp_admin_submenu', 9999 );
+
+/**
  * Add GamiPress admin bar menu
  *
  * @since 1.5.1
@@ -357,6 +377,19 @@ function gamipress_admin_bar_submenu( $wp_admin_bar ) {
         'parent' => 'gamipress',
         'href'   => admin_url( 'admin.php?page=gamipress_settings' )
     ) );
+
+    if( ! class_exists( 'AutomatorWP' ) ) {
+
+        $badge = '<span class="gamipress-admin-menu-badge">' . __( 'New', 'gamipress' ) . '</span>';
+
+        // Try AutomatorWP
+        $wp_admin_bar->add_node( array(
+            'id'     => 'gamipress-try-automatorwp',
+            'title'  => __( 'Try AutomatorWP!', 'gamipress' ) . $badge,
+            'parent' => 'gamipress',
+            'href'   => 'https://wordpress.org/plugins/automatorwp/'
+        ) );
+    }
 
 }
 add_action( 'admin_bar_menu', 'gamipress_admin_bar_submenu', 999 );

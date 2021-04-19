@@ -99,7 +99,7 @@ function ct_cmb2_save_object( $object_id, $object ) {
     }
 
     // Return if user is not allowed
-    if ( ! current_user_can( 'edit_item', $object_id ) ) {
+    if ( ! current_user_can( $ct_table->cap->edit_item, $object_id ) ) {
         return;
     }
 

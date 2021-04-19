@@ -73,10 +73,16 @@ function gamipress_register_achievement_shortcode() {
 			),
             'times_earned' => array(
                 'name'        => __( 'Show Times Earned', 'gamipress' ),
-                'description' => __( 'Display the times user has earned this achievement (on achievements allowed to be earned more that 1 time).', 'gamipress' ),
+                'description' => __( 'Display the times the user has earned this achievement (only for achievements that can be earned more that 1 time).', 'gamipress' ),
                 'type' 	=> 'checkbox',
                 'classes' => 'gamipress-switch',
                 'default' => 'yes'
+            ),
+            'global_times_earned' => array(
+                'name'        => __( 'Show Times Earned By All Users', 'gamipress' ),
+                'description' => __( 'Display the times that all users have earned this achievement.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
             ),
 			'steps' => array(
 				'name'        => __( 'Show Steps', 'gamipress' ),
@@ -118,17 +124,20 @@ function gamipress_register_achievement_shortcode() {
 				'name'        => __( 'Layout', 'gamipress' ),
 				'description' => __( 'Layout to show the achievement.', 'gamipress' ),
 				'type' 		  => 'radio',
-				'options' 	  => array(
-					'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
-					'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
-					'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
-					'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
-					'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
-				),
+				'options' 	  => gamipress_get_layout_options(),
 				'default' 	  => 'left',
 				'inline' 	  => true,
 				'classes' 	  => 'gamipress-image-options'
 			),
+            'align' => array(
+                'name'        => __( 'Alignment', 'gamipress' ),
+                'description' => __( 'Alignment to show the achievement.', 'gamipress' ),
+                'type' 		  => 'radio',
+                'options' 	  => gamipress_get_alignment_options(),
+                'default' 	  => 'none',
+                'inline' 	  => true,
+                'classes' 	  => 'gamipress-image-options'
+            ),
 		),
 	) );
 
@@ -220,19 +229,21 @@ function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
 function gamipress_achievement_shortcode_defaults() {
 
 	return apply_filters( 'gamipress_achievement_shortcode_defaults', array(
-		'id' 				=> get_the_ID(),
-		'title' 			=> 'yes',
-		'link' 				=> 'yes',
-		'thumbnail' 		=> 'yes',
-		'points_awarded' 	=> 'yes',
-		'excerpt'	  		=> 'yes',
-        'times_earned' 	    => 'yes',
-		'steps'	  			=> 'yes',
-		'toggle' 			=> 'yes',
-		'unlock_button' 	=> 'yes',
-		'earners'	  		=> 'no',
-		'earners_limit'	    => '0',
-		'layout'	  		=> 'left',
+		'id' 				    => get_the_ID(),
+		'title' 			    => 'yes',
+		'link' 				    => 'yes',
+		'thumbnail' 		    => 'yes',
+		'points_awarded' 	    => 'yes',
+		'excerpt'	  		    => 'yes',
+        'times_earned' 	        => 'yes',
+        'global_times_earned' 	=> 'no',
+		'steps'	  			    => 'yes',
+		'toggle' 			    => 'yes',
+		'unlock_button' 	    => 'yes',
+		'earners'	  		    => 'no',
+		'earners_limit'	        => '0',
+		'layout'	  		    => 'left',
+		'align'	  		        => 'none',
 	) );
 
 }

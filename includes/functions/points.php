@@ -24,8 +24,9 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_get_user_points( $user_id = 0, $points_type = '', $args = array() ) {
 
 	// Use current user's ID if none specified
-	if ( ! $user_id )
-		$user_id = wp_get_current_user()->ID;
+	if ( ! $user_id ) {
+		$user_id = get_current_user_id();
+    }
 
     $args = wp_parse_args( $args, array(
         'date_query' => array(), // Limit user points balance on a specific date query, accepts before and after params

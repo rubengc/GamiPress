@@ -18,6 +18,8 @@ require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievement.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_achievements.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_earnings.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_logs.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_user_points.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_site_points.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points_types.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_rank.php';
@@ -245,17 +247,10 @@ add_filter( 'gamipress_gamipress_ranks_shortcode_fields', 'gamipress_shortcodes_
  */
 function gamipress_shortcode_error( $error_message, $shortcode ) {
 
-    global $gamipress_renderer, $gamipress_current_widget, $wp;
-
-    // Support for block Rest API rendering
-    if( isset( $wp->query_vars[ 'rest_route' ] )
-        && ! empty( $wp->query_vars[ 'rest_route' ] )
-        && strpos( $wp->query_vars[ 'rest_route' ], 'block-renderer' ) !== false ) {
-        $gamipress_renderer = 'block';
-    }
+    global $gamipress_current_widget;
 
     // Setup label and shortcode label to customize message for shortcodes, widgets or blocks
-    switch( $gamipress_renderer ) {
+    switch( gamipress_get_renderer() ) {
         case 'widget':
             $label = __( 'Widget:', 'gamipress' );
             $shortcode_label = $gamipress_current_widget->name;
@@ -288,6 +283,47 @@ function gamipress_shortcode_error( $error_message, $shortcode ) {
         // Do not output anything for non admins
         return '';
     }
+
+}
+
+/**
+ * Function to get the actual renderer
+ *
+ * @since 	2.0.0
+ *
+ * @return string shortcode | block | widget
+ */
+function gamipress_get_renderer() {
+
+    global $gamipress_renderer, $wp;
+
+    // Support for block Rest API rendering
+    if( isset( $wp->query_vars[ 'rest_route' ] )
+        && ! empty( $wp->query_vars[ 'rest_route' ] )
+        && strpos( $wp->query_vars[ 'rest_route' ], 'block-renderer' ) !== false ) {
+        $gamipress_renderer = 'block';
+    }
+
+    if( ! $gamipress_renderer ) {
+        $gamipress_renderer = 'shortcode';
+    }
+
+    return $gamipress_renderer;
+
+}
+
+/**
+ * Function to set the current renderer
+ *
+ * @since 	1.5.9
+ *
+ * @param string $renderer
+ */
+function gamipress_set_renderer( $renderer ) {
+
+    global $gamipress_renderer;
+
+    $gamipress_renderer = $renderer;
 
 }
 

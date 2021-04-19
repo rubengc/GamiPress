@@ -82,14 +82,17 @@ function gamipress_register_points_types_shortcode() {
                 'name'        => __( 'Layout', 'gamipress' ),
                 'description' => __( 'Layout to show the points type.', 'gamipress' ),
                 'type' 		  => 'radio',
-                'options' 	  => array(
-                    'left' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-left.svg">' . __( 'Left', 'gamipress' ),
-                    'top' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-top.svg">' . __( 'Top', 'gamipress' ),
-                    'right' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-right.svg">' . __( 'Right', 'gamipress' ),
-                    'bottom' 	=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-bottom.svg">' . __( 'Bottom', 'gamipress' ),
-                    'none' 		=> '<img src="' . GAMIPRESS_URL . 'assets/img/layout-none.svg">' . __( 'None', 'gamipress' ),
-                ),
+                'options' 	  => gamipress_get_layout_options(),
                 'default' 	  => 'left',
+                'inline' 	  => true,
+                'classes' 	  => 'gamipress-image-options'
+            ),
+            'align' => array(
+                'name'        => __( 'Alignment', 'gamipress' ),
+                'description' => __( 'Alignment to show the points.', 'gamipress' ),
+                'type' 		  => 'radio',
+                'options' 	  => gamipress_get_alignment_options(),
+                'default' 	  => 'none',
                 'inline' 	  => true,
                 'classes' 	  => 'gamipress-image-options'
             ),
@@ -146,6 +149,7 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
         'deducts'       => 'yes',
         'toggle'        => 'yes',
         'layout'        => 'left',
+        'align'	  		=> 'none',
         'current_user'  => 'yes',
         'user_id'       => '0',
         'wpms'          => 'no',

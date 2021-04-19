@@ -607,6 +607,14 @@
 
     });
 
+	// Target blank on featured menu links
+	$('#adminmenu .gamipress-admin-menu-badge, '
+		+ '#wp-admin-bar-gamipress .gamipress-admin-menu-badge').each( function() {
+			var parent = $(this).closest('a');
+
+			parent.attr('target', '_blank');
+	} );
+
 	// Auto initialize upgrade if user reloads the page during an upgrade
 	if( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').length ) {
 		gamipress_start_upgrade( $('#gamipress-upgrade-notice').find('.gamipress-upgrade-progress[data-running-upgrade]').data('running-upgrade') );

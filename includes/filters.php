@@ -139,6 +139,14 @@ function gamipress_apply_single_template( $content, $single_template = '' ) {
 		$gamipress_template_args['layout'] = 'left';
 	}
 
+    // Set the configured alignment
+    $gamipress_template_args['align'] = gamipress_get_post_meta( get_the_ID(), '_gamipress_align' );
+
+    // If not alignment defined, fallback to none alignment
+    if( empty( $gamipress_template_args['align'] ) ) {
+        $gamipress_template_args['align'] = 'none';
+    }
+
 	ob_start();
 
 	// Try to load single-{template}-{post_type}.php, if not exists load single-{template}.php
@@ -616,7 +624,7 @@ add_filter( 'gamipress_rank_requirement_title_display', 'gamipress_format_requir
  *
  * @since  1.5.9
  *
- * @param  int 	$achievement_id The given achievement's ID
+ * @param  int 	    $achievement_id The given achievement's ID
  * @param  array 	$template_args 	Achievement template args
  *
  * @return string                  The HTML markup for our times earned output
@@ -649,8 +657,22 @@ function gamipress_achievement_times_earned_markup( $achievement_id = 0, $templa
 
     $earned_times = gamipress_get_earnings_count( array( 'user_id' => $user_id, 'post_id' => $achievement_id ) );
 
-    // Return if user hasn't earned it or just earned it 1 time
-    if( $earned_times <= 1 ) {
+    /**
+     * Filter to override the minimum times required to show the achievement times earned text, by default 1
+     *
+     * @since  2.0.0
+     *
+     * @param  int 	    $minimum_earned_times   Minimum times required to show the achievement times earned text, by default 1
+     * @param  int 	    $achievement_id         The given achievement's ID
+     * @param  int 	    $user_id                The user's ID
+     * @param  int 	    $earned_times           The user's times earned this achievement
+     * @param  int 	    $maximum_earnings       The achievement's maximum times to be earned
+     * @param  array 	$template_args 	        Achievement template args
+     */
+    $minimum_earned_times = apply_filters( 'gamipress_achievement_times_earned_minimum_times_to_show', 1, $achievement_id, $user_id, $earned_times, $maximum_earnings, $template_args );
+
+    // Return if user hasn't earned this achievement the minimum times required to show
+    if( $earned_times <= $minimum_earned_times ) {
         return '';
     }
 
@@ -671,10 +693,10 @@ function gamipress_achievement_times_earned_markup( $achievement_id = 0, $templa
      * @since  1.5.9
      *
      * @param  string 	$times_earned_text  Times earned text, by default "X times earned"
-     * @param  int 	$achievement_id     The given achievement's ID
-     * @param  int 	$user_id            The user's ID
-     * @param  int 	$earned_times       The user's times earned this achievement
-     * @param  int 	$maximum_earnings   The achievement's maximum times to be earned
+     * @param  int 	    $achievement_id     The given achievement's ID
+     * @param  int 	    $user_id            The user's ID
+     * @param  int 	    $earned_times       The user's times earned this achievement
+     * @param  int 	    $maximum_earnings   The achievement's maximum times to be earned
      * @param  array 	$template_args 	    Achievement template args
      */
     $times_earned_text = apply_filters( 'gamipress_achievement_times_earned_text', $times_earned_text, $achievement_id, $user_id, $earned_times, $maximum_earnings, $template_args );
@@ -688,13 +710,98 @@ function gamipress_achievement_times_earned_markup( $achievement_id = 0, $templa
      * @since  1.5.9
      *
      * @param  string 	$output             Times earned markup
-     * @param  int 	$achievement_id     The given achievement's ID
-     * @param  int 	$user_id            The user's ID
-     * @param  int 	$earned_times       The user's times earned this achievement
-     * @param  int 	$maximum_earnings   The achievement's maximum times to be earned
+     * @param  int 	    $achievement_id     The given achievement's ID
+     * @param  int 	    $user_id            The user's ID
+     * @param  int 	    $earned_times       The user's times earned this achievement
+     * @param  int 	    $maximum_earnings   The achievement's maximum times to be earned
      * @param  array 	$template_args 	    Achievement template args
      */
     return apply_filters( 'gamipress_achievement_times_earned_markup', $output, $achievement_id, $user_id, $earned_times, $maximum_earnings, $template_args );
+
+}
+
+/**
+ * Generate markup for an achievement's times earned by all users output
+ *
+ * @since  2.0.0
+ *
+ * @param  int 	    $achievement_id The given achievement's ID
+ * @param  array 	$template_args 	Achievement template args
+ *
+ * @return string                  The HTML markup for our times earned output
+ */
+function gamipress_achievement_global_times_earned_markup( $achievement_id = 0, $template_args = array() ) {
+
+    // Grab the current post ID if no achievement_id was specified
+    if ( ! $achievement_id ) {
+        global $post;
+        $achievement_id = $post->ID;
+    }
+
+    $maximum_earnings = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_global_maximum_earnings' ) );
+
+    $earned_times = gamipress_get_earnings_count( array( 'post_id' => $achievement_id ) );
+
+    /**
+     * Filter to override the minimum times required to show the achievement times earned by all users text, by default 1
+     *
+     * @since  2.0.0
+     *
+     * @param  int 	    $minimum_earned_times   Minimum times required to show the achievement times earned text, by default 1
+     * @param  int 	    $achievement_id         The given achievement's ID
+     * @param  int 	    $earned_times           The user's times earned this achievement
+     * @param  int 	    $maximum_earnings       The achievement's global maximum times to be earned
+     * @param  array 	$template_args 	        Achievement template args
+     */
+    $minimum_earned_times = apply_filters( 'gamipress_achievement_global_times_earned_minimum_times_to_show', 1, $achievement_id, $earned_times, $maximum_earnings, $template_args );
+
+    // Return if user hasn't earned this achievement the minimum times required to show
+    if( $earned_times <= $minimum_earned_times ) {
+        return '';
+    }
+
+    $post_type = gamipress_get_post_type( $achievement_id );
+    $achievement_type_singular = gamipress_get_achievement_type_singular( $post_type );
+
+    // Setup the times earned text based on if achievements has unlimited times to be earned
+    if( $maximum_earnings === 0 ) {
+        $times_earned_pattern = __( '%d users have earned this %s', 'gamipress' );
+
+        $times_earned_text = sprintf( $times_earned_pattern, $earned_times, $achievement_type_singular );
+    } else {
+        $times_earned_pattern = __( '%d of %d users have earned this %s', 'gamipress' );
+
+        $times_earned_text = sprintf( $times_earned_pattern, $earned_times, $maximum_earnings, $achievement_type_singular );
+    }
+
+    /**
+     * Filter to override the achievement times earned by all users text
+     *
+     * @since  1.5.9
+     *
+     * @param  string 	$times_earned_text  Times earned text, by default "X users have earned this Y"
+     * @param  int 	    $achievement_id     The given achievement's ID
+     * @param  int 	    $earned_times       The user's times earned this achievement
+     * @param  int 	    $maximum_earnings   The achievement's maximum times to be earned
+     * @param  array 	$template_args 	    Achievement template args
+     */
+    $times_earned_text = apply_filters( 'gamipress_achievement_global_times_earned_text', $times_earned_text, $achievement_id, $earned_times, $maximum_earnings, $template_args );
+
+    // The time earned markup
+    $output = '<div class="gamipress-achievement-global-times-earned">' . $times_earned_text . '</div>';
+
+    /**
+     * Filter to override the achievement times earned by all users markup
+     *
+     * @since  1.5.9
+     *
+     * @param  string 	$output             Times earned markup
+     * @param  int 	    $achievement_id     The given achievement's ID
+     * @param  int 	    $earned_times       The user's times earned this achievement
+     * @param  int 	    $maximum_earnings   The achievement's maximum times to be earned
+     * @param  array 	$template_args 	    Achievement template args
+     */
+    return apply_filters( 'gamipress_achievement_global_times_earned_markup', $output, $achievement_id, $earned_times, $maximum_earnings, $template_args );
 
 }
 
@@ -753,7 +860,7 @@ function gamipress_achievement_unlock_with_points_markup( $achievement_id = 0, $
 
 	$user_id = get_current_user_id();
 
-	// Guest not supported yet (basically because they has not points)
+	// Guest not supported yet (basically because they have no points)
 	if( $user_id === 0 ) {
 		return '';
     }
@@ -888,7 +995,7 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 
 	$user_id = get_current_user_id();
 
-	// Guest not supported yet (basically because they has not points)
+	// Guest not supported yet (basically because they have no points)
 	if( $user_id === 0 ) {
 		return '';
     }

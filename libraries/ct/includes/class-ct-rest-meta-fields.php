@@ -134,7 +134,7 @@ class CT_REST_Meta_Fields extends WP_REST_Meta_Fields {
      */
     protected function update_meta_value( $object_id, $meta_key, $name, $value ) {
         $meta_type = $this->get_meta_type();
-        if ( ! current_user_can(  "edit_{$meta_type}_meta", $object_id, $meta_key ) ) {
+        if ( ! current_user_can( $this->table->cap->edit_post_meta, $object_id, $meta_key ) ) {
             return new WP_Error(
                 'rest_cannot_update',
                 /* translators: %s: custom field key */

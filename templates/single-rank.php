@@ -22,7 +22,8 @@ $classes = array(
     'single-rank',
     'rank-wrap',
     ( $earned ? 'user-has-earned' : '' ),
-    'gamipress-layout-' . $a['layout']
+    'gamipress-layout-' . $a['layout'],
+    'gamipress-align-' . $a['align']
 );
 
 /**
