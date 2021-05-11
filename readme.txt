@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs, pacogon, flabernardez
 Tags: gamipress, gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.7
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -228,6 +228,13 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.0.1 =
+
+* **Improvements**
+* Style improvements on the admin area.
+* **Bug Fixes**
+* Fixed cache clean up for "Unlock all achievements of type" event.
 
 = 2.0.0 =
 

@@ -906,13 +906,13 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 					'since'     => $since
 				) );
 				break;
-			case 'any-achievement' :
+			case 'any-achievement':
 				$trigger = 'gamipress_unlock_' . $requirement['achievement_type'];
 				break;
-			case 'all-achievements' :
+			case 'all-achievements':
 				$trigger = 'gamipress_unlock_all_' . $requirement['achievement_type'];
 				break;
-			default :
+			default:
 				$trigger = $requirement['trigger_type'];
 				break;
 		}

@@ -245,6 +245,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.1 ###
+
+* **Improvements**
+* Style improvements on the admin area.
+* **Bug Fixes**
+* Fixed cache clean up for "Unlock all achievements of type" event.
+
 ### 2.0.0 ###
 
 * **New Features**

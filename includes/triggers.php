@@ -1175,13 +1175,15 @@ add_filter( 'gamipress_get_triggered_requirements', 'gamipress_sort_triggered_ra
  */
 function gamipress_delete_trigger_cache( $trigger ) {
 
+    global $wpdb;
+
     // Bail if empty trigger
-    if( empty( $trigger ) ) return false;
+    if( empty( $trigger ) ) {
+        return false;
+    }
 
     // Listeners count cache varies if is specific trigger
     if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
-
-        global $wpdb;
 
         // Cache prefix and suffix
         $trigger = sanitize_text_field( $trigger );
@@ -1191,6 +1193,22 @@ function gamipress_delete_trigger_cache( $trigger ) {
 
         // Delete listeners count cache for specific trigger
 
+        if( gamipress_is_network_wide_active() ) {
+            // Multi site installs
+            $wpdb->query( "DELETE FROM {$wpdb->sitemeta} WHERE meta_key LIKE '{$prefix}%' AND ( meta_key LIKE '%{$triggered_suffix}' OR meta_key LIKE '%{$listeners_suffix}' )");
+        } else {
+            // Single site installs
+            $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '{$prefix}%' AND ( option_name LIKE '%{$triggered_suffix}' OR option_name LIKE '%{$listeners_suffix}' )" );
+        }
+
+    } else if ( $trigger === 'any-achievement' || $trigger === 'all-achievements' ) {
+
+        // Cache prefix and suffix
+        $prefix = 'gamipress_cache_gamipress_unlock_';
+        $triggered_suffix = '_triggered_requirements';
+        $listeners_suffix = '_listeners_count';
+
+        // Delete listeners count cache for unlock all/specific achievement
         if( gamipress_is_network_wide_active() ) {
             // Multi site installs
             $wpdb->query( "DELETE FROM {$wpdb->sitemeta} WHERE meta_key LIKE '{$prefix}%' AND ( meta_key LIKE '%{$triggered_suffix}' OR meta_key LIKE '%{$listeners_suffix}' )");

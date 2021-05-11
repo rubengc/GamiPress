@@ -1439,6 +1439,10 @@ label[for="_gamipress_sequential"] {
 	margin: 0 2px 0 0;
 }
 
+.gamipress-page.cmb2-options-page #poststuff h2.nav-tab-wrapper {
+	margin-bottom: 20px !important;
+}
+
 .gamipress_settings .cmb2-metabox > .cmb-row > .cmb-th,
 .gamipress_tools .cmb2-metabox > .cmb-row > .cmb-th {
     font-weight: 600 !important;
