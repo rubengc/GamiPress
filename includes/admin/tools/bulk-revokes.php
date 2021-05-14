@@ -458,8 +458,10 @@ function gamipress_ajax_bulk_revokes_tool() {
 
             $user_rank_id = gamipress_get_user_rank_id( $user->ID, $rank->post_type );
 
-            // Revoke rank
-            gamipress_revoke_rank_to_user( $user->ID, $user_rank_id, $rank_id, array( 'admin_id' => get_current_user_id() ) );
+            if( $user_rank_id === $rank_id ) {
+                // Revoke rank
+                gamipress_revoke_rank_to_user( $user->ID, $rank_id, 0, array( 'admin_id' => get_current_user_id() ) );
+            }
 
         }
 

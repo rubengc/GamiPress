@@ -874,7 +874,7 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 	$site_id = get_current_blog_id();
 
 	// Assume the user has no relevant activities
-	$activities = 0;
+	$activity_count = 0;
 
 	$post_type = gamipress_get_post_type( $achievement_id );
 
@@ -900,7 +900,7 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 				}
 
 				// Get our achievement activity
-                $activities = gamipress_get_earnings_count( array(
+                $activity_count = gamipress_get_earnings_count( array(
 					'user_id'   => absint( $user_id ),
 					'post_id'   => absint( $requirement['achievement_post'] ),
 					'since'     => $since
@@ -946,14 +946,163 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 
 			}
 
-            $activities = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirement );
+            $activity_count = gamipress_get_user_trigger_count( $user_id, $trigger, $since, $site_id, $requirement );
 
 		}
 
 	}
 
-	// Available filter for overriding user activity
-	return absint( apply_filters( "gamipress_{$post_type}_activity", $activities, $user_id, $achievement_id ) );
+    /**
+     * Available filter for overriding user activity count
+     *
+     * @since  1.0.0
+     *
+     * @param  int $activity_count  The achievement's activity count
+     * @param  int $user_id 		The given user's ID
+     * @param  int $achievement_id 	The given achievement's ID
+     * @param  int $since 			Timestamp since retrieve the count
+     *
+     * @return int          		The total activity count
+     */
+	return absint( apply_filters( "gamipress_{$post_type}_activity_count", $activity_count, $user_id, $achievement_id, $since ) );
+}
+
+/**
+ * Count the user's relevant actions for a given achievement applying the requirement limits
+ *
+ * @since  2.0.2
+ *
+ * @param  int $user_id 		The given user's ID
+ * @param  int $achievement_id 	The given achievement's ID
+ * @param  int $since 			Timestamp since retrieve the count
+ *
+ * @return int          		The total activity count
+ */
+function gamipress_get_achievement_activity_count_limited( $user_id = 0, $achievement_id = 0, $since = 0 ) {
+
+    // Assume the user has no relevant activities
+    $activity_count = 0;
+
+    $post_type = gamipress_get_post_type( $achievement_id );
+
+    if ( in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
+
+        $limit_type = gamipress_get_post_meta( $achievement_id, '_gamipress_limit_type' );
+
+        if( empty( $limit_type ) ) {
+            $limit_type = 'unlimited';
+        }
+
+        if( $limit_type === 'unlimited' ) {
+            // Times activity has triggered
+            $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $achievement_id, $since ) );
+        } else {
+
+            // Grab the requirement object
+            $requirement = gamipress_get_requirement_object( $achievement_id );
+
+            $where = array(
+                'type'          => 'event_trigger',
+            );
+
+            // Determine which type of trigger we're using and return the corresponding activities
+            switch( $requirement['trigger_type'] ) {
+                case 'specific-achievement':
+                    $trigger = 'gamipress_unlock_' . $requirement['achievement_type'];
+                    $where['post_id'] = absint( $requirement['achievement_post'] );
+                    break;
+                case 'any-achievement':
+                    $trigger = 'gamipress_unlock_' . $requirement['achievement_type'];
+                    break;
+                case 'all-achievements':
+                    $trigger = 'gamipress_unlock_all_' . $requirement['achievement_type'];
+                    break;
+                default:
+                    $trigger = $requirement['trigger_type'];
+                    break;
+            }
+
+            $where['trigger_type'] = $trigger;
+            $group_by = '';
+            $since = 0;
+
+            // If since is not defined check it from new ways
+            if( $since === 0 ) {
+
+                if( $post_type === 'rank-requirement' ) {
+                    // If is a rank requirement, we need to get the last time user earned the latest rank of type
+                    $rank = gamipress_get_rank_requirement_rank( $achievement_id );
+
+                    $since = gamipress_get_rank_earned_time( $user_id, $rank->post_type );
+                } else {
+
+                    // Get activity count from last time earned
+                    $since = gamipress_achievement_last_user_activity( $achievement_id, $user_id );
+
+                    // If user hasn't earned this yet, then get activity count from publish date
+                    if( $since === 0 ) {
+                        $since = strtotime( gamipress_get_post_date( $achievement_id ) ) - 1;
+                    }
+
+                }
+
+            }
+
+            // Setup the group by clause based on the requirement limit type
+            switch( $limit_type ) {
+                case 'minutely':
+                    $group_by = 'YEAR(l.date), MONTH(l.date), DAY(l.date), HOUR(l.date), MINUTE(l.date)';
+                    break;
+                case 'hourly':
+                    $group_by = 'YEAR(l.date), MONTH(l.date), DAY(l.date), HOUR(l.date)';
+                    break;
+                case 'daily':
+                    $group_by = 'YEAR(l.date), MONTH(l.date), DAY(l.date)';
+                    break;
+                case 'weekly':
+                    $group_by = "YEAR(l.date), DATE_FORMAT( l.date, '%u' )";
+                    break;
+                case 'monthly':
+                    $group_by = 'YEAR(l.date), MONTH(l.date)';
+                    break;
+                case 'yearly':
+                    $group_by = 'YEAR(l.date)';
+                    break;
+            }
+
+            // Get the user activity counts grouped by date
+            $results = gamipress_query_logs( array(
+                'select'    => 'LEAST(COUNT(*), ' . $requirement['limit'] . ') AS count', // Least() returns the lowest value (like PHP min() function)
+                'user_id'   => $user_id,
+                'where'     => $where,
+                'since'     => $since,
+                'group_by'  => $group_by,
+            ) );
+
+            if( is_array( $results ) ) {
+                foreach( $results as $result ) {
+                    $activity_count += absint( $result->count );
+                }
+            }
+
+        }
+
+    }
+
+    /**
+     * Available filter for overriding user activity count applying the requirement limits
+     *
+     * @since  1.0.0
+     *
+     * @param  int $activity_count  The achievement's activity count
+     * @param  int $user_id 		The given user's ID
+     * @param  int $achievement_id 	The given achievement's ID
+     * @param  int $since 			Timestamp since retrieve the count
+     *
+     * @return int          		The total activity count
+     */
+    return absint( apply_filters( "gamipress_{$post_type}_activity_count_limited", $activity_count, $user_id, $achievement_id, $since ) );
+
 }
 
 /**

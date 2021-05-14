@@ -322,13 +322,13 @@ function gamipress_can_user_earn_requirement( $requirement_id = 0, $user_id = 0 
             if( $since > 0 ) {
 
                 // Activity count limit over time
-                $limit = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) );
+                $count = absint( gamipress_get_post_meta( $requirement_id, '_gamipress_count' ) );
 
                 // Activity count limited to a timestamp
-                $activity_count = absint( gamipress_get_achievement_activity_count( $user_id, $requirement_id, $since ) );
+                $activity_count = absint( gamipress_get_achievement_activity_count_limited( $user_id, $requirement_id, $since ) );
 
                 // Force bail if user exceeds the limit over time
-                if( $activity_count >= $limit ) {
+                if( $activity_count >= $count ) {
                     $can_earn = false;
                 }
 

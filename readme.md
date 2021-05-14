@@ -245,6 +245,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.2 ###
+
+* **Bug Fixes**
+* Fixed incorrect display of time limited steps that are displayed as completed when the user has not earned them.
+* Fixed incorrect new rank assignment on the Bulk Revokes tool.
+
 ### 2.0.1 ###
 
 * **Improvements**
