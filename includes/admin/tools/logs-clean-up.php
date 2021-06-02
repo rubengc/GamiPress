@@ -131,10 +131,8 @@ function gamipress_ajax_logs_clean_up_tool_checks() {
  * @return string
  */
 function gamipress_ajax_logs_clean_up_tool_where() {
-    global $wpdb;
 
-    $logs       = GamiPress()->db->logs;
-    $logs_meta  = GamiPress()->db->logs_meta;
+    $logs = GamiPress()->db->logs;
 
     // Setup vars
     $log_types = esc_sql( $_POST['log_types'] );

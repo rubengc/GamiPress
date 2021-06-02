@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	2.0.2
+ * Version:         	2.0.3
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -137,7 +137,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '2.0.2' );
+		define( 'GAMIPRESS_VER', '2.0.3' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -269,7 +269,6 @@ final class GamiPress {
 		// Hook in all our important pieces
 		add_action( 'plugins_loaded', array( $this, 'pre_init' ), 20 );
 		add_action( 'plugins_loaded', array( $this, 'init' ), 50 );
-		add_action( 'init', array( $this, 'register_image_sizes' ) );
 
 	}
 
@@ -311,31 +310,6 @@ final class GamiPress {
 
 		// Trigger our action to let other plugins know that GamiPress is ready
 		do_action( 'gamipress_init' );
-
-	}
-
-	/**
-	 * Register custom WordPress image size(s)
-	 *
-	 * @since       1.0.0
-	 * @return      void
-	 */
-	function register_image_sizes() {
-
-		// Register points image size
-		$points_image_size = gamipress_get_option( 'points_image_size', array( 'width' => 50, 'height' => 50 ) );
-
-		add_image_size( 'gamipress-points', absint( $points_image_size['width'] ), absint( $points_image_size['height'] ) );
-
-		// Register achievement image size
-		$achievement_image_size = gamipress_get_option( 'achievement_image_size', array( 'width' => 100, 'height' => 100 ) );
-
-		add_image_size( 'gamipress-achievement', absint( $achievement_image_size['width'] ), absint( $achievement_image_size['height'] ) );
-
-		// Register rank image size
-		$rank_image_size = gamipress_get_option( 'rank_image_size', array( 'width' => 100, 'height' => 100 ) );
-
-		add_image_size( 'gamipress-rank', absint( $rank_image_size['width'] ), absint( $rank_image_size['height'] ) );
 
 	}
 

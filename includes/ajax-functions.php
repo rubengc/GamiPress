@@ -690,8 +690,25 @@ function gamipress_ajax_unlock_achievement_with_points() {
 	$user_points = gamipress_get_user_points( $user_id, $points_type );
 
 	// Return if insufficient points
-	if( $user_points < $points )
-		wp_send_json_error( sprintf( __( 'Insufficient %s.', 'gamipress' ), $points_label ) );
+	if( $user_points < $points ) {
+
+        $message = sprintf( __( 'Insufficient %s.', 'gamipress' ), $points_label );
+
+        /**
+         * Available filter to override the insufficient points text when unlocking a rank using points
+         *
+         * @since   1.0.5
+         *
+         * @param string    $message        The insufficient points message
+         * @param int       $achievement_id The achievement ID
+         * @param int       $user_id        The current logged in user ID
+         * @param int       $points         The required amount of points
+         * @param string    $points_type    The required amount points type
+         */
+        $message = apply_filters( 'gamipress_unlock_rank_with_points_insufficient_points_message', $message, $achievement_id, $user_id, $points, $points_type );
+
+		wp_send_json_error( $message );
+    }
 
 	// Deduct points to user
 	gamipress_deduct_points_to_user( $user_id, $points, $points_type, array(
@@ -793,8 +810,25 @@ function gamipress_ajax_unlock_rank_with_points() {
 	$user_points = gamipress_get_user_points( $user_id, $points_type );
 
 	// Return if insufficient points
-	if( $user_points < $points )
-		wp_send_json_error( sprintf( __( 'Insufficient %s.', 'gamipress' ), $points_label ) );
+	if( $user_points < $points ) {
+
+        $message = sprintf( __( 'Insufficient %s.', 'gamipress' ), $points_label );
+
+        /**
+         * Available filter to override the insufficient points text when unlocking a rank using points
+         *
+         * @since   1.0.5
+         *
+         * @param string    $message        The insufficient points message
+         * @param int       $rank_id        The rank ID
+         * @param int       $user_id        The current logged in user ID
+         * @param int       $points         The required amount of points
+         * @param string    $points_type    The required amount points type
+         */
+        $message = apply_filters( 'gamipress_unlock_rank_with_points_insufficient_points_message', $message, $rank_id, $user_id, $points, $points_type );
+
+        wp_send_json_error( $message );
+    }
 
 	// Deduct points to user
 	gamipress_deduct_points_to_user( $user_id, $points, $points_type, array(

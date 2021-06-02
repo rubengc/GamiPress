@@ -113,3 +113,28 @@ function gamipress_settings_general_meta_boxes( $meta_boxes ) {
 
 }
 add_filter( 'gamipress_settings_general_meta_boxes', 'gamipress_settings_general_meta_boxes' );
+
+/**
+ * Register custom WordPress image size(s)
+ *
+ * @since 1.0.0
+ */
+function gamipress_register_image_sizes() {
+
+    // Register points image size
+    $points_image_size = gamipress_get_option( 'points_image_size', array( 'width' => 50, 'height' => 50 ) );
+
+    add_image_size( 'gamipress-points', absint( $points_image_size['width'] ), absint( $points_image_size['height'] ) );
+
+    // Register achievement image size
+    $achievement_image_size = gamipress_get_option( 'achievement_image_size', array( 'width' => 100, 'height' => 100 ) );
+
+    add_image_size( 'gamipress-achievement', absint( $achievement_image_size['width'] ), absint( $achievement_image_size['height'] ) );
+
+    // Register rank image size
+    $rank_image_size = gamipress_get_option( 'rank_image_size', array( 'width' => 100, 'height' => 100 ) );
+
+    add_image_size( 'gamipress-rank', absint( $rank_image_size['width'] ), absint( $rank_image_size['height'] ) );
+
+}
+add_action( 'init', 'gamipress_register_image_sizes' );

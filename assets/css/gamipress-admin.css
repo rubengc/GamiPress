@@ -1956,79 +1956,79 @@ label[for="_gamipress_sequential"] {
 	margin-left: 40px;
 }
 
-/* Export setup options */
-.cmb2-id-export-setup-options input[value="all-points-types"] + label,
-.cmb2-id-export-setup-options input[value="all-achievement-types"] + label,
-.cmb2-id-export-setup-options input[value="all-rank-types"] + label {
+/* All types multicheck */
+.gamipress-all-types-multicheck input[value="all-points-types"] + label,
+.gamipress-all-types-multicheck input[value="all-achievement-types"] + label,
+.gamipress-all-types-multicheck input[value="all-rank-types"] + label {
 	font-weight: bold;
 }
 
 /* Align inputs */
-.cmb2-id-export-setup-options input[value$="-points-type"],
-.cmb2-id-export-setup-options input[value$="-achievement-type"],
-.cmb2-id-export-setup-options input[value$="-rank-type"] {
+.gamipress-all-types-multicheck input[value$="-points-type"],
+.gamipress-all-types-multicheck input[value$="-achievement-type"],
+.gamipress-all-types-multicheck input[value$="-rank-type"] {
 	margin-left: 20px !important;
 }
 
 /* Align labels */
-.cmb2-id-export-setup-options input[value$="-points-type"] + label,
-.cmb2-id-export-setup-options input[value$="-achievement-type"] + label,
-.cmb2-id-export-setup-options input[value$="-rank-type"] + label {
+.gamipress-all-types-multicheck input[value$="-points-type"] + label,
+.gamipress-all-types-multicheck input[value$="-achievement-type"] + label,
+.gamipress-all-types-multicheck input[value$="-rank-type"] + label {
 	margin-left: 72px;
 }
 
-.cmb2-id-export-setup-options input[value$="-points-type"] + label:before,
-.cmb2-id-export-setup-options input[value$="-points-type"] + label:after,
-.cmb2-id-export-setup-options input[value$="-achievement-type"] + label:before,
-.cmb2-id-export-setup-options input[value$="-achievement-type"] + label:after,
-.cmb2-id-export-setup-options input[value$="-rank-type"] + label:before,
-.cmb2-id-export-setup-options input[value$="-rank-type"] + label:after {
+.gamipress-all-types-multicheck input[value$="-points-type"] + label:before,
+.gamipress-all-types-multicheck input[value$="-points-type"] + label:after,
+.gamipress-all-types-multicheck input[value$="-achievement-type"] + label:before,
+.gamipress-all-types-multicheck input[value$="-achievement-type"] + label:after,
+.gamipress-all-types-multicheck input[value$="-rank-type"] + label:before,
+.gamipress-all-types-multicheck input[value$="-rank-type"] + label:after {
 	left: 20px !important;
 }
 
 /* Align inputs */
-.cmb2-id-export-setup-options input[value$="-points-awards"],
-.cmb2-id-export-setup-options input[value$="-points-deducts"],
-.cmb2-id-export-setup-options input[value$="-achievements"],
-.cmb2-id-export-setup-options input[value$="-ranks"] {
+.gamipress-all-types-multicheck input[value$="-points-awards"],
+.gamipress-all-types-multicheck input[value$="-points-deducts"],
+.gamipress-all-types-multicheck input[value$="-achievements"],
+.gamipress-all-types-multicheck input[value$="-ranks"] {
 	margin-left: 40px !important;
 }
 
 /* Align labels */
-.cmb2-id-export-setup-options input[value$="-points-awards"] + label,
-.cmb2-id-export-setup-options input[value$="-points-deducts"] + label,
-.cmb2-id-export-setup-options input[value$="-achievements"] + label,
-.cmb2-id-export-setup-options input[value$="-ranks"] + label {
+.gamipress-all-types-multicheck input[value$="-points-awards"] + label,
+.gamipress-all-types-multicheck input[value$="-points-deducts"] + label,
+.gamipress-all-types-multicheck input[value$="-achievements"] + label,
+.gamipress-all-types-multicheck input[value$="-ranks"] + label {
 	margin-left: 92px;
 }
 
-.cmb2-id-export-setup-options input[value$="-points-awards"] + label:before,
-.cmb2-id-export-setup-options input[value$="-points-awards"] + label:after,
-.cmb2-id-export-setup-options input[value$="-points-deducts"] + label:before,
-.cmb2-id-export-setup-options input[value$="-points-deducts"] + label:after,
-.cmb2-id-export-setup-options input[value$="-achievements"] + label:before,
-.cmb2-id-export-setup-options input[value$="-achievements"] + label:after,
-.cmb2-id-export-setup-options input[value$="-ranks"] + label:before,
-.cmb2-id-export-setup-options input[value$="-ranks"] + label:after {
+.gamipress-all-types-multicheck input[value$="-points-awards"] + label:before,
+.gamipress-all-types-multicheck input[value$="-points-awards"] + label:after,
+.gamipress-all-types-multicheck input[value$="-points-deducts"] + label:before,
+.gamipress-all-types-multicheck input[value$="-points-deducts"] + label:after,
+.gamipress-all-types-multicheck input[value$="-achievements"] + label:before,
+.gamipress-all-types-multicheck input[value$="-achievements"] + label:after,
+.gamipress-all-types-multicheck input[value$="-ranks"] + label:before,
+.gamipress-all-types-multicheck input[value$="-ranks"] + label:after {
 	left: 40px !important;
 }
 
 /* Align inputs */
-.cmb2-id-export-setup-options input[value$="-steps"],
-.cmb2-id-export-setup-options input[value$="-rank-requirements"] {
+.gamipress-all-types-multicheck input[value$="-steps"],
+.gamipress-all-types-multicheck input[value$="-rank-requirements"] {
 	margin-left: 60px !important;
 }
 
 /* Align labels */
-.cmb2-id-export-setup-options input[value$="-steps"] + label,
-.cmb2-id-export-setup-options input[value$="-rank-requirements"] + label {
+.gamipress-all-types-multicheck input[value$="-steps"] + label,
+.gamipress-all-types-multicheck input[value$="-rank-requirements"] + label {
 	margin-left: 112px;
 }
 
-.cmb2-id-export-setup-options input[value$="-steps"] + label:before,
-.cmb2-id-export-setup-options input[value$="-steps"] + label:after,
-.cmb2-id-export-setup-options input[value$="-rank-requirements"] + label:before,
-.cmb2-id-export-setup-options input[value$="-rank-requirements"] + label:after {
+.gamipress-all-types-multicheck input[value$="-steps"] + label:before,
+.gamipress-all-types-multicheck input[value$="-steps"] + label:after,
+.gamipress-all-types-multicheck input[value$="-rank-requirements"] + label:before,
+.gamipress-all-types-multicheck input[value$="-rank-requirements"] + label:after {
 	left: 60px !important;
 }
 

@@ -20,6 +20,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/tools/reset-data.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-achievements.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-points.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-ranks.php';
+require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-earnings.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-setup.php';
 require_once GAMIPRESS_DIR . 'includes/admin/tools/import-export-settings.php';
 // System Info

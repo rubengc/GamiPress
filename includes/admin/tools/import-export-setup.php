@@ -27,39 +27,31 @@ function gamipress_import_export_setup_tool_meta_boxes( $meta_boxes ) {
 
     $options = array();
 
-    // All points types option
+    // Points types options
     if( count( $points_types ) ) $options['all-points-types'] = __( 'All Points Types', 'gamipress' );
 
-    // Each points type options (points type, awards and deducts)
     foreach( $points_types as $slug => $data ) {
-
-        $options[$slug . '-points-type'] = $data['plural_name'];
-        $options[$slug . '-points-awards'] = sprintf( __( '%s Points Awards', 'gamipress' ), $data['plural_name'] );
-        $options[$slug . '-points-deducts'] = sprintf( __( '%s Points Deducts', 'gamipress' ), $data['plural_name'] );
-
+        $options[$slug . '-points-type'] = '<strong>' . $data['plural_name'] . '</strong>';
+        $options[$slug . '-points-awards'] = __( 'Points Awards', 'gamipress' );
+        $options[$slug . '-points-deducts'] = __( 'Points Deducts', 'gamipress' );
     }
 
-    // All achievement types option
+    // Achievement types options
     if( count( $achievement_types ) ) $options['all-achievement-types'] = __( 'All Achievement Types', 'gamipress' );
 
-    // Each achievement type options (achievement type, achievements and steps)
     foreach( $achievement_types as $slug => $data ) {
-
-        $options[$slug . '-achievement-type'] = $data['singular_name'];
-        $options[$slug . '-achievements'] = sprintf( __( '%s Achievements', 'gamipress' ), $data['singular_name'] );
-        $options[$slug . '-steps'] = sprintf( __( '%s Steps', 'gamipress' ), $data['singular_name'] );
-
+        $options[$slug . '-achievement-type'] = '<strong>' . $data['singular_name'] . '</strong>';
+        $options[$slug . '-achievements'] = __( 'Achievements', 'gamipress' );
+        $options[$slug . '-steps'] = __( 'Steps', 'gamipress' );
     }
 
+    // Rank types options
     if( count( $rank_types ) ) $options['all-rank-types'] = __( 'All Rank Types', 'gamipress' );
 
-    // Each achievement type options (rank type, ranks and requirements)
     foreach( $rank_types as $slug => $data ) {
-
-        $options[$slug . '-rank-type'] = $data['singular_name'];
-        $options[$slug . '-ranks'] = sprintf( __( '%s Ranks', 'gamipress' ), $data['singular_name'] );
-        $options[$slug . '-rank-requirements'] = sprintf( __( '%s Requirements', 'gamipress' ), $data['singular_name'] );
-
+        $options[$slug . '-rank-type'] = '<strong>' . $data['singular_name'] . '</strong>';
+        $options[$slug . '-ranks'] = __( 'Ranks', 'gamipress' );
+        $options[$slug . '-rank-requirements'] = __( 'Requirements', 'gamipress' );
     }
 
     $meta_boxes['import-export-setup'] = array(
@@ -69,7 +61,7 @@ function gamipress_import_export_setup_tool_meta_boxes( $meta_boxes ) {
                 'label'     => __( 'Export Setup', 'gamipress' ),
                 'desc'      => __( 'Choose the stored setup you want to export.', 'gamipress' ),
                 'type'      => 'multicheck',
-                'classes' => 'gamipress-switch',
+                'classes' => 'gamipress-switch gamipress-all-types-multicheck',
                 'options' => $options,
             ),
             'export_setup' => array(
@@ -153,7 +145,6 @@ function gamipress_ajax_export_setup_tool() {
 
     // Setup vars
     $setup = array();
-    $types_to_export = array();
     $posts_to_export = array();
     $points_types = gamipress_get_points_types();
     $achievement_types = gamipress_get_achievement_types();
@@ -188,88 +179,89 @@ function gamipress_ajax_export_setup_tool() {
 
         foreach( $suffixes as $suffix ) {
 
-            // If option ends with one of suffixes then is correct
-            if( gamipress_ends_with( $item_to_export, $suffix ) ) {
+            // If option does not ends with one of suffixes then is not correct
+            if( ! gamipress_ends_with( $item_to_export, $suffix ) ) {
+                continue;
+            }
 
-                // Remove the suffix to get the type
-                $type = str_replace( $suffix, '', $item_to_export );
+            // Remove the suffix to get the type
+            $type = str_replace( $suffix, '', $item_to_export );
 
-                // Check if is a registered type option
-                if( in_array( $type, $types_slugs ) ) {
+            // Check if is a registered type option
+            if( ! in_array( $type, $types_slugs ) ) {
+                continue;
+            }
 
-                    switch( $suffix ) {
-                        case '-points-type':
-                        case '-achievement-type':
-                        case '-rank-type':
-                            // Append type to the posts to export array
-                            $posts_to_export[] = gamipress_get_post( $types[$type]['ID'] );
-                            break;
-                        case '-points-awards':
-                        case '-points-deducts':
+            switch( $suffix ) {
+                case '-points-type':
+                case '-achievement-type':
+                case '-rank-type':
+                    // Append type to the posts to export array
+                    $posts_to_export[] = gamipress_get_post( $types[$type]['ID'] );
+                    break;
+                case '-points-awards':
+                case '-points-deducts':
 
-                            // Remove first "-"
-                            $post_type = substr( $suffix, 1 );
-                            // Remove last "s"
-                            $post_type = rtrim( $post_type, 's' );
+                    // Remove first "-"
+                    $post_type = substr( $suffix, 1 );
+                    // Remove last "s"
+                    $post_type = rtrim( $post_type, 's' );
 
-                            $posts = get_posts( array_merge( $query_args, array(
-                                'post_type'         => $post_type,
-                                'post_parent'     	=> $types[$type]['ID'],
-                            ) ) );
+                    $posts = get_posts( array_merge( $query_args, array(
+                        'post_type'         => $post_type,
+                        'post_parent'     	=> $types[$type]['ID'],
+                    ) ) );
 
-                            // Bail if not posts found
-                            if( empty( $posts ) ) break;
+                    // Bail if not posts found
+                    if( empty( $posts ) ) break;
 
-                            // Merge posts to posts to export
-                            $posts_to_export = array_merge( $posts_to_export, $posts );
+                    // Merge posts to posts to export
+                    $posts_to_export = array_merge( $posts_to_export, $posts );
 
-                            break;
-                        case '-steps':
-                        case '-rank-requirements':
+                    break;
+                case '-steps':
+                case '-rank-requirements':
 
-                            // Remove first "-"
-                            $post_type = substr( $suffix, 1 );
-                            // Remove last "s"
-                            $post_type = rtrim( $post_type, 's' );
+                    // Remove first "-"
+                    $post_type = substr( $suffix, 1 );
+                    // Remove last "s"
+                    $post_type = rtrim( $post_type, 's' );
 
-                            $parents = get_posts( array_merge( $query_args, array(
-                                'post_type' => $type,
-                            ) ) );
+                    $parents = get_posts( array_merge( $query_args, array(
+                        'post_type' => $type,
+                    ) ) );
 
-                            $parents = wp_list_pluck( $parents, 'ID' );
+                    $parents = wp_list_pluck( $parents, 'ID' );
 
-                            // Bail if not parents found
-                            if( empty( $parents ) ) break;
+                    // Bail if not parents found
+                    if( empty( $parents ) ) break;
 
-                            $posts = get_posts( array_merge( $query_args, array(
-                                'post_type'         => $post_type,
-                                'post_parent__in'   => $parents,
-                            ) ) );
+                    $posts = get_posts( array_merge( $query_args, array(
+                        'post_type'         => $post_type,
+                        'post_parent__in'   => $parents,
+                    ) ) );
 
-                            // Bail if not posts found
-                            if( empty( $posts ) ) break;
+                    // Bail if not posts found
+                    if( empty( $posts ) ) break;
 
-                            // Merge posts to posts to export
-                            $posts_to_export = array_merge( $posts_to_export, $posts );
+                    // Merge posts to posts to export
+                    $posts_to_export = array_merge( $posts_to_export, $posts );
 
-                            break;
-                        case '-achievements':
-                        case '-ranks':
+                    break;
+                case '-achievements':
+                case '-ranks':
 
-                            $posts = get_posts( array_merge( $query_args, array(
-                                'post_type' => $type,
-                            ) ) );
+                    $posts = get_posts( array_merge( $query_args, array(
+                        'post_type' => $type,
+                    ) ) );
 
-                            // Bail if not posts found
-                            if( empty( $posts ) ) break;
+                    // Bail if not posts found
+                    if( empty( $posts ) ) break;
 
-                            // Merge posts to posts to export
-                            $posts_to_export = array_merge( $posts_to_export, $posts );
+                    // Merge posts to posts to export
+                    $posts_to_export = array_merge( $posts_to_export, $posts );
 
-                            break;
-                    }
-
-                }
+                    break;
             }
 
         }

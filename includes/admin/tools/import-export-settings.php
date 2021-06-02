@@ -41,7 +41,25 @@ function gamipress_import_export_settings_tool_meta_boxes( $meta_boxes ) {
                 'button'    => 'primary',
                 'icon'      => 'dashicons-upload',
             ),
-        ) )
+        ) ),
+        'vertical_tabs' => true,
+        'tabs' => apply_filters( 'gamipress_import_export_settings_tool_tabs', array(
+            'export_settings' => array(
+                'icon' => 'dashicons-download',
+                'title' => __( 'Export', 'gamipress' ),
+                'fields' => array(
+                    'export_settings',
+                ),
+            ),
+            'import_settings' => array(
+                'icon' => 'dashicons-upload',
+                'title' => __( 'Import', 'gamipress' ),
+                'fields' => array(
+                    'import_settings_file',
+                    'import_settings',
+                ),
+            ),
+        ) ),
     );
 
     return $meta_boxes;

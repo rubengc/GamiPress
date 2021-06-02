@@ -245,6 +245,17 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.3 ###
+
+* **New Features**
+* New Tool: Export User Earnings.
+* **Bug Fixes**
+* Fixed "Show Achievements Without Points" field visibility on User Earnings block.
+* **Developer Notes**
+* Added new hooks to override the insufficient points message when unlocking achievements and ranks using points.
+* Added several helper functions to reduce the plugin code.
+* Moved the register image sizes outside the core class.
+
 ### 2.0.2 ###
 
 * **Bug Fixes**

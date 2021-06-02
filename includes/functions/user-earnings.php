@@ -229,6 +229,40 @@ function gamipress_get_earnings_where( $query = array() ) {
         }
     }
 
+    // Before
+    if( isset( $query['before'] ) ) {
+
+        $before = $query['before'];
+
+        // Turn a string date into time
+        if( gettype( $query['before'] ) === 'string' ) {
+            $before = strtotime( $query['before'] );
+        }
+
+        if( $before > 0 ) {
+            $before = date( 'Y-m-d H:i:s', $before );
+            $where[] = " ue.date < '{$before}'";
+        }
+
+    }
+
+    // After
+    if( isset( $query['after'] ) ) {
+
+        $after = $query['after'];
+
+        // Turn a string date into time
+        if( gettype( $query['after'] ) === 'string' ) {
+            $after = strtotime( $query['after'] );
+        }
+
+        if( $after > 0 ) {
+            $after = date( 'Y-m-d H:i:s', $after );
+            $where[] = " ue.date > '{$after}'";
+        }
+
+    }
+
     return $where;
 
 }

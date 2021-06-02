@@ -500,6 +500,68 @@
     // Export Achievements, Points and Ranks Tool
     // ----------------------------------
 
+    $('#export_achievements, #export_points, #export_ranks, #export_earnings').on('click', function(e) {
+        e.preventDefault();
+
+        var $this = $(this);
+        var type;
+        var error = '';
+
+        switch( $this.attr('id') ) {
+            case 'export_achievements':
+                // Achievements export
+                type = 'achievements';
+
+                // Check achievement types
+                if( ! $('input[name="export_achievements_achievement_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 achievement type to export.';
+                }
+                break;
+            case 'export_points':
+                // Points export
+                type = 'points';
+
+                // Check points types
+                if( ! $('input[name="export_points_points_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 points type to export.';
+                }
+                break;
+            case 'export_ranks':
+                // Ranks export
+                type = 'ranks';
+
+                // Check rank types
+                if( ! $('input[name="export_ranks_rank_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 rank type to export.';
+                }
+                break;
+            case 'export_earnings':
+                // Ranks export
+                type = 'earnings';
+
+                // Check rank types
+                if( ! $('input[name="export_earnings_types[]"]:checked').length ) {
+                    error = 'You need to choose at least 1 type to export.';
+                }
+                break;
+        }
+
+        // Remove error messages
+        $('#export-' + type + '-warning').remove();
+
+        // If there is any error, show it to the user
+        if( error !== '' ) {
+            $this.parent().prepend('<p id="export-' + type + '-warning" class="cmb2-metabox-description" style="color: #a00;">' + error + '</p>');
+            return false;
+        }
+
+        // Reset the data to export
+        to_export = [];
+
+        gamipress_run_export_tool( type );
+
+    });
+
     var to_export = [];
 
     // Function to handle the export process
@@ -578,6 +640,25 @@
                     loop: loop
                 };
                 break;
+            case 'earnings':
+                // Ranks data
+                var types = [];
+
+                $('input[name="export_earnings_types[]"]:checked').each(function() {
+                    types.push( $(this).val() );
+                });
+
+                data = {
+                    action: 'gamipress_import_export_earnings_tool_export',
+                    nonce: gamipress_admin_tools.nonce,
+                    types: types,
+                    user_field: $('#export_earnings_user_field').val(),
+                    post_field: $('#export_earnings_post_field').val(),
+                    from: $('#export_earnings_from').val(),
+                    to: $('#export_earnings_to').val(),
+                    loop: loop
+                };
+                break;
         }
 
         $.post(
@@ -627,59 +708,6 @@
         });
 
     }
-
-    $('#export_achievements, #export_points, #export_ranks').on('click', function(e) {
-        e.preventDefault();
-
-        var $this = $(this);
-        var type;
-        var error = '';
-
-        switch( $this.attr('id') ) {
-            case 'export_achievements':
-                // Achievements export
-                type = 'achievements';
-
-                // Check achievement types
-                if( ! $('input[name="export_achievements_achievement_types[]"]:checked').length ) {
-                    error = 'You need to choose at least 1 achievement type to export.';
-                }
-                break;
-            case 'export_points':
-                // Points export
-                type = 'points';
-
-                // Check points types
-                if( ! $('input[name="export_points_points_types[]"]:checked').length ) {
-                    error = 'You need to choose at least 1 points type to export.';
-                }
-                break;
-            case 'export_ranks':
-                // Ranks export
-                type = 'ranks';
-
-                // Check rank types
-                if( ! $('input[name="export_ranks_rank_types[]"]:checked').length ) {
-                    error = 'You need to choose at least 1 rank type to export.';
-                }
-                break;
-        }
-
-        // Remove error messages
-        $('#export-' + type + '-warning').remove();
-
-        // If there is any error, show it to the user
-        if( error !== '' ) {
-            $this.parent().prepend('<p id="export-' + type + '-warning" class="cmb2-metabox-description" style="color: #a00;">' + error + '</p>');
-            return false;
-        }
-
-        // Reset the data to export
-        to_export = [];
-
-        gamipress_run_export_tool( type );
-
-    });
 
     // ----------------------------------
     // Import Achievements, Points and Ranks Tool
@@ -884,58 +912,65 @@
     // Export Setup Tool
     // ----------------------------------
 
-    $('.cmb2-id-export-setup-options').on('change', 'input', function() {
+    $('.gamipress-all-types-multicheck').on('change', 'input', function() {
 
-        $('#export-setup-warning').remove();
+        var box = $(this).closest('.cmb2-metabox').attr('id');
+
+        if( box === 'cmb2-metabox-import-export-setup' ) {
+            $('#export-setup-warning').remove();
+        } else if( box === 'cmb2-metabox-import-export-earnings' ) {
+            $('#export-earnings-warning').remove();
+        }
+
 
         var checked_option = $(this).val();
         var type = '';
 
         if( checked_option === 'all-points-types' ) {
 
-            $('.cmb2-id-export-setup-options input[value$="-points-type"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value$="-points-awards"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value$="-points-deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-points-type"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-points-awards"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-points-deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option.endsWith( '-points-type' ) ) {
 
             type = checked_option.replace( '-points-type', '' );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-points-awards"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-points-deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-points-awards"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-points-deducts"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option === 'all-achievement-types' ) {
 
-            $('.cmb2-id-export-setup-options input[value$="-achievement-type"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value$="-achievements"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value$="-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-achievement-type"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-achievements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option.endsWith( '-achievement-type' ) ) {
 
             type = checked_option.replace( '-achievement-type', '' );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-achievements"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-achievements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option.endsWith( '-achievements' ) ) {
 
             type = checked_option.replace( '-achievements', '' );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-steps"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option === 'all-rank-types' ) {
 
-            $('.cmb2-id-export-setup-options input[value$="-rank-type"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value$="-ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value$="-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-rank-type"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value$="-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option.endsWith( '-rank-type' ) ) {
 
             type = checked_option.replace( '-rank-type', '' );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-ranks"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
 
         } else if( checked_option.endsWith( '-ranks' ) ) {
 
             type = checked_option.replace( '-ranks', '' );
-            $('.cmb2-id-export-setup-options input[value="' + type + '-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
+            $('.gamipress-all-types-multicheck input[value="' + type + '-rank-requirements"]').prop( 'checked', $(this).prop( 'checked' ) );
         }
 
     });

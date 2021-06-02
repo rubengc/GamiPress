@@ -52,6 +52,7 @@ function gamipress_register_earnings_shortcode() {
                     'achievements',
                     'achievement_types',
                     'steps',
+                    'achievements_without_points',
                 ),
             ),
             'ranks' => array(
