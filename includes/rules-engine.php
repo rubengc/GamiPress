@@ -1026,6 +1026,33 @@ function gamipress_get_achievement_activity_count_limited( $user_id = 0, $achiev
             $group_by = '';
             $since = 0;
 
+            // Grab the requirement object
+            $requirement = gamipress_get_requirement_object( $achievement_id );
+            $site_id = get_current_blog_id();
+
+            /**
+             * Filter required to get the same where conditions as in the gamipress_get_user_trigger_count() function
+             * Explained in gamipress_get_user_trigger_count()
+             * @see gamipress_get_user_trigger_count()
+             */
+            $where = apply_filters( 'gamipress_get_user_trigger_count_log_meta', $where, $user_id, $trigger, $since, $site_id, $requirement );
+
+            /**
+             * Filter to override the where data to filter the logs count applying the requirement limits
+             *
+             * @since   2.0.4
+             *
+             * @param  array    $log_meta       The meta data to filter the logs count
+             * @param  int      $user_id        The given user's ID
+             * @param  string   $trigger        The given trigger we're checking
+             * @param  int      $since 	        The since timestamp where retrieve the logs
+             * @param  int      $site_id        The desired Site ID to check
+             * @param  array    $args           The triggered args or requirement object
+             *
+             * @return array                    The where data to filter the logs count
+             */
+            $where = apply_filters( 'gamipress_get_achievement_activity_count_limited_where', $where, $user_id, $trigger, $since, $site_id, $requirement );
+
             // If since is not defined check it from new ways
             if( $since === 0 ) {
 

@@ -53,6 +53,9 @@ function gamipress_send_email( $to, $subject, $message, $attachments = '' ) {
     // Apply the email template and parses the message to it
     $message = gamipress_get_email_body( $to, $subject, $message, $attachments );
 
+    // Get the email attachments
+    $attachments = gamipress_get_email_attachments( $to, $subject, $message, $attachments );
+
     add_filter( 'wp_mail_from', 'gamipress_get_email_from_address' );
     add_filter( 'wp_mail_from_name', 'gamipress_get_email_from_name' );
     add_filter( 'wp_mail_content_type', 'gamipress_get_email_content_type' );
@@ -195,6 +198,24 @@ function gamipress_get_email_body( $to, $subject, $message, $attachments = '' ) 
     $body = str_replace( '{email}', $message, $body );
 
     return apply_filters( 'gamipress_email_body', $body, $to, $subject, $message, $attachments );
+
+}
+
+/**
+ * Get the email attachments (actually not used in GamiPress but the filters allows to extend it)
+ *
+ * @since 2.0.4
+ *
+ * @param string|array  $to
+ * @param string        $subject
+ * @param string        $message
+ * @param string|array  $attachments
+ *
+ * @return string
+ */
+function gamipress_get_email_attachments( $to, $subject, $message, $attachments = '' ) {
+
+    return apply_filters( 'gamipress_email_attachments', $attachments, $to, $subject, $message );
 
 }
 

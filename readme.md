@@ -245,6 +245,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.4 ###
+
+* **Developer Notes**
+* Added the activity count wheres filter on activity count limited to match in the same result for both functions.
+* Added new filters to extend the gamipress_send_email() function.
+
 ### 2.0.3 ###
 
 * **New Features**
