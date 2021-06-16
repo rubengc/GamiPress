@@ -457,6 +457,13 @@ function gamipress_user_meets_post_type_requirement( $return = false, $user_id =
         return $return;
     }
 
+    $post_type = gamipress_get_post_type( $achievement_id );
+
+    // Bail if not is a requirement
+    if( ! in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
+        return $return;
+    }
+
     if( empty( $trigger ) ) {
         $trigger = gamipress_get_post_meta( $achievement_id, '_gamipress_trigger_type' );
     }
@@ -512,6 +519,13 @@ function gamipress_user_meets_role_requirement( $return = false, $user_id = 0, $
 
     // Bail if access is not already granted
     if( ! $return ) {
+        return $return;
+    }
+
+    $post_type = gamipress_get_post_type( $achievement_id );
+
+    // Bail if not is a requirement
+    if( ! in_array( $post_type, gamipress_get_requirement_types_slugs() ) ) {
         return $return;
     }
 
@@ -1032,7 +1046,7 @@ function gamipress_get_achievement_activity_count_limited( $user_id = 0, $achiev
 
             /**
              * Filter required to get the same where conditions as in the gamipress_get_user_trigger_count() function
-             * Explained in gamipress_get_user_trigger_count()
+             *
              * @see gamipress_get_user_trigger_count()
              */
             $where = apply_filters( 'gamipress_get_user_trigger_count_log_meta', $where, $user_id, $trigger, $since, $site_id, $requirement );

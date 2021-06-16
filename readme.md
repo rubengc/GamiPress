@@ -245,6 +245,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.5 ###
+
+* **Bug Fixes**
+* Fixed post type based events count.
+* Fixed role based events count.
+
 ### 2.0.4 ###
 
 * **Developer Notes**

@@ -606,8 +606,8 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 		case 'gamipress_user_post_visit':
 		case 'gamipress_user_specific_post_visit':
 			// Add the visited post ID
-			$log_meta['post_id'] = $args[0];
-			$log_meta['visitor_id'] = $args[2];
+			$log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
+			$log_meta['visitor_id'] = gamipress_get_event_arg( $args, 'user_id', 2 );
 			break;
 		case 'gamipress_new_comment':
 		case 'gamipress_specific_new_comment':
@@ -616,22 +616,22 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 		case 'gamipress_spam_comment':
 		case 'gamipress_specific_spam_comment':
 			// Add the comment ID and post commented ID
-			$log_meta['comment_id'] = $args[0];
-			$log_meta['comment_post_id'] = $args[2];
+			$log_meta['comment_id'] = gamipress_get_event_arg( $args, 'comment_id', 0 );
+			$log_meta['comment_post_id'] = gamipress_get_event_arg( $args, 'post_id', 2 );
 			break;
         case 'gamipress_new_comment_post_type':
         case 'gamipress_user_post_comment_post_type':
         case 'gamipress_spam_comment_post_type':
             // Add the comment ID, post commented ID and type
-            $log_meta['comment_id'] = $args[0];
-            $log_meta['comment_post_id'] = $args[2];
-            $log_meta['comment_post_type'] = $args[3];
+            $log_meta['comment_id'] = gamipress_get_event_arg( $args, 'comment_id', 0 );
+            $log_meta['comment_post_id'] = gamipress_get_event_arg( $args, 'post_id', 2 );
+            $log_meta['comment_post_type'] = gamipress_get_event_arg( $args, 'post_type', 3 );
             break;
 		case 'gamipress_expend_points':
 			// Add the post ID, the amount of points and the points type
-			$log_meta['post_id'] = $args[0];
-			$log_meta['points'] = $args[2];
-			$log_meta['points_type'] = $args[3];
+			$log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 0 );
+			$log_meta['points'] = gamipress_get_event_arg( $args, 'points', 2 );
+			$log_meta['points_type'] = gamipress_get_event_arg( $args, 'points_type', 3 );
 			break;
 		case 'gamipress_login':
 		case 'gamipress_register':
@@ -645,6 +645,53 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 	return $log_meta;
 }
 add_filter( 'gamipress_log_event_trigger_meta_data', 'gamipress_log_event_trigger_extended_meta_data', 10, 5 );
+
+/**
+ * Extended meta data to filter the logs count
+ *
+ * @since 2.0.5
+ *
+ * @param  array    $log_meta       The meta data to filter the logs count
+ * @param  int      $user_id        The given user's ID
+ * @param  string   $trigger        The given trigger we're checking
+ * @param  int      $since 	        The since timestamp where retrieve the logs
+ * @param  int      $site_id        The desired Site ID to check
+ * @param  array    $args           The triggered args or requirement object
+ *
+ * @return array                    The meta data to filter the logs count
+ */
+function gamipress_get_user_trigger_count_log_extended_meta( $log_meta, $user_id, $trigger, $since, $site_id, $args ) {
+
+    switch ( $trigger ) {
+        case 'gamipress_publish_post_type':
+        case 'gamipress_delete_post_type':
+        case 'gamipress_post_type_visit':
+        case 'gamipress_user_post_type_visit':
+            // Filter by the post type
+            $log_meta['post_type'] = gamipress_get_event_arg( $args, 'post_type', 2 );
+
+            // $args could be a requirement object
+            if( isset( $args['post_type_required'] ) ) {
+                $log_meta['post_type'] = $args['post_type_required'];
+            }
+            break;
+        case 'gamipress_new_comment_post_type':
+        case 'gamipress_user_post_comment_post_type':
+        case 'gamipress_spam_comment_post_type':
+            // Filter by the post type
+            $log_meta['comment_post_type'] = gamipress_get_event_arg( $args, 'post_type', 3 );
+
+            // $args could be a requirement object
+            if( isset( $args['post_type_required'] ) ) {
+                $log_meta['comment_post_type'] = $args['post_type_required'];
+            }
+            break;
+    }
+
+    return $log_meta;
+
+}
+add_filter( 'gamipress_get_user_trigger_count_log_meta', 'gamipress_get_user_trigger_count_log_extended_meta', 10, 6 );
 
 /**
  * Extra filter to check duplicated activity
