@@ -1038,7 +1038,6 @@ function gamipress_get_achievement_activity_count_limited( $user_id = 0, $achiev
 
             $where['trigger_type'] = $trigger;
             $group_by = '';
-            $since = 0;
 
             // Grab the requirement object
             $requirement = gamipress_get_requirement_object( $achievement_id );

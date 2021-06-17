@@ -245,6 +245,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.6 ###
+
+* **Bug Fixes**
+* Fixed typo causing an incorrect earned status display for time limited requirements.
+
 ### 2.0.5 ###
 
 * **Bug Fixes**
