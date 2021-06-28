@@ -239,7 +239,7 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
 
     $shortcode = 'gamipress_earnings';
 
-    $atts = shortcode_atts( array(
+    $shortcode_defaults = array(
         'current_user'                  => 'yes',
         'user_id'                       => '0',
         'limit'                         => '10',
@@ -261,7 +261,20 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
         'ranks'                         => 'yes',
         'rank_types'                    => 'all',
         'rank_requirements'             => 'yes',
-    ), $atts, $shortcode );
+    );
+
+    /**
+     * Filters shortcode defaults
+     *
+     * @since 1.0.0
+     *
+     * @param array $shortcode_defaults
+     *
+     * @return array
+     */
+    $shortcode_defaults = apply_filters( 'gamipress_earnings_shortcode_defaults', $shortcode_defaults );
+
+    $atts = shortcode_atts( $shortcode_defaults, $atts, $shortcode );
 
     gamipress_enqueue_scripts();
 
@@ -467,6 +480,18 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
     if( $args['achievements_without_points'] === 'yes' ) {
         $query_args['points_type'][] = '';
     }
+
+    /**
+     * Filters earnings shortcode query args
+     *
+     * @since 2.0.7
+     *
+     * @param array $query_args Query args to be passed to CT_Query
+     * @param array $args       Function received args
+     *
+     * @return array
+     */
+    $query_args = apply_filters( 'gamipress_earnings_shortcode_query_args', $query_args, $args );
 
     // Setup table
     ct_setup_table( 'gamipress_user_earnings' );

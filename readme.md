@@ -245,6 +245,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.7 ###
+
+* **Developer Notes**
+* Added new filters to extend the GamiPress Earnings block.
+
 ### 2.0.6 ###
 
 * **Bug Fixes**

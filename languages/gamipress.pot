@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2021-06-17 17:17+0200\n"
+"POT-Creation-Date: 2021-06-28 19:54+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -829,7 +829,7 @@ msgstr ""
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:40
-#: includes/shortcodes/gamipress_earnings.php:313 templates/points.php:18
+#: includes/shortcodes/gamipress_earnings.php:326 templates/points.php:18
 msgid "Points"
 msgstr ""
 
@@ -910,7 +910,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:357
 #: includes/shortcodes/gamipress_achievements.php:166
 #: includes/shortcodes/gamipress_earnings.php:77
-#: includes/shortcodes/gamipress_earnings.php:307
+#: includes/shortcodes/gamipress_earnings.php:320
 #: includes/shortcodes/gamipress_logs.php:46
 #: includes/shortcodes/gamipress_points.php:60
 #: includes/shortcodes/gamipress_points_types.php:107
@@ -2895,7 +2895,7 @@ msgid "You need to choose at least 1 type to export."
 msgstr ""
 
 #: includes/admin/tools/import-export-earnings.php:245
-#: includes/shortcodes/gamipress_earnings.php:311
+#: includes/shortcodes/gamipress_earnings.php:324
 msgid "Description"
 msgstr ""
 
@@ -2914,7 +2914,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:365
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:251
-#: includes/shortcodes/gamipress_earnings.php:312
+#: includes/shortcodes/gamipress_earnings.php:325
 #: includes/shortcodes/gamipress_logs.php:81
 msgid "Date"
 msgstr ""
@@ -5457,7 +5457,7 @@ msgstr ""
 msgid "Show rank requirements completed."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:310
+#: includes/shortcodes/gamipress_earnings.php:323
 msgid "Thumbnail"
 msgstr ""
 
