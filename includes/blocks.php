@@ -27,6 +27,7 @@ function gamipress_register_block_categories( $categories, $post ) {
 
 }
 add_filter( 'block_categories', 'gamipress_register_block_categories', 10, 2 );
+add_filter( 'block_categories_all', 'gamipress_register_block_categories', 10, 2 );
 
 /**
  * GamiPress block icons
@@ -71,8 +72,9 @@ function gamipress_get_block_icons() {
 function gamipress_register_block_types() {
 
     // Bail if Gutenberg is not enabled
-    if( ! function_exists( 'register_block_type' ) )
+    if( ! function_exists( 'register_block_type' ) ) {
         return;
+    }
 
     foreach( GamiPress()->shortcodes as $shortcode ) {
 
@@ -110,8 +112,9 @@ function gamipress_get_block_fields( $shortcode ) {
     foreach( $shortcode->fields as $field_id => $field ) {
 
         // Parse options callbacks
-        if( isset( $field['options_cb'] ) )
+        if( isset( $field['options_cb'] ) ) {
             $field['options'] = gamipress_blocks_parse_options_cb( $field );
+        }
 
         // Set the definitive object field
         $fields[$field_id] = $field;
@@ -233,19 +236,15 @@ function gamipress_get_block_attributes( $shortcode ) {
     foreach( $shortcode->fields as $field_id => $field ) {
 
         if( $field['type'] === 'checkbox' ) {
-
             // Checkboxes as boolean
             $attributes[$field_id] = array(
                 'type' => 'boolean',
             );
-
         } else {
-
             // String is the default type
             $attributes[$field_id] = array(
                 'type' => 'string',
             );
-
         }
 
     }
@@ -301,17 +300,16 @@ function gamipress_remove_null_block_attributes( $out, $pairs, $atts, $shortcode
 
         // Gutenberg pass default values and empty as null
         // So let's force default value instead of null
-        if( $value === null )
+        if( $value === null ) {
             $out[$name] = $pairs[$name];
+        }
 
         if( isset( $shortcode_obj->fields[$name] ) ) {
             $field = $shortcode_obj->fields[$name];
 
             if( $field['type'] === 'checkbox' && is_bool( $out[$name] ) ) {
-
                 // Turn booleans into yes|no
                 $out[$name] = ( $out[$name] === true ? 'yes' : 'no' );
-
             }
         }
     }

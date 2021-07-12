@@ -1279,7 +1279,10 @@ label[for="_gamipress_sequential"] {
 	color: #32373c;
 }
 
-/* GamiPress forms on widgets area */
+/* -------------------------------------------
+	Widgets
+   ------------------------------------------- */
+
 .widget[id*="_gamipress_"] .widget-content .cmb-th {
 	float: none;
     padding: 0;
@@ -1313,6 +1316,86 @@ label[for="_gamipress_sequential"] {
 
 .widget-content .cmb-tabs-wrap .cmb-tabs .cmb-tab .cmb-tab-icon {
 	margin-right: 0;
+}
+
+/* -------------------------------------------
+	Widgets Block Legacy
+   ------------------------------------------- */
+
+/* Forms */
+.wp-block-legacy-widget .gamipress-widget-form * {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .cmb-row {
+	margin: 8px 0;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .cmb-th,
+.wp-block-legacy-widget .gamipress-widget-form .cmb-td {
+	width: 100%;
+	padding: 0;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .cmb2-metabox-description {
+	font-size: 12px;
+	font-style: normal;
+	color: #757575;
+	padding-top: 0;
+	margin-bottom: 0 !important;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form ul.cmb2-list {
+	padding: 0;
+	margin: 0;
+}
+
+/* Tabs */
+.wp-block-legacy-widget .cmb-tabs *:not(.dashicons) {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	font-size: 13px;
+	line-height: 2.1;
+}
+
+.wp-block-legacy-widget .cmb-tabs-wrap {
+	margin: -1px -11px 0px -11px;
+}
+
+.wp-block-legacy-widget .cmb-tabs {
+	border-top: 1px solid #eee;
+}
+
+.wp-block-legacy-widget .cmb-tabs .cmb-tab-icon .dashicons {
+	margin-top: 4px;
+}
+
+/* Select2 */
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-select2 {
+	width: 100% !important;
+}
+
+/* Switch */
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-switch input {
+	width: 44px;
+	height: 24px;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-switch input:before,
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-switch input:checked:after {
+	display: none;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-switch input + label:before {
+	height: 20px;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-switch input + label:after {
+	width: 12px;
+	height: 12px;
+}
+
+.wp-block-legacy-widget .gamipress-widget-form .gamipress-switch input:checked + label:after {
+	margin-left: 24px;
 }
 
 /* -------------------------------------------

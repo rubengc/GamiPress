@@ -245,6 +245,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.8 ###
+
+* **New Features**
+* Tested GamiPress with WordPress 5.8.
+* **Improvements**
+* Improved styles for the new widgets area.
+
 ### 2.0.7 ###
 
 * **Developer Notes**
