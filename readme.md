@@ -245,6 +245,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.0.9 ###
+
+* **Improvements**
+* Added required parameters in the 'get_the_excerpt' filter to avoid compatibility issues.
+* Multisite: Added extra check when exporting data to ensure that only users from the current site gets exported when GamiPress is not active network wide.
+
 ### 2.0.8 ###
 
 * **New Features**

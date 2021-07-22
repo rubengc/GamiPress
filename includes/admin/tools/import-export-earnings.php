@@ -266,8 +266,20 @@ function gamipress_import_export_earnings_tool_ajax_export() {
 
     $user_earnings = GamiPress()->db->user_earnings;
 
-    // Get all stored users
-    $earnings = $wpdb->get_results( "SELECT * FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT {$offset}, {$limit}" );
+    if( ! gamipress_is_network_wide_active() ) {
+        // Get users earnings from the current site
+        $earnings = $wpdb->get_results(
+            "SELECT * 
+            FROM {$user_earnings} AS ue
+            LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = ue.user_id ) 
+            WHERE {$where} AND umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities'
+            ORDER BY ue.date DESC
+            LIMIT {$offset}, {$limit}"
+        );
+    } else {
+        // Get all stored user earnings
+        $earnings = $wpdb->get_results( "SELECT * FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT {$offset}, {$limit}" );
+    }
 
     if( empty( $earnings ) ) {
         // Return a success message
@@ -321,7 +333,21 @@ function gamipress_import_export_earnings_tool_ajax_export() {
     }
 
     $exported_earnings = $limit * ( $loop + 1 );
-    $earnings_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC" ) );
+
+    if( ! gamipress_is_network_wide_active() ) {
+        // Count users earnings from the current site
+        $earnings_count = absint( $wpdb->get_var(
+            "SELECT COUNT(*)
+            FROM {$user_earnings} AS ue
+            LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = ue.user_id ) 
+            WHERE {$where} AND umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities'
+            ORDER BY ue.date DESC"
+        ) );
+    } else {
+        // Count all stored user earnings
+        $earnings_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC" ) );
+    }
+
     $total = $earnings_count - $exported_earnings;
 
     if( $total > 0 ) {

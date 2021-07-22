@@ -168,8 +168,20 @@ function gamipress_import_export_ranks_tool_ajax_export() {
         set_time_limit( 0 );
     }
 
-    // Get all stored users
-    $users = $wpdb->get_results( "SELECT * FROM {$wpdb->users} ORDER BY ID ASC LIMIT {$offset}, {$limit}" );
+    if( ! gamipress_is_network_wide_active() ) {
+        // Get users from the current site
+        $users = $wpdb->get_results(
+            "SELECT * 
+            FROM {$wpdb->users} AS u
+            LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID ) 
+            WHERE umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities'
+            ORDER BY ID ASC
+            LIMIT {$offset}, {$limit}"
+        );
+    } else {
+        // Get all stored users
+        $users = $wpdb->get_results( "SELECT * FROM {$wpdb->users} ORDER BY ID ASC LIMIT {$offset}, {$limit}" );
+    }
 
     if( empty( $users ) ) {
         // Return a success message
@@ -228,7 +240,21 @@ function gamipress_import_export_ranks_tool_ajax_export() {
     }
 
     $exported_users = $limit * ( $loop + 1 );
-    $users_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->users} ORDER BY ID ASC" ) );
+
+    if( ! gamipress_is_network_wide_active() ) {
+        // Count users from the current site
+        $users_count = absint( $wpdb->get_var(
+            "SELECT COUNT(*) 
+            FROM {$wpdb->users} AS u
+            LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID ) 
+            WHERE umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities'
+            ORDER BY ID ASC"
+        ) );
+    } else {
+        // Count all stored users
+        $users_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->users} ORDER BY ID ASC" ) );
+    }
+
     $total = $users_count - $exported_users;
 
     if( $total > 0 ) {
