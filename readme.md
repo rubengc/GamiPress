@@ -245,6 +245,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.0 ###
+
+* **Improvements**
+* Performance in database table structure adding more new keys for speed up all database queries.
+* Order registered types alphabetically.
+* Multisite: Ensure to only display achievement or rank earners from the current site.
+
 ### 2.0.9 ###
 
 * **Improvements**

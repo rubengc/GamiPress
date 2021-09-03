@@ -972,7 +972,16 @@ function gamipress_get_rank_earners( $rank_id = 0, $args = array() ) {
 
     // Setup vars
     $from = "{$wpdb->usermeta} AS u ";
-    $where = "meta_key = '{$meta}' AND meta_value = '{$rank_id}' ";
+    $where = "u.meta_key = '{$meta}' AND u.meta_value = '{$rank_id}' ";
+
+    // On multisite, get earners only of the current site
+    if( gamipress_is_network_wide_active() ) {
+        $from .= "RIGHT JOIN {$wpdb->usermeta} AS umcap ON ( 
+        umcap.user_id = u.user_id 
+        AND umcap.meta_key = '" . $wpdb->get_blog_prefix( gamipress_get_original_site_id() ) . "capabilities' 
+        ) ";
+    }
+
 
     // If is lowest priority rank then requires an extra check to get users that doesn't have the rank meta
     if( gamipress_is_lowest_priority_rank( $rank_id ) ) {
@@ -1034,6 +1043,11 @@ function gamipress_get_rank_earners( $rank_id = 0, $args = array() ) {
     $earned_users = array();
 
     foreach( $earners as $earner_id ) {
+
+        if( absint( $earner_id ) === 0 ) {
+            continue;
+        }
+
         $earned_users[] = new WP_User( $earner_id );
     }
 

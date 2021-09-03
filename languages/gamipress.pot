@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2021-06-28 19:54+0200\n"
+"POT-Creation-Date: 2021-09-03 14:03+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1253,12 +1253,12 @@ msgstr ""
 #: includes/admin/tools/bulk-revokes.php:258
 #: includes/admin/tools/bulk-revokes.php:262
 #: includes/admin/tools/import-export-achievements.php:138
-#: includes/admin/tools/import-export-achievements.php:279
+#: includes/admin/tools/import-export-achievements.php:305
 #: includes/admin/tools/import-export-earnings.php:129
 #: includes/admin/tools/import-export-points.php:126
-#: includes/admin/tools/import-export-points.php:239
+#: includes/admin/tools/import-export-points.php:265
 #: includes/admin/tools/import-export-ranks.php:138
-#: includes/admin/tools/import-export-ranks.php:267
+#: includes/admin/tools/import-export-ranks.php:293
 #: includes/admin/tools/import-export-settings.php:115
 #: includes/admin/tools/import-export-setup.php:137
 #: includes/admin/tools/import-export-setup.php:354
@@ -2138,7 +2138,7 @@ msgstr ""
 msgid "Used when user completes a points award or step. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1353
+#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1359
 msgid "{user} completed the {achievement_type} {achievement}"
 msgstr ""
 
@@ -2150,7 +2150,7 @@ msgstr ""
 msgid "Used when user earns an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1355
+#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1361
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
@@ -2199,7 +2199,7 @@ msgstr ""
 msgid "Used when an admin awards a user with an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1343
+#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1349
 msgid "{admin} awarded {user} with the the {achievement} {achievement_type}"
 msgstr ""
 
@@ -2545,9 +2545,9 @@ msgstr ""
 
 #: includes/admin/tools/bulk-awards.php:489
 #: includes/admin/tools/bulk-revokes.php:491
-#: includes/admin/tools/import-export-achievements.php:251
-#: includes/admin/tools/import-export-points.php:213
-#: includes/admin/tools/import-export-ranks.php:239
+#: includes/admin/tools/import-export-achievements.php:277
+#: includes/admin/tools/import-export-points.php:239
+#: includes/admin/tools/import-export-ranks.php:265
 #, php-format
 msgid "%d remaining users"
 msgstr ""
@@ -2797,30 +2797,30 @@ msgstr ""
 msgid "You need to choose at least 1 achievement type to export."
 msgstr ""
 
-#: includes/admin/tools/import-export-achievements.php:176
-#: includes/admin/tools/import-export-achievements.php:258
+#: includes/admin/tools/import-export-achievements.php:188
+#: includes/admin/tools/import-export-achievements.php:284
 msgid "User's achievements export process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/import-export-achievements.php:284
-#: includes/admin/tools/import-export-points.php:244
-#: includes/admin/tools/import-export-ranks.php:272
+#: includes/admin/tools/import-export-achievements.php:310
+#: includes/admin/tools/import-export-points.php:270
+#: includes/admin/tools/import-export-ranks.php:298
 msgid "No file to import."
 msgstr ""
 
-#: includes/admin/tools/import-export-achievements.php:290
-#: includes/admin/tools/import-export-points.php:250
-#: includes/admin/tools/import-export-ranks.php:278
+#: includes/admin/tools/import-export-achievements.php:316
+#: includes/admin/tools/import-export-points.php:276
+#: includes/admin/tools/import-export-ranks.php:304
 msgid "Can't retrieve the file to import, check server file permissions."
 msgstr ""
 
-#: includes/admin/tools/import-export-achievements.php:303
-#: includes/admin/tools/import-export-points.php:263
-#: includes/admin/tools/import-export-ranks.php:291
+#: includes/admin/tools/import-export-achievements.php:329
+#: includes/admin/tools/import-export-points.php:289
+#: includes/admin/tools/import-export-ranks.php:317
 msgid "Empty file, so nothing to import."
 msgstr ""
 
-#: includes/admin/tools/import-export-achievements.php:405
+#: includes/admin/tools/import-export-achievements.php:431
 msgid "Achievements has been awarded successfully to all users."
 msgstr ""
 
@@ -2919,12 +2919,12 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: includes/admin/tools/import-export-earnings.php:274
-#: includes/admin/tools/import-export-earnings.php:339
+#: includes/admin/tools/import-export-earnings.php:286
+#: includes/admin/tools/import-export-earnings.php:365
 msgid "User's earnings export process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/import-export-earnings.php:332
+#: includes/admin/tools/import-export-earnings.php:358
 #, php-format
 msgid "%d remaining earnings"
 msgstr ""
@@ -2959,12 +2959,12 @@ msgstr ""
 msgid "You need to choose at least 1 points type to export."
 msgstr ""
 
-#: includes/admin/tools/import-export-points.php:167
-#: includes/admin/tools/import-export-points.php:220
+#: includes/admin/tools/import-export-points.php:179
+#: includes/admin/tools/import-export-points.php:246
 msgid "User's points balances export process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/import-export-points.php:358
+#: includes/admin/tools/import-export-points.php:384
 msgid "User's points balances has been updated successfully."
 msgstr ""
 
@@ -3004,12 +3004,12 @@ msgstr ""
 msgid "You need to choose at least 1 rank type to export."
 msgstr ""
 
-#: includes/admin/tools/import-export-ranks.php:176
-#: includes/admin/tools/import-export-ranks.php:246
+#: includes/admin/tools/import-export-ranks.php:188
+#: includes/admin/tools/import-export-ranks.php:272
 msgid "User's ranks export process has been done successfully."
 msgstr ""
 
-#: includes/admin/tools/import-export-ranks.php:389
+#: includes/admin/tools/import-export-ranks.php:415
 msgid "Ranks has been awarded successfully to all users."
 msgstr ""
 
@@ -4218,21 +4218,21 @@ msgstr ""
 msgid "Justify"
 msgstr ""
 
-#: includes/functions/achievements.php:932
+#: includes/functions/achievements.php:938
 msgid "People who have earned this:"
 msgstr ""
 
-#: includes/functions/achievements.php:1309
+#: includes/functions/achievements.php:1315
 msgid "Achievement Type saved successfully."
 msgstr ""
 
-#: includes/functions/achievements.php:1310
+#: includes/functions/achievements.php:1316
 #, php-format
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1310 includes/functions/points.php:1319
-#: includes/functions/ranks.php:1409
+#: includes/functions/achievements.php:1316 includes/functions/points.php:1319
+#: includes/functions/ranks.php:1423
 msgid "widgets"
 msgstr ""
 
@@ -4379,15 +4379,15 @@ msgstr ""
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/ranks.php:1077
+#: includes/functions/ranks.php:1091
 msgid "People who have reached this rank:"
 msgstr ""
 
-#: includes/functions/ranks.php:1408
+#: includes/functions/ranks.php:1422
 msgid "Rank Type saved successfully."
 msgstr ""
 
-#: includes/functions/ranks.php:1409
+#: includes/functions/ranks.php:1423
 #, php-format
 msgid "Rank Type renamed successfully. <p>All ranks of this type, and all active and earned user ranks, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old rank type slug must be updated <strong>manually</strong>."
 msgstr ""

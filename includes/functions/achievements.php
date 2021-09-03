@@ -854,6 +854,12 @@ function gamipress_get_achievement_earners( $achievement_id = 0, $args = array()
         'order'     => 'DESC',
     );
 
+    // On multisite, get earners only of the current site
+    if( gamipress_is_network_wide_active() ) {
+        $from .= "LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.user_id ) ";
+        $where .= "AND umcap.meta_key = '" . $wpdb->get_blog_prefix( gamipress_get_original_site_id() ) . "capabilities' ";
+    }
+
     /**
      * Filters the earners args
      *

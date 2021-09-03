@@ -352,20 +352,23 @@ add_action( 'wp_insert_post', 'gamipress_fix_network_wp_insert_post', 9 );
 /**
  * Switch to main site
  *
- * @since 1.6.3
+ * @since   1.6.3
+ * @updated 2.1.0 Update the $gamipress_original_blog_id global var
  *
  * @return int The blog ID before switch to main site
  */
 function gamipress_switch_to_main_site() {
 
-    $blog_id = get_current_blog_id();
+    global $gamipress_original_blog_id;
+
+    $gamipress_original_blog_id = get_current_blog_id();
 
     // Switch to main site if not already on main site
     if( ! is_main_site() ) {
         switch_to_blog( get_main_site_id() );
     }
 
-    return $blog_id;
+    return $gamipress_original_blog_id;
 
 }
 
@@ -384,5 +387,20 @@ function gamipress_switch_to_main_site_if_network_wide_active() {
     }
 
     return get_current_blog_id();
+
+}
+
+/**
+ * Get the original site ID even if GamiPress has switched to main site
+ *
+ * @since 2.1.0
+ *
+ * @return int The blog ID before switch to main site
+ */
+function gamipress_get_original_site_id() {
+
+    global $gamipress_original_blog_id;
+
+    return ( $gamipress_original_blog_id ? $gamipress_original_blog_id : get_current_blog_id() );
 
 }
