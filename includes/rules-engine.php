@@ -1591,9 +1591,11 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
         // Setup vars
         $post_type = gamipress_get_post_type( $achievement_id );
         $points_types = gamipress_get_points_types();
+        $is_achievement = in_array( $post_type, gamipress_get_achievement_types_slugs() );
+        $is_rank = in_array( $post_type, gamipress_get_rank_types_slugs() );
 
         // If is achievement or rank, revoke also all its requirements
-        if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) || in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
+        if ( $is_achievement || $is_rank ) {
 
             /**
              * Available filter to determine if should revoke requirements when parent element is revoked too
@@ -1611,16 +1613,50 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 
                 $requirements = array();
 
-                if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) ) {
+                if ( $is_achievement ) {
                     // Get the achievement steps
                     $requirements = gamipress_get_achievement_steps( $achievement_id );
-                } else if ( in_array( $post_type, gamipress_get_rank_types_slugs() ) ) {
+                } else if ( $is_rank ) {
                     // Get the rank requirements
                     $requirements = gamipress_get_rank_requirements( $achievement_id );
                 }
 
                 foreach( $requirements as $requirement ) {
                     gamipress_revoke_achievement_to_user( $requirement->ID, $user_id );
+                }
+
+            }
+
+        }
+
+        // If is revoking the current user rank, update user rank with the previous one
+        if( $is_rank ) {
+
+            $user_rank_id = gamipress_get_user_rank_id( $user_id, $post_type );
+
+            if( $achievement_id === $user_rank_id ) {
+
+                $prev_rank_id = gamipress_get_prev_rank_id( $user_rank_id );
+
+                $prev_rank_query = new CT_Query( array(
+                    'user_id' => $user_id,
+                    'post_id' => $prev_rank_id,
+                    'items_per_page' => 1
+                ) );
+
+                $prev_rank_earnings = $prev_rank_query->get_results();
+
+                // If previous rank is registered in user earnings, remove the action to register it in user earnings
+                if( count( $prev_rank_earnings ) > 0 ) {
+                    remove_action( 'gamipress_update_user_rank', 'gamipress_register_user_rank_earning', 10 );
+                }
+
+                // Update the user rank with the previous one
+                gamipress_update_user_rank( $user_id, $prev_rank_id );
+
+                // Restore the removed action
+                if( count( $prev_rank_earnings ) > 0 ) {
+                    add_action( 'gamipress_update_user_rank', 'gamipress_register_user_rank_earning', 10, 5 );
                 }
 
             }

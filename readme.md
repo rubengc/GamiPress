@@ -245,6 +245,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.1 ###
+
+* **Improvements**
+* Added new checks when revoking a rank from user earnings to update the user rank to the previous one.
+
 ### 2.1.0 ###
 
 * **Improvements**
