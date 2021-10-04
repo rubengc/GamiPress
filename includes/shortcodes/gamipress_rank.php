@@ -18,7 +18,7 @@ function gamipress_register_rank_shortcode() {
 
 	gamipress_register_shortcode( 'gamipress_rank', array(
 		'name'              => __( 'Single Rank', 'gamipress' ),
-		'description'       => __( 'Render a single rank.', 'gamipress' ),
+		'description'       => __( 'Display a single rank.', 'gamipress' ),
         'icon' 	            => 'rank',
         'group' 	        => 'gamipress',
 		'output_callback'   => 'gamipress_rank_shortcode',

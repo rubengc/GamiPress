@@ -18,7 +18,7 @@ function gamipress_register_site_points_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_site_points', array(
         'name'              => __( 'Site Points', 'gamipress' ),
-        'description'       => __( 'Output a sum of all site points.', 'gamipress' ),
+        'description'       => __( 'Display a sum of all site points.', 'gamipress' ),
         'icon' 	            => 'star-filled',
         'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_site_points_shortcode',

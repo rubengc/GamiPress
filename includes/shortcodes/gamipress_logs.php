@@ -18,7 +18,7 @@ function gamipress_register_logs_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_logs', array(
         'name'              => __( 'Logs', 'gamipress' ),
-        'description'       => __( 'Output a list of logs.', 'gamipress' ),
+        'description'       => __( 'Display a list of logs.', 'gamipress' ),
         'icon' 	            => 'editor-ul',
         'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_logs_shortcode',
@@ -38,13 +38,13 @@ function gamipress_register_logs_shortcode() {
             ),
             'current_user' => array(
                 'name'        => __( 'Current User', 'gamipress' ),
-                'description' => __( 'Show only logs of the current logged in user.', 'gamipress' ),
+                'description' => __( 'Show logs of the current logged in user.', 'gamipress' ),
                 'type' 		  => 'checkbox',
                 'classes' 	  => 'gamipress-switch',
             ),
             'user_id' => array(
                 'name'        => __( 'User', 'gamipress' ),
-                'description' => __( 'Show only logs by a specific user. Leave blank to show logs of all users.', 'gamipress' ),
+                'description' => __( 'Show logs by a specific user. Leave blank to show logs of all users.', 'gamipress' ),
                 'type'        => 'select',
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'

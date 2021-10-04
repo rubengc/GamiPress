@@ -115,6 +115,78 @@ function gamipress_get_earnings_count( $query = array() ) {
 }
 
 /**
+ * Get the last earning
+ *
+ * @since  2.1.2
+ *
+ * @param  array $query     User earning query parameters
+ *
+ * @return stdClass|null    The last earning object
+ */
+function gamipress_get_last_earning( $query = array() ) {
+
+    global $wpdb;
+
+    $where = gamipress_get_earnings_where( $query );
+
+    // Merge all wheres
+    $where = implode( ' AND ', $where );
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    return $wpdb->get_row( "SELECT ue.* FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT 1" );
+
+}
+
+/**
+ * Get the last earning ID
+ *
+ * @since  2.1.2
+ *
+ * @param  array $query User earning query parameters
+ *
+ * @return int          The last earning ID
+ */
+function gamipress_get_last_earning_id( $query = array() ) {
+
+    global $wpdb;
+
+    $where = gamipress_get_earnings_where( $query );
+
+    // Merge all wheres
+    $where = implode( ' AND ', $where );
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    return $wpdb->get_var( "SELECT ue.user_earning_id FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT 1" );
+
+}
+
+/**
+ * Get the last earning post ID
+ *
+ * @since  2.1.2
+ *
+ * @param  array $query User earning query parameters
+ *
+ * @return int          The last earning post ID
+ */
+function gamipress_get_last_earning_post_id( $query = array() ) {
+
+    global $wpdb;
+
+    $where = gamipress_get_earnings_where( $query );
+
+    // Merge all wheres
+    $where = implode( ' AND ', $where );
+
+    $user_earnings = GamiPress()->db->user_earnings;
+
+    return $wpdb->get_var( "SELECT ue.post_id FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT 1" );
+
+}
+
+/**
  * Get the last earning date
  *
  * @since  1.8.7
@@ -264,5 +336,54 @@ function gamipress_get_earnings_where( $query = array() ) {
     }
 
     return $where;
+
+}
+
+/**
+ * Get the user earning object data
+ *
+ * @since 2.1.2
+ *
+ * @param int       $user_earning_id    The user earning ID
+ * @param string    $meta_key           The meta key to retrieve. By default, returns
+ *                                      data for all keys. Default empty.
+ * @param bool      $single             Optional. Whether to return a single value. Default false.
+ *
+ * @return mixed                        Will be an array if $single is false. Will be value of meta data field if $single is true.
+ */
+function gamipress_get_user_earning_meta( $user_earning_id, $meta_key = '', $single = false ) {
+
+    ct_setup_table( 'gamipress_user_earnings' );
+
+    $meta_value = ct_get_object_meta( $user_earning_id, $meta_key, $single );
+
+    ct_reset_setup_table();
+
+    return $meta_value;
+
+}
+
+/**
+ * Update the user earning object data
+ *
+ * @since 2.1.2
+ *
+ * @param int       $user_earning_id    The user earning ID
+ * @param string $meta_key   Metadata key.
+ * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
+ * @param mixed  $prev_value Optional. Previous value to check before removing.
+ *                           Default empty.
+ *
+ * @return int|bool         Meta ID if the key didn't exist, true on successful update, false on failure.
+ */
+function gamipress_update_user_earning_meta( $user_earning_id, $meta_key, $meta_value, $prev_value = '' ) {
+
+    ct_setup_table( 'gamipress_user_earnings' );
+
+    $meta_id = ct_update_object_meta( $user_earning_id, $meta_key, $meta_value, $prev_value );
+
+    ct_reset_setup_table();
+
+    return $meta_id;
 
 }

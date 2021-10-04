@@ -18,7 +18,7 @@ function gamipress_register_points_types_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_points_types', array(
         'name'              => __( 'Points Types', 'gamipress' ),
-        'description'       => __( 'Output a list of points types with their points awards.', 'gamipress' ),
+        'description'       => __( 'Display a list of points types with their points awards.', 'gamipress' ),
         'icon' 	            => 'star-filled',
         'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_points_types_shortcode',

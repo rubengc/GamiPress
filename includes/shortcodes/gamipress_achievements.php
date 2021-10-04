@@ -22,7 +22,7 @@ function gamipress_register_achievements_shortcode() {
 
 	gamipress_register_shortcode( 'gamipress_achievements', array(
 		'name'              => __( 'Achievement List', 'gamipress' ),
-		'description'       => __( 'Output a list of achievements.', 'gamipress' ),
+		'description'       => __( 'Display a list of achievements.', 'gamipress' ),
         'icon' 	            => 'awards',
         'group' 	        => 'gamipress',
 		'output_callback'   => 'gamipress_achievements_shortcode',
@@ -158,13 +158,13 @@ function gamipress_register_achievements_shortcode() {
 			),
 			'current_user' => array(
 				'name'        => __( 'Current User', 'gamipress' ),
-				'description' => __( 'Show only achievements earned by the current logged in user.', 'gamipress' ),
+				'description' => __( 'Show achievements earned by the current logged in user.', 'gamipress' ),
 				'type' 		  => 'checkbox',
 				'classes' 	  => 'gamipress-switch',
 			),
 			'user_id' => array(
 				'name'        => __( 'User', 'gamipress' ),
-				'description' => __( 'Show only achievements earned by a specific user.', 'gamipress' ),
+				'description' => __( 'Show achievements earned by a specific user.', 'gamipress' ),
 				'type'        => 'select',
 				'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'

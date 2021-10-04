@@ -115,6 +115,21 @@ function gamipress_admin_submenu() {
 add_action( 'admin_menu', 'gamipress_admin_submenu', 12 );
 
 /**
+ * Add Clear Cache submenu
+ *
+ * @since 2.1.2
+ */
+function gamipress_clear_cache_admin_submenu() {
+
+    // Set minimum role setting for menus
+    $minimum_role = gamipress_get_manager_capability();
+
+    add_submenu_page( 'gamipress', __( 'Clear Cache', 'gamipress' ), __( 'Clear Cache', 'gamipress' ), $minimum_role, add_query_arg( 'gamipress-action', 'clear_cache' ), null );
+
+}
+add_action( 'admin_menu', 'gamipress_clear_cache_admin_submenu', 13 );
+
+/**
  * Add Try AutomatorWP submenu
  *
  * @since 2.0.0
@@ -376,6 +391,14 @@ function gamipress_admin_bar_submenu( $wp_admin_bar ) {
         'href'   => admin_url( 'admin.php?page=gamipress_settings' )
     ) );
 
+    // Clear cache
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-clear-cache',
+        'title'  => __( 'Clear Cache', 'gamipress' ),
+        'parent' => 'gamipress',
+        'href'   => add_query_arg( 'gamipress-action', 'clear_cache' )
+    ) );
+
 }
 add_action( 'admin_bar_menu', 'gamipress_admin_bar_submenu', 999 );
 
@@ -600,11 +623,22 @@ add_action( 'delete_post', 'gamipress_on_delete_post' );
  * @since 1.1.5
  */
 function gamipress_process_actions() {
-    if ( isset( $_POST['gamipress-action'] ) )
-        do_action( 'gamipress_action_post_' . $_POST['gamipress-action'], $_POST );
 
-    if ( isset( $_GET['gamipress-action'] ) )
+    // $_REQUEST
+    if ( isset( $_REQUEST['gamipress-action'] ) ) {
+        do_action( 'gamipress_action_request_' . $_REQUEST['gamipress-action'], $_REQUEST );
+    }
+
+    // $_POST
+    if ( isset( $_POST['gamipress-action'] ) ) {
+        do_action( 'gamipress_action_post_' . $_POST['gamipress-action'], $_POST );
+    }
+
+    // $_GET
+    if ( isset( $_GET['gamipress-action'] ) ) {
         do_action( 'gamipress_action_get_' . $_GET['gamipress-action'], $_GET );
+    }
+
 }
 add_action( 'admin_init', 'gamipress_process_actions' );
 

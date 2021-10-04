@@ -18,7 +18,7 @@ function gamipress_register_user_points_shortcode() {
 
     gamipress_register_shortcode( 'gamipress_user_points', array(
         'name'              => __( 'User Points', 'gamipress' ),
-        'description'       => __( 'Output a user points balance.', 'gamipress' ),
+        'description'       => __( 'Display a user points balance.', 'gamipress' ),
         'icon' 	            => 'star-filled',
         'group' 	        => 'gamipress',
         'output_callback'   => 'gamipress_user_points_shortcode',
@@ -52,14 +52,14 @@ function gamipress_register_user_points_shortcode() {
             ),
             'current_user' => array(
                 'name'          => __( 'Current User', 'gamipress' ),
-                'description'   => __( 'Show only points earned by the current logged in user.', 'gamipress' ),
+                'description'   => __( 'Show points earned by the current logged in user.', 'gamipress' ),
                 'type' 		    => 'checkbox',
                 'classes' 	    => 'gamipress-switch',
                 'default' 	    => 'yes',
             ),
             'user_id' => array(
                 'name'          => __( 'User', 'gamipress' ),
-                'description'   => __( 'Show only points earned by a specific user.', 'gamipress' ),
+                'description'   => __( 'Show points earned by a specific user.', 'gamipress' ),
                 'type'          => 'select',
                 'default'       => '',
                 'options_cb'    => 'gamipress_options_cb_users'

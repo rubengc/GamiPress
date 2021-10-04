@@ -18,7 +18,7 @@ function gamipress_register_achievement_shortcode() {
 
 	gamipress_register_shortcode( 'gamipress_achievement', array(
 		'name'            	=> __( 'Single Achievement', 'gamipress' ),
-		'description'     	=> __( 'Render a single achievement.', 'gamipress' ),
+		'description'     	=> __( 'Display a single achievement.', 'gamipress' ),
 		'icon' 	            => 'awards',
 		'group' 	        => 'gamipress',
 		'output_callback' 	=> 'gamipress_achievement_shortcode',
@@ -64,6 +64,13 @@ function gamipress_register_achievement_shortcode() {
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'points_awarded_thumbnail' => array(
+                'name'        => __( 'Show Points Awarded Thumbnail', 'gamipress' ),
+                'description' => __( 'Display the thumbnail of the points awarded.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
 			'excerpt' => array(
 				'name'        => __( 'Show Excerpt', 'gamipress' ),
 				'description' => __( 'Display the achievement short description.', 'gamipress' ),
@@ -171,12 +178,14 @@ function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
     $is_achievement = gamipress_is_achievement( $achievement );
 
     // Return if achievement id not specified
-    if ( empty( $original_atts['id'] ) && ! $is_achievement )
+    if ( empty( $original_atts['id'] ) && ! $is_achievement ) {
         return gamipress_shortcode_error( __( 'Please, provide the achievement ID.', 'gamipress' ), $shortcode );
+    }
 
     // Check if we're dealing with an achievement post
-    if ( ! $is_achievement )
+    if ( ! $is_achievement ) {
         return gamipress_shortcode_error( __( 'The id provided doesn\'t belong to a valid achievement.', 'gamipress' ), $shortcode );
+    }
 
     // ---------------------------
     // Shortcode Processing
@@ -229,21 +238,22 @@ function gamipress_achievement_shortcode( $atts = array(), $content = '' ) {
 function gamipress_achievement_shortcode_defaults() {
 
 	return apply_filters( 'gamipress_achievement_shortcode_defaults', array(
-		'id' 				    => get_the_ID(),
-		'title' 			    => 'yes',
-		'link' 				    => 'yes',
-		'thumbnail' 		    => 'yes',
-		'points_awarded' 	    => 'yes',
-		'excerpt'	  		    => 'yes',
-        'times_earned' 	        => 'yes',
-        'global_times_earned' 	=> 'no',
-		'steps'	  			    => 'yes',
-		'toggle' 			    => 'yes',
-		'unlock_button' 	    => 'yes',
-		'earners'	  		    => 'no',
-		'earners_limit'	        => '0',
-		'layout'	  		    => 'left',
-		'align'	  		        => 'none',
+		'id' 				        => get_the_ID(),
+		'title' 			        => 'yes',
+		'link' 				        => 'yes',
+		'thumbnail' 		        => 'yes',
+		'points_awarded' 	        => 'yes',
+		'points_awarded_thumbnail' 	=> 'yes',
+		'excerpt'	  		        => 'yes',
+        'times_earned' 	            => 'yes',
+        'global_times_earned' 	    => 'no',
+		'steps'	  			        => 'yes',
+		'toggle' 			        => 'yes',
+		'unlock_button' 	        => 'yes',
+		'earners'	  		        => 'no',
+		'earners_limit'	            => '0',
+		'layout'	  		        => 'left',
+		'align'	  		            => 'none',
 	) );
 
 }

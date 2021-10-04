@@ -211,6 +211,7 @@ GamiPress comes with the following shortcodes:
 
 * [[gamipress_achievement]](https://gamipress.com/docs/shortcodes/gamipress_achievement/) to display a desired achievement.
 * [[gamipress_achievements]](https://gamipress.com/docs/shortcodes/gamipress_achievements/) to display a list of achievements.
+* [[gamipress_last_achievement_earned]](https://gamipress.com/docs/shortcodes/gamipress_last_achievement_earned/) to display the last achievement earned.
 * [[gamipress_earnings]](https://gamipress.com/docs/shortcodes/gamipress_earnings/) to display a list of user earnings.
 * [[gamipress_logs]](https://gamipress.com/docs/shortcodes/gamipress_logs/) to display a list of logs.
 * [[gamipress_points_types]](https://gamipress.com/docs/shortcodes/gamipress_points_types/) to display a list of points types with their points awards and deducts.
@@ -229,6 +230,7 @@ GamiPress comes with the following widgets:
 
 * Achievement: to display a desired achievement.
 * Achievements: to display a list of achievements.
+* Last Achievement Earned: to display a list of achievements.
 * User Earnings: to display a list of user earnings.
 * Logs: to display a list of logs.
 * Points Types: to display a list of points types with their points awards and deducts.
@@ -244,6 +246,22 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 ## Changelog ##
+
+### 2.1.2 ###
+
+* **New Features**
+* Added the points type image in the achievement points awarded.
+* Added the attribute "points_awarded_thumbnail" in all achievement related shortcodes.
+* Added the option "Show Points Awarded Thumbnail" in all achievement related block and widgets.
+* New shortcode: [gamipress_last_achievement_earned].
+* New block and widget: GamiPress: Last Achievement Earned.
+* Added a helper link to clear the GamiPress cache directly from the GamiPress menus.
+* **Improvements**
+* Improved several shortcodes, blocks and widgets fields descriptions.
+* Improved shortcodes descriptions.
+* **Developer Notes**
+* Added new utility functions to make more easy to work with logs and user earnings metas.
+* Added new utility functions to query user earnings efficiently.
 
 ### 2.1.1 ###
 

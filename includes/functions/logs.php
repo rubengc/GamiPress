@@ -923,3 +923,52 @@ function gamipress_get_log_meta_data_defaults( $log_meta, $log_id, $log_data ) {
 
 }
 add_filter( 'gamipress_get_log_meta_data', 'gamipress_get_log_meta_data_defaults', 10, 3 );
+
+/**
+ * Get the log object data
+ *
+ * @since 2.1.2
+ *
+ * @param int       $log_id         The log ID
+ * @param string    $meta_key       The meta key to retrieve. By default, returns
+ *                                  data for all keys. Default empty.
+ * @param bool      $single         Optional. Whether to return a single value. Default false.
+ *
+ * @return mixed                    Will be an array if $single is false. Will be value of meta data field if $single is true.
+ */
+function gamipress_get_log_meta( $log_id, $meta_key = '', $single = false ) {
+
+    ct_setup_table( 'gamipress_logs' );
+
+    $meta_value = ct_get_object_meta( $log_id, $meta_key, $single );
+
+    ct_reset_setup_table();
+
+    return $meta_value;
+
+}
+
+/**
+ * Update the log object data
+ *
+ * @since 2.1.2
+ *
+ * @param int    $log_id     The log ID
+ * @param string $meta_key   Metadata key.
+ * @param mixed  $meta_value Metadata value. Must be serializable if non-scalar.
+ * @param mixed  $prev_value Optional. Previous value to check before removing.
+ *                           Default empty.
+ *
+ * @return int|bool         Meta ID if the key didn't exist, true on successful update, false on failure.
+ */
+function gamipress_update_log_meta( $log_id, $meta_key, $meta_value, $prev_value = '' ) {
+
+    ct_setup_table( 'gamipress_logs' );
+
+    $meta_id = ct_update_object_meta( $log_id, $meta_key, $meta_value, $prev_value );
+
+    ct_reset_setup_table();
+
+    return $meta_id;
+
+}

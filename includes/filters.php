@@ -833,8 +833,15 @@ function gamipress_achievement_points_markup( $achievement_id = 0, $template_arg
 
     $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
 
+	// Set the default value for the points awarded thumbnail
+	if( ! isset( $template_args['points_awarded_thumbnail'] ) ) {
+        $template_args['points_awarded_thumbnail'] = 'yes';
+    }
 
-	$output = '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">' . gamipress_format_points( $points, $points_type  ) . '</div>';
+	$output = '<div class="gamipress-achievement-points gamipress-achievement-points-type-' . $points_type . '">'
+            . ( $template_args['points_awarded_thumbnail'] === 'yes' ? gamipress_get_points_type_thumbnail( $points_type ) . ' ' : '' )
+            . gamipress_format_points( $points, $points_type  )
+        . '</div>';
 
     // Return the points awarded output
 	return apply_filters( 'gamipress_achievement_points_markup', $output, $achievement_id, $points, $points_type, $template_args );

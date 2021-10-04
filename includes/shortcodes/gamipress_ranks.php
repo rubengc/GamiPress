@@ -23,7 +23,7 @@ function gamipress_register_ranks_shortcode() {
 
 	gamipress_register_shortcode( 'gamipress_ranks', array(
 		'name'              => __( 'Rank List', 'gamipress' ),
-		'description'       => __( 'Output a list of ranks.', 'gamipress' ),
+		'description'       => __( 'Display a list of ranks.', 'gamipress' ),
         'icon' 	            => 'rank',
         'group' 	        => 'gamipress',
 		'output_callback'   => 'gamipress_ranks_shortcode',

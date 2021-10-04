@@ -144,3 +144,57 @@ function gamipress_flush_cache() {
     }
 
 }
+
+/**
+ * Preview achievement earned email action
+ *
+ * @since 1.3.0
+ */
+function gamipress_clear_cache_action() {
+
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    gamipress_flush_cache();
+
+    $url = remove_query_arg( array( 'gamipress-action'  ) );
+    $url = add_query_arg( 'gamipress-message', 'cache_cleared', $url );
+
+    wp_redirect( $url );
+    exit;
+
+}
+add_action( 'gamipress_action_get_clear_cache', 'gamipress_clear_cache_action' );
+
+/**
+ * GamiPress admin notices
+ *
+ * @since 1.5.9
+ */
+function gamipress_clear_cache_notices() {
+
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
+        return;
+    }
+
+    if( ! isset( $_GET['gamipress-message'] ) ) {
+        return;
+    }
+
+    if( $_GET['gamipress-message'] !== 'cache_cleared' ) {
+        return;
+    }
+
+    ?>
+
+    <div class="notice notice-success is-dismissible gamipress-notice">
+        <p>
+            <?php _e( '<strong>GamiPress cache</strong> cleared successfully!', 'gamipress' ); ?>
+        </p>
+    </div>
+
+    <?php
+
+}
+add_action( 'admin_notices', 'gamipress_clear_cache_notices' );
