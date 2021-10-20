@@ -247,6 +247,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.3 ###
+
+* **Improvements**
+* Ensure to deduct points when a user earning gets revoked.
+
 ### 2.1.2 ###
 
 * **New Features**

@@ -1585,6 +1585,10 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 
 	}
 
+    if( $earning_id ) {
+        $earning = ct_get_object( $earning_id );
+    }
+
     // If achievement ID provided, check if requirement should get revoked too
     if( $achievement_id !== 0 ) {
 
@@ -1663,58 +1667,73 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 
         }
 
-        if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) || $post_type === 'points-award' ) {
+        if( $earning ) {
+            // Get the points and points type from the user earning entry
+            $points = absint( $earning->points );
+            $points_type = $earning->points_type;
+        } else {
+            // Get the points and points type from the post provided
+            $points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
+            $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
+        }
 
-            /**
-             * Available filter to determine if should deduct points when an element is revoked
-             *
-             * @since  	1.8.9
-             *
-             * @param bool 	$revoke         Deduct confirmation, by default true
-             * @param int 	$user_id        The given user ID
-             * @param int 	$achievement_id The post ID to revoke (commonly an achievement ID or points award ID)
-             * @param int 	$earning_id     The user earning ID
-             */
-            $deduct_points = apply_filters( 'gamipress_deduct_points_on_revoke', true, $achievement_id, $user_id, $earning_id );
+        if( $points !== 0 ) {
 
-            if( $deduct_points ) {
+            // Turn the "points-type" post type to award or deduct type depending on the amount of points assigned
+            if( $post_type === 'points-type' ) {
+                if( $points > 0 ) {
+                    $post_type = 'points-award';
+                } else {
+                    $post_type = 'points-deduct';
+                }
+            }
 
-                // Grab our points from the provided post
-                $points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
-                $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
+            if ( in_array( $post_type, gamipress_get_achievement_types_slugs() ) || $post_type === 'points-award' ) {
 
-                if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
-                    // Revoke points awarded from this achievement or points award
-                    gamipress_deduct_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+                /**
+                 * Available filter to determine if should deduct points when an element is revoked
+                 *
+                 * @since  	1.8.9
+                 *
+                 * @param bool 	$revoke         Deduct confirmation, by default true
+                 * @param int 	$user_id        The given user ID
+                 * @param int 	$achievement_id The post ID to revoke (commonly an achievement ID or points award ID)
+                 * @param int 	$earning_id     The user earning ID
+                 */
+                $deduct_points = apply_filters( 'gamipress_deduct_points_on_revoke', true, $achievement_id, $user_id, $earning_id );
+
+                if( $deduct_points ) {
+
+                    if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
+                        // Revoke points awarded from this achievement or points award
+                        gamipress_deduct_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+                    }
+
                 }
 
             }
 
-        }
+            if ( $post_type === 'points-deduct' ) {
 
-        if ( $post_type === 'points-deduct' ) {
+                /**
+                 * Available filter to determine if should award points when an element is revoked
+                 *
+                 * @since  	1.8.9
+                 *
+                 * @param bool 	$revoke         Award confirmation, by default true
+                 * @param int 	$user_id        The given user ID
+                 * @param int 	$achievement_id The post ID to revoke (commonly a points deduct ID)
+                 * @param int 	$earning_id     The user earning ID
+                 */
+                $award_points = apply_filters( 'gamipress_award_points_on_revoke', true, $achievement_id, $user_id, $earning_id );
 
-            /**
-             * Available filter to determine if should award points when an element is revoked
-             *
-             * @since  	1.8.9
-             *
-             * @param bool 	$revoke         Award confirmation, by default true
-             * @param int 	$user_id        The given user ID
-             * @param int 	$achievement_id The post ID to revoke (commonly a points deduct ID)
-             * @param int 	$earning_id     The user earning ID
-             */
-            $award_points = apply_filters( 'gamipress_award_points_on_revoke', true, $achievement_id, $user_id, $earning_id );
+                if( $award_points ) {
 
-            if( $award_points ) {
+                    if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
+                        // Restore points deducted from these points deduct
+                        gamipress_award_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
+                    }
 
-                // Grab our points from the provided post
-                $points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
-                $points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
-
-                if ( ! empty( $points ) && isset( $points_types[$points_type] ) ) {
-                    // Restore points deducted from this points deduct
-                    gamipress_award_points_to_user( $user_id, $points, $points_type, array( 'achievement_id' => $achievement_id ) );
                 }
 
             }
@@ -1737,5 +1756,7 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 	if( $earning_id ) {
 		$ct_table->db->delete( $earning_id );
 	}
+
+    ct_reset_setup_table();
 
 }
