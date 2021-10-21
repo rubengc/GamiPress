@@ -14,13 +14,20 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
     class CT_DataBase_Schema {
 
         /**
-         * @var array Schema fields definition
+         * @var array Fields schema definition
          */
         public $fields = array();
+
+        /**
+         * @var array Keys schema definition
+         */
+        public $keys = array();
 
         public $primary_key = '';
 
         public function __construct( $schema ) {
+
+            $this->keys = array();
 
             if( gettype( $schema ) === 'string' ) {
                 $schema = $this->string_schema_to_array( $schema );
@@ -58,7 +65,6 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
         public function __toString() {
 
             $fields_def = array();
-            $keys = array();
 
             foreach( $this->fields as $field_id => $field_args ) {
                 // Turn field array to schema
@@ -69,9 +75,9 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
             $sql = implode( ', ', $fields_def ) . ', '
                 . 'PRIMARY KEY  (' . $this->primary_key . ')'; // Add two spaces to avoid issues
 
-            // Setup KEY definition
-            if( ! empty( $keys ) ) {
-                $sql .= ', ' . implode( ', ', $keys );
+            // Setup KEY definitions
+            if( ! empty( $this->keys ) ) {
+                $sql .= ', ' . implode( ', ', $this->keys );
             }
 
             return $sql;
@@ -229,9 +235,9 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
                 $max_index_length = 191;
 
                 if( $field_args['length'] > $max_index_length ) {
-                    $keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $max_index_length . '))';
+                    $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $max_index_length . '))';
                 } else {
-                    $keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
+                    $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
                 }
             }
 

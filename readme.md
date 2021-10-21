@@ -247,6 +247,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.4 ###
+
+* **Improvements**
+* Improved database indexes creation to ensure maximum performance on the GamiPress tables.
+* Ensure the creation of table indexes during installation.
+* Updated GamiPress table versions to force table indexes creation on already installed websites.
+* Updated Custom Tables library.
+
 ### 2.1.3 ###
 
 * **Improvements**
