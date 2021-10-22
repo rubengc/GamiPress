@@ -247,6 +247,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.5 ###
+
+* **Improvements**
+* Multisite: Ensure to load users only from the current site in all tools or fields who query users.
+
 ### 2.1.4 ###
 
 * **Improvements**

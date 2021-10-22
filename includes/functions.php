@@ -112,6 +112,123 @@ function gamipress_delete_transient( $transient ) {
 }
 
 /**
+ * Helper function to get a list of users based in the current site if multisite is active.
+ *
+ * @since  2.1.5
+ *
+ * @param array         $query_args     Query parameters.
+ * @param string        $output         Optional. Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants.
+ *
+ * @return array|null                   An array of users.
+ */
+function gamipress_get_users( $query_args = array(), $output = OBJECT ) {
+
+    global $wpdb;
+
+    $query_args = wp_parse_args( $query_args, array(
+        'orderby'   => 'u.ID ASC',
+        'offset'    => 0,
+        'limit'     => -1,
+    ) );
+
+    // FROM
+    $from = "FROM {$wpdb->users} AS u ";
+
+    // WHERE
+    $where = '';
+
+    // ORDER BY
+    $orderby = $query_args['orderby'];
+
+    if( ! empty( $orderby ) ) {
+        $orderby = "ORDER BY {$orderby}";
+    } else {
+        $orderby = '';
+    }
+
+    // LIMIT
+    $offset = $query_args['offset'];
+    $limit = $query_args['limit'];
+
+    if( $limit != -1 ) {
+        $limit = "LIMIT {$offset}, {$limit}";
+    } else {
+        $limit = '';
+    }
+
+    // Multisite check
+    if( is_multisite() ) {
+        $from .= "LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID ) ";
+
+        // Check if where have been initialized or not
+        if( empty( $where ) ) {
+            $where = "WHERE ";
+        } else {
+            $where .= "AND ";
+        }
+
+        $where .= "umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities' ";
+    }
+
+    // Get the stored users
+    $users = $wpdb->get_results(
+        "SELECT * 
+        {$from} 
+        {$where}
+        {$orderby}
+        {$limit}",
+        $output
+    );
+
+    return $users;
+
+}
+
+/**
+ * Helper function to get a count of users based in the current site if multisite is active.
+ *
+ * @since  2.1.5
+ *
+ * @param array         $query_args     Query parameters.
+ *
+ * @return int                          The number of users.
+ */
+function gamipress_get_users_count( $query_args = array() ) {
+
+    global $wpdb;
+
+    // FROM
+    $from = "FROM {$wpdb->users} AS u ";
+
+    // WHERE
+    $where = '';
+
+    // Multisite check
+    if( is_multisite() ) {
+        $from .= "LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID ) ";
+
+        // Check if where have been initialized or not
+        if( empty( $where ) ) {
+            $where = "WHERE ";
+        } else {
+            $where .= "AND ";
+        }
+
+        $where .= "umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities' ";
+    }
+
+    // Get the users count
+    $users_count = absint( $wpdb->get_var(
+        "SELECT COUNT(*) 
+        {$from} 
+        {$where}"
+    ) );
+
+    return $users_count;
+
+}
+
+/**
  * Helper function to get a user meta.
  *
  * @since  1.4.0

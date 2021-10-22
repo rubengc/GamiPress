@@ -358,14 +358,18 @@ function gamipress_ajax_bulk_revokes_tool() {
 
     if( $to_all_users ) {
 
-        // Get all stored users
-        $users = $wpdb->get_results( "SELECT u.ID FROM {$wpdb->users} AS u ORDER BY u.ID ASC LIMIT {$offset}, {$limit}" );
+        // Get stored users
+        $users = gamipress_get_users( array(
+            'offset' => $offset,
+            'limit' => $limit,
+        ) );
 
         // Return a success message if finished, else run again
-        if( empty( $users ) && $loop !== 0 )
+        if( empty( $users ) && $loop !== 0 ) {
             wp_send_json_success( __( 'Bulk revoke process has been done successfully.', 'gamipress' ) );
-        else
+        } else {
             $run_again = true;
+        }
 
     } else {
         // Get specific stored users
@@ -472,7 +476,8 @@ function gamipress_ajax_bulk_revokes_tool() {
         $awarded_users = $limit * ( $loop + 1 );
 
         if( $to_all_users ) {
-            $users_count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$wpdb->users} AS u ORDER BY u.ID ASC" ) );
+            // Get the users count
+            $users_count = gamipress_get_users_count();
         } else {
             $users_count = absint( $wpdb->get_var(
                 "SELECT COUNT(*) 

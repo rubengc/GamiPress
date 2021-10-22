@@ -107,12 +107,27 @@ function gamipress_ajax_get_users() {
 	// Pull back the search string
 	$search = esc_sql( $wpdb->esc_like( $_REQUEST['q'] ) );
 	$where = '';
+    $from = "FROM {$wpdb->users} as u ";
 
 	if ( ! empty( $search ) ) {
-		$where = " WHERE user_login LIKE '%{$search}%'";
-		$where .= " OR user_email LIKE '%{$search}%'";
-		$where .= " OR display_name LIKE '%{$search}%'";
+		$where = "WHERE ( u.user_login LIKE '%{$search}%' ";
+		$where .= "OR u.user_email LIKE '%{$search}%' ";
+		$where .= "OR u.display_name LIKE '%{$search}%' ) ";
 	}
+
+    // Get users from the current site
+    if( is_multisite() ) {
+        $from .= "LEFT JOIN {$wpdb->usermeta} AS umcap ON ( umcap.user_id = u.ID ) ";
+
+        // Check if where have been initialized or not
+        if( empty( $where ) ) {
+            $where = "WHERE ";
+        } else {
+            $where .= "AND ";
+        }
+
+        $where .= "umcap.meta_key = '" . $wpdb->get_blog_prefix() . "capabilities' ";
+    }
 
 	// Pagination args
 	$page = isset( $_REQUEST['page'] ) ? absint( $_REQUEST['page'] ) : 1;
@@ -122,7 +137,7 @@ function gamipress_ajax_get_users() {
 	// Fetch our results (store as associative array)
 	$results = $wpdb->get_results(
 		"SELECT ID, user_login, user_email, display_name
-		 FROM {$wpdb->users}
+		 {$from}
 		 {$where}
 		 LIMIT {$offset}, {$limit}",
 		'ARRAY_A'
@@ -130,7 +145,7 @@ function gamipress_ajax_get_users() {
 
 	$count = $wpdb->get_var(
 		"SELECT COUNT(*)
-		 FROM {$wpdb->users}
+		 {$from}
 		 {$where}"
 	);
 
