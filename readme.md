@@ -247,6 +247,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.6 ###
+
+* **Improvements**
+* Ensure to provide a key length during database indexes creation to avoid issues with databases that requires key length.
+
 ### 2.1.5 ###
 
 * **Improvements**

@@ -233,12 +233,14 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
                  * This means that an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
                  */
                 $max_index_length = 191;
+                $length = max( $field_args['length'], $max_index_length );
 
-                if( $field_args['length'] > $max_index_length ) {
-                    $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $max_index_length . '))';
-                } else {
-                    $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
+                // Ensure that length has a value
+                if( $length === 0 ) {
+                    $length = $max_index_length;
                 }
+
+                $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $length . '))';
             }
 
             return $schema;
