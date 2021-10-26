@@ -240,7 +240,11 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
                     $length = $max_index_length;
                 }
 
-                $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $length . '))';
+                if( $this->is_numeric( $field_args['type'] ) ) {
+                    $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . ')';
+                } else {
+                    $this->keys[] = 'KEY ' . $field_id . '(' . $field_id . '(' . $length . '))';
+                }
             }
 
             return $schema;
@@ -424,6 +428,11 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
 
         }
 
+        /**
+         * Get the list of allowed types
+         *
+         * @return array
+         */
         public function allowed_field_types() {
             return array(
                 'BIT',
@@ -455,6 +464,31 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
                 'TEXT',
                 'JSON'
             );
+        }
+
+        /**
+         * Check if given type is numeric
+         *
+         * @param string $type
+         *
+         * @return bool
+         */
+        public function is_numeric( $type ) {
+
+            return in_array( strtoupper( $type ), array(
+                'TINYINT',
+                'SMALLINT',
+                'MEDIUMINT',
+                'INT',
+                'INTEGER',
+                'BIGINT',
+                'REAL',
+                'DOUBLE',
+                'FLOAT',
+                'DECIMAL',
+                'NUMERIC',
+            ) );
+
         }
 
     }

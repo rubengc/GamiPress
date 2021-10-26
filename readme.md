@@ -247,6 +247,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.7 ###
+
+* **Bug Fixes**
+* Fixed issue during database tables creation for numeric keys.
+
 ### 2.1.6 ###
 
 * **Improvements**
