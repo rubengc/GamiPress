@@ -55,7 +55,7 @@ function gamipress_privacy_logs_exporter( $email_address, $page = 1 ) {
     $export_items   = array();
     $limit = 500;
     $offset = $limit * ( $page - 1 );
-    $done = false;
+    $done = true;
 
     $user = get_user_by( 'email', $email_address );
 

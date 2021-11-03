@@ -247,6 +247,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.8 ###
+
+* **Bug Fixes**
+* Fixed wrong check that causes an infinite loop in the export personal data tool.
+
 ### 2.1.7 ###
 
 * **Bug Fixes**
