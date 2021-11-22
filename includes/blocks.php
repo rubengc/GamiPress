@@ -10,6 +10,26 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
+ * Select the right "block_categories" filter according to WP version
+ *
+ * @since 2.1.9
+ */
+function gamipress_init_block_category() {
+
+    global $wp_version;
+
+    if( version_compare( $wp_version, '5.8', '<' ) ) {
+        // WP version is less than 5.8
+        add_filter( 'block_categories', 'gamipress_register_block_categories', 10, 2 );
+    } else {
+        // WP version is 5.8 or higher
+        add_filter( 'block_categories_all', 'gamipress_register_block_categories', 10, 2 );
+    }
+
+}
+add_action( 'gamipress_init', 'gamipress_init_block_category' );
+
+/**
  * Register GamiPress as block category
  *
  * @since 1.6.0
@@ -26,8 +46,6 @@ function gamipress_register_block_categories( $categories, $post ) {
     return $categories;
 
 }
-add_filter( 'block_categories', 'gamipress_register_block_categories', 10, 2 );
-add_filter( 'block_categories_all', 'gamipress_register_block_categories', 10, 2 );
 
 /**
  * GamiPress block icons

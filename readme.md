@@ -247,6 +247,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.1.9 ###
+
+* **Improvements**
+* Prevent the use of the deprecated "block_categories" hook for WP installs on 5.8 or higher (thanks to @martatorre and @omhabibal).
+
 ### 2.1.8 ###
 
 * **Bug Fixes**
