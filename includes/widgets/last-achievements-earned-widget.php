@@ -1,15 +1,15 @@
 <?php
 /**
- * Last Achievement Earned Widget
+ * Last Achievements Earned Widget
  *
- * @package     GamiPress\Widgets\Widget\Last_Achievement_Earned
+ * @package     GamiPress\Widgets\Widget\Last_Achievements_Earned
  * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
  * @since       1.0.0
  */
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
-class GamiPress_Last_Achievement_Earned_Widget extends GamiPress_Widget {
+class GamiPress_Last_Achievements_Earned_Widget extends GamiPress_Widget {
 
     /**
      * Shortcode for this widget.
@@ -22,8 +22,8 @@ class GamiPress_Last_Achievement_Earned_Widget extends GamiPress_Widget {
 
         parent::__construct(
             $this->shortcode . '_widget',
-            __( 'GamiPress: Last Achievement Earned', 'gamipress' ),
-            __( 'Display the last achievement earned by the current user or a desired user.', 'gamipress' )
+            __( 'GamiPress: Last Achievements Earned', 'gamipress' ),
+            __( 'Display the last achievements earned by the current user or a desired user.', 'gamipress' )
         );
 
     }

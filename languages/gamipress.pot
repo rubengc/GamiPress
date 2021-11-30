@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2021-11-22 12:23+0100\n"
+"POT-Creation-Date: 2021-11-26 18:07+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -240,7 +240,7 @@ msgstr ""
 
 #: includes/admin/contextual-help.php:37
 #: includes/admin/meta-boxes/requirements.php:66 includes/post-types.php:386
-#: includes/shortcodes/gamipress_last_achievement_earned.php:47
+#: includes/shortcodes/gamipress_last_achievements_earned.php:53
 msgid "Achievement Type"
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_achievement.php:27
 #: includes/shortcodes/gamipress_achievements.php:45
 #: includes/shortcodes/gamipress_achievements.php:141
-#: includes/shortcodes/gamipress_last_achievement_earned.php:41
+#: includes/shortcodes/gamipress_last_achievements_earned.php:47
 msgid "Achievement"
 msgstr ""
 
@@ -917,7 +917,7 @@ msgstr ""
 #: includes/shortcodes/gamipress_achievements.php:166
 #: includes/shortcodes/gamipress_earnings.php:77
 #: includes/shortcodes/gamipress_earnings.php:320
-#: includes/shortcodes/gamipress_last_achievement_earned.php:64
+#: includes/shortcodes/gamipress_last_achievements_earned.php:70
 #: includes/shortcodes/gamipress_logs.php:46
 #: includes/shortcodes/gamipress_points.php:60
 #: includes/shortcodes/gamipress_points_types.php:107
@@ -1434,6 +1434,7 @@ msgstr ""
 #: includes/admin/meta-boxes/requirements.php:49
 #: includes/shortcodes/gamipress_achievements.php:130
 #: includes/shortcodes/gamipress_earnings.php:84
+#: includes/shortcodes/gamipress_last_achievements_earned.php:77
 #: includes/shortcodes/gamipress_logs.php:64
 msgid "Limit"
 msgstr ""
@@ -1640,7 +1641,7 @@ msgstr ""
 #: includes/admin/pages/settings.php:174 includes/admin/pages/tools.php:159
 #: includes/shortcodes/gamipress_achievements.php:32
 #: includes/shortcodes/gamipress_earnings.php:27
-#: includes/shortcodes/gamipress_last_achievement_earned.php:32
+#: includes/shortcodes/gamipress_last_achievements_earned.php:36
 #: includes/shortcodes/gamipress_ranks.php:33
 #: includes/shortcodes/gamipress_user_rank.php:33
 msgid "General"
@@ -5051,6 +5052,7 @@ msgid "Single or comma-separated list of achievement type(s) to display."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:78
+#: includes/shortcodes/gamipress_last_achievements_earned.php:83
 #: includes/shortcodes/gamipress_points.php:91
 #: includes/shortcodes/gamipress_points_types.php:40
 #: includes/shortcodes/gamipress_ranks.php:73
@@ -5065,6 +5067,7 @@ msgid "Columns to divide achievements."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:82
+#: includes/shortcodes/gamipress_last_achievements_earned.php:87
 #: includes/shortcodes/gamipress_points.php:95
 #: includes/shortcodes/gamipress_points_types.php:44
 #: includes/shortcodes/gamipress_ranks.php:77
@@ -5075,6 +5078,7 @@ msgid "1 Column"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:83
+#: includes/shortcodes/gamipress_last_achievements_earned.php:88
 #: includes/shortcodes/gamipress_points.php:96
 #: includes/shortcodes/gamipress_points_types.php:45
 #: includes/shortcodes/gamipress_ranks.php:78
@@ -5085,6 +5089,7 @@ msgid "2 Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:84
+#: includes/shortcodes/gamipress_last_achievements_earned.php:89
 #: includes/shortcodes/gamipress_points.php:97
 #: includes/shortcodes/gamipress_points_types.php:46
 #: includes/shortcodes/gamipress_ranks.php:79
@@ -5095,6 +5100,7 @@ msgid "3 Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:85
+#: includes/shortcodes/gamipress_last_achievements_earned.php:90
 #: includes/shortcodes/gamipress_points.php:98
 #: includes/shortcodes/gamipress_points_types.php:47
 #: includes/shortcodes/gamipress_ranks.php:80
@@ -5104,6 +5110,7 @@ msgid "4 Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:86
+#: includes/shortcodes/gamipress_last_achievements_earned.php:91
 #: includes/shortcodes/gamipress_points.php:99
 #: includes/shortcodes/gamipress_points_types.php:48
 #: includes/shortcodes/gamipress_ranks.php:81
@@ -5113,6 +5120,7 @@ msgid "5 Columns"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:87
+#: includes/shortcodes/gamipress_last_achievements_earned.php:92
 #: includes/shortcodes/gamipress_points.php:100
 #: includes/shortcodes/gamipress_points_types.php:49
 #: includes/shortcodes/gamipress_ranks.php:82
@@ -5174,6 +5182,7 @@ msgid "Display a load more button."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:131
+#: includes/shortcodes/gamipress_last_achievements_earned.php:78
 msgid "Number of achievements to display."
 msgstr ""
 
@@ -5242,7 +5251,7 @@ msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:160
 #: includes/shortcodes/gamipress_earnings.php:70
-#: includes/shortcodes/gamipress_last_achievement_earned.php:57
+#: includes/shortcodes/gamipress_last_achievements_earned.php:63
 #: includes/shortcodes/gamipress_logs.php:40
 #: includes/shortcodes/gamipress_points.php:54
 #: includes/shortcodes/gamipress_points_types.php:100
@@ -5304,7 +5313,7 @@ msgid "Show achievements from all network sites."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:266
-#: includes/shortcodes/gamipress_last_achievement_earned.php:107
+#: includes/shortcodes/gamipress_last_achievements_earned.php:135
 msgid "The type provided isn't a valid registered achievement type."
 msgstr ""
 
@@ -5485,25 +5494,29 @@ msgstr ""
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/shortcodes/gamipress_last_achievement_earned.php:24
-msgid "Last Achievement Earned"
+#: includes/shortcodes/gamipress_last_achievements_earned.php:28
+msgid "Last Achievements Earned"
 msgstr ""
 
-#: includes/shortcodes/gamipress_last_achievement_earned.php:25
-#: includes/widgets/last-achievement-earned-widget.php:26
-msgid "Display the last achievement earned by the current user or a desired user."
+#: includes/shortcodes/gamipress_last_achievements_earned.php:29
+#: includes/widgets/last-achievements-earned-widget.php:26
+msgid "Display the last achievements earned by the current user or a desired user."
 msgstr ""
 
-#: includes/shortcodes/gamipress_last_achievement_earned.php:48
+#: includes/shortcodes/gamipress_last_achievements_earned.php:54
 msgid "The type of the last achievement earned."
 msgstr ""
 
-#: includes/shortcodes/gamipress_last_achievement_earned.php:58
+#: includes/shortcodes/gamipress_last_achievements_earned.php:64
 msgid "Show the last achievement earned by the current logged in user."
 msgstr ""
 
-#: includes/shortcodes/gamipress_last_achievement_earned.php:65
+#: includes/shortcodes/gamipress_last_achievements_earned.php:71
 msgid "Show the last achievement earned by a specific user."
+msgstr ""
+
+#: includes/shortcodes/gamipress_last_achievements_earned.php:84
+msgid "Columns to divide achievements (only used when limit is higher than 1)."
 msgstr ""
 
 #: includes/shortcodes/gamipress_logs.php:21
@@ -6456,8 +6469,8 @@ msgstr ""
 msgid "GamiPress: User Earnings"
 msgstr ""
 
-#: includes/widgets/last-achievement-earned-widget.php:25
-msgid "GamiPress: Last Achievement Earned"
+#: includes/widgets/last-achievements-earned-widget.php:25
+msgid "GamiPress: Last Achievements Earned"
 msgstr ""
 
 #: includes/widgets/logs-widget.php:24

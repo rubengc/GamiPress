@@ -125,6 +125,23 @@ function gamipress_get_earnings_count( $query = array() ) {
  */
 function gamipress_get_last_earning( $query = array() ) {
 
+    $query['limit'] = 1;
+
+    return gamipress_get_last_earnings( $query );
+
+}
+
+/**
+ * Get the last earnings
+ *
+ * @since  2.2.0
+ *
+ * @param  array $query     User earning query parameters
+ *
+ * @return array|stdClass|null       Array of the last earnings registered
+ */
+function gamipress_get_last_earnings( $query = array() ) {
+
     global $wpdb;
 
     $where = gamipress_get_earnings_where( $query );
@@ -134,7 +151,9 @@ function gamipress_get_last_earning( $query = array() ) {
 
     $user_earnings = GamiPress()->db->user_earnings;
 
-    return $wpdb->get_row( "SELECT ue.* FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT 1" );
+    $limit = ( isset( $query['limit'] ) ? absint( $query['limit'] ) : 1 );
+
+    return $wpdb->get_results( "SELECT ue.* FROM {$user_earnings} AS ue WHERE {$where} ORDER BY ue.date DESC LIMIT {$limit}" );
 
 }
 

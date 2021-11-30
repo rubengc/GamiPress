@@ -27,10 +27,11 @@ function gamipress_render_achievement( $achievement = 0, $template_args = array(
     $gamipress_template_args = wp_parse_args( $template_args, gamipress_achievement_shortcode_defaults() );
 
     // If we were given an ID, get the post
-    if ( is_numeric( $achievement ) )
+    if ( is_numeric( $achievement ) ) {
         $post = gamipress_get_post( $achievement );
-    else
+    } else {
         $post = $achievement;
+    }
 
     setup_postdata( $post );
 
