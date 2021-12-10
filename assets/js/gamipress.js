@@ -618,4 +618,60 @@
         } );
     });
 
+	/**
+	 * Email settings
+	 *
+	 * @since 	2.2.1
+	 */
+	$body.on( 'change', '.gamipress-email-settings input', function (e) {
+
+		var $this = $(this);
+		var form = $this.closest('.gamipress-email-settings');
+		var row = $this.closest('tr');
+		var loader = row.find('.gamipress-email-settings-loader');
+		var value = $this.val();
+		var name = $this.attr('name');
+		var setting = name.replace('gamipress_email_settings[', '').replace(']', '');
+
+		switch( setting ) {
+			case 'all':
+				form.find('input[value="' + value + '"]:not([name="' + name + '"])').prop('checked', true);
+				break;
+			case 'points_types':
+			case 'achievement_types':
+			case 'rank_types':
+				form.find('input[value="' + value + '"][name^="gamipress_email_settings[' + setting + '_"]').prop('checked', true);
+				break;
+		}
+
+		// Show the "Saving..." text
+		loader.find('.gamipress-email-settings-saving').show();
+		loader.find('.gamipress-email-settings-saved').hide();
+		loader.show();
+
+		$.ajax( {
+			url: gamipress.ajaxurl,
+			data: {
+				action: 'gamipress_save_email_settings',
+				nonce: gamipress.nonce,
+				setting: setting,
+				value: value,
+			},
+			dataType: 'json',
+			success: function( response ) {
+
+				// Show the "Saved!" text
+				loader.find('.gamipress-email-settings-saving').hide();
+				loader.find('.gamipress-email-settings-saved').show();
+				loader.show();
+
+				setTimeout( function() {
+					loader.hide();
+				}, 2000 );
+
+			}
+		} );
+
+	});
+
 } )( jQuery );

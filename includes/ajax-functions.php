@@ -89,6 +89,75 @@ add_action( 'wp_ajax_gamipress_get_user_earnings', 'gamipress_ajax_get_user_earn
 add_action( 'wp_ajax_nopriv_gamipress_get_user_earnings', 'gamipress_ajax_get_user_earnings' );
 
 /**
+ * Ajax Helper for save email settings
+ *
+ * @since 2.2.1
+ *
+ * @return void
+ */
+function gamipress_ajax_save_email_settings() {
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'gamipress', 'nonce' );
+
+    if( ! isset( $_REQUEST['setting'] ) ) {
+        wp_send_json_error( __( 'Invalid setting key.', 'gamipress' ) );
+    }
+
+    if( ! isset( $_REQUEST['value'] ) ) {
+        wp_send_json_error( __( 'Invalid setting value.', 'gamipress' ) );
+    }
+
+    // Sanitize the setting key
+    $setting = sanitize_text_field( $_REQUEST['setting'] );
+    $setting = sanitize_key( $setting );
+
+    // Sanitize the setting value
+    $value = sanitize_text_field( $_REQUEST['value'] );
+
+    // The unique accepted values are "yes" or "no"
+    if( $value !== 'yes' && $value !== 'no' ) {
+        $value = 'yes';
+    }
+
+    $user_id = get_current_user_id();
+
+    // Bail if user is not logged in
+    if( $user_id === 0 ) {
+        wp_send_json_error( __( 'Please, log in to update your email preferences.', 'gamipress' ) );
+    }
+
+    $user_settings = gamipress_get_user_email_settings( $user_id );
+
+    $user_settings[$setting] = $value;
+
+    switch ( $setting ) {
+        case 'all':
+            // Update all user settings to the same value
+            foreach( $user_settings as $user_setting => $setting_value ) {
+                $user_settings[$user_setting] = $value;
+            }
+            break;
+        case 'points_types':
+        case 'achievement_types':
+        case 'rank_types':
+            // Update the group settings to the same value
+            foreach( $user_settings as $user_setting => $setting_value ) {
+                if( gamipress_starts_with( $user_setting, $setting . '_' ) ) {
+                    $user_settings[$user_setting] = $value;
+                }
+            }
+            break;
+    }
+
+    update_user_meta( $user_id, 'gamipress_email_settings', $user_settings );
+
+    // Send back our successful response
+    wp_send_json_success( __( 'Email preferences saved successfully.', 'gamipress' ) );
+
+}
+add_action( 'wp_ajax_gamipress_save_email_settings', 'gamipress_ajax_save_email_settings' );
+
+/**
  * AJAX Helper for selecting users in Shortcode Embedder
  *
  * @since 1.0.0

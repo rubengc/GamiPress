@@ -3,7 +3,7 @@ Contributors: gamipress, tsunoa, rubengc, eneribs, pacogon, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.8
-Stable tag: 2.2.0
+Stable tag: 2.2.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -205,12 +205,13 @@ GamiPress comes with the following shortcodes:
 * [[gamipress_rank]](https://gamipress.com/docs/shortcodes/gamipress_rank/) to display a desired rank.
 * [[gamipress_ranks]](https://gamipress.com/docs/shortcodes/gamipress_ranks/) to display a list of ranks.
 * [[gamipress_user_rank]](https://gamipress.com/docs/shortcodes/gamipress_user_rank/) to display previous, current and/or next rank of a user.
+* [[gamipress_email_settings]](https://gamipress.com/docs/shortcodes/gamipress_email_settings/) to display the user email notifications preferences for the GamiPress emails.
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of available shortcodes, including descriptions of all parameters each shortcode supports.
 
-= Which widgets come bundled with GamiPress? =
+= Which blocks and widgets come bundled with GamiPress? =
 
-GamiPress comes with the following widgets:
+GamiPress comes with the following blocks and widgets:
 
 * Achievement: to display a desired achievement.
 * Achievements: to display a list of achievements.
@@ -222,6 +223,7 @@ GamiPress comes with the following widgets:
 * Rank: to display a desired rank.
 * Ranks: to display a list of ranks.
 * User Rank: to display previous, current and/or next rank of a user.
+* Email Settings: to display the user email notifications preferences for the GamiPress emails.
 
 = Do you offer custom development services? =
 
@@ -230,6 +232,15 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.2.1 =
+
+* **New Features**
+* Added user email preferences support to meet the EU GDPR requirements.
+* Added the shortcode [gamipress_email_settings] to display the user email notifications preferences for the GamiPress emails.
+* Added the block and widget Email Settings to display the user email notifications preferences for the GamiPress emails.
+* **Developer Notes**
+* Quote all fields and indexes during database creation to improve compatibility with some database servers.
 
 = 2.2.0 =
 

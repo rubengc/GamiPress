@@ -104,7 +104,7 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
 
                     switch( $alter['action'] ) {
                         case 'ADD':
-                            $queries[] = "ALTER TABLE {$this->ct_db->table_name} ADD " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            $queries[] = "ALTER TABLE `{$this->ct_db->table_name}` ADD " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
                             break;
                         case 'ADD INDEX':
 
@@ -115,29 +115,29 @@ if ( ! class_exists( 'CT_DataBase_Schema_Updater' ) ) :
                             $max_index_length = 191;
 
                             if( $schema_fields[$column]['length'] > $max_index_length || $schema_fields[$column]['type'] === 'text' ) {
-                                $add_index_query = '' . $column . '(' . $column . '(' . $max_index_length . '))';
+                                $add_index_query = '`' . $column . '`(`' . $column . '`(' . $max_index_length . '))';
                             } else {
-                                $add_index_query = '' . $column . '(' . $column . ')';
+                                $add_index_query = '`' . $column . '`(' . $column . '`)';
                             }
 
                             // Prevent errors if index already exists
                             drop_index( $this->ct_db->table_name, $column );
 
                             // For indexes query should be executed directly
-                            $this->ct_db->db->query( "ALTER TABLE {$this->ct_db->table_name} ADD INDEX {$add_index_query}" );
+                            $this->ct_db->db->query( "ALTER TABLE `{$this->ct_db->table_name}` ADD INDEX {$add_index_query}" );
                             break;
                         case 'MODIFY':
-                            $queries[] = "ALTER TABLE {$this->ct_db->table_name} MODIFY " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
+                            $queries[] = "ALTER TABLE `{$this->ct_db->table_name}` MODIFY " . $this->schema->field_array_to_schema( $column, $schema_fields[$column] ) . "; ";
                             break;
                         case 'DROP':
-                            $queries[] = "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}; ";
+                            $queries[] = "ALTER TABLE `{$this->ct_db->table_name}` DROP COLUMN `{$column}`; ";
 
                             // Better use a built-in function here?
-                            //maybe_drop_column( $this->ct_db->table_name, $column, "ALTER TABLE {$this->ct_db->table_name} DROP COLUMN {$column}" );
+                            //maybe_drop_column( $this->ct_db->table_name, $column, "ALTER TABLE `{$this->ct_db->table_name}` DROP COLUMN {$column}" );
                         break;
                         case 'DROP INDEX':
                             // For indexes query should be executed directly
-                            //$this->ct_db->db->query( "ALTER TABLE {$this->ct_db->table_name} DROP INDEX {$column}" );
+                            //$this->ct_db->db->query( "ALTER TABLE `{$this->ct_db->table_name}` DROP INDEX {$column}" );
 
                             // Use a built-in function for safe drop
                             drop_index( $this->ct_db->table_name, $column );

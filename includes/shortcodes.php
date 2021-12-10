@@ -26,6 +26,7 @@ require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_points_types.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_rank.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_ranks.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_user_rank.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_email_settings.php';
 
 /**
  * Register a new GamiPress Shortcode

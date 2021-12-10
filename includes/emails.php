@@ -795,11 +795,11 @@ add_action( 'gamipress_action_get_send_test_rank_requirement_completed_email', '
  *
  * @since 1.3.0
  *
- * @param $user_id
- * @param $achievement_id
- * @param $trigger
- * @param $site_id
- * @param $args
+ * @param int $user_id
+ * @param int $achievement_id
+ * @param string $trigger
+ * @param int $site_id
+ * @param array $args
  */
 function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger, $site_id, $args ) {
 
@@ -813,7 +813,13 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
 
     if( in_array( $achievement_type, $achievement_types ) ) {
 
+        // Check if email disabled from settings
         if( (bool) apply_filters( 'gamipress_disable_achievement_earned_email', gamipress_get_option( 'disable_achievement_earned_email', false ), $user_id, $achievement_id ) ) {
+            return;
+        }
+
+        // Check if email disabled from user preferences
+        if( gamipress_is_email_disabled_from_user_settings( $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -839,6 +845,11 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         }
 
         if( (bool) apply_filters( 'gamipress_disable_step_completed_email', gamipress_get_option( 'disable_step_completed_email', false ), $user_id, $achievement_id, $achievement ) ) {
+            return;
+        }
+
+        // Check if email disabled from user preferences
+        if( gamipress_is_email_disabled_from_user_settings( $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -887,6 +898,11 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
             return;
         }
 
+        // Check if email disabled from user preferences
+        if( gamipress_is_email_disabled_from_user_settings( $user_id, $achievement_id ) ) {
+            return;
+        }
+
         $gamipress_email_template_args = array(
             'user_id' => $user_id,
             'points_award_id' => $achievement_id,
@@ -902,6 +918,11 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
     } else if( $achievement_type === 'points-deduct' ) {
 
         if( (bool) apply_filters( 'gamipress_disable_points_deduct_completed_email', gamipress_get_option( 'disable_points_deduct_completed_email', false ), $user_id, $achievement_id ) ) {
+            return;
+        }
+
+        // Check if email disabled from user preferences
+        if( gamipress_is_email_disabled_from_user_settings( $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -927,6 +948,11 @@ function gamipress_maybe_send_email_to_user( $user_id, $achievement_id, $trigger
         }
 
         if( (bool) apply_filters( 'gamipress_disable_rank_requirement_completed_email', gamipress_get_option( 'disable_rank_requirement_completed_email', false ), $user_id, $achievement_id, $rank ) ) {
+            return;
+        }
+
+        // Check if email disabled from user preferences
+        if( gamipress_is_email_disabled_from_user_settings( $user_id, $achievement_id ) ) {
             return;
         }
 
@@ -981,17 +1007,22 @@ add_action( 'gamipress_award_achievement', 'gamipress_maybe_send_email_to_user',
  * @since   1.3.1
  * @updated 1.3.8 Added filters to allow override anything
  *
- * @param $user_id
- * @param $new_rank
- * @param $old_rank
- * @param $admin_id
- * @param $achievement_id
+ * @param int $user_id
+ * @param WP_Post $new_rank
+ * @param WP_Post $old_rank
+ * @param int $admin_id
+ * @param int $achievement_id
  */
 function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank, $old_rank, $admin_id = 0, $achievement_id = null ) {
 
     global $gamipress_email_template_args;
 
     if( (bool) apply_filters( 'gamipress_disable_rank_earned_email', gamipress_get_option( 'disable_rank_earned_email', false ), $user_id, $new_rank ) ) {
+        return;
+    }
+
+    // Check if email disabled from user preferences
+    if( gamipress_is_email_disabled_from_user_settings( $user_id, $new_rank->ID ) ) {
         return;
     }
 
@@ -1010,3 +1041,165 @@ function gamipress_maybe_send_email_to_user_for_rank_earned( $user_id, $new_rank
     gamipress_send_email( $user->user_email, $subject, $message );
 }
 add_action( 'gamipress_update_user_rank', 'gamipress_maybe_send_email_to_user_for_rank_earned', 20, 5 );
+
+/**
+ * Get the user email settings
+ *
+ * @since 2.2.1
+ *
+ * @param int $user_id  The user ID
+ *
+ * @return array        The user email settings
+ */
+function gamipress_get_user_email_settings( $user_id ) {
+
+    $user_id = absint( $user_id );
+
+    $cache = gamipress_get_cache( 'user_email_settings', array(), false );
+
+    // If result already cached, return it
+    if( isset( $cache[$user_id] ) ) {
+        return $cache[$user_id];
+    }
+
+    $email_settings = gamipress_get_user_meta( $user_id, 'gamipress_email_settings', true );
+
+    // Ensure that is an array
+    if( ! is_array( $email_settings ) ) {
+        $email_settings = array();
+    }
+
+    // Setup the default values
+    $default_settings =array(
+        'all' => 'yes',
+        'points_types' => 'yes',
+        'achievement_types' => 'yes',
+        'rank_types' => 'yes',
+    );
+
+    // Setup the default values per points type
+    foreach ( gamipress_get_points_types() as $type => $data ) {
+        $default_settings['points_types_' . $type] = 'yes';
+    }
+
+    // Setup the default values per achievement type
+    foreach ( gamipress_get_achievement_types() as $type => $data ) {
+        $default_settings['achievement_types_' . $type] = 'yes';
+    }
+
+    // Setup the default values per rank type
+    foreach ( gamipress_get_rank_types() as $type => $data ) {
+        $default_settings['rank_types_' . $type] = 'yes';
+    }
+
+    // Apply the default values
+    $email_settings = wp_parse_args( $email_settings, $default_settings );
+
+    /**
+     * Filter to override the user email settings
+     *
+     * @since 2.2.1
+     *
+     * @param array $email_settings The user email settings
+     * @param int   $user_id        The user ID
+     *
+     * @return array
+     */
+    $email_settings = apply_filters( 'gamipress_get_user_email_settings', $email_settings, $user_id );
+
+    // Cache the user email settings
+    $cache[$user_id] = $email_settings;
+    gamipress_set_cache( 'user_email_settings', $cache );
+
+    return $email_settings;
+
+
+}
+
+/**
+ * Check if email for a specific type is disabled via the user email settings
+ *
+ * @since 2.2.1
+ *
+ * @param int $user_id The user ID
+ * @param int $post_id The post ID to check if emails are disabled or not
+ *
+ * @return bool
+ */
+function gamipress_is_email_disabled_from_user_settings( $user_id, $post_id ) {
+
+    $disabled = false;
+
+    // Get the user email settings
+    $user_email_settings = gamipress_get_user_email_settings( $user_id );
+
+    // Skip the whole function checks if user has disabled all emails
+    if( $user_email_settings['all'] === 'no' ) {
+        $disabled = true;
+    }
+
+    if( ! $disabled ) {
+
+        // Get the post type of the element to check
+        $post_type = gamipress_get_post_type( $post_id );
+        $group = '';
+        $type = '';
+
+        if( in_array( $post_type, gamipress_get_achievement_types() ) ) {
+            // Achievement
+            $group = 'achievement_types';
+            $type = $post_type;
+        } else if( in_array( $post_type, gamipress_get_rank_types() ) ) {
+            // Rank
+            $group = 'rank_types';
+            $type = $post_type;
+        } else if( $post_type === 'step' ) {
+            // Step
+            $group = 'achievement_types';
+
+            $achievement = gamipress_get_step_achievement( $post_id );
+
+            if( $achievement ) {
+                $type = $achievement->post_type;
+            }
+
+        } else if( $post_type === 'rank-requirement' ) {
+            // Rank requirement
+            $group = 'rank_types';
+
+            $rank = gamipress_get_rank_requirement_rank( $post_id );
+
+            if( $rank ) {
+                $type = $rank->post_type;
+            }
+
+        } else if( $post_type === 'points-award' || $post_type === 'points-deduct' ) {
+            // Points Award/Deduct
+            $group = 'points_types';
+
+            $points_type = gamipress_get_points_award_points_type( $post_id );
+
+            if( $points_type ) {
+                $type = $points_type->post_name;
+            }
+        }
+
+        // Check if emails has been disabled for the group (points, achievements or ranks) or for the type
+        if( $user_email_settings[$group] === 'no' || $user_email_settings[$group . '_' . $type] === 'no' ) {
+            $disabled = true;
+        }
+    }
+
+    /**
+     * Check if email for a specific type is disabled via the user email settings
+     *
+     * @since 2.2.1
+     *
+     * @param int $user_id The user ID
+     * @param int $post_id The post ID to check if emails are disabled or not
+     *
+     * @return bool
+     */
+    return apply_filters( 'gamipress_is_email_disabled_from_user_settings', $disabled, $user_id, $post_id );
+
+}

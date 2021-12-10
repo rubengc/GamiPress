@@ -529,6 +529,53 @@ ul.gamipress-rank-earners-list li .earner-display-name {
 }
 
 /* --------------------------------------
+	Email Settings
+   -------------------------------------- */
+
+.gamipress-email-settings .gamipress-email-settings-header-yes,
+.gamipress-email-settings .gamipress-email-settings-header-no,
+.gamipress-email-settings .gamipress-email-settings-column-yes,
+.gamipress-email-settings .gamipress-email-settings-column-no {
+	width: 80px;
+	text-align: center;
+}
+
+.gamipress-email-settings-loader {
+	position: absolute;
+	right: -65px;
+	font-size: 80%;
+	width: 60px;
+}
+
+.gamipress-email-settings-loader .gamipress-email-settings-saving {
+	-webkit-animation: flickerAnimation 1s infinite;
+	-moz-animation: flickerAnimation 1s infinite;
+	-o-animation: flickerAnimation 1s infinite;
+	animation: flickerAnimation 1s infinite;
+}
+
+@keyframes flickerAnimation {
+	0%   { opacity:1; }
+	50%  { opacity:0; }
+	100% { opacity:1; }
+}
+@-o-keyframes flickerAnimation{
+	0%   { opacity:1; }
+	50%  { opacity:0; }
+	100% { opacity:1; }
+}
+@-moz-keyframes flickerAnimation{
+	0%   { opacity:1; }
+	50%  { opacity:0; }
+	100% { opacity:1; }
+}
+@-webkit-keyframes flickerAnimation{
+	0%   { opacity:1; }
+	50%  { opacity:0; }
+	100% { opacity:1; }
+}
+
+/* --------------------------------------
 	Shortcode errors
    -------------------------------------- */
 .gamipress-shortcode-error {
