@@ -60,6 +60,11 @@ Other features
 
 ## Changelog ##
 
+**1.0.2**
+
+**Bug Fixes**
+- Make use of the min() function when defining length of the table keys (thanks to @mholubowski).
+
 **1.0.1**
 
 **Improvements**

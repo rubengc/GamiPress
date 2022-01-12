@@ -233,7 +233,7 @@ if ( ! class_exists( 'CT_DataBase_Schema' ) ) :
                  * This means that an index which used to have room for floor(767/3) = 255 characters, now only has room for floor(767/4) = 191 characters.
                  */
                 $max_index_length = 191;
-                $length = max( $field_args['length'], $max_index_length );
+                $length = min( $field_args['length'], $max_index_length );
 
                 // Ensure that length has a value
                 if( $length === 0 ) {

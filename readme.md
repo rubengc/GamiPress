@@ -249,6 +249,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.2 ###
+
+* **Developer Notes**
+* Make use of the min() function when defining length of the table keys (thanks to @mholubowski).
+
 ### 2.2.1 ###
 
 * **New Features**
