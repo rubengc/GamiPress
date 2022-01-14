@@ -249,6 +249,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.3 ###
+
+* **Developer Notes**
+* Added support for CMB2 fields data removal if field has "multiple" set to "true".
+
 ### 2.2.2 ###
 
 * **Developer Notes**
