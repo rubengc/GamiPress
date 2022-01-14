@@ -60,6 +60,11 @@ Other features
 
 ## Changelog ##
 
+**1.0.3**
+
+**Improvements**
+- Added support for CMB2 fields data removal if field has "multiple" set to "true".
+
 **1.0.2**
 
 **Bug Fixes**
