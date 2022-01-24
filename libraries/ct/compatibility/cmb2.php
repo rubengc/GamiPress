@@ -228,7 +228,7 @@ function ct_cmb2_override_meta_remove( $check, $args, $field_args, $field ) {
     }
 
     $object = (array) ct_get_object( $args['id'] );
-    
+
     // If not is a main field and CT_Table supports meta data, then try to remove the given value to the meta table
     // Note: Main fields are automatically managed by the save method on the CT_Edit_View edit screen
     if( ! isset( $object[$args['field_id']] ) && in_array( 'meta', $ct_table->supports ) ) {

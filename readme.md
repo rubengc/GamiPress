@@ -249,6 +249,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.4 ###
+
+* **Developer Notes**
+* Tested with WordPress 5.9.
+
 ### 2.2.3 ###
 
 * **Developer Notes**
