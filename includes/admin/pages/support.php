@@ -24,7 +24,7 @@ function gamipress_help_support_page() {
         <h1 class="wp-heading-inline"><?php _e( 'GamiPress Help and Support', 'gamipress' ); ?></h1>
 
         <h2><?php _e( 'About GamiPress', 'gamipress' ); ?>:</h2>
-        <p><?php echo __( 'GamiPress is plugin to WordPress that allows your site\'s users to complete tasks, demonstrate achievements, and earn points. You define the points and achievement types, organize your requirements any way you like, and choose from a range of options to determine whether each task or requirement has been achieved.', 'gamipress' ); ?></p>
+        <p><?php echo __( 'GamiPress is plugin for WordPress that allows your site\'s users to complete tasks, demonstrate achievements, and earn points. You define the points and achievement types, organize your requirements any way you like, and choose from a range of options to determine whether each task or requirement has been achieved.', 'gamipress' ); ?></p>
 
         <?php do_action( 'gamipress_help_support_page_about' ); ?>
 

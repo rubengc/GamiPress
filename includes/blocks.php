@@ -38,7 +38,7 @@ function gamipress_register_block_categories( $categories, $post ) {
 
     // Register GamiPress as block category
     $categories[] = array(
-        'title' => __( 'GamiPress', 'gamipress' ),
+        'title' => 'GamiPress',
         'slug'  => 'gamipress',
         'icon'  => 'gamipress',
     );

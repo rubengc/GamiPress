@@ -156,12 +156,10 @@ function gamipress_clear_cache_action() {
         return;
     }
 
+    // Clear the GamiPress cache
     gamipress_flush_cache();
 
-    $url = remove_query_arg( array( 'gamipress-action'  ) );
-    $url = add_query_arg( 'gamipress-message', 'cache_cleared', $url );
-
-    wp_redirect( $url );
+    wp_redirect( admin_url( 'admin.php?page=gamipress&gamipress-message=cache_cleared' ) );
     exit;
 
 }

@@ -57,7 +57,7 @@ function gamipress_get_activity_triggers() {
                 'gamipress_user_post_type_visit'  	    => __( 'Get visits on a post of a type', 'gamipress' ),
 			),
 			// GamiPress
-			__( 'GamiPress', 'gamipress' ) => array(
+			'GamiPress' => array(
 				'specific-achievement' 					=> __( 'Unlock a specific achievement', 'gamipress' ),
 				'any-achievement'      					=> __( 'Unlock any achievement of type', 'gamipress' ),
 				'all-achievements'     					=> __( 'Unlock all Achievements of type', 'gamipress' ),
@@ -358,8 +358,8 @@ function gamipress_load_activity_triggers() {
 	foreach ( gamipress_get_achievement_types() as $achievement_type => $data ) {
 
 		// Add trigger for unlocking ANY and ALL posts for each achievement type
-		$activity_triggers[__( 'GamiPress', 'gamipress' )]['gamipress_unlock_' . $achievement_type] = sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
-		$activity_triggers[__( 'GamiPress', 'gamipress' )]['gamipress_unlock_all_' . $achievement_type] = sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
+		$activity_triggers['GamiPress']['gamipress_unlock_' . $achievement_type] = sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
+		$activity_triggers['GamiPress']['gamipress_unlock_all_' . $achievement_type] = sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
 
 	}
 

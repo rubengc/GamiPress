@@ -1775,6 +1775,158 @@ label[for="_gamipress_sequential"] {
 }
 
 /* -------------------------------------------
+    Dashboard
+   ------------------------------------------- */
+
+.gamipress-dashboard .wp-heading-inline {
+	display: none !important;
+}
+
+.gamipress-dashboard .postbox .inside,
+.gamipress-dashboard .postbox .inside p {
+	font-size: 14px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-logo {
+	margin-bottom: 10px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-logo img {
+	width: 230px;
+	vertical-align: middle;
+}
+
+.gamipress-dashboard .gamipress-dashboard-logo .autoamtorwp-dashboard-version {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.gamipress-dashboard h3 {
+	font-size: 16px !important;
+	font-weight: 600 !important;
+}
+
+.gamipress-dashboard li {
+	margin-bottom: 10px;
+}
+
+.gamipress-dashboard li h3 {
+	margin-top: 10px !important;
+}
+
+.gamipress-dashboard li .dashicons {
+	color: #82878c;
+}
+
+.gamipress-dashboard .gamipress-dashboard-video a {
+	display: grid;
+	grid-gap: 0;
+	grid-template-columns: 1fr 3fr;
+	margin-bottom: 3px;
+	text-decoration: none;
+	color: #3c434a;
+	opacity: 0.8;
+}
+
+.gamipress-dashboard .gamipress-dashboard-video a:hover {
+	opacity: 1;
+}
+
+.gamipress-dashboard .gamipress-dashboard-video .gamipress-dashboard-video-image {
+	height: 62px;
+	overflow: hidden;
+}
+
+.gamipress-dashboard .gamipress-dashboard-video .gamipress-dashboard-video-image img {
+	margin-top: -13px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-video .gamipress-dashboard-video-details .gamipress-dashboard-video-title {
+	font-size: 16px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-video .gamipress-dashboard-video-details .gamipress-dashboard-video-duration {
+	font-size: 13px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-get-involved p,
+.gamipress-dashboard .gamipress-dashboard-get-involved ul {
+	margin-bottom: 20px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-pricing-button {
+	text-align: center;
+	margin-top: 28px;
+}
+
+.gamipress-dashboard .gamipress-dashboard-pricing-button a {
+	padding: 8px 18px;
+}
+
+.gamipress-dashboard-more-videos {
+	text-align: center;
+}
+
+.gamipress-dashboard-more-videos a {
+	text-decoration: none;
+}
+
+.gamipress-dashboard .contributors-list {
+	text-align: center;
+}
+
+.gamipress-dashboard .contributors-list img {
+	border-radius: 50%;
+}
+
+.gamipress-dashboard .contributors-list span {
+	display: block;
+}
+
+.gamipress-dashboard .gamipress-dashboard-social-list li {
+	margin-bottom: 16px;
+}
+
+.gamipress-dashboard .dashicons-youtube {
+	color: #e90000 !important;
+}
+
+.gamipress-dashboard .dashicons-facebook {
+	color: #4766a9 !important;
+}
+
+.gamipress-dashboard .dashicons-twitter {
+	color: #139ae7 !important;
+}
+
+.gamipress-dashboard .dashicons-linkedin {
+	color: #0074b3 !important;
+}
+
+.gamipress-dashboard-blocks-list li span {
+	float: right;
+}
+
+@media screen and (min-width: 1200px) {
+
+	.gamipress-dashboard .postbox .inside {
+		min-height: 226px;
+	}
+
+	.gamipress-dashboard .gamipress-dashboard-columns {
+		display: grid;
+		grid-gap: 2rem;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+
+	.gamipress-dashboard .contributors-list {
+		display: grid;
+		grid-gap: 1rem;
+		grid-template-columns: 1fr 1fr 1fr;
+	}
+}
+
+/* -------------------------------------------
     Add-ons
    ------------------------------------------- */
 

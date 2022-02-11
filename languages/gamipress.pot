@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-01-24 10:53+0100\n"
+"POT-Creation-Date: 2022-02-11 12:11+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,15 +21,16 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-0: libraries\n"
 
 #: assets/js/gamipress-blocks.js:1 assets/js/gamipress-blocks.min.js:1
-#: includes/admin.php:389 includes/admin/pages/settings.php:143
-#: includes/admin/pages/settings.php:149 includes/admin/plugins.php:30
-#: includes/admin/plugins.php:33
+#: includes/admin.php:441 includes/admin/pages/dashboard.php:229
+#: includes/admin/pages/settings.php:143 includes/admin/pages/settings.php:149
+#: includes/admin/plugins.php:30 includes/admin/plugins.php:33
 #: includes/admin/tools/import-export-settings.php:24
 #: includes/admin/tools/system-info.php:382
 msgid "Settings"
 msgstr ""
 
-#: includes/admin.php:82 includes/admin/settings/email.php:326
+#: includes/admin.php:83 includes/admin/pages/dashboard.php:243
+#: includes/admin/settings/email.php:326
 #: includes/admin/tools/bulk-awards.php:217
 #: includes/admin/tools/bulk-revokes.php:217
 #: includes/admin/tools/import-export-achievements.php:155
@@ -43,7 +44,8 @@ msgstr ""
 msgid "Achievements"
 msgstr ""
 
-#: includes/admin.php:90 includes/admin/settings/email.php:366
+#: includes/admin.php:91 includes/admin/pages/dashboard.php:249
+#: includes/admin/settings/email.php:366
 #: includes/admin/tools/bulk-awards.php:228
 #: includes/admin/tools/bulk-revokes.php:228
 #: includes/admin/tools/import-export-earnings.php:53
@@ -56,103 +58,104 @@ msgstr ""
 msgid "Ranks"
 msgstr ""
 
-#: includes/admin.php:94 includes/admin.php:195 includes/admin/users.php:27
-#: includes/blocks.php:41 includes/shortcodes.php:71
-#: includes/shortcodes/shortcodes-editor.php:92 includes/triggers.php:60
-#: includes/triggers.php:361 includes/triggers.php:362
-msgid "GamiPress"
+#: includes/admin.php:96 includes/admin.php:121 includes/admin.php:246
+#: includes/admin/pages/dashboard.php:22
+msgid "Dashboard"
 msgstr ""
 
-#: includes/admin.php:110 includes/admin.php:349
+#: includes/admin.php:147 includes/admin.php:401
 #: includes/admin/pages/support.php:42
 msgid "Help / Support"
 msgstr ""
 
-#: includes/admin.php:111 includes/admin.php:357
+#: includes/admin.php:148 includes/admin.php:409
 #: includes/admin/pages/settings.php:194 includes/admin/plugins.php:67
 msgid "Add-ons"
 msgstr ""
 
-#: includes/admin.php:112 includes/admin.php:365
+#: includes/admin.php:149 includes/admin.php:417
 msgid "Assets"
 msgstr ""
 
-#: includes/admin.php:127 includes/admin.php:397
+#: includes/admin.php:164 includes/admin.php:449
 msgid "Clear Cache"
 msgstr ""
 
-#: includes/admin.php:146 includes/admin.php:423
+#: includes/admin.php:183 includes/admin.php:475
 msgid "New"
 msgstr ""
 
-#: includes/admin.php:148 includes/admin.php:428
+#: includes/admin.php:185 includes/admin.php:480
 msgid "Try AutomatorWP!"
 msgstr ""
 
-#: includes/admin.php:205 includes/admin/tools/reset-data.php:34
+#: includes/admin.php:257 includes/admin/pages/dashboard.php:247
+#: includes/admin/tools/reset-data.php:34
 #: includes/admin/tools/system-info.php:357 includes/post-types.php:282
 #: includes/post-types.php:288 includes/post-types.php:294
 #: includes/shortcodes/gamipress_points_types.php:20
 msgid "Points Types"
 msgstr ""
 
-#: includes/admin.php:238 includes/admin/tools/reset-data.php:31
+#: includes/admin.php:290 includes/admin/tools/reset-data.php:31
 #: includes/admin/tools/system-info.php:362 includes/post-types.php:385
 #: includes/post-types.php:391 includes/post-types.php:397
 msgid "Achievement Types"
 msgstr ""
 
-#: includes/admin.php:271 includes/admin/tools/reset-data.php:37
+#: includes/admin.php:323 includes/admin/tools/reset-data.php:37
 #: includes/admin/tools/system-info.php:367 includes/post-types.php:454
 #: includes/post-types.php:460 includes/post-types.php:466
 msgid "Rank Types"
 msgstr ""
 
-#: includes/admin.php:316 includes/admin/users.php:465
-#: includes/custom-tables.php:35 includes/custom-tables.php:48
-#: includes/privacy/erasers/user-earnings.php:24
+#: includes/admin.php:368 includes/admin/pages/dashboard.php:252
+#: includes/admin/users.php:465 includes/custom-tables.php:35
+#: includes/custom-tables.php:48 includes/privacy/erasers/user-earnings.php:24
 #: includes/privacy/exporters/user-earnings.php:24
 #: includes/privacy/exporters/user-earnings.php:77
 #: includes/shortcodes/gamipress_earnings.php:20
 msgid "User Earnings"
 msgstr ""
 
-#: includes/admin.php:324 includes/admin/pages/settings.php:190
-#: includes/admin/settings/logs.php:25 includes/admin/tools/reset-data.php:40
-#: includes/compatibility/1.2.8.php:250 includes/compatibility/1.2.8.php:256
-#: includes/compatibility/1.2.8.php:262 includes/custom-tables.php:97
-#: includes/custom-tables.php:107 includes/shortcodes/gamipress_logs.php:20
+#: includes/admin.php:376 includes/admin/pages/dashboard.php:251
+#: includes/admin/pages/settings.php:190 includes/admin/settings/logs.php:25
+#: includes/admin/tools/reset-data.php:40 includes/compatibility/1.2.8.php:250
+#: includes/compatibility/1.2.8.php:256 includes/compatibility/1.2.8.php:262
+#: includes/custom-tables.php:97 includes/custom-tables.php:107
+#: includes/shortcodes/gamipress_logs.php:20
 msgid "Logs"
 msgstr ""
 
-#: includes/admin.php:373 includes/admin/pages/licenses.php:254
+#: includes/admin.php:425 includes/admin/pages/licenses.php:254
 #: includes/admin/pages/licenses.php:261
 msgid "Licenses"
 msgstr ""
 
-#: includes/admin.php:381 includes/admin/pages/add-ons.php:41
-#: includes/admin/pages/tools.php:128 includes/admin/pages/tools.php:134
+#: includes/admin.php:433 includes/admin/pages/add-ons.php:41
+#: includes/admin/pages/dashboard.php:230 includes/admin/pages/tools.php:128
+#: includes/admin/pages/tools.php:134
 msgid "Tools"
 msgstr ""
 
-#: includes/admin.php:454 includes/admin/meta-boxes/achievement-type.php:29
+#: includes/admin.php:506 includes/admin/meta-boxes/achievement-type.php:29
 #: includes/admin/meta-boxes/points-type.php:32
 #: includes/admin/meta-boxes/rank-type.php:29
 msgid "Singular Name"
 msgstr ""
 
-#: includes/admin.php:458 includes/admin/achievements.php:42
+#: includes/admin.php:510 includes/admin/achievements.php:42
 #: includes/admin/ranks.php:67
 msgid "Image"
 msgstr ""
 
-#: includes/admin.php:471 includes/admin/meta-boxes/achievement-type.php:34
+#: includes/admin.php:523 includes/admin/meta-boxes/achievement-type.php:34
 #: includes/admin/meta-boxes/points-type.php:37
 #: includes/admin/meta-boxes/rank-type.php:34
 msgid "Plural Name"
 msgstr ""
 
-#: includes/admin.php:472 includes/admin/meta-boxes/achievement-type.php:39
+#: includes/admin.php:524 includes/admin/meta-boxes/achievement-type.php:39
 #: includes/admin/meta-boxes/points-type.php:42
 #: includes/admin/meta-boxes/rank-type.php:39
 #: includes/admin/tools/import-export-achievements.php:55
@@ -161,13 +164,13 @@ msgstr ""
 msgid "Slug"
 msgstr ""
 
-#: includes/admin.php:502 includes/admin/achievements.php:85
+#: includes/admin.php:554 includes/admin/achievements.php:85
 #: includes/admin/ranks.php:127
 #, php-format
 msgid "&#8220;%s&#8221; (Edit)"
 msgstr ""
 
-#: includes/admin.php:676
+#: includes/admin.php:728
 #, php-format
 msgid "Thank you for using <a href=\"%1$s\" target=\"_blank\">GamiPress</a>! Please leave us a <a href=\"%2$s\" target=\"_blank\">%3$s</a> rating on WordPress.org"
 msgstr ""
@@ -1625,6 +1628,146 @@ msgstr ""
 msgid "Resources to decorate your gamification elements and take their design to the next level!."
 msgstr ""
 
+#: includes/admin/pages/dashboard.php:39
+msgid "Welcome to GamiPress"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:51 includes/admin/pages/support.php:31
+msgid "Documentation"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:64
+msgid "Blocks, Shortcodes and Widgets"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:77
+msgid "Meet the team"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:90
+msgid "Follow us"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:154
+msgid "More videos"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:197
+msgid "View all videos"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:202
+msgid "GamiPress is a free and open-source plugin accessible to everyone just like WordPress. There are many ways you can help support GamiPress"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:204
+msgid "Get involved with GamiPress development."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:205
+msgid "Translate GamiPress into your language."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:206
+msgid "Review GamiPress on WordPress.org."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:208
+msgid "Pro add-ons help to maintain the project and offer the most advanced features."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:210
+msgid "View plans and pricing"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:225
+msgid "What is GamiPress?"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:226
+msgid "Getting started"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:227
+msgid "Tutorials"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:228
+msgid "Advanced"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:242
+#: includes/shortcodes/gamipress_achievement.php:20
+msgid "Single Achievement"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:244
+#: includes/shortcodes/gamipress_last_achievements_earned.php:28
+msgid "Last Achievements Earned"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:245
+#: includes/admin/tools/import-export-points.php:24
+#: includes/shortcodes/gamipress_user_points.php:20
+msgid "User Points"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:246
+#: includes/shortcodes/gamipress_site_points.php:20
+msgid "Site Points"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:248
+#: includes/shortcodes/gamipress_rank.php:20
+msgid "Single Rank"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:250
+#: includes/shortcodes/gamipress_user_rank.php:25
+msgid "User Rank"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:253
+#: includes/shortcodes/gamipress_email_settings.php:20
+msgid "Email Settings"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:258
+msgid "Block"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:258
+msgid "Shortcode"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:258
+msgid "Widget"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:313
+msgid "Follow us in your favorite social network!"
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:315
+msgid "Subscribe to our YouTube channel."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:316
+msgid "Follow us on Facebook."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:317
+msgid "Join our Facebook community."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:318
+msgid "Follow @GamiPress on Twitter."
+msgstr ""
+
+#: includes/admin/pages/dashboard.php:319
+msgid "Follow us on LinkedIn."
+msgstr ""
+
 #: includes/admin/pages/licenses.php:382
 msgid "Enter valid license key for automatic updates."
 msgstr ""
@@ -1676,11 +1819,7 @@ msgid "About GamiPress"
 msgstr ""
 
 #: includes/admin/pages/support.php:27
-msgid "GamiPress is plugin to WordPress that allows your site's users to complete tasks, demonstrate achievements, and earn points. You define the points and achievement types, organize your requirements any way you like, and choose from a range of options to determine whether each task or requirement has been achieved."
-msgstr ""
-
-#: includes/admin/pages/support.php:31
-msgid "Documentation"
+msgid "GamiPress is plugin for WordPress that allows your site's users to complete tasks, demonstrate achievements, and earn points. You define the points and achievement types, organize your requirements any way you like, and choose from a range of options to determine whether each task or requirement has been achieved."
 msgstr ""
 
 #: includes/admin/pages/support.php:33
@@ -2942,11 +3081,6 @@ msgstr ""
 msgid "%d remaining earnings"
 msgstr ""
 
-#: includes/admin/tools/import-export-points.php:24
-#: includes/shortcodes/gamipress_user_points.php:20
-msgid "User Points"
-msgstr ""
-
 #: includes/admin/tools/import-export-points.php:30
 msgid "Points Types To Export"
 msgstr ""
@@ -3544,6 +3678,10 @@ msgstr ""
 msgid "Removing this library will improve the <strong>compatibility</strong> of GamiPress with other plugins and themes as well as will <strong>speed up</strong> all relationship related queries making GamiPress much faster!"
 msgstr ""
 
+#: includes/admin/users.php:27
+msgid "GamiPress"
+msgstr ""
+
 #: includes/admin/users.php:64 includes/admin/users.php:112
 #: includes/admin/users.php:547 includes/admin/users.php:555
 #: includes/admin/users.php:732 includes/admin/users.php:740
@@ -3934,7 +4072,7 @@ msgstr ""
 msgid "Limit response to user earnings before a given ISO8601 compliant date."
 msgstr ""
 
-#: includes/cache.php:193
+#: includes/cache.php:191
 msgid "<strong>GamiPress cache</strong> cleared successfully!"
 msgstr ""
 
@@ -4889,43 +5027,43 @@ msgstr ""
 msgid "Others"
 msgstr ""
 
-#: includes/shortcodes.php:111
+#: includes/shortcodes.php:112
+msgid "More details"
+msgstr ""
+
+#: includes/shortcodes.php:114
 msgid "Attributes:"
 msgstr ""
 
-#: includes/shortcodes.php:145
+#: includes/shortcodes.php:148
 #, php-format
 msgid "Accepts: %s"
 msgstr ""
 
-#: includes/shortcodes.php:146
+#: includes/shortcodes.php:149
 #, php-format
 msgid "Default: %s"
 msgstr ""
 
-#: includes/shortcodes.php:183
+#: includes/shortcodes.php:186
 #, php-format
 msgid "Example: %s"
 msgstr ""
 
-#: includes/shortcodes.php:257
+#: includes/shortcodes.php:260
 msgid "Widget:"
 msgstr ""
 
-#: includes/shortcodes.php:261
+#: includes/shortcodes.php:264
 msgid "Block:"
 msgstr ""
 
-#: includes/shortcodes.php:266
+#: includes/shortcodes.php:269
 msgid "Shortcode:"
 msgstr ""
 
-#: includes/shortcodes.php:281
+#: includes/shortcodes.php:284
 msgid "Message visible only to administrators."
-msgstr ""
-
-#: includes/shortcodes/gamipress_achievement.php:20
-msgid "Single Achievement"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievement.php:21
@@ -5517,10 +5655,6 @@ msgstr ""
 msgid "Thumbnail"
 msgstr ""
 
-#: includes/shortcodes/gamipress_email_settings.php:20
-msgid "Email Settings"
-msgstr ""
-
 #: includes/shortcodes/gamipress_email_settings.php:21
 #: includes/widgets/email-settings-widget.php:25
 msgid "Display the user email notifications preferences for the GamiPress emails."
@@ -5583,10 +5717,6 @@ msgstr ""
 
 #: includes/shortcodes/gamipress_email_settings.php:170
 msgid "Receive emails related to ranks"
-msgstr ""
-
-#: includes/shortcodes/gamipress_last_achievements_earned.php:28
-msgid "Last Achievements Earned"
 msgstr ""
 
 #: includes/shortcodes/gamipress_last_achievements_earned.php:29
@@ -5867,10 +5997,6 @@ msgstr ""
 msgid "Show points types from all network sites."
 msgstr ""
 
-#: includes/shortcodes/gamipress_rank.php:20
-msgid "Single Rank"
-msgstr ""
-
 #: includes/shortcodes/gamipress_rank.php:21
 msgid "Display a single rank."
 msgstr ""
@@ -6009,10 +6135,6 @@ msgstr ""
 msgid "All types provided aren't valid registered rank types."
 msgstr ""
 
-#: includes/shortcodes/gamipress_site_points.php:20
-msgid "Site Points"
-msgstr ""
-
 #: includes/shortcodes/gamipress_site_points.php:21
 msgid "Display a sum of all site points."
 msgstr ""
@@ -6039,10 +6161,6 @@ msgstr ""
 
 #: includes/shortcodes/gamipress_user_points.php:125
 msgid "Show user points from all network sites."
-msgstr ""
-
-#: includes/shortcodes/gamipress_user_rank.php:25
-msgid "User Rank"
 msgstr ""
 
 #: includes/shortcodes/gamipress_user_rank.php:26

@@ -249,6 +249,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.5 ###
+
+* **New Features**
+* Added the "Dashboard" page.
+* **Improvements**
+* Improved the Help/Support page display.
+* **Bug Fixes**
+* Fixed incorrect redirections to the Clear Cache action.
+
 ### 2.2.4 ###
 
 * **Developer Notes**

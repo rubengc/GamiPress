@@ -68,7 +68,7 @@ function gamipress_get_shortcodes() {
 function gamipress_get_shortcodes_groups() {
 
     return apply_filters( 'gamipress_shortcodes_groups', array(
-        'gamipress' => __( 'GamiPress', 'gamipress' ),
+        'gamipress' => 'GamiPress',
         'others'    => __( 'Others', 'gamipress' ),
     ) );
 
@@ -98,15 +98,18 @@ add_action( 'gamipress_help_support_page_shortcodes', 'gamipress_help_support_pa
 function gamipress_shortcode_help_render_help( $shortcode ) {
 	printf(
 		'<hr/>
-		<h3>%1$s &ndash; [%2$s]</h3>
-		<p>%3$s</p>
-		<ul>
-		<li><strong>%4$s</strong></li>
-		%5$s
-		</ul>
-		<p>%6$s</p>',
+		<strong style="font-size: 14px;">%1$s &ndash; [%2$s]</strong> <a href="#" onclick="jQuery(this).next().slideToggle();return false;">%3$s</a>
+		<div style="display: none;">
+            <p>%4$s</p>
+            <ul>
+                <li><strong>%5$s</strong></li>
+                %6$s
+            </ul>
+            <p>%7$s</p>
+		</div>',
 		$shortcode->name,
 		$shortcode->slug,
+        __( 'More details', 'gamipress' ),
 		$shortcode->description,
 		__( 'Attributes:', 'gamipress' ),
 		gamipress_shortcode_help_render_fields( $shortcode->fields ),

@@ -48,3 +48,11 @@
     font-size: 11px !important;
     line-height: 1.6 !important;
 }
+
+#wpadminbar #wp-admin-bar-gamipress #wp-admin-bar-gamipress-dashboard-group {
+    padding-bottom: 0;
+}
+
+#wpadminbar #wp-admin-bar-gamipress #wp-admin-bar-gamipress-dashboard-group {
+    padding-top: 0;
+}

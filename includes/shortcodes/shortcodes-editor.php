@@ -89,7 +89,7 @@ class GamiPress_Shortcodes_Editor {
 		$this->button_rendered = true;
 
 		echo '<a id="insert_gamipress_shortcodes" href="#TB_inline?width=660&height=800&inlineId=select_gamipress_shortcode" class="thickbox button gamipress_media_link" data-width="800">'
-                . '<span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . __( 'GamiPress', 'gamipress' )
+                . '<span class="wp-media-buttons-icon dashicons dashicons-gamipress"></span> ' . 'GamiPress'
             . '</a>';
 	}
 

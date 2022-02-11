@@ -24,6 +24,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/users.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades.php';
 
 // Admin pages
+require_once GAMIPRESS_DIR . 'includes/admin/pages/dashboard.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/support.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/add-ons.php';
 require_once GAMIPRESS_DIR . 'includes/admin/pages/assets.php';
@@ -91,10 +92,46 @@ function gamipress_admin_menu() {
     }
 
     // GamiPress menu
-    add_menu_page( __( 'GamiPress', 'gamipress' ), __( 'GamiPress', 'gamipress' ), $minimum_role, 'gamipress', '', 'dashicons-gamipress', 55 );
+    add_menu_page( 'GamiPress', 'GamiPress', $minimum_role, 'gamipress', '', 'dashicons-gamipress', 55 );
+    add_submenu_page( 'gamipress', __( 'Dashboard', 'gamipress' ), __( 'Dashboard', 'gamipress' ), $minimum_role, 'gamipress', 'gamipress_dashboard_page' );
 
 }
 add_action( 'admin_menu', 'gamipress_admin_menu' );
+
+/**
+ * Moves the Dashboard submenu to the first menu
+ * For some reason, WordPress assigns the first submenu item the post types registered under this menu
+ *
+ * @since 1.0.0
+ *
+ * @param string $parent_file The parent file.
+ *
+ * @return string
+ */
+function gamipress_admin_menu_fix( $parent_file ) {
+
+    global $submenu;
+
+    if( isset( $submenu['gamipress'] ) && is_array( $submenu['gamipress'] ) ) {
+
+        // Loop all the GamiPress submenus
+        foreach( $submenu['gamipress'] as $i => $menu ) {
+
+            // Check for the "Dashboard" menu to move it to first position
+            if( is_array( $menu ) && isset( $menu[3] ) && $menu[3] === __( 'Dashboard', 'gamipress' ) ) {
+                unset( $submenu['gamipress'][$i] );
+                array_unshift( $submenu['gamipress'], $menu );
+                break;
+            }
+
+        }
+
+    }
+
+    return $parent_file;
+
+}
+add_filter( 'parent_file', 'gamipress_admin_menu_fix' );
 
 /**
  * Add GamiPress submenus
@@ -124,7 +161,7 @@ function gamipress_clear_cache_admin_submenu() {
     // Set minimum role setting for menus
     $minimum_role = gamipress_get_manager_capability();
 
-    add_submenu_page( 'gamipress', __( 'Clear Cache', 'gamipress' ), __( 'Clear Cache', 'gamipress' ), $minimum_role, add_query_arg( 'gamipress-action', 'clear_cache' ), null );
+    add_submenu_page( 'gamipress', __( 'Clear Cache', 'gamipress' ), __( 'Clear Cache', 'gamipress' ), $minimum_role, admin_url( 'admin.php?page=gamipress&gamipress-action=clear_cache' ), null );
 
 }
 add_action( 'admin_menu', 'gamipress_clear_cache_admin_submenu', 13 );
@@ -192,8 +229,23 @@ function gamipress_admin_bar_menu( $wp_admin_bar ) {
     // GamiPress
     $wp_admin_bar->add_node( array(
         'id'    => 'gamipress',
-        'title'	=>	'<span class="ab-icon"></span>' . __( 'GamiPress', 'gamipress' ),
+        'title'	=>	'<span class="ab-icon"></span>' . 'GamiPress',
+        'href'   => admin_url( 'admin.php?page=gamipress' ),
         'meta'  => array( 'class' => 'gamipress' ),
+    ) );
+
+    // Dashboard Group
+    $wp_admin_bar->add_group( array(
+        'id'     => 'gamipress-dashboard-group',
+        'parent' => 'gamipress',
+    ) );
+
+    // Dashboard
+    $wp_admin_bar->add_node( array(
+        'id'     => 'gamipress-dashboard',
+        'title'  => __( 'Dashboard', 'gamipress' ),
+        'parent' => 'gamipress-dashboard-group',
+        'href'   => admin_url( 'admin.php?page=gamipress' )
     ) );
 
     // Check registered points types
@@ -396,7 +448,7 @@ function gamipress_admin_bar_submenu( $wp_admin_bar ) {
         'id'     => 'gamipress-clear-cache',
         'title'  => __( 'Clear Cache', 'gamipress' ),
         'parent' => 'gamipress',
-        'href'   => add_query_arg( 'gamipress-action', 'clear_cache' )
+        'href'   => admin_url( 'admin.php?page=gamipress&gamipress-action=clear_cache' )
     ) );
 
 }
