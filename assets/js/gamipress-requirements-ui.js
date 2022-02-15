@@ -211,18 +211,8 @@
 
         // Post type
         var post_type_selector_required = $(this).siblings('.select-post-type-required');
-        var post_type_triggers = [
-            'gamipress_new_comment_post_type',
-            'gamipress_user_post_comment_post_type',
-            'gamipress_spam_comment_post_type',
-            'gamipress_spam_comment_post_type',
-            'gamipress_publish_post_type',
-            'gamipress_delete_post_type',
-            'gamipress_post_type_visit',
-            'gamipress_user_post_type_visit',
-        ];
 
-        if ( post_type_triggers.indexOf( trigger_type ) !== -1 ) {
+        if ( gamipress_requirements_ui.post_type_triggers.indexOf( trigger_type ) !== -1 ) {
             post_type_selector_required.show();
         } else {
             post_type_selector_required.hide();
@@ -230,13 +220,8 @@
 
         // User role
         var user_role_selector_required = $(this).siblings('.select-user-role-required');
-        var user_role_triggers = [
-            'gamipress_add_specific_role',
-            'gamipress_set_specific_role',
-            'gamipress_remove_specific_role',
-        ];
 
-        if ( user_role_triggers.indexOf( trigger_type ) !== -1 ) {
+        if ( gamipress_requirements_ui.user_role_triggers.indexOf( trigger_type ) !== -1 ) {
             user_role_selector_required.show();
         } else {
             user_role_selector_required.hide();
