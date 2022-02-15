@@ -235,8 +235,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 = 2.2.6 =
 
+* **Improvements**
+* Improved rank earners heading title.
 * **Developer Notes**
-* Added new filters to extend the usage of the GamiPress post type and user role selectors.
+* Added new filters to extend the achievement and rank heading titles.
+* Localize some script texts.
+* Added new filters to extend the usage of points, achievement and rank selectors.
+* Added new filters to extend the usage of post type and user role selectors (thanks to @pryley).
 
 = 2.2.5 =
 

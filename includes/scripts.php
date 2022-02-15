@@ -152,8 +152,12 @@ function gamipress_admin_enqueue_scripts( $hook ) {
         wp_localize_script( 'gamipress-requirements-ui-js', 'gamipress_requirements_ui', array(
             'nonce'                         => gamipress_get_admin_nonce(),
             'post_placeholder'              => __( 'Select a Post', 'gamipress' ),
+            'unsaved_changes_text'          => __( 'Unsaved Changes', 'gamipress' ),
             'specific_activity_triggers'    => gamipress_get_specific_activity_triggers(),
             'triggers_excluded_from_limit'  => gamipress_get_activity_triggers_excluded_from_activity_limit(),
+            'points_triggers'               => gamipress_get_points_triggers(),
+            'achievement_type_triggers'     => gamipress_get_achievement_type_triggers(),
+            'rank_type_triggers'            => gamipress_get_rank_type_triggers(),
             'post_type_triggers'            => gamipress_get_post_type_triggers(),
             'user_role_triggers'            => gamipress_get_user_role_triggers(),
         ) );

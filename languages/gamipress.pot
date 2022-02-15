@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-02-11 12:11+0100\n"
+"POT-Creation-Date: 2022-02-15 10:39+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -2241,7 +2241,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:531
+#: includes/admin/settings/logs.php:43 includes/triggers.php:619
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -2290,7 +2290,7 @@ msgstr ""
 msgid "Used when user completes a points award or step. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1359
+#: includes/admin/settings/logs.php:67 includes/functions/achievements.php:1373
 msgid "{user} completed the {achievement_type} {achievement}"
 msgstr ""
 
@@ -2302,7 +2302,7 @@ msgstr ""
 msgid "Used when user earns an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1361
+#: includes/admin/settings/logs.php:73 includes/functions/achievements.php:1375
 msgid "{user} unlocked the {achievement} {achievement_type}"
 msgstr ""
 
@@ -2351,7 +2351,7 @@ msgstr ""
 msgid "Used when an admin awards a user with an achievement. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1349
+#: includes/admin/settings/logs.php:97 includes/functions/achievements.php:1363
 msgid "{admin} awarded {user} with the the {achievement} {achievement_type}"
 msgstr ""
 
@@ -4391,21 +4391,21 @@ msgstr ""
 msgid "Justify"
 msgstr ""
 
-#: includes/functions/achievements.php:938
+#: includes/functions/achievements.php:949
 msgid "People who have earned this:"
 msgstr ""
 
-#: includes/functions/achievements.php:1315
+#: includes/functions/achievements.php:1329
 msgid "Achievement Type saved successfully."
 msgstr ""
 
-#: includes/functions/achievements.php:1316
+#: includes/functions/achievements.php:1330
 #, php-format
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1316 includes/functions/points.php:1319
-#: includes/functions/ranks.php:1423
+#: includes/functions/achievements.php:1330 includes/functions/points.php:1319
+#: includes/functions/ranks.php:1436
 msgid "widgets"
 msgstr ""
 
@@ -4552,15 +4552,15 @@ msgstr ""
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/ranks.php:1091
-msgid "People who have reached this rank:"
+#: includes/functions/ranks.php:1101
+msgid "People who have reached this:"
 msgstr ""
 
-#: includes/functions/ranks.php:1422
+#: includes/functions/ranks.php:1435
 msgid "Rank Type saved successfully."
 msgstr ""
 
-#: includes/functions/ranks.php:1423
+#: includes/functions/ranks.php:1436
 #, php-format
 msgid "Rank Type renamed successfully. <p>All ranks of this type, and all active and earned user ranks, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old rank type slug must be updated <strong>manually</strong>."
 msgstr ""
@@ -4959,20 +4959,24 @@ msgstr ""
 msgid "User hasn't completed this achievement yet."
 msgstr ""
 
-#: includes/scripts.php:154 includes/scripts.php:179
+#: includes/scripts.php:154 includes/scripts.php:185
 #: includes/shortcodes/shortcodes-editor.php:66
 msgid "Select a Post"
 msgstr ""
 
-#: includes/scripts.php:180 includes/shortcodes/shortcodes-editor.php:67
+#: includes/scripts.php:155
+msgid "Unsaved Changes"
+msgstr ""
+
+#: includes/scripts.php:186 includes/shortcodes/shortcodes-editor.php:67
 msgid "Select Post(s)"
 msgstr ""
 
-#: includes/scripts.php:181 includes/shortcodes/shortcodes-editor.php:68
+#: includes/scripts.php:187 includes/shortcodes/shortcodes-editor.php:68
 msgid "Select an User"
 msgstr ""
 
-#: includes/scripts.php:182 includes/shortcodes/gamipress_achievements.php:71
+#: includes/scripts.php:188 includes/shortcodes/gamipress_achievements.php:71
 #: includes/shortcodes/gamipress_earnings.php:131
 #: includes/shortcodes/gamipress_earnings.php:168
 #: includes/shortcodes/gamipress_earnings.php:205
@@ -4986,40 +4990,40 @@ msgstr ""
 msgid "Default: All"
 msgstr ""
 
-#: includes/scripts.php:183 includes/shortcodes/shortcodes-editor.php:70
+#: includes/scripts.php:189 includes/shortcodes/shortcodes-editor.php:70
 msgid "Select a Rank"
 msgstr ""
 
-#: includes/scripts.php:202
+#: includes/scripts.php:208
 msgid "Please be patient while this process is running. This can take a while, up to some minutes. Do not navigate away from this page until this script is done. You will be notified via this page when the recount process is completed."
 msgstr ""
 
-#: includes/scripts.php:314
+#: includes/scripts.php:320
 msgid "Select an option"
 msgstr ""
 
-#: includes/scripts.php:315
+#: includes/scripts.php:321
 msgid "Select a post"
 msgstr ""
 
-#: includes/scripts.php:316
+#: includes/scripts.php:322
 msgid "Select a user"
 msgstr ""
 
-#: includes/scripts.php:318
+#: includes/scripts.php:324
 msgid "Slug can't contain special characters. Only alphanumeric characters are allowed."
 msgstr ""
 
-#: includes/scripts.php:319
+#: includes/scripts.php:325
 msgid "Slug supports a maximum of 20 characters."
 msgstr ""
 
-#: includes/scripts.php:320
+#: includes/scripts.php:326
 #, php-format
 msgid "The %s post type already uses this slug."
 msgstr ""
 
-#: includes/scripts.php:321
+#: includes/scripts.php:327
 msgid "Slug can't match any <a href=\"https://codex.wordpress.org/Reserved_Terms\">WordPress reserved term</a>."
 msgstr ""
 
@@ -6617,37 +6621,37 @@ msgstr ""
 msgid "Reach a rank"
 msgstr ""
 
-#: includes/triggers.php:176 includes/triggers.php:362
+#: includes/triggers.php:264 includes/triggers.php:450
 #, php-format
 msgid "Unlocked all %s"
 msgstr ""
 
-#: includes/triggers.php:178 includes/triggers.php:361
+#: includes/triggers.php:266 includes/triggers.php:449
 #, php-format
 msgid "Unlocked a %s"
 msgstr ""
 
-#: includes/triggers.php:208
+#: includes/triggers.php:296
 #, php-format
 msgid "Comment on %s"
 msgstr ""
 
-#: includes/triggers.php:209
+#: includes/triggers.php:297
 #, php-format
 msgid "Get a comment on %s"
 msgstr ""
 
-#: includes/triggers.php:210
+#: includes/triggers.php:298
 #, php-format
 msgid "Get a comment on %s marked as spam"
 msgstr ""
 
-#: includes/triggers.php:211
+#: includes/triggers.php:299
 #, php-format
 msgid "Visit %s"
 msgstr ""
 
-#: includes/triggers.php:212
+#: includes/triggers.php:300
 #, php-format
 msgid "%s gets visited"
 msgstr ""

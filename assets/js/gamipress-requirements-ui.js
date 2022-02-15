@@ -156,13 +156,8 @@
         // Required points
         var points_selector_required = $(this).siblings('.points-required');
         var points_type_selector_required = $(this).siblings('.select-points-type-required');
-        var required_points_triggers = [
-            'earn-points',
-            'points-balance',
-            'gamipress_expend_points',
-        ];
 
-        if ( required_points_triggers.indexOf( trigger_type ) !== -1 ) {
+        if ( gamipress_requirements_ui.points_triggers.indexOf( trigger_type ) !== -1 ) {
             // Show required points fields
             points_selector_required.show();
             points_type_selector_required.show();
@@ -176,11 +171,11 @@
         var rank_type_selector_required = $(this).siblings('.select-rank-type-required');
         var rank_selector_required = $(this).siblings('.select-rank-required');
 
-        if ( trigger_type === 'earn-rank' ) {
+        if ( gamipress_requirements_ui.rank_type_triggers.indexOf( trigger_type ) !== -1 ) {
             // Show required rank fields
             rank_type_selector_required.show();
-            //rank_selector_required.show();
 
+            // Trigger a change to the rank type selector to determine if it should show
             rank_type_selector_required.trigger('change');
         } else {
             // Hide required rank fields
@@ -191,17 +186,12 @@
         // Achievement type
         var achievement_type_selector = $(this).siblings('.select-achievement-type');
         var achievement_post_selector = $(this).siblings('.select-achievement-post');
-        var achievement_type_triggers = [
-            'any-achievement',
-            'all-achievements',
-            'specific-achievement',
-        ];
 
         // If we're working with achievements, show the achievement type selector (otherwise, hide it)
-        if ( achievement_type_triggers.indexOf( trigger_type ) !== -1 ) {
+        if ( gamipress_requirements_ui.achievement_type_triggers.indexOf( trigger_type ) !== -1 ) {
             achievement_type_selector.show();
 
-            // Trigger a change for our achievement type post selector to determine if it should show
+            // Trigger a change to the achievement type selector to determine if it should show
             achievement_type_selector.trigger('change');
         } else {
             // Hide achievement type and post selector
@@ -421,7 +411,7 @@
 
         // If has unsaved changes and not the waring, add it
         if( has_unsaved_changes && ! row.find('.requirement-header-title .requirement-unsaved-changes').length ) {
-            row.find('.requirement-header-title').append('<span class="requirement-unsaved-changes dashicons dashicons-warning" title="Unsaved Changes"></span>');
+            row.find('.requirement-header-title').append('<span class="requirement-unsaved-changes dashicons dashicons-warning" title="' + gamipress_requirements_ui.unsaved_changes_text + '"></span>');
         }
 
         // Trigger change on sequential input to update the requirements order display

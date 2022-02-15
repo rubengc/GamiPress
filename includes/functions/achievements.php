@@ -934,8 +934,22 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0, $args = ar
 
 	// Only generate output if we have earners
 	if ( ! empty( $earners ) )  {
+
+        /**
+         * Filters the achievement earners heading text
+         *
+         * @since 1.8.6
+         *
+         * @param string    $heading_text   The heading text
+         * @param int       $achievement_id The given achievement's post ID
+         * @param array     $args           Array of given arguments
+         *
+         * @return string
+         */
+        $heading_text = apply_filters( 'gamipress_achievement_earners_heading', __( 'People who have earned this:', 'gamipress' ), $achievement_id, $args );
+
 		// Loop through each user and build our output
-		$output .= '<h4>' . apply_filters( 'gamipress_earners_heading', __( 'People who have earned this:', 'gamipress' ) ) . '</h4>';
+		$output .= '<h4>' . $heading_text . '</h4>';
 
 		$output .= '<ul class="gamipress-achievement-earners-list achievement-' . $achievement_id . '-earners-list">';
 
@@ -944,7 +958,7 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0, $args = ar
             /**
              * Filters the achievement earner url
              *
-             * @since   1.8.6
+             * @since 1.8.6
              *
              * @param string    $user_url       The user URl, by default the get_author_posts_url()
              * @param int       $user_id        The rendered user ID
@@ -958,7 +972,7 @@ function gamipress_get_achievement_earners_list( $achievement_id = 0, $args = ar
             /**
              * Filters the achievement earner display
              *
-             * @since   1.8.6
+             * @since 1.8.6
              *
              * @param string    $user_display   The user display, by default the user display name
              * @param int       $user_id        The rendered user ID

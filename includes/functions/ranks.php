@@ -1087,8 +1087,21 @@ function gamipress_get_rank_earners_list( $rank_id = 0, $args = array() ) {
     // Only generate output if we have earners
     if ( ! empty( $earners ) )  {
 
+        /**
+         * Filters the rank earners heading text
+         *
+         * @since 1.8.6
+         *
+         * @param string    $heading_text   The heading text
+         * @param int       $rank_id        The given rank's post ID
+         * @param array     $args           Array of given arguments
+         *
+         * @return string
+         */
+        $heading_text = apply_filters( 'gamipress_rank_earners_heading', __( 'People who have reached this:', 'gamipress' ), $rank_id, $args );
+
         // Loop through each user and build our output
-        $output .= '<h4>' . apply_filters( 'gamipress_earners_heading', __( 'People who have reached this rank:', 'gamipress' ) ) . '</h4>';
+        $output .= '<h4>' . $heading_text . '</h4>';
 
         $output .= '<ul class="gamipress-rank-earners-list rank-' . $rank_id . '-earners-list">';
 
@@ -1099,7 +1112,7 @@ function gamipress_get_rank_earners_list( $rank_id = 0, $args = array() ) {
             /**
              * Filters the rank earner url
              *
-             * @since   1.8.6
+             * @since 1.8.6
              *
              * @param string    $user_url       The user URl, by default the get_author_posts_url()
              * @param int       $user_id        The rendered user ID
@@ -1113,7 +1126,7 @@ function gamipress_get_rank_earners_list( $rank_id = 0, $args = array() ) {
             /**
              * Filters the rank earner display
              *
-             * @since   1.8.6
+             * @since 1.8.6
              *
              * @param string    $user_display   The user display, by default the user display name
              * @param int       $user_id        The rendered user ID

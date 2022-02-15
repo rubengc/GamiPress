@@ -10,45 +10,6 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * GamiPress triggers for the post type selector
- *
- * @since  2.2.6
- *
- * @return array Array of all post_type triggers
- */
-function gamipress_get_post_type_triggers() {
-
-    return apply_filters( 'gamipress_post_type_triggers', array(
-        'gamipress_new_comment_post_type',
-        'gamipress_user_post_comment_post_type',
-        'gamipress_spam_comment_post_type',
-        'gamipress_spam_comment_post_type',
-        'gamipress_publish_post_type',
-        'gamipress_delete_post_type',
-        'gamipress_post_type_visit',
-        'gamipress_user_post_type_visit',
-    ) );
-
-}
-
-/**
- * GamiPress triggers for the user role selector
- *
- * @since  2.2.6
- *
- * @return array Array of all user role triggers
- */
-function gamipress_get_user_role_triggers() {
-
-    return apply_filters( 'gamipress_user_role_triggers', array(
-        'gamipress_add_specific_role',
-        'gamipress_set_specific_role',
-        'gamipress_remove_specific_role',
-    ) );
-
-}
-
-/**
  * GamiPress activity triggers
  *
  * @since  1.0.0
@@ -150,6 +111,94 @@ function gamipress_get_specific_activity_triggers() {
 		'gamipress_specific_post_visit'  		=> $public_post_types,
 		'gamipress_user_specific_post_visit'  	=> $public_post_types,
 	) );
+
+}
+
+/**
+ * GamiPress triggers for the points and points type selector
+ *
+ * @since 2.2.6
+ *
+ * @return array Array of all points triggers
+ */
+function gamipress_get_points_triggers() {
+
+    return apply_filters( 'gamipress_points_triggers', array(
+        'earn-points',
+        'points-balance',
+        'gamipress_expend_points',
+    ) );
+
+}
+
+/**
+ * GamiPress triggers for the achievement type selector
+ *
+ * @since 2.2.6
+ *
+ * @return array Array of all achievement type triggers
+ */
+function gamipress_get_achievement_type_triggers() {
+
+    return apply_filters( 'gamipress_achievement_type_triggers', array(
+        'any-achievement',
+        'all-achievements',
+        'specific-achievement',
+    ) );
+
+}
+
+/**
+ * GamiPress triggers for the rank type selector
+ *
+ * @since 2.2.6
+ *
+ * @return array Array of all rank type triggers
+ */
+function gamipress_get_rank_type_triggers() {
+
+    return apply_filters( 'gamipress_rank_type_triggers', array(
+        'earn-rank',
+    ) );
+
+}
+
+/**
+ * GamiPress triggers for the post type selector
+ *
+ * @since 2.2.6
+ *
+ * @return array Array of all post type triggers
+ */
+function gamipress_get_post_type_triggers() {
+
+    return apply_filters( 'gamipress_post_type_triggers', array(
+        'gamipress_new_comment_post_type',
+        'gamipress_user_post_comment_post_type',
+        'gamipress_spam_comment_post_type',
+        'gamipress_spam_comment_post_type',
+        'gamipress_publish_post_type',
+        'gamipress_delete_post_type',
+        'gamipress_post_type_visit',
+        'gamipress_user_post_type_visit',
+    ) );
+
+}
+
+/**
+ * GamiPress triggers for the user role selector
+ *
+ * @since 2.2.6
+ *
+ * @return array Array of all user role triggers
+ */
+function gamipress_get_user_role_triggers() {
+
+    return apply_filters( 'gamipress_user_role_triggers', array(
+        'gamipress_add_specific_role',
+        'gamipress_set_specific_role',
+        'gamipress_remove_specific_role',
+    ) );
 
 }
 

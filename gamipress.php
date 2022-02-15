@@ -137,7 +137,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '2.2.5' );
+		define( 'GAMIPRESS_VER', '2.2.6' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
