@@ -154,6 +154,8 @@ function gamipress_admin_enqueue_scripts( $hook ) {
             'post_placeholder'              => __( 'Select a Post', 'gamipress' ),
             'specific_activity_triggers'    => gamipress_get_specific_activity_triggers(),
             'triggers_excluded_from_limit'  => gamipress_get_activity_triggers_excluded_from_activity_limit(),
+            'post_type_triggers'            => gamipress_get_post_type_triggers(),
+            'user_role_triggers'            => gamipress_get_user_role_triggers(),
         ) );
 
         wp_enqueue_script( 'gamipress-requirements-ui-js' );

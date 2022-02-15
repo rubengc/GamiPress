@@ -249,6 +249,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.6 ###
+
+* **Developer Notes**
+* Added new filters to extend the usage of the GamiPress post type and user role selectors.
+
 ### 2.2.5 ###
 
 * **New Features**
