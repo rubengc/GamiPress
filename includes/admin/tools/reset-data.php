@@ -46,9 +46,9 @@ function gamipress_reset_data_tool_meta_boxes( $meta_boxes ) {
             ),
             'reset_data' => array(
                 'label' => __( 'Reset Data', 'gamipress' ),
-                'desc' => __( '<strong>Important!</strong> Just use this tool on a test environment or if really you know what are you doing.', 'gamipress' ),
+                'desc' => '<span style="color: color: #a00;">' . __( '<strong>Important!</strong> Just use this tool on a test environment or if really you know what are you doing.', 'gamipress' ) . '</span>',
                 'type' => 'button',
-                'button' => 'primary'
+                'button' => 'danger gamipress-button-danger'
             ),
         ) )
     );

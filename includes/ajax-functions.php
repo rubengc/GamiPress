@@ -181,7 +181,8 @@ function gamipress_ajax_get_users() {
 	if ( ! empty( $search ) ) {
 		$where = "WHERE ( u.user_login LIKE '%{$search}%' ";
 		$where .= "OR u.user_email LIKE '%{$search}%' ";
-		$where .= "OR u.display_name LIKE '%{$search}%' ) ";
+		$where .= "OR u.display_name LIKE '%{$search}%' ";
+		$where .= "OR u.ID LIKE '%{$search}%' ) ";
 	}
 
     // Get users from the current site
@@ -219,7 +220,7 @@ function gamipress_ajax_get_users() {
 	);
 
     /**
-     * Ajax posts results (used on almost every post selector)
+     * Ajax users results (used on almost every post selector)
      * Note: Use $_REQUEST for all given parameters
      *
      * @since  1.0.0
@@ -253,7 +254,7 @@ function gamipress_ajax_get_posts() {
 	global $wpdb;
 
 	// Pull back the search string
-	$search = isset( $_REQUEST['q'] ) ? $wpdb->esc_like( $_REQUEST['q'] ) : '';
+	$search = isset( $_REQUEST['q'] ) ? esc_sql( $wpdb->esc_like( $_REQUEST['q'] ) ) : '';
 
 	// Setup where conditions (initialized with 1=1)
     $where = '1=1';
@@ -279,8 +280,8 @@ function gamipress_ajax_get_posts() {
 
     $where .= $post_type;
 
-	// Post title conditional
-    $where .= " AND p.post_title LIKE %s";
+	// Post title and ID conditional
+    $where .= " AND ( p.post_title LIKE '%{$search}%' OR p.ID LIKE '%{$search}%' )";
 
 	// Post status conditional
     $where .= " AND p.post_status IN( 'publish', 'private', 'inherit' )";
@@ -413,14 +414,13 @@ function gamipress_ajax_get_posts() {
             $from = apply_filters( 'gamipress_ajax_get_posts_site_from', $from, $site_id );
 
 			// On this query, keep $wpdb->posts to get sub site posts
-			$site_results = $wpdb->get_results( $wpdb->prepare(
+			$site_results = $wpdb->get_results(
 				"SELECT p.ID, p.post_title, p.post_type
 				 FROM {$from}
 				 WHERE {$where}
                  ORDER BY {$order_by}
-				 LIMIT {$offset}, {$limit}",
-				"%%{$search}%%"
-			) );
+				 LIMIT {$offset}, {$limit}"
+			);
 
 			// Loop all site results to add the site ID and name
 			foreach( $site_results as $index => $site_result ) {

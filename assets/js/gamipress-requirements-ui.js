@@ -1,6 +1,7 @@
 (function($) {
+
     // Hide requirements meta box if unnecessary
-    $("#_gamipress_earned_by").on('change', function() {
+    $('body').on('change', '#_gamipress_earned_by', function() {
         if ( 'triggers' == $(this).val() )
             $('#gamipress-requirements-ui').show();
         else
@@ -8,7 +9,7 @@
     }).trigger('change');
 
     // Make requirements list sortable
-    $(".requirements-list").sortable({
+    $('.requirements-list').sortable({
         cancel: 'input, select, textarea, .gamipress-no-grab',
         // When the list order is updated
         update : function ( e, ui ) {
@@ -27,8 +28,18 @@
         }
     });
 
+    // Click add requirement
+    $('body').on('click', '.gamipress-add-requirement', function(e) {
+        gamipress_add_requirement( e.target, $(e.target).data('post-id'), $(e.target).data('requirement-type') );
+    });
+
+    // Click save requirements
+    $('body').on('click', '.gamipress-save-requirements', function(e) {
+        gamipress_update_requirements( e.target );
+    });
+
     // On change sequential requirements, add order display on all requirements
-    $("#_gamipress_sequential").on('change', function() {
+    $('body').on('change', '#_gamipress_sequential', function() {
 
         $('.requirements-list .requirement-header-title .requirement-order').remove();
 
@@ -42,7 +53,7 @@
             });
         }
 
-    }).trigger('change');
+    });
 
     // Change status action
     $('.requirements-list').on( 'change', '.requirement-action.requirement-action-change-status input', function() {
@@ -376,11 +387,30 @@
         }
     });
 
+    // Listen for a change to optional select
+    $('.requirements-list').on( 'change', '.select-optional', function() {
+        var $this = $(this);
+
+        if( $this.val() === '1' ) {
+            $this.addClass('optional-selected');
+            $this.removeClass('required-selected');
+        } else {
+            $this.removeClass('optional-selected');
+            $this.addClass('required-selected');
+        }
+    });
+
     // Trigger a change for our trigger type post selector to determine if it should show
     $( '.select-trigger-type' ).trigger('change');
 
+    // Trigger a change for our sequential field
+    $( '#_gamipress_sequential' ).trigger('change');
+
     // Trigger a change for our limit type to determine if limit should show
     $( '.limit-type' ).trigger('change');
+
+    // Trigger a change for our optional select to update its class
+    $( '.select-optional' ).trigger('change');
 
     // Trigger a change for our change status input
     $( '.requirement-action-change-status input' ).trigger('change');
@@ -636,7 +666,9 @@ function gamipress_update_requirements( element, loop ) {
             achievement_type            : requirement.find( '.select-achievement-type' ).val(),
             achievement_post            : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post' ).val() : requirement.find( 'select.select-achievement-post' ).val() ),
             achievement_post_site_id    : ( gamipress_requirements_ui.specific_activity_triggers[trigger_type] !== undefined ? requirement.find( '.select-post-site-id' ).val() : '' ),
-            title                       : requirement.find( '.requirement-title .title' ).val()
+            optional                    : requirement.find( '.requirement-optional select' ).val(),
+            title                       : requirement.find( '.requirement-title .title' ).val(),
+            url                         : requirement.find( '.requirement-url .url' ).val()
         };
 
         if( requirement_details.requirement_type === 'points-award' || requirement_details.requirement_type === 'points-deduct' ) {

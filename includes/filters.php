@@ -584,30 +584,37 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 function gamipress_format_requirement_title_with_post_link( $title = '', $requirement = null ) {
 
 	// Grab our step requirements
-    $requirement_object = gamipress_get_requirement_object( $requirement->ID );
-    $trigger = $requirement_object['trigger_type'];
-    $post_id = 0;
-    $site_id = get_current_blog_id();
+    $requirement = gamipress_get_requirement_object( $requirement->ID );
 
-    if ( $trigger === 'earn-rank' && ! empty( $requirement_object['rank_required'] ) ) {
+    $url = $requirement['url'];
 
-        // Setup the post ID for the rank required to reach
-        $post_id = $requirement_object['rank_required'];
-        $site_id = ( gamipress_is_network_wide_active() ? get_main_site_id() : get_current_blog_id() );
+    if( empty( $url ) ) {
 
-    } else if ( ! empty( $requirement_object['achievement_post'] ) ) {
+        $trigger = $requirement['trigger_type'];
+        $post_id = 0;
+        $site_id = get_current_blog_id();
 
-        // Setup the post ID for the post assigned
-        $post_id = $requirement_object['achievement_post'];
-        $site_id = $requirement_object['achievement_post_site_id'];
+        if ($trigger === 'earn-rank' && !empty( $requirement['rank_required'] ) ) {
+
+            // Set the post ID for the rank required to reach
+            $post_id = $requirement['rank_required'];
+            $site_id = ( gamipress_is_network_wide_active() ? get_main_site_id() : get_current_blog_id() );
+
+        } else if (!empty($requirement['achievement_post'])) {
+
+            // Set the post ID for the post assigned
+            $post_id = $requirement['achievement_post'];
+            $site_id = $requirement['achievement_post_site_id'];
+
+        }
+
+        // Set the URL to link to a specific post
+        $url = gamipress_get_specific_activity_trigger_permalink( $post_id, $trigger, $site_id );
 
     }
 
-    // Setup a URL to link to a specific post
-    $url = gamipress_get_specific_activity_trigger_permalink( $post_id, $trigger, $site_id );
-
 	// If we have a URL, update the title to link to it
-	if ( isset( $url ) && ! empty( $url ) ) {
+	if ( ! empty( $url ) ) {
 		$title = '<a href="' . esc_url( $url ) . '">' . $title . '</a>';
     }
 

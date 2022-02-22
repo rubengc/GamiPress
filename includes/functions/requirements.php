@@ -92,6 +92,8 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         'limit'                     => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_limit' ) ),
         'limit_type'                => gamipress_get_post_meta( $requirement_id, '_gamipress_limit_type' ),
         'trigger_type'              => gamipress_get_post_meta( $requirement_id, '_gamipress_trigger_type' ),
+        'optional'                  => (bool) gamipress_get_post_meta( $requirement_id, '_gamipress_optional' ),
+        'url'                       => gamipress_get_post_meta( $requirement_id, '_gamipress_url' ),
         // Points vars
         'points_condition'          => gamipress_get_post_meta( $requirement_id, '_gamipress_points_condition' ),
         'points_required'           => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_points_required' ) ),

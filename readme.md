@@ -249,6 +249,18 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.7 ###
+
+* **New Features**
+* Added the ability to define achievement and rank requirements as optional to allow unlock achievements and ranks without complete all its requirements.
+* New URL field on requirements to allow define a custom URL to the requirement.
+* **Improvements**
+* Full style rework of the requirements UI.
+* Style improvements in several areas.
+* Added the ability to search users and posts by ID in selectors by just typing the ID number.
+* **Developer Notes**
+* Updated CMB2 library to 2.10.
+
 ### 2.2.6 ###
 
 * **Improvements**

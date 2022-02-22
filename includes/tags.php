@@ -337,8 +337,13 @@ function gamipress_get_achievement_earned_tags_replacements( $achievement_id, $u
                     ) ) > 0;
 
                 $title = $step->post_title;
+                $url = gamipress_get_post_meta( $step->ID, '_gamipress_url' );
 
-                $achievement_steps_html .= '<li style="' . ( $earned ? 'text-decoration: line-through;' : '' ) . '">' . $title . '</li>';
+                $achievement_steps_html .= '<li style="' . ( $earned ? 'text-decoration: line-through;' : '' ) . '">'
+                        . ( ! empty( $url ) ? '<a href="' . $url. '">' : '' )
+                        . $title
+                        . ( ! empty( $url ) ? '</a>' : '' )
+                    . '</li>';
             }
 
             $achievement_steps_html .= "</{$list_tag}>";
@@ -532,8 +537,13 @@ function gamipress_get_rank_earned_tags_replacements( $rank_id, $user_id ) {
                     ) ) > 0;
 
                 $title = $requirement->post_title;
+                $url = gamipress_get_post_meta( $requirement->ID, '_gamipress_url' );
 
-                $rank_requirements_html .= '<li style="' . ( $earned ? 'text-decoration: line-through;' : '' ) . '">' . $title . '</li>';
+                $rank_requirements_html .= '<li style="' . ( $earned ? 'text-decoration: line-through;' : '' ) . '">'
+                        . ( ! empty( $url ) ? '<a href="' . $url. '">' : '' )
+                        . $title
+                        . ( ! empty( $url ) ? '</a>' : '' )
+                    . '</li>';
             }
 
             $rank_requirements_html .= "</{$list_tag}>";

@@ -129,6 +129,11 @@ function gamipress_user_has_access_to_achievement( $user_id = 0, $achievement_id
 				    break;
                 }
 
+                // Skip optional requirements
+                if( ( bool ) gamipress_get_post_meta( $sibling->ID, '_gamipress_optional' ) ) {
+                    continue;
+                }
+
 				// If we haven't earned any previous step, we can't earn this one
 				if ( ! gamipress_has_user_earned_achievement( $sibling->ID, $user_id ) ) {
 					$return = false;
@@ -597,6 +602,11 @@ function gamipress_check_achievement_completion_for_user( $achievement_id = 0, $
 		if ( is_array( $required_achievements ) && ! empty( $required_achievements ) ) {
 
 			foreach ( $required_achievements as $requirement ) {
+
+                // Skip optional requirements
+                if( ( bool ) gamipress_get_post_meta( $requirement->ID, '_gamipress_optional' ) ) {
+                    continue;
+                }
 
 				$requirement_earned = gamipress_get_earnings_count( array(
 					'user_id'   => $user_id,
@@ -1522,6 +1532,11 @@ function gamipress_maybe_award_rank( $user_id = 0, $achievement_id = 0 ) {
 	$completed = true;
 
 	foreach( $requirements as $requirement ) {
+
+        // Skip optional requirements
+        if( ( bool ) gamipress_get_post_meta( $requirement->ID, '_gamipress_optional' ) ) {
+            continue;
+        }
 
 		// Check if rank requirement has been earned
 		if( gamipress_get_earnings_count( array(

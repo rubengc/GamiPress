@@ -137,9 +137,13 @@ function gamipress_requirements_ui_meta_box( $post = null, $metabox = array() ) 
     }
     echo '</ul>';
 
-    // Render our buttons ?>
-    <input style="margin-right: 1em" class="button" type="button" onclick="gamipress_add_requirement( this, <?php echo $post->ID; ?>, '<?php echo $requirement_type; ?>');" value="<?php printf( __( 'Add New %s', 'gamipress' ), $requirement_type_object['singular_name'] ); ?>">
-    <input class="button-primary" type="button" onclick="gamipress_update_requirements( this );" value="<?php printf( __( 'Save All %s', 'gamipress' ), $requirement_type_object['plural_name'] ); ?>">
+    // Render the add and save buttons ?>
+    <div class="button gamipress-button-success gamipress-add-requirement" data-post-id="<?php echo $post->ID; ?>" data-requirement-type="<?php echo $requirement_type; ?>">
+        <span class="dashicons dashicons-plus"></span><?php printf( __( 'Add New %s', 'gamipress' ), $requirement_type_object['singular_name'] ); ?>
+    </div>
+    <div class="button-primary gamipress-save-requirements">
+        <span class="dashicons dashicons-saved"></span><?php printf( __( 'Save All %s', 'gamipress' ), $requirement_type_object['plural_name'] ); ?>
+    </div>
     <span class="spinner requirements-spinner"></span>
     <?php
 }
@@ -209,6 +213,17 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
     <li class="requirement-row requirement-<?php echo $requirement_id; ?> <?php echo ( $status === 'publish' ? 'requirement-published' : '' ); ?>" data-requirement-id="<?php echo $requirement_id; ?>">
 
+        <?php
+        /**
+         * Available action to add custom HTML at top of the requirement HTML
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_requirement_top', $requirement_id, $post_id ); ?>
+
         <input type="hidden" name="requirement_id" value="<?php echo $requirement_id; ?>" />
         <input type="hidden" name="requirement_type" value="<?php echo $requirement_type; ?>" />
         <input type="hidden" name="post_id" value="<?php echo $post_id; ?>" />
@@ -269,6 +284,17 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
             </div>
 
         </div>
+
+        <?php
+        /**
+         * Available action to add custom HTML after the requirement header
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_after_requirement_header', $requirement_id, $post_id ); ?>
 
         <label for="select-trigger-type-<?php echo $requirement_id; ?>"><?php _e( 'When', 'gamipress' ); ?>:</label>
 
@@ -534,7 +560,8 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          */
         do_action( 'gamipress_requirement_ui_html_after_limit', $requirement_id, $post_id ); ?>
 
-        <?php if( in_array( $requirement_type, array( 'points-award', 'points-deduct' ) ) ) :
+        <?php // Required points fields
+        if( in_array( $requirement_type, array( 'points-award', 'points-deduct' ) ) ) :
             $points                 = ! empty( $requirements['points'] ) ? $requirements['points'] : 1;
             $points_singular_name   = get_post_field( 'post_title', $post_id );
             $post_name              = get_post_field( 'post_name', $post_id );
@@ -577,12 +604,53 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
             do_action( 'gamipress_requirement_ui_html_after_points', $requirement_id, $post_id ); ?>
         <?php endif; ?>
 
+        <?php // Optional field
+        if( in_array( $requirement_type, array( 'step', 'rank-requirement' ) ) ) :
+            $optional = (bool) $requirements['optional'];
+            ?>
+            <div class="requirement-clear"></div>
+            <div class="requirement-optional">
+                <label for="requirement-<?php echo $requirement_id; ?>-optional"><?php _e( 'Optional', 'gamipress' ); ?>:</label>
+                <select class="select-optional select-optional-<?php echo $requirement_id; ?>">
+                    <option value="0" <?php selected( false, $optional ); ?>><?php _e( 'Required', 'gamipress'); ?></option>
+                    <option value="1" <?php selected( true, $optional ); ?>><?php _e( 'Optional', 'gamipress'); ?></option>
+                </select>
+            </div>
+
+            <?php
+            /**
+             * Available action to add custom HTML after requirement optional ( just available for steps and rank requirements )
+             *
+             * @since 1.0.0
+             *
+             * @param int   $requirement_id     The requirement ID
+             * @param int   $post_id            The post ID where requirements are displayed
+             */
+            do_action( 'gamipress_requirement_ui_html_after_optional', $requirement_id, $post_id ); ?>
+        <?php endif; ?>
+
         <div class="requirement-title">
             <label for="requirement-<?php echo $requirement_id; ?>-title"><?php _e( 'Label', 'gamipress' ); ?>:</label>
-            <input type="text" name="requirement-title" id="requirement-<?php echo $requirement_id; ?>-title" class="title" value="<?php echo esc_attr( get_the_title( $requirement_id ) ); ?>" />
+            <input type="text" name="requirement-title" id="requirement-<?php echo $requirement_id; ?>-title" class="title" value="<?php echo esc_attr( get_the_title( $requirement_id ) ); ?>" placeholder="<?php echo esc_attr( __( 'Enter the label here or leave it empty to be autogenerated...', 'gamipress' ) ); ?>" />
+        </div>
+
+        <div class="requirement-url">
+            <label for="requirement-<?php echo $requirement_id; ?>-url"><?php _e( 'URL', 'gamipress' ); ?>:</label>
+            <input type="text" id="requirement-<?php echo $requirement_id; ?>-url" class="url" value="<?php echo esc_attr( $requirements['url'] ); ?>" placeholder="https://..." />
         </div>
 
         <?php
+        /**
+         * Available action to add custom HTML after requirement URL
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_after_requirement_url', $requirement_id, $post_id ); ?>
+
+        <?php // TODO: Keep here for backward compatibility
         /**
          * Available action to add custom HTML after requirement title
          *
@@ -592,6 +660,17 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_requirement_title', $requirement_id, $post_id ); ?>
+
+        <?php
+        /**
+         * Available action to add custom HTML at bottom of the requirement HTML
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_requirement_bottom', $requirement_id, $post_id ); ?>
 
     </li>
     <?php
@@ -909,6 +988,8 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? sanitize_text_field( $requirement['user_role_required'] ) : '';
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? sanitize_text_field( $requirement['limit_type'] ) : 'unlimited';
+    $optional               = ( isset( $requirement['optional'] ) ) ? (bool) $requirement['optional'] : false;
+    $url                    = ( ! empty( $requirement['url'] ) ) ? sanitize_url( $requirement['url'] ) : '';
     $trigger_type           = sanitize_text_field( $requirement['trigger_type'] );
     $achievement_type       = sanitize_text_field( $requirement['achievement_type'] );
 
@@ -947,6 +1028,8 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     update_post_meta( $requirement_id, '_gamipress_limit_type', $limit_type );
     update_post_meta( $requirement_id, '_gamipress_trigger_type', $trigger_type );
     update_post_meta( $requirement_id, '_gamipress_achievement_type', $achievement_type );
+    update_post_meta( $requirement_id, '_gamipress_optional', ( $optional ? '1' : '0' ) );
+    update_post_meta( $requirement_id, '_gamipress_url', $url );
 
     // Specific points award data
     if( $requirement_type === 'points-award' || $requirement_type === 'points-deduct' ) {
@@ -1020,8 +1103,9 @@ add_action( 'save_post', 'gamipress_on_save_requirements_post_parent' );
  */
 function gamipress_build_requirement_title( $requirement_id, $requirement = array() ) {
 
-    if( empty( $requirement ) )
+    if( empty( $requirement ) ) {
         $requirement = gamipress_get_requirement_object( $requirement_id );
+    }
 
     $requirement_type       = gamipress_get_post_type( $requirement_id );
     $points_condition       = ( ! empty( $requirement['points_condition'] ) ) ? $requirement['points_condition'] : 'greater_or_equal';
@@ -1191,6 +1275,12 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
         }
 
         $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, sprintf( __( '(limited to %d per %s)', 'gamipress' ), $limit, $limit_type_label ) );
+    }
+
+    $optional = ( isset( $requirement['optional'] ) ) ? (bool) $requirement['optional'] : false;
+
+    if( $optional ) {
+        $title = sprintf( __( '%1$s %2$s', 'gamipress' ), $title, __( '(Optional)', 'gamipress' ) );
     }
 
     // Available hook for custom Activity Triggers

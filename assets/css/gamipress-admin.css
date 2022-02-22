@@ -100,6 +100,47 @@
 }
 
 /* -------------------------------------------
+    Buttons
+   ------------------------------------------- */
+.button.gamipress-button-success {
+	background: #46b450;
+	border: #46b450;
+	color: #fff;
+}
+
+.button.gamipress-button-success:hover {
+	background: #40a549;
+	border: #40a549;
+	color: #fff;
+}
+
+.button.gamipress-button-success:focus,
+.button.gamipress-button-success:active {
+	background: #399341;
+	border: #399341;
+	color: #fff;
+}
+
+.button.gamipress-button-danger {
+	background: #e15151;
+	border: #e15151;
+	color: #fff;
+}
+
+.button.gamipress-button-danger:hover {
+	background: #de3b3b;
+	border: #de3b3b;
+	color: #fff;
+}
+
+.button.gamipress-button-danger:focus,
+.button.gamipress-button-danger:active {
+	background: #da2525;
+	border: #da2525;
+	color: #fff;
+}
+
+/* -------------------------------------------
 	Dashboard widgets
    ------------------------------------------- */
 
@@ -258,6 +299,33 @@
 	Requirements UI
    ------------------------------------------- */
 
+#gamipress-requirements-ui .inside,
+.postbox[id^="gamipress-requirements-ui-"] .inside {
+	background-color: #f0f0f1;
+}
+
+.block-editor-page #gamipress-requirements-ui .inside,
+.block-editor-page .postbox[id^="gamipress-requirements-ui-"] .inside {
+	border-top: 1px solid #ddd;
+}
+
+body:not(.block-editor-page) #gamipress-requirements-ui,
+body:not(.block-editor-page) .postbox[id^="gamipress-requirements-ui-"] {
+	border: none;
+	box-shadow: none;
+}
+
+body:not(.block-editor-page) #gamipress-requirements-ui .postbox-header,
+body:not(.block-editor-page) .postbox[id^="gamipress-requirements-ui-"] .postbox-header {
+	border: 1px solid #c3c4c7;
+}
+
+body:not(.block-editor-page) #gamipress-requirements-ui .inside,
+body:not(.block-editor-page) .postbox[id^="gamipress-requirements-ui-"] .inside {
+	padding: 6px 0 6px 0;
+	margin: 0 !important;
+}
+
 #gamipress-requirements-ui .spinner,
 .postbox[id^="gamipress-requirements-ui-"] .spinner {
 	float: none;
@@ -271,14 +339,14 @@
 }
 
 .gamipress-requirements-sequential label {
-    color: #aaaaaa;
+    color: #888;
     font-style: italic;
     margin-left: 45px;
 }
 
 li.requirement-row {
 	background: #fff;
-	border: 1px solid #e9e9e9;
+	border: 1px solid #c3c4c7;
 	padding: 15px;
 	margin: 0;
 	position: relative;
@@ -286,7 +354,7 @@ li.requirement-row {
 
 li.requirement-row.ui-sortable-placeholder {
 	visibility: visible !important;
-	background-color: #f1f1f1;
+	background-color: #e0e0e1;
 }
 
 li.requirement-row.ui-sortable-helper {
@@ -299,14 +367,15 @@ li.requirement-row:not(:first-child) {
 
 li.requirement-row .requirement-header {
 	background: #fafafa;
-	border-bottom: 1px solid #e9e9e9;
+	border-bottom: 1px solid #c3c4c7;
 	margin: -15px -15px 15px -15px;
 	cursor: move;
 }
 
 li.requirement-row .requirement-header .requirement-header-title {
 	display: inline-block;
-	line-height: 1.5;
+	font-size: 14px;
+	line-height: 1.4;
 	padding: 8px 12px;
     min-height: 15px;
     font-weight: 600;
@@ -337,7 +406,7 @@ li.requirement-row .requirement-header .requirement-actions .requirement-action:
 }
 
 li.requirement-row .requirement-header .requirement-actions .requirement-action:not(:first-child) {
-    border-left: 1px solid #e9e9e9;
+    border-left: 1px solid #c3c4c7;
 }
 
 li.requirement-row .requirement-header .requirement-actions .requirement-action-change-status {
@@ -357,6 +426,8 @@ li.requirement-row .required-duration {
 }
 
 li.requirement-row .requirement-awards,
+li.requirement-row .requirement-optional,
+li.requirement-row .requirement-url,
 li.requirement-row .requirement-title {
 	display: block;
 	padding-top: 5px;
@@ -372,21 +443,106 @@ li.requirement-row .maximum-earnings {
 	max-width: 60px;
 }
 
+li.requirement-row .requirement-optional {
+	float: right;
+}
+
+li.requirement-row .requirement-optional > label {
+	display: none;
+}
+
+li.requirement-row .requirement-optional select.optional-selected {
+	background: #11a0d2 url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20width%3D%2220%22%20height%3D%2220%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M5%206l5%205%205-5%202%201-7%207-7-7%202-1z%22%20fill%3D%22%23fff%22%2F%3E%3C%2Fsvg%3E') no-repeat right 5px top 55%;
+	border-color: #11a0d2;
+	color: #fff;
+}
+
+li.requirement-row .requirement-optional select.optional-selected:hover,
+li.requirement-row .requirement-optional select.optional-selected:focus,
+li.requirement-row .requirement-optional select.optional-selected:active {
+	background-color: #0f8ebd;
+	border-color: #0f8ebd;
+}
+
+li.requirement-row .requirement-title {
+	width: 100%;
+}
+
+li.requirement-row .requirement-optional + .requirement-title {
+	width: calc( 100% - 95px);
+}
+
+li.requirement-row .url,
 li.requirement-row .title {
-	width: 400px;
+	width: calc( 100% - 58px );
 }
 
 li.requirement-row input, li.requirement-row select {
 	vertical-align: middle;
+	background-color: #f0f0f0;
+	border-color: #f0f0f0;
+	margin-bottom: 5px;
+}
+
+li.requirement-row input:hover, li.requirement-row select:hover,
+li.requirement-row input:focus, li.requirement-row select:focus,
+li.requirement-row input:active, li.requirement-row select:active {
+	background-color: #e0e0e0;
+}
+
+li.requirement-row input::placeholder {
+	color: #888;
+}
+
+li.requirement-row input[readonly] {
+	color: #fff;
+	background-color: #333;
+}
+
+li.requirement-row input[readonly]:hover,
+li.requirement-row input[readonly]:focus,
+li.requirement-row input[readonly]:active {
+	background-color: #222;
+}
+
+li.requirement-row .gamipress-select2 {
+	margin-bottom: 5px;
+}
+
+li.requirement-row .gamipress-select2 .select2-selection {
+	background-color: #f0f0f0 !important;
+	border: 1px solid #f0f0f0 !important;
+	box-shadow: none !important;
+}
+
+li.requirement-row .gamipress-select2 .select2-selection--single .select2-selection__arrow {
+	background-color: #f0f0f0 !important;
 }
 
 li.requirement-row label {
 	width: 50px;
 	display: inline-block;
+	margin-bottom: 5px;
 }
 
 li.requirement-row.requirement-disabled {
     color: rgba( 51, 51, 51, 0.5 );
+}
+
+.gamipress-add-requirement {
+	margin-right: 6px !important;
+}
+
+.gamipress-add-requirement .dashicons,
+.gamipress-save-requirements .dashicons {
+	line-height: 32px;
+	opacity: 0.8;
+	margin-right: 4px;
+	margin-left: -4px;
+}
+
+.gamipress-save-requirements .dashicons {
+	line-height: 28px;
 }
 
 @media screen and (max-width: 782px) {
@@ -397,10 +553,23 @@ li.requirement-row.requirement-disabled {
 	li.requirement-row label {
 		padding: 10px 0;
 		width: 100%;
+		margin: 0;
 	}
 
 	li.requirement-row label:first-child {
 		padding-top: 0;
+	}
+
+	li.requirement-row .requirement-optional + .requirement-title {
+		width: calc( 100% - 110px);
+	}
+
+	li.requirement-row .title {
+		width: 100%;
+	}
+
+	li.requirement-row .requirement-optional {
+		margin-top: 37px;
 	}
 }
 
@@ -877,7 +1046,7 @@ body.wp-customizer > .gamipress-select2 {
 .gamipress-select2 .select2-search--dropdown .select2-search__field,
 .gamipress-select2.select2-container--focus .select2-selection--multiple {
 	border: 1px solid #7e8993 !important;
-	border-radius: 3px !important;
+	border-radius: 4px !important;
 	-webkit-box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 ) !important;
 	box-shadow: inset 0 1px 2px rgba( 0, 0, 0, 0.07 ) !important;
 	color: #32373c !important;
@@ -896,6 +1065,7 @@ body.wp-customizer > .gamipress-select2 {
 .gamipress-select2 .select2-selection--single .select2-selection__clear {
 	font-size: 18px;
 	line-height: 26px;
+	margin-right: 5px;
 }
 
 .gamipress-select2 .select2-selection--multiple .select2-selection__clear {
@@ -1531,6 +1701,11 @@ label[for="_gamipress_sequential"] {
     font-weight: 600 !important;
 }
 
+.gamipress_settings .postbox-header .handle-actions,
+.gamipress_tools .postbox-header .handle-actions {
+	display: none;
+}
+
 .gamipress-page .postbox .hndle {
 	justify-content: flex-start;
 }
@@ -1578,6 +1753,25 @@ label[for="_gamipress_sequential"] {
 
 .gamipress_settings input[name="reset-cmb"] {
     margin-right: 0 !important;
+}
+
+.gamipress_settings input[name="reset-cmb"] {
+	background: #e15151;
+	border: #e15151;
+	color: #fff;
+}
+
+.gamipress_settings input[name="reset-cmb"]:hover {
+	background: #de3b3b;
+	border: #de3b3b;
+	color: #fff;
+}
+
+.gamipress_settings input[name="reset-cmb"]:focus,
+.gamipress_settings input[name="reset-cmb"]:active {
+	background: #da2525;
+	border: #da2525;
+	color: #fff;
 }
 
 @media screen and (min-width: 782px) {
