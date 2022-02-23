@@ -249,6 +249,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.2.8 ###
+
+* **Bug Fixes**
+* Fixed the post selector result processing.
+* **Developer Notes**
+* Updated CMB2 library to 2.10.1.
+
 ### 2.2.7 ###
 
 * **New Features**

@@ -213,11 +213,7 @@ function gamipress_ajax_get_users() {
 		'ARRAY_A'
     );
 
-	$count = $wpdb->get_var(
-		"SELECT COUNT(*)
-		 {$from}
-		 {$where}"
-	);
+	$count = absint( $wpdb->get_var( "SELECT COUNT(*) {$from} {$where}" ) );
 
     /**
      * Ajax users results (used on almost every post selector)
@@ -233,7 +229,7 @@ function gamipress_ajax_get_users() {
 
 	$response = array(
 		'results' => $results,
-		'more_results' => absint( $count ) > $offset,
+		'more_results' => $count > $offset,
 	);
 
 	// Return our results
@@ -434,10 +430,7 @@ function gamipress_ajax_get_posts() {
 			// Merge it to all results
 			$results = array_merge( $results, $site_results );
 
-			$count += absint( $wpdb->get_var( $wpdb->prepare(
-				"SELECT COUNT(*) FROM {$from} WHERE {$where}",
-				"%%{$search}%%"
-			) ) );
+			$count += absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$from} WHERE {$where}" ) );
 
             // Restore current site
             restore_current_blog();
@@ -447,19 +440,15 @@ function gamipress_ajax_get_posts() {
 	} else {
 
 		// On this query, keep $wpdb->posts to get current site posts
-		$results = $wpdb->get_results( $wpdb->prepare(
+		$results = $wpdb->get_results(
 			"SELECT p.ID, p.post_title, p.post_type
              FROM {$from}
              WHERE {$where}
              ORDER BY {$order_by}
-             LIMIT {$offset}, {$limit}",
-			"%%{$search}%%"
-		) );
+             LIMIT {$offset}, {$limit}"
+		);
 
-		$count = absint( $wpdb->get_var( $wpdb->prepare(
-			"SELECT COUNT(*) FROM {$from} WHERE {$where}",
-			"%%{$search}%%"
-		) ) );
+		$count = absint( $wpdb->get_var( "SELECT COUNT(*) FROM {$from} WHERE {$where}" ) );
 
 	}
 
