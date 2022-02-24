@@ -180,11 +180,12 @@ function gamipress_approved_comment_listener( $comment_ID, $comment ) {
     $comment_id = (int) $comment_ID;
     $user_id = (int) $comment['user_id'];
     $post_id = absint( $comment[ 'comment_post_ID' ] );
+    $post_type = get_post_type( $post_id );
 
     // Trigger comment actions
     do_action( 'gamipress_new_comment', $comment_id, $user_id, $post_id, $comment );
     do_action( 'gamipress_specific_new_comment', $comment_id, $user_id, $post_id, $comment );
-    do_action( 'gamipress_new_comment_post_type', $comment_id, $user_id, $post_id, get_post_type( $post_id ), $comment );
+    do_action( 'gamipress_new_comment_post_type', $comment_id, $user_id, $post_id, $post_type, $comment );
 
     if( $post_id !== 0 ) {
 
@@ -193,7 +194,7 @@ function gamipress_approved_comment_listener( $comment_ID, $comment ) {
         // Trigger comment actions to author
         do_action( 'gamipress_user_post_comment', $comment_id, $post_author, $post_id, $comment );
         do_action( 'gamipress_user_specific_post_comment', $comment_id, $post_author, $post_id, $comment );
-        do_action( 'gamipress_user_post_comment_post_type', $comment_id, $post_author, $post_id, get_post_type( $post_id ), $comment );
+        do_action( 'gamipress_user_post_comment_post_type', $comment_id, $post_author, $post_id, $post_type, $comment );
     }
 
 }
@@ -224,11 +225,12 @@ function gamipress_spam_comment_listener( $comment_ID, $comment ) {
     $comment_id = (int) $comment_ID;
     $user_id = (int) $comment['user_id'];
     $post_id = absint( $comment[ 'comment_post_ID' ] );
+    $post_type = get_post_type( $post_id );
 
     // Trigger comment actions
     do_action( 'gamipress_spam_comment', $comment_id, $user_id, $post_id, $comment );
     do_action( 'gamipress_specific_spam_comment', $comment_id, $user_id, $post_id, $comment );
-    do_action( 'gamipress_spam_comment_post_type', $comment_id, $user_id, $post_id, get_post_type( $post_id ), $comment );
+    do_action( 'gamipress_spam_comment_post_type', $comment_id, $user_id, $post_id, $post_type, $comment );
 
 }
 add_action( 'comment_spam_', 'gamipress_spam_comment_listener', 10, 2 );

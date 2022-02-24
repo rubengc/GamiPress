@@ -597,9 +597,7 @@ function gamipress_trigger_event() {
  * @return mixed
  */
 function gamipress_get_event_arg( $args = array(), $key = '', $index = 0 ) {
-
-    return ( isset( $args[$key] ) ? $args[$key] : $args[$index] );
-
+    return ( isset( $args[$key] ) ? $args[$key] : ( isset( $args[$index] ) ? $args[$index] : '' ) );
 }
 
 /**

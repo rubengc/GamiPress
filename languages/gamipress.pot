@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-02-22 10:16+0100\n"
+"POT-Creation-Date: 2022-02-24 10:40+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -812,7 +812,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/log-extra-data-ui.php:184
 #: includes/admin/requirements.php:41 includes/admin/requirements.php:80
-#: includes/ajax-functions.php:567 includes/compatibility/1.2.8.php:1000
+#: includes/ajax-functions.php:556 includes/compatibility/1.2.8.php:1000
 #: includes/functions/achievement-types.php:155
 #: includes/functions/achievement-types.php:162
 #: includes/shortcodes/gamipress_achievement.php:27
@@ -833,7 +833,7 @@ msgstr ""
 #: includes/admin/tools/bulk-revokes.php:203
 #: includes/admin/tools/import-export-earnings.php:249
 #: includes/admin/tools/import-export-points.php:142
-#: includes/ajax-functions.php:767 includes/ajax-functions.php:887
+#: includes/ajax-functions.php:756 includes/ajax-functions.php:876
 #: includes/compatibility/1.2.8.php:1021
 #: includes/custom-tables/user-earnings.php:358
 #: includes/custom-tables/user-earnings.php:364
@@ -876,7 +876,7 @@ msgstr ""
 #: includes/admin/meta-boxes/log-extra-data-ui.php:230
 #: includes/admin/requirements.php:43 includes/admin/requirements.php:83
 #: includes/admin/tools/import-export-ranks.php:155
-#: includes/ajax-functions.php:615 includes/functions/rank-types.php:156
+#: includes/ajax-functions.php:604 includes/functions/rank-types.php:156
 #: includes/functions/rank-types.php:163
 #: includes/shortcodes/gamipress_rank.php:27
 #: includes/shortcodes/gamipress_ranks.php:41
@@ -1295,8 +1295,8 @@ msgstr ""
 #: includes/admin/tools/import-export-setup.php:354
 #: includes/admin/tools/logs-clean-up.php:111
 #: includes/admin/tools/recount-activity.php:95
-#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:744
-#: includes/ajax-functions.php:863
+#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:733
+#: includes/ajax-functions.php:852
 msgid "You are not allowed to perform this action."
 msgstr ""
 
@@ -2263,7 +2263,7 @@ msgstr ""
 msgid "Used to register user activity triggered. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:43 includes/triggers.php:619
+#: includes/admin/settings/logs.php:43 includes/triggers.php:617
 msgid "{user} triggered {trigger_type} (x{count})"
 msgstr ""
 
@@ -2299,8 +2299,8 @@ msgstr ""
 msgid "Used when user expend an amount of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:800
-#: includes/ajax-functions.php:920
+#: includes/admin/settings/logs.php:61 includes/ajax-functions.php:789
+#: includes/ajax-functions.php:909
 msgid "{user} expended {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -3869,54 +3869,54 @@ msgstr ""
 msgid "Email preferences saved successfully."
 msgstr ""
 
-#: includes/ajax-functions.php:580 includes/ajax-functions.php:648
+#: includes/ajax-functions.php:569 includes/ajax-functions.php:637
 #, php-format
 msgid "Choose the %s"
 msgstr ""
 
-#: includes/ajax-functions.php:730
+#: includes/ajax-functions.php:719
 msgid "Achievement not found."
 msgstr ""
 
-#: includes/ajax-functions.php:736
+#: includes/ajax-functions.php:725
 msgid "Invalid achievement."
 msgstr ""
 
-#: includes/ajax-functions.php:748 includes/ajax-functions.php:754
-#: includes/ajax-functions.php:867 includes/ajax-functions.php:874
+#: includes/ajax-functions.php:737 includes/ajax-functions.php:743
+#: includes/ajax-functions.php:856 includes/ajax-functions.php:863
 #, php-format
 msgid "You are not allowed to unlock this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:760
+#: includes/ajax-functions.php:749
 #, php-format
 msgid "You already unlocked this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:779 includes/ajax-functions.php:899
+#: includes/ajax-functions.php:768 includes/ajax-functions.php:888
 #, php-format
 msgid "Insufficient %s."
 msgstr ""
 
-#: includes/ajax-functions.php:809
+#: includes/ajax-functions.php:798
 #, php-format
 msgid "Congratulations! You unlocked the %s %s."
 msgstr ""
 
-#: includes/ajax-functions.php:849
+#: includes/ajax-functions.php:838
 msgid "Rank not found."
 msgstr ""
 
-#: includes/ajax-functions.php:855
+#: includes/ajax-functions.php:844
 msgid "Invalid rank."
 msgstr ""
 
-#: includes/ajax-functions.php:880
+#: includes/ajax-functions.php:869
 #, php-format
 msgid "You are already in a higher %s."
 msgstr ""
 
-#: includes/ajax-functions.php:929
+#: includes/ajax-functions.php:918
 #, php-format
 msgid "Congratulations! You reached to the %s %s."
 msgstr ""

@@ -233,6 +233,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 == Changelog ==
 
+= 2.2.9 =
+
+* **Bug Fixes**
+* Prevent PHP notices for undefined array keys.
+
 = 2.2.8 =
 
 * **Bug Fixes**
