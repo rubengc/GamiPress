@@ -132,6 +132,20 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     }
 
+    if( isset( $qv['post_type__not_in'] ) && ! empty( $qv['post_type__not_in'] ) ) {
+
+        $post_type__not_in = $qv['post_type__not_in'];
+
+        if( is_array( $post_type__not_in ) ) {
+            $post_type__not_in = "'" . implode( "', '", $post_type__not_in ) . "'";
+
+            $where .= "AND {$table_name}.post_type NOT IN ( {$post_type__not_in} ) ";
+        } else {
+            $where .= "AND {$table_name}.post_type != '{$post_type__not_in}' ";
+        }
+
+    }
+
     // Include
     if( isset( $qv['user_earning__in'] ) && ! empty( $qv['user_earning__in'] ) ) {
 

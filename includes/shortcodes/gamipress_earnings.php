@@ -367,8 +367,9 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
         'paged'             => max( 1, get_query_var( 'paged' ) )
     );
 
-    $types = array();
-    $points_types = array();
+    $query_args['post_type'] = array();
+    $query_args['points_type'] = array();
+    $query_args['post_type__not_in'] = array();
 
     // User
     if( isset( $args['user_id'] ) && absint( $args['user_id'] ) !== 0 ) {
@@ -399,24 +400,32 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
     if( $args['points'] === 'yes' ) {
 
         if( $args['points_types'] === 'all') {
-            $points_types = gamipress_get_points_types_slugs();
+            $query_args['points_type'] = gamipress_get_points_types_slugs();
         } else {
-            $points_types = explode( ',', $args['points_types'] );
+            $query_args['points_type'] = explode( ',', $args['points_types'] );
         }
 
         // For custom earnings points to the points type
-        $types[] = 'points-type';
+        $query_args['post_type'][] = 'points-type';
 
         // Points awards
         if( $args['awards'] === 'yes' ) {
-            $types[] = 'points-award';
+            $query_args['post_type'][] = 'points-award';
+        }  else {
+            $query_args['post_type__not_in'][] = 'points-award';
         }
 
         // Points deducts
         if( $args['deducts'] === 'yes' ) {
-            $types[] = 'points-deduct';
+            $query_args['post_type'][] = 'points-deduct';
+        }  else {
+            $query_args['post_type__not_in'][] = 'points-deduct';
         }
 
+    } else {
+        $query_args['post_type__not_in'][] = 'points-type';
+        $query_args['post_type__not_in'][] = 'points-award';
+        $query_args['post_type__not_in'][] = 'points-deduct';
     }
 
     // Achievement types
@@ -428,13 +437,18 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
             $achievement_types = explode( ',', $args['achievement_types'] );
         }
 
-        $types = array_merge( $types, $achievement_types );
+        $query_args['post_type'] = array_merge( $query_args['post_type'], $achievement_types );
 
         // Step
         if( $args['steps'] === 'yes' ) {
-            $types[] = 'step';
+            $query_args['post_type'][] = 'step';
+        } else {
+            $query_args['post_type__not_in'][] = 'step';
         }
 
+    } else {
+        $query_args['post_type__not_in'] = array_merge( $query_args['post_type__not_in'], gamipress_get_achievement_types_slugs() );
+        $query_args['post_type__not_in'][] = 'step';
     }
 
     // Rank types
@@ -446,32 +460,33 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
             $rank_types = explode( ',', $args['rank_types'] );
         }
 
-        $types = array_merge( $types, $rank_types );
+        $query_args['post_type'] = array_merge( $query_args['post_type'], $rank_types );
 
         // Rank requirements
         if( $args['rank_requirements'] === 'yes' ) {
-            $types[] = 'rank-requirement';
+            $query_args['post_type'][] = 'rank-requirement';
+        } else {
+            $query_args['post_type__not_in'][] = 'rank-requirement';
         }
 
+    } else {
+        $query_args['post_type__not_in'] = array_merge( $query_args['post_type__not_in'], gamipress_get_rank_types_slugs() );
+        $query_args['post_type__not_in'][] = 'rank-requirement';
     }
 
     // Remove types that has 'all' value
-    foreach( $types as $index => $type ) {
+    foreach( $query_args['post_type'] as $index => $type ) {
         if( $type === 'all' ) {
-            unset( $types[$index] );
+            unset( $query_args['post_type'][$index] );
         }
     }
 
     // Return if not types selected
-    if( empty( $types ) ) {
+    if( empty( $query_args['post_type'] ) ) {
         return false;
     }
 
-    $query_args['post_type'] = $types;
-    $query_args['points_type'] = array();
-
-    if( ! empty( $points_types ) ) {
-        $query_args['points_type'] = $points_types;
+    if( ! empty( $query_args['points_type'] ) ) {
         $query_args['force_types'] = true;
 
     }

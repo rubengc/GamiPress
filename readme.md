@@ -249,6 +249,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.0 ###
+
+* **Improvements**
+* Improved database query for the user earnings shortcode, block and widget.
+
 ### 2.2.9 ###
 
 * **Bug Fixes**
