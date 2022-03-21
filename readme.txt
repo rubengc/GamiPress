@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.9
-Stable tag: 2.3.0
+Stable tag: 2.3.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -206,6 +206,10 @@ GamiPress comes with the following shortcodes:
 * [[gamipress_ranks]](https://gamipress.com/docs/shortcodes/gamipress_ranks/) to display a list of ranks.
 * [[gamipress_user_rank]](https://gamipress.com/docs/shortcodes/gamipress_user_rank/) to display previous, current and/or next rank of a user.
 * [[gamipress_email_settings]](https://gamipress.com/docs/shortcodes/gamipress_email_settings/) to display the user email notifications preferences for the GamiPress emails.
+* [[gamipress_inline_achievement]](https://gamipress.com/docs/shortcodes/gamipress_inline_achievement/) to display a desired achievement inline.
+* [[gamipress_inline_last_achievements_earned]](https://gamipress.com/docs/shortcodes/gamipress_inline_last_achievements_earned/) to display the last achievements earned inline.
+* [[gamipress_inline_rank]](https://gamipress.com/docs/shortcodes/gamipress_inline_rank/) to display a desired rank inline.
+* [[gamipress_inline_user_rank]](https://gamipress.com/docs/shortcodes/gamipress_inline_user_rank/) to display previous, current and/or next rank of a user inline.
 
 In your WordPress admin area, navigate to the GamiPress Help/Support menu where you can find the full list of available shortcodes, including descriptions of all parameters each shortcode supports.
 
@@ -224,6 +228,10 @@ GamiPress comes with the following blocks and widgets:
 * Ranks: to display a list of ranks.
 * User Rank: to display previous, current and/or next rank of a user.
 * Email Settings: to display the user email notifications preferences for the GamiPress emails.
+* Inline Achievement: to display a desired achievement inline.
+* Inline Last Achievements Earned: to display a list of the latest achievements earned inline.
+* Inline Rank: to display a desired rank inline.
+* Inline User Rank: to display previous, current and/or next rank of a user inline.
 
 = Do you offer custom development services? =
 
@@ -232,6 +240,36 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.3.1 =
+
+* **New Features**
+* New options for several blocks, shortcodes and widgets:
+* - Option to set the title text size.
+* - Option to set the thumbnail size.
+* - Option to show/hide the heading text on steps, requirements, points awards and deducts.
+* - Option to set the heading text size.
+* New block and widget: Inline Achievement.
+* New shortcode: [gamipress_inline_achievement].
+* New block and widget: Inline Last Achievements Earned.
+* New shortcode: [gamipress_inline_last_achievements_earned].
+* New block and widget: Inline Rank.
+* New shortcode: [gamipress_inline_rank].
+* New block and widget: Inline User Rank.
+* New shortcode: [gamipress_inline_user_rank].
+* New event: Get a specific achievement revoked.
+* New event: Get any achievement of type revoked.
+* New event: Get a rank revoked.
+* **Improvements**
+* Removed the word "Required" from the achievement steps heading.
+* Style improvements in some form components.
+* Added new CSS classes to headings when listing steps, requirements, points awards and deducts.
+* **Developer Notes**
+* Added a new points inline template to make it overridable through the template system.
+* Added an achievement inline template.
+* Added an achievements inline template.
+* Added a rank inline template.
+* Added a ranks inline template.
 
 = 2.3.0 =
 

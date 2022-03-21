@@ -260,9 +260,18 @@
 	box-shadow: none;
 }
 
-/* Fix color pickers preview color height */
+/* Rounded color pickers */
+.gamipress-form .wp-picker-container .wp-color-result {
+	height: 30px;
+	width: 30px;
+	padding: 0 !important;
+	border-radius: 100%;
+}
+
 .gamipress-form .wp-picker-container .wp-color-result .color-alpha {
 	height: 28px !important;
+	width: 28px !important;
+	border-radius: 100% !important;
 }
 
 @media only screen and (min-width: 850px) {
@@ -1421,6 +1430,40 @@ label[for="_gamipress_sequential"] {
 	#post-body.columns-2 #postbox-container-1 .gamipress-image-options .cmb2-radio-list li {
 		padding-right: 1px;
 	}
+}
+
+/* -------------------------------------------
+	Font Size control
+   ------------------------------------------- */
+
+.gamipress-font-size select option[value="h1"] {
+	font-size: 24px;
+	font-weight: 700;
+}
+
+.gamipress-font-size select option[value="h2"] {
+	font-size: 22px;
+	font-weight: 700;
+}
+
+.gamipress-font-size select option[value="h3"] {
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.gamipress-font-size select option[value="h4"] {
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.gamipress-font-size select option[value="h5"] {
+	font-size: 16px;
+	font-weight: 700;
+}
+
+.gamipress-font-size select option[value="h6"] {
+	font-size: 14px;
+	font-weight: 700;
 }
 
 /* -------------------------------------------

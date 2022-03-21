@@ -1,35 +1,32 @@
 <?php
 /**
- * GamiPress Last Achievements Earned Shortcode
+ * GamiPress Inline Last Achievements Earned Shortcode
  *
- * @package     GamiPress\Shortcodes\Shortcode\GamiPress_Last_Achievements_Earned
+ * @package     GamiPress\Shortcodes\Shortcode\GamiPress_Inline_Last_Achievements_Earned
  * @author      GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gmail.com>
- * @since       1.0.0
+ * @since       2.3.1
  */
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
-// Register the singular separately to keep backward compatibility
-add_shortcode( 'gamipress_last_achievement_earned', 'gamipress_last_achievements_earned_shortcode' );
-
 /**
  * Register [gamipress_last_achievements_earned] shortcode
  *
- * @since 1.0.0
+ * @since 2.3.1
  */
-function gamipress_register_last_achievements_earned_shortcode() {
+function gamipress_register_inline_last_achievements_earned_shortcode() {
 
-	$achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
+	$achievement_fields = GamiPress()->shortcodes['gamipress_inline_achievement']->fields;
 
 	unset( $achievement_fields['id'] );
 
     // Register as singular to keep backward compatibility
-	gamipress_register_shortcode( 'gamipress_last_achievements_earned', array(
-		'name'              => __( 'Last Achievements Earned', 'gamipress' ),
-		'description'       => __( 'Display the last achievements earned by the current user or a desired user.', 'gamipress' ),
+	gamipress_register_shortcode( 'gamipress_inline_last_achievements_earned', array(
+		'name'              => __( 'Inline Last Achievements Earned', 'gamipress' ),
+		'description'       => __( 'Display the last achievements earned by the current user or a desired user inline.', 'gamipress' ),
         'icon' 	            => 'awards',
         'group' 	        => 'gamipress',
-		'output_callback'   => 'gamipress_last_achievements_earned_shortcode',
+		'output_callback'   => 'gamipress_inline_last_achievements_earned_shortcode',
         'tabs' => array(
             'general' => array(
                 'icon' => 'dashicons-admin-generic',
@@ -79,52 +76,37 @@ function gamipress_register_last_achievements_earned_shortcode() {
                 'type'        => 'text',
                 'default'     => '1',
             ),
-            'columns' => array(
-                'name'        => __( 'Columns', 'gamipress' ),
-                'description' => __( 'Columns to divide achievements (only used when limit is higher than 1).', 'gamipress' ),
-                'type' 	=> 'select',
-                'options' => array(
-                    '1' => __( '1 Column', 'gamipress' ),
-                    '2' => __( '2 Columns', 'gamipress' ),
-                    '3' => __( '3 Columns', 'gamipress' ),
-                    '4' => __( '4 Columns', 'gamipress' ),
-                    '5' => __( '5 Columns', 'gamipress' ),
-                    '6' => __( '6 Columns', 'gamipress' ),
-                ),
-                'default' => '1'
-            ),
 		), $achievement_fields ),
 	) );
 
 }
-add_action( 'init', 'gamipress_register_last_achievements_earned_shortcode' );
+add_action( 'init', 'gamipress_register_inline_last_achievements_earned_shortcode' );
 
 /**
  * Last Achievements Earned Shortcode
  *
- * @since  1.0.0
+ * @since  2.3.1
  *
  * @param  array    $atts      Shortcode attributes
  * @param  string   $content   Shortcode content
  *
  * @return string 	   HTML markup
  */
-function gamipress_last_achievements_earned_shortcode( $atts = array(), $content = '' ) {
+function gamipress_inline_last_achievements_earned_shortcode( $atts = array(), $content = '' ) {
 
 	global $gamipress_template_args;
 
 	// Initialize GamiPress template args global
 	$gamipress_template_args = array();
 
-    $shortcode = 'gamipress_last_achievements_earned';
+    $shortcode = 'gamipress_inline_last_achievements_earned';
 
 	$atts = shortcode_atts( array_merge( array(
 		'type'        	    => '',
 		'current_user'      => 'yes',
 		'user_id'     	    => '0',
 		'limit'     	    => '1',
-		'columns'     	    => '1',
-	), gamipress_achievement_shortcode_defaults() ), $atts, $shortcode );
+	), gamipress_inline_achievement_shortcode_defaults() ), $atts, $shortcode );
 
     // ---------------------------
     // Shortcode Errors
@@ -153,13 +135,13 @@ function gamipress_last_achievements_earned_shortcode( $atts = array(), $content
         /**
          * Filter to override shortcode output when no user has been found
          *
-         * @since 2.1.2
+         * @since 2.3.1
          *
          * @param string    $output     Final output
          * @param array     $atts       Shortcode attributes
          * @param string    $content    Shortcode content
          */
-	    return apply_filters( 'gamipress_last_achievements_earned_shortcode_no_user_output', '', $atts, $content );
+	    return apply_filters( 'gamipress_inline_last_achievements_earned_shortcode_no_user_output', '', $atts, $content );
     }
 
     $atts['limit'] = absint( $atts['limit'] );
@@ -177,19 +159,19 @@ function gamipress_last_achievements_earned_shortcode( $atts = array(), $content
             /**
              * Filter to override the shortcode output when no achievement has been found
              *
-             * @since 2.1.2
+             * @since 2.3.1
              *
              * @param string    $output     Final output
              * @param array     $atts       Shortcode attributes
              * @param string    $content    Shortcode content
              */
-            return apply_filters( 'gamipress_last_achievements_earned_shortcode_no_achievement_output', '', $atts, $content );
+            return apply_filters( 'gamipress_inline_last_achievements_earned_shortcode_no_achievement_output', '', $atts, $content );
         }
 
         // Set the achievement ID
         $atts['id'] = $achievement_id;
 
-        $output = gamipress_achievement_shortcode( $atts, $content );
+        $output = gamipress_inline_achievement_shortcode( $atts, $content );
     } else {
         // Display a list of achievements
 
@@ -203,7 +185,7 @@ function gamipress_last_achievements_earned_shortcode( $atts = array(), $content
             /**
              * Filter to override the shortcode output when no achievements has been found
              *
-             * @since 2.1.2
+             * @since 2.3.1
              *
              * @param string    $output     Final output
              * @param array     $atts       Shortcode attributes
@@ -213,40 +195,33 @@ function gamipress_last_achievements_earned_shortcode( $atts = array(), $content
         }
 
         // Render the achievements
-        $achievements = '';
+        $achievements = array();
 
         foreach( $last_earnings as $earning ) {
-            $achievements .= gamipress_render_achievement( $earning->post_id, $atts );
+            $achievements[] = $earning->post_id;
         }
 
         // Setup the template args
         $gamipress_template_args = $atts;
-        $gamipress_template_args['filter'] = 'no';
-        $gamipress_template_args['filter_value'] = 'all';
-        $gamipress_template_args['search'] = 'no';
-        $gamipress_template_args['load_more'] = 'no';
-        $gamipress_template_args['query'] = array(
-            'achievements'      => $achievements,
-            'offset'            => $atts['limit'],
-            'query_count'       => $atts['limit'],
-            'achievement_count' => $atts['limit'],
-        );
+        $gamipress_template_args['achievements'] = $achievements;
 
         ob_start();
-        gamipress_get_template_part( 'achievements', $atts['type'] );
+        gamipress_get_template_part( 'inline-achievements', $atts['type'] );
         $output = ob_get_clean();
+
+        $output = gamipress_parse_inline_output( $output );
     }
 
 
     /**
      * Filter to override shortcode output
      *
-     * @since 2.1.2
+     * @since 2.3.1
      *
      * @param string    $output     Final output
      * @param array     $atts       Shortcode attributes
      * @param string    $content    Shortcode content
      */
-    return apply_filters( 'gamipress_last_achievements_earned_shortcode_output', $output, $atts, $content );
+    return apply_filters( 'gamipress_inline_last_achievements_earned_shortcode_output', $output, $atts, $content );
 
 }

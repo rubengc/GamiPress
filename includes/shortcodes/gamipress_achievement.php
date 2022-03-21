@@ -43,6 +43,22 @@ function gamipress_register_achievement_shortcode() {
 				'classes' 	        => 'gamipress-switch',
 				'default'           => 'yes'
 			),
+            'title_size' => array(
+                'name'              => __( 'Title Size', 'gamipress' ),
+                'description'       => __( 'The achievement title size.', 'gamipress' ),
+                'type' 		        => 'select',
+                'classes' 		    => 'gamipress-font-size',
+                'options' 	        => array(
+                    'h1'    => __( 'Heading 1', 'gamipress' ),
+                    'h2'    => __( 'Heading 2', 'gamipress' ),
+                    'h3'    => __( 'Heading 3', 'gamipress' ),
+                    'h4'    => __( 'Heading 4', 'gamipress' ),
+                    'h5'    => __( 'Heading 5', 'gamipress' ),
+                    'h6'    => __( 'Heading 6', 'gamipress' ),
+                    'p'     => __( 'Paragraph', 'gamipress' ),
+                ),
+                'default'           => 'h2'
+            ),
 			'link' => array(
 				'name'        => __( 'Show Link', 'gamipress' ),
 				'description' => __( 'Add a link on achievement title to the achievement page.', 'gamipress' ),
@@ -57,6 +73,14 @@ function gamipress_register_achievement_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'thumbnail_size' => array(
+                'name'        => __( 'Thumbnail Size (in pixels)', 'gamipress' ),
+                'description' => __( 'The achievement featured image size in pixels. Leave empty to use the image size from settings.', 'gamipress' ),
+                'type' 	=> 'text',
+                'attributes' => array(
+                    'type' => 'number',
+                )
+            ),
 			'points_awarded' => array(
 				'name'        => __( 'Show Points Awarded', 'gamipress' ),
 				'description' => __( 'Display the achievement points awarded (on achievements where this setting is set).', 'gamipress' ),
@@ -105,6 +129,29 @@ function gamipress_register_achievement_shortcode() {
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'heading' => array(
+                'name'        => __( 'Show Steps Heading', 'gamipress' ),
+                'description' => __( 'Display the achievement steps heading text.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
+            'heading_size' => array(
+                'name'              => __( 'Steps Heading Size', 'gamipress' ),
+                'description'       => __( 'The achievement steps heading text size.', 'gamipress' ),
+                'type' 		        => 'select',
+                'classes' 		    => 'gamipress-font-size',
+                'options' 	        => array(
+                    'h1'    => __( 'Heading 1', 'gamipress' ),
+                    'h2'    => __( 'Heading 2', 'gamipress' ),
+                    'h3'    => __( 'Heading 3', 'gamipress' ),
+                    'h4'    => __( 'Heading 4', 'gamipress' ),
+                    'h5'    => __( 'Heading 5', 'gamipress' ),
+                    'h6'    => __( 'Heading 6', 'gamipress' ),
+                    'p'     => __( 'Paragraph', 'gamipress' ),
+                ),
+                'default'           => 'h4'
+            ),
 			'unlock_button' => array(
 				'name'        => __( 'Show Unlock Button', 'gamipress' ),
 				'description' => __( 'Display the "Unlock using points" (on achievements where unlock with points is allowed).', 'gamipress' ),
@@ -240,8 +287,10 @@ function gamipress_achievement_shortcode_defaults() {
 	return apply_filters( 'gamipress_achievement_shortcode_defaults', array(
 		'id' 				        => get_the_ID(),
 		'title' 			        => 'yes',
+		'title_size' 			    => 'h2',
 		'link' 				        => 'yes',
 		'thumbnail' 		        => 'yes',
+		'thumbnail_size' 		    => '',
 		'points_awarded' 	        => 'yes',
 		'points_awarded_thumbnail' 	=> 'yes',
 		'excerpt'	  		        => 'yes',
@@ -249,6 +298,8 @@ function gamipress_achievement_shortcode_defaults() {
         'global_times_earned' 	    => 'no',
 		'steps'	  			        => 'yes',
 		'toggle' 			        => 'yes',
+		'heading' 			        => 'yes',
+		'heading_size' 			    => 'h4',
 		'unlock_button' 	        => 'yes',
 		'earners'	  		        => 'no',
 		'earners_limit'	            => '0',

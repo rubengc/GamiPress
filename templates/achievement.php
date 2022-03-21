@@ -15,6 +15,15 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
 // Check if user has earned this achievement
 $earned = gamipress_has_user_earned_achievement( get_the_ID(), $user_id );
 
+// Setup thumbnail size
+$thumbnail_size = absint( $a['thumbnail_size'] );
+
+if( $thumbnail_size === 0 ) {
+    $thumbnail_size = 'gamipress-achievement';
+} else {
+    $thumbnail_size = array( $thumbnail_size, $thumbnail_size );
+}
+
 // Setup achievement classes
 $classes = array(
     'gamipress-achievement',
@@ -53,9 +62,9 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
 
             <?php // Link to the achievement page
             if( $a['link'] === 'yes' ) : ?>
-                <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?></a>
+                <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php echo gamipress_get_achievement_post_thumbnail( get_the_ID(), $thumbnail_size ); ?></a>
             <?php else : ?>
-                <?php echo gamipress_get_achievement_post_thumbnail( get_the_ID() ); ?>
+                <?php echo gamipress_get_achievement_post_thumbnail( get_the_ID(), $thumbnail_size ); ?>
             <?php endif; ?>
 
             <?php // Share
@@ -81,7 +90,7 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
 
         <?php // Achievement Title
         if( $a['title'] === 'yes' ) : ?>
-            <h2 class="gamipress-achievement-title">
+            <<?php echo $a['title_size']; ?> class="gamipress-achievement-title">
 
                 <?php // Link to the achievement page
                 if( $a['link'] === 'yes' ) : ?>
@@ -90,7 +99,7 @@ $classes = apply_filters( 'gamipress_achievement_classes', $classes, get_the_ID(
                     <?php the_title(); ?>
                 <?php endif; ?>
 
-            </h2>
+            </<?php echo $a['title_size']; ?>>
 
             <?php
             /**

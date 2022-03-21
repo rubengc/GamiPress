@@ -443,7 +443,7 @@ add_action( 'gamipress_achievement_unlocked_with_points', 'gamipress_expend_poin
 add_action( 'gamipress_rank_unlocked_with_points', 'gamipress_expend_points_listener', 10, 4 );
 
 /**
- * Trigger listener
+ * Listener for user role changes
  *
  * @since 1.8.8
  *

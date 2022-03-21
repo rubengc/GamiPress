@@ -295,16 +295,17 @@
     $('.requirements-list').on( 'change', '.select-achievement-type', function() {
 
         // Setup our necessary variables
-        var $this                = $(this);
-        var achievement_post     = $this.siblings('.select-achievement-post');
-        var achievement_type     = $this.val();
-        var requirement_id       = $this.parent('li').attr('data-requirement-id');
-        var requirement_type     = $this.siblings('input[name="requirement_type"]').val();
-        var excluded_posts       = [$this.siblings('input[name="post_id"]').val()];
-        var trigger_type         = $this.siblings('.select-trigger-type').val();
+        var $this               = $(this);
+        var achievement_post    = $this.siblings('.select-achievement-post');
+        var achievement_type    = $this.val();
+        var requirement_id      = $this.parent('li').attr('data-requirement-id');
+        var requirement_type    = $this.siblings('input[name="requirement_type"]').val();
+        var excluded_posts      = [$this.siblings('input[name="post_id"]').val()];
+        var trigger_type        = $this.siblings('.select-trigger-type').val();
+        var events              = [ 'specific-achievement', 'revoke-specific-achievement' ];
 
         // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
-        if ( '' !== achievement_type && 'specific-achievement' === trigger_type ) {
+        if ( '' !== achievement_type && events.indexOf( trigger_type ) !== -1 ) {
             // Add the loader
             $('<span class="achievement-type-spinner spinner is-active" style="float: none; margin: 0 2px 0 4px;"></span>').insertAfter($this);
 
@@ -339,14 +340,15 @@
     $('.requirements-list').on( 'change', '.select-rank-type-required', function() {
 
         // Setup our necessary variables
-        var $this                = $(this);
-        var rank_selector        = $this.siblings('.select-rank-required');
-        var rank_type            = $this.val();
-        var requirement_id       = $this.parent('li').attr('data-requirement-id');
-        var trigger_type         = $this.siblings('.select-trigger-type').val();
+        var $this               = $(this);
+        var rank_selector       = $this.siblings('.select-rank-required');
+        var rank_type           = $this.val();
+        var requirement_id      = $this.parent('li').attr('data-requirement-id');
+        var trigger_type        = $this.siblings('.select-trigger-type').val();
+        var events              = [ 'earn-rank', 'revoke-rank' ];
 
         // If we've selected a *specific* achievement type, show our post selector and populate it w/ the corresponding achievement posts
-        if ( '' !== rank_type && 'earn-rank' === trigger_type ) {
+        if ( '' !== rank_type && events.indexOf( trigger_type ) !== -1 ) {
 
             // Add the loader
             $('<span class="rank-type-spinner spinner is-active" style="float: none; margin: 0 2px 0 4px;"></span>').insertAfter( $this );

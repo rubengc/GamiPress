@@ -994,7 +994,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     $achievement_type       = sanitize_text_field( $requirement['achievement_type'] );
 
     // Connect the achievement with the requirement
-    if( $trigger_type === 'specific-achievement' ) {
+    if( in_array( $trigger_type, array( 'specific-achievement', 'revoke-specific-achievement' ) ) ) {
 
         $achievement_post_id = absint( $requirement['achievement_post'] );
 
@@ -1151,15 +1151,26 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
 
             $title = sprintf( __( 'Reach %s %s', 'gamipress' ), ( $rank ? gamipress_get_rank_type_singular( $rank->post_type, true ) : '' ), ( $rank ? $rank->post_title : '' ) );
             break;
+        case 'revoke-rank':
+            $rank = gamipress_get_post( $rank_required );
+
+            $title = sprintf( __( 'Get %s %s revoked', 'gamipress' ), ( $rank ? gamipress_get_rank_type_singular( $rank->post_type, true ) : '' ), ( $rank ? $rank->post_title : '' ) );
+            break;
         // Achievement triggers
+        case 'specific-achievement':
+            $title = sprintf( __( 'Unlock "%s"', 'gamipress' ), gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) );
+            break;
         case 'any-achievement':
             $title = sprintf( __( 'Unlock any %s', 'gamipress' ), $achievement_type );
             break;
         case 'all-achievements':
             $title = sprintf( __( 'Unlock all %s', 'gamipress' ), $achievement_type );
             break;
-        case 'specific-achievement':
-            $title = sprintf( __( 'Unlock "%s"', 'gamipress' ), gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) );
+        case 'revoke-specific-achievement':
+            $title = sprintf( __( 'Get "%s" revoked', 'gamipress' ), gamipress_get_specific_activity_trigger_post_title( $requirement['achievement_post'], $trigger_type, $requirement['achievement_post_site_id'] ) );
+            break;
+        case 'revoke-any-achievement':
+            $title = sprintf( __( 'Get any %s revoked', 'gamipress' ), $achievement_type );
             break;
         // Post type triggers
         case 'gamipress_new_comment_post_type':

@@ -222,3 +222,29 @@ function gamipress_get_theme_template_paths() {
     return array_map( 'trailingslashit', $file_paths );
 
 }
+
+/**
+ * Helper function to parse inline shortcode outputs
+ *
+ * @since 1.0.0
+ *
+ * @return array
+ */
+function gamipress_parse_inline_output( $output ) {
+
+    // Remove line breaks
+    $output = str_replace( "\r", "", $output );
+    $output = str_replace( "\n", "", $output );
+
+    // Remove tabs
+    $output = str_replace( "\t", "", $output );
+
+    // Remove double spaces
+    $output = str_replace( "  ", "", $output );
+
+    // Remove spaces between tags
+    $output = str_replace( "> <", "><", $output );
+
+
+    return $output;
+}

@@ -224,6 +224,7 @@
 /* --------------------------------------
 	Align Utility
    -------------------------------------- */
+
 .gamipress-align-left {
 	text-align: left;
 }
@@ -464,9 +465,17 @@ ul.gamipress-rank-earners-list li .earner-display-name {
 	display: inline-block;
 }
 
+/* Inline shortcodes styles */
+.gamipress-inline-points .gamipress-inline-points-thumbnail img,
+.gamipress-inline-achievement .gamipress-inline-achievement-thumbnail img,
+.gamipress-inline-rank .gamipress-inline-rank-thumbnail img {
+	vertical-align: middle;
+}
+
 /* --------------------------------------
 	Share buttons
    -------------------------------------- */
+
 .gamipress-share-buttons-label {
 	margin-top: 0;
 	margin-bottom: 2px;
@@ -578,6 +587,7 @@ ul.gamipress-rank-earners-list li .earner-display-name {
 /* --------------------------------------
 	Shortcode errors
    -------------------------------------- */
+
 .gamipress-shortcode-error {
 	color: #a00;
 	background-color: #fdd;

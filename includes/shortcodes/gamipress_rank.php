@@ -43,6 +43,22 @@ function gamipress_register_rank_shortcode() {
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'title_size' => array(
+                'name'              => __( 'Title Size', 'gamipress' ),
+                'description'       => __( 'The rank title size.', 'gamipress' ),
+                'type' 		        => 'select',
+                'classes' 		    => 'gamipress-font-size',
+                'options' 	        => array(
+                    'h1'    => __( 'Heading 1', 'gamipress' ),
+                    'h2'    => __( 'Heading 2', 'gamipress' ),
+                    'h3'    => __( 'Heading 3', 'gamipress' ),
+                    'h4'    => __( 'Heading 4', 'gamipress' ),
+                    'h5'    => __( 'Heading 5', 'gamipress' ),
+                    'h6'    => __( 'Heading 6', 'gamipress' ),
+                    'p'     => __( 'Paragraph', 'gamipress' ),
+                ),
+                'default'           => 'h2'
+            ),
 			'link' => array(
 				'name'        => __( 'Show Link', 'gamipress' ),
 				'description' => __( 'Add a link on rank title to the rank page.', 'gamipress' ),
@@ -57,6 +73,14 @@ function gamipress_register_rank_shortcode() {
                 'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'thumbnail_size' => array(
+                'name'        => __( 'Thumbnail Size (in pixels)', 'gamipress' ),
+                'description' => __( 'The rank featured image size in pixels. Leave empty to use the image size from settings.', 'gamipress' ),
+                'type' 	=> 'text',
+                'attributes' => array(
+                    'type' => 'number',
+                )
+            ),
 			'excerpt' => array(
 				'name'        => __( 'Show Excerpt', 'gamipress' ),
 				'description' => __( 'Display the rank short description.', 'gamipress' ),
@@ -78,6 +102,29 @@ function gamipress_register_rank_shortcode() {
 				'classes' => 'gamipress-switch',
 				'default' => 'yes'
 			),
+            'heading' => array(
+                'name'        => __( 'Show Requirements Heading', 'gamipress' ),
+                'description' => __( 'Display the rank requirements heading text.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
+            'heading_size' => array(
+                'name'              => __( 'Requirements Heading Size', 'gamipress' ),
+                'description'       => __( 'The rank requirements heading text size.', 'gamipress' ),
+                'type' 		        => 'select',
+                'classes' 		    => 'gamipress-font-size',
+                'options' 	        => array(
+                    'h1'    => __( 'Heading 1', 'gamipress' ),
+                    'h2'    => __( 'Heading 2', 'gamipress' ),
+                    'h3'    => __( 'Heading 3', 'gamipress' ),
+                    'h4'    => __( 'Heading 4', 'gamipress' ),
+                    'h5'    => __( 'Heading 5', 'gamipress' ),
+                    'h6'    => __( 'Heading 6', 'gamipress' ),
+                    'p'     => __( 'Paragraph', 'gamipress' ),
+                ),
+                'default'           => 'h4'
+            ),
 			'unlock_button' => array(
 				'name'        => __( 'Show Unlock Button', 'gamipress' ),
 				'description' => __( 'Display the "Unlock using points" (on ranks where unlock with points is allowed).', 'gamipress' ),
@@ -146,10 +193,6 @@ function gamipress_rank_shortcode( $atts = array(), $content = '' ) {
     // Shortcode Errors
     // ---------------------------
 
-	// return if post id not specified
-	if ( empty($atts['id']) )
-	  return '';
-
     // Get the rank post
     $rank = gamipress_get_post( $atts['id'] );
     $is_rank = gamipress_is_rank( $rank );
@@ -172,9 +215,15 @@ function gamipress_rank_shortcode( $atts = array(), $content = '' ) {
 	// On network wide active installs, we need to switch to main blog mostly for posts permalinks and thumbnails
     $blog_id = gamipress_switch_to_main_site_if_network_wide_active();
 
-	// Get the current user if none wasn't specified
-	if( absint( $atts['user_id'] ) === 0 )
-		$atts['user_id'] = get_current_user_id();
+    // Initialize user ID to avoid undefined index errors
+    if( ! isset( $atts['user_id'] ) ) {
+        $atts['user_id'] = get_current_user_id();
+    }
+
+    // Get the current user if none wasn't specified
+    if( absint( $atts['user_id'] ) === 0 ) {
+        $atts['user_id'] = get_current_user_id();
+    }
 
 	// If we're dealing with an rank post
     $output = gamipress_render_rank( $rank, $atts );
@@ -206,19 +255,22 @@ function gamipress_rank_shortcode( $atts = array(), $content = '' ) {
 function gamipress_rank_shortcode_defaults() {
 
 	return apply_filters( 'gamipress_rank_shortcode_defaults', array(
-		'id' 			=> get_the_ID(),
-		'user_id' 		=> '0',
-		'title' 		=> 'yes',
-		'link' 			=> 'yes',
-		'thumbnail' 	=> 'yes',
-		'excerpt'	  	=> 'yes',
-		'requirements'	=> 'yes',
-		'toggle' 		=> 'yes',
-		'unlock_button' => 'yes',
-		'earners'	  	=> 'no',
-		'earners_limit'	=> '0',
-		'layout'	  	=> 'left',
-		'align'	  	    => 'none',
+		'id' 			        => get_the_ID(),
+		'title' 		        => 'yes',
+		'title_size' 		    => 'h2',
+		'link' 			        => 'yes',
+		'thumbnail' 	        => 'yes',
+		'thumbnail_size' 	    => '',
+		'excerpt'	  	        => 'yes',
+		'requirements'	        => 'yes',
+		'toggle' 		        => 'yes',
+		'heading' 	            => 'yes',
+		'heading_size' 	        => 'h4',
+		'unlock_button'         => 'yes',
+		'earners'	  	        => 'no',
+		'earners_limit'	        => '0',
+		'layout'	  	        => 'left',
+		'align'	  	            => 'none',
 	) );
 
 }

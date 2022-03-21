@@ -61,10 +61,13 @@ function gamipress_get_activity_triggers() {
 				'specific-achievement' 					=> __( 'Unlock a specific achievement', 'gamipress' ),
 				'any-achievement'      					=> __( 'Unlock any achievement of type', 'gamipress' ),
 				'all-achievements'     					=> __( 'Unlock all Achievements of type', 'gamipress' ),
-				'earn-points' 							=> __( 'Earn an amount of points', 'gamipress' ),
+                'revoke-specific-achievement' 			=> __( 'Get a specific achievement revoked', 'gamipress' ),
+                'revoke-any-achievement'      			=> __( 'Get any achievement of type revoked', 'gamipress' ),
+                'earn-points' 							=> __( 'Earn an amount of points', 'gamipress' ),
 				'points-balance' 					    => __( 'Reach a points balance', 'gamipress' ),
 				'gamipress_expend_points' 				=> __( 'Expend an amount of points', 'gamipress' ),
 				'earn-rank' 							=> __( 'Reach a rank', 'gamipress' ),
+				'revoke-rank' 							=> __( 'Get a rank revoked', 'gamipress' ),
 			),
 		)
 	);
@@ -141,9 +144,11 @@ function gamipress_get_points_triggers() {
 function gamipress_get_achievement_type_triggers() {
 
     return apply_filters( 'gamipress_achievement_type_triggers', array(
+        'specific-achievement',
         'any-achievement',
         'all-achievements',
-        'specific-achievement',
+        'revoke-specific-achievement',
+        'revoke-any-achievement'
     ) );
 
 }
@@ -159,6 +164,7 @@ function gamipress_get_rank_type_triggers() {
 
     return apply_filters( 'gamipress_rank_type_triggers', array(
         'earn-rank',
+        'revoke-rank',
     ) );
 
 }
@@ -251,9 +257,9 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
         }
 	}
 
-	// Check if trigger is for unlocking ANY and ALL posts of an achievement type
 	if( gamipress_starts_with( $activity_trigger, 'gamipress_unlock_' ) ) {
 
+        // Check if trigger is for unlocking ANY and ALL posts of an achievement type
 	    $achievement_type = $activity_trigger;
 	    $achievement_type = str_replace( 'gamipress_unlock_all_', '', $achievement_type );
 	    $achievement_type = str_replace( 'gamipress_unlock_', '', $achievement_type );
@@ -265,6 +271,18 @@ function gamipress_get_activity_trigger_label( $activity_trigger ) {
             else
                 $label = sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
         }
+
+    } else if( gamipress_starts_with( $activity_trigger, 'gamipress_revoke_' ) ) {
+
+        // Check if trigger is for revoking ANY posts of an achievement type
+        $achievement_type = $activity_trigger;
+        $achievement_type = str_replace( 'gamipress_revoke_', '', $achievement_type );
+        $data = gamipress_get_achievement_type( $achievement_type );
+
+        if ( $data ) {
+            $label = sprintf( __( 'Get a %s revoked', 'gamipress' ), $data['singular_name'] );
+        }
+
     }
 
     /**
@@ -442,12 +460,13 @@ function gamipress_load_activity_triggers() {
 	$activity_triggers = gamipress_get_activity_triggers();
     $excluded_to_load = gamipress_get_activity_triggers_excluded_to_load();
 
-	// Loop through each achievement type and add triggers for unlocking them
+	// Loop through each achievement type and add triggers for unlocking/revoking them
 	foreach ( gamipress_get_achievement_types() as $achievement_type => $data ) {
 
-		// Add trigger for unlocking ANY and ALL posts for each achievement type
+		// Add trigger for unlocking/revoking ANY and ALL posts for each achievement type
 		$activity_triggers['GamiPress']['gamipress_unlock_' . $achievement_type] = sprintf( __( 'Unlocked a %s', 'gamipress' ), $data['singular_name'] );
 		$activity_triggers['GamiPress']['gamipress_unlock_all_' . $achievement_type] = sprintf( __( 'Unlocked all %s', 'gamipress' ), $data['plural_name'] );
+        $activity_triggers['GamiPress']['gamipress_revoke_' . $achievement_type] = sprintf( __( 'Revoked a %s', 'gamipress' ), $data['singular_name'] );
 
 	}
 
@@ -497,7 +516,8 @@ function gamipress_get_activity_triggers_excluded_from_activity_limit() {
         'gamipress_register',
         'earn-points',
         'points-balance',
-        'earn-rank'
+        'earn-rank',
+        'revoke-rank'
     ) );
 
 }
@@ -532,8 +552,8 @@ function gamipress_trigger_event() {
 	// Grab our current trigger
 	$trigger = ( isset( $args['event'] ) ? $args['event'] : current_filter() );
 
-	// gamipress_unlock_all_{achievement_type} and gamipress_unlock_{achievement_type} are excluded from this check
-	if( ! gamipress_starts_with( $trigger, 'gamipress_unlock_' ) ) {
+	// gamipress_unlock_all_{type}, gamipress_unlock_{type} and gamipress_revoke_{type} are excluded from this check
+	if( ! ( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) || gamipress_starts_with( $trigger, 'gamipress_revoke_' ) ) ) {
 
 		// Check if log all events is enabled, if checked then function won't
 		if( ! (bool) gamipress_get_option( 'log_all_events', false ) ) {
@@ -620,8 +640,9 @@ function gamipress_log_event_triggered( $user_id, $trigger, $site_id, $args ) {
     );
 
     // On multisite, search for site logs
-    if( is_multisite() && gamipress_is_network_wide_active() )
+    if( is_multisite() && gamipress_is_network_wide_active() ) {
         $log_meta['site_id'] = $site_id;
+    }
 
     // If is specific trigger then try to get the attached id
     if( in_array( $trigger, array_keys( gamipress_get_specific_activity_triggers() ) ) ) {
@@ -719,11 +740,18 @@ function gamipress_log_event_trigger_extended_meta_data( $log_meta, $user_id, $t
 			$log_meta['points'] = gamipress_get_event_arg( $args, 'points', 2 );
 			$log_meta['points_type'] = gamipress_get_event_arg( $args, 'points_type', 3 );
 			break;
-		case 'gamipress_login':
-		case 'gamipress_register':
-		case 'gamipress_site_visit':
 		case gamipress_starts_with( $trigger, 'gamipress_unlock_' ):
-		default :
+            if( ! gamipress_starts_with( $trigger, 'gamipress_unlock_all_' ) ) {
+                $log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 1 );
+            }
+            break;
+		case gamipress_starts_with( $trigger, 'gamipress_revoke_' ):
+            $log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 1 );
+            break;
+        case 'gamipress_login':
+        case 'gamipress_register':
+        case 'gamipress_site_visit':
+		default:
 			// Nothing to store
 			break;
 	}
@@ -771,6 +799,28 @@ function gamipress_get_user_trigger_count_log_extended_meta( $log_meta, $user_id
             if( isset( $args['post_type_required'] ) ) {
                 $log_meta['comment_post_type'] = $args['post_type_required'];
             }
+            break;
+        case 'specific-achievement':
+            // Filter by the post ID
+            $log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 1 );
+
+            if( isset( $args['achievement_post'] ) && absint( $log_meta['achievement_post'] ) === 0 ) {
+                $log_meta['post_id'] = $args['achievement_post'];
+            }
+
+            // Update the trigger type
+            $log_meta['trigger_type'] = 'gamipress_unlock_' . gamipress_get_post_type( $log_meta['post_id'] );
+            break;
+        case 'revoke-specific-achievement':
+            // Filter by the post ID
+            $log_meta['post_id'] = gamipress_get_event_arg( $args, 'post_id', 1 );
+
+            if( isset( $args['achievement_post'] ) && absint( $log_meta['achievement_post'] ) === 0 ) {
+                $log_meta['post_id'] = $args['achievement_post'];
+            }
+
+            // Update the trigger type
+            $log_meta['trigger_type'] = 'gamipress_revoke_' . gamipress_get_post_type( $log_meta['post_id'] );
             break;
     }
 
@@ -874,6 +924,7 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
         case 'gamipress_remove_role':
         case 'gamipress_remove_specific_role':
 		case gamipress_starts_with( $trigger, 'gamipress_unlock_' ):
+		case gamipress_starts_with( $trigger, 'gamipress_revoke_' ):
 			$user_id = $args[0];
 			break;
 		case 'gamipress_publish_post':
@@ -1154,6 +1205,25 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
         // Add the achievement type
         $query_args['meta_query']['_gamipress_achievement_type'] = $achievement_type;
 
+    } else if( gamipress_starts_with( $trigger, 'gamipress_revoke_' ) ) {
+        // Check if trigger is for revoking ANY posts of an achievement type
+
+        $event_trigger = $trigger;
+
+        // Get the achievement type
+        $achievement_type = str_replace( 'gamipress_revoke_', '', $trigger );
+
+        if( in_array( $achievement_type, gamipress_get_achievement_types_slugs() ) ) {
+            // Replace "gamipress_revoke_{achievement-type}" to "revoke-any-achievement"
+            $event_trigger = 'revoke-any-achievement';
+
+            // Add the achievement type
+            $query_args['meta_query']['_gamipress_achievement_type'] = $achievement_type;
+        }
+
+        // Update the trigger with the correct trigger
+        $query_args['meta_query']['_gamipress_trigger_type'] = $event_trigger;
+
     }
 
     /**
@@ -1334,12 +1404,16 @@ function gamipress_delete_trigger_cache( $trigger ) {
             $wpdb->query( "DELETE FROM {$wpdb->options} WHERE option_name LIKE '{$prefix}%' AND ( option_name LIKE '%{$triggered_suffix}' OR option_name LIKE '%{$listeners_suffix}' )" );
         }
 
-    } else if ( $trigger === 'any-achievement' || $trigger === 'all-achievements' ) {
+    } else if ( $trigger === 'any-achievement' || $trigger === 'all-achievements' || $trigger === 'revoke-any-achievement' ) {
 
         // Cache prefix and suffix
         $prefix = 'gamipress_cache_gamipress_unlock_';
         $triggered_suffix = '_triggered_requirements';
         $listeners_suffix = '_listeners_count';
+
+        if( $trigger === 'revoke-any-achievement' ) {
+            $prefix = 'gamipress_cache_gamipress_revoke_';
+        }
 
         // Delete listeners count cache for unlock all/specific achievement
         if( gamipress_is_network_wide_active() ) {

@@ -16,7 +16,7 @@ class GamiPress_Last_Achievements_Earned_Widget extends GamiPress_Widget {
      *
      * @var string
      */
-    protected $shortcode = 'gamipress_last_achievement_earned';
+    protected $shortcode = 'gamipress_last_achievements_earned';
 
     public function __construct() {
 

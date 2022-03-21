@@ -27,6 +27,11 @@ require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_rank.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_ranks.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_user_rank.php';
 require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_email_settings.php';
+// Inline Shortcodes
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_inline_achievement.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_inline_last_achievements_earned.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_inline_rank.php';
+require_once GAMIPRESS_DIR . 'includes/shortcodes/gamipress_inline_user_rank.php';
 
 /**
  * Register a new GamiPress Shortcode

@@ -50,6 +50,22 @@ function gamipress_register_points_types_shortcode() {
                 ),
                 'default' => '1'
             ),
+            'title_size' => array(
+                'name'              => __( 'Title Size', 'gamipress' ),
+                'description'       => __( 'The points type title size.', 'gamipress' ),
+                'type' 		        => 'select',
+                'classes' 		    => 'gamipress-font-size',
+                'options' 	        => array(
+                    'h1'    => __( 'Heading 1', 'gamipress' ),
+                    'h2'    => __( 'Heading 2', 'gamipress' ),
+                    'h3'    => __( 'Heading 3', 'gamipress' ),
+                    'h4'    => __( 'Heading 4', 'gamipress' ),
+                    'h5'    => __( 'Heading 5', 'gamipress' ),
+                    'h6'    => __( 'Heading 6', 'gamipress' ),
+                    'p'     => __( 'Paragraph', 'gamipress' ),
+                ),
+                'default'           => 'h2'
+            ),
             'thumbnail' => array(
                 'name'        => __( 'Show Thumbnail', 'gamipress' ),
                 'description' => __( 'Display the points type featured image.', 'gamipress' ),
@@ -57,26 +73,57 @@ function gamipress_register_points_types_shortcode() {
                 'classes' => 'gamipress-switch',
                 'default' => 'yes'
             ),
+            'thumbnail_size' => array(
+                'name'        => __( 'Thumbnail Size (in pixels)', 'gamipress' ),
+                'description' => __( 'The points type featured image size in pixels. Leave empty to use the image size from settings.', 'gamipress' ),
+                'type' 	=> 'text',
+                'attributes' => array(
+                    'type' => 'number',
+                )
+            ),
             'awards' => array(
                 'name'        => __( 'Show Points Awards', 'gamipress' ),
-                'description' => __( 'Display the points type points awards.', 'gamipress' ),
+                'description' => __( 'Display the points type awards.', 'gamipress' ),
                 'type' 	=> 'checkbox',
                 'classes' => 'gamipress-switch',
                 'default' => 'yes',
             ),
             'deducts' => array(
                 'name'        => __( 'Show Points Deducts', 'gamipress' ),
-                'description' => __( 'Display the points type points deducts.', 'gamipress' ),
+                'description' => __( 'Display the points type deducts.', 'gamipress' ),
                 'type' 	=> 'checkbox',
                 'classes' => 'gamipress-switch',
                 'default' => 'yes',
             ),
             'toggle' => array(
                 'name'        => __( 'Show Points Awards/Deducts Toggle', 'gamipress' ),
-                'description' => __( 'Display the points type points awards and deducts toggle.', 'gamipress' ),
+                'description' => __( 'Display the points type awards and deducts toggle.', 'gamipress' ),
                 'type' 	=> 'checkbox',
                 'classes' => 'gamipress-switch',
                 'default' => 'yes'
+            ),
+            'heading' => array(
+                'name'        => __( 'Show Points Awards/Deducts Heading', 'gamipress' ),
+                'description' => __( 'Display the points type awards and deducts heading text.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes' => 'gamipress-switch',
+                'default' => 'yes'
+            ),
+            'heading_size' => array(
+                'name'              => __( 'Points Awards/Deducts Heading Size', 'gamipress' ),
+                'description'       => __( 'The the points type awards and deducts heading text size.', 'gamipress' ),
+                'type' 		        => 'select',
+                'classes' 		    => 'gamipress-font-size',
+                'options' 	        => array(
+                    'h1'    => __( 'Heading 1', 'gamipress' ),
+                    'h2'    => __( 'Heading 2', 'gamipress' ),
+                    'h3'    => __( 'Heading 3', 'gamipress' ),
+                    'h4'    => __( 'Heading 4', 'gamipress' ),
+                    'h5'    => __( 'Heading 5', 'gamipress' ),
+                    'h6'    => __( 'Heading 6', 'gamipress' ),
+                    'p'     => __( 'Paragraph', 'gamipress' ),
+                ),
+                'default'           => 'h4'
             ),
             'layout' => array(
                 'name'        => __( 'Layout', 'gamipress' ),
@@ -140,20 +187,7 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
 
     $shortcode = 'gamipress_points_types';
 
-    $atts = shortcode_atts( array(
-        // Points atts
-        'type'          => 'all',
-        'columns'       => '1',
-        'thumbnail'     => 'yes',
-        'awards'        => 'yes',
-        'deducts'       => 'yes',
-        'toggle'        => 'yes',
-        'layout'        => 'left',
-        'align'	  		=> 'none',
-        'current_user'  => 'yes',
-        'user_id'       => '0',
-        'wpms'          => 'no',
-    ), $atts, $shortcode );
+    $atts = shortcode_atts( gamipress_points_types_shortcode_defaults(), $atts, $shortcode );
 
     // Single type check to use dynamic template
     $is_single_type = false;
@@ -282,5 +316,34 @@ function gamipress_points_types_shortcode( $atts = array(), $content = '' ) {
      * @param string    $content    Shortcode content
      */
     return apply_filters( 'gamipress_points_types_shortcode_output', $output, $atts, $content );
+
+}
+
+/**
+ * Points types shortcode defaults attributes values
+ *
+ * @since 2.3.1
+ *
+ * @return array
+ */
+function gamipress_points_types_shortcode_defaults() {
+
+    return apply_filters( 'gamipress_points_types_shortcode_defaults', array(
+        'type'              => 'all',
+        'columns'           => '1',
+        'title_size'        => 'h2',
+        'thumbnail'         => 'yes',
+        'thumbnail_size'    => '',
+        'awards'            => 'yes',
+        'deducts'           => 'yes',
+        'toggle'            => 'yes',
+        'heading'           => 'yes',
+        'heading_size'      => 'h4',
+        'layout'            => 'left',
+        'align'	  		    => 'none',
+        'current_user'      => 'yes',
+        'user_id'           => '0',
+        'wpms'              => 'no',
+    ) );
 
 }

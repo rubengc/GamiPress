@@ -50,8 +50,6 @@ function gamipress_enqueue_scripts( $hook = null ) {
         $achievement_fields = array();
 
         if( isset( GamiPress()->shortcodes['gamipress_achievement'] ) && is_array( GamiPress()->shortcodes['gamipress_achievement']->fields ) ) {
-            $achievement_fields = GamiPress()->shortcodes['gamipress_achievement']->fields;
-
             $achievement_fields = array_keys( GamiPress()->shortcodes['gamipress_achievement']->fields );
         }
 

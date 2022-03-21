@@ -200,49 +200,60 @@ function gamipress_is_single_achievement( $id = false ) {
 function gamipress_get_points_awards_for_points_types_list_markup( $points_awards = array(), $user_id = 0, $template_args = array() ) {
 
 	// If we don't have any points awards, or our points awards aren't an array, return nothing
-	if ( ! $points_awards || ! is_array( $points_awards ) )
+	if ( ! $points_awards || ! is_array( $points_awards ) ) {
 		return null;
+    }
 
 	$count = count( $points_awards );
 
 	// If we have no points awards, return nothing
-	if ( ! $count )
+	if ( ! $count ) {
 		return null;
+    }
 
 	// Grab the current user's ID if none was specifed
-	if ( ! $user_id )
+	if ( ! $user_id ) {
 		$user_id = get_current_user_id();
+    }
+
+    $a = wp_parse_args( $template_args, gamipress_points_types_shortcode_defaults() );
 
 	// Setup our variables
 	$output = '';
-	$points_type = gamipress_get_points_award_points_type( $points_awards[0]->ID );
 
-	if( $points_type ) {
-		$plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
+    if( $a['heading'] === 'yes' ) {
 
-		if( ! $plural_name )
-			$plural_name = $points_type->post_title;
+        $points_type = gamipress_get_points_award_points_type( $points_awards[0]->ID );
 
-		$points_awards_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Award', 'Awards', $count, 'gamipress' ) ); // 2 Credits Awards
-	} else {
-		$points_awards_heading = sprintf( '%1$d %2$s', $count, _n( 'Award', 'Awards', $count, 'gamipress' ) ); // 2 Awards
-	}
+        if( $points_type ) {
+            $plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
 
-    /**
-     * Filters the points award heading text
-     *
-     * @since 1.0.0
-     *
-     * @param string    $points_awards_heading  The heading text (eg: 2 Points Awards)
-     * @param array     $points_awards          The points awards
-     * @param int       $user_id                The user's ID
-     * @param array     $template_args          The given template args
-     *
-     * @return string
-     */
-    $points_awards_heading = apply_filters( 'gamipress_points_awards_heading', $points_awards_heading, $points_awards, $user_id, $template_args );
+            if( ! $plural_name )
+                $plural_name = $points_type->post_title;
 
-	$output .= '<h4>' . $points_awards_heading . '</h4>';
+            $points_awards_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Award', 'Awards', $count, 'gamipress' ) ); // 2 Credits Awards
+        } else {
+            $points_awards_heading = sprintf( '%1$d %2$s', $count, _n( 'Award', 'Awards', $count, 'gamipress' ) ); // 2 Awards
+        }
+
+        /**
+         * Filters the points award heading text
+         *
+         * @since 1.0.0
+         *
+         * @param string    $points_awards_heading  The heading text (eg: 2 Points Awards)
+         * @param array     $points_awards          The points awards
+         * @param int       $user_id                The user's ID
+         * @param array     $template_args          The given template args
+         *
+         * @return string
+         */
+        $points_awards_heading = apply_filters( 'gamipress_points_awards_heading', $points_awards_heading, $points_awards, $user_id, $template_args );
+
+        $output .= '<' . $a['heading_size'] . ' class="gamipress-points-awards-heading">' . $points_awards_heading . '</' . $a['heading_size'] . '>';
+
+    }
+
 	$output .= '<ul class="gamipress-points-awards">';
 
 	// Concatenate our output
@@ -315,50 +326,61 @@ function gamipress_get_points_awards_for_points_types_list_markup( $points_award
 function gamipress_get_points_deducts_for_points_types_list_markup( $points_deducts = array(), $user_id = 0, $template_args = array() ) {
 
 	// If we don't have any points deducts, or our points deducts aren't an array, return nothing
-	if ( ! $points_deducts || ! is_array( $points_deducts ) )
+	if ( ! $points_deducts || ! is_array( $points_deducts ) ) {
 		return null;
+    }
 
 	$count = count( $points_deducts );
 
 	// If we have no points deducts, return nothing
-	if ( ! $count )
+	if ( ! $count ) {
 		return null;
+    }
 
 	// Grab the current user's ID if none was specifed
-	if ( ! $user_id )
+	if ( ! $user_id ) {
 		$user_id = get_current_user_id();
+    }
+
+    $a = wp_parse_args( $template_args, gamipress_points_types_shortcode_defaults() );
 
 	// Setup our variables
 	$output = '';
-	$points_type = gamipress_get_points_deduct_points_type( $points_deducts[0]->ID );
 
-	if( $points_type ) {
-		$plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
+    if( $a['heading'] === 'yes' ) {
 
-		if( ! $plural_name ) {
-			$plural_name = $points_type->post_title;
-		}
+        $points_type = gamipress_get_points_deduct_points_type( $points_deducts[0]->ID );
 
-		$points_deducts_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Credits Deducts
-	} else {
-		$points_deducts_heading = sprintf( '%1$d %2$s', $count, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Deducts
-	}
+        if( $points_type ) {
+            $plural_name = gamipress_get_post_meta( '_gamipress_plural_name', $points_type->ID );
 
-    /**
-     * Filters the points deduct heading text
-     *
-     * @since 1.3.7
-     *
-     * @param string    $points_deducts_heading The heading text (eg: 2 Points Deducts)
-     * @param array     $points_deducts         The points deducts
-     * @param int       $user_id                The user's ID
-     * @param array     $template_args          The given template args
-     *
-     * @return string
-     */
-    $points_deducts_heading = apply_filters( 'gamipress_points_deducts_heading', $points_deducts_heading, $points_deducts, $user_id, $template_args );
+            if( ! $plural_name ) {
+                $plural_name = $points_type->post_title;
+            }
 
-	$output .= '<h4>' . $points_deducts_heading . '</h4>';
+            $points_deducts_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Credits Deducts
+        } else {
+            $points_deducts_heading = sprintf( '%1$d %2$s', $count, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Deducts
+        }
+
+        /**
+         * Filters the points deduct heading text
+         *
+         * @since 1.3.7
+         *
+         * @param string    $points_deducts_heading The heading text (eg: 2 Points Deducts)
+         * @param array     $points_deducts         The points deducts
+         * @param int       $user_id                The user's ID
+         * @param array     $template_args          The given template args
+         *
+         * @return string
+         */
+        $points_deducts_heading = apply_filters( 'gamipress_points_deducts_heading', $points_deducts_heading, $points_deducts, $user_id, $template_args );
+
+        $output .= '<' . $a['heading_size'] . ' class="gamipress-points-deducts-heading">' . $points_deducts_heading . '</' . $a['heading_size'] . '>';
+
+    }
+
 	$output .= '<ul class="gamipress-points-deducts">';
 
 	// Concatenate our output
@@ -483,28 +505,35 @@ function gamipress_get_required_achievements_for_achievement_list_markup( $steps
 	if ( ! $user_id )
 		$user_id = get_current_user_id();
 
+    $a = wp_parse_args( $template_args, gamipress_achievement_shortcode_defaults() );
+
 	// Setup our variables
 	$output = '';
 	$container = gamipress_is_achievement_sequential() ? 'ol' : 'ul';
 
-    $steps_heading =  sprintf( __( '%1$d Required %2$s', 'gamipress' ), $count, _n( 'Step', 'Steps', $count, 'gamipress' ) );
+    if( $a['heading'] === 'yes' ) {
 
-    /**
-     * Filters the steps heading text
-     *
-     * @since 1.0.0
-     *
-     * @param string    $steps_heading          The heading text (eg: 2 Required Steps)
-     * @param array     $steps                  The achievement steps
-     * @param int       $user_id                The user's ID
-     * @param array     $template_args          The given template args
-     *
-     * @return string
-     */
-    $steps_heading = apply_filters( 'gamipress_steps_heading', $steps_heading, $steps, $user_id, $template_args );
+        $steps_heading = sprintf( '%1$d %2$s', $count, _n( 'Step', 'Steps', $count, 'gamipress' ) );
 
-	$output .= '<h4>' . $steps_heading . '</h4>';
-	$output .= '<' . $container .' class="gamipress-required-achievements">';
+        /**
+         * Filters the steps heading text
+         *
+         * @since 1.0.0
+         *
+         * @param string    $steps_heading          The heading text (eg: 2 Steps)
+         * @param array     $steps                  The achievement steps
+         * @param int       $user_id                The user's ID
+         * @param array     $template_args          The given template args
+         *
+         * @return string
+         */
+        $steps_heading = apply_filters( 'gamipress_steps_heading', $steps_heading, $steps, $user_id, $template_args );
+
+        $output .= '<' . $a['heading_size'] . ' class="gamipress-achievement-steps-heading">' . $steps_heading . '</' . $a['heading_size'] . '>';
+
+    }
+
+	$output .= '<' . $container .' class="gamipress-achievement-steps gamipress-required-achievements">';
 
 	// Concatenate our output
 	foreach ( $steps as $step ) {
@@ -594,13 +623,13 @@ function gamipress_format_requirement_title_with_post_link( $title = '', $requir
         $post_id = 0;
         $site_id = get_current_blog_id();
 
-        if ($trigger === 'earn-rank' && !empty( $requirement['rank_required'] ) ) {
+        if ( in_array( $trigger, array( 'earn-rank', 'revoke-rank' ) ) && ! empty( $requirement['rank_required'] ) ) {
 
             // Set the post ID for the rank required to reach
             $post_id = $requirement['rank_required'];
             $site_id = ( gamipress_is_network_wide_active() ? get_main_site_id() : get_current_blog_id() );
 
-        } else if (!empty($requirement['achievement_post'])) {
+        } else if ( ! empty( $requirement['achievement_post'] ) ) {
 
             // Set the post ID for the post assigned
             $post_id = $requirement['achievement_post'];
@@ -1793,8 +1822,9 @@ function gamipress_get_rank_requirements_list( $rank_id = 0, $user_id = 0 ) {
 function gamipress_get_rank_requirements_list_markup( $requirements = array(), $rank_id = 0, $user_id = 0, $template_args = array() ) {
 
 	// If we don't have any steps, or our steps aren't an array, return nothing
-	if ( ! $requirements || ! is_array( $requirements ) )
+	if ( ! $requirements || ! is_array( $requirements ) ) {
 		return null;
+    }
 
 	// Grab the current post ID if no achievement_id was specified
 	if ( ! $rank_id ) {
@@ -1814,28 +1844,35 @@ function gamipress_get_rank_requirements_list_markup( $requirements = array(), $
 		$user_id = get_current_user_id();
     }
 
+    $a = wp_parse_args( $template_args, gamipress_rank_shortcode_defaults() );
+
 	// Setup our variables
 	$output = '';
 	$container = gamipress_is_achievement_sequential() ? 'ol' : 'ul';
 
-    $requirements_heading = $count . ' ' . _n( 'Requirement', 'Requirements', $count, 'gamipress' );
+    if( $a['heading'] === 'yes' ) {
 
-    /**
-     * Filters the steps heading text
-     *
-     * @since 1.0.0
-     *
-     * @param string    $steps_heading          The heading text (eg: 2 Requirements)
-     * @param array     $requirements           The rank requirements
-     * @param int       $user_id                The user's ID
-     * @param array     $template_args          The given template args
-     *
-     * @return string
-     */
-    $requirements_heading = apply_filters( 'gamipress_rank_requirements_heading', $requirements_heading, $requirements, $user_id, $template_args );
+        $requirements_heading = sprintf( '%1$d %2$s', $count, _n( 'Requirement', 'Requirements', $count, 'gamipress' ) );;
 
-	$output .= '<h4>' . $requirements_heading . '</h4>';
-	$output .= '<' . $container .' class="gamipress-required-requirements">';
+        /**
+         * Filters the steps heading text
+         *
+         * @since 1.0.0
+         *
+         * @param string    $requirements_heading   The heading text (eg: 2 Requirements)
+         * @param array     $requirements           The rank requirements
+         * @param int       $user_id                The user's ID
+         * @param array     $template_args          The given template args
+         *
+         * @return string
+         */
+        $requirements_heading = apply_filters( 'gamipress_rank_requirements_heading', $requirements_heading, $requirements, $user_id, $template_args );
+
+        $output .= '<' . $a['heading_size'] . ' class="gamipress-rank-requirements-heading">' . $requirements_heading . '</' . $a['heading_size'] . '>';
+
+    }
+
+	$output .= '<' . $container .' class="gamipress-rank-requirements gamipress-required-requirements">';
 
 	// Concatenate our output
 	foreach ( $requirements as $requirement ) {

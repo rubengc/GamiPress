@@ -776,6 +776,7 @@ function gamipress_user_meets_rank_requirement( $return = false, $user_id = 0, $
 	if (
 		'rank' === gamipress_get_post_meta( $achievement_id, '_gamipress_earned_by' ) 				// Check for achievements earned by rank
 		|| 'earn-rank' === $trigger_type 	                                                        // Check for requirements with earn rank activity
+		|| 'revoke-rank' === $trigger_type 	                                                        // Check for requirements with revoke rank activity
 	) {
 		// Grab our user's rank and compared it with the required one
 		$rank_required   = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_rank_required' ) );
@@ -936,6 +937,9 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 			case 'all-achievements':
 				$trigger = 'gamipress_unlock_all_' . $requirement['achievement_type'];
 				break;
+            case 'revoke-any-achievement':
+                $trigger = 'gamipress_revoke_' . $requirement['achievement_type'];
+                break;
 			default:
 				$trigger = $requirement['trigger_type'];
 				break;
@@ -1026,7 +1030,7 @@ function gamipress_get_achievement_activity_count_limited( $user_id = 0, $achiev
             $requirement = gamipress_get_requirement_object( $achievement_id );
 
             $where = array(
-                'type'          => 'event_trigger',
+                'type' => 'event_trigger',
             );
 
             // Determine which type of trigger we're using and return the corresponding activities
@@ -1040,6 +1044,13 @@ function gamipress_get_achievement_activity_count_limited( $user_id = 0, $achiev
                     break;
                 case 'all-achievements':
                     $trigger = 'gamipress_unlock_all_' . $requirement['achievement_type'];
+                    break;
+                case 'revoke-specific-achievement':
+                    $trigger = 'gamipress_revoke_' . $requirement['achievement_type'];
+                    $where['post_id'] = absint( $requirement['achievement_post'] );
+                    break;
+                case 'revoke-any-achievement':
+                    $trigger = 'gamipress_revoke_' . $requirement['achievement_type'];
                     break;
                 default:
                     $trigger = $requirement['trigger_type'];
@@ -1254,17 +1265,17 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 		$site_id = get_current_blog_id();
     }
 
-	// Setup our achievement object
-	$achievement_object = gamipress_build_achievement_object( $achievement_id );
+	// Setup our achievement
+	$achievement = gamipress_build_achievement_object( $achievement_id );
 
 	// Update user's earned achievements
-	gamipress_update_user_achievements( array( 'user_id' => $user_id, 'new_achievements' => array( $achievement_object ) ) );
+	gamipress_update_user_achievements( array( 'user_id' => $user_id, 'new_achievements' => array( $achievement ) ) );
 
 	// Log the earning of the award
 	gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id, $trigger );
 
 	// Available hook for unlocking any achievement of this achievement type
-	do_action( 'gamipress_unlock_' . $achievement_object->post_type, $user_id, $achievement_id, $trigger, $site_id, $args );
+	do_action( 'gamipress_unlock_' . $achievement->post_type, $user_id, $achievement_id, $trigger, $site_id, $args );
 
 	// Patch for WordPress to support recursive actions, specifically for gamipress_award_achievement
 	// Because global iteration is fun, assuming we can get this fixed for WordPress 3.9
@@ -1325,8 +1336,14 @@ function gamipress_maybe_award_additional_achievements_to_user( $user_id = 0, $a
 
 	// Loop through each dependent achievement and see if it can be awarded
 	foreach ( $dependent_achievements as $achievement ) {
-
 	    $trigger = '';
+
+        $trigger_type = gamipress_get_post_meta( $achievement->ID, '_gamipress_trigger_type' );
+
+        // Skip achievements for revoking
+        if( in_array( $trigger_type, array( 'revoke-specific-achievement', 'revoke-rank' ) ) ) {
+            continue;
+        }
 
 	    if( in_array( $post_type, $achievement_types ) ) {
             $trigger = 'specific-achievement';
@@ -1755,12 +1772,23 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 
         }
 
+        /**
+         * Available action per type for triggering other processes
+         *
+         * @since 2.3.1
+         *
+         * @param int 	$user_id        The given user's ID
+         * @param int 	$achievement_id The given achievement's post ID
+         * @param int 	$earning_id     The user's earning ID
+         */
+        do_action( 'gamipress_revoke_' . $post_type, $user_id, $achievement_id, $earning_id );
+
     }
 
     /**
      * Available action for triggering other processes
      *
-     * @since  	1.4.3
+     * @since 1.4.3
      *
      * @param int 	$user_id        The given user's ID
      * @param int 	$achievement_id The given achievement's post ID
@@ -1775,3 +1803,46 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
     ct_reset_setup_table();
 
 }
+
+/**
+ * Award additional achievements to user
+ *
+ * @since 2.3.1
+ *
+ * @param  int $user_id        The given user's ID
+ * @param  int $achievement_id The given achievement's post ID
+ *
+ * @return void
+ */
+function gamipress_maybe_award_additional_achievements_to_user_on_revoke( $user_id = 0, $achievement_id = 0 ) {
+
+    // Get the achievement post type
+    $post_type = gamipress_get_post_type( $achievement_id );
+    $achievement_types = gamipress_get_achievement_types_slugs();
+    $rank_types = gamipress_get_achievement_types_slugs();
+
+    // Get achievements that can be earned from completing this achievement
+    $dependent_achievements = gamipress_get_dependent_achievements( $achievement_id );
+
+    // Loop through each dependent achievement and see if it can be awarded
+    foreach ( $dependent_achievements as $achievement ) {
+        $trigger = '';
+
+        $trigger_type = gamipress_get_post_meta( $achievement->ID, '_gamipress_trigger_type' );
+
+        // Skip achievements for awarding
+        if( in_array( $trigger_type, array( 'specific-achievement', 'earn-rank' ) ) ) {
+            continue;
+        }
+
+        if( in_array( $post_type, $achievement_types ) ) {
+            $trigger = 'revoke-specific-achievement';
+        } else if( in_array( $post_type, $rank_types ) ) {
+            $trigger = 'revoke-rank';
+        }
+
+        gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id, $trigger );
+    }
+
+}
+add_action( 'gamipress_revoke_achievement_to_user', 'gamipress_maybe_award_additional_achievements_to_user_on_revoke', 10, 2 );

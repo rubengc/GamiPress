@@ -22,6 +22,15 @@ if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
 // Check if this rank is the current one of the user
 $current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
 
+// Setup thumbnail size
+$thumbnail_size = absint( $a['thumbnail_size'] );
+
+if( $thumbnail_size === 0 ) {
+    $thumbnail_size = 'gamipress-rank';
+} else {
+    $thumbnail_size = array( $thumbnail_size, $thumbnail_size );
+}
+
 // Setup rank classes
 $classes = array(
     'gamipress-rank',
@@ -63,9 +72,9 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
 
             <?php // Link to the rank page
             if( $a['link'] === 'yes' ) : ?>
-                <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?></a>
+                <a href="<?php the_permalink(); ?>" title="<?php the_title(); ?>"><?php echo gamipress_get_rank_post_thumbnail( get_the_ID(), $thumbnail_size ); ?></a>
             <?php else : ?>
-                <?php echo gamipress_get_rank_post_thumbnail( get_the_ID() ); ?>
+                <?php echo gamipress_get_rank_post_thumbnail( get_the_ID(), $thumbnail_size ); ?>
             <?php endif; ?>
 
             <?php // Share
@@ -91,7 +100,7 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
 
         <?php // Rank Title
         if( $a['title'] === 'yes' ) :  ?>
-            <h2 class="gamipress-rank-title">
+            <<?php echo $a['title_size']; ?> class="gamipress-rank-title">
 
                 <?php // Link to the rank page
                 if( $a['link'] === 'yes' ) : ?>
@@ -100,7 +109,7 @@ $classes = apply_filters( 'gamipress_rank_classes', $classes, get_the_ID(), $a )
                     <?php the_title(); ?>
                 <?php endif; ?>
 
-            </h2>
+            </<?php echo $a['title_size']; ?>>
 
             <?php
             /**

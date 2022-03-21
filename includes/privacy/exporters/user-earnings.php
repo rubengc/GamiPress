@@ -157,12 +157,11 @@ function gamipress_privacy_get_user_earning_data( $user_earning ) {
         } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
             // Points Award and Deduct
 
+            $format = ( $user_earning->post_type === 'points-award' ? __( '%s Award', 'gamipress' ) : __( '%s Deduction', 'gamipress' ) );
+
             $data['type'] = array(
                 'name' => __( 'Type', 'gamipress' ),
-                'value' => sprintf( '%s %s',
-                    $points_types[$points_type->post_name]['plural_name'],
-                    ( $user_earning->post_type === 'points-award' ? __( 'Award', 'gamipress' ) : __( 'Deduction', 'gamipress' ) )
-                ),
+                'value' => sprintf( $format, $points_types[$points_type->post_name]['plural_name'] ),
             );
 
         } else if( $user_earning->post_type === 'rank-requirement' && $rank = gamipress_get_rank_requirement_rank( $user_earning->post_id ) ) {

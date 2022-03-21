@@ -178,6 +178,7 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
 
     switch ( $shortcode->slug ) {
         case 'gamipress_achievement':
+        case 'gamipress_inline_achievement':
             // Achievement ID
             $fields['id']['type'] = 'post';
             $fields['id']['post_type'] = gamipress_get_achievement_types_slugs();
@@ -191,6 +192,7 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
             $fields['exclude']['post_type'] = gamipress_get_achievement_types_slugs();
             break;
         case 'gamipress_rank':
+        case 'gamipress_inline_rank':
             // Rank ID
             $fields['id']['type'] = 'post';
             $fields['id']['post_type'] = gamipress_get_rank_types_slugs();
@@ -207,13 +209,67 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
         case 'gamipress_user_points':
         case 'gamipress_site_points':
             // Period start and end visibility
-            $fields['period_start']['conditions'] = array(
-                'period' => 'custom',
+            $fields['period_start']['conditions'] = array( 'period' => 'custom' );
+            $fields['period_end']['conditions'] = array( 'period' => 'custom' );
+            // Inline conditions
+            $inline_condition = array(
+                'field_id' => 'inline',
+                'value' => true,
+                'compare' => '!=',
             );
+            $fields['columns']['conditions'] = array( $inline_condition );
+            $fields['layout']['conditions'] = array( $inline_condition );
+            $fields['align']['conditions'] = array( $inline_condition );
+            break;
+        case 'gamipress_points_types':
+            // Points Types attributes
+            $fields['toggle']['conditions'] = array( 'awards' => true, 'deducts' => true, 'relation' => 'OR' );
+            $fields['heading']['conditions'] = array( 'awards' => true, 'deducts' => true, 'relation' => 'OR' );
+            $fields['heading_size']['conditions'] = array( 'heading' => true );
+            break;
+    }
 
-            $fields['period_end']['conditions'] = array(
-                'period' => 'custom',
-            );
+    // Common attributes
+    switch ( $shortcode->slug ) {
+        case 'gamipress_achievement':
+        case 'gamipress_achievements':
+        case 'gamipress_last_achievements_earned':
+            // Achievement common attributes
+            $fields['title_size']['conditions'] = array( 'title' => true );
+            $fields['thumbnail_size']['conditions'] = array( 'thumbnail' => true );
+            $fields['points_awarded_thumbnail']['conditions'] = array( 'points_awarded' => true );
+            $fields['toggle']['conditions'] = array( 'steps' => true );
+            $fields['heading']['conditions'] = array( 'steps' => true );
+            $fields['heading_size']['conditions'] = array( 'steps' => true, 'heading' => true );
+            $fields['earners_limit']['conditions'] = array( 'earners' => true );
+            break;
+        case 'gamipress_inline_achievement':
+        case 'gamipress_inline_last_achievements_earned':
+            // Inline achievement common attributes
+            $fields['thumbnail_size']['conditions'] = array( 'thumbnail' => true );
+            break;
+        case 'gamipress_rank':
+        case 'gamipress_ranks':
+        case 'gamipress_user_rank':
+            // Rank common attributes
+            $fields['title_size']['conditions'] = array( 'title' => true );
+            $fields['thumbnail_size']['conditions'] = array( 'thumbnail' => true );
+            $fields['toggle']['conditions'] = array( 'requirements' => true );
+            $fields['heading']['conditions'] = array( 'requirements' => true );
+            $fields['heading_size']['conditions'] = array( 'requirements' => true, 'heading' => true );
+            $fields['earners_limit']['conditions'] = array( 'earners' => true );
+            break;
+        case 'gamipress_inline_rank':
+        case 'gamipress_inline_user_rank':
+            // Inline rank common attributes
+            $fields['thumbnail_size']['conditions'] = array( 'thumbnail' => true );
+            break;
+        case 'gamipress_points':
+        case 'gamipress_user_points':
+        case 'gamipress_site_points':
+        case 'gamipress_points_types':
+            // Points common attributes
+            $fields['thumbnail_size']['conditions'] = array( 'thumbnail' => true );
             break;
     }
 

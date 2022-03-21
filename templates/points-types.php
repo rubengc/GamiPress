@@ -14,6 +14,15 @@ $points_types = gamipress_get_points_types();
 
 $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_id();
 
+// Setup thumbnail size
+$thumbnail_size = absint( $a['thumbnail_size'] );
+
+if( $thumbnail_size === 0 ) {
+    $thumbnail_size = 'gamipress-points';
+} else {
+    $thumbnail_size = array( $thumbnail_size, $thumbnail_size );
+}
+
 // Setup points classes
 $classes = array(
     'gamipress-points-types',
@@ -74,7 +83,7 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
             <?php // Points Type Image
             if( $a['thumbnail'] === 'yes' ) : ?>
                 <div class="gamipress-points-type-image gamipress-points-type-<?php echo esc_attr( $points_type ); ?>-image">
-                    <?php echo gamipress_get_points_type_thumbnail( $points_type ); ?>
+                    <?php echo gamipress_get_points_type_thumbnail( $points_type, $thumbnail_size ); ?>
                 </div><!-- .gamipress-points-image -->
 
                 <?php
@@ -95,7 +104,7 @@ $classes = apply_filters( 'gamipress_points_types_classes', $classes, $a['points
 
             <div class="gamipress-points-type-description">
 
-                <h2 class="gamipress-points-type-title"><?php echo $points_types[$points_type]['plural_name']; ?></h2>
+                <<?php echo $a['title_size']; ?> class="gamipress-points-type-title"><?php echo $points_types[$points_type]['plural_name']; ?></<?php echo $a['title_size']; ?>>
 
                 <?php
                 /**

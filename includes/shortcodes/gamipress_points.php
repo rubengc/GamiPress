@@ -43,6 +43,14 @@ function gamipress_register_points_shortcode() {
                 'classes'       => 'gamipress-switch',
                 'default'       => 'yes'
             ),
+            'thumbnail_size' => array(
+                'name'        => __( 'Thumbnail Size (in pixels)', 'gamipress' ),
+                'description' => __( 'The points type featured image size in pixels. Leave empty to use the image size from settings.', 'gamipress' ),
+                'type' 	=> 'text',
+                'attributes' => array(
+                    'type' => 'number',
+                )
+            ),
             'label' => array(
                 'name'          => __( 'Show Points Type Label', 'gamipress' ),
                 'description'   => __( 'Display the points type label (singular or plural name, based on the amount of points).', 'gamipress' ),
@@ -152,19 +160,20 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
 
     $atts = shortcode_atts( array(
         // Points atts
-        'type'          => 'all',
-        'thumbnail'     => 'yes',
-        'label'         => 'yes',
-        'current_user'  => 'no',
-        'user_id'       => '0',
-        'period'        => '',
-        'period_start'  => '',
-        'period_end'    => '',
-        'inline'        => 'no',
-        'columns'       => '1',
-        'layout'        => 'left',
-        'align'	  		=> 'none',
-        'wpms'          => 'no',
+        'type'              => 'all',
+        'thumbnail'         => 'yes',
+        'thumbnail_size'    => '',
+        'label'             => 'yes',
+        'current_user'      => 'no',
+        'user_id'           => '0',
+        'period'            => '',
+        'period_start'      => '',
+        'period_end'        => '',
+        'inline'            => 'no',
+        'columns'           => '1',
+        'layout'            => 'left',
+        'align'	  		    => 'none',
+        'wpms'              => 'no',
     ), $atts, $shortcode );
 
     // Single type check to use dynamic template
@@ -291,38 +300,13 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
 
     }
 
+    // Template rendering
+    ob_start();
+    gamipress_get_template_part( ( $atts['inline'] === 'yes' ? 'inline-points' : 'points' ), ( $is_single_type ? $atts['type'] : null ) );
+    $output = ob_get_clean();
+
     if( $atts['inline'] === 'yes' ) {
-
-        $output = '';
-
-        // Get the last points type to show to meet if should append the separator or not
-        $last_points_type = key( array_slice( $gamipress_template_args['points'], -1, 1, true ) );
-
-        // Inline rendering
-        foreach( $gamipress_template_args['points'] as $points_type => $amount ) {
-
-            $label_position = gamipress_get_points_type_label_position( $points_type );
-
-            $output .=
-                // Thumbnail
-                ( $gamipress_template_args['thumbnail'] === 'yes' ? gamipress_get_points_type_thumbnail( $points_type ) . ' ' : '' )
-                // Points label (before)
-                . ( $gamipress_template_args['label'] === 'yes' && $label_position === 'before' ? gamipress_get_points_amount_label( $amount, $points_type ) . ' ' : '' )
-                // Points amount
-                . gamipress_format_amount( $amount, $points_type )
-                // Points label (after)
-                . ( $gamipress_template_args['label'] === 'yes' && $label_position !== 'before' ? ' ' . gamipress_get_points_amount_label( $amount, $points_type ) : '' )
-                // Points separator
-                . ( $points_type !== $last_points_type ? ', ' : '' );
-        }
-
-    } else {
-
-        // Template rendering
-        ob_start();
-        gamipress_get_template_part( 'points', ( $is_single_type ? $atts['type'] : null ) );
-        $output = ob_get_clean();
-
+        $output = gamipress_parse_inline_output( $output );
     }
 
     // If switched to blog, return back to que current blog

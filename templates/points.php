@@ -1,6 +1,6 @@
 <?php
 /**
- * User Points template
+ * Points template
  *
  * This template can be overridden by copying it to yourtheme/gamipress/points.php
  * To override a specific points type just copy it as yourtheme/gamipress/points-{points-type}.php
@@ -20,6 +20,15 @@ $points_types[''] = array(
 
 // Check to meet if points showed comes from current logged in user
 $is_current_user = ( absint( $a['user_id'] ) === get_current_user_id() );
+
+// Setup thumbnail size
+$thumbnail_size = absint( $a['thumbnail_size'] );
+
+if( $thumbnail_size === 0 ) {
+    $thumbnail_size = 'gamipress-points';
+} else {
+    $thumbnail_size = array( $thumbnail_size, $thumbnail_size );
+}
 
 // Setup points classes
 $classes = array(
@@ -76,7 +85,7 @@ $classes = apply_filters( 'gamipress_points_classes', $classes, $points_types, $
             <?php // User Points Image
             if( $a['thumbnail'] === 'yes' ) : ?>
                 <div class="gamipress-user-points-image gamipress-user-points-<?php echo esc_attr( $points_type ); ?>-image">
-                    <?php echo gamipress_get_points_type_thumbnail( $points_type ); ?>
+                    <?php echo gamipress_get_points_type_thumbnail( $points_type, $thumbnail_size ); ?>
                 </div><!-- .gamipress-user-points-image -->
 
                 <?php
