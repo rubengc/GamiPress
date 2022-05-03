@@ -117,6 +117,7 @@ function gamipress_get_points_award_completed_pattern_tags() {
         '{points}'          =>  __( 'The amount of points earned.', 'gamipress' ),
         '{points_balance}'  =>  __( 'The full amount of points user has earned until this date.', 'gamipress' ),
         '{points_type}'     =>  __( 'The points award points type. Singular or plural is based on the amount of points earned.', 'gamipress' ),
+        '{points_image}'     =>  __( 'The points type featured image.', 'gamipress' ),
     ) ) );
 
 }
@@ -139,6 +140,7 @@ function gamipress_get_points_deduct_completed_pattern_tags() {
         '{points}'          =>  __( 'The amount of points deducted.', 'gamipress' ),
         '{points_balance}'  =>  __( 'The full amount of points user has earned until this date.', 'gamipress' ),
         '{points_type}'     =>  __( 'The points deduct points type. Singular or plural is based on the amount of points deducted.', 'gamipress' ),
+        '{points_image}'     =>  __( 'The points type featured image.', 'gamipress' ),
     ) ) );
 
 }
@@ -439,6 +441,7 @@ function gamipress_get_points_award_completed_tags_replacements( $points_award_i
             $replacements['{points}'] = gamipress_format_amount( $points, $points_type->post_name );
             $replacements['{points_balance}'] = $points_balance;
             $replacements['{points_type}'] = _n( $singular, $plural, $points );
+            $replacements['{points_image}'] = gamipress_get_points_type_thumbnail( $points_type->ID );
 
         }
 
@@ -486,6 +489,7 @@ function gamipress_get_points_deduct_completed_tags_replacements( $points_deduct
             $replacements['{points}'] = gamipress_format_amount( $points, $points_type->post_name );
             $replacements['{points_balance}'] = $points_balance;
             $replacements['{points_type}'] = _n( $singular, $plural, $points );
+            $replacements['{points_image}'] = gamipress_get_points_type_thumbnail( $points_type->ID );
 
         }
 

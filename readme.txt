@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 5.9
-Stable tag: 2.3.1
+Stable tag: 2.3.2
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -240,6 +240,13 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.3.2 =
+
+* **New Features**
+* Added the email tag {points_image} with the points type featured image on points awards/deducts email templates.
+* **Bug Fixes**
+* Prevent to lost sequential steps option when saving the achievement through the quick edit form.
 
 = 2.3.1 =
 

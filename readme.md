@@ -257,6 +257,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.2 ###
+
+* **New Features**
+* Added the email tag {points_image} with the points type featured image on points awards/deducts email templates.
+* **Bug Fixes**
+* Prevent to lost sequential steps option when saving the achievement through the quick edit form.
+
 ### 2.3.1 ###
 
 * **New Features**

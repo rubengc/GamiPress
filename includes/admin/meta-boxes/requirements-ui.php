@@ -111,6 +111,8 @@ function gamipress_requirements_ui_meta_box( $post = null, $metabox = array() ) 
     // Sequential input
     if( in_array( $requirement_type, array( 'step', 'rank-requirement' ) ) ) : ?>
 
+        <?php wp_nonce_field( '_gamipress_sequential_' . $post->ID, '_gamipress_sequential_nonce' ); ?>
+
         <label for="_gamipress_sequential">
             <strong><?php echo ( $requirement_type === 'step'
                 ? __( 'Sequential Steps', 'gamipress' )
@@ -1078,8 +1080,14 @@ function gamipress_on_save_requirements_post_parent( $post_id ) {
     $allowed_post_types = array_merge( gamipress_get_achievement_types_slugs(), gamipress_get_rank_types_slugs() );
 
     // Bail if not is an allowed type
-    if( ! in_array( $post_type, $allowed_post_types ) )
+    if( ! in_array( $post_type, $allowed_post_types ) ) {
         return;
+    }
+
+    if ( ! isset( $_POST['_gamipress_sequential_nonce'] )
+        || ! wp_verify_nonce( $_POST['_gamipress_sequential_nonce'], '_gamipress_sequential_' . $post_id ) ) {
+        return;
+    }
 
     // Save sequential steps (now placed on requirements UI)
     if( isset( $_REQUEST['_gamipress_sequential'] ) ) {

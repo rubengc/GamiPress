@@ -373,6 +373,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
         $replacements['{points}'] = 100;
         $replacements['{points_balance}'] = 1000;
         $replacements['{points_type}'] = __( 'Sample Points Type', 'gamipress' );
+        $replacements['{points_image}'] = '<div style="' . $img_placeholder_style . '">100x100</div>';;
 
     } else if( $gamipress_email_template_args['type'] === 'points_deduct_completed' ) {
 
@@ -380,6 +381,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
         $replacements['{points}'] = 100;
         $replacements['{points_balance}'] = 1000;
         $replacements['{points_type}'] = __( 'Sample Points Type', 'gamipress' );
+        $replacements['{points_image}'] = '<div style="' . $img_placeholder_style . '">100x100</div>';;
 
     } else if( $gamipress_email_template_args['type'] === 'rank_earned' ) {
 

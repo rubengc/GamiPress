@@ -10,7 +10,7 @@
 if( !defined( 'ABSPATH' ) ) exit;
 
 /**
- * Register [gamipress_last_achievements_earned] shortcode
+ * Register [gamipress_inline_last_achievements_earned] shortcode
  *
  * @since 2.3.1
  */
