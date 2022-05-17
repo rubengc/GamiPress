@@ -257,6 +257,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.3 ###
+
+* **Improvements**
+* Style improvements for the admin area forms.
+* Tested with WordPress 6.0.
+
 ### 2.3.2 ###
 
 * **New Features**

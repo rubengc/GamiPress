@@ -3,13 +3,13 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	2.3.2
+ * Version:         	2.3.3
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
  * Domain Path: 		/languages/
  * Requires at least: 	4.4
- * Tested up to: 		5.9
+ * Tested up to: 		6.0
  * License:         	GNU AGPL v3.0 (http://www.gnu.org/licenses/agpl.txt)
  *
  * @package         	GamiPress
