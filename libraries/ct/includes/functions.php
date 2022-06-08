@@ -1662,3 +1662,52 @@ function ct_get_delete_link( $name, $object_id = 0 ) {
 
     return $url;
 }
+
+function ct_get_tables_in_group( $group ) {
+
+    global $ct_tables_groups, $wpdb;
+
+    if( ! is_array( $ct_tables_groups ) ) {
+        $ct_tables_groups = array();
+    }
+
+    if( isset( $ct_tables_groups[$group] ) ) {
+        return $ct_tables_groups[$group];
+    }
+
+    $ct_tables_groups[$group] = $wpdb->get_col( $wpdb->prepare(
+        "SHOW TABLES LIKE %s",
+        "%" . $wpdb->esc_like( $group ) . "%"
+    ) );
+
+    return $ct_tables_groups[$group];
+
+}
+
+function ct_add_table_to_group( $group, $table ) {
+
+    global $ct_tables_groups;
+
+    if( ! is_array( $ct_tables_groups ) ) {
+        $ct_tables_groups = array();
+    }
+
+    if( isset( $ct_tables_groups[$group] ) ) {
+        $ct_tables_groups[$group] = $table;
+    }
+
+}
+
+function ct_reset_tables_in_group( $group ) {
+
+    global $ct_tables_groups;
+
+    if( ! is_array( $ct_tables_groups ) ) {
+        $ct_tables_groups = array();
+    }
+
+    if( isset( $ct_tables_groups[$group] ) ) {
+        unset( $ct_tables_groups[$group] );
+    }
+
+}

@@ -70,6 +70,16 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
          */
         public $db = false;
 
+        /**
+         * @var string Used to meet if database is in a group of tables to reduce database exists query calls
+         */
+        public $group = '';
+
+        /**
+         * @var bool Stores if database has been found to reduce query calls
+         */
+        protected $exists = false;
+
         /** Methods ***************************************************************/
 
         /**
@@ -88,6 +98,8 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
             $this->global = ( isset( $args['global'] ) && $args['global'] === true ) ? true : false;
 
             $this->schema = ( isset( $args['schema'] ) ) ? new CT_DataBase_Schema( $args['schema'] ) : '';
+
+            $this->group = ( isset( $args['group'] ) ) ? $args['group'] : strtok( $this->name, '_');
 
             // If not primary key given, then look at out schema
             if( $this->schema && ! $this->primary_key ) {
@@ -362,6 +374,13 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
             $created = dbDelta( "CREATE TABLE `{$this->table_name}` ( {$this->schema} ) ENGINE={$this->engine} {$this->charset_collation};" );
 
             // Was anything created?
+            $this->exists = ! empty( $created );
+
+            // Add the table to the group when created
+            if( $this->exists && $this->group !== '' ) {
+                ct_add_table_to_group( $this->group, $this->table_name );
+            }
+
             return ! empty( $created );
         }
 
@@ -372,14 +391,28 @@ if ( ! class_exists( 'CT_DataBase' ) ) :
          *
          * @return bool
          */
-        private function exists() {
+        public function exists() {
 
-            $table_exist = $this->db->get_var( $this->db->prepare(
-                "SHOW TABLES LIKE %s",
-                $this->db->esc_like( $this->table_name )
-            ) );
+            if( $this->exists === true ) {
+                return $this->exists;
+            }
 
-            return ! empty( $table_exist );
+            if( $this->group === '' ) {
+                // Table not in group
+                $table_exist = $this->db->get_var( $this->db->prepare(
+                    "SHOW TABLES LIKE %s",
+                    $this->db->esc_like( $this->table_name )
+                ) );
+
+                $this->exists = ! empty( $table_exist );
+            } else {
+                // Table in group
+                $tables = ct_get_tables_in_group( $this->group );
+
+                $this->exists = in_array( $this->table_name, $tables );
+            }
+
+            return $this->exists;
 
         }
 

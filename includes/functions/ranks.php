@@ -19,7 +19,7 @@ if( !defined( 'ABSPATH' ) ) exit;
  */
 function gamipress_is_rank( $post = null ) {
 
-    // Assume we are working with an rank object
+    // Assume we are working with a rank object
     $return = true;
 
     if( gettype($post) === 'string' ) {

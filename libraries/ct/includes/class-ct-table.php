@@ -436,6 +436,7 @@ if ( ! class_exists( 'CT_Table' ) ) :
                 'plural'                => $this->name . 's',
                 'labels'                => array(),
                 'description'           => '',
+                'group'                 => '',
                 'public'                => false,
                 'hierarchical'          => false,
                 'exclude_from_search'   => null,
@@ -476,6 +477,10 @@ if ( ! class_exists( 'CT_Table' ) ) :
             $args = array_merge( $defaults, $args );
 
             $args['name'] = $this->name;
+
+            if ( empty( $args['group'] ) ) {
+                $args['group'] = strtok( $this->name, '_');
+            }
 
             // If not set, default to the setting for public.
             if ( null === $args['publicly_queryable'] ) {

@@ -257,6 +257,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.4 ###
+
+* **Improvements**
+* Performance improvement reducing the database queries to check if a table exists.
+
 ### 2.3.3 ###
 
 * **Improvements**
