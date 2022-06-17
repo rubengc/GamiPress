@@ -257,6 +257,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.5 ###
+
+* **Bug Fixes**
+* Prevent PHP warnings during activation caused by checking the existent database tables during activation.
+* **Developer Notes**
+* Added the filter "gamipress_get_user_points" to let extend the way that points are displayed (thanks to @gkipouros).
+
 ### 2.3.4 ###
 
 * **Improvements**

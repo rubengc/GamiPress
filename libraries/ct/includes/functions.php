@@ -1663,6 +1663,13 @@ function ct_get_delete_link( $name, $object_id = 0 ) {
     return $url;
 }
 
+/**
+ * Helper function to get the tables registered in a group of custom tables
+ *
+ * @param string $group
+ *
+ * @return array
+ */
 function ct_get_tables_in_group( $group ) {
 
     global $ct_tables_groups, $wpdb;
@@ -1680,10 +1687,21 @@ function ct_get_tables_in_group( $group ) {
         "%" . $wpdb->esc_like( $group ) . "%"
     ) );
 
+    // Ensure that group tables is an array
+    if( ! is_array( $ct_tables_groups[$group] ) ) {
+        $ct_tables_groups[$group] = array();
+    }
+
     return $ct_tables_groups[$group];
 
 }
 
+/**
+ * Add the table to the group of tables
+ *
+ * @param string $group
+ * @param string $table
+ */
 function ct_add_table_to_group( $group, $table ) {
 
     global $ct_tables_groups;
@@ -1692,12 +1710,19 @@ function ct_add_table_to_group( $group, $table ) {
         $ct_tables_groups = array();
     }
 
-    if( isset( $ct_tables_groups[$group] ) ) {
-        $ct_tables_groups[$group] = $table;
+    if( ! isset( $ct_tables_groups[$group] ) ) {
+        $ct_tables_groups[$group] = array();
     }
+
+    $ct_tables_groups[$group][] = $table;
 
 }
 
+/**
+ * Reset the tables in a group
+ *
+ * @param string $group
+ */
 function ct_reset_tables_in_group( $group ) {
 
     global $ct_tables_groups;

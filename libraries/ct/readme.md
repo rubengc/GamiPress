@@ -60,6 +60,11 @@ Other features
 
 ## Changelog ##
 
+**1.0.4**
+
+**Improvements**
+* Reduced the number of "Show tables" queries.
+
 **1.0.3**
 
 **Improvements**

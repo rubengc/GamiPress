@@ -63,8 +63,21 @@ function gamipress_get_user_points( $user_id = 0, $points_type = '', $args = arr
         $user_meta = "_gamipress_{$points_type}_points";
     }
 
-	// Return our user's points as an integer (sanely falls back to 0 if empty)
-	return absint( gamipress_get_user_meta( $user_id, $user_meta ) );
+    // Fetch our user's points
+    $raw_points = gamipress_get_user_meta( $user_id, $user_meta );
+
+    // Transform points to a non-negative integer (sanely falls back to 0 if empty)
+    $user_points = absint( $raw_points );
+
+    /**
+     * User points amount filter
+     *
+     * @param int       $user_points    The user's points (falls back to 0 if empty)
+     * @param string    $raw_points     The original points (as fetched from the database)
+     * @param int       $user_id        The ID of the user whose points were requested
+     * @param string    $user_meta      The user meta field name that holds the user's points
+     */
+    return apply_filters( 'gamipress_get_user_points', $user_points, $raw_points, $user_id, $user_meta );
 
 }
 
