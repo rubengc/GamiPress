@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      CMB2\Tabs
- * @author       Ruben Garcia <rubengcdev@gmail.com>, GamiPress <contact@gamipress.com>, AutomatorWP <contact@automatorwp.com>
+ * @package      RGC\CMB2\Tabs
+ * @author       Ruben Garcia (RubenGC) <rubengcdev@gmail.com>, GamiPress <contact@gamipress.com>, AutomatorWP <contact@automatorwp.com>
  * @copyright    Copyright (c) Ruben Garcia
  *
  * Plugin Name: CMB2 Tabs
@@ -13,16 +13,15 @@
  * Author URI: http://rubengc.com/
  * License: GPLv2+
  */
-
-
 // Exit if accessed directly
 if( !defined( 'ABSPATH' ) ) exit;
 
-if( !class_exists( 'CMB2_Tabs' ) ) {
+// Prevent CMB2 autoload adding "RGC_" at start
+if( !class_exists( 'RGC_CMB2_Tabs' ) ) {
     /**
-     * Class CMB2_Tabs
+     * Class RGC_CMB2_Tabs
      */
-    class CMB2_Tabs {
+    class RGC_CMB2_Tabs {
 
         /**
          * Current version number
@@ -129,5 +128,5 @@ if( !class_exists( 'CMB2_Tabs' ) ) {
 
     }
 
-    $cmb2_tabs = new CMB2_Tabs();
+    $cmb2_tabs = new RGC_CMB2_Tabs();
 }

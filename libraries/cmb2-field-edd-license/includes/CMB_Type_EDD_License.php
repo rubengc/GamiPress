@@ -85,7 +85,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 			'cmb-edd-license-js'
 		) );
 
-		$license = cmb2_edd_license_data( $args['value'] );
+		$license = rgc_cmb2_edd_license_data( $args['value'] );
 		$license_status = ( $license !== false ) ? $license->license : false;
 
         // If user has input a license but there isn't any license object, then perform a new API request
@@ -94,7 +94,7 @@ class CMB_Type_EDD_License extends CMB2_Type_Base {
 
             $cmb2_field_edd_license->api_request( $field_args['server'], $args['value'], $field_args, 'activate_license' );
 
-            $license = cmb2_edd_license_data( $args['value'] );
+            $license = rgc_cmb2_edd_license_data( $args['value'] );
             $license_status = ( $license !== false ) ? $license->license : false;
 
         }

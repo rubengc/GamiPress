@@ -80,8 +80,8 @@ function cmb2_edd_license_metabox() {
 
 ## Retrieve the license status
 
-You can use the function `cmb2_edd_license_data( $license_key )` to see the data returned by the server of this license (is an stdClass object)
-In Addition, you can use the function `cmb2_edd_license_status( $license_key )` to see the status of this license (valid, invalid or false if not license key or license not checked)
+You can use the function `rgc_cmb2_edd_license_data( $license_key )` to see the data returned by the server of this license (is an stdClass object)
+In Addition, you can use the function `rgc_cmb2_edd_license_status( $license_key )` to see the status of this license (valid, invalid or false if not license key or license not checked)
 
 ## Changelog
 

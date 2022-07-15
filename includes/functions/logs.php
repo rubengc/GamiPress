@@ -811,11 +811,19 @@ function gamipress_maybe_apply_log_pattern( $object_data = array(), $original_ob
 
         $log_id = $original_object_data['log_id'];
 
-        $pattern = ct_get_object_meta( $log_id, '_gamipress_pattern', true );
+        // Just update using pattern if title has been changed
+        if( empty( $object_data['title'] ) ) {
+            // Check pattern
+            if( isset( $_POST['_gamipress_pattern'] ) && ! empty( $_POST['_gamipress_pattern'] ) ) {
+                $pattern = sanitize_text_field( $_POST['_gamipress_pattern'] );
+            } else {
+                $pattern = ct_get_object_meta( $log_id, '_gamipress_pattern', true );
+            }
 
-        // Just parse pattern if not empty
-        if( ! empty( $pattern ) ) {
-            $object_data['title'] = gamipress_get_parsed_log( $log_id );
+            // Just parse pattern if not empty
+            if( ! empty( $pattern ) ) {
+                $object_data['title'] = gamipress_get_parsed_log( $log_id );
+            }
         }
     }
 

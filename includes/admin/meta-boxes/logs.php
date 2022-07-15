@@ -19,6 +19,25 @@ function gamipress_logs_meta_boxes() {
     // Start with an underscore to hide fields from custom fields list
     $prefix = '_gamipress_';
 
+    // Title
+    gamipress_add_meta_box(
+        'gamipress-log-title',
+        __( 'Title', 'gamipress' ),
+        'gamipress_logs',
+        array(
+            'title' => array(
+                'name' 	=> __( 'Title', 'gamipress' ),
+                'type' 	=> 'text',
+                'attributes' => array(
+                    'placeholder' => __( 'Enter title here. Leave empty if you want to generate it from the pattern.', 'gamipress' ),
+                )
+            ),
+        ),
+        array(
+            'priority' => 'high',
+        )
+    );
+
     // Log Data
     gamipress_add_meta_box(
         'log-data',

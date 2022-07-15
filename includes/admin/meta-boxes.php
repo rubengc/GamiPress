@@ -159,7 +159,7 @@ function gamipress_init_meta_boxes() {
     }
 
     // Check if there is the edit GamiPress logs screen
-    if( empty( $post_type ) && $pagenow === 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] === 'edit_gamipress_logs' ) {
+    if( $pagenow === 'admin.php' && isset( $_GET['page'] ) && $_GET['page'] === 'edit_gamipress_logs' ) {
         $post_type = 'gamipress_logs';
     }
 

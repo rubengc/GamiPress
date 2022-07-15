@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-03-21 11:40+0100\n"
+"POT-Creation-Date: 2022-07-15 14:31+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -219,7 +219,7 @@ msgid "Admin-awarded Only"
 msgstr ""
 
 #: includes/admin/achievements.php:144 includes/admin/achievements.php:150
-#: includes/admin/meta-boxes/requirements-ui.php:524
+#: includes/admin/meta-boxes/requirements-ui.php:526
 #: includes/admin/meta-boxes/requirements.php:58
 msgid "Unlimited"
 msgstr ""
@@ -504,7 +504,7 @@ msgid "Nothing to show :)"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:349
-#: includes/admin/meta-boxes/requirements-ui.php:471
+#: includes/admin/meta-boxes/requirements-ui.php:473
 #: includes/admin/users.php:511
 msgid "Choose an achievement type"
 msgstr ""
@@ -914,11 +914,26 @@ msgstr ""
 msgid "No extra data registered"
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:25 includes/compatibility/1.2.8.php:298
+#: includes/admin/meta-boxes/logs.php:25 includes/admin/meta-boxes/logs.php:29
+#: includes/admin/tools/import-export-achievements.php:54
+#: includes/admin/tools/import-export-earnings.php:84
+#: includes/admin/tools/import-export-ranks.php:54
+#: includes/custom-tables/logs.php:266
+#: includes/privacy/exporters/user-earnings.php:131
+#: includes/shortcodes/gamipress_achievements.php:142
+#: includes/shortcodes/gamipress_ranks.php:93
+msgid "Title"
+msgstr ""
+
+#: includes/admin/meta-boxes/logs.php:32
+msgid "Enter title here. Leave empty if you want to generate it from the pattern."
+msgstr ""
+
+#: includes/admin/meta-boxes/logs.php:44 includes/compatibility/1.2.8.php:298
 msgid "Log Data"
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:29
+#: includes/admin/meta-boxes/logs.php:48
 #: includes/admin/tools/import-export-achievements.php:154
 #: includes/admin/tools/import-export-earnings.php:246
 #: includes/admin/tools/import-export-points.php:141
@@ -942,11 +957,11 @@ msgstr ""
 msgid "User"
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:30 includes/compatibility/1.2.8.php:303
+#: includes/admin/meta-boxes/logs.php:49 includes/compatibility/1.2.8.php:303
 msgid "User assigned to this log."
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:35
+#: includes/admin/meta-boxes/logs.php:54
 #: includes/admin/tools/logs-clean-up.php:59
 #: includes/compatibility/1.2.8.php:308 includes/custom-tables/logs.php:267
 #: includes/privacy/exporters/logs.php:134
@@ -958,15 +973,15 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:36 includes/compatibility/1.2.8.php:309
+#: includes/admin/meta-boxes/logs.php:55 includes/compatibility/1.2.8.php:309
 msgid "The log type."
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:41 includes/compatibility/1.2.8.php:314
+#: includes/admin/meta-boxes/logs.php:60 includes/compatibility/1.2.8.php:314
 msgid "Pattern"
 msgstr ""
 
-#: includes/admin/meta-boxes/logs.php:42 includes/compatibility/1.2.8.php:315
+#: includes/admin/meta-boxes/logs.php:61 includes/compatibility/1.2.8.php:315
 msgid "The log output pattern. Available tags:"
 msgstr ""
 
@@ -1105,188 +1120,188 @@ msgstr ""
 msgid "<strong>Important!</strong> User will not earn this requirements until be ranked on the previous rank."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:116
+#: includes/admin/meta-boxes/requirements-ui.php:118
 msgid "Sequential Steps"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:117
+#: includes/admin/meta-boxes/requirements-ui.php:119
 msgid "Sequential Requirements"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:124
+#: includes/admin/meta-boxes/requirements-ui.php:126
 msgid "Check this option to force users to complete steps in order."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:125
+#: includes/admin/meta-boxes/requirements-ui.php:127
 msgid "Check this option to force users to complete requirements in order."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:142
+#: includes/admin/meta-boxes/requirements-ui.php:144
 #: includes/post-types.php:542 includes/post-types.php:617
 #, php-format
 msgid "Add New %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:145
+#: includes/admin/meta-boxes/requirements-ui.php:147
 #, php-format
 msgid "Save All %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:240
-#: includes/admin/meta-boxes/requirements-ui.php:244
+#: includes/admin/meta-boxes/requirements-ui.php:242
+#: includes/admin/meta-boxes/requirements-ui.php:246
 #, php-format
 msgid "Disable %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:240
-#: includes/admin/meta-boxes/requirements-ui.php:245
+#: includes/admin/meta-boxes/requirements-ui.php:242
+#: includes/admin/meta-boxes/requirements-ui.php:247
 #, php-format
 msgid "Enable %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:258
+#: includes/admin/meta-boxes/requirements-ui.php:260
 msgid "Duplicate"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:262
+#: includes/admin/meta-boxes/requirements-ui.php:264
 msgid "Delete"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:299
+#: includes/admin/meta-boxes/requirements-ui.php:301
 msgid "When"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:339
-#: includes/admin/meta-boxes/requirements-ui.php:1135
+#: includes/admin/meta-boxes/requirements-ui.php:341
+#: includes/admin/meta-boxes/requirements-ui.php:1143
 msgid "equal to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:340
-#: includes/admin/meta-boxes/requirements-ui.php:1136
+#: includes/admin/meta-boxes/requirements-ui.php:342
+#: includes/admin/meta-boxes/requirements-ui.php:1144
 msgid "not equal to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:341
-#: includes/admin/meta-boxes/requirements-ui.php:1137
+#: includes/admin/meta-boxes/requirements-ui.php:343
+#: includes/admin/meta-boxes/requirements-ui.php:1145
 msgid "less than"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:342
-#: includes/admin/meta-boxes/requirements-ui.php:1138
+#: includes/admin/meta-boxes/requirements-ui.php:344
+#: includes/admin/meta-boxes/requirements-ui.php:1146
 msgid "greater than"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:343
-#: includes/admin/meta-boxes/requirements-ui.php:1139
+#: includes/admin/meta-boxes/requirements-ui.php:345
+#: includes/admin/meta-boxes/requirements-ui.php:1147
 msgid "less or equal to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:344
-#: includes/admin/meta-boxes/requirements-ui.php:1140
+#: includes/admin/meta-boxes/requirements-ui.php:346
+#: includes/admin/meta-boxes/requirements-ui.php:1148
 msgid "greater or equal to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:378
+#: includes/admin/meta-boxes/requirements-ui.php:380
 msgid "Default points"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:417
+#: includes/admin/meta-boxes/requirements-ui.php:419
 msgid "Choose a rank"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:434
+#: includes/admin/meta-boxes/requirements-ui.php:436
 msgid "Choose a post type"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:491
+#: includes/admin/meta-boxes/requirements-ui.php:493
 msgid "Choose an achievement"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:516
+#: includes/admin/meta-boxes/requirements-ui.php:518
 msgid "time(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:520
+#: includes/admin/meta-boxes/requirements-ui.php:522
 msgid "limited to"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:525
+#: includes/admin/meta-boxes/requirements-ui.php:527
 msgid "Per minute"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:526
+#: includes/admin/meta-boxes/requirements-ui.php:528
 msgid "Per hour"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:527
+#: includes/admin/meta-boxes/requirements-ui.php:529
 msgid "Per day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:528
+#: includes/admin/meta-boxes/requirements-ui.php:530
 msgid "Per week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:529
+#: includes/admin/meta-boxes/requirements-ui.php:531
 msgid "Per month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:530
+#: includes/admin/meta-boxes/requirements-ui.php:532
 msgid "Per year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:578
+#: includes/admin/meta-boxes/requirements-ui.php:580
 msgid "point(s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:584
+#: includes/admin/meta-boxes/requirements-ui.php:586
 msgid "Earn"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:584 includes/filters.php:361
+#: includes/admin/meta-boxes/requirements-ui.php:586 includes/filters.php:361
 #: includes/filters.php:363
 msgid "Deduct"
 msgid_plural "Deducts"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:590
+#: includes/admin/meta-boxes/requirements-ui.php:592
 msgid "with a maximum number of times to earn it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:590
+#: includes/admin/meta-boxes/requirements-ui.php:592
 msgid "with a maximum number of times to deduct it of"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:592
+#: includes/admin/meta-boxes/requirements-ui.php:594
 msgid "(0 for no maximum)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:613
-#: includes/admin/meta-boxes/requirements-ui.php:616
+#: includes/admin/meta-boxes/requirements-ui.php:615
+#: includes/admin/meta-boxes/requirements-ui.php:618
 msgid "Optional"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:615
+#: includes/admin/meta-boxes/requirements-ui.php:617
 msgid "Required"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:633
+#: includes/admin/meta-boxes/requirements-ui.php:635
 msgid "Label"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:634
+#: includes/admin/meta-boxes/requirements-ui.php:636
 msgid "Enter the label here or leave it empty to be autogenerated..."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:638
+#: includes/admin/meta-boxes/requirements-ui.php:640
 msgid "URL"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:782
-#: includes/admin/meta-boxes/requirements-ui.php:822
-#: includes/admin/meta-boxes/requirements-ui.php:868
-#: includes/admin/meta-boxes/requirements-ui.php:894
-#: includes/admin/meta-boxes/requirements-ui.php:969
+#: includes/admin/meta-boxes/requirements-ui.php:784
+#: includes/admin/meta-boxes/requirements-ui.php:824
+#: includes/admin/meta-boxes/requirements-ui.php:870
+#: includes/admin/meta-boxes/requirements-ui.php:896
+#: includes/admin/meta-boxes/requirements-ui.php:971
 #: includes/admin/tools/bulk-awards.php:258
 #: includes/admin/tools/bulk-awards.php:263
 #: includes/admin/tools/bulk-revokes.php:258
@@ -1308,170 +1323,170 @@ msgstr ""
 msgid "You are not allowed to perform this action."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:789
-#: includes/admin/meta-boxes/requirements-ui.php:830
+#: includes/admin/meta-boxes/requirements-ui.php:791
+#: includes/admin/meta-boxes/requirements-ui.php:832
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1118
+#: includes/admin/meta-boxes/requirements-ui.php:1126
 msgid "post"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1131
+#: includes/admin/meta-boxes/requirements-ui.php:1139
 #, php-format
 msgid "Earn %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1143
+#: includes/admin/meta-boxes/requirements-ui.php:1151
 #, php-format
 msgid "Reach a balance %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1146
+#: includes/admin/meta-boxes/requirements-ui.php:1154
 #, php-format
 msgid "Expend %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1152
+#: includes/admin/meta-boxes/requirements-ui.php:1160
 #, php-format
 msgid "Reach %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1157
+#: includes/admin/meta-boxes/requirements-ui.php:1165
 #, php-format
 msgid "Get %s %s revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1161
+#: includes/admin/meta-boxes/requirements-ui.php:1169
 #, php-format
 msgid "Unlock \"%s\""
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1164
+#: includes/admin/meta-boxes/requirements-ui.php:1172
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1167
+#: includes/admin/meta-boxes/requirements-ui.php:1175
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1170
+#: includes/admin/meta-boxes/requirements-ui.php:1178
 #, php-format
 msgid "Get \"%s\" revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1173
+#: includes/admin/meta-boxes/requirements-ui.php:1181
 #, php-format
 msgid "Get any %s revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1177
+#: includes/admin/meta-boxes/requirements-ui.php:1185
 #, php-format
 msgid "Comment on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1180
+#: includes/admin/meta-boxes/requirements-ui.php:1188
 #, php-format
 msgid "Get a comment on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1183
+#: includes/admin/meta-boxes/requirements-ui.php:1191
 #, php-format
 msgid "Get a comment on a %s marked as spam"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1186
+#: includes/admin/meta-boxes/requirements-ui.php:1194
 #, php-format
 msgid "Publish a new %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1189
+#: includes/admin/meta-boxes/requirements-ui.php:1197
 #, php-format
 msgid "Delete a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1192
+#: includes/admin/meta-boxes/requirements-ui.php:1200
 #, php-format
 msgid "Daily visit a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1195
+#: includes/admin/meta-boxes/requirements-ui.php:1203
 #, php-format
 msgid "Get visits on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1199
+#: includes/admin/meta-boxes/requirements-ui.php:1207
 #, php-format
 msgid "Get added to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1202
+#: includes/admin/meta-boxes/requirements-ui.php:1210
 #, php-format
 msgid "Get assigned to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1205
+#: includes/admin/meta-boxes/requirements-ui.php:1213
 #, php-format
 msgid "Get removed from %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1244
+#: includes/admin/meta-boxes/requirements-ui.php:1252
 #, php-format
 msgid "%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1246
+#: includes/admin/meta-boxes/requirements-ui.php:1254
 #, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1250
-#: includes/admin/meta-boxes/requirements-ui.php:1259
-#: includes/admin/meta-boxes/requirements-ui.php:1288
-#: includes/admin/meta-boxes/requirements-ui.php:1294
+#: includes/admin/meta-boxes/requirements-ui.php:1258
+#: includes/admin/meta-boxes/requirements-ui.php:1267
+#: includes/admin/meta-boxes/requirements-ui.php:1296
+#: includes/admin/meta-boxes/requirements-ui.php:1302
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1259
+#: includes/admin/meta-boxes/requirements-ui.php:1267
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1269
+#: includes/admin/meta-boxes/requirements-ui.php:1277
 msgid "minute"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1272
+#: includes/admin/meta-boxes/requirements-ui.php:1280
 msgid "hour"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1275
+#: includes/admin/meta-boxes/requirements-ui.php:1283
 msgid "day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1278
+#: includes/admin/meta-boxes/requirements-ui.php:1286
 msgid "week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1281
+#: includes/admin/meta-boxes/requirements-ui.php:1289
 msgid "month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1284
+#: includes/admin/meta-boxes/requirements-ui.php:1292
 msgid "year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1288
+#: includes/admin/meta-boxes/requirements-ui.php:1296
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1294
+#: includes/admin/meta-boxes/requirements-ui.php:1302
 msgid "(Optional)"
 msgstr ""
 
@@ -2301,7 +2316,7 @@ msgstr ""
 msgid "Used when user earns points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:49 includes/functions/points.php:822
+#: includes/admin/settings/logs.php:49 includes/functions/points.php:835
 msgid "{user} earned {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2313,7 +2328,7 @@ msgstr ""
 msgid "Used when user gets a deduction of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:55 includes/functions/points.php:826
+#: includes/admin/settings/logs.php:55 includes/functions/points.php:839
 msgid "{user} deducted {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2375,7 +2390,7 @@ msgstr ""
 msgid "Used when an admin awards a user with points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:85 includes/functions/points.php:810
+#: includes/admin/settings/logs.php:85 includes/functions/points.php:823
 msgid "{admin} awarded {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2387,7 +2402,7 @@ msgstr ""
 msgid "Used when an admin revokes points of a user. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:91 includes/functions/points.php:814
+#: includes/admin/settings/logs.php:91 includes/functions/points.php:827
 msgid "{admin} revoked {user} {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2941,16 +2956,6 @@ msgstr ""
 
 #: includes/admin/tools/import-export-achievements.php:50
 msgid "Choose the field to display on achievements column."
-msgstr ""
-
-#: includes/admin/tools/import-export-achievements.php:54
-#: includes/admin/tools/import-export-earnings.php:84
-#: includes/admin/tools/import-export-ranks.php:54
-#: includes/custom-tables/logs.php:266
-#: includes/privacy/exporters/user-earnings.php:131
-#: includes/shortcodes/gamipress_achievements.php:142
-#: includes/shortcodes/gamipress_ranks.php:93
-msgid "Title"
 msgstr ""
 
 #: includes/admin/tools/import-export-achievements.php:60
@@ -3710,7 +3715,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/1.4.7.php:213 includes/admin/upgrades/1.4.7.php:241
-#: includes/functions/points.php:864
+#: includes/functions/points.php:877
 msgid "(no trigger)"
 msgstr ""
 
@@ -4250,47 +4255,47 @@ msgstr ""
 msgid "Sample Points Award Label"
 msgstr ""
 
-#: includes/emails.php:375 includes/emails.php:382
+#: includes/emails.php:375 includes/emails.php:383
 msgid "Sample Points Type"
 msgstr ""
 
-#: includes/emails.php:379
+#: includes/emails.php:380
 msgid "Sample Points Deduct Label"
 msgstr ""
 
-#: includes/emails.php:387
+#: includes/emails.php:389
 msgid "Sample Rank"
 msgstr ""
 
-#: includes/emails.php:390
+#: includes/emails.php:392
 msgid "Sample Rank Excerpt"
 msgstr ""
 
-#: includes/emails.php:393
+#: includes/emails.php:395
 msgid "Not completed rank requirement."
 msgstr ""
 
-#: includes/emails.php:394
+#: includes/emails.php:396
 msgid "Completed rank requirement."
 msgstr ""
 
-#: includes/emails.php:396
+#: includes/emails.php:398
 msgid "Sample Rank Type"
 msgstr ""
 
-#: includes/emails.php:397
+#: includes/emails.php:399
 msgid "Sample Rank Congratulations Text"
 msgstr ""
 
-#: includes/emails.php:401
+#: includes/emails.php:403
 msgid "Sample Rank Requirement Label"
 msgstr ""
 
-#: includes/emails.php:646
+#: includes/emails.php:648
 msgid "Email sent successfully!"
 msgstr ""
 
-#: includes/emails.php:650
+#: includes/emails.php:652
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 
@@ -4446,7 +4451,7 @@ msgstr ""
 msgid "Achievement Type renamed successfully. <p>All achievements of this type, and all active and earned user achievements, have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old achievement type slug must be updated <strong>manually</strong>."
 msgstr ""
 
-#: includes/functions/achievements.php:1330 includes/functions/points.php:1319
+#: includes/functions/achievements.php:1330 includes/functions/points.php:1332
 #: includes/functions/ranks.php:1436
 msgid "widgets"
 msgstr ""
@@ -4585,11 +4590,11 @@ msgstr ""
 msgid "Point"
 msgstr ""
 
-#: includes/functions/points.php:1318
+#: includes/functions/points.php:1331
 msgid "Points Type saved successfully."
 msgstr ""
 
-#: includes/functions/points.php:1319
+#: includes/functions/points.php:1332
 #, php-format
 msgid "Points Type renamed successfully. <p>All user points of this type have been updated <strong>automatically</strong>.</p> All shortcodes, %s, and URIs that reference the old points type slug must be updated <strong>manually</strong>."
 msgstr ""
@@ -6645,7 +6650,7 @@ msgstr ""
 msgid "The amount of points earned."
 msgstr ""
 
-#: includes/tags.php:118 includes/tags.php:140
+#: includes/tags.php:118 includes/tags.php:141
 msgid "The full amount of points user has earned until this date."
 msgstr ""
 
@@ -6653,103 +6658,107 @@ msgstr ""
 msgid "The points award points type. Singular or plural is based on the amount of points earned."
 msgstr ""
 
-#: includes/tags.php:135
+#: includes/tags.php:120 includes/tags.php:143
+msgid "The points type featured image."
+msgstr ""
+
+#: includes/tags.php:136
 msgid "Points Deduct Tags"
 msgstr ""
 
-#: includes/tags.php:138
+#: includes/tags.php:139
 msgid "Points deduct label."
 msgstr ""
 
-#: includes/tags.php:139
+#: includes/tags.php:140
 msgid "The amount of points deducted."
 msgstr ""
 
-#: includes/tags.php:141
+#: includes/tags.php:142
 msgid "The points deduct points type. Singular or plural is based on the amount of points deducted."
 msgstr ""
 
-#: includes/tags.php:157
+#: includes/tags.php:159
 msgid "Rank Tags"
 msgstr ""
 
-#: includes/tags.php:160
+#: includes/tags.php:162
 msgid "Rank ID (useful for shortcodes that rank ID can be passed as attribute)."
 msgstr ""
 
-#: includes/tags.php:161
+#: includes/tags.php:163
 msgid "Rank title."
 msgstr ""
 
-#: includes/tags.php:162
+#: includes/tags.php:164
 msgid "URL to the rank."
 msgstr ""
 
-#: includes/tags.php:163
+#: includes/tags.php:165
 msgid "Link to the rank with the rank title as text."
 msgstr ""
 
-#: includes/tags.php:164
+#: includes/tags.php:166
 msgid "Rank excerpt."
 msgstr ""
 
-#: includes/tags.php:165
+#: includes/tags.php:167
 msgid "Rank featured image."
 msgstr ""
 
-#: includes/tags.php:166
+#: includes/tags.php:168
 msgid "Rank requirements."
 msgstr ""
 
-#: includes/tags.php:167
+#: includes/tags.php:169
 msgid "Rank congratulations text."
 msgstr ""
 
-#: includes/tags.php:168 includes/tags.php:196
+#: includes/tags.php:170 includes/tags.php:198
 msgid "Type of the rank."
 msgstr ""
 
-#: includes/tags.php:184
+#: includes/tags.php:186
 msgid "Rank Requirement Tags"
 msgstr ""
 
-#: includes/tags.php:187
+#: includes/tags.php:189
 msgid "Requirement label."
 msgstr ""
 
-#: includes/tags.php:188
+#: includes/tags.php:190
 msgid "Requirement rank ID (useful for shortcodes that rank ID can be passed as attribute)."
 msgstr ""
 
-#: includes/tags.php:189
+#: includes/tags.php:191
 msgid "Requirement rank title."
 msgstr ""
 
-#: includes/tags.php:190
+#: includes/tags.php:192
 msgid "URL to the requirement rank."
 msgstr ""
 
-#: includes/tags.php:191
+#: includes/tags.php:193
 msgid "Link to the requirement rank with the rank title as text."
 msgstr ""
 
-#: includes/tags.php:192
+#: includes/tags.php:194
 msgid "Requirement rank excerpt."
 msgstr ""
 
-#: includes/tags.php:193
+#: includes/tags.php:195
 msgid "Requirement rank featured image."
 msgstr ""
 
-#: includes/tags.php:194
+#: includes/tags.php:196
 msgid "Requirement rank requirements."
 msgstr ""
 
-#: includes/tags.php:195
+#: includes/tags.php:197
 msgid "Requirement rank congratulations text."
 msgstr ""
 
-#: includes/tags.php:228
+#: includes/tags.php:230
 msgid "Show tags"
 msgstr ""
 

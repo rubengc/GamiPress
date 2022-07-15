@@ -456,28 +456,6 @@ function gamipress_manage_logs_custom_column(  $column_name, $object_id ) {
 add_action( 'manage_gamipress_logs_custom_column', 'gamipress_manage_logs_custom_column', 10, 2 );
 
 /**
- * Place the title at top of edit log screen
- *
- * @since  1.2.8
- *
- * @param stdClass $object
- */
-function gamipress_logs_edit_form_top( $object ) {
-    global $ct_table;
-
-    if( $ct_table->name !== 'gamipress_logs' ) {
-        return;
-    }
-
-    ?>
-    <div class="gamipress-log-title-preview">
-        <h1><?php echo $object->title; ?></h1>
-    </div>
-    <?php
-}
-add_action( 'ct_edit_form_top', 'gamipress_logs_edit_form_top' );
-
-/**
  * Remove submit div box on logs
  *
  * @since  1.2.8

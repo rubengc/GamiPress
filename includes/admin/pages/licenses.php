@@ -319,7 +319,7 @@ function gamipress_license_plugin_update_row( $file, $plugin_data ) {
         $license = gamipress_get_option( $slug . '_license', '' );
 
         // Check the license status
-        $license_status = cmb2_edd_license_status( $license );
+        $license_status = rgc_cmb2_edd_license_status( $license );
 
         if( $license_status === 'valid' ) {
 
@@ -375,7 +375,7 @@ function gamipress_license_in_plugin_update_message( $plugin_data, $response ) {
     $license = gamipress_get_option( $slug . '_license', '' );
 
     // Check the license status
-    $license_status = cmb2_edd_license_status( $license );
+    $license_status = rgc_cmb2_edd_license_status( $license );
 
     if( $license_status !== 'valid' ) {
 

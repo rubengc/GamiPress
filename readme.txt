@@ -1,13 +1,13 @@
-﻿=== GamiPress ===
+﻿=== GamiPress - The most flexible and powerful gamification plugin for WordPress ===
 Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.0
-Stable tag: 2.3.5
+Stable tag: 2.3.6
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
-The most flexible and powerful gamification system for WordPress.
+Reward your users with points, achievements, badges and ranks to increase your site activity and loyalty.
 
 == Description ==
 
@@ -240,6 +240,13 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.3.6 =
+
+* **New Features**
+* Added the ability to change log title from the log edit screen.
+* **Improvements**
+* Prevent PHP warnings during activation caused by CMB2 library.
 
 = 2.3.5 =
 

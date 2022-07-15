@@ -1,7 +1,7 @@
 <?php
 /**
- * @package      CMB2\Field_EDD_License
- * @author       GamiPress
+ * @package      RGC\CMB2\Field_EDD_License
+ * @author       Ruben Garcia (RubenGC) <rubengcdev@gmail.com>, GamiPress <contact@gamipress.com>
  * @copyright    Copyright (c) GamiPress
  *
  * Plugin Name: CMB2 Field Type: EDD License
@@ -16,14 +16,13 @@
 
 global $cmb2_field_edd_license;
 
-// TODO: Add support for themes
-
-if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
+// Prevent CMB2 autoload adding "RGC_" at start
+if( ! class_exists( 'RGC_CMB2_Field_EDD_License' ) ) {
 
     /**
-     * Class CMB2_Field_EDD_License
+     * Class RGC_CMB2_Field_EDD_License
      */
-    class CMB2_Field_EDD_License {
+    class RGC_CMB2_Field_EDD_License {
 
         /**
          * Current version number
@@ -147,7 +146,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
             }
 
-            $license = cmb2_edd_license_data( $field->escaped_value() );
+            $license = rgc_cmb2_edd_license_data( $field->escaped_value() );
             $license_status = ( $license !== false ) ? $license->license : false;
 
             if( $license_status === 'valid' ) {
@@ -265,7 +264,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
             }
 
-            $license = cmb2_edd_license_data( $field->escaped_value() );
+            $license = rgc_cmb2_edd_license_data( $field->escaped_value() );
             $license_status = ( $license !== false ) ? $license->license : false;
 
             // If clearing a valid license, first deactivate it
@@ -461,7 +460,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
 
             // Prepare updater arguments
             $api_params = array(
-                'license' => ( cmb2_edd_license_status( $license_key ) === 'valid' ? $license_key : '' ),
+                'license' => ( rgc_cmb2_edd_license_status( $license_key ) === 'valid' ? $license_key : '' ),
             );
 
             // Add license ID or name for identification
@@ -633,7 +632,7 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
      *
      * @return bool|stdClass        License data or false (if not license provided or not checked)
      */
-    function cmb2_edd_license_data( $license_key ) {
+    function rgc_cmb2_edd_license_data( $license_key ) {
 
         if( ! empty( $license_key ) ) {
 
@@ -654,9 +653,9 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
      * @param string $license_key   License key value (Just pass the field value)
      * @return bool|string          Value of license status, could return "valid", "invalid" or false (if not license provided or not checked)
      */
-    function cmb2_edd_license_status( $license_key ) {
+    function rgc_cmb2_edd_license_status( $license_key ) {
 
-        $license_data = cmb2_edd_license_data( $license_key );
+        $license_data = rgc_cmb2_edd_license_data( $license_key );
 
         if( $license_data ) {
             return $license_data->license;
@@ -665,6 +664,6 @@ if( ! class_exists( 'CMB2_Field_EDD_License' ) ) {
         return false;
     }
 
-    $cmb2_field_edd_license = new CMB2_Field_EDD_License();
+    $cmb2_field_edd_license = new RGC_CMB2_Field_EDD_License();
 
 }
