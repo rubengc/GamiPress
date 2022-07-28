@@ -370,6 +370,7 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
     $query_args['post_type'] = array();
     $query_args['points_type'] = array();
     $query_args['post_type__not_in'] = array();
+    $query_args['parent_post_type'] = array();
 
     // User
     if( isset( $args['user_id'] ) && absint( $args['user_id'] ) !== 0 ) {
@@ -441,7 +442,11 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
 
         // Step
         if( $args['steps'] === 'yes' ) {
-            $query_args['post_type'][] = 'step';
+            if( $args['achievement_types'] === 'all') {
+                $query_args['post_type'][] = 'step';
+            } else {
+                $query_args['parent_post_type'] = array_merge( $query_args['parent_post_type'], $achievement_types );
+            }
         } else {
             $query_args['post_type__not_in'][] = 'step';
         }
@@ -464,7 +469,11 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
 
         // Rank requirements
         if( $args['rank_requirements'] === 'yes' ) {
-            $query_args['post_type'][] = 'rank-requirement';
+            if( $args['rank_types'] === 'all') {
+                $query_args['post_type'][] = 'rank-requirement';
+            } else {
+                $query_args['parent_post_type'] = array_merge( $query_args['parent_post_type'], $rank_types );
+            }
         } else {
             $query_args['post_type__not_in'][] = 'rank-requirement';
         }
@@ -488,12 +497,12 @@ function gamipress_earnings_shortcode_query( $args = array () ) {
 
     if( ! empty( $query_args['points_type'] ) ) {
         $query_args['force_types'] = true;
-
     }
 
-    // If looking to show achievements that do not award any points, then need to add the empty points type value
+    // If looking to show achievements that do not award any points, then need to add the empty points type value and force the post and points types queries
     if( $args['achievements_without_points'] === 'yes' ) {
         $query_args['points_type'][] = '';
+        $query_args['force_types'] = true;
     }
 
     /**

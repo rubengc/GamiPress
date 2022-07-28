@@ -19,6 +19,7 @@ require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.3.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.4.7.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.5.1.php';
 require_once GAMIPRESS_DIR . 'includes/admin/upgrades/1.8.7.php';
+require_once GAMIPRESS_DIR . 'includes/admin/upgrades/2.3.7.php';
 
 /**
  * GamiPress upgrades

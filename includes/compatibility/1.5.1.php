@@ -286,6 +286,10 @@ function gamipress_get_requirement_connected_id( $requirement_id = 0 ) {
 
     $p2p = GamiPress()->db->p2p;
 
+    if( ! gamipress_database_table_exists( $p2p ) ) {
+        return 0;
+    }
+
     $p2p_to = $wpdb->get_var( $wpdb->prepare( "SELECT p2p_to FROM $p2p WHERE p2p_from = %d ", $requirement_id ) );
 
     return $p2p_to;

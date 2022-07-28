@@ -229,6 +229,7 @@ function gamipress_ajax_process_151_upgrade() {
     if( ! is_gamipress_upgrade_completed( 'update_requirements_relationships' ) ) {
 
         // Migrate from p2p table to posts
+        $continue = true;
 
         // Setup the P2P tables
         $p2p        = ( property_exists( $wpdb, 'p2p' ) ? $wpdb->p2p : $wpdb->prefix . 'p2p' );
@@ -240,46 +241,54 @@ function gamipress_ajax_process_151_upgrade() {
             $p2pmeta 	= $wpdb->base_prefix . 'p2pmeta';
         }
 
-        // Get our requirement types
-        $requirements_types = gamipress_get_requirement_types_slugs();
-
-        // Retrieve all requirements without parent
-        $results = $wpdb->get_results( "SELECT p.ID, p.post_type FROM {$posts} AS p WHERE p.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) AND p.post_parent = 0 LIMIT {$limit}" );
-
-        foreach( $results as $post ) {
-
-            // Get the requirement relationship from the P2P table
-            // p2p_from is the requirement ID
-            // p2p_to is the parent ID (achievement, points type or rank)
-            $p2p_entry = $wpdb->get_row( "SELECT p2p.p2p_id, p2p.p2p_to FROM {$p2p} AS p2p WHERE p2p.p2p_from = {$post->ID} AND p2p.p2p_type LIKE '{$post->post_type}-to-%'" );
-
-            if( $p2p_entry ) {
-
-                // Setup the vars to update our post
-                $post_parent = $p2p_entry->p2p_to;
-                $menu_order = absint( $wpdb->get_var( "SELECT p2pmeta.meta_value FROM {$p2pmeta} AS p2pmeta WHERE p2pmeta.p2p_id = {$p2p_entry->p2p_id} AND p2pmeta.meta_key = 'order'" ) );
-
-                // Update the requirement object to meet the new relationships
-                wp_update_post( array(
-                    'ID' => $post->ID,
-                    'post_parent' => $post_parent,
-                    'menu_order' => $menu_order,
-                ) );
-
-            } else {
-
-                // Delete this requirement since is not well connected
-                wp_delete_post( $post->ID );
-
-            }
-
-            $current++;
+        // Extra check for new installs
+        if( ! gamipress_database_table_exists( $p2p ) ) {
+            gamipress_set_upgrade_complete( 'update_requirements_relationships' );
+            $continue = false;
         }
 
-        $posts_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$posts} AS p WHERE p.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) AND p.post_parent = 0" );
+        if( $continue ) {
+            // Get our requirement types
+            $requirements_types = gamipress_get_requirement_types_slugs();
 
-        if( absint( $posts_count ) === 0 ) {
-            gamipress_set_upgrade_complete( 'update_requirements_relationships' );
+            // Retrieve all requirements without parent
+            $results = $wpdb->get_results( "SELECT p.ID, p.post_type FROM {$posts} AS p WHERE p.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) AND p.post_parent = 0 LIMIT {$limit}" );
+
+            foreach( $results as $post ) {
+
+                // Get the requirement relationship from the P2P table
+                // p2p_from is the requirement ID
+                // p2p_to is the parent ID (achievement, points type or rank)
+                $p2p_entry = $wpdb->get_row( "SELECT p2p.p2p_id, p2p.p2p_to FROM {$p2p} AS p2p WHERE p2p.p2p_from = {$post->ID} AND p2p.p2p_type LIKE '{$post->post_type}-to-%'" );
+
+                if( $p2p_entry ) {
+
+                    // Setup the vars to update our post
+                    $post_parent = $p2p_entry->p2p_to;
+                    $menu_order = absint( $wpdb->get_var( "SELECT p2pmeta.meta_value FROM {$p2pmeta} AS p2pmeta WHERE p2pmeta.p2p_id = {$p2p_entry->p2p_id} AND p2pmeta.meta_key = 'order'" ) );
+
+                    // Update the requirement object to meet the new relationships
+                    wp_update_post( array(
+                        'ID' => $post->ID,
+                        'post_parent' => $post_parent,
+                        'menu_order' => $menu_order,
+                    ) );
+
+                } else {
+
+                    // Delete this requirement since is not well connected
+                    wp_delete_post( $post->ID );
+
+                }
+
+                $current++;
+            }
+
+            $posts_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$posts} AS p WHERE p.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) AND p.post_parent = 0" );
+
+            if( absint( $posts_count ) === 0 ) {
+                gamipress_set_upgrade_complete( 'update_requirements_relationships' );
+            }
         }
 
     }
@@ -292,40 +301,50 @@ function gamipress_ajax_process_151_upgrade() {
 
     if( is_gamipress_upgrade_completed( 'update_requirements_relationships' ) && ! is_gamipress_upgrade_completed( 'update_achievements_relationships' ) ) {
 
-        // Retrieve all requirements with specific-achievement trigger type and without _gamipress_achievement_post meta
-        $results = $wpdb->get_results(
-            "SELECT pm.post_id
-             FROM {$postmeta} AS pm
-             WHERE pm.post_id NOT IN ( SELECT spm.post_id FROM {$postmeta} AS spm WHERE spm.meta_key = '_gamipress_achievement_post' )
-              AND pm.meta_key = '_gamipress_trigger_type' AND pm.meta_value = 'specific-achievement'
-              LIMIT {$limit}"
-        );
+        $continue = true;
 
-        foreach( $results as $result ) {
-
-            $requirement_type = gamipress_get_post_type( $result->post_id );
-            $achievement_type = gamipress_get_post_meta( $result->post_id, '_gamipress_achievement_type' );
-
-            // Get the requirement relationship from the P2P table
-            // p2p_from is the achievement ID
-            // p2p_to is the requirement ID
-            $achievement_id = absint( $wpdb->get_var( "SELECT p2p.p2p_from FROM {$p2p} AS p2p WHERE p2p.p2p_to = {$result->post_id} AND p2p.p2p_type = '{$achievement_type}-to-{$requirement_type}'" ) );
-
-            gamipress_update_post_meta( $result->post_id, '_gamipress_achievement_post', $achievement_id );
-
-            $current++;
-
+        // Extra check for new installs
+        if( ! gamipress_database_table_exists( $p2p ) ) {
+            gamipress_set_upgrade_complete( 'update_achievements_relationships' );
+            $continue = false;
         }
 
-        $meta_count = $wpdb->get_var(
-            "SELECT COUNT(*)
-             FROM {$postmeta} AS pm
-             WHERE pm.post_id NOT IN ( SELECT spm.post_id FROM {$postmeta} AS spm WHERE spm.meta_key = '_gamipress_achievement_post' )
-              AND pm.meta_key = '_gamipress_trigger_type' AND pm.meta_value = 'specific-achievement'"
-        );
+        if( $continue ) {
+            // Retrieve all requirements with specific-achievement trigger type and without _gamipress_achievement_post meta
+            $results = $wpdb->get_results(
+                "SELECT pm.post_id
+                 FROM {$postmeta} AS pm
+                 WHERE pm.post_id NOT IN ( SELECT spm.post_id FROM {$postmeta} AS spm WHERE spm.meta_key = '_gamipress_achievement_post' )
+                  AND pm.meta_key = '_gamipress_trigger_type' AND pm.meta_value = 'specific-achievement'
+                  LIMIT {$limit}"
+            );
 
-        if( absint( $meta_count ) === 0 ) {
-            gamipress_set_upgrade_complete( 'update_requirements_relationships' );
+            foreach( $results as $result ) {
+
+                $requirement_type = gamipress_get_post_type( $result->post_id );
+                $achievement_type = gamipress_get_post_meta( $result->post_id, '_gamipress_achievement_type' );
+
+                // Get the requirement relationship from the P2P table
+                // p2p_from is the achievement ID
+                // p2p_to is the requirement ID
+                $achievement_id = absint( $wpdb->get_var( "SELECT p2p.p2p_from FROM {$p2p} AS p2p WHERE p2p.p2p_to = {$result->post_id} AND p2p.p2p_type = '{$achievement_type}-to-{$requirement_type}'" ) );
+
+                gamipress_update_post_meta( $result->post_id, '_gamipress_achievement_post', $achievement_id );
+
+                $current++;
+
+            }
+
+            $meta_count = $wpdb->get_var(
+                "SELECT COUNT(*)
+                 FROM {$postmeta} AS pm
+                 WHERE pm.post_id NOT IN ( SELECT spm.post_id FROM {$postmeta} AS spm WHERE spm.meta_key = '_gamipress_achievement_post' )
+                  AND pm.meta_key = '_gamipress_trigger_type' AND pm.meta_value = 'specific-achievement'"
+            );
+
+            if( absint( $meta_count ) === 0 ) {
+                gamipress_set_upgrade_complete( 'update_requirements_relationships' );
+            }
         }
 
     }

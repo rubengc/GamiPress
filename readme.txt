@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.0
-Stable tag: 2.3.6
+Stable tag: 2.3.7
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -240,6 +240,15 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.3.7 =
+
+* **Improvements**
+* Added a new upgrade process to append information to user earnings for filtering in User Earnings block, shortcode and widget.
+* **Bug Fixes**
+* Ensure to correctly display achievement steps of the types allowed in User Earnings block, shortcode and widget (requires run upgrade process).
+* Prevent PHP warning about undefined index in emails.
+* Prevent to query P2P table on new installs.
 
 = 2.3.6 =
 

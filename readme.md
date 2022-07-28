@@ -257,6 +257,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.7 ###
+
+* **Improvements**
+* Added a new upgrade process to append information to user earnings for filtering in User Earnings block, shortcode and widget.
+* **Bug Fixes**
+* Ensure to correctly display achievement steps of the types allowed in User Earnings block, shortcode and widget (requires run upgrade process).
+* Prevent PHP warning about undefined index in emails.
+* Prevent to query P2P table on new installs.
+
 ### 2.3.6 ###
 
 * **New Features**

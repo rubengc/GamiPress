@@ -1187,7 +1187,8 @@ function gamipress_is_email_disabled_from_user_settings( $user_id, $post_id ) {
         }
 
         // Check if emails has been disabled for the group (points, achievements or ranks) or for the type
-        if( $user_email_settings[$group] === 'no' || $user_email_settings[$group . '_' . $type] === 'no' ) {
+        if( ( isset( $user_email_settings[$group] ) && $user_email_settings[$group] === 'no' )
+            || ( isset( $user_email_settings[$group . '_' . $type] ) && $user_email_settings[$group . '_' . $type] === 'no' ) ) {
             $disabled = true;
         }
     }

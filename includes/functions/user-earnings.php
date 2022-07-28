@@ -46,6 +46,25 @@ function gamipress_insert_user_earning( $user_id = 0, $data = array(), $meta = a
     // Store user earning entry
     $user_earning_id = $ct_table->db->insert( $data );
 
+    // parent_post_type and parent_id meta to meet on requirements the parent information
+    if( $user_earning_id && in_array( $data['post_type'], gamipress_get_requirement_types_slugs() ) ) {
+        $parent_id = absint( gamipress_get_post_field( 'post_parent', $data['post_id'] ) );
+
+        $meta['parent_post_type'] = '';
+
+        if( $parent_id !== 0 ) {
+            $meta['parent_post_type'] = gamipress_get_post_field( 'post_type', $parent_id );
+
+            if( $meta['parent_post_type'] === 'points-type' ) {
+                $meta['parent_post_type'] = gamipress_get_post_field( 'post_name', $parent_id );
+            }
+        }
+
+        if( empty( $meta['parent_post_type'] ) ) {
+            $meta['parent_post_type'] = $data['post_type'];
+        }
+    }
+
     // Store user earning meta data
     if ( $user_earning_id && ! empty( $meta ) ) {
 

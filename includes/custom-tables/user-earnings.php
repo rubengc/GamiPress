@@ -224,10 +224,57 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     }
 
+    // Parent post type
+    if( isset( $qv['parent_post_type'] ) && ! empty( $qv['parent_post_type'] ) ) {
+        $parent_post_type = $qv['parent_post_type'];
+
+        if( is_array( $parent_post_type ) ) {
+            $parent_post_type = "'" . implode( "', '", $parent_post_type ) . "'";
+
+            $where .= " OR ppt.meta_value IN ( {$parent_post_type} )";
+        } else {
+            $$where .= " OR ppt.meta_value = '{$parent_post_type}'";
+        }
+    }
+
     return $where;
 
 }
 add_filter( 'ct_query_where', 'gamipress_user_earnings_query_where', 10, 2 );
+
+/**
+ * Parse query args for user earnings to be applied on JOIN clause
+ *
+ * @since   1.2.8
+ *
+ * @param string    $join
+ * @param CT_Query  $ct_query
+ *
+ * @return string
+ */
+function gamipress_user_earnings_query_join( $join, $ct_query ) {
+
+    global $ct_table;
+
+    if( $ct_table->name !== 'gamipress_user_earnings' ) {
+        return $join;
+    }
+
+    $table_name = $ct_table->db->table_name;
+    $meta_table_name = $ct_table->meta->db->table_name;
+
+    // Shorthand
+    $qv = $ct_query->query_vars;
+
+    // Parent post type
+    if( isset( $qv['parent_post_type'] ) ) {
+        $join .= " LEFT JOIN {$meta_table_name} ppt ON ( ppt.user_earning_id = {$table_name}.user_earning_id AND ppt.meta_key = '_gamipress_parent_post_type' )";
+    }
+
+    return $join;
+
+}
+add_filter( 'ct_query_join', 'gamipress_user_earnings_query_join', 10, 2 );
 
 /**
  * Define the search fields for user earnings

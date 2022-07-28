@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-07-15 14:31+0200\n"
+"POT-Creation-Date: 2022-07-28 12:59+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -176,8 +176,8 @@ msgid "Thank you for using <a href=\"%1$s\" target=\"_blank\">GamiPress</a>! Ple
 msgstr ""
 
 #: includes/admin/achievements.php:38 includes/admin/ranks.php:61
-#: includes/custom-tables/user-earnings.php:370
-#: includes/custom-tables/user-earnings.php:377
+#: includes/custom-tables/user-earnings.php:417
+#: includes/custom-tables/user-earnings.php:424
 msgid "Name"
 msgstr ""
 
@@ -294,7 +294,7 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:35
 #: includes/admin/tools/import-export-setup.php:35
 #: includes/admin/tools/reset-data.php:35
-#: includes/custom-tables/user-earnings.php:437 includes/post-types.php:319
+#: includes/custom-tables/user-earnings.php:484 includes/post-types.php:319
 #: includes/post-types.php:325 includes/post-types.php:331
 msgid "Points Awards"
 msgstr ""
@@ -312,7 +312,7 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:36
 #: includes/admin/tools/import-export-setup.php:36
 #: includes/admin/tools/reset-data.php:36
-#: includes/custom-tables/user-earnings.php:438 includes/post-types.php:353
+#: includes/custom-tables/user-earnings.php:485 includes/post-types.php:353
 #: includes/post-types.php:359 includes/post-types.php:365
 msgid "Points Deducts"
 msgstr ""
@@ -378,7 +378,7 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:45
 #: includes/admin/tools/import-export-setup.php:45
 #: includes/admin/tools/reset-data.php:33
-#: includes/custom-tables/user-earnings.php:431 includes/post-types.php:422
+#: includes/custom-tables/user-earnings.php:478 includes/post-types.php:422
 #: includes/post-types.php:428 includes/post-types.php:434
 msgid "Steps"
 msgstr ""
@@ -429,7 +429,7 @@ msgstr ""
 #: includes/admin/contextual-help.php:134
 #: includes/admin/meta-boxes/requirements-ui.php:34
 #: includes/admin/settings/email.php:376 includes/admin/tools/reset-data.php:39
-#: includes/custom-tables/user-earnings.php:444 includes/post-types.php:491
+#: includes/custom-tables/user-earnings.php:491 includes/post-types.php:491
 #: includes/post-types.php:497 includes/post-types.php:503
 msgid "Rank Requirements"
 msgstr ""
@@ -537,7 +537,7 @@ msgid "Choose an option"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:441
-#: includes/custom-tables/user-earnings.php:481
+#: includes/custom-tables/user-earnings.php:528
 msgid "All"
 msgstr ""
 
@@ -839,8 +839,8 @@ msgstr ""
 #: includes/admin/tools/import-export-points.php:142
 #: includes/ajax-functions.php:756 includes/ajax-functions.php:876
 #: includes/compatibility/1.2.8.php:1021
-#: includes/custom-tables/user-earnings.php:372
-#: includes/custom-tables/user-earnings.php:378
+#: includes/custom-tables/user-earnings.php:419
+#: includes/custom-tables/user-earnings.php:425
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:40
@@ -939,8 +939,8 @@ msgstr ""
 #: includes/admin/tools/import-export-points.php:141
 #: includes/admin/tools/import-export-ranks.php:154
 #: includes/compatibility/1.2.8.php:302 includes/custom-tables/logs.php:268
-#: includes/custom-tables/user-earnings.php:364
-#: includes/custom-tables/user-earnings.php:371
+#: includes/custom-tables/user-earnings.php:411
+#: includes/custom-tables/user-earnings.php:418
 #: includes/shortcodes/gamipress_achievements.php:166
 #: includes/shortcodes/gamipress_earnings.php:77
 #: includes/shortcodes/gamipress_earnings.php:320
@@ -3114,9 +3114,9 @@ msgstr ""
 
 #: includes/admin/tools/import-export-earnings.php:251
 #: includes/custom-tables/logs.php:271
-#: includes/custom-tables/user-earnings.php:365
-#: includes/custom-tables/user-earnings.php:373
-#: includes/custom-tables/user-earnings.php:379
+#: includes/custom-tables/user-earnings.php:412
+#: includes/custom-tables/user-earnings.php:420
+#: includes/custom-tables/user-earnings.php:426
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:250
 #: includes/shortcodes/gamipress_earnings.php:325
@@ -3680,21 +3680,25 @@ msgstr ""
 
 #: includes/admin/upgrades/1.2.8.php:101 includes/admin/upgrades/1.4.3.php:96
 #: includes/admin/upgrades/1.4.7.php:96 includes/admin/upgrades/1.5.1.php:93
+#: includes/admin/upgrades/2.3.7.php:91
 msgid "Upgrading GamiPress database..."
 msgstr ""
 
 #: includes/admin/upgrades/1.2.8.php:110 includes/admin/upgrades/1.4.3.php:105
 #: includes/admin/upgrades/1.4.7.php:105 includes/admin/upgrades/1.5.1.php:102
+#: includes/admin/upgrades/2.3.7.php:100
 msgid "GamiPress needs to upgrade the database. <strong>Please backup your database before starting this upgrade.</strong> This upgrade routine will be making changes to the database that are not reversible."
 msgstr ""
 
 #: includes/admin/upgrades/1.2.8.php:113 includes/admin/upgrades/1.4.3.php:108
 #: includes/admin/upgrades/1.4.7.php:108 includes/admin/upgrades/1.5.1.php:105
+#: includes/admin/upgrades/2.3.7.php:103
 msgid "Learn more about this upgrade"
 msgstr ""
 
 #: includes/admin/upgrades/1.2.8.php:114 includes/admin/upgrades/1.4.3.php:109
 #: includes/admin/upgrades/1.4.7.php:109 includes/admin/upgrades/1.5.1.php:106
+#: includes/admin/upgrades/2.3.7.php:104
 msgid "Start the upgrade"
 msgstr ""
 
@@ -3729,6 +3733,15 @@ msgstr ""
 
 #: includes/admin/upgrades/1.5.1.php:113
 msgid "Removing this library will improve the <strong>compatibility</strong> of GamiPress with other plugins and themes as well as will <strong>speed up</strong> all relationship related queries making GamiPress much faster!"
+msgstr ""
+
+#: includes/admin/upgrades/2.3.7.php:107
+msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory</em></strong> update that will update the GamiPress user earnings adding some extra information on earnings related to requirements."
+msgstr ""
+
+#: includes/admin/upgrades/2.3.7.php:109
+#, php-format
+msgid "Depending on the number of user earnings found, this process could take a while, but there is <strong><em>no danger</em></strong> about lose any data because this process will only <strong><em>append</em></strong> information to old entries, so is <strong><em>100% safe to upgrade</em></strong>."
 msgstr ""
 
 #: includes/admin/users.php:27
@@ -3859,7 +3872,7 @@ msgid "Award %s"
 msgstr ""
 
 #: includes/admin/users.php:630 includes/admin/users.php:859
-#: includes/custom-tables/user-earnings.php:707
+#: includes/custom-tables/user-earnings.php:754
 msgid "Revoke Award"
 msgstr ""
 
@@ -4202,11 +4215,11 @@ msgstr ""
 msgid "Rank Requirement Award"
 msgstr ""
 
-#: includes/custom-tables/user-earnings.php:384
+#: includes/custom-tables/user-earnings.php:431
 msgid "Action"
 msgstr ""
 
-#: includes/custom-tables/user-earnings.php:640
+#: includes/custom-tables/user-earnings.php:687
 msgid "Show more details"
 msgstr ""
 
