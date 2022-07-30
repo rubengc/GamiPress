@@ -257,6 +257,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.8 ###
+
+* **Improvements**
+* Reduced the number of items to process in upgrade 2.3.7 to prevent exceed the PHP max execution time on large databases.
+
 ### 2.3.7 ###
 
 * **Improvements**
