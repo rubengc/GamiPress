@@ -205,31 +205,50 @@ function gamipress_ajax_process_237_upgrade() {
         $current            = isset( $_REQUEST['current'] ) ? absint( $_REQUEST['current'] ) : 0;
         $limit              = 100;
 
-        // Retrieve all requirements without parent
+        // Retrieve all requirements without parent (ordered by post_id for performance)
         $results = $wpdb->get_results(
                 "SELECT ue.user_earning_id, ue.post_id, ue.post_type
             FROM {$user_earnings} AS ue 
             LEFT JOIN {$user_earnings_meta} uem ON ( uem.user_earning_id = ue.user_earning_id AND uem.meta_key = '_gamipress_parent_post_type'  ) 
             WHERE ue.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) 
             AND uem.meta_value IS NULL
+            ORDER BY ue.post_id ASC
             LIMIT {$limit}"
         );
 
         $metas = array();
         $meta_key = '_gamipress_parent_post_type';
 
-        foreach( $results as $user_earning ) {
+        // Cache for the parent post types
+        $parent_post_types = array();
 
-            $parent_id = absint( gamipress_get_post_field( 'post_parent', absint( $user_earning->post_id ) ) );
+        foreach( $results as $user_earning ) {
 
             $meta_value = '';
 
-            if( $parent_id !== 0 ) {
-                $meta_value = gamipress_get_post_field( 'post_type', $parent_id );
+            if( isset( $parent_post_types[$user_earning->post_id] ) ) {
+                // Get the parent post type for this post ID
+                $meta_value = $parent_post_types[$user_earning->post_id];
+            } else {
+                $parent_id = absint( gamipress_get_post_field( 'post_parent', absint( $user_earning->post_id ) ) );
 
-                if( $meta_value === 'points-type' ) {
-                    $meta_value = gamipress_get_post_field( 'post_name', $parent_id );
+                if( isset( $parent_post_types[$parent_id] ) ) {
+                    // Get the parent post type for this parent ID
+                    $meta_value = $parent_post_types[$parent_id];
+                } else {
+                    if( $parent_id !== 0 ) {
+                        $meta_value = gamipress_get_post_field( 'post_type', $parent_id );
+
+                        if( $meta_value === 'points-type' ) {
+                            $meta_value = gamipress_get_post_field( 'post_name', $parent_id );
+                        }
+                    }
+
+                    // Cache the parent post type for that post and parent ID
+                    $parent_post_types[$user_earning->post_id] = $meta_value;
+                    $parent_post_types[$parent_id] = $meta_value;
                 }
+
             }
 
             if( empty( $meta_value ) ) {

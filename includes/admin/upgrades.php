@@ -127,7 +127,7 @@ function gamipress_get_completed_upgrades() {
 
     $completed_upgrades = get_option( 'gamipress_completed_upgrades' );
 
-    if ( false === $completed_upgrades ) {
+    if ( ! is_array( $completed_upgrades ) ) {
         $completed_upgrades = array();
     }
 

@@ -740,7 +740,10 @@ function gamipress_run_upgrade( version ) {
 			// Update progress bar width
 			$('#gamipress-upgrade-notice .gamipress-upgrade-progress .gamipress-upgrade-progress-bar').attr('style', 'width: ' + ( ( gamipress_current_upgrade_progress / gamipress_current_upgrade_info ) * 100 ) + '%')
 
-			gamipress_run_upgrade( version );
+			// Give to the server 3 seconds until the next upgrade run
+			setTimeout( function() {
+				gamipress_run_upgrade( version );
+			}, 3000 );
 
 		},
 		error: function( response ) {

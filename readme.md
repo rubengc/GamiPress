@@ -257,6 +257,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.9 ###
+
+* **Improvements**
+* Improved the upgrade 2.3.7 to prevent collapse the server database.
+* Added a small delay between upgrade runs, now upgrades will run slower but this prevents to overload the server.
+
 ### 2.3.8 ###
 
 * **Improvements**
