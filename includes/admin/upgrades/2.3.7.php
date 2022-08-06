@@ -203,7 +203,7 @@ function gamipress_ajax_process_237_upgrade() {
         $user_earnings_meta = GamiPress()->db->user_earnings_meta;
         $requirements_types = gamipress_get_requirement_types_slugs();
         $current            = isset( $_REQUEST['current'] ) ? absint( $_REQUEST['current'] ) : 0;
-        $limit              = 100;
+        $limit              = 50;
 
         // Retrieve all requirements without parent (ordered by post_id for performance)
         $results = $wpdb->get_results(

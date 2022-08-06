@@ -257,6 +257,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.9.1 ###
+
+* **Improvements**
+* Reduced the number of entries to process per loop in 2.3.7 upgrade for large databases.
+
 ### 2.3.9 ###
 
 * **Improvements**
