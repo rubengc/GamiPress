@@ -257,6 +257,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.3.9.2 ###
+
+* **Improvements**
+* Reduced the number of elements used per database query to prevent exceed the server resources limit.
+
 ### 2.3.9.1 ###
 
 * **Improvements**

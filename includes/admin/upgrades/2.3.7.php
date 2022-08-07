@@ -136,13 +136,12 @@ function gamipress_237_upgrade_size() {
         // Setup vars
         $user_earnings      = GamiPress()->db->user_earnings;
         $user_earnings_meta = GamiPress()->db->user_earnings_meta;
-        $requirements_types = gamipress_get_requirement_types_slugs();
 
         $upgrade_size = absint( $wpdb->get_var(
             "SELECT COUNT(*) 
             FROM {$user_earnings} AS ue 
             LEFT JOIN {$user_earnings_meta} uem ON ( uem.user_earning_id = ue.user_earning_id AND uem.meta_key = '_gamipress_parent_post_type'  ) 
-            WHERE ue.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) 
+            WHERE ue.post_type IN ( 'step', 'rank-requirement' ) 
             AND uem.meta_value IS NULL"
         ) );
 
@@ -201,7 +200,6 @@ function gamipress_ajax_process_237_upgrade() {
         // Setup vars
         $user_earnings      = GamiPress()->db->user_earnings;
         $user_earnings_meta = GamiPress()->db->user_earnings_meta;
-        $requirements_types = gamipress_get_requirement_types_slugs();
         $current            = isset( $_REQUEST['current'] ) ? absint( $_REQUEST['current'] ) : 0;
         $limit              = 50;
 
@@ -210,7 +208,7 @@ function gamipress_ajax_process_237_upgrade() {
                 "SELECT ue.user_earning_id, ue.post_id, ue.post_type
             FROM {$user_earnings} AS ue 
             LEFT JOIN {$user_earnings_meta} uem ON ( uem.user_earning_id = ue.user_earning_id AND uem.meta_key = '_gamipress_parent_post_type'  ) 
-            WHERE ue.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) 
+            WHERE ue.post_type IN ( 'step', 'rank-requirement' ) 
             AND uem.meta_value IS NULL
             ORDER BY ue.post_id ASC
             LIMIT {$limit}"
@@ -270,7 +268,7 @@ function gamipress_ajax_process_237_upgrade() {
             "SELECT COUNT(*) 
             FROM {$user_earnings} AS ue 
             LEFT JOIN {$user_earnings_meta} uem ON ( uem.user_earning_id = ue.user_earning_id AND uem.meta_key = '_gamipress_parent_post_type'  ) 
-            WHERE ue.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) 
+            WHERE ue.post_type IN ( 'step', 'rank-requirement' ) 
             AND uem.meta_value IS NULL"
         ) );
 
