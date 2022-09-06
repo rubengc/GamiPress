@@ -247,4 +247,4 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 * Improved unlock rank using points to respect the priority order.
 * **Developer Notes**
 * Moved old changelog to changelog.txt file.
-* Set GamiPress 2.0.0 as new stable release! :)
+* Set GamiPress 2.4.0 as new stable release! :)

@@ -834,8 +834,9 @@ function gamipress_ajax_unlock_rank_with_points() {
 	$rank = gamipress_get_post( $rank_id );
 
 	// Return if rank not exists
-	if( ! $rank )
+	if( ! $rank ) {
 		wp_send_json_error( __( 'Rank not found.', 'gamipress' ) );
+    }
 
 	$rank_types = gamipress_get_rank_types();
 
@@ -866,15 +867,16 @@ function gamipress_ajax_unlock_rank_with_points() {
     }
 
     // Bail if not is the next rank to unlock
-    if( gamipress_get_next_user_rank_id( $user_id, $rank_type ) !== $rank_id ) {
+    if( gamipress_get_next_user_rank_id( $user_id, $rank->post_type ) !== $rank_id ) {
         wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $rank_type['singular_name'] ) );
     }
 
 	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
 
 	// Return if user is in a higher rank
-	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) )
+	if( gamipress_get_rank_priority( $rank_id ) <= gamipress_get_rank_priority( $user_rank ) ) {
 		wp_send_json_error( sprintf( __( 'You are already in a higher %s.', 'gamipress' ), $rank_type['singular_name'] ) );
+    }
 
 	// Setup points type
 	$points_types = gamipress_get_points_types();
