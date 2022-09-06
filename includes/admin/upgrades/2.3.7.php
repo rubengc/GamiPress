@@ -131,7 +131,7 @@ function gamipress_237_upgrade_size() {
     $upgrade_size = 0;
 
     // Retrieve the count of post upgrade
-    if( ! is_gamipress_upgrade_completed( 'update_earnings_parent_post_type_meta' ) ) {
+    if( ! is_gamipress_upgrade_completed( 'update_earnings_parent_post_type_meta' ) && gamipress_database_table_exists( GamiPress()->db->user_earnings ) ) {
 
         // Setup vars
         $user_earnings      = GamiPress()->db->user_earnings;

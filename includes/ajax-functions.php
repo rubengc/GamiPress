@@ -778,7 +778,7 @@ function gamipress_ajax_unlock_achievement_with_points() {
          * @param int       $points         The required amount of points
          * @param string    $points_type    The required amount points type
          */
-        $message = apply_filters( 'gamipress_unlock_rank_with_points_insufficient_points_message', $message, $achievement_id, $user_id, $points, $points_type );
+        $message = apply_filters( 'gamipress_unlock_achievement_with_points_insufficient_points_message', $message, $achievement_id, $user_id, $points, $points_type );
 
 		wp_send_json_error( $message );
     }
@@ -840,16 +840,18 @@ function gamipress_ajax_unlock_rank_with_points() {
 	$rank_types = gamipress_get_rank_types();
 
 	// Return if not a valid rank
-	if( ! isset( $rank_types[$rank->post_type] ) )
+	if( ! isset( $rank_types[$rank->post_type] ) ) {
 		wp_send_json_error( __( 'Invalid rank.', 'gamipress' ) );
+    }
 
 	$rank_type = $rank_types[$rank->post_type];
 
 	$user_id = get_current_user_id();
 
 	// Guest not supported yet (basically because they has not points)
-	if( $user_id === 0 )
+	if( $user_id === 0 ) {
 		wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
+    }
 
 	// Return if this option not was enabled
 	if( ! (bool) gamipress_get_post_meta( $rank_id, '_gamipress_unlock_with_points' ) ) {
@@ -859,8 +861,14 @@ function gamipress_ajax_unlock_rank_with_points() {
 	$points = absint( gamipress_get_post_meta( $rank_id, '_gamipress_points_to_unlock' ) );
 
 	// Return if no points configured
-	if( $points === 0 )
+	if( $points === 0 ) {
 		wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $rank_type['singular_name'] ) );
+    }
+
+    // Bail if not is the next rank to unlock
+    if( gamipress_get_next_user_rank_id( $user_id, $rank_type ) !== $rank_id ) {
+        wp_send_json_error( sprintf( __( 'You are not allowed to unlock this %s.', 'gamipress' ), $rank_type['singular_name'] ) );
+    }
 
 	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
 

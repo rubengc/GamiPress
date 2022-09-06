@@ -1064,6 +1064,11 @@ function gamipress_rank_unlock_with_points_markup( $rank_id = 0, $template_args 
 		return '';
     }
 
+    // Bail if not is the next rank to unlock
+    if( gamipress_get_next_user_rank_id( $user_id, $rank_type ) !== $rank_id ) {
+        return '';
+    }
+
 	$user_rank = gamipress_get_user_rank( $user_id, $rank_type );
 
 	// Return if user is in a higher rank
