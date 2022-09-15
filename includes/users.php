@@ -140,7 +140,12 @@ function gamipress_get_user_achievements( $args = array() ) {
     }
 
 	// Setup CT object
-	ct_setup_table( 'gamipress_user_earnings' );
+	$ct_table = ct_setup_table( 'gamipress_user_earnings' );
+
+    // Bail if table not yet created
+    if( ! is_object( $ct_table ) ) {
+        return array();
+    }
 
 	// Setup query args
 	$query_args = array(

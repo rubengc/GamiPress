@@ -257,6 +257,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.4.1 ###
+
+* **Improvements**
+* Prevent non-existent queries if any external plugins calls to GamiPress functions when GamiPress has not yet setup its database tables.
+
 ### 2.4.0 ###
 
 * **Improvements**
