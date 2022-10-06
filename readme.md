@@ -257,6 +257,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.4.2 ###
+
+* **Improvements**
+* Fixed several typos around all the plugin (thanks @starbuck).
+* **Developer Notes**
+* Added several functions to centralize all condition fields.
+
 ### 2.4.1 ###
 
 * **Improvements**

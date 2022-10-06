@@ -100,7 +100,7 @@ $logs = $a['query']->get_results();
 
         <?php else : ?>
 
-            <p id="gamipress-logs-no-results"><?php echo __( 'You have not logs registered yet.', 'gamipress' ); ?></p>
+            <p id="gamipress-logs-no-results"><?php echo __( 'You have no logs registered yet.', 'gamipress' ); ?></p>
 
         <?php endif; ?>
 

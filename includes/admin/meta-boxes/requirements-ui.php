@@ -21,8 +21,8 @@ function gamipress_add_requirements_ui_meta_box() {
     // Points Awards
     add_meta_box( 'gamipress-requirements-ui-points-award', __( 'Automatic Points Awards', 'gamipress' ), 'gamipress_requirements_ui_meta_box', 'points-type', 'advanced', 'default', array( 'requirement_type' => 'points-award' ) );
 
-    // Points Deducts
-    add_meta_box( 'gamipress-requirements-ui-points-deduct', __( 'Automatic Points Deducts', 'gamipress' ), 'gamipress_requirements_ui_meta_box', 'points-type', 'advanced', 'default', array( 'requirement_type' => 'points-deduct' ) );
+    // Points Deductions
+    add_meta_box( 'gamipress-requirements-ui-points-deduct', __( 'Automatic Points Deductions', 'gamipress' ), 'gamipress_requirements_ui_meta_box', 'points-type', 'advanced', 'default', array( 'requirement_type' => 'points-deduct' ) );
 
     // Steps
     foreach ( gamipress_get_achievement_types_slugs() as $achievement_type ) {
@@ -337,14 +337,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
         do_action( 'gamipress_requirement_ui_html_after_trigger_type', $requirement_id, $post_id ); ?>
 
         <?php
-        $points_conditions = array(
-            'equal'             => __( 'equal to', 'gamipress'),
-            'not_equal'         => __( 'not equal to', 'gamipress'),
-            'less_than'         => __( 'less than', 'gamipress' ),
-            'greater_than'      => __( 'greater than', 'gamipress' ),
-            'less_or_equal'     => __( 'less or equal to', 'gamipress' ),
-            'greater_or_equal'  => __( 'greater or equal to', 'gamipress' ),
-        ); ?>
+        $points_conditions = gamipress_number_condition_options(); ?>
 
         <select class="select-points-condition select-points-condition-<?php echo $requirement_id; ?>">
             <?php foreach ( $points_conditions as $value => $label ) :
@@ -1139,14 +1132,7 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
             $title = sprintf( __( 'Earn %s', 'gamipress' ), gamipress_format_points( $points_required, $points_type_required ) );
             break;
         case 'points-balance':
-            $points_conditions = array(
-                'equal'             => __( 'equal to', 'gamipress'),
-                'not_equal'         => __( 'not equal to', 'gamipress'),
-                'less_than'         => __( 'less than', 'gamipress' ),
-                'greater_than'      => __( 'greater than', 'gamipress' ),
-                'less_or_equal'     => __( 'less or equal to', 'gamipress' ),
-                'greater_or_equal'  => __( 'greater or equal to', 'gamipress' ),
-            );
+            $points_conditions = gamipress_number_condition_options();
 
             $title = sprintf( __( 'Reach a balance %s %s', 'gamipress' ), $points_conditions[$points_condition], gamipress_format_points( $points_required, $points_type_required ) );
             break;

@@ -89,7 +89,7 @@ function gamipress_register_points_types_shortcode() {
                 'default' => 'yes',
             ),
             'deducts' => array(
-                'name'        => __( 'Show Points Deducts', 'gamipress' ),
+                'name'        => __( 'Show Points Deductions', 'gamipress' ),
                 'description' => __( 'Display the points type deducts.', 'gamipress' ),
                 'type' 	=> 'checkbox',
                 'classes' => 'gamipress-switch',

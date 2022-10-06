@@ -33,7 +33,7 @@ function gamipress_reset_data_tool_meta_boxes( $meta_boxes ) {
                     'steps' => __( 'Steps', 'gamipress' ),
                     'points_types' => __( 'Points Types', 'gamipress' ),
                     'points_awards' => __( 'Points Awards', 'gamipress' ),
-                    'points_deducts' => __( 'Points Deducts', 'gamipress' ),
+                    'points_deducts' => __( 'Points Deductions', 'gamipress' ),
                     'rank_types' => __( 'Rank Types', 'gamipress' ),
                     'ranks' => __( 'Ranks', 'gamipress' ),
                     'rank_requirements' => __( 'Rank Requirements', 'gamipress' ),

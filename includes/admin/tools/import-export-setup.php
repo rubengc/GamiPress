@@ -33,7 +33,7 @@ function gamipress_import_export_setup_tool_meta_boxes( $meta_boxes ) {
     foreach( $points_types as $slug => $data ) {
         $options[$slug . '-points-type'] = '<strong>' . $data['plural_name'] . '</strong>';
         $options[$slug . '-points-awards'] = __( 'Points Awards', 'gamipress' );
-        $options[$slug . '-points-deducts'] = __( 'Points Deducts', 'gamipress' );
+        $options[$slug . '-points-deducts'] = __( 'Points Deductions', 'gamipress' );
     }
 
     // Achievement types options

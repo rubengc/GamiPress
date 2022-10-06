@@ -986,7 +986,7 @@ function gamipress_get_points_award_points_type( $points_award_id = 0 ) {
 }
 
 /**
- * Get Points Type Points Deducts
+ * Get Points Type Points Deductions
  *
  * @since  	1.3.7
  * @updated 1.4.6 Added $post_status parameter
@@ -1055,7 +1055,7 @@ function gamipress_get_points_type_points_deducts( $points_type = 0, $post_statu
 }
 
 /**
- * Get Points Deduct Points Type
+ * Get Points Deduction Points Type
  *
  * @since  1.3.7
  *

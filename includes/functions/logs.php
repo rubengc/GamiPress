@@ -23,7 +23,7 @@ function gamipress_get_log_types() {
         'achievement_earn' => __( 'Achievement Earn', 'gamipress' ),
         'achievement_award' => __( 'Achievement Award', 'gamipress' ),
         'points_earn' => __( 'Points Earn', 'gamipress' ),
-        'points_deduct' => __( 'Points Deduct', 'gamipress' ),
+        'points_deduct' => __( 'Points Deduction', 'gamipress' ),
         'points_expend' => __( 'Points Expend', 'gamipress' ),
         'points_award' => __( 'Points Award', 'gamipress' ),
         'points_revoke' => __( 'Points Revoke', 'gamipress' ),

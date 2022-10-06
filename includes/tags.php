@@ -133,13 +133,13 @@ function gamipress_get_points_deduct_completed_pattern_tags() {
 
     $pattern_tags = gamipress_get_pattern_tags();
 
-    $pattern_tags[] = '<strong>' . __( 'Points Deduct Tags', 'gamipress' ) . '</strong>';
+    $pattern_tags[] = '<strong>' . __( 'Points Deduction Tags', 'gamipress' ) . '</strong>';
 
     return apply_filters( 'gamipress_points_deduct_completed_pattern_tags', array_merge( $pattern_tags, array(
-        '{label}'           =>  __( 'Points deduct label.', 'gamipress' ),
+        '{label}'           =>  __( 'Points deduction label.', 'gamipress' ),
         '{points}'          =>  __( 'The amount of points deducted.', 'gamipress' ),
         '{points_balance}'  =>  __( 'The full amount of points user has earned until this date.', 'gamipress' ),
-        '{points_type}'     =>  __( 'The points deduct points type. Singular or plural is based on the amount of points deducted.', 'gamipress' ),
+        '{points_type}'     =>  __( 'The points deduction points type. Singular or plural is based on the amount of points deducted.', 'gamipress' ),
         '{points_image}'     =>  __( 'The points type featured image.', 'gamipress' ),
     ) ) );
 

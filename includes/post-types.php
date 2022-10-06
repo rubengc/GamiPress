@@ -18,7 +18,7 @@ function gamipress_register_types() {
 
     // Requirement types
     gamipress_register_requirement_type( 'Points Award', 'Points Awards' );
-    gamipress_register_requirement_type( 'Points Deduct', 'Points Deducts' );
+    gamipress_register_requirement_type( 'Points Deduction', 'Points Deductions' );
     gamipress_register_requirement_type( 'Step', 'Steps' );
     gamipress_register_requirement_type( 'Rank Requirement', 'Rank Requirements' );
 
@@ -345,24 +345,24 @@ function gamipress_register_post_types() {
 
     ) );
 
-    // Register Points Deduct
+    // Register Points Deduction
     $public_points_deducts = apply_filters( 'gamipress_public_points_deducts', false );
 
     register_post_type( 'points-deduct', array(
         'labels'             => array(
-            'name'               => __( 'Points Deducts', 'gamipress' ),
-            'singular_name'      => __( 'Points Deduct', 'gamipress' ),
+            'name'               => __( 'Points Deductions', 'gamipress' ),
+            'singular_name'      => __( 'Points Deduction', 'gamipress' ),
             'add_new'            => __( 'Add New', 'gamipress' ),
-            'add_new_item'       => __( 'Add New Points Deduct', 'gamipress' ),
-            'edit_item'          => __( 'Edit Points Deduct', 'gamipress' ),
-            'new_item'           => __( 'New Points Deduct', 'gamipress' ),
-            'all_items'          => __( 'Points Deducts', 'gamipress' ),
-            'view_item'          => __( 'View Points Deduct', 'gamipress' ),
-            'search_items'       => __( 'Search Points Deducts', 'gamipress' ),
-            'not_found'          => __( 'No points deducts found', 'gamipress' ),
-            'not_found_in_trash' => __( 'No points deducts found in Trash', 'gamipress' ),
+            'add_new_item'       => __( 'Add New Points Deduction', 'gamipress' ),
+            'edit_item'          => __( 'Edit Points Deduction', 'gamipress' ),
+            'new_item'           => __( 'New Points Deduction', 'gamipress' ),
+            'all_items'          => __( 'Points Deductions', 'gamipress' ),
+            'view_item'          => __( 'View Points Deduction', 'gamipress' ),
+            'search_items'       => __( 'Search Points Deductions', 'gamipress' ),
+            'not_found'          => __( 'No points deductions found', 'gamipress' ),
+            'not_found_in_trash' => __( 'No points deductions found in Trash', 'gamipress' ),
             'parent_item_colon'  => '',
-            'menu_name'          => __( 'Points Deducts', 'gamipress' )
+            'menu_name'          => __( 'Points Deductions', 'gamipress' )
         ),
         'public'             => $public_points_deducts,
         'publicly_queryable' => $public_points_deducts,

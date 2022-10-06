@@ -1662,12 +1662,12 @@
 
 = 1.3.7 =
 
-* New feature: Points Deducts.
+* New feature: Points Deductions.
 * New feature: Unlock achievement and rank by expending points.
 * New feature: Added featured image support on points types.
 * New activity triggers: Delete a post , Delete a page and Expend an amount of points.
 * Added the parameters thumbnail, awards and deducts to [gamipress_points_types] shortcode.
-* Added the fields "Show Thumbnail", "Show Points Awards" and "Show Points Deducts" to GamiPress: Points Types widget.
+* Added the fields "Show Thumbnail", "Show Points Awards" and "Show Points Deductions" to GamiPress: Points Types widget.
 * Added the points deduct email template.
 * Added the parameters thumbnail and label to [gamipress_user_points] shortcode.
 * Added the fields "Show Thumbnail" and "Show Points Type Label" to GamiPress: User Points Balance widget.

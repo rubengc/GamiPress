@@ -61,15 +61,15 @@ function gamipress_edit_screen_contextual_help() {
                 'title'	    => __( 'Points Awards', 'gamipress' ),
                 'content'	=>
                     '<p>' . __( 'Points awards are automatic ways a user could retrieve an amount of a points type.', 'gamipress' ) . '</p>' .
-                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Deducts</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-deducts/' ) ) . '</p>'
+                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Deductions</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-deducts/' ) ) . '</p>'
             ) );
 
             $screen->add_help_tab( array(
                 'id'	    => 'gamipress-points-deducts',
-                'title'	    => __( 'Points Deducts', 'gamipress' ),
+                'title'	    => __( 'Points Deductions', 'gamipress' ),
                 'content'	=>
                     '<p>' . __( 'Points deduct are automatic ways a user could lose an amount of a points type.', 'gamipress' ) . '</p>' .
-                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Deducts</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-deducts/' ) ) . '</p>'
+                    '<p>' . sprintf( __( 'For more information, see <a href="%s">Points Awards and Deductions</a> documentation page on the GamiPress website.', 'gamipress' ), esc_url( 'https://gamipress.com/docs/getting-started/points-awards-and-deducts/' ) ) . '</p>'
             ) );
 
         }

@@ -358,9 +358,9 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
                 $plural_name = $points_type->post_title;
             }
 
-            $points_deducts_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Credits Deducts
+            $points_deducts_heading = sprintf( '%1$d %2$s %3$s', $count, $plural_name, _n( 'Deduction', 'Deductions', $count, 'gamipress' ) ); // 2 Credits Deducts
         } else {
-            $points_deducts_heading = sprintf( '%1$d %2$s', $count, _n( 'Deduct', 'Deducts', $count, 'gamipress' ) ); // 2 Deducts
+            $points_deducts_heading = sprintf( '%1$d %2$s', $count, _n( 'Deduction', 'Deductions', $count, 'gamipress' ) ); // 2 Deductions
         }
 
         /**
@@ -368,7 +368,7 @@ function gamipress_get_points_deducts_for_points_types_list_markup( $points_dedu
          *
          * @since 1.3.7
          *
-         * @param string    $points_deducts_heading The heading text (eg: 2 Points Deducts)
+         * @param string    $points_deducts_heading The heading text (eg: 2 Points Deductions)
          * @param array     $points_deducts         The points deducts
          * @param int       $user_id                The user's ID
          * @param array     $template_args          The given template args
@@ -2138,7 +2138,7 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 					$column_output = gamipress_get_achievement_post_thumbnail( $achievement->ID );
 
 				} else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
-					// Points Award and Deduct
+					// Points Award and Deduction
 
 					// Get the points type thumbnail
 					$column_output = gamipress_get_points_type_thumbnail( $points_type->ID );
@@ -2192,7 +2192,7 @@ function gamipress_earnings_render_column( $column_output, $column_name, $user_e
 					);
 
 				} else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
-					// Points Award and Deduct
+					// Points Award and Deduction
 
 					$earning_description = sprintf( '%s %s',
 						$points_types[$points_type->post_name]['plural_name'],

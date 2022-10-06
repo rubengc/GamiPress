@@ -404,7 +404,7 @@ function gamipress_get_points_award_points_type_old( $points_award_id = 0 ) {
 }
 
 /**
- * Get Points Deduct Points Type
+ * Get Points Deduction Points Type
  *
  * @since  1.3.7
  *

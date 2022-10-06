@@ -79,8 +79,8 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 ),
             ),
             'disable_achievement_earned_email' => array(
-                'name' => __( 'Disable achievement earned email sending', 'gamipress' ),
-                'desc' => __( 'Check this option to stop sending emails to users for the new achievements earned.', 'gamipress' ),
+                'name' => __( 'Disable sending of achievements earned emails', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users about new achievements earned.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -122,8 +122,8 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 ),
             ),
             'disable_step_completed_email' => array(
-                'name' => __( 'Disable step completed email sending', 'gamipress' ),
-                'desc' => __( 'Check this option to stop sending emails to users for the new steps completed.', 'gamipress' ),
+                'name' => __( 'Disable sending of completed steps emails', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users about new steps completed.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -166,8 +166,8 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 ),
             ),
             'disable_points_award_completed_email' => array(
-                'name' => __( 'Disable points award email sending', 'gamipress' ),
-                'desc' => __( 'Check this option to stop sending emails to users for the new points award completed.', 'gamipress' ),
+                'name' => __( 'Disable sending of points awards emails', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users about new points awards.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -189,7 +189,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                     . __( 'Best regards', 'gamipress' ),
             ),
 
-            // Points Deduct Completed
+            // Points Deduction Completed
 
             'points_deduct_completed_email_actions' => array(
                 'type' => 'multi_buttons',
@@ -209,8 +209,8 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 ),
             ),
             'disable_points_deduct_completed_email' => array(
-                'name' => __( 'Disable points deduct email sending', 'gamipress' ),
-                'desc' => __( 'Check this option to stop sending emails to users for the new points deduct.', 'gamipress' ),
+                'name' => __( 'Disable sending of points deductions emails', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users about new points deductions.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -225,7 +225,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 'desc' => __( 'Available tags:', 'gamipress' ) . gamipress_get_pattern_tags_html( 'points_deduct_completed' ),
                 'type' => 'wysiwyg',
                 'default' =>
-                    '<h2>' . __( 'Ops {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+                    '<h2>' . __( 'Oops {user_first}!', 'gamipress' ) . '</h2>' . "\n"
                     . __( 'You lost {points} {points_type} for "{label}".', 'gamipress' ) . "\n"
                     . __( 'Your new {points_type} balance is:', 'gamipress' ) . "\n"
                     . '{points_balance}' . "\n\n"
@@ -252,8 +252,8 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 ),
             ),
             'disable_rank_earned_email' => array(
-                'name' => __( 'Disable rank earned email sending', 'gamipress' ),
-                'desc' => __( 'Check this option to stop sending emails to users for the new ranks reached.', 'gamipress' ),
+                'name' => __( 'Disable sending of ranks earned emails', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users about new ranks reached.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -295,8 +295,8 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 ),
             ),
             'disable_rank_requirement_completed_email' => array(
-                'name' => __( 'Disable rank requirement completed email sending', 'gamipress' ),
-                'desc' => __( 'Check this option to stop sending emails to users for the new rank requirements completed.', 'gamipress' ),
+                'name' => __( 'Disable sending of rank requirements completed emails', 'gamipress' ),
+                'desc' => __( 'Check this option to stop sending emails to users about new rank requirements completed.', 'gamipress' ),
                 'type' => 'checkbox',
                 'classes' => 'gamipress-switch',
             ),
@@ -353,7 +353,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
                 )
             ),
             'points_deduct_completed' => array(
-                'title' => __( 'Points Deducts', 'gamipress' ),
+                'title' => __( 'Points Deductions', 'gamipress' ),
                 'icon' => 'dashicons-star-empty',
                 'fields' => array(
                     'points_deduct_completed_email_actions',

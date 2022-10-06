@@ -40,7 +40,7 @@ function gamipress_137_upgrades( $stored_version ) {
     if ( ! isset( $gamipress_settings['points_deduct_completed_email_content'] ) ) {
 
         $gamipress_settings['points_deduct_completed_email_subject'] = __( '[{site_title}] {user_first}, you lost {points} {points_type}', 'gamipress' );
-        $gamipress_settings['points_deduct_completed_email_content'] = '<h2>' . __( 'Ops {user_first}!', 'gamipress' ) . '</h2>' . "\n"
+        $gamipress_settings['points_deduct_completed_email_content'] = '<h2>' . __( 'Oops {user_first}!', 'gamipress' ) . '</h2>' . "\n"
             . __( 'You lost {points} {points_type} for "{label}".', 'gamipress' ) . "\n"
             . __( 'Your new {points_type} balance is:', 'gamipress' ) . "\n"
             . '{points_balance}' . "\n\n"

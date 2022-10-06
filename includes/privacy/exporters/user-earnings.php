@@ -155,7 +155,7 @@ function gamipress_privacy_get_user_earning_data( $user_earning ) {
             );
 
         } else if( ( $user_earning->post_type === 'points-award' || $user_earning->post_type === 'points-deduct' ) && $points_type = gamipress_get_points_award_points_type( $user_earning->post_id ) )  {
-            // Points Award and Deduct
+            // Points Award and Deduction
 
             $format = ( $user_earning->post_type === 'points-award' ? __( '%s Award', 'gamipress' ) : __( '%s Deduction', 'gamipress' ) );
 

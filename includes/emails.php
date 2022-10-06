@@ -377,7 +377,7 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
 
     } else if( $gamipress_email_template_args['type'] === 'points_deduct_completed' ) {
 
-        $replacements['{label}'] = __( 'Sample Points Deduct Label', 'gamipress' );
+        $replacements['{label}'] = __( 'Sample Points Deduction Label', 'gamipress' );
         $replacements['{points}'] = 100;
         $replacements['{points_balance}'] = 1000;
         $replacements['{points_type}'] = __( 'Sample Points Type', 'gamipress' );

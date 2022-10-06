@@ -482,7 +482,7 @@ function gamipress_user_earnings_views_field_labels( $field_labels = array() ) {
     }
 
     $field_labels['points-award'] = __( 'Points Awards', 'gamipress' );
-        $field_labels['points-deduct'] = __( 'Points Deducts', 'gamipress' );
+        $field_labels['points-deduct'] = __( 'Points Deductions', 'gamipress' );
 
     foreach( gamipress_get_rank_types() as $type => $data ) {
         $field_labels[$type] = $data['plural_name'];
