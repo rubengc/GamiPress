@@ -257,6 +257,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.4.4 ###
+
+* **Improvements**
+* Added more sanitization and escaping checks (thanks Shahjahan Jewel).
+
+### 2.4.3 ###
+
+* **Bug Fixes**
+* Fixed a typo that prevents completions for points deductions.
+
 ### 2.4.2 ###
 
 * **Improvements**

@@ -150,7 +150,7 @@ function gamipress_init_meta_boxes() {
 
     // On post-new.php and sometimes on post.php post type is on GET or POST parameters
     if( empty( $post_type ) && isset( $_REQUEST['post_type'] ) ) {
-        $post_type = $_REQUEST['post_type'];
+        $post_type = sanitize_text_field( $_REQUEST['post_type'] );
     }
 
     // Check if there is a CT view

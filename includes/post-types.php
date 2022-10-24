@@ -17,10 +17,10 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_register_types() {
 
     // Requirement types
-    gamipress_register_requirement_type( 'Points Award', 'Points Awards' );
-    gamipress_register_requirement_type( 'Points Deduction', 'Points Deductions' );
-    gamipress_register_requirement_type( 'Step', 'Steps' );
-    gamipress_register_requirement_type( 'Rank Requirement', 'Rank Requirements' );
+    gamipress_register_requirement_type( 'Points Award', 'Points Awards', 'points-award' );
+    gamipress_register_requirement_type( 'Points Deduction', 'Points Deductions', 'points-deduct' );
+    gamipress_register_requirement_type( 'Step', 'Steps', 'step' );
+    gamipress_register_requirement_type( 'Rank Requirement', 'Rank Requirements', 'rank-requirement' );
 
     // Points types
     gamipress_register_points_types();
@@ -185,14 +185,19 @@ function gamipress_register_achievement_types() {
  *
  * @since  1.0.5
  *
- * @param  string $requirement_name_singular The singular name
- * @param  string $requirement_name_plural  The plural name
+ * @param  string $singular_name    The singular name
+ * @param  string $plural_name      The plural name
+ * @param  string $slug             The slug
  */
-function gamipress_register_requirement_type( $requirement_name_singular = '', $requirement_name_plural = '' ) {
+function gamipress_register_requirement_type( $singular_name = '', $plural_name = '', $slug = '' ) {
 
-	GamiPress()->requirement_types[sanitize_key( sanitize_title( strtolower( $requirement_name_singular ) ) )] = array(
-		'singular_name' => $requirement_name_singular,
-		'plural_name' => $requirement_name_plural,
+    if( empty( $slug ) ) {
+        $slug = sanitize_key( sanitize_title( strtolower( $singular_name ) ) );
+    }
+
+	GamiPress()->requirement_types[$slug] = array(
+		'singular_name' => $singular_name,
+		'plural_name' => $plural_name,
 	);
 
 }

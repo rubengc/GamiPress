@@ -134,7 +134,7 @@ function gamipress_rank_posts_custom_columns( $column_name, $post_id ) {
             break;
         case 'priority':
 
-            echo get_post_field( 'menu_order', $post_id );
+            echo absint( get_post_field( 'menu_order', $post_id ) );
 
             break;
         case 'unlock_with_points':

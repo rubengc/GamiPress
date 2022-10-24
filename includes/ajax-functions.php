@@ -534,6 +534,9 @@ function gamipress_achievement_post_ajax_handler() {
 		$selected = $_REQUEST['selected'];
 	}
 
+    // Sanitize
+    $selected = absint( $selected );
+
 	$achievement_type = sanitize_text_field( $_REQUEST['achievement_type'] );
 	$exclude_posts = isset( $_REQUEST['excluded_posts'] ) ? (array) $_REQUEST['excluded_posts'] : array();
 
@@ -568,7 +571,8 @@ function gamipress_achievement_post_ajax_handler() {
     // Setup our output
     $output = '<option value="">' . sprintf( __( 'Choose the %s', 'gamipress' ), $singular_name ) . '</option>';
     foreach ( $achievements as $achievement ) {
-        $output .= '<option value="' . $achievement->ID . '" ' . selected( $selected, $achievement->ID, false ) . '>' . $achievement->post_title . '</option>';
+        $achievement_id = absint( $achievement->ID );
+        $output .= '<option value="' . $achievement_id . '" ' . selected( $selected, $achievement_id, false ) . '>' . $achievement->post_title . '</option>';
     }
 
     // Send back our results and die like a man
@@ -623,6 +627,9 @@ function gamipress_ajax_get_ranks_options_html() {
 		$selected = $_REQUEST['selected'];
 	}
 
+    // Sanitize
+    $selected = absint( $selected );
+
 	$posts = GamiPress()->db->posts;
 
 	$ranks = $wpdb->get_results(
@@ -636,7 +643,8 @@ function gamipress_ajax_get_ranks_options_html() {
 	// Setup our output
 	$output = '<option value="">' . sprintf( __( 'Choose the %s', 'gamipress' ), $singular_name ) . '</option>';
 	foreach ( $ranks as $rank ) {
-		$output .= '<option value="' . $rank->ID . '" ' . selected( $selected, $rank->ID, false ) . '>' . $rank->post_title . '</option>';
+        $rank_id = absint( $rank->ID );
+		$output .= '<option value="' . $rank_id . '" ' . selected( $selected, $rank_id, false ) . '>' . $rank->post_title . '</option>';
 	}
 
 	// Send back our results and die like a man

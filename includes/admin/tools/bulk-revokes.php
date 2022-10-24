@@ -261,7 +261,7 @@ function gamipress_ajax_bulk_revokes_tool() {
     if( ! isset( $_POST['bulk_revoke'] ) || empty( $_POST['bulk_revoke'] ) )
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
 
-    $bulk_revoke = $_POST['bulk_revoke'];
+    $bulk_revoke = sanitize_text_field( $_POST['bulk_revoke'] );
     $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
     $limit = 100;
     $offset = $limit * $loop;

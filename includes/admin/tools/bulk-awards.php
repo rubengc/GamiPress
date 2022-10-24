@@ -263,7 +263,7 @@ function gamipress_ajax_bulk_awards_tool() {
         wp_send_json_error( __( 'You are not allowed to perform this action.', 'gamipress' ) );
     }
 
-    $bulk_award = $_POST['bulk_award'];
+    $bulk_award = sanitize_text_field( $_POST['bulk_award'] );
     $loop = ( ! isset( $_POST['loop'] ) ? 0 : absint( $_POST['loop'] ) );
     $limit = 100;
     $offset = $limit * $loop;

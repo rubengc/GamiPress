@@ -560,10 +560,10 @@ function gamipress_posts_custom_columns( $column_name, $post_id ) {
 
             break;
         case 'plural_name':
-            echo gamipress_get_post_meta( $post_id, '_gamipress_plural_name' );
+            echo esc_html( gamipress_get_post_meta( $post_id, '_gamipress_plural_name' ) );
             break;
         case 'post_name':
-            echo get_post_field( 'post_name', $post_id );
+            echo esc_html( get_post_field( 'post_name', $post_id ) );
             break;
     }
 }

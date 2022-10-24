@@ -25,7 +25,7 @@ $user_settings = gamipress_get_user_email_settings( $a['user_id'] ); ?>
     <?php // Loop sections ?>
     <?php foreach( $a['email_settings'] as $section => $section_args ) : ?>
 
-        <table class="gamipress-email-settings-table gamipress-email-settings-table-<?php echo $section; ?>">
+        <table class="gamipress-email-settings-table gamipress-email-settings-table-<?php echo esc_attr( $section ); ?>">
             <thead>
             <tr>
                 <th class="gamipress-email-settings-header-setting"><?php echo $section_args['label']; ?></th>
@@ -37,7 +37,7 @@ $user_settings = gamipress_get_user_email_settings( $a['user_id'] ); ?>
                 <?php // Loop each section settings ?>
                 <?php foreach( $section_args['settings'] as $setting => $label ) :
                     $user_setting = ( isset( $user_settings[$setting] ) ? $user_settings[$setting] : 'yes' ); ?>
-                    <tr id="gamipress-email-settings-<?php echo $setting; ?>">
+                    <tr id="gamipress-email-settings-<?php echo esc_attr( $setting ); ?>">
                         <td class="gamipress-email-settings-column-setting">
                             <div class="gamipress-email-settings-loader" style="display: none;">
                                 <div class="gamipress-email-settings-saving"><?php _e( 'Saving...', 'gamipress' ); ?></div>
@@ -47,12 +47,12 @@ $user_settings = gamipress_get_user_email_settings( $a['user_id'] ); ?>
                         </td>
                         <td class="gamipress-email-settings-column-yes">
                             <div class="gamipress-email-settings-radio">
-                                <input type="radio" name="gamipress_email_settings[<?php echo $setting; ?>]" value="yes" <?php checked( $user_setting, 'yes' ); ?>>
+                                <input type="radio" name="gamipress_email_settings[<?php echo esc_attr( $setting ); ?>]" value="yes" <?php checked( $user_setting, 'yes' ); ?>>
                             </div>
                         </td>
                         <td class="gamipress-email-settings-column-no">
                             <div class="gamipress-email-settings-radio">
-                                <input type="radio" name="gamipress_email_settings[<?php echo $setting; ?>]" value="no" <?php checked( $user_setting, 'no' ); ?>>
+                                <input type="radio" name="gamipress_email_settings[<?php echo esc_attr( $setting ); ?>]" value="no" <?php checked( $user_setting, 'no' ); ?>>
                             </div>
                         </td>
                     </tr>
