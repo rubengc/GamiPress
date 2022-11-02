@@ -257,6 +257,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.4.6 ###
+
+* **Improvements**
+* Updated add-ons API.
+
+### 2.4.5 ###
+
+* **Improvements**
+* Tested with WordPress 6.1.
+
 ### 2.4.4 ###
 
 * **Improvements**
