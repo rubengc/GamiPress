@@ -1617,6 +1617,8 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 
 	}
 
+    $earning = false;
+
     if( $earning_id ) {
         $earning = ct_get_object( $earning_id );
     }

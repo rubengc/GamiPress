@@ -257,6 +257,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.4.7 ###
+
+* **Improvements**
+* Added more sanitization checks on the save requirements screen.
+* **Developer Notes**
+* Ensure to define the $earning var at gamipress_revoke_achievement_to_user() function.
+
 ### 2.4.6 ###
 
 * **Improvements**

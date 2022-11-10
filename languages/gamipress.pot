@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-10-24 18:47+0200\n"
+"POT-Creation-Date: 2022-11-10 12:02+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -1295,165 +1295,165 @@ msgstr ""
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1119
+#: includes/admin/meta-boxes/requirements-ui.php:1129
 msgid "post"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1132
+#: includes/admin/meta-boxes/requirements-ui.php:1142
 #, php-format
 msgid "Earn %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1137
+#: includes/admin/meta-boxes/requirements-ui.php:1147
 #, php-format
 msgid "Reach a balance %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1140
+#: includes/admin/meta-boxes/requirements-ui.php:1150
 #, php-format
 msgid "Expend %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1146
+#: includes/admin/meta-boxes/requirements-ui.php:1156
 #, php-format
 msgid "Reach %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1151
+#: includes/admin/meta-boxes/requirements-ui.php:1161
 #, php-format
 msgid "Get %s %s revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1155
+#: includes/admin/meta-boxes/requirements-ui.php:1165
 #, php-format
 msgid "Unlock \"%s\""
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1158
+#: includes/admin/meta-boxes/requirements-ui.php:1168
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1161
+#: includes/admin/meta-boxes/requirements-ui.php:1171
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1164
+#: includes/admin/meta-boxes/requirements-ui.php:1174
 #, php-format
 msgid "Get \"%s\" revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1167
+#: includes/admin/meta-boxes/requirements-ui.php:1177
 #, php-format
 msgid "Get any %s revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1171
+#: includes/admin/meta-boxes/requirements-ui.php:1181
 #, php-format
 msgid "Comment on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1174
+#: includes/admin/meta-boxes/requirements-ui.php:1184
 #, php-format
 msgid "Get a comment on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1177
+#: includes/admin/meta-boxes/requirements-ui.php:1187
 #, php-format
 msgid "Get a comment on a %s marked as spam"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1180
+#: includes/admin/meta-boxes/requirements-ui.php:1190
 #, php-format
 msgid "Publish a new %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1183
+#: includes/admin/meta-boxes/requirements-ui.php:1193
 #, php-format
 msgid "Delete a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1186
+#: includes/admin/meta-boxes/requirements-ui.php:1196
 #, php-format
 msgid "Daily visit a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1189
+#: includes/admin/meta-boxes/requirements-ui.php:1199
 #, php-format
 msgid "Get visits on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1193
+#: includes/admin/meta-boxes/requirements-ui.php:1203
 #, php-format
 msgid "Get added to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1196
+#: includes/admin/meta-boxes/requirements-ui.php:1206
 #, php-format
 msgid "Get assigned to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1199
+#: includes/admin/meta-boxes/requirements-ui.php:1209
 #, php-format
 msgid "Get removed from %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1238
+#: includes/admin/meta-boxes/requirements-ui.php:1248
 #, php-format
 msgid "%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1240
+#: includes/admin/meta-boxes/requirements-ui.php:1250
 #, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1244
-#: includes/admin/meta-boxes/requirements-ui.php:1253
-#: includes/admin/meta-boxes/requirements-ui.php:1282
-#: includes/admin/meta-boxes/requirements-ui.php:1288
+#: includes/admin/meta-boxes/requirements-ui.php:1254
+#: includes/admin/meta-boxes/requirements-ui.php:1263
+#: includes/admin/meta-boxes/requirements-ui.php:1292
+#: includes/admin/meta-boxes/requirements-ui.php:1298
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1253
+#: includes/admin/meta-boxes/requirements-ui.php:1263
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1263
+#: includes/admin/meta-boxes/requirements-ui.php:1273
 msgid "minute"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1266
+#: includes/admin/meta-boxes/requirements-ui.php:1276
 msgid "hour"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1269
+#: includes/admin/meta-boxes/requirements-ui.php:1279
 msgid "day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1272
+#: includes/admin/meta-boxes/requirements-ui.php:1282
 msgid "week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1275
+#: includes/admin/meta-boxes/requirements-ui.php:1285
 msgid "month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1278
+#: includes/admin/meta-boxes/requirements-ui.php:1288
 msgid "year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1282
+#: includes/admin/meta-boxes/requirements-ui.php:1292
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1288
+#: includes/admin/meta-boxes/requirements-ui.php:1298
 msgid "(Optional)"
 msgstr ""
 

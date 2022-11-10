@@ -968,8 +968,6 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
 
     }
 
-    global $wpdb;
-
     // Grab all of the relevant values of that requirement
     $requirement_id         = isset( $requirement['ID'] ) ? absint( $requirement['ID'] ) : absint( $requirement['requirement_id'] );
     $requirement_type       = gamipress_get_post_type( $requirement_id );
@@ -995,7 +993,6 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
 
         // Update achievement post to check it on rules engine
         update_post_meta( $requirement_id, '_gamipress_achievement_post', $achievement_post_id );
-
     }
 
     // Specific activity trigger type
@@ -1007,7 +1004,6 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
         // Update achievement post to check it on rules engine
         update_post_meta( $requirement_id, '_gamipress_achievement_post', $achievement_post_id );
         update_post_meta( $requirement_id, '_gamipress_achievement_post_site_id', $achievement_post_site_id );
-
     }
 
     // Update our relevant meta
@@ -1037,23 +1033,37 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
         update_post_meta( $requirement_id, '_gamipress_maximum_earnings', $maximum_earnings );
     }
 
-    // Action to store custom requirement data when saved
+    /**
+     * Action to store custom requirement data when saved
+     *
+     * @since 1.0.0
+     *
+     * @param int   $requirement_id
+     * @param array $requirement
+     */
     do_action( 'gamipress_update_requirement', $requirement_id, $requirement );
 
     if( defined( 'DOING_AJAX' ) ) {
-        // Action to store custom requirement data when saved through ajax
+        /**
+         * Action to store custom requirement data when saved through ajax
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id
+         * @param array $requirement
+         */
         do_action( 'gamipress_ajax_update_requirement', $requirement_id, $requirement );
     }
 
     // Setup a new title if no set
-    $post_title = ! empty( $requirement['title'] ) ? $requirement['title'] : gamipress_build_requirement_title( $requirement_id, $requirement );
+    $post_title = ! empty( $requirement['title'] ) ? sanitize_text_field( $requirement['title'] ) : gamipress_build_requirement_title( $requirement_id, $requirement );
 
     // Update our original post with the new title
     wp_update_post( array(
         'ID' => $requirement_id,
         'post_title' => $post_title,
-        'post_status' => isset( $requirement['status'] ) ? $requirement['status'] : gamipress_get_post_status( $requirement_id ),
-        'menu_order' => $order
+        'post_status' => isset( $requirement['status'] ) ? sanitize_text_field( $requirement['status'] ) : gamipress_get_post_status( $requirement_id ),
+        'menu_order' => absint( $order )
     ) );
 
     return gamipress_get_requirement_object( $requirement_id );
