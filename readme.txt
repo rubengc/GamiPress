@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.1
-Stable tag: 2.4.7
+Stable tag: 2.4.8
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -71,8 +71,23 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [LearnDash](https://wordpress.org/plugins/gamipress-learndash-integration/)
 * [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
 * [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
-* [LifterLMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
+* [Lifter LMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
 * [Tutor LMS](https://wordpress.org/plugins/gamipress-tutor-integration/)
+* [Thrive Apprentice](https://wordpress.org/plugins/gamipress-thrive-apprentice-integration/)
+* [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
+* [MasterStudy LMS](https://wordpress.org/plugins/gamipress-masterstudy-lms-integration/)
+
+= Forms integrations =
+
+* [Gravity Forms](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
+* [Contact Form 7](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
+* [Ninja Forms](https://wordpress.org/plugins/gamipress-ninja-forms-integration/)
+* [Formidable Forms](https://wordpress.org/plugins/gamipress-formidable-forms-integration/)
+* [Forminator](https://wordpress.org/plugins/gamipress-forminator-integration/)
+* [Divi Forms](https://wordpress.org/plugins/gamipress-divi-integration/)
+* [Elementor Forms](https://wordpress.org/plugins/gamipress-elementor-forms-integration/)
+* [WP Fluent Forms](https://wordpress.org/plugins/gamipress-fluentform-integration/)
+* [JetFormBuilder](https://wordpress.org/plugins/gamipress-jetformbuilder-integration/)
 
 = Other integrations =
 
@@ -86,8 +101,10 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/) & [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
 * [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
 * [The Events Calendar](https://wordpress.org/plugins/gamipress-the-events-calendar-integration/)
-* [Gravity Forms](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
-* [Contact Form 7](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
+* [Advanced Custom Fields (ACF)](https://wordpress.org/plugins/gamipress-advanced-custom-fields-integration/)
+* [Meta Box](https://wordpress.org/plugins/gamipress-meta-box-integration/)
+* [Studiocart](https://wordpress.org/plugins/gamipress-studiocart-integration/)
+* [Download Manager](https://wordpress.org/plugins/gamipress-download-manager-integration/)
 
 [View all integrations](https://gamipress.com/integrations/)
 
@@ -122,6 +139,12 @@ If you’re looking for something endorsed and maintained by the developers who 
 * [Zapier](https://gamipress.com/add-ons/gamipress-zapier/)
 
 [View all add-ons](https://gamipress.com/add-ons/)
+
+= More plugins from the GamiPress team =
+
+If you like GamiPress, you will love [AutomatorWP](https://wordpress.org/plugins/automatorwp/)! The most powerful no-code automator plugin that lets you connect +100 plugins together or with apps, platforms with webhooks plus other WordPress sites.
+
+[More about AutomatorWP](https://wordpress.org/plugins/automatorwp/)
 
 == Installation ==
 
@@ -240,6 +263,11 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.4.8 =
+
+* **Improvements**
+* Execute shortcodes in congratulations text while unlocking an achievement or rank using points.
 
 = 2.4.7 =
 

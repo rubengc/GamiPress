@@ -802,8 +802,12 @@ function gamipress_ajax_unlock_achievement_with_points() {
 
 	$congratulations = gamipress_get_post_meta( $achievement_id, '_gamipress_congratulations_text' );
 
-	if( empty( $congratulations ) )
+	if( empty( $congratulations ) ) {
 		$congratulations = sprintf( __( 'Congratulations! You unlocked the %s %s.', 'gamipress' ), $achievement_type['singular_name'], $achievement->post_title );
+    }
+
+    $congratulations = wpautop( $congratulations );
+    $congratulations = do_shortcode( $congratulations );
 
 	// Filter to change congratulations message
 	$congratulations = apply_filters( 'gamipress_achievement_unlocked_with_points_congratulations', $congratulations, $achievement_id, $user_id, $points, $points_type );
@@ -932,8 +936,12 @@ function gamipress_ajax_unlock_rank_with_points() {
 
 	$congratulations = gamipress_get_post_meta( $rank_id, '_gamipress_congratulations_text' );
 
-	if( empty( $congratulations ) )
+	if( empty( $congratulations ) ) {
 		$congratulations = sprintf( __( 'Congratulations! You reached to the %s %s.', 'gamipress' ), $rank_type['singular_name'], $rank->post_title );
+    }
+
+    $congratulations = wpautop( $congratulations );
+    $congratulations = do_shortcode( $congratulations );
 
 	// Filter to change congratulations message
 	$congratulations = apply_filters( 'gamipress_rank_unlocked_with_points_congratulations', $congratulations, $rank_id, $user_id, $points, $points_type );
