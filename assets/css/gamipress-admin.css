@@ -554,6 +554,7 @@ li.requirement-row.requirement-disabled {
 	line-height: 28px;
 }
 
+/* Requirements UI Mobile */
 @media screen and (max-width: 782px) {
 	li.requirement-row {
 		font-size: 16px;
@@ -579,6 +580,11 @@ li.requirement-row.requirement-disabled {
 
 	li.requirement-row .requirement-optional {
 		margin-top: 37px;
+	}
+
+	.button.gamipress-add-requirement {
+		min-height: 30px;
+		line-height: 2.2;
 	}
 }
 

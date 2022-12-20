@@ -963,7 +963,14 @@ function gamipress_get_achievement_activity_count( $user_id = 0, $achievement_id
 
                     // If user hasn't earned this yet, then get activity count from publish date
                     if( $since === 0 ) {
-                        $since = strtotime( gamipress_get_post_date( $achievement_id ) );
+                        $parent_id = absint( gamipress_get_post_field( 'post_parent', $achievement_id ) );
+
+                        // Try to get the date from the parent (achievement, rank or points type), if not possible, get it from the requirement
+                        if( $parent_id !== 0 ) {
+                            $since = strtotime( gamipress_get_post_date( $parent_id ) );
+                        } else {
+                            $since = strtotime( gamipress_get_post_date( $achievement_id ) );
+                        }
                     }
 
                     if( defined( 'GAMIPRESS_DOING_ACTIVITY_RECOUNT' ) && GAMIPRESS_DOING_ACTIVITY_RECOUNT ) {

@@ -280,6 +280,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.4.9 ###
+
+* **Improvements**
+* Correctly get the parent date (achievement, rank or points type) when checking for not yet completing requirements.
+* Improvements for the requirements editor on small screens.
+
 ### 2.4.8 ###
 
 * **Improvements**
