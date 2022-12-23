@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2022-12-20 21:43+0100\n"
+"POT-Creation-Date: 2022-12-23 16:42+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -476,12 +476,12 @@ msgid "Latest Logs"
 msgstr ""
 
 #: includes/admin/dashboard.php:143 includes/compatibility/1.2.8.php:353
-#: includes/functions.php:734
+#: includes/functions.php:790
 msgid "Today"
 msgstr ""
 
 #: includes/admin/dashboard.php:145 includes/compatibility/1.2.8.php:355
-#: includes/functions.php:735
+#: includes/functions.php:791
 msgid "Yesterday"
 msgstr ""
 
@@ -4365,60 +4365,60 @@ msgstr[1] ""
 msgid "You have reached this %s!"
 msgstr ""
 
-#: includes/functions.php:733 includes/functions.php:871
-#: includes/functions.php:895
+#: includes/functions.php:789 includes/functions.php:927
+#: includes/functions.php:951
 msgid "None"
 msgstr ""
 
-#: includes/functions.php:736
+#: includes/functions.php:792
 msgid "Current Week"
 msgstr ""
 
-#: includes/functions.php:737
+#: includes/functions.php:793
 msgid "Past Week"
 msgstr ""
 
-#: includes/functions.php:738
+#: includes/functions.php:794
 msgid "Current Month"
 msgstr ""
 
-#: includes/functions.php:739
+#: includes/functions.php:795
 msgid "Past Month"
 msgstr ""
 
-#: includes/functions.php:740
+#: includes/functions.php:796
 msgid "Current Year"
 msgstr ""
 
-#: includes/functions.php:741
+#: includes/functions.php:797
 msgid "Past Year"
 msgstr ""
 
-#: includes/functions.php:742
+#: includes/functions.php:798
 msgid "Custom"
 msgstr ""
 
-#: includes/functions.php:867 includes/functions.php:896
+#: includes/functions.php:923 includes/functions.php:952
 msgid "Left"
 msgstr ""
 
-#: includes/functions.php:868
+#: includes/functions.php:924
 msgid "Top"
 msgstr ""
 
-#: includes/functions.php:869 includes/functions.php:898
+#: includes/functions.php:925 includes/functions.php:954
 msgid "Right"
 msgstr ""
 
-#: includes/functions.php:870
+#: includes/functions.php:926
 msgid "Bottom"
 msgstr ""
 
-#: includes/functions.php:897
+#: includes/functions.php:953
 msgid "Center"
 msgstr ""
 
-#: includes/functions.php:899
+#: includes/functions.php:955
 msgid "Justify"
 msgstr ""
 

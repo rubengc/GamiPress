@@ -241,8 +241,9 @@ function gamipress_get_users_count( $query_args = array() ) {
  */
 function gamipress_get_user_meta( $user_id, $meta_key = '', $single = true ) {
 
-    if( gamipress_is_network_wide_active() ) {
-        return get_user_option( $meta_key, $user_id );
+    if( is_multisite() ) {
+        $global = gamipress_is_network_wide_active();
+        return gamipress_get_user_option( $meta_key, $user_id, $global );
     } else {
         return get_user_meta( $user_id, $meta_key, $single );
     }
@@ -263,8 +264,9 @@ function gamipress_get_user_meta( $user_id, $meta_key = '', $single = true ) {
  */
 function gamipress_update_user_meta( $user_id, $meta_key, $meta_value, $prev_value = '' ) {
 
-    if( gamipress_is_network_wide_active() ) {
-        return update_user_option( $user_id, $meta_key, $meta_value, true );
+    if( is_multisite() ) {
+        $global = gamipress_is_network_wide_active();
+        return update_user_option( $user_id, $meta_key, $meta_value, $global );
     } else {
         return update_user_meta( $user_id, $meta_key, $meta_value, $prev_value );
     }
@@ -284,12 +286,66 @@ function gamipress_update_user_meta( $user_id, $meta_key, $meta_value, $prev_val
  */
 function gamipress_delete_user_meta( $user_id, $meta_key, $meta_value = '' ) {
 
-    if( gamipress_is_network_wide_active() ) {
-        return delete_user_option( $user_id, $meta_key, true );
+    if( is_multisite() ) {
+        $global = gamipress_is_network_wide_active();
+        return delete_user_option( $user_id, $meta_key, $global );
     } else {
         return delete_user_meta( $user_id, $meta_key, $meta_value );
     }
 
+}
+
+/**
+ * Retrieves user option that can be either per Site or per Network.
+ *
+ * @since 2.0.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @param string $option        User option name.
+ * @param int    $user_id       Optional. User ID.
+ * @param bool   $global        Optional. Whether option name is global or blog specific. Default false (blog specific).
+ *
+ * @return mixed User option value on success, false on failure.
+ */
+function gamipress_get_user_option( $option, $user_id = 0, $global = false ) {
+    global $wpdb;
+
+    if ( empty( $user_id ) ) {
+        return false;
+    }
+
+    $user = get_userdata( $user_id );
+    if ( ! $user ) {
+        return false;
+    }
+
+    $result = false;
+
+    if( $global ) {
+        if ( $user->has_prop( $option ) ) { // User-specific and cross-blog.
+            $result = $user->get( $option );
+        }
+    } else {
+        $prefix = $wpdb->get_blog_prefix();
+
+        if ( $user->has_prop( $prefix . $option ) ) { // Blog-specific.
+            $result = $user->get( $prefix . $option );
+        }
+    }
+
+    /**
+     * Filters a specific user option value.
+     *
+     * The dynamic portion of the hook name, `$option`, refers to the user option name.
+     *
+     * @since 2.5.0
+     *
+     * @param mixed   $result Value for the user's option.
+     * @param string  $option Name of the option being retrieved.
+     * @param WP_User $user   WP_User object of the user whose option is being retrieved.
+     */
+    return apply_filters( "get_user_option_{$option}", $result, $option, $user );
 }
 
 /**

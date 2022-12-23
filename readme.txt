@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.1
-Stable tag: 2.4.9
+Stable tag: 2.5.0
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -264,60 +264,10 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 == Changelog ==
 
-= 2.4.9 =
-
-* **Improvements**
-* Correctly get the parent date (achievement, rank or points type) when checking for not yet completing requirements.
-* Improvements for the requirements editor on small screens.
-
-= 2.4.8 =
-
-* **Improvements**
-* Execute shortcodes in congratulations text while unlocking an achievement or rank using points.
-
-= 2.4.7 =
-
-* **Improvements**
-* Added more sanitization checks on the save requirements screen.
-* **Developer Notes**
-* Ensure to define the $earning var at gamipress_revoke_achievement_to_user() function.
-
-= 2.4.6 =
-
-* **Improvements**
-* Updated add-ons API.
-
-= 2.4.5 =
-
-* **Improvements**
-* Tested with WordPress 6.1.
-
-= 2.4.4 =
-
-* **Improvements**
-* Added more sanitization and escaping checks (thanks Shahjahan Jewel).
-
-= 2.4.3 =
+= 2.5.0 =
 
 * **Bug Fixes**
-* Fixed a typo that prevents completions for points deductions.
-
-= 2.4.2 =
-
-* **Improvements**
-* Fixed several typos around all the plugin (thanks @starbuck).
-* **Developer Notes**
-* Added several functions to centralize all condition fields.
-
-= 2.4.1 =
-
-* **Improvements**
-* Prevent non-existent queries if any external plugins calls to GamiPress functions when GamiPress has not yet setup its database tables.
-
-= 2.4.0 =
-
-* **Improvements**
-* Improved unlock rank using points to respect the priority order.
+* Prevent to use global options on multisite when GamiPress is not network wide active.
 * **Developer Notes**
 * Moved old changelog to changelog.txt file.
-* Set GamiPress 2.4.0 as new stable release! :)
+* Set GamiPress 2.5.0 as new stable release! :)
