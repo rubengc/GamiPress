@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.1 ###
+
+* **Improvements**
+* Added more nonce checks to prevent CSRF attacks.
+
 ### 2.5.0 ###
 
 * **Bug Fixes**

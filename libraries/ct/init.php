@@ -10,7 +10,7 @@
  * @copyright GamiPress <contact@gamipress.com>, Ruben Garcia <rubengcdev@gamil.com>
  * @credits   Justin Sternberg (https://jtsternberg.com), Jhon James Jacob (https://jjj.blog)
  * @license   GPL-2.0+
- * @version   1.0.4
+ * @version   1.0.5
  * @link      https://gamipress.com
  */
 
@@ -35,16 +35,16 @@
 /**
  * Loader versioning: http://jtsternberg.github.io/wp-lib-loader/
  */
-if ( ! class_exists( 'CT_Loader_104', false ) ) {
+if ( ! class_exists( 'CT_Loader_105', false ) ) {
 
-    class CT_Loader_104 {
+    class CT_Loader_105 {
 
         /**
          * CT_Loader version number
          * @var   string
          * @since 1.0.0
          */
-        const VERSION = '1.0.4';
+        const VERSION = '1.0.5';
 
         /**
          * Setup constants
@@ -137,5 +137,5 @@ if ( ! class_exists( 'CT_Loader_104', false ) ) {
     }
 
     // Kick it off.
-    new CT_Loader_104;
+    new CT_Loader_105;
 }

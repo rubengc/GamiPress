@@ -313,8 +313,9 @@ if ( ! class_exists( 'CT_List_View' ) ) :
             global $ct_table;
 
             // If not CT object, die
-            if ( ! $ct_table )
+            if ( ! $ct_table ) {
                 wp_die( __( 'Invalid item type.' ) );
+            }
 
             // If not CT object allow ui, die
             if ( ! $ct_table->show_ui ) {
@@ -330,7 +331,16 @@ if ( ! class_exists( 'CT_List_View' ) ) :
 
             $object_id = (int) $_GET[$primary_key];
 
-            // If not current user can delete, die
+            // Nonce check
+            if ( ! isset( $_REQUEST['_wpnonce'] ) ) {
+                wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
+            }
+
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'ct_delete_' . $object_id ) ) {
+                wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
+            }
+
+            // If user can not delete it, bail
             if ( ! current_user_can( $ct_table->cap->delete_item, $object_id ) ) {
                 wp_die( __( 'Sorry, you are not allowed to delete this item.' ) );
             }
