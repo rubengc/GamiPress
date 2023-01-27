@@ -164,6 +164,31 @@
             points_condition_selector.hide();
         }
 
+        // Metas condition
+        var meta_key_selector = $(this).siblings('.meta-key-required');
+
+        if( trigger_type === 'gamipress_update_post_meta_any_value'
+        || trigger_type === 'gamipress_update_user_meta_any_value'
+        || trigger_type === 'gamipress_update_post_meta_specific_value'
+        || trigger_type === 'gamipress_update_user_meta_specific_value' ) {
+            // Show meta key field
+            meta_key_selector.show();
+        } else {
+            // Hide meta key field
+            meta_key_selector.hide();
+        }
+
+        var meta_value_selector = $(this).siblings('.meta-value-required');
+
+        if( trigger_type === 'gamipress_update_post_meta_specific_value'
+        || trigger_type === 'gamipress_update_user_meta_specific_value' ) {
+            // Show meta value field
+            meta_value_selector.show();
+        } else {
+            // Hide meta value field
+            meta_value_selector.hide();
+        }
+
         // Required points
         var points_selector_required = $(this).siblings('.points-required');
         var points_type_selector_required = $(this).siblings('.select-points-type-required');
@@ -677,6 +702,21 @@ function gamipress_update_requirements( element, loop ) {
             requirement_details.points = requirement.find( '.points' ).val();
             requirement_details.points_type = requirement.find( 'input[name="points_type"]' ).val();
             requirement_details.maximum_earnings = requirement.find( '.maximum-earnings' ).val();
+        }
+
+        if( requirement_details.trigger_type === 'gamipress_update_user_meta_any_value'
+        || requirement_details.trigger_type === 'gamipress_update_post_meta_any_value' ) {
+            
+            requirement_details.meta_key_required = requirement.find( '.meta-key-required' ).val();
+    
+        }
+
+        if( requirement_details.trigger_type === 'gamipress_update_user_meta_specific_value'
+        || requirement_details.trigger_type === 'gamipress_update_post_meta_specific_value' ) {
+            
+            requirement_details.meta_key_required = requirement.find( '.meta-key-required' ).val();
+            requirement_details.meta_value_required = requirement.find( '.meta-value-required' ).val();
+    
         }
 
         /**

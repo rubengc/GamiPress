@@ -360,6 +360,24 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <?php
         /**
+         * Available action to add custom HTML after points condition
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_after_points_condition', $requirement_id, $post_id ); ?>
+
+        <?php
+        $meta_key_required = get_post_meta( $requirement_id, '_gamipress_meta_key_required', true );
+        $meta_value_required = get_post_meta( $requirement_id, '_gamipress_meta_value_required', true ); ?>
+
+        <input type="text" name="requirement-meta-key-required" id="requirement-<?php echo $requirement_id; ?>-meta-key-required" class="meta-key-required" value="<?php echo $meta_key_required; ?>" placeholder="<?php echo __( 'Meta key', 'gamipress' ); ?>" />
+        <input type="text" name="requirement-meta-value-required" id="requirement-<?php echo $requirement_id; ?>-meta-value-required" class="meta-value-required" value="<?php echo $meta_value_required; ?>" placeholder="<?php echo __( 'Meta value', 'gamipress' ); ?>" />
+        
+        <?php
+        /**
          * Available action to add custom HTML after points required
          *
          * @since 1.0.0
@@ -1032,7 +1050,18 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
         update_post_meta( $requirement_id, '_gamipress_points_type', $points_type );
         update_post_meta( $requirement_id, '_gamipress_maximum_earnings', $maximum_earnings );
     }
+    
+    // Meta events data
+    if( $trigger_type === 'gamipress_update_user_meta_any_value'
+        || $trigger_type === 'gamipress_update_post_meta_any_value' ) {
+            update_post_meta( $requirement_id, '_gamipress_meta_key_required', $requirement['meta_key_required'] );
+        }
 
+        if( $trigger_type === 'gamipress_update_user_meta_specific_value'
+        || $trigger_type === 'gamipress_update_post_meta_specific_value' ) {
+            update_post_meta( $requirement_id, '_gamipress_meta_key_required', $requirement['meta_key_required'] );
+            update_post_meta( $requirement_id, '_gamipress_meta_value_required', $requirement['meta_value_required'] );
+        }
     /**
      * Action to store custom requirement data when saved
      *
@@ -1134,6 +1163,8 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? $requirement['limit_type'] : 'unlimited';
     $trigger_type           = $requirement['trigger_type'];
     $achievement_type       = $requirement['achievement_type'];
+    $meta_key_required      = ( isset( $requirement['meta_key_required'] ) ) ? $requirement['meta_key_required'] : '';
+    $meta_value_required    = ( isset( $requirement['meta_value_required'] ) ) ? $requirement['meta_value_required'] : '';
 
     // Flip between our requirement types and make an appropriate connection
     switch ( $trigger_type ) {
@@ -1207,6 +1238,19 @@ function gamipress_build_requirement_title( $requirement_id, $requirement = arra
             break;
         case 'gamipress_remove_specific_role':
             $title = sprintf( __( 'Get removed from %s role', 'gamipress' ), translate_user_role( $roles[$user_role_required]['name'] ) );
+            break;
+        // Metas
+        case 'gamipress_update_post_meta_any_value':
+            $title = sprintf( __( 'Update post meta %s', 'gamipress' ), $meta_key_required );
+            break;
+        case 'gamipress_update_user_meta_any_value':
+            $title = sprintf( __( 'Update user meta %s', 'gamipress' ), $meta_key_required );
+            break;
+        case 'gamipress_update_post_meta_specific_value':
+            $title = sprintf( __( 'Update post meta %s with %s', 'gamipress' ), $meta_key_required, $meta_value_required );
+            break;
+        case 'gamipress_update_user_meta_specific_value':
+            $title = sprintf( __( 'Update user meta %s with %s', 'gamipress' ), $meta_key_required, $meta_value_required );
             break;
         // Default
         default:

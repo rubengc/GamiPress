@@ -556,6 +556,73 @@ function gamipress_user_meets_role_requirement( $return = false, $user_id = 0, $
 }
 add_filter( 'user_has_access_to_achievement', 'gamipress_user_meets_role_requirement', 10, 6 );
 
+/**
+ * Check if user meets the meta requirement for a given achievement
+ *
+ * @since  1.0.0
+ *
+ * @param bool $return          The default return value
+ * @param int $user_id          The given user's ID
+ * @param int $requirement_id   The given requirement's post ID
+ * @param string $trigger       The trigger triggered
+ * @param int $site_id          The site id
+ * @param array $args           Arguments of this trigger
+ *
+ * @return bool True if user has access to the requirement, false otherwise
+ */
+function gamipress_user_meets_meta_requirement( $return = false, $user_id = 0, $requirement_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
+
+    // If we're not working with a requirement, bail here
+    if ( ! in_array( get_post_type( $requirement_id ), gamipress_get_requirement_types_slugs() ) )
+        return $return;
+
+    // Check if user has access to the achievement ($return will be false if user has exceed the limit or achievement is not published yet)
+    if( ! $return )
+        return $return;
+
+    // Rules engine needs to check if meta key matches required ones
+    if( $return && ( $trigger === 'gamipress_update_post_meta_any_value'
+        || $trigger === 'gamipress_update_user_meta_any_value' ) ) {
+
+        $meta_key = $args[2]; 
+        $required_meta_key = gamipress_get_post_meta( $requirement_id, '_gamipress_meta_key_required', true );
+
+        $return = (bool) ( $meta_key === $required_meta_key );
+        
+    }
+
+    // Rules engine needs to check if meta key and values matches required ones
+    if( $return && ( $trigger === 'gamipress_update_post_meta_specific_value'
+        || $trigger === 'gamipress_update_user_meta_specific_value' ) ) {
+
+        $meta_key = $args[2];
+        $meta_value = $args[3];
+        $required_meta_key = gamipress_get_post_meta( $requirement_id, '_gamipress_meta_key_required', true );
+        $required_meta_value = gamipress_get_post_meta( $requirement_id, '_gamipress_meta_value_required', true );
+        
+        if ( is_numeric( $meta_value ) ){
+            
+            $meta_value = strval( $meta_value );
+        }
+        
+        $return = (bool) ( $meta_key === $required_meta_key );
+
+        if ( $return ) {
+            // Check if field value matches the required one (with support for arrays)
+            if( is_array( $meta_value ) )
+                $return = (bool) ( in_array( $required_meta_value, $meta_value ) );
+            else
+                $return = (bool) ( $meta_value === $required_meta_value );
+        }
+ 
+    }
+
+    // Send back our eligibility
+    return $return;
+
+}
+add_filter( 'user_has_access_to_achievement', 'gamipress_user_meets_meta_requirement', 10, 6 );
+
 /* --------------------------------------------------
  * Completion Checks
    -------------------------------------------------- */

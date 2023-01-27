@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.1
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -263,6 +263,16 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.5.2 =
+
+* **New Features**
+* New event: Get user meta updated with any value.
+* New event: Get user meta updated with a value.
+* New event: Post meta updated with any value.
+* New event: Post meta updated with any value.
+* **Bug Fixes**
+* Fixed incorrect use of gamipress_get_user_rank_id() in rank template (thanks @tambaqui fixes #24)
 
 = 2.5.1 =
 

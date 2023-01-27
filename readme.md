@@ -280,6 +280,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.2 ###
+
+* **New Features**
+* New event: Get user meta updated with any value.
+* New event: Get user meta updated with a value.
+* New event: Post meta updated with any value.
+* New event: Post meta updated with any value.
+* **Bug Fixes**
+* Fixed incorrect use of gamipress_get_user_rank_id() in rank template (thanks @tambaqui fixes #24)
+
 ### 2.5.1 ###
 
 * **Improvements**

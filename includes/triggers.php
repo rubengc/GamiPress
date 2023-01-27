@@ -45,6 +45,10 @@ function gamipress_get_activity_triggers() {
 				'gamipress_set_specific_role'     		=> __( 'Get assigned to specific role', 'gamipress' ),
 				'gamipress_remove_role'     			=> __( 'Get removed from any role', 'gamipress' ),
 				'gamipress_remove_specific_role'     	=> __( 'Get removed from a specific role', 'gamipress' ),
+                'gamipress_update_user_meta_any_value'      => __( 'Get user meta updated with any value', 'gamipress' ),
+                'gamipress_update_user_meta_specific_value' => __( 'Get user meta updated with a value', 'gamipress' ),
+                'gamipress_update_post_meta_any_value'      => __( 'Post meta updated with any value', 'gamipress' ),
+                'gamipress_update_post_meta_specific_value' => __( 'Post meta updated with a value', 'gamipress' ),
 			),
 			// Site Interactions
 			__( 'Site Interactions', 'gamipress' ) => array(
@@ -925,6 +929,10 @@ function gamipress_trigger_get_user_id( $trigger = '', $args = array() ) {
         case 'gamipress_remove_specific_role':
 		case gamipress_starts_with( $trigger, 'gamipress_unlock_' ):
 		case gamipress_starts_with( $trigger, 'gamipress_revoke_' ):
+        case 'gamipress_update_user_meta_any_value':
+        case 'gamipress_update_user_meta_specific_value':
+        case 'gamipress_update_post_meta_any_value':
+        case 'gamipress_update_post_meta_specific_value':
 			$user_id = $args[0];
 			break;
 		case 'gamipress_publish_post':

@@ -464,3 +464,55 @@ function gamipress_user_role_listener( $user_id, $role ) {
 add_action( 'add_user_role', 'gamipress_user_role_listener', 10, 2 );
 add_action( 'set_user_role', 'gamipress_user_role_listener', 10, 2 );
 add_action( 'remove_user_role', 'gamipress_user_role_listener', 10, 2 );
+
+/**
+ * Listener for user meta update
+ *
+ * @since 2.5.1
+ *
+ * @param int    $meta_id     ID of updated metadata entry.
+ * @param int    $object_id   ID of the object metadata is for.
+ * @param string $meta_key    Metadata key.
+ * @param mixed  $_meta_value  Metadata value. Serialized if non-scalar.
+ */
+function gamipress_user_meta_update_listener( $meta_id, $object_id, $meta_key, $_meta_value ) {
+
+    $user_id = get_current_user_id(); 
+
+    // Login is required
+    if ( $user_id === 0 ) return;
+
+    // Trigger update any value
+    do_action( "gamipress_update_user_meta_any_value", $user_id, $meta_id, $meta_key, $_meta_value, $object_id );
+
+    // Trigger update specific value
+    do_action( "gamipress_update_user_meta_specific_value", $user_id, $meta_id, $meta_key, $_meta_value, $object_id );
+
+}
+add_action( 'updated_user_meta', 'gamipress_user_meta_update_listener', 10, 4 );
+
+/**
+ * Listener for post meta update
+ *
+ * @since 2.5.1
+ *
+ * @param int    $meta_id     ID of updated metadata entry.
+ * @param int    $object_id   ID of the object metadata is for.
+ * @param string $meta_key    Metadata key.
+ * @param mixed  $_meta_value  Metadata value. Serialized if non-scalar.
+ */
+function gamipress_post_meta_update_listener( $meta_id, $object_id, $meta_key, $_meta_value ) {
+
+    $user_id = get_current_user_id(); 
+
+    // Login is required
+    if ( $user_id === 0 ) return;
+
+    // Trigger update any value
+    do_action( "gamipress_update_post_meta_any_value", $user_id, $meta_id, $meta_key, $_meta_value, $object_id );
+
+    // Trigger update specific value
+    do_action( "gamipress_update_post_meta_specific_value", $user_id, $meta_id, $meta_key, $_meta_value, $object_id );
+
+}
+add_action( 'updated_post_meta', 'gamipress_post_meta_update_listener', 10, 4 );

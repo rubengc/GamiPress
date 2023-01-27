@@ -109,6 +109,9 @@ function gamipress_get_requirement_object( $requirement_id = 0 ) {
         'achievement_type'          => gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_type' ),
         'achievement_post'          => absint( gamipress_get_post_meta( $requirement_id, '_gamipress_achievement_post' ) ),
         'achievement_post_site_id'  => get_current_blog_id(),
+        // Meta vars
+        'meta_key_required'         => gamipress_get_post_meta( $requirement_id, '_gamipress_meta_key_required' ),
+        'meta_value_required'       => gamipress_get_post_meta( $requirement_id, '_gamipress_meta_value_required' ),
     );
 
     // Initialize points condition for backward compatibility

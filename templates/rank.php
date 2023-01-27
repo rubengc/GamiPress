@@ -20,7 +20,7 @@ if( gamipress_is_lowest_priority_rank( get_the_ID() ) ) {
 }
 
 // Check if this rank is the current one of the user
-$current = gamipress_get_user_rank_id( $user_id ) === get_the_ID();
+$current = gamipress_get_user_rank_id( $user_id, get_post_type( get_the_ID() ) ) === get_the_ID();
 
 // Setup thumbnail size
 $thumbnail_size = absint( $a['thumbnail_size'] );
