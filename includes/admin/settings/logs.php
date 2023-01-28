@@ -24,13 +24,6 @@ function gamipress_settings_logs_meta_boxes( $meta_boxes ) {
     $meta_boxes['logs-patterns-settings'] = array(
         'title' => gamipress_dashicon( 'editor-alignleft' ) . __( 'Logs', 'gamipress' ),
         'fields' => apply_filters( 'gamipress_logs_patterns_settings_fields', array(
-            'log_all_events' => array(
-                'name' => __( 'Log all activities', 'gamipress' ),
-                'desc' => __( 'Check this option to log all activities triggered.', 'gamipress' )
-                    . '<br>' . __( 'By default, GamiPress just logs activities that has a requirement (points awards, steps, etc) looking for it.', 'gamipress' ),
-                'type' => 'checkbox',
-                'classes' => 'gamipress-switch',
-            ),
             'log_patterns_title' => array(
                 'name' => __( 'Logs Patterns', 'gamipress' ),
                 'description' => __( 'From this settings you can modify the default pattern for upcoming log entries of each category.', 'gamipress' ),

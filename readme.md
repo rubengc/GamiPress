@@ -280,6 +280,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.3 ###
+
+* **Improvements**
+* Moved the option "Log all events" to a WordPress hook to get enabled only through code.
+* Added several performance improvements to the user meta and post meta listeners.
+
 ### 2.5.2 ###
 
 * **New Features**

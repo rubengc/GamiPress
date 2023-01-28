@@ -360,24 +360,6 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
 
         <?php
         /**
-         * Available action to add custom HTML after points condition
-         *
-         * @since 1.0.0
-         *
-         * @param int   $requirement_id     The requirement ID
-         * @param int   $post_id            The post ID where requirements are displayed
-         */
-        do_action( 'gamipress_requirement_ui_html_after_points_condition', $requirement_id, $post_id ); ?>
-
-        <?php
-        $meta_key_required = get_post_meta( $requirement_id, '_gamipress_meta_key_required', true );
-        $meta_value_required = get_post_meta( $requirement_id, '_gamipress_meta_value_required', true ); ?>
-
-        <input type="text" name="requirement-meta-key-required" id="requirement-<?php echo $requirement_id; ?>-meta-key-required" class="meta-key-required" value="<?php echo $meta_key_required; ?>" placeholder="<?php echo __( 'Meta key', 'gamipress' ); ?>" />
-        <input type="text" name="requirement-meta-value-required" id="requirement-<?php echo $requirement_id; ?>-meta-value-required" class="meta-value-required" value="<?php echo $meta_value_required; ?>" placeholder="<?php echo __( 'Meta value', 'gamipress' ); ?>" />
-        
-        <?php
-        /**
          * Available action to add custom HTML after points required
          *
          * @since 1.0.0
@@ -386,6 +368,20 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
          * @param int   $post_id            The post ID where requirements are displayed
          */
         do_action( 'gamipress_requirement_ui_html_after_points_required', $requirement_id, $post_id ); ?>
+
+        <input type="text" name="requirement-meta-key-required" id="requirement-<?php echo $requirement_id; ?>-meta-key-required" class="meta-key-required" value="<?php echo esc_attr( $requirements['meta_key_required'] ); ?>" placeholder="<?php echo esc_attr( __( 'Meta key', 'gamipress' ) ); ?>" />
+        <input type="text" name="requirement-meta-value-required" id="requirement-<?php echo $requirement_id; ?>-meta-value-required" class="meta-value-required" value="<?php echo esc_attr( $requirements['meta_value_required'] ); ?>" placeholder="<?php echo esc_attr( __( 'Meta value', 'gamipress' ) ); ?>" />
+
+        <?php
+        /**
+         * Available action to add custom HTML after meta required
+         *
+         * @since 1.0.0
+         *
+         * @param int   $requirement_id     The requirement ID
+         * @param int   $post_id            The post ID where requirements are displayed
+         */
+        do_action( 'gamipress_requirement_ui_html_after_meta_required', $requirement_id, $post_id ); ?>
 
         <select class="select-points-type-required select-points-type-required-<?php echo $requirement_id; ?>">
             <option value=""><?php _e( 'Default points', 'gamipress'); ?></option>
@@ -997,6 +993,8 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     $rank_required          = ( ! empty( $requirement['rank_required'] ) ) ? absint( $requirement['rank_required'] ) : 0;
     $post_type_required     = ( ! empty( $requirement['post_type_required'] ) ) ? sanitize_text_field( $requirement['post_type_required'] ) : '';
     $user_role_required     = ( ! empty( $requirement['user_role_required'] ) ) ? sanitize_text_field( $requirement['user_role_required'] ) : '';
+    $meta_key_required      = ( ! empty( $requirement['meta_key_required'] ) ) ? sanitize_text_field( $requirement['meta_key_required'] ) : '';
+    $meta_value_required    = ( ! empty( $requirement['meta_value_required'] ) ) ? sanitize_text_field( $requirement['meta_value_required'] ) : '';
     $limit                  = ( ! empty( $requirement['limit'] ) ) ? absint( $requirement['limit'] ) : 1;
     $limit_type             = ( ! empty( $requirement['limit_type'] ) ) ? sanitize_text_field( $requirement['limit_type'] ) : 'unlimited';
     $optional               = ( isset( $requirement['optional'] ) ) ? (bool) $requirement['optional'] : false;
@@ -1032,6 +1030,8 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
     update_post_meta( $requirement_id, '_gamipress_rank_required', $rank_required );
     update_post_meta( $requirement_id, '_gamipress_post_type_required', $post_type_required );
     update_post_meta( $requirement_id, '_gamipress_user_role_required', $user_role_required );
+    update_post_meta( $requirement_id, '_gamipress_meta_key_required', $meta_key_required );
+    update_post_meta( $requirement_id, '_gamipress_meta_value_required', $meta_value_required );
     update_post_meta( $requirement_id, '_gamipress_count', $count );
     update_post_meta( $requirement_id, '_gamipress_limit', $limit );
     update_post_meta( $requirement_id, '_gamipress_limit_type', $limit_type );
@@ -1050,18 +1050,7 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
         update_post_meta( $requirement_id, '_gamipress_points_type', $points_type );
         update_post_meta( $requirement_id, '_gamipress_maximum_earnings', $maximum_earnings );
     }
-    
-    // Meta events data
-    if( $trigger_type === 'gamipress_update_user_meta_any_value'
-        || $trigger_type === 'gamipress_update_post_meta_any_value' ) {
-            update_post_meta( $requirement_id, '_gamipress_meta_key_required', $requirement['meta_key_required'] );
-        }
 
-        if( $trigger_type === 'gamipress_update_user_meta_specific_value'
-        || $trigger_type === 'gamipress_update_post_meta_specific_value' ) {
-            update_post_meta( $requirement_id, '_gamipress_meta_key_required', $requirement['meta_key_required'] );
-            update_post_meta( $requirement_id, '_gamipress_meta_value_required', $requirement['meta_value_required'] );
-        }
     /**
      * Action to store custom requirement data when saved
      *

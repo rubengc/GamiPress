@@ -477,10 +477,33 @@ add_action( 'remove_user_role', 'gamipress_user_role_listener', 10, 2 );
  */
 function gamipress_user_meta_update_listener( $meta_id, $object_id, $meta_key, $_meta_value ) {
 
-    $user_id = get_current_user_id(); 
+    $user_id = $object_id;
 
     // Login is required
     if ( $user_id === 0 ) return;
+
+    $excluded_metas = array(
+        '_gamipress_triggered_triggers',
+        '_gamipress_achievements',
+        'gamipress_email_settings',
+    );
+
+    /**
+     * Exclude user metas to get triggered
+     *
+     * @since 2.5.3
+     *
+     * @param array  $excluded_metas    The excluded metas
+     * @param int    $meta_id           ID of updated metadata entry.
+     * @param int    $object_id         ID of the object metadata is for.
+     * @param string $meta_key          Metadata key.
+     * @param mixed  $_meta_value       Metadata value. Serialized if non-scalar.
+     */
+    $excluded_metas = apply_filters( 'gamipress_update_user_meta_trigger_excluded_metas', $excluded_metas, $meta_id, $object_id, $meta_key, $_meta_value );
+
+    if( in_array( $meta_key, $excluded_metas ) ) {
+        return;
+    }
 
     // Trigger update any value
     do_action( "gamipress_update_user_meta_any_value", $user_id, $meta_id, $meta_key, $_meta_value, $object_id );
@@ -507,6 +530,25 @@ function gamipress_post_meta_update_listener( $meta_id, $object_id, $meta_key, $
 
     // Login is required
     if ( $user_id === 0 ) return;
+
+    $excluded_metas = array();
+
+    /**
+     * Exclude post metas to get triggered
+     *
+     * @since 2.5.3
+     *
+     * @param array  $excluded_metas    The excluded metas
+     * @param int    $meta_id           ID of updated metadata entry.
+     * @param int    $object_id         ID of the object metadata is for.
+     * @param string $meta_key          Metadata key.
+     * @param mixed  $_meta_value       Metadata value. Serialized if non-scalar.
+     */
+    $excluded_metas = apply_filters( 'gamipress_update_post_meta_trigger_excluded_metas', $excluded_metas, $meta_id, $object_id, $meta_key, $_meta_value );
+
+    if( in_array( $meta_key, $excluded_metas ) ) {
+        return;
+    }
 
     // Trigger update any value
     do_action( "gamipress_update_post_meta_any_value", $user_id, $meta_id, $meta_key, $_meta_value, $object_id );

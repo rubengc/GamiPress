@@ -559,8 +559,19 @@ function gamipress_trigger_event() {
 	// gamipress_unlock_all_{type}, gamipress_unlock_{type} and gamipress_revoke_{type} are excluded from this check
 	if( ! ( gamipress_starts_with( $trigger, 'gamipress_unlock_' ) || gamipress_starts_with( $trigger, 'gamipress_revoke_' ) ) ) {
 
-		// Check if log all events is enabled, if checked then function won't
-		if( ! (bool) gamipress_get_option( 'log_all_events', false ) ) {
+        /**
+         * Filter to decide if GamiPress should log all events triggered (filter in replacement to the option "log_all_events")
+         *
+         * @since 2.5.3
+         *
+         * @param bool $log_all_events
+         *
+         * @return bool
+         */
+        $log_all_events = apply_filters( 'gamipress_log_all_events', false );
+
+		// Check if log all events is enabled
+		if( ! $log_all_events ) {
 
             // If not achievements listening it, then return
 			if( ! gamipress_trigger_has_listeners( $trigger, $site_id, $args ) ) {
