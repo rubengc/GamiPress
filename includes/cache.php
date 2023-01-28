@@ -117,6 +117,10 @@ function gamipress_save_cache( $key = '', $value = '' ) {
  */
 function gamipress_delete_cache( $key = '' ) {
 
+    if( isset( GamiPress()->cache[$key] ) ) {
+        unset( GamiPress()->cache[$key] );
+    }
+
     // If GamiPress is installed network wide, delete cache on network options
     if( gamipress_is_network_wide_active() ) {
         return delete_site_option( 'gamipress_cache_' . $key );

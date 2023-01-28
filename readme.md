@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.4 ###
+
+* **Improvements**
+* Added more performance improvements to the user meta and post meta listeners.
+
 ### 2.5.3 ###
 
 * **Improvements**

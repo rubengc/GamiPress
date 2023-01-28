@@ -498,10 +498,20 @@ function gamipress_user_meta_update_listener( $meta_id, $object_id, $meta_key, $
      * @param int    $object_id         ID of the object metadata is for.
      * @param string $meta_key          Metadata key.
      * @param mixed  $_meta_value       Metadata value. Serialized if non-scalar.
+     *
+     * @return array
      */
     $excluded_metas = apply_filters( 'gamipress_update_user_meta_trigger_excluded_metas', $excluded_metas, $meta_id, $object_id, $meta_key, $_meta_value );
 
+    // Bail if meta excluded
     if( in_array( $meta_key, $excluded_metas ) ) {
+        return;
+    }
+
+    $meta_keys_in_use = gamipress_get_meta_keys_in_use();
+
+    // Bail if meta key not in use
+    if( ! in_array( $meta_key, $meta_keys_in_use ) ) {
         return;
     }
 
@@ -543,10 +553,19 @@ function gamipress_post_meta_update_listener( $meta_id, $object_id, $meta_key, $
      * @param int    $object_id         ID of the object metadata is for.
      * @param string $meta_key          Metadata key.
      * @param mixed  $_meta_value       Metadata value. Serialized if non-scalar.
+     *
+     * @return array
      */
     $excluded_metas = apply_filters( 'gamipress_update_post_meta_trigger_excluded_metas', $excluded_metas, $meta_id, $object_id, $meta_key, $_meta_value );
 
     if( in_array( $meta_key, $excluded_metas ) ) {
+        return;
+    }
+
+    $meta_keys_in_use = gamipress_get_meta_keys_in_use();
+
+    // Bail if meta key not in use
+    if( ! in_array( $meta_key, $meta_keys_in_use ) ) {
         return;
     }
 
@@ -558,3 +577,52 @@ function gamipress_post_meta_update_listener( $meta_id, $object_id, $meta_key, $
 
 }
 add_action( 'updated_post_meta', 'gamipress_post_meta_update_listener', 10, 4 );
+
+/**
+ * Helper function to get meta keys in use
+ *
+ * @since 2.5.4
+ *
+ * @return array
+ */
+function gamipress_get_meta_keys_in_use() {
+
+    $cache = gamipress_get_cache( 'gamipress_meta_keys_in_use', false );
+
+    // If result already cached, return it
+    if( is_array( $cache ) ) {
+        return $cache;
+    }
+
+    global $wpdb;
+
+    $postmeta = GamiPress()->db->postmeta;
+
+    // Get an array with the meta keys in use
+    $meta_keys_in_use = $wpdb->get_results(
+        "SELECT pm.meta_value AS 'meta_value'
+         FROM {$postmeta} AS pm
+         WHERE pm.meta_key = '_gamipress_meta_key_required'
+         AND pm.meta_value != '' 
+         GROUP BY pm.meta_value", ARRAY_N
+    );
+
+    if( ! is_array( $meta_keys_in_use ) ) {
+        $meta_keys_in_use = array();
+    }
+
+    // Cache listeners count
+    gamipress_save_cache( "gamipress_meta_keys_in_use", $meta_keys_in_use );
+
+    /**
+     * Filter to override meta keys in use
+     *
+     * @since 2.5.4
+     *
+     * @param array $listeners_count
+     *
+     * @return array
+     */
+    return apply_filters( 'gamipress_get_meta_keys_in_use', $meta_keys_in_use );
+
+}

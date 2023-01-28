@@ -1051,6 +1051,12 @@ function gamipress_update_requirement( $requirement, $order = 0 ) {
         update_post_meta( $requirement_id, '_gamipress_maximum_earnings', $maximum_earnings );
     }
 
+    // If a new meta key is in use, delete cache and rebuild it
+    if( $meta_key_required !== '' ) {
+        gamipress_delete_cache( 'gamipress_meta_keys_in_use' );
+        gamipress_get_meta_keys_in_use();
+    }
+
     /**
      * Action to store custom requirement data when saved
      *
