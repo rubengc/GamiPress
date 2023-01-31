@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.5 ###
+
+* **Improvements**
+* Updated some labels to better guide users when configuring GamiPress.
+
 ### 2.5.4 ###
 
 * **Improvements**

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2023-01-28 01:40+0100\n"
+"POT-Creation-Date: 2023-01-31 21:57+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -509,7 +509,9 @@ msgstr ""
 msgid "Choose an achievement type"
 msgstr ""
 
-#: includes/admin/meta-boxes.php:367 includes/admin/tools/bulk-awards.php:25
+#: includes/admin/meta-boxes.php:367
+#: includes/admin/meta-boxes/requirements-ui.php:387
+#: includes/admin/tools/bulk-awards.php:25
 #: includes/admin/tools/bulk-revokes.php:25
 msgid "Choose a points type"
 msgstr ""
@@ -837,8 +839,8 @@ msgstr ""
 #: includes/admin/tools/bulk-revokes.php:203
 #: includes/admin/tools/import-export-earnings.php:249
 #: includes/admin/tools/import-export-points.php:142
-#: includes/ajax-functions.php:764 includes/ajax-functions.php:898
-#: includes/compatibility/1.2.8.php:1021
+#: includes/admin/users.php:344 includes/ajax-functions.php:764
+#: includes/ajax-functions.php:898 includes/compatibility/1.2.8.php:1021
 #: includes/custom-tables/user-earnings.php:419
 #: includes/custom-tables/user-earnings.php:425
 #: includes/functions/points-types.php:184
@@ -1179,10 +1181,6 @@ msgstr ""
 msgid "Meta value"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:387
-msgid "Default points"
-msgstr ""
-
 #: includes/admin/meta-boxes/requirements-ui.php:426
 msgid "Choose a rank"
 msgstr ""
@@ -1303,185 +1301,185 @@ msgstr ""
 msgid "Invalid post."
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1147
+#: includes/admin/meta-boxes/requirements-ui.php:1153
 msgid "post"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1162
+#: includes/admin/meta-boxes/requirements-ui.php:1168
 #, php-format
 msgid "Earn %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1167
+#: includes/admin/meta-boxes/requirements-ui.php:1173
 #, php-format
 msgid "Reach a balance %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1170
+#: includes/admin/meta-boxes/requirements-ui.php:1176
 #, php-format
 msgid "Expend %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1176
+#: includes/admin/meta-boxes/requirements-ui.php:1182
 #, php-format
 msgid "Reach %s %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1181
+#: includes/admin/meta-boxes/requirements-ui.php:1187
 #, php-format
 msgid "Get %s %s revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1185
+#: includes/admin/meta-boxes/requirements-ui.php:1191
 #, php-format
 msgid "Unlock \"%s\""
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1188
+#: includes/admin/meta-boxes/requirements-ui.php:1194
 #, php-format
 msgid "Unlock any %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1191
+#: includes/admin/meta-boxes/requirements-ui.php:1197
 #, php-format
 msgid "Unlock all %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1194
+#: includes/admin/meta-boxes/requirements-ui.php:1200
 #, php-format
 msgid "Get \"%s\" revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1197
+#: includes/admin/meta-boxes/requirements-ui.php:1203
 #, php-format
 msgid "Get any %s revoked"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1201
+#: includes/admin/meta-boxes/requirements-ui.php:1207
 #, php-format
 msgid "Comment on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1204
+#: includes/admin/meta-boxes/requirements-ui.php:1210
 #, php-format
 msgid "Get a comment on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1207
+#: includes/admin/meta-boxes/requirements-ui.php:1213
 #, php-format
 msgid "Get a comment on a %s marked as spam"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1210
+#: includes/admin/meta-boxes/requirements-ui.php:1216
 #, php-format
 msgid "Publish a new %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1213
+#: includes/admin/meta-boxes/requirements-ui.php:1219
 #, php-format
 msgid "Delete a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1216
+#: includes/admin/meta-boxes/requirements-ui.php:1222
 #, php-format
 msgid "Daily visit a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1219
+#: includes/admin/meta-boxes/requirements-ui.php:1225
 #, php-format
 msgid "Get visits on a %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1223
+#: includes/admin/meta-boxes/requirements-ui.php:1229
 #, php-format
 msgid "Get added to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1226
+#: includes/admin/meta-boxes/requirements-ui.php:1232
 #, php-format
 msgid "Get assigned to %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1229
+#: includes/admin/meta-boxes/requirements-ui.php:1235
 #, php-format
 msgid "Get removed from %s role"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1233
+#: includes/admin/meta-boxes/requirements-ui.php:1239
 #, php-format
 msgid "Update post meta %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1236
+#: includes/admin/meta-boxes/requirements-ui.php:1242
 #, php-format
 msgid "Update user meta %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1239
+#: includes/admin/meta-boxes/requirements-ui.php:1245
 #, php-format
 msgid "Update post meta %s with %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1242
+#: includes/admin/meta-boxes/requirements-ui.php:1248
 #, php-format
 msgid "Update user meta %s with %s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1281
+#: includes/admin/meta-boxes/requirements-ui.php:1287
 #, php-format
 msgid "%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1283
+#: includes/admin/meta-boxes/requirements-ui.php:1289
 #, php-format
 msgid "-%s for"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1287
-#: includes/admin/meta-boxes/requirements-ui.php:1296
-#: includes/admin/meta-boxes/requirements-ui.php:1325
+#: includes/admin/meta-boxes/requirements-ui.php:1293
+#: includes/admin/meta-boxes/requirements-ui.php:1302
 #: includes/admin/meta-boxes/requirements-ui.php:1331
+#: includes/admin/meta-boxes/requirements-ui.php:1337
 #, php-format
 msgid "%1$s %2$s"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1296
+#: includes/admin/meta-boxes/requirements-ui.php:1302
 #, php-format
 msgid "%d time"
 msgid_plural "%d times"
 msgstr[0] ""
 msgstr[1] ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1306
+#: includes/admin/meta-boxes/requirements-ui.php:1312
 msgid "minute"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1309
+#: includes/admin/meta-boxes/requirements-ui.php:1315
 msgid "hour"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1312
+#: includes/admin/meta-boxes/requirements-ui.php:1318
 msgid "day"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1315
+#: includes/admin/meta-boxes/requirements-ui.php:1321
 msgid "week"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1318
+#: includes/admin/meta-boxes/requirements-ui.php:1324
 msgid "month"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1321
+#: includes/admin/meta-boxes/requirements-ui.php:1327
 msgid "year"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1325
+#: includes/admin/meta-boxes/requirements-ui.php:1331
 #, php-format
 msgid "(limited to %d per %s)"
 msgstr ""
 
-#: includes/admin/meta-boxes/requirements-ui.php:1331
+#: includes/admin/meta-boxes/requirements-ui.php:1337
 msgid "(Optional)"
 msgstr ""
 
@@ -3813,10 +3811,6 @@ msgstr ""
 msgid "No points types configured, visit %s to configure some points types."
 msgstr ""
 
-#: includes/admin/users.php:344
-msgid "Default Points"
-msgstr ""
-
 #: includes/admin/users.php:359 includes/admin/users.php:400
 msgid "Enter a new total will automatically log the change and difference between totals."
 msgstr ""
@@ -4122,7 +4116,7 @@ msgstr ""
 msgid "Limit response to user earnings before a given ISO8601 compliant date."
 msgstr ""
 
-#: includes/cache.php:191
+#: includes/cache.php:195
 msgid "<strong>GamiPress cache</strong> cleared successfully!"
 msgstr ""
 

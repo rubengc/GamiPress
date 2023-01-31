@@ -341,7 +341,7 @@ function gamipress_profile_user_points( $user = null ) {
 
                                 <div class="profile-points profile-points-default gamipress-profile-card">
 
-                                    <span class="profile-points-type-name"><?php _e( 'Default Points', 'gamipress' ); ?></span>
+                                    <span class="profile-points-type-name"><?php _e( 'Points', 'gamipress' ); ?></span>
 
                                     <div class="profile-points-thumbnail"></div>
 

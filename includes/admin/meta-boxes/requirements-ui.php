@@ -384,7 +384,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
         do_action( 'gamipress_requirement_ui_html_after_meta_required', $requirement_id, $post_id ); ?>
 
         <select class="select-points-type-required select-points-type-required-<?php echo $requirement_id; ?>">
-            <option value=""><?php _e( 'Default points', 'gamipress'); ?></option>
+            <option value=""><?php _e( 'Choose a points type', 'gamipress'); ?></option>
             <?php foreach ( gamipress_get_points_types() as $slug => $data ) :
 
                 echo '<option value="' . $slug . '" ' . selected( $requirements['points_type_required'], $slug, false ) . '>' . $data['plural_name'] . '</option>';
