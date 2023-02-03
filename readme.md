@@ -280,6 +280,14 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.6 ###
+
+* **New Features**
+* Added the attribute "force_responsive" to the [gamipress_earnings] shortcode.
+* Added the option "Force responsive" to Earnings block and widget.
+* **Improvements**
+* Improved the user earnings display in small areas or small screens.
+
 ### 2.5.5 ###
 
 * **Improvements**

@@ -66,7 +66,7 @@ $user_earnings = $a['query']->get_results();
         $columns = apply_filters( 'gamipress_earnings_columns', $a['columns'], $a );
         ?>
 
-        <table id="gamipress-earnings-table" class="gamipress-earnings-table">
+        <table id="gamipress-earnings-table" class="gamipress-earnings-table <?php if( $a['force_responsive'] === 'yes' ) : ?>gamipress-earnings-force-responsive<?php endif;?>">
 
             <thead>
 
@@ -107,9 +107,16 @@ $user_earnings = $a['query']->get_results();
                          * @return string
                          */
                         $column_output = apply_filters( 'gamipress_earnings_render_column', '', $column_name, $user_earning, $a );
+
+                        $css_class = 'gamipress-earnings-col gamipress-earnings-col-' . $column_name;
+
+                        if( empty( $column_output ) ) {
+                            $column_output = '&nbsp;';
+                            $css_class .= ' gamipress-earnings-col-empty';
+                        }
                         ?>
 
-                        <td class="gamipress-earnings-col gamipress-earnings-col-<?php echo esc_attr( $column_name ); ?>"><?php echo $column_output; ?></td>
+                        <td class="<?php echo esc_attr( $css_class ); ?>" data-label="<?php echo esc_attr( $column_label ); ?>"><?php echo $column_output; ?></td>
                     <?php endforeach ?>
 
                 </tr>

@@ -538,6 +538,143 @@ ul.gamipress-rank-earners-list li .earner-display-name {
 }
 
 /* --------------------------------------
+	User Earnings
+   -------------------------------------- */
+
+/* User earnings in small areas (with support for iPads screens) */
+@media only screen
+and (max-width: 760px), (min-device-width: 768px)
+and (max-device-width: 1024px) {
+	#gamipress-earnings-table,
+	#gamipress-earnings-table thead,
+	#gamipress-earnings-table tbody,
+	#gamipress-earnings-table th,
+	#gamipress-earnings-table td,
+	#gamipress-earnings-table tr {
+		display: block;
+		width: 100%;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-thumbnail {
+		float: left;
+		width: 18%;
+		margin-right: 2%;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-thumbnail img {
+		width: 100%;
+		height: auto;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-thumbnail.gamipress-earnings-col-empty {
+		display: none;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-description {
+		width: 100%;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-description:after {
+		content: " ";
+		display: block;
+		clear: both;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-date {
+		width: 48%;
+		float: left;
+	}
+
+	#gamipress-earnings-table td.gamipress-earnings-col-points {
+		width: 50%;
+		text-align: right;
+		float: right;
+	}
+
+	#gamipress-earnings-table thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+
+	#gamipress-earnings-table tr {
+		padding-bottom: 1em;
+		border-bottom: 1px solid rgba(0,0,0,0.1);
+		margin-bottom: 1em;
+	}
+
+	#gamipress-earnings-table tr:after {
+		content: " ";
+		display: block;
+		clear: both;
+	}
+}
+
+/* Force responsive */
+#gamipress-earnings-table.gamipress-earnings-force-responsive,
+#gamipress-earnings-table.gamipress-earnings-force-responsive thead,
+#gamipress-earnings-table.gamipress-earnings-force-responsive tbody,
+#gamipress-earnings-table.gamipress-earnings-force-responsive th,
+#gamipress-earnings-table.gamipress-earnings-force-responsive td,
+#gamipress-earnings-table.gamipress-earnings-force-responsive tr {
+	display: block;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-thumbnail {
+	float: left;
+	width: 18%;
+	margin-right: 2%;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-thumbnail img {
+	width: 100%;
+	height: auto;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-thumbnail.gamipress-earnings-col-empty {
+	display: none;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-description {
+	width: 100%;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-description:after {
+	content: " ";
+	display: block;
+	clear: both;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-date {
+	width: 48%;
+	float: left;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive td.gamipress-earnings-col-points {
+	width: 50%;
+	text-align: right;
+	float: right;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive thead tr {
+	position: absolute;
+	top: -9999px;
+	left: -9999px;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive tr {
+	padding-bottom: 1em;
+	border-bottom: 1px solid rgba(0,0,0,0.1);
+	margin-bottom: 1em;
+}
+
+#gamipress-earnings-table.gamipress-earnings-force-responsive tr:after {
+	content: " ";
+	display: block;
+	clear: both;
+}
+
+/* --------------------------------------
 	Email Settings
    -------------------------------------- */
 

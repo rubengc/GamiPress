@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2023-01-31 21:57+0100\n"
+"POT-Creation-Date: 2023-02-02 22:11+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -39,7 +39,7 @@ msgstr ""
 #: includes/admin/tools/reset-data.php:32
 #: includes/functions/achievement-types.php:184
 #: includes/functions/achievement-types.php:191
-#: includes/shortcodes/gamipress_earnings.php:50
+#: includes/shortcodes/gamipress_earnings.php:51
 #: includes/shortcodes/gamipress_email_settings.php:149
 msgid "Achievements"
 msgstr ""
@@ -53,7 +53,7 @@ msgstr ""
 #: includes/admin/tools/reset-data.php:38 includes/admin/users.php:201
 #: includes/functions/rank-types.php:186 includes/functions/rank-types.php:193
 #: includes/privacy/exporters/user-data.php:136
-#: includes/shortcodes/gamipress_earnings.php:60
+#: includes/shortcodes/gamipress_earnings.php:61
 #: includes/shortcodes/gamipress_email_settings.php:168
 msgid "Ranks"
 msgstr ""
@@ -845,8 +845,8 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:425
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
-#: includes/shortcodes/gamipress_earnings.php:40
-#: includes/shortcodes/gamipress_earnings.php:326
+#: includes/shortcodes/gamipress_earnings.php:41
+#: includes/shortcodes/gamipress_earnings.php:334
 #: includes/shortcodes/gamipress_email_settings.php:130 templates/points.php:18
 msgid "Points"
 msgstr ""
@@ -944,8 +944,8 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:411
 #: includes/custom-tables/user-earnings.php:418
 #: includes/shortcodes/gamipress_achievements.php:166
-#: includes/shortcodes/gamipress_earnings.php:77
-#: includes/shortcodes/gamipress_earnings.php:320
+#: includes/shortcodes/gamipress_earnings.php:78
+#: includes/shortcodes/gamipress_earnings.php:328
 #: includes/shortcodes/gamipress_email_settings.php:48
 #: includes/shortcodes/gamipress_inline_last_achievements_earned.php:67
 #: includes/shortcodes/gamipress_inline_user_rank.php:88
@@ -1493,7 +1493,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/requirements.php:49
 #: includes/shortcodes/gamipress_achievements.php:130
-#: includes/shortcodes/gamipress_earnings.php:84
+#: includes/shortcodes/gamipress_earnings.php:91
 #: includes/shortcodes/gamipress_inline_last_achievements_earned.php:74
 #: includes/shortcodes/gamipress_last_achievements_earned.php:77
 #: includes/shortcodes/gamipress_logs.php:64
@@ -3081,7 +3081,7 @@ msgid "You need to choose at least 1 type to export."
 msgstr ""
 
 #: includes/admin/tools/import-export-earnings.php:245
-#: includes/shortcodes/gamipress_earnings.php:324
+#: includes/shortcodes/gamipress_earnings.php:332
 msgid "Description"
 msgstr ""
 
@@ -3100,7 +3100,7 @@ msgstr ""
 #: includes/custom-tables/user-earnings.php:426
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:250
-#: includes/shortcodes/gamipress_earnings.php:325
+#: includes/shortcodes/gamipress_earnings.php:333
 #: includes/shortcodes/gamipress_logs.php:81
 msgid "Date"
 msgstr ""
@@ -5100,9 +5100,9 @@ msgid "Select an User"
 msgstr ""
 
 #: includes/scripts.php:186 includes/shortcodes/gamipress_achievements.php:71
-#: includes/shortcodes/gamipress_earnings.php:131
-#: includes/shortcodes/gamipress_earnings.php:168
-#: includes/shortcodes/gamipress_earnings.php:205
+#: includes/shortcodes/gamipress_earnings.php:138
+#: includes/shortcodes/gamipress_earnings.php:175
+#: includes/shortcodes/gamipress_earnings.php:212
 #: includes/shortcodes/gamipress_logs.php:34
 #: includes/shortcodes/gamipress_points.php:34
 #: includes/shortcodes/gamipress_points_types.php:34
@@ -5371,7 +5371,7 @@ msgid "Display the times that all users have earned this achievement."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievement.php:119
-#: includes/shortcodes/gamipress_earnings.php:174
+#: includes/shortcodes/gamipress_earnings.php:181
 msgid "Show Steps"
 msgstr ""
 
@@ -5441,7 +5441,7 @@ msgid "Query"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:65
-#: includes/shortcodes/gamipress_earnings.php:161
+#: includes/shortcodes/gamipress_earnings.php:168
 msgid "Achievement Type(s)"
 msgstr ""
 
@@ -5627,14 +5627,14 @@ msgid "Points to unlock"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:153
-#: includes/shortcodes/gamipress_earnings.php:97
+#: includes/shortcodes/gamipress_earnings.php:104
 #: includes/shortcodes/gamipress_logs.php:90
 #: includes/shortcodes/gamipress_ranks.php:102
 msgid "Order"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:154
-#: includes/shortcodes/gamipress_earnings.php:98
+#: includes/shortcodes/gamipress_earnings.php:105
 #: includes/shortcodes/gamipress_logs.php:91
 #: includes/shortcodes/gamipress_ranks.php:103
 msgid "Sort order."
@@ -5653,7 +5653,7 @@ msgid "Descending"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:160
-#: includes/shortcodes/gamipress_earnings.php:70
+#: includes/shortcodes/gamipress_earnings.php:71
 #: includes/shortcodes/gamipress_email_settings.php:41
 #: includes/shortcodes/gamipress_inline_last_achievements_earned.php:60
 #: includes/shortcodes/gamipress_inline_user_rank.php:81
@@ -5676,7 +5676,7 @@ msgid "Show achievements earned by a specific user."
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:173
-#: includes/shortcodes/gamipress_earnings.php:104
+#: includes/shortcodes/gamipress_earnings.php:111
 #: includes/shortcodes/gamipress_logs.php:97
 #: includes/shortcodes/gamipress_ranks.php:122
 msgid "Include"
@@ -5696,7 +5696,7 @@ msgid "Select achievements"
 msgstr ""
 
 #: includes/shortcodes/gamipress_achievements.php:187
-#: includes/shortcodes/gamipress_earnings.php:109
+#: includes/shortcodes/gamipress_earnings.php:116
 #: includes/shortcodes/gamipress_logs.php:102
 #: includes/shortcodes/gamipress_ranks.php:136
 msgid "Exclude"
@@ -5754,52 +5754,60 @@ msgstr ""
 msgid "Display a list of user earnings."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:71
+#: includes/shortcodes/gamipress_earnings.php:72
 msgid "Show only earned items of the current logged in user."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:78
+#: includes/shortcodes/gamipress_earnings.php:79
 msgid "Show only earned items by a specific user. Leave blank to show earned items of all users."
 msgstr ""
 
 #: includes/shortcodes/gamipress_earnings.php:85
+msgid "Force Responsive"
+msgstr ""
+
+#: includes/shortcodes/gamipress_earnings.php:86
+msgid "Force to display the earnings table with the responsive style even if is displayed in a big screen."
+msgstr ""
+
+#: includes/shortcodes/gamipress_earnings.php:92
 msgid "Number of items to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:90
+#: includes/shortcodes/gamipress_earnings.php:97
 #: includes/shortcodes/gamipress_logs.php:70
 msgid "Enable Pagination"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:91
+#: includes/shortcodes/gamipress_earnings.php:98
 msgid "Show pagination links to navigate through all earned items."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:100
+#: includes/shortcodes/gamipress_earnings.php:107
 msgid "Newest"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:100
+#: includes/shortcodes/gamipress_earnings.php:107
 msgid "Older"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:105
+#: includes/shortcodes/gamipress_earnings.php:112
 msgid "Comma-separated list of specific earnings IDs to include."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:110
+#: includes/shortcodes/gamipress_earnings.php:117
 msgid "Comma-separated list of specific earnings IDs to exclude."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:117
+#: includes/shortcodes/gamipress_earnings.php:124
 msgid "Show Points"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:118
+#: includes/shortcodes/gamipress_earnings.php:125
 msgid "Show points earned and deducted."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:124
+#: includes/shortcodes/gamipress_earnings.php:131
 #: includes/shortcodes/gamipress_points.php:27
 #: includes/shortcodes/gamipress_points_types.php:27
 #: includes/shortcodes/gamipress_site_points.php:27
@@ -5807,7 +5815,7 @@ msgstr ""
 msgid "Points Type(s)"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:125
+#: includes/shortcodes/gamipress_earnings.php:132
 #: includes/shortcodes/gamipress_points.php:28
 #: includes/shortcodes/gamipress_points_types.php:28
 #: includes/shortcodes/gamipress_site_points.php:28
@@ -5815,7 +5823,7 @@ msgstr ""
 msgid "Points type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:126
+#: includes/shortcodes/gamipress_earnings.php:133
 #: includes/shortcodes/gamipress_points.php:29
 #: includes/shortcodes/gamipress_points_types.php:29
 #: includes/shortcodes/gamipress_site_points.php:29
@@ -5823,82 +5831,82 @@ msgstr ""
 msgid "Single or comma-separated list of points type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:137
+#: includes/shortcodes/gamipress_earnings.php:144
 #: includes/shortcodes/gamipress_points_types.php:85
 msgid "Show Points Awards"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:138
+#: includes/shortcodes/gamipress_earnings.php:145
 msgid "Show points awarded."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:144
+#: includes/shortcodes/gamipress_earnings.php:151
 #: includes/shortcodes/gamipress_points_types.php:92
 msgid "Show Points Deductions"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:145
+#: includes/shortcodes/gamipress_earnings.php:152
 msgid "Show points deducted."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:154
+#: includes/shortcodes/gamipress_earnings.php:161
 msgid "Show Achievements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:155
+#: includes/shortcodes/gamipress_earnings.php:162
 msgid "Show achievements earned."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:162
+#: includes/shortcodes/gamipress_earnings.php:169
 msgid "Achievements type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:163
+#: includes/shortcodes/gamipress_earnings.php:170
 msgid "Single or comma-separated list of achievements type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:175
+#: includes/shortcodes/gamipress_earnings.php:182
 msgid "Show steps completed."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:181
+#: includes/shortcodes/gamipress_earnings.php:188
 msgid "Show Achievements Without Points"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:182
+#: includes/shortcodes/gamipress_earnings.php:189
 msgid "Show achievements that do not award points."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:191
+#: includes/shortcodes/gamipress_earnings.php:198
 msgid "Show Ranks"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:192
+#: includes/shortcodes/gamipress_earnings.php:199
 msgid "Show ranks reached."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:198
+#: includes/shortcodes/gamipress_earnings.php:205
 #: includes/shortcodes/gamipress_ranks.php:60
 msgid "Rank Type(s)"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:199
+#: includes/shortcodes/gamipress_earnings.php:206
 msgid "Ranks type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:200
+#: includes/shortcodes/gamipress_earnings.php:207
 msgid "Single or comma-separated list of ranks type(s) to display."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:211
+#: includes/shortcodes/gamipress_earnings.php:218
 msgid "Show Rank Requirements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:212
+#: includes/shortcodes/gamipress_earnings.php:219
 msgid "Show rank requirements completed."
 msgstr ""
 
-#: includes/shortcodes/gamipress_earnings.php:323
+#: includes/shortcodes/gamipress_earnings.php:331
 msgid "Thumbnail"
 msgstr ""
 
@@ -7201,7 +7209,7 @@ msgstr ""
 msgid "Load More"
 msgstr ""
 
-#: templates/earnings.php:162
+#: templates/earnings.php:169
 msgid "You have not earned anything yet."
 msgstr ""
 

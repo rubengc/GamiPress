@@ -28,6 +28,7 @@ function gamipress_register_earnings_shortcode() {
                 'fields' => array(
                     'current_user',
                     'user_id',
+                    'force_responsive',
                     'limit',
                     'pagination',
                     'order',
@@ -79,6 +80,12 @@ function gamipress_register_earnings_shortcode() {
                 'type'        => 'select',
                 'default'     => '',
                 'options_cb'  => 'gamipress_options_cb_users'
+            ),
+            'force_responsive' => array(
+                'name' 	=> __( 'Force Responsive', 'gamipress' ),
+                'desc' 	=> __( 'Force to display the earnings table with the responsive style even if is displayed in a big screen.', 'gamipress' ),
+                'type' 	=> 'checkbox',
+                'classes'   => 'gamipress-switch',
             ),
             'limit' => array(
                 'name'        => __( 'Limit', 'gamipress' ),
@@ -242,6 +249,7 @@ function gamipress_earnings_shortcode( $atts = array(), $content = '' ) {
     $shortcode_defaults = array(
         'current_user'                  => 'yes',
         'user_id'                       => '0',
+        'force_responsive'              => '',
         'limit'                         => '10',
         'pagination'                    => 'yes',
         'order'                         => 'DESC',
