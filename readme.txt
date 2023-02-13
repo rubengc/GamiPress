@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.1
-Stable tag: 2.5.7
+Stable tag: 2.5.7.1
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -263,6 +263,13 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.5.7.1 =
+
+* **Bug Fixes**
+* Fixed typo that caused User Earnings query not work correctly.
+* **Improvements**
+* Improved escaping of SQL queries.
 
 = 2.5.7 =
 

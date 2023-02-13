@@ -280,6 +280,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.7.1 ###
+
+* **Bug Fixes**
+* Fixed typo that caused User Earnings query not work correctly.
+* **Improvements**
+* Improved escaping of SQL queries.
+
 ### 2.5.7 ###
 
 * **Improvements**

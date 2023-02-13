@@ -50,6 +50,9 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
     // Points Type
     $points_type_where = gamipress_custom_table_where( $qv, 'points_type', 'points_type', 'string' );
 
+    $post_type_where = str_replace( ' AND ', '', $post_type_where );
+    $points_type_where = str_replace( ' AND ', '', $points_type_where );
+
     if( ! empty( $post_type_where ) && ! empty( $points_type_where ) ) {
 
         if( isset( $qv['force_types'] ) && $qv['force_types'] === true ) {

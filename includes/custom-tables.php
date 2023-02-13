@@ -184,7 +184,7 @@ function gamipress_custom_table_where( $query_vars, $field_id, $table_field, $fi
             if( $field_type === 'string' || $field_type === 'text' ) {
 
                 // Sanitize
-                $value = array_map( 'sanitize_text_field', $qv[$field_id] );
+                $value = array_map( 'esc_sql', $qv[$field_id] );
 
                 // Join values by a comma-separated list of strings
                 $value = "'" . implode( "', '", $value ) . "'";
@@ -207,7 +207,7 @@ function gamipress_custom_table_where( $query_vars, $field_id, $table_field, $fi
 
             if( $field_type === 'string' || $field_type === 'text' ) {
 
-                $value = sanitize_text_field( $qv[$field_id] );
+                $value = esc_sql( $qv[$field_id] );
 
                 $where .= " AND {$table_name}.{$table_field} {$single_operator} '{$value}'";
 
