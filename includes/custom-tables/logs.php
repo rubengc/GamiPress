@@ -34,91 +34,22 @@ function gamipress_logs_query_where( $where, $ct_query ) {
     $qv = $ct_query->query_vars;
 
     // Type
-    if( isset( $qv['type'] ) && ! empty( $qv['type'] ) ) {
-
-        $type = $qv['type'];
-
-        if( is_array( $type ) ) {
-            $type = "'" . implode( "', '", $type ) . "'";
-
-            $where .= " AND {$table_name}.type IN ( {$type} )";
-        } else {
-            $where .= " AND {$table_name}.type = '{$type}'";
-        }
-
-    }
+    $where .= gamipress_custom_table_where( $qv, 'type', 'type', 'string' );
 
     // Trigger Type
-    if( isset( $qv['trigger_type'] ) && ! empty( $qv['trigger_type'] ) && is_gamipress_upgraded_to( '1.4.7' ) ) {
-
-        $trigger_type = $qv['trigger_type'];
-
-        if( is_array( $trigger_type ) ) {
-            $trigger_type = "'" . implode( "', '", $trigger_type ) . "'";
-
-            $where .= " AND {$table_name}.trigger_type IN ( {$trigger_type} )";
-        } else {
-            $where .= " AND {$table_name}.trigger_type = '{$trigger_type}'";
-        }
-
-    }
+    $where .= gamipress_custom_table_where( $qv, 'trigger_type', 'trigger_type', 'string' );
 
     // Access
-    if( isset( $qv['access'] ) && ! empty( $qv['access'] ) ) {
-
-        $access = $qv['access'];
-
-        if( is_array( $access ) ) {
-            $access = "'" . implode( "', '", $access ) . "'";
-
-            $where .= " AND {$table_name}.access IN ( {$access} )";
-        } else {
-            $where .= " AND {$table_name}.access = '{$access}'";
-        }
-
-    }
+    $where .= gamipress_custom_table_where( $qv, 'access', 'access', 'string' );
 
     // User ID
-    if( isset( $qv['user_id'] ) && absint( $qv['user_id'] ) !== 0 ) {
-
-        $user_id = $qv['user_id'];
-
-        if( is_array( $user_id ) ) {
-            $user_id = implode( ", ", $user_id );
-
-            $where .= " AND {$table_name}.user_id IN ( {$user_id} )";
-        } else {
-            $where .= " AND {$table_name}.user_id = {$user_id}";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'user_id', 'user_id', 'integer' );
 
     // Include
-    if( isset( $qv['log__in'] ) && ! empty( $qv['log__in'] ) ) {
-
-        if( is_array( $qv['log__in'] ) ) {
-            $include = implode( ", ", $qv['log__in'] );
-        } else {
-            $include = $qv['log__in'];
-        }
-
-        if( ! empty( $include ) ) {
-            $where .= " AND {$table_name}.log_id IN ( {$include} )";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'log__in', 'log_id', 'integer' );
 
     // Exclude
-    if( isset( $qv['log__not_in'] ) && ! empty( $qv['log__not_in'] ) ) {
-
-        if( is_array( $qv['log__not_in'] ) ) {
-            $exclude = implode( ", ", $qv['log__not_in'] );
-        } else {
-            $exclude = $qv['log__not_in'];
-        }
-
-        if( ! empty( $exclude ) ) {
-            $where .= " AND {$table_name}.log_id NOT IN ( {$exclude} )";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'log__not_in', 'log_id', 'integer', '!=', 'NOT IN' );
 
     // Before
     if( isset( $qv['before'] ) ) {

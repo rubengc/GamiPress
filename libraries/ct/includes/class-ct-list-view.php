@@ -280,6 +280,15 @@ if ( ! class_exists( 'CT_List_View' ) ) :
                 wp_die( __( 'Sorry, you are not allowed to delete items of this type.' ) );
             }
 
+            // Nonce check
+            if ( ! isset( $_REQUEST['_wpnonce'] ) ) {
+                wp_die( __( 'Sorry, you are not allowed to delete items of this type.' ) );
+            }
+
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'bulk-' . sanitize_key( $ct_table->labels->plural_name ) ) ) {
+                wp_die( __( 'Sorry, you are not allowed to delete items of this type.' ) );
+            }
+
             $object_ids = array();
 
             // Check received items

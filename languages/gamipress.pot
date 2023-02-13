@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2023-02-02 22:11+0100\n"
+"POT-Creation-Date: 2023-02-13 11:14+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -50,7 +50,7 @@ msgstr ""
 #: includes/admin/tools/bulk-revokes.php:228
 #: includes/admin/tools/import-export-earnings.php:53
 #: includes/admin/tools/import-export-setup.php:53
-#: includes/admin/tools/reset-data.php:38 includes/admin/users.php:201
+#: includes/admin/tools/reset-data.php:38 includes/admin/users.php:206
 #: includes/functions/rank-types.php:186 includes/functions/rank-types.php:193
 #: includes/privacy/exporters/user-data.php:136
 #: includes/shortcodes/gamipress_earnings.php:61
@@ -110,7 +110,7 @@ msgid "Rank Types"
 msgstr ""
 
 #: includes/admin.php:368 includes/admin/pages/dashboard.php:252
-#: includes/admin/users.php:465 includes/custom-tables.php:35
+#: includes/admin/users.php:470 includes/custom-tables.php:35
 #: includes/custom-tables.php:48 includes/privacy/erasers/user-earnings.php:24
 #: includes/privacy/exporters/user-earnings.php:24
 #: includes/privacy/exporters/user-earnings.php:77
@@ -176,8 +176,8 @@ msgid "Thank you for using <a href=\"%1$s\" target=\"_blank\">GamiPress</a>! Ple
 msgstr ""
 
 #: includes/admin/achievements.php:38 includes/admin/ranks.php:61
-#: includes/custom-tables/user-earnings.php:417
-#: includes/custom-tables/user-earnings.php:424
+#: includes/custom-tables/user-earnings.php:326
+#: includes/custom-tables/user-earnings.php:333
 msgid "Name"
 msgstr ""
 
@@ -294,7 +294,7 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:35
 #: includes/admin/tools/import-export-setup.php:35
 #: includes/admin/tools/reset-data.php:35
-#: includes/custom-tables/user-earnings.php:484 includes/post-types.php:324
+#: includes/custom-tables/user-earnings.php:393 includes/post-types.php:324
 #: includes/post-types.php:330 includes/post-types.php:336
 msgid "Points Awards"
 msgstr ""
@@ -312,7 +312,7 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:36
 #: includes/admin/tools/import-export-setup.php:36
 #: includes/admin/tools/reset-data.php:36
-#: includes/custom-tables/user-earnings.php:485 includes/post-types.php:358
+#: includes/custom-tables/user-earnings.php:394 includes/post-types.php:358
 #: includes/post-types.php:364 includes/post-types.php:370
 msgid "Points Deductions"
 msgstr ""
@@ -378,7 +378,7 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:45
 #: includes/admin/tools/import-export-setup.php:45
 #: includes/admin/tools/reset-data.php:33
-#: includes/custom-tables/user-earnings.php:478 includes/post-types.php:427
+#: includes/custom-tables/user-earnings.php:387 includes/post-types.php:427
 #: includes/post-types.php:433 includes/post-types.php:439
 msgid "Steps"
 msgstr ""
@@ -429,7 +429,7 @@ msgstr ""
 #: includes/admin/contextual-help.php:134
 #: includes/admin/meta-boxes/requirements-ui.php:34
 #: includes/admin/settings/email.php:376 includes/admin/tools/reset-data.php:39
-#: includes/custom-tables/user-earnings.php:491 includes/post-types.php:496
+#: includes/custom-tables/user-earnings.php:400 includes/post-types.php:496
 #: includes/post-types.php:502 includes/post-types.php:508
 msgid "Rank Requirements"
 msgstr ""
@@ -505,7 +505,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes.php:349
 #: includes/admin/meta-boxes/requirements-ui.php:480
-#: includes/admin/users.php:511
+#: includes/admin/users.php:516
 msgid "Choose an achievement type"
 msgstr ""
 
@@ -539,7 +539,7 @@ msgid "Choose an option"
 msgstr ""
 
 #: includes/admin/meta-boxes.php:441
-#: includes/custom-tables/user-earnings.php:528
+#: includes/custom-tables/user-earnings.php:437
 msgid "All"
 msgstr ""
 
@@ -751,13 +751,13 @@ msgid "Visibility:"
 msgstr ""
 
 #: includes/admin/meta-boxes/log-extra-data-ui.php:70
-#: includes/custom-tables/logs.php:318
+#: includes/custom-tables/logs.php:249
 #: includes/shortcodes/gamipress_logs.php:58
 msgid "Public"
 msgstr ""
 
 #: includes/admin/meta-boxes/log-extra-data-ui.php:70
-#: includes/custom-tables/logs.php:318
+#: includes/custom-tables/logs.php:249
 #: includes/shortcodes/gamipress_logs.php:59
 msgid "Private"
 msgstr ""
@@ -816,7 +816,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/log-extra-data-ui.php:184
 #: includes/admin/requirements.php:41 includes/admin/requirements.php:80
-#: includes/ajax-functions.php:559 includes/compatibility/1.2.8.php:1000
+#: includes/ajax-functions.php:564 includes/compatibility/1.2.8.php:1000
 #: includes/functions/achievement-types.php:155
 #: includes/functions/achievement-types.php:162
 #: includes/shortcodes/gamipress_achievement.php:27
@@ -839,10 +839,10 @@ msgstr ""
 #: includes/admin/tools/bulk-revokes.php:203
 #: includes/admin/tools/import-export-earnings.php:249
 #: includes/admin/tools/import-export-points.php:142
-#: includes/admin/users.php:344 includes/ajax-functions.php:764
-#: includes/ajax-functions.php:898 includes/compatibility/1.2.8.php:1021
-#: includes/custom-tables/user-earnings.php:419
-#: includes/custom-tables/user-earnings.php:425
+#: includes/admin/users.php:349 includes/ajax-functions.php:769
+#: includes/ajax-functions.php:903 includes/compatibility/1.2.8.php:1021
+#: includes/custom-tables/user-earnings.php:328
+#: includes/custom-tables/user-earnings.php:334
 #: includes/functions/points-types.php:184
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:41
@@ -882,7 +882,7 @@ msgstr ""
 #: includes/admin/meta-boxes/log-extra-data-ui.php:230
 #: includes/admin/requirements.php:43 includes/admin/requirements.php:83
 #: includes/admin/tools/import-export-ranks.php:155
-#: includes/ajax-functions.php:608 includes/functions/rank-types.php:156
+#: includes/ajax-functions.php:613 includes/functions/rank-types.php:156
 #: includes/functions/rank-types.php:163
 #: includes/shortcodes/gamipress_inline_rank.php:27
 #: includes/shortcodes/gamipress_inline_user_rank.php:46
@@ -898,7 +898,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/log-extra-data-ui.php:246
 #: includes/admin/settings/general.php:31 includes/compatibility/1.2.8.php:1046
-#: includes/custom-tables/logs.php:270
+#: includes/custom-tables/logs.php:201
 msgid "Administrator"
 msgstr ""
 
@@ -920,7 +920,7 @@ msgstr ""
 #: includes/admin/tools/import-export-achievements.php:54
 #: includes/admin/tools/import-export-earnings.php:84
 #: includes/admin/tools/import-export-ranks.php:54
-#: includes/custom-tables/logs.php:266
+#: includes/custom-tables/logs.php:197
 #: includes/privacy/exporters/user-earnings.php:131
 #: includes/shortcodes/gamipress_achievements.php:142
 #: includes/shortcodes/gamipress_ranks.php:93
@@ -940,9 +940,9 @@ msgstr ""
 #: includes/admin/tools/import-export-earnings.php:246
 #: includes/admin/tools/import-export-points.php:141
 #: includes/admin/tools/import-export-ranks.php:154
-#: includes/compatibility/1.2.8.php:302 includes/custom-tables/logs.php:268
-#: includes/custom-tables/user-earnings.php:411
-#: includes/custom-tables/user-earnings.php:418
+#: includes/compatibility/1.2.8.php:302 includes/custom-tables/logs.php:199
+#: includes/custom-tables/user-earnings.php:320
+#: includes/custom-tables/user-earnings.php:327
 #: includes/shortcodes/gamipress_achievements.php:166
 #: includes/shortcodes/gamipress_earnings.php:78
 #: includes/shortcodes/gamipress_earnings.php:328
@@ -965,7 +965,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/logs.php:54
 #: includes/admin/tools/logs-clean-up.php:59
-#: includes/compatibility/1.2.8.php:308 includes/custom-tables/logs.php:267
+#: includes/compatibility/1.2.8.php:308 includes/custom-tables/logs.php:198
 #: includes/privacy/exporters/logs.php:134
 #: includes/privacy/exporters/user-earnings.php:143
 #: includes/privacy/exporters/user-earnings.php:163
@@ -1291,8 +1291,8 @@ msgstr ""
 #: includes/admin/tools/import-export-setup.php:354
 #: includes/admin/tools/logs-clean-up.php:111
 #: includes/admin/tools/recount-activity.php:95
-#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:741
-#: includes/ajax-functions.php:866
+#: includes/admin/tools/reset-data.php:100 includes/ajax-functions.php:746
+#: includes/ajax-functions.php:871
 msgid "You are not allowed to perform this action."
 msgstr ""
 
@@ -1926,8 +1926,8 @@ msgid "Next %s"
 msgstr ""
 
 #: includes/admin/ranks.php:211 includes/admin/ranks.php:234
-#: includes/admin/users.php:257 includes/admin/users.php:353
-#: includes/admin/users.php:393
+#: includes/admin/users.php:262 includes/admin/users.php:358
+#: includes/admin/users.php:398
 msgid "Edit"
 msgstr ""
 
@@ -2321,8 +2321,8 @@ msgstr ""
 msgid "Used when user expend an amount of points. Available tags:"
 msgstr ""
 
-#: includes/admin/settings/logs.php:54 includes/ajax-functions.php:797
-#: includes/ajax-functions.php:931
+#: includes/admin/settings/logs.php:54 includes/ajax-functions.php:802
+#: includes/ajax-functions.php:936
 msgid "{user} expended {points} {points_type} for a new total of {total_points} {points_type}"
 msgstr ""
 
@@ -2574,7 +2574,7 @@ msgid "Register on user earnings"
 msgstr ""
 
 #: includes/admin/tools/bulk-awards.php:52
-#: includes/admin/tools/bulk-revokes.php:52 includes/admin/users.php:406
+#: includes/admin/tools/bulk-revokes.php:52 includes/admin/users.php:411
 msgid "Check this option to register this balance movement on user earnings."
 msgstr ""
 
@@ -2584,12 +2584,12 @@ msgid "Earning entry text"
 msgstr ""
 
 #: includes/admin/tools/bulk-awards.php:58
-#: includes/admin/tools/bulk-revokes.php:58 includes/admin/users.php:412
+#: includes/admin/tools/bulk-revokes.php:58 includes/admin/users.php:417
 msgid "Enter the line text to be displayed on user earnings."
 msgstr ""
 
 #: includes/admin/tools/bulk-awards.php:60
-#: includes/admin/tools/bulk-revokes.php:60 includes/admin/users.php:411
+#: includes/admin/tools/bulk-revokes.php:60 includes/admin/users.php:416
 msgid "Manual balance adjustment"
 msgstr ""
 
@@ -3094,10 +3094,10 @@ msgid "Element Type"
 msgstr ""
 
 #: includes/admin/tools/import-export-earnings.php:251
-#: includes/custom-tables/logs.php:271
-#: includes/custom-tables/user-earnings.php:412
-#: includes/custom-tables/user-earnings.php:420
-#: includes/custom-tables/user-earnings.php:426
+#: includes/custom-tables/logs.php:202
+#: includes/custom-tables/user-earnings.php:321
+#: includes/custom-tables/user-earnings.php:329
+#: includes/custom-tables/user-earnings.php:335
 #: includes/privacy/exporters/logs.php:181
 #: includes/privacy/exporters/user-earnings.php:250
 #: includes/shortcodes/gamipress_earnings.php:333
@@ -3730,12 +3730,13 @@ msgid "GamiPress"
 msgstr ""
 
 #: includes/admin/users.php:64 includes/admin/users.php:112
-#: includes/admin/users.php:547 includes/admin/users.php:555
-#: includes/admin/users.php:732 includes/admin/users.php:740
+#: includes/admin/users.php:117 includes/admin/users.php:552
+#: includes/admin/users.php:560 includes/admin/users.php:737
+#: includes/admin/users.php:745
 msgid "You can perform this action."
 msgstr ""
 
-#: includes/admin/users.php:68 includes/admin/users.php:117
+#: includes/admin/users.php:68 includes/admin/users.php:122
 #: includes/api/logs.php:209 includes/api/user-earnings.php:219
 msgid "Invalid user ID."
 msgstr ""
@@ -3752,193 +3753,193 @@ msgstr ""
 msgid "Rank updated successfully."
 msgstr ""
 
-#: includes/admin/users.php:122
+#: includes/admin/users.php:127
 msgid "Invalid points amount."
 msgstr ""
 
-#: includes/admin/users.php:127 includes/api/user-earnings.php:235
+#: includes/admin/users.php:132 includes/api/user-earnings.php:235
 msgid "Invalid points type."
 msgstr ""
 
-#: includes/admin/users.php:169
+#: includes/admin/users.php:174
 msgid "Points updated successfully."
 msgstr ""
 
-#: includes/admin/users.php:201
+#: includes/admin/users.php:206
 msgid "Your Ranks"
 msgstr ""
 
-#: includes/admin/users.php:209
+#: includes/admin/users.php:214
 #, php-format
 msgid "No rank types configured, visit %s to configure some rank types."
 msgstr ""
 
-#: includes/admin/users.php:209 includes/admin/users.php:251
-#: includes/admin/users.php:329
+#: includes/admin/users.php:214 includes/admin/users.php:256
+#: includes/admin/users.php:334
 msgid "this page"
 msgstr ""
 
-#: includes/admin/users.php:249
+#: includes/admin/users.php:254
 #, php-format
 msgid "No %1$s configured, visit %2$s to configure some %1$s."
 msgstr ""
 
-#: includes/admin/users.php:267
+#: includes/admin/users.php:272
 #, php-format
 msgid "%s listed are ordered by priority."
 msgstr ""
 
-#: includes/admin/users.php:270 includes/admin/users.php:362
-#: includes/admin/users.php:416
+#: includes/admin/users.php:275 includes/admin/users.php:367
+#: includes/admin/users.php:421
 msgid "Save"
 msgstr ""
 
-#: includes/admin/users.php:271 includes/admin/users.php:363
-#: includes/admin/users.php:417 includes/shortcodes/shortcodes-editor.php:119
+#: includes/admin/users.php:276 includes/admin/users.php:368
+#: includes/admin/users.php:422 includes/shortcodes/shortcodes-editor.php:119
 msgid "Cancel"
 msgstr ""
 
-#: includes/admin/users.php:322 includes/privacy/exporters/user-data.php:101
+#: includes/admin/users.php:327 includes/privacy/exporters/user-data.php:101
 msgid "Points Balances"
 msgstr ""
 
-#: includes/admin/users.php:322
+#: includes/admin/users.php:327
 msgid "Your Balances"
 msgstr ""
 
-#: includes/admin/users.php:329
+#: includes/admin/users.php:334
 #, php-format
 msgid "No points types configured, visit %s to configure some points types."
 msgstr ""
 
-#: includes/admin/users.php:359 includes/admin/users.php:400
+#: includes/admin/users.php:364 includes/admin/users.php:405
 msgid "Enter a new total will automatically log the change and difference between totals."
 msgstr ""
 
-#: includes/admin/users.php:398
+#: includes/admin/users.php:403
 msgid "New balance:"
 msgstr ""
 
-#: includes/admin/users.php:403
+#: includes/admin/users.php:408
 msgid "Register on user earnings:"
 msgstr ""
 
-#: includes/admin/users.php:410
+#: includes/admin/users.php:415
 msgid "Earning entry text:"
 msgstr ""
 
-#: includes/admin/users.php:465
+#: includes/admin/users.php:470
 msgid "Your Achievements"
 msgstr ""
 
-#: includes/admin/users.php:503
+#: includes/admin/users.php:508
 msgid "Award Achievement"
 msgstr ""
 
-#: includes/admin/users.php:508
+#: includes/admin/users.php:513
 msgid "Select an achievement type to award:"
 msgstr ""
 
-#: includes/admin/users.php:587 includes/admin/users.php:774
+#: includes/admin/users.php:592 includes/admin/users.php:779
 msgid "Actions"
 msgstr ""
 
-#: includes/admin/users.php:621 includes/admin/users.php:850
+#: includes/admin/users.php:626 includes/admin/users.php:855
 #, php-format
 msgid "Award %s"
 msgstr ""
 
-#: includes/admin/users.php:630 includes/admin/users.php:859
-#: includes/custom-tables/user-earnings.php:754
+#: includes/admin/users.php:635 includes/admin/users.php:864
+#: includes/custom-tables/user-earnings.php:663
 msgid "Revoke Award"
 msgstr ""
 
-#: includes/admin/users.php:639 includes/admin/users.php:868
+#: includes/admin/users.php:644 includes/admin/users.php:873
 #, php-format
 msgid "No %s found."
 msgstr ""
 
-#: includes/admin/users.php:658 includes/admin/users.php:887
+#: includes/admin/users.php:663 includes/admin/users.php:892
 msgid "Couldn't load this content."
 msgstr ""
 
-#: includes/admin/users.php:688
+#: includes/admin/users.php:693
 msgid "Award Requirement"
 msgstr ""
 
-#: includes/admin/users.php:693
+#: includes/admin/users.php:698
 msgid "Select a requirement type to award:"
 msgstr ""
 
-#: includes/admin/users.php:696
+#: includes/admin/users.php:701
 msgid "Choose a requirement type"
 msgstr ""
 
-#: includes/ajax-functions.php:103
+#: includes/ajax-functions.php:108
 msgid "Invalid setting key."
 msgstr ""
 
-#: includes/ajax-functions.php:107
+#: includes/ajax-functions.php:112
 msgid "Invalid setting value."
 msgstr ""
 
-#: includes/ajax-functions.php:126
+#: includes/ajax-functions.php:131
 msgid "Please, log in to update your email preferences."
 msgstr ""
 
-#: includes/ajax-functions.php:155
+#: includes/ajax-functions.php:160
 msgid "Email preferences saved successfully."
 msgstr ""
 
-#: includes/ajax-functions.php:572 includes/ajax-functions.php:644
+#: includes/ajax-functions.php:577 includes/ajax-functions.php:649
 #, php-format
 msgid "Choose the %s"
 msgstr ""
 
-#: includes/ajax-functions.php:727
+#: includes/ajax-functions.php:732
 msgid "Achievement not found."
 msgstr ""
 
-#: includes/ajax-functions.php:733
+#: includes/ajax-functions.php:738
 msgid "Invalid achievement."
 msgstr ""
 
-#: includes/ajax-functions.php:745 includes/ajax-functions.php:751
-#: includes/ajax-functions.php:871 includes/ajax-functions.php:878
-#: includes/ajax-functions.php:883
+#: includes/ajax-functions.php:750 includes/ajax-functions.php:756
+#: includes/ajax-functions.php:876 includes/ajax-functions.php:883
+#: includes/ajax-functions.php:888
 #, php-format
 msgid "You are not allowed to unlock this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:757
+#: includes/ajax-functions.php:762
 #, php-format
 msgid "You already unlocked this %s."
 msgstr ""
 
-#: includes/ajax-functions.php:776 includes/ajax-functions.php:910
+#: includes/ajax-functions.php:781 includes/ajax-functions.php:915
 #, php-format
 msgid "Insufficient %s."
 msgstr ""
 
-#: includes/ajax-functions.php:806
+#: includes/ajax-functions.php:811
 #, php-format
 msgid "Congratulations! You unlocked the %s %s."
 msgstr ""
 
-#: includes/ajax-functions.php:850
+#: includes/ajax-functions.php:855
 msgid "Rank not found."
 msgstr ""
 
-#: includes/ajax-functions.php:857
+#: includes/ajax-functions.php:862
 msgid "Invalid rank."
 msgstr ""
 
-#: includes/ajax-functions.php:890
+#: includes/ajax-functions.php:895
 #, php-format
 msgid "You are already in a higher %s."
 msgstr ""
 
-#: includes/ajax-functions.php:940
+#: includes/ajax-functions.php:945
 #, php-format
 msgid "Congratulations! You reached to the %s %s."
 msgstr ""
@@ -4173,31 +4174,31 @@ msgstr ""
 msgid "This user has not earned anything"
 msgstr ""
 
-#: includes/custom-tables/logs.php:269
+#: includes/custom-tables/logs.php:200
 msgid "Post"
 msgstr ""
 
-#: includes/custom-tables/logs.php:334
+#: includes/custom-tables/logs.php:265
 msgid "Achievement Step Earn"
 msgstr ""
 
-#: includes/custom-tables/logs.php:336
+#: includes/custom-tables/logs.php:267
 msgid "Achievement Step Award"
 msgstr ""
 
-#: includes/custom-tables/logs.php:341
+#: includes/custom-tables/logs.php:272
 msgid "Rank Requirement Earn"
 msgstr ""
 
-#: includes/custom-tables/logs.php:343
+#: includes/custom-tables/logs.php:274
 msgid "Rank Requirement Award"
 msgstr ""
 
-#: includes/custom-tables/user-earnings.php:431
+#: includes/custom-tables/user-earnings.php:340
 msgid "Action"
 msgstr ""
 
-#: includes/custom-tables/user-earnings.php:687
+#: includes/custom-tables/user-earnings.php:596
 msgid "Show more details"
 msgstr ""
 

@@ -34,82 +34,21 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
     $qv = $ct_query->query_vars;
 
     // User ID
-    if( isset( $qv['user_id'] ) && absint( $qv['user_id'] ) !== 0 ) {
-
-        $user_id = $qv['user_id'];
-
-        if( is_array( $user_id ) ) {
-            $user_id = implode( ", ", $user_id );
-
-            $where .= " AND {$table_name}.user_id IN ( {$user_id} )";
-        } else {
-            $where .= " AND {$table_name}.user_id = {$user_id}";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'user_id', 'user_id', 'integer' );
 
     // Post ID
-    if( isset( $qv['post_id'] ) && absint( $qv['post_id'] ) !== 0 ) {
-
-        $post_id = $qv['post_id'];
-
-        if( is_array( $post_id ) ) {
-            $post_id = implode( ", ", $post_id );
-
-            $where .= " AND {$table_name}.post_id IN ( {$post_id} )";
-        } else {
-            $where .= " AND {$table_name}.post_id = {$post_id}";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'post_id', 'post_id', 'integer' );
 
     // Post Type
-    $post_type_where = '';
-
-    if( isset( $qv['post_type'] ) && ! empty( $qv['post_type'] ) ) {
-
-        $post_type = $qv['post_type'];
-
-        if( is_array( $post_type ) ) {
-            $post_type = "'" . implode( "', '", $post_type ) . "'";
-
-            $post_type_where = "{$table_name}.post_type IN ( {$post_type} )";
-        } else {
-            $post_type_where = "{$table_name}.post_type = '{$post_type}'";
-        }
-
-    }
+    $post_type_where = gamipress_custom_table_where( $qv, 'post_type', 'post_type', 'string' );
 
     // Post Type (using the 'type' key)
     if( isset( $qv['type'] ) && ! empty( $qv['type'] ) ) {
-
-        $post_type = $qv['type'];
-
-        if( is_array( $post_type ) ) {
-            $post_type = "'" . implode( "', '", $post_type ) . "'";
-
-            $post_type_where = "{$table_name}.post_type IN ( {$post_type} )";
-        } else {
-            $post_type_where = "{$table_name}.post_type = '{$post_type}'";
-        }
-
+        $post_type_where = gamipress_custom_table_where( $qv, 'type', 'post_type', 'string' );
     }
 
     // Points Type
-    $points_type_where = '';
-
-    if( isset( $qv['points_type'] ) && ! empty( $qv['points_type'] ) ) {
-
-        $points_type = $qv['points_type'];
-
-        if( is_array( $points_type ) ) {
-            $points_type = "'" . implode( "', '", $points_type ) . "'";
-
-            $points_type_where = "{$table_name}.points_type IN ( {$points_type} )";
-        } else {
-            $points_type_where = "{$table_name}.points_type = '{$points_type}'";
-        }
-
-    }
-
+    $points_type_where = gamipress_custom_table_where( $qv, 'points_type', 'points_type', 'string' );
 
     if( ! empty( $post_type_where ) && ! empty( $points_type_where ) ) {
 
@@ -132,47 +71,14 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     }
 
-    if( isset( $qv['post_type__not_in'] ) && ! empty( $qv['post_type__not_in'] ) ) {
-
-        $post_type__not_in = $qv['post_type__not_in'];
-
-        if( is_array( $post_type__not_in ) ) {
-            $post_type__not_in = "'" . implode( "', '", $post_type__not_in ) . "'";
-
-            $where .= "AND {$table_name}.post_type NOT IN ( {$post_type__not_in} ) ";
-        } else {
-            $where .= "AND {$table_name}.post_type != '{$post_type__not_in}' ";
-        }
-
-    }
+    // Post type NOT IN
+    $where .= gamipress_custom_table_where( $qv, 'post_type__not_in', 'post_type', 'string', '!=', 'NOT IN' );
 
     // Include
-    if( isset( $qv['user_earning__in'] ) && ! empty( $qv['user_earning__in'] ) ) {
-
-        if( is_array( $qv['user_earning__in'] ) ) {
-            $include = implode( ", ", $qv['user_earning__in'] );
-        } else {
-            $include = $qv['user_earning__in'];
-        }
-
-        if( ! empty( $include ) ) {
-            $where .= " AND {$table_name}.user_earning_id IN ( {$include} )";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'user_earning__in', 'user_earning_id', 'integer' );
 
     // Exclude
-    if( isset( $qv['user_earning__not_in'] ) && ! empty( $qv['user_earning__not_in'] ) ) {
-
-        if( is_array( $qv['user_earning__not_in'] ) ) {
-            $exclude = implode( ", ", $qv['user_earning__not_in'] );
-        } else {
-            $exclude = $qv['user_earning__not_in'];
-        }
-
-        if( ! empty( $exclude ) ) {
-            $where .= " AND {$table_name}.user_earning_id NOT IN ( {$exclude} )";
-        }
-    }
+    $where .= gamipress_custom_table_where( $qv, 'user_earning__not_in', 'user_earning_id', 'integer', '!=', 'NOT IN' );
 
     // Since
     if( isset( $qv['since'] ) ) {
@@ -226,14 +132,17 @@ function gamipress_user_earnings_query_where( $where, $ct_query ) {
 
     // Parent post type
     if( isset( $qv['parent_post_type'] ) && ! empty( $qv['parent_post_type'] ) ) {
-        $parent_post_type = $qv['parent_post_type'];
 
-        if( is_array( $parent_post_type ) ) {
+        if( is_array( $qv['parent_post_type'] ) ) {
+            // Sanitize
+            $parent_post_type = array_map( 'sanitize_text_field', $qv['parent_post_type'] );
             $parent_post_type = "'" . implode( "', '", $parent_post_type ) . "'";
 
             $where .= " OR ppt.meta_value IN ( {$parent_post_type} )";
         } else {
-            $$where .= " OR ppt.meta_value = '{$parent_post_type}'";
+            // Sanitize
+            $parent_post_type = sanitize_text_field( $qv['parent_post_type'] );
+            $where .= " OR ppt.meta_value = '{$parent_post_type}'";
         }
     }
 

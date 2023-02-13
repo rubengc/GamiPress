@@ -107,8 +107,13 @@ function gamipress_ajax_profile_update_user_points() {
     $points_type        = sanitize_text_field( $_POST['points_type'] );
     $user_id            = absint( $_POST['user_id'] );
 
-    // Check if user has permissions
+    // Check if user can edit other users
     if ( ! current_user_can( 'edit_user', $user_id ) ) {
+        wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
+    }
+
+    // Check if user can manage GamiPress
+    if( ! current_user_can( gamipress_get_manager_capability() ) ) {
         wp_send_json_error( __( 'You can perform this action.', 'gamipress' ) );
     }
 

@@ -72,6 +72,7 @@ function ct_ajax_list_table_paginate_table( table, paged ) {
         url: ajaxurl,
         data: {
             action: 'ct_ajax_list_table_request',
+            nonce: ct_ajax_list_table.nonce,
             object: object,
             query_args: query_args,
             paged: paged

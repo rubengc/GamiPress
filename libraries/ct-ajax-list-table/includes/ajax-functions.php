@@ -13,6 +13,9 @@ function ct_ajax_list_table_handle_request() {
 
     global $ct_table, $ct_query, $ct_list_table, $ct_ajax_list_items_per_page;
 
+    // Security check, forces to die if not security passed
+    check_ajax_referer( 'ct_ajax_list_table', 'nonce' );
+
     if( ! isset( $_GET['object'] ) ) {
         wp_send_json_error();
     }

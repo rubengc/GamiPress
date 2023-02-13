@@ -280,6 +280,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.7 ###
+
+* **Improvements**
+* Added more permission checks to some ajax functions.
+* Added more nonce checks to prevent CSRF attacks.
+* Added more sanitization checks to database queries.
+
 ### 2.5.6 ###
 
 * **New Features**

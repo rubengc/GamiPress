@@ -2,7 +2,7 @@
 /**
  * Custom Tables - Ajax List Table
  *
- * @package      Custom_Tables\Leaderboards
+ * @package      Custom_Tables\Ajax_List_Table
  * @author       GamiPress <contact@gamipress.com>, rubengc <rubengcdev@gamil.com>
  * @copyright    Copyright (c) GamiPress
  */
@@ -44,7 +44,7 @@ if ( ! class_exists( 'CT_Ajax_List_Table' ) ) :
         private function constants() {
 
             // Plugin version
-            define( 'CT_AJAX_LIST_TABLE_VER', '1.0.0' );
+            define( 'CT_AJAX_LIST_TABLE_VER', '1.0.1' );
 
             // Plugin file
             define( 'CT_AJAX_LIST_TABLE_FILE', __FILE__ );

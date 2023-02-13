@@ -149,3 +149,79 @@ function gamipress_register_custom_tables() {
 
 }
 add_action( 'ct_init', 'gamipress_register_custom_tables' );
+
+/**
+ * Helper function to generate a where from a CT Query
+ *
+ * @since 1.0.0
+ *
+ * @param array     $query_vars         The query vars
+ * @param string    $field_id           The field id
+ * @param string    $table_field        The table field key
+ * @param string    $field_type         The field type (string|integer)
+ * @param string    $single_operator    The single operator (=|!=)
+ * @param string    $array_operator     The array operator (IN|NOT IN)
+ *
+ * @return string
+ */
+function gamipress_custom_table_where( $query_vars, $field_id, $table_field, $field_type, $single_operator = '=', $array_operator = 'IN' ) {
+
+    global $ct_table;
+
+    $table_name = $ct_table->db->table_name;
+
+    $where = '';
+
+    // Shorthand
+    $qv = $query_vars;
+
+    // Type
+    if( isset( $qv[$field_id] ) && ! empty( $qv[$field_id] ) ) {
+
+        if( is_array( $qv[$field_id] ) ) {
+            // Array values
+
+            if( $field_type === 'string' || $field_type === 'text' ) {
+
+                // Sanitize
+                $value = array_map( 'sanitize_text_field', $qv[$field_id] );
+
+                // Join values by a comma-separated list of strings
+                $value = "'" . implode( "', '", $value ) . "'";
+
+                $where .= " AND {$table_name}.{$table_field} {$array_operator} ( {$value} )";
+
+            } else if( $field_type === 'integer' || $field_type === 'int' ) {
+
+                // Sanitize
+                $value = array_map( 'absint', $qv[$field_id] );
+
+                // Join values by a comma-separated list of integers
+                $value =  implode( ", ", $value );
+
+                $where .= " AND {$table_name}.{$table_field} {$array_operator} ( {$value} )";
+
+            }
+        } else {
+            // Single value
+
+            if( $field_type === 'string' || $field_type === 'text' ) {
+
+                $value = sanitize_text_field( $qv[$field_id] );
+
+                $where .= " AND {$table_name}.{$table_field} {$single_operator} '{$value}'";
+
+            } else if( $field_type === 'integer' || $field_type === 'int' ) {
+
+                $value = absint( $qv[$field_id] );
+
+                $where .= " AND {$table_name}.{$table_field} {$single_operator} {$value}";
+
+            }
+        }
+
+    }
+
+    return $where;
+
+}

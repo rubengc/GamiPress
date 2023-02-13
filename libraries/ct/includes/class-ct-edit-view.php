@@ -359,14 +359,28 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                 wp_die( __( 'Sorry, you are not allowed to edit items of this type.' ) );
             }
 
+            $primary_key = $ct_table->db->primary_key;
+
+            if( ! isset( $_POST[$primary_key] ) ) {
+                wp_die( __( 'Invalid item type.' ) );
+            }
+
+            $object_id = $_POST[$primary_key];
+
+            // Nonce check
+            if ( ! isset( $_REQUEST['_wpnonce'] ) ) {
+                wp_die( __( 'Sorry, you are not allowed to edit this item.' ) );
+            }
+
+            if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], 'ct_edit_' . $object_id ) ) {
+                wp_die( __( 'Sorry, you are not allowed to edit this item.' ) );
+            }
+
             $object_data = &$_POST;
 
             unset( $object_data['ct-save'] );
 
             $success = ct_update_object( $object_data );
-
-            $primary_key = $ct_table->db->primary_key;
-            $object_id = $_POST[$primary_key];
 
             $location = add_query_arg( array( $primary_key => $object_id ), $this->get_link() );
 
@@ -491,6 +505,7 @@ if ( ! class_exists( 'CT_Edit_View' ) ) :
                 <form name="ct_edit_form" action="" method="post" id="ct_edit_form">
 
                     <input type="hidden" id="object_id" name="<?php echo $ct_table->db->primary_key; ?>" value="<?php echo $this->object_id; ?>">
+                    <?php wp_nonce_field( 'ct_edit_' . $this->object_id ); ?>
 
                     <?php
                     /**

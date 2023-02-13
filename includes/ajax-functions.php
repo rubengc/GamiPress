@@ -81,6 +81,11 @@ function gamipress_ajax_get_user_earnings() {
     unset( $atts['action'] );
     unset( $atts['page'] );
 
+    // Sanitize
+    foreach( $atts as $attr => $value ) {
+        $atts[$attr] = sanitize_text_field( $value );
+    }
+
 	// Send back our successful response
 	wp_send_json_success( gamipress_do_shortcode( 'gamipress_earnings', $atts ) );
 
