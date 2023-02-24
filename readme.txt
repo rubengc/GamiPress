@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.1
-Stable tag: 2.5.7.1
+Stable tag: 2.5.8
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -264,12 +264,19 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 == Changelog ==
 
+= 2.5.8 =
+
+* **Improvements**
+* Added listeners when user and post metas are added to work with the user and post metas events.
+* **Bug Fixes**
+* Fixed typo that does not allows to check the metas in use correctly.
+
 = 2.5.7.1 =
 
-* **Bug Fixes**
-* Fixed typo that caused User Earnings query not work correctly.
 * **Improvements**
 * Improved escaping of SQL queries.
+* **Bug Fixes**
+* Fixed typo that caused User Earnings query not work correctly.
 
 = 2.5.7 =
 

@@ -523,6 +523,7 @@ function gamipress_user_meta_update_listener( $meta_id, $object_id, $meta_key, $
 
 }
 add_action( 'updated_user_meta', 'gamipress_user_meta_update_listener', 10, 4 );
+add_action( 'added_user_meta', 'gamipress_user_meta_update_listener', 10, 4 );
 
 /**
  * Listener for post meta update
@@ -577,6 +578,7 @@ function gamipress_post_meta_update_listener( $meta_id, $object_id, $meta_key, $
 
 }
 add_action( 'updated_post_meta', 'gamipress_post_meta_update_listener', 10, 4 );
+add_action( 'added_post_meta', 'gamipress_post_meta_update_listener', 10, 4 );
 
 /**
  * Helper function to get meta keys in use
@@ -599,12 +601,12 @@ function gamipress_get_meta_keys_in_use() {
     $postmeta = GamiPress()->db->postmeta;
 
     // Get an array with the meta keys in use
-    $meta_keys_in_use = $wpdb->get_results(
+    $meta_keys_in_use = $wpdb->get_col(
         "SELECT pm.meta_value AS 'meta_value'
          FROM {$postmeta} AS pm
          WHERE pm.meta_key = '_gamipress_meta_key_required'
          AND pm.meta_value != '' 
-         GROUP BY pm.meta_value", ARRAY_N
+         GROUP BY pm.meta_value"
     );
 
     if( ! is_array( $meta_keys_in_use ) ) {

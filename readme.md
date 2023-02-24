@@ -280,6 +280,13 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.8 ###
+
+* **Improvements**
+* Added listeners when user and post metas are added to work with the user and post metas events.
+* **Bug Fixes**
+* Fixed typo that does not allows to check the metas in use correctly.
+
 ### 2.5.7.1 ###
 
 * **Bug Fixes**
