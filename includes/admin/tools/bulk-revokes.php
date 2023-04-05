@@ -452,7 +452,7 @@ function gamipress_ajax_bulk_revokes_tool() {
             }
 
         } else if( $bulk_revoke === 'achievements' ) {
-
+            
             // Revoke achievements
             foreach( $achievements as $achievement ) {
                 gamipress_revoke_achievement_to_user( absint( $achievement ), $user->ID );

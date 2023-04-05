@@ -1356,9 +1356,16 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	$is_recursive_filter = ( current_filter() === 'gamipress_award_achievement');
 	$current_key = null;
 
+    $gamipress_award_achievement_filter = $wp_filter[ 'gamipress_award_achievement' ];
+
+    // Ensure that filter is an array
+    if ( ! is_array( $gamipress_award_achievement_filter ) ) {
+        $gamipress_award_achievement_filter = (array) $gamipress_award_achievement_filter;
+    }
+
 	// Get current position
 	if ( $is_recursive_filter ) {
-		$current_key = key( $wp_filter[ 'gamipress_award_achievement' ] );
+        $current_key = key( $gamipress_award_achievement_filter );
     }
 
     /**
@@ -1375,11 +1382,13 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 	do_action( 'gamipress_award_achievement', $user_id, $achievement_id, $trigger, $site_id, $args );
 
 	if ( $is_recursive_filter ) {
-		reset( $wp_filter[ 'gamipress_award_achievement' ] );
+        
+		reset( $gamipress_award_achievement_filter );
 
-		while ( key( $wp_filter[ 'gamipress_award_achievement' ] ) !== $current_key ) {
-			next( $wp_filter[ 'gamipress_award_achievement' ] );
+		while ( key( $gamipress_award_achievement_filter ) !== $current_key ) {
+			next( $gamipress_award_achievement_filter );
 		}
+
 	}
 
 }
@@ -1875,6 +1884,17 @@ function gamipress_revoke_achievement_to_user( $achievement_id = 0, $user_id = 0
 	if( $earning_id ) {
 		$ct_table->db->delete( $earning_id );
 	}
+
+    /**
+     * Available action for triggering after removing achievement
+     *
+     * @since 2.5.9
+     *
+     * @param int 	$user_id        The given user's ID
+     * @param int 	$achievement_id The given achievement's post ID
+     * @param int 	$earning_id     The user's earning ID
+     */
+	do_action( 'gamipress_revoke_achievement_to_user_after', $user_id, $achievement_id, $earning_id );
 
     ct_reset_setup_table();
 

@@ -2,8 +2,8 @@
 Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
-Tested up to: 6.1
-Stable tag: 2.5.8
+Tested up to: 6.2
+Stable tag: 2.5.9
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -263,6 +263,15 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.5.9 =
+
+* **Improvements**
+* Added new hook to detect complete achievement revoke.
+* Deprecated functions updated to adapt to PHP latest version.
+* Improved SQL queries to clean logs.
+* **Bug Fixes**
+* Fixed rank earners display in multisite with no network-wide activation.
 
 = 2.5.8 =
 

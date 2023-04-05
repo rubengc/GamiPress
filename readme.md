@@ -280,6 +280,15 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.9 ###
+
+* **Improvements**
+* Added new hook to detect complete achievement revoke.
+* Deprecated functions updated to adapt to PHP latest version.
+* Improved SQL queries to clean logs.
+* **Bug Fixes**
+* Fixed rank earners display in multisite with no network-wide activation.
+
 ### 2.5.8 ###
 
 * **Improvements**

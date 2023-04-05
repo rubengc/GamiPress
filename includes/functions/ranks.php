@@ -970,6 +970,10 @@ function gamipress_get_rank_earners( $rank_id = 0, $args = array() ) {
         $meta = "_gamipress_{$rank_type}_rank";
     }
 
+    if ( is_multisite() && ! gamipress_is_network_wide_active() ) {
+        $meta = $wpdb->get_blog_prefix() . $meta;
+    }
+
     // Setup vars
     $from = "{$wpdb->usermeta} AS u ";
     $where = "u.meta_key = '{$meta}' AND u.meta_value = '{$rank_id}' ";

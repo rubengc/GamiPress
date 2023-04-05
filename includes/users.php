@@ -89,12 +89,12 @@ function gamipress_on_delete_user( $id, $reassign ) {
     // Delete all user's earnings
     $wpdb->query( "DELETE ue FROM {$user_earnings} AS ue WHERE ue.user_id = {$id}" );
     // Delete orphaned user earnings metas
-    $wpdb->query( "DELETE uem FROM {$user_earnings_meta} uem LEFT JOIN {$user_earnings} ue ON ue.user_earning_id = uem.user_earning_id WHERE ue.user_earning_id IS NULL" );
+    $wpdb->query( "DELETE uem FROM {$user_earnings_meta} uem INNER JOIN {$user_earnings} ue ON ue.user_earning_id = uem.user_earning_id WHERE ue.user_earning_id IS NULL" );
 
     // Delete all user's logs
     $wpdb->query( "DELETE l FROM {$logs} AS l WHERE l.user_id = {$id}" );
     // Delete orphaned logs metas
-    $wpdb->query( "DELETE lm FROM {$logs_meta} lm LEFT JOIN {$logs} l ON l.log_id = lm.log_id WHERE l.log_id IS NULL" );
+    $wpdb->query( "DELETE lm FROM {$logs_meta} lm INNER JOIN {$logs} l ON l.log_id = lm.log_id WHERE l.log_id IS NULL" );
 
 }
 add_action( 'delete_user', 'gamipress_on_delete_user', 10, 2 );
