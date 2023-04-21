@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.5.9.1 ###
+
+* **Developer Notes**
+* Fixed PHP notices caused by add_submenu_page() function when passing null as first parameter.
+
 ### 2.5.9 ###
 
 * **Improvements**

@@ -60,6 +60,11 @@ Other features
 
 ## Changelog ##
 
+**1.0.7**
+
+* **Bug Fixes**
+* Fixed PHP notices caused by add_submenu_page() function when passing null as first parameter.
+
 **1.0.6**
 
 **Improvements**
