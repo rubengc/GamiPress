@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.6.0 ###
+
+* **Bug Fixes**
+* Fixed issue with Gutenberg Blocks preview in backend.
+
 ### 2.5.9.1 ###
 
 * **Developer Notes**
