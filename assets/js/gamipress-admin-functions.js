@@ -534,3 +534,19 @@ function gamipress_is_valid_url( url ) {
     var result = url.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
     return ( result !== null )
 }
+
+/**
+ * Helper function to remove script tags in a string
+ * @param String s
+ * @returns {string}
+ */
+function gamipress_strip_scripts(s) {
+    var div = document.createElement('div');
+    div.innerHTML = s;
+    var scripts = div.getElementsByTagName('script');
+    var i = scripts.length;
+    while (i--) {
+        scripts[i].parentNode.removeChild(scripts[i]);
+    }
+    return div.innerHTML;
+}

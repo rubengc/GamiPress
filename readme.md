@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.6.1 ###
+
+* **Bug Fixes**
+* Prevent to execute script tags while entering the requirement title to avoid XSS injection.
+
 ### 2.6.0 ###
 
 * **Bug Fixes**

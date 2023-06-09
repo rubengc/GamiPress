@@ -107,7 +107,7 @@
 
     // On change requirement title, also update requirement header title
     $('.requirements-list').on( 'change keyup', '.requirement-title input', function() {
-        $(this).closest('.requirement-row').find('.requirement-header-title strong').html($(this).val());
+        $(this).closest('.requirement-row').find('.requirement-header-title strong').html(gamipress_strip_scripts($(this).val()));
     });
 
     // Listen for our change to our trigger type selectors
