@@ -34,6 +34,7 @@ function gamipress_register_ranks_shortcode() {
 				'fields' => array(
 					'type',
 					'columns',
+					'columns_small',
 				),
 			),
 			'rank' => array(
@@ -83,6 +84,20 @@ function gamipress_register_ranks_shortcode() {
 				),
 				'default' => '1'
 			),
+            'columns_small' => array(
+                'name'        => __( 'Columns in small screens', 'gamipress' ),
+                'description' => __( 'Columns to divide ranks in small screens.', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
+            ),
 			'orderby' => array(
 				'name'        => __( 'Order By', 'gamipress' ),
 				'description' => __( 'Parameter to use for sorting.', 'gamipress' ),
@@ -181,6 +196,7 @@ function gamipress_ranks_shortcode( $atts = array(), $content = '' ) {
 		// Ranks atts
 		'type'        	=> 'all',
 		'columns'       => '1',
+		'columns_small' => '1',
 		'current_user' 	=> 'no',
 		'user_id' 		=> '0',
 		'wpms'        	=> 'no',

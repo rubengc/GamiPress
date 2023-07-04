@@ -33,6 +33,7 @@ function gamipress_register_achievements_shortcode() {
 				'fields' => array(
 					'type',
 					'columns',
+					'columns_small',
 					'filter',
 					'filter_value',
 					'search',
@@ -88,6 +89,20 @@ function gamipress_register_achievements_shortcode() {
 				),
 				'default' => '1'
 			),
+            'columns_small' => array(
+                'name'        => __( 'Columns in small screens', 'gamipress' ),
+                'description' => __( 'Columns to divide achievements in small screens.', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
+            ),
 			'filter' => array(
 				'name'        => __( 'Show Filter', 'gamipress' ),
 				'description' => __( 'Display filter input.', 'gamipress' ),
@@ -232,6 +247,7 @@ function gamipress_achievements_shortcode( $atts = array(), $content = '' ) {
 		// Achievements atts
 		'type'        	    => 'all',
 		'columns'           => '1',
+		'columns_small'     => '1',
 		'filter' 	  	    => 'yes',
 		'filter_value' 	    => 'all',
 		'search' 	  	    => 'yes',

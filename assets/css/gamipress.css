@@ -282,6 +282,41 @@
 	box-sizing: border-box;
 }
 
+.gamipress-columns-small-2 > .gamipress-achievement,
+.gamipress-columns-small-2 > .gamipress-points,
+.gamipress-columns-small-2 > .gamipress-points-type,
+.gamipress-columns-small-2 .gamipress-rank {
+	width: 50%;
+}
+
+.gamipress-columns-small-3 > .gamipress-achievement,
+.gamipress-columns-small-3 > .gamipress-points,
+.gamipress-columns-small-3 > .gamipress-points-type,
+.gamipress-columns-small-3 .gamipress-rank {
+	width: 33%;
+}
+
+.gamipress-columns-small-4 > .gamipress-achievement,
+.gamipress-columns-small-4 > .gamipress-points,
+.gamipress-columns-small-4 > .gamipress-points-type,
+.gamipress-columns-small-4 .gamipress-rank {
+	width: 25%;
+}
+
+.gamipress-columns-small-5 > .gamipress-achievement,
+.gamipress-columns-small-5 > .gamipress-points,
+.gamipress-columns-small-5 > .gamipress-points-type,
+.gamipress-columns-small-5 .gamipress-rank {
+	width: 20%;
+}
+
+.gamipress-columns-small-6 > .gamipress-achievement,
+.gamipress-columns-small-6 > .gamipress-points,
+.gamipress-columns-small-6 > .gamipress-points-type,
+.gamipress-columns-small-6 .gamipress-rank {
+	width: 16.6%;
+}
+
 @media screen and (min-width: 768px) {
 
 	#gamipress-achievements-container[class*="gamipress-columns"] > .gamipress-achievement,

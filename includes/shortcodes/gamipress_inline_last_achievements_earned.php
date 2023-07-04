@@ -37,6 +37,7 @@ function gamipress_register_inline_last_achievements_earned_shortcode() {
                     'user_id',
                     'limit',
                     'columns',
+                    'columns_small',
                 ),
             ),
             'achievement' => array(

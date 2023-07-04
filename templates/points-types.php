@@ -27,6 +27,7 @@ if( $thumbnail_size === 0 ) {
 $classes = array(
     'gamipress-points-types',
     'gamipress-columns-' . $a['columns'],
+    'gamipress-columns-small-' . $a['columns_small'],
     'gamipress-layout-' . $a['layout'],
     'gamipress-align-' . $a['align']
 );

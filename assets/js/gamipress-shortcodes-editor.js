@@ -291,6 +291,7 @@
         // Get the columns and layout fields
         var target = $(this).closest('.cmb2-wrap').find(
             '.cmb2-id-' + selector + '-columns, '
+            + '.cmb2-id-' + selector + '-columns-small, '
             + '.cmb2-id-' + selector + '-layout'
         );
 
@@ -306,6 +307,7 @@
         // If user checks inline, then columns and layout has no sense
         if( args.attributes.inline === 'yes' ) {
             delete args.attributes.columns;
+            delete args.attributes.columns_small;
             delete args.attributes.layout;
         }
 

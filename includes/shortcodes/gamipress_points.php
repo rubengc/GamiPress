@@ -109,6 +109,20 @@ function gamipress_register_points_shortcode() {
                 ),
                 'default'       => '1'
             ),
+            'columns_small' => array(
+                'name'          => __( 'Columns in small screens', 'gamipress' ),
+                'description'   => __( 'Columns to divide each points balance in small screens.', 'gamipress' ),
+                'type' 	        => 'select',
+                'options'       => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default'       => '1'
+            ),
             'layout' => array(
                 'name'          => __( 'Layout', 'gamipress' ),
                 'description'   => __( 'Layout to show the points.', 'gamipress' ),
@@ -171,6 +185,7 @@ function gamipress_points_shortcode( $atts = array(), $content = '' ) {
         'period_end'        => '',
         'inline'            => 'no',
         'columns'           => '1',
+        'columns_small'     => '1',
         'layout'            => 'left',
         'align'	  		    => 'none',
         'wpms'              => 'no',

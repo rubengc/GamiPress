@@ -35,6 +35,7 @@ $classes = array(
     'gamipress-user-points',
     ( $is_current_user ? 'gamipress-is-current-user' : '' ),
     'gamipress-columns-' . $a['columns'],
+    'gamipress-columns-small-' . $a['columns_small'],
     'gamipress-layout-' . $a['layout'],
     'gamipress-align-' . $a['align']
 );

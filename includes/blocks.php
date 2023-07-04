@@ -218,6 +218,7 @@ function gamipress_blocks_selector_fields( $fields, $shortcode ) {
                 'compare' => '!=',
             );
             $fields['columns']['conditions'] = array( $inline_condition );
+            $fields['columns_small']['conditions'] = array( $inline_condition );
             $fields['layout']['conditions'] = array( $inline_condition );
             $fields['align']['conditions'] = array( $inline_condition );
             break;

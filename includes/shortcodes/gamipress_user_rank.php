@@ -39,6 +39,7 @@ function gamipress_register_user_rank_shortcode() {
                     'current_user',
                     'user_id',
                     'columns',
+                    'columns_small',
                 ),
             ),
             'rank' => array(
@@ -102,6 +103,17 @@ function gamipress_register_user_rank_shortcode() {
                 ),
                 'default' => '1'
             ),
+            'columns_small' => array(
+                'name'        => __( 'Columns in small screens', 'gamipress' ),
+                'description' => __( 'Columns to divide ranks in small screens.', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
+            ),
         ), $rank_fields ),
     ) );
 
@@ -137,6 +149,7 @@ function gamipress_user_rank_shortcode( $atts = array(), $content = '' ) {
         'current_user' 	=> 'yes',
         'user_id' 		=> '0',
         'columns'       => '1',
+        'columns_small' => '1',
 
     ), gamipress_rank_shortcode_defaults() ), $atts, $shortcode );
 

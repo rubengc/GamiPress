@@ -40,6 +40,7 @@ function gamipress_register_last_achievements_earned_shortcode() {
                     'user_id',
                     'limit',
                     'columns',
+                    'columns_small',
                 ),
             ),
             'achievement' => array(
@@ -93,6 +94,20 @@ function gamipress_register_last_achievements_earned_shortcode() {
                 ),
                 'default' => '1'
             ),
+            'columns_small' => array(
+                'name'        => __( 'Columns in small screens', 'gamipress' ),
+                'description' => __( 'Columns to divide achievements in small screens (only used when limit is higher than 1).', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
+            ),
 		), $achievement_fields ),
 	) );
 
@@ -124,6 +139,7 @@ function gamipress_last_achievements_earned_shortcode( $atts = array(), $content
 		'user_id'     	    => '0',
 		'limit'     	    => '1',
 		'columns'     	    => '1',
+		'columns_small'     => '1',
 	), gamipress_achievement_shortcode_defaults() ), $atts, $shortcode );
 
     // ---------------------------

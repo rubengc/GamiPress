@@ -50,6 +50,20 @@ function gamipress_register_points_types_shortcode() {
                 ),
                 'default' => '1'
             ),
+            'columns_small' => array(
+                'name'        => __( 'Columns in small screens', 'gamipress' ),
+                'description' => __( 'Columns to divide each points type in small screens.', 'gamipress' ),
+                'type' 	=> 'select',
+                'options' => array(
+                    '1' => __( '1 Column', 'gamipress' ),
+                    '2' => __( '2 Columns', 'gamipress' ),
+                    '3' => __( '3 Columns', 'gamipress' ),
+                    '4' => __( '4 Columns', 'gamipress' ),
+                    '5' => __( '5 Columns', 'gamipress' ),
+                    '6' => __( '6 Columns', 'gamipress' ),
+                ),
+                'default' => '1'
+            ),
             'title_size' => array(
                 'name'              => __( 'Title Size', 'gamipress' ),
                 'description'       => __( 'The points type title size.', 'gamipress' ),
@@ -331,6 +345,7 @@ function gamipress_points_types_shortcode_defaults() {
     return apply_filters( 'gamipress_points_types_shortcode_defaults', array(
         'type'              => 'all',
         'columns'           => '1',
+        'columns_small'     => '1',
         'title_size'        => 'h2',
         'thumbnail'         => 'yes',
         'thumbnail_size'    => '',

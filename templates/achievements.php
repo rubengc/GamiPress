@@ -122,7 +122,7 @@ $a = $gamipress_template_args; ?>
     </div><!-- #gamipress-achievements-filters-wrap -->
 
     <?php // Content Container ?>
-    <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?>">
+    <div id="gamipress-achievements-container" class="gamipress-achievements-container gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?> gamipress-columns-small-<?php echo esc_attr( $a['columns_small'] ); ?>">
         <?php echo $a['query']['achievements']; ?>
     </div>
 

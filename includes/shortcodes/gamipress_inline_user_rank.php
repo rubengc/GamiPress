@@ -39,6 +39,7 @@ function gamipress_register_inline_user_rank_shortcode() {
                     'current_user',
                     'user_id',
                     'columns',
+                    'columns_small',
                 ),
             ),
             'rank' => array(

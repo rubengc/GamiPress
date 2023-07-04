@@ -61,7 +61,7 @@ $user_id = isset( $a['user_id'] ) ? absint( $a['user_id'] ) : get_current_user_i
              */
             do_action( 'gamipress_after_rank_type_title', $rank_type, $a['rank-types'], $a ); ?>
 
-            <div class="gamipress-ranks-container gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?>">
+            <div class="gamipress-ranks-container gamipress-columns-<?php echo esc_attr( $a['columns'] ); ?> gamipress-columns-small-<?php echo esc_attr( $a['columns_small'] ); ?>">
 
                 <?php foreach( $rank_ids as $rank_id ) : ?>
 

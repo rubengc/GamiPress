@@ -280,6 +280,12 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.6.2 ###
+
+* **New Features**
+* Added the field "Columns in small screens" to all blocks and widgets with support to columns.
+* Added the attribute "columns_small" to all shortcodes with support to columns.
+
 ### 2.6.1 ###
 
 * **Bug Fixes**
