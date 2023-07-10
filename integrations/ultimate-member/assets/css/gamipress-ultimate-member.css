@@ -1,0 +1,9 @@
+.um .gamipress-achievements-container * {
+    box-sizing: border-box;
+}
+
+.um-profile .gamipress-ultimate-member-points img,
+.um-profile .gamipress-ultimate-member-achievements img,
+.um-profile .gamipress-ultimate-member-ranks img {
+    display: inline-block !important;
+}

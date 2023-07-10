@@ -280,6 +280,11 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.6.3 ###
+
+* **New Features**
+* Moved all integrations inside GamiPress! Now, is not required anymore to install integrations individually.
+
 ### 2.6.2 ###
 
 * **New Features**

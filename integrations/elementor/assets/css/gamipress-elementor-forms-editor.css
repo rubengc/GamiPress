@@ -1,0 +1,30 @@
+.elementor-control-content .cmb-tabs {
+    display: none;
+}
+
+.elementor-control-content .gamipress-widget-form .cmb-row {
+    margin-bottom: 12px;
+}
+
+.elementor-control-content .gamipress-widget-form .cmb-th {
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.elementor-control-content .gamipress-widget-form .cmb2-metabox-description {
+    font-style: italic;
+    line-height: 1.4;
+    color: #a4afb7;
+    margin: 6px 0 0 0 !important;
+}
+
+.elementor-control-content .gamipress-widget-form .gamipress-image-options .cmb2-list li {
+    display: inline-block;
+    width: 35%;
+    margin: 0px 35px 10px 0px;
+}
+
+.elementor-control-content .gamipress-widget-form select[multiple="true"],
+.elementor-control-content .gamipress-widget-form select[multiple="multiple"] {
+    height: 60px;
+}

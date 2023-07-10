@@ -1,0 +1,223 @@
+== Changelog ==
+
+= 1.3.9 =
+
+* **New Features**
+* New event: Get assigned to a specific profile type.
+* New event: Remove a friendship.
+* New event: Get a friendship removed.
+
+= 1.3.8 =
+
+* **Bug Fixes**
+* Fixed incorrect link for events related to a specific group.
+
+= 1.3.7 =
+
+* **New Features**
+* New event: Leave a group.
+* New event: Leave a specific group.
+* New event: Remove an activity stream message.
+* New event: Remove a group activity stream message.
+* New setting: Option to show/hide achievement and rank types labels at top.
+* New setting: Option to limit the number of achievements displayed at top.
+
+= 1.3.6 =
+
+* **Improvements**
+* Added an explanatory text about the possibility of reorder type by dragging and dropping them.
+* Ensure to always setup the current user to option to no on elements displayed on user profiles.
+
+= 1.3.5 =
+
+* **New Features**
+* New event: Get a friendship accepted.
+* New event: Remove a favorite on an activity stream item.
+* New event: Get a favorite removed from an activity stream item.
+* **Bug Fixes**
+* Correctly award to the friend user on "Accept a friendship" event.
+
+= 1.3.4 =
+
+* **Bug Fixes**
+* Improved achievement type detection when displaying acheivements on a sub-tab.
+
+= 1.3.3 =
+
+* **Improvements**
+* Code cleanup removing debug and old code.
+
+= 1.3.2 =
+
+* **Improvements**
+* Improved rank activity feed detection.
+
+= 1.3.1 =
+
+* **Improvements**
+* Avoid to grant access to any event on duplicity checks.
+
+= 1.3.0 =
+
+* **Bug Fixes**
+* Fixed tab settings default value that forces to get it back to tab when choose to not display.
+* **Improvements**
+* Moved old changelog to changelog.txt file.
+
+= 1.2.9 =
+
+* **New Features**
+* Added the option "Not display" for points, achievements and ranks placement.
+
+= 1.2.8 =
+
+* **Bug Fixes**
+* Fixed wrong tab slug check.
+
+= 1.2.7 =
+
+* **New Features**
+* Added the ability to set any desired custom tab slug for points, achievements and ranks tabs.
+
+= 1.2.6 =
+
+* **New Features**
+* Added the ability to select which points, achievements or ranks show on user activity feed (including their requirements).
+* **Improvements**
+* Added new questions to the FAQ section.
+
+= 1.2.5 =
+
+* **Improvements**
+* Prevent to show duplicated achievements at top of user profile.
+
+= 1.2.4 =
+
+* **New Features**
+* New event: Get a favorite on an activity stream item
+
+= 1.2.3 =
+
+* **Bug Fixes**
+* Fixed undefined index notice when registering new BuddyPress activities.
+
+= 1.2.2 =
+
+* **Bug Fixes**
+* Fixed typo on a settings field description.
+* **Improvements**
+* Improved settings placement.
+
+= 1.2.1 =
+
+* **Bug Fixes**
+* Fixed wrong group name on requirements.
+* **Improvements**
+* Updated deprecated WordPress functions.
+
+= 1.2.0 =
+
+* **Improvements**
+* Improvements on multisite functionalities.
+* Added stronger checks on settings to prevent display removed or renamed points types, achievement types and rank types.
+* Moved old changelog to changelog.txt file.
+
+= 1.1.9 =
+
+* Added support to GamiPress 1.4.8 multisite features.
+
+= 1.1.8 =
+
+* Added display options for points shown at top to show/hide points thumbnail and label.
+* Added display options for achievements at top to show/hide achievement thumbnail, title and link.
+* Added display options for ranks at top to show/hide rank thumbnail, title and link.
+
+= 1.1.7 =
+
+* Improved achievement award activity registration on user activity.
+* Improvements on recount activity tool on large communities.
+
+= 1.1.6 =
+
+* Added activity events for private groups.
+
+= 1.1.5 =
+
+Important: After update, go to GamiPress -> Settings -> Add-ons tab and update the BuddyPress integration settings.
+
+* Added dynamic achievement display options.
+* Added dynamic rank display options.
+* Improvements on duplicity checks.
+* Updated code to match GamiPress 1.4.5 [gamipress_achievements] shortcode attributes.
+
+= 1.1.4 =
+
+* Fixed issue on activity triggers with default specific id.
+
+= 1.1.3 =
+
+* Updated text domain to add support to wordpress translate (tanslate.wordpress.org).
+* Moved old changelog to changelog.txt file.
+
+= 1.1.2 =
+
+* Fixed ranks placement at user profile top position.
+
+= 1.1.1 =
+
+* Added support for GamiPress Ranks.
+* Added the GamiPress Member Ranks Component.
+* Full rework of plugin settings.
+* Added the ability to show points, achievements or ranks at top of the user profile, as a profile tab or both locations.
+
+= 1.1.0 =
+
+* Fixed issues on activity triggers with specific ids.
+* Fixed issue on activity triggers with default user id.
+* Moved old changelog to changelog.txt file.
+
+= 1.0.9 =
+
+* Fixed wrong text domain directory.
+
+= 1.0.8 =
+
+* Added the points tab on members frontend profile.
+* Added more settings to customize the output of the achievements on frontend profile.
+
+= 1.0.7 =
+
+* Fix: New achievement types are not listed on the drag and drop settings.
+
+= 1.0.6 =
+
+* Added support for GamiPress recount activity tool.
+
+= 1.0.5 =
+
+* Added drag and drop settings to set achievements types to show at frontend and in what order.
+* Added extra data on event log.
+* Added duplicity checks.
+
+= 1.0.4 =
+
+* Fixed change profile avatar activity trigger.
+* Added support for GamiPress automatic updates.
+
+= 1.0.3 =
+
+* Setting to configure GamiPress Members BP Component tab title.
+* Prevent to show steps/points awards on GamiPress Members BP Component.
+
+= 1.0.2 =
+
+* Fix on GamiPress Members BP Component.
+
+= 1.0.1 =
+
+* Added the ability to show user earned achievements on frontend profile.
+* Added the ability to create activity streams of user earned achievements.
+
+= 1.0.0 =
+
+* Initial release.

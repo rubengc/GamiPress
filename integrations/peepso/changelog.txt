@@ -1,0 +1,50 @@
+== Changelog ==
+
+= 1.0.9 =
+
+* **New Features**
+* Added the option "Not display" for points, achievements and ranks placement.
+
+= 1.0.8 =
+
+* **Bug Fixes**
+* Fixed wrong tab slug check.
+
+= 1.0.7 =
+
+* **New Features**
+* Added the ability to set any desired custom tab slug for points, achievements and ranks tabs.
+
+= 1.0.6 =
+
+* **New features**
+* Added 6 new events related to likes on profiles, posts and comments.
+
+= 1.0.5 =
+
+* **Bug Fixes**
+* Fixed typo on triggers.
+
+= 1.0.4 =
+
+* **Bug Fixes**
+* Fixed issue registering new user profile tabs.
+
+= 1.0.3 =
+
+* **Bug Fixes**
+* Fixed PeepSo activity post and comment activities.
+
+= 1.0.2 =
+
+* **Improvements**
+* Prevent to show duplicated achievements at top of user profile.
+
+= 1.0.1 =
+
+* **Bug Fixes**
+* Fixed wrong method call.
+
+= 1.0.0 =
+
+* Initial release.

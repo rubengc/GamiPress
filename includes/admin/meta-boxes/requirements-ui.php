@@ -314,6 +314,7 @@ function gamipress_requirement_ui_html( $requirement_id = 0, $post_id = 0 ) {
         <select id="select-trigger-type-<?php echo $requirement_id; ?>" class="select-trigger-type" data-requirement-id="<?php echo $requirement_id; ?>">
             <?php
             $activity_triggers = gamipress_get_activity_triggers();
+            ksort( $activity_triggers );
 
             // Grouped activity triggers
             foreach ( $activity_triggers as $group => $group_triggers ) : ?>

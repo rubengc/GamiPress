@@ -124,7 +124,14 @@ function gamipress_render_plugin_card( $plugin ) {
 
     $details_link = esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $slug . '&TB_iframe=true&width=600&height=550' ) );
 
-    if( $plugin->wp_info ) {
+    if( gamipress_plugin_has_category( $plugin, 'integrations' ) ) {
+        $class = 'gamipress-integration-add-on';
+
+        $details_link = '';
+
+        // "More Information" action
+        $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button" target="_blank">' . __( 'More Information', 'gamipress' ) . '</a>';
+    } else if( $plugin->wp_info ) {
         // Free add-ons
 
         if( gamipress_plugin_has_category( $plugin, 'integrations' ) ) {

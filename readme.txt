@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.2
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -68,43 +68,52 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 
 = LMS integrations =
 
-* [LearnDash](https://wordpress.org/plugins/gamipress-learndash-integration/)
-* [H5P](https://wordpress.org/plugins/gamipress-h5p-integration/)
-* [LearnPress](https://wordpress.org/plugins/gamipress-learnpress-integration/)
-* [Lifter LMS](https://wordpress.org/plugins/gamipress-lifterlms-integration/)
-* [Tutor LMS](https://wordpress.org/plugins/gamipress-tutor-integration/)
-* [Thrive Apprentice](https://wordpress.org/plugins/gamipress-thrive-apprentice-integration/)
-* [WPLMS](https://wordpress.org/plugins/gamipress-wplms-integration/)
-* [MasterStudy LMS](https://wordpress.org/plugins/gamipress-masterstudy-lms-integration/)
+* [LearnDash](https://gamipress.com/add-ons/learndash-integration/)
+* [H5P](https://gamipress.com/add-ons/h5p-integration/)
+* [LearnPress](https://gamipress.com/add-ons/learnpress-integration/)
+* [Lifter LMS](https://gamipress.com/add-ons/lifterlms-integration/)
+* [Tutor LMS](https://gamipress.com/add-ons/tutor-integration/)
+* [Thrive Apprentice](https://gamipress.com/add-ons/thrive-apprentice-integration/)
+* [WPLMS](https://gamipress.com/add-ons/wplms-integration/)
+* [MasterStudy LMS](https://gamipress.com/add-ons/masterstudy-lms-integration/)
 
 = Forms integrations =
 
-* [Gravity Forms](https://wordpress.org/plugins/gamipress-gravity-forms-integration/)
-* [Contact Form 7](https://wordpress.org/plugins/gamipress-contact-form-7-integration/)
-* [Ninja Forms](https://wordpress.org/plugins/gamipress-ninja-forms-integration/)
-* [Formidable Forms](https://wordpress.org/plugins/gamipress-formidable-forms-integration/)
-* [Forminator](https://wordpress.org/plugins/gamipress-forminator-integration/)
-* [Divi Forms](https://wordpress.org/plugins/gamipress-divi-integration/)
-* [Elementor Forms](https://wordpress.org/plugins/gamipress-elementor-forms-integration/)
-* [WP Fluent Forms](https://wordpress.org/plugins/gamipress-fluentform-integration/)
-* [JetFormBuilder](https://wordpress.org/plugins/gamipress-jetformbuilder-integration/)
+* [Gravity Forms](https://gamipress.com/add-ons/gravity-forms-integration/)
+* [Contact Form 7](https://gamipress.com/add-ons/contact-form-7-integration/)
+* [Ninja Forms](https://gamipress.com/add-ons/ninja-forms-integration/)
+* [Formidable Forms](https://gamipress.com/add-ons/formidable-forms-integration/)
+* [Forminator](https://gamipress.com/add-ons/forminator-integration/)
+* [Divi Forms](https://gamipress.com/add-ons/divi-integration/)
+* [Elementor Forms](https://gamipress.com/add-ons/elementor-forms-integration/)
+* [WP Fluent Forms](https://gamipress.com/add-ons/fluentform-integration/)
+* [JetFormBuilder](https://gamipress.com/add-ons/jetformbuilder-integration/)
+* [WS Form](https://gamipress.com/add-ons/ws-form-integration/)
+
+= Community integrations =
+
+* [BuddyBoss](https://gamipress.com/add-ons/buddyboss-integration/)
+* [BuddyPress](https://gamipress.com/add-ons/buddypress-integration/)
+* [bbPress](https://gamipress.com/add-ons/bbpress-integration/)
+* [Ultimate Member](https://gamipress.com/add-ons/ultimate-member-integration/)
+* [PeepSo](https://gamipress.com/add-ons/peepso-integration/)
+* [Simple:Press](https://gamipress.com/add-ons/simplepress-integration/)
+* [WP User Manager](https://gamipress.com/add-ons/wp-user-manager-integration/)
+* [wpForo](https://gamipress.com/add-ons/wpforo-integration/)
 
 = Other integrations =
 
 * [AutomatorWP](https://gamipress.com/add-ons/automatorwp-integration/)
-* [WooCommerce](https://wordpress.org/plugins/gamipress-woocommerce-integration/)
-* [Easy Digital Downloads](https://wordpress.org/plugins/gamipress-easy-digital-downloads-integration/)
-* [AffiliateWP](https://wordpress.org/plugins/gamipress-affiliatewp-integration/)
-* [BuddyBoss](https://wordpress.org/plugins/gamipress-buddyboss-integration/)
-* [BuddyPress](https://wordpress.org/plugins/gamipress-buddypress-integration/)
-* [bbPress](https://wordpress.org/plugins/gamipress-bbpress-integration/)
-* [Youtube](https://wordpress.org/plugins/gamipress-youtube-integration/) & [Vimeo](https://wordpress.org/plugins/gamipress-vimeo-integration/)
-* [Ultimate Member](https://wordpress.org/plugins/gamipress-ultimate-member-integration/)
-* [The Events Calendar](https://wordpress.org/plugins/gamipress-the-events-calendar-integration/)
-* [Advanced Custom Fields (ACF)](https://wordpress.org/plugins/gamipress-advanced-custom-fields-integration/)
-* [Meta Box](https://wordpress.org/plugins/gamipress-meta-box-integration/)
-* [Studiocart](https://wordpress.org/plugins/gamipress-studiocart-integration/)
-* [Download Manager](https://wordpress.org/plugins/gamipress-download-manager-integration/)
+* [WooCommerce](https://gamipress.com/add-ons/woocommerce-integration/)
+* [Easy Digital Downloads](https://gamipress.com/add-ons/easy-digital-downloads-integration/)
+* [AffiliateWP](https://gamipress.com/add-ons/affiliatewp-integration/)
+* [Youtube](https://gamipress.com/add-ons/youtube-integration/) & [Vimeo](https://gamipress.com/add-ons/vimeo-integration/)
+* [The Events Calendar](https://gamipress.com/add-ons/the-events-calendar-integration/)
+* [Advanced Custom Fields (ACF)](https://gamipress.com/add-ons/advanced-custom-fields-integration/)
+* [Meta Box](https://gamipress.com/add-ons/meta-box-integration/)
+* [Studiocart](https://gamipress.com/add-ons/studiocart-integration/)
+* [Download Manager](https://gamipress.com/add-ons/download-manager-integration/)
+* [Presto Player](https://gamipress.com/add-ons/presto-player-integration/)
 
 [View all integrations](https://gamipress.com/integrations/)
 
@@ -263,6 +272,11 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.6.3 =
+
+* **New Features**
+* Moved all integrations inside GamiPress! Now, is not required anymore to install integrations individually.
 
 = 2.6.2 =
 

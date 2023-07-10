@@ -1,0 +1,166 @@
+== Changelog ==
+
+= 1.2.9 =
+
+* **Bug Fixes**
+* Fixed duplicity check for variable products purchases and refunds.
+
+= 1.2.8 =
+
+* **Bug Fixes**
+* Fixed quantity detection for variable products purchases and refunds.
+
+= 1.2.7 =
+
+* **Bug Fixes**
+* Fixed duplicity check for publish a download.
+
+= 1.2.6 =
+
+* **Bug Fixes**
+* Fixed site id for the variation selector on multisites.
+
+= 1.2.5 =
+
+* **Bug Fixes**
+* Fixed variation selector on multisite.
+
+= 1.2.4 =
+
+* **Improvements**
+* Improved the way to detect when an order gets marked as completed.
+
+= 1.2.3 =
+
+* **Improvements**
+* Prevent to execute duplicity checks if user has the same product added multiples times in the same cart.
+
+= 1.2.2 =
+
+* **New Features**
+* Added support to WooCommerce Subscriptions with 8 new events.
+* New events: Vendor gets a review on any/specific product.
+
+= 1.2.1 =
+
+* **Bug Fixes**
+* Fixed a wrong duplicity check for products with multiples categories and tags.
+
+= 1.2.0 =
+
+* **Improvements**
+* Avoid to grant access to any event on duplicity checks.
+* Moved old changelog to changelog.txt file.
+
+= 1.1.9 =
+
+* **Improvements**
+* Improvements on duplicity checks to better match the duplicated event.
+
+= 1.1.8 =
+
+* **New Features**
+* Added 6 events related to products purchased refund.
+
+= 1.1.7 =
+
+* **New Features**
+* Added the product display on admin logs list.
+* **Bug Fixes**
+* Fixed duplicity checks that wrongly checks product purchases just per order, making don't take in count the rest of order's items.
+
+= 1.1.6 =
+
+* **New Features**
+* Added the event "Vendor gets a new sale".
+* Added the event "Refund a purchase".
+* **Improvements**
+* Make events based on a product purchase get triggered same times that cart item's quantity.
+
+= 1.1.5 =
+
+* **Improvements**
+* Improved logs count for "Specific product variation purchase" event.
+* Improved logs count for "New product purchase of a specific category" event.
+* Improved logs count for "New product purchase of a specific tag" event.
+* Make use of WC_Order::get_user_id() function instead of access directly to avoid warnings.
+
+= 1.1.4 =
+
+* **Improvements**
+* Added duplicity checks by payment ID, specially useful for recount activity tool.
+
+= 1.1.3 =
+
+* **New Features**
+* Added the event "Specific product variation purchase".
+* Added the event "New product purchase of a specific category".
+* Added the event "New product purchase of a specific tag".
+* Added support for orders completed manually (like orders paid through direct transfer).
+
+= 1.1.2 =
+
+* **Bug Fixes**
+* Fixed wrong constant usage.
+* **Developer Notes**
+* Added the filter 'gamipress_wc_award_points_for_purchase' to extend the conditional logic when awarding points for a product purchase.
+
+= 1.1.1 =
+
+* **Bug Fixes**
+* The award points on purchase a product now correctly sets the points amount based on quantity purchased.
+* **Improvements**
+* Added a specific log description to meet when points has been awarded though a purchase and not through the awards engine.
+* Updated some deprecated methods to use new GamiPress ones.
+
+= 1.1.0 =
+
+* **New Features**
+* Added support to GamiPress 1.4.8 multisite features.
+* **Improvements**
+* Moved old changelog to changelog.txt file.
+
+= 1.0.9 =
+
+* Update new purchase checks to match new WooCommerce classes.
+
+= 1.0.8 =
+
+* Fixed new reviews hook priority.
+* Update new reviews checks to match new WooCommerce workflow.
+
+= 1.0.7 =
+
+* Improvements on duplicity checks.
+
+= 1.0.6 =
+
+* Updated text domain to add support to wordpress translate (tanslate.wordpress.org).
+
+= 1.0.5 =
+
+* Fixed issue with text domain localization.
+* Fixed issues on activity triggers with specific ids.
+* Fixed issue on activity triggers with default user id.
+
+= 1.0.4 =
+
+* Added support for GamiPress recount activity tool.
+
+= 1.0.3 =
+
+* Added extra data on event log.
+* Added duplicity checks.
+
+= 1.0.2 =
+
+* Fixed wrong method name.
+* Added support for GamiPress automatic updates.
+
+= 1.0.1 =
+
+* Updated code based on GamiPress 1.0.8
+
+= 1.0.0 =
+
+* Initial release

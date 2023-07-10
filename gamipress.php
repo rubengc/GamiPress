@@ -3,7 +3,7 @@
  * Plugin Name:     	GamiPress
  * Plugin URI:      	https://gamipress.com
  * Description:     	The most flexible and powerful gamification system for WordPress.
- * Version:         	2.6.2
+ * Version:         	2.6.3
  * Author:          	GamiPress
  * Author URI:      	https://gamipress.com/
  * Text Domain:     	gamipress
@@ -137,7 +137,7 @@ final class GamiPress {
 	private function constants() {
 
 		// Plugin version
-		define( 'GAMIPRESS_VER', '2.6.2' );
+		define( 'GAMIPRESS_VER', '2.6.3' );
 
 		// Plugin file
 		define( 'GAMIPRESS_FILE', __FILE__ );
@@ -253,6 +253,133 @@ final class GamiPress {
 
 	}
 
+    /**
+     * Include integrations files
+     *
+     * @access      private
+     * @since       1.0.0
+     * @return      void
+     */
+    private function integrations() {
+
+        $integrations_dir = GAMIPRESS_DIR . 'integrations';
+
+        // Setup active plugins
+        $active_plugins = array();
+
+        if( function_exists( 'get_option' ) ) {
+            $active_plugins = (array) get_option( 'active_plugins', array() );
+        }
+
+        // Setup active sitewide plugins
+        $active_sitewide_plugins = array();
+
+        if ( is_multisite() && function_exists( 'get_site_option' ) ) {
+            $active_sitewide_plugins = get_site_option( 'active_sitewide_plugins' );
+
+            if( ! is_array( $active_sitewide_plugins ) ) {
+                $active_sitewide_plugins = array();
+            }
+        }
+
+        $integrations = @opendir( $integrations_dir );
+
+        while ( ( $integration = @readdir( $integrations ) ) !== false ) {
+
+            if ( $integration === '.' || $integration === '..' || $integration === 'index.php' ) {
+                continue;
+            }
+
+            /**
+             * Filter to allow third party plugins skip any integration
+             *
+             * @since 1.0.0
+             *
+             * @param bool      $skip
+             * @param string    $integration The integration slug as named in gamipress/includes/integrations
+             * @param array     $active_plugins
+             * @param array     $active_sitewide_plugins
+             *
+             * @return bool
+             */
+            if( apply_filters( 'gamipress_skip_integration', false, $integration, $active_plugins, $active_sitewide_plugins ) ) {
+                continue;
+            }
+
+            // Skip if integration is already active
+            if( $this->is_integration_active( $integration, $active_plugins, $active_sitewide_plugins ) ) {
+                continue;
+            }
+
+            $integration_file = $integrations_dir . DIRECTORY_SEPARATOR . $integration . DIRECTORY_SEPARATOR . $integration . '.php';
+
+            // Skip if no file to load
+            if( ! file_exists( $integration_file ) ) {
+                continue;
+            }
+
+            require_once $integration_file;
+
+        }
+
+        closedir( $integrations );
+
+    }
+
+    /**
+     * Include integrations files
+     *
+     * @access      private
+     * @since       1.0.0
+     * @param       string  $integration
+     * @param       array   $active_plugins
+     * @param       array   $active_sitewide_plugins
+     * @return      bool
+     */
+    private function is_integration_active( $integration, $active_plugins, $active_sitewide_plugins ) {
+
+        $plugins = array(
+            "gamipress-{$integration}-integration/gamipress-{$integration}.php",
+            "gamipress-{$integration}-integration/gamipress-{$integration}-integration.php",
+        );
+
+        if( $integration === 'elementor' ) {
+            $plugins = array(
+                "gamipress-{$integration}-forms-integration/gamipress-{$integration}-forms.php",
+            );
+        }
+
+        foreach( $plugins as $plugin ) {
+
+            // Bail if plugin is active
+            if( in_array( $plugin, $active_plugins, true ) ) {
+                return true;
+            }
+
+            // Bail if plugin is network wide active
+            if ( isset( $active_sitewide_plugins[$plugin] ) ) {
+                return true;
+            }
+
+            // Consider integration active during it's activation
+            if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'activate'
+                && isset( $_REQUEST['plugin'] ) && $_REQUEST['plugin'] === $plugin ) {
+                return true;
+            }
+
+            // Support for bulk activate
+            if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] === 'activate-selected'
+                && isset( $_REQUEST['checked'] ) && is_array( $_REQUEST['checked'] )
+                && in_array( $plugin, $_REQUEST['checked'] ) ) {
+                return true;
+            }
+
+        }
+
+        return false;
+
+    }
+
 	/**
 	 * Setup plugin hooks
 	 *
@@ -269,8 +396,9 @@ final class GamiPress {
 		// Hook in all our important pieces
 		add_action( 'plugins_loaded', array( $this, 'pre_init' ), 20 );
 		add_action( 'plugins_loaded', array( $this, 'init' ), 50 );
+        add_action( 'plugins_loaded', array( $this, 'post_init' ), 999 );
 
-	}
+    }
 
 	/**
 	 * Pre init function
@@ -280,6 +408,9 @@ final class GamiPress {
 	 * @return      void
 	 */
 	function pre_init() {
+
+        // Load all integrations
+        $this->integrations();
 
 		global $wpdb;
 
@@ -297,6 +428,9 @@ final class GamiPress {
 		$this->db->user_earnings 		= $wpdb->gamipress_user_earnings;
 		$this->db->user_earnings_meta 	= $wpdb->gamipress_user_earnings_meta;
 
+        // Trigger our action to let other plugins know that GamiPress is getting initialized
+        do_action( 'gamipress_pre_init' );
+
 	}
 
 	/**
@@ -312,6 +446,20 @@ final class GamiPress {
 		do_action( 'gamipress_init' );
 
 	}
+
+    /**
+     * Post init function
+     *
+     * @access      private
+     * @since       1.0.0
+     * @return      void
+     */
+    function post_init() {
+
+        // Trigger our action to let other plugins know that GamiPress has been initialized
+        do_action( 'gamipress_post_init' );
+
+    }
 
 	/**
 	 * Activation hook for the plugin.

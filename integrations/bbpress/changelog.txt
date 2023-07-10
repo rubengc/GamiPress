@@ -1,0 +1,48 @@
+== Changelog ==
+
+= 1.0.9 =
+
+* Added support to GamiPress 1.4.8 multisite features.
+
+= 1.0.8 =
+
+* Added points types display options to show/hide points thumbnail and label.
+* Added achievement types display options to show/hide achievement thumbnail, title and link.
+* Added rank types display options to show/hide rank thumbnail, title and link.
+
+= 1.0.7 =
+
+* Improvements on topic creation listeners.
+
+= 1.0.6 =
+
+* Fixed wrong strings.
+
+= 1.0.5 =
+
+* Updated text domain to add support to wordpress translate (tanslate.wordpress.org).
+
+= 1.0.4 =
+
+* Fixed issue with text domain localization.
+* Added the ability to show the user points, achievements and/or ranks at replies.
+
+= 1.0.3 =
+
+* Fixed issue with text domain localization.
+* Fixed issues on activity triggers with specific ids.
+* Fixed issue on activity triggers with default user id.
+
+= 1.0.2 =
+
+* Added support for GamiPress recount activity tool.
+
+= 1.0.1 =
+
+* Added extra data on event log.
+* Added duplicity checks.
+* Added support for GamiPress automatic updates.
+
+= 1.0.0 =
+
+* Initial release.

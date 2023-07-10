@@ -1,0 +1,109 @@
+== Changelog ==
+
+= 1.1.9 =
+
+* **Improvements**
+* Improvements on duplicity checks to better match the duplicated event.
+
+= 1.1.8 =
+
+* **New Features**
+* Added 6 events related to downloads purchased refund.
+
+= 1.1.7 =
+
+* **Bug Fixes**
+* Fixed wrong events naming on requirements.
+
+= 1.1.6 =
+
+* **New Features**
+* Added the download display on admin logs list.
+* **Bug Fixes**
+* Fixed duplicity checks that wrongly checks download purchases just per payment, making don't take in count the rest of payment's items.
+
+= 1.1.5 =
+
+* **New Features**
+* Added the event "Refund a purchase".
+* **Improvements**
+* Make events based on a download purchase get triggered same times that cart item's quantity.
+
+= 1.1.4 =
+
+* **Improvements**
+* Improved logs count for "Specific download variation purchase" event.
+* Improved logs count for "New download purchase of a specific category" event.
+* Improved logs count for "New download purchase of a specific tag" event.
+
+= 1.1.3 =
+
+* **Improvements**
+* Added duplicity checks by payment ID, specially useful for recount activity tool.
+
+= 1.1.2 =
+
+* **New Features**
+* Added the event "Specific download variation purchase".
+* Added the event "New download purchase of a specific category".
+* Added the event "New download purchase of a specific tag".
+* **Bug Fixes**
+* Fixed events triggered on manual payment gateways.
+
+= 1.1.1 =
+
+* **Improvements**
+* Updated some deprecated methods to use new GamiPress ones.
+* **Developer Notes**
+* Added the filter 'gamipress_edd_award_points_for_purchase' to extend the conditional logic when awarding points for a download purchase.
+
+= 1.1.0 =
+
+* **Improvements**
+* Added support to GamiPress 1.4.8 multisite features.
+* Moved old changelog to changelog.txt file.
+
+= 1.0.9 =
+
+* Fixed some listeners hook priority.
+
+= 1.0.8 =
+
+* Improvements on duplicity checks.
+
+= 1.0.7 =
+
+* Fixed issue on activity triggers with default specific id.
+
+= 1.0.6 =
+
+* Updated text domain to add support to wordpress translate (tanslate.wordpress.org).
+
+= 1.0.5 =
+
+* Fixed issue with text domain localization constant dir.
+
+= 1.0.4 =
+
+* Fixed issue with text domain localization.
+* Fixed issues on activity triggers with specific ids.
+* Fixed issue on activity triggers with default user id.
+
+= 1.0.3 =
+
+* Added support for GamiPress recount activity tool.
+
+= 1.0.2 =
+
+* Added extra data on event log.
+* Added duplicity checks.
+
+= 1.0.1 =
+
+* Added new sale activity trigger.
+* Added activity triggers based on most used Easy Digital Downloads extensions.
+* Added support for GamiPress automatic updates.
+
+= 1.0.0 =
+
+* Initial release

@@ -1,0 +1,70 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: GamiPress Invite Anyone Integration\n"
+"Report-Msgid-Bugs-To: https://gamipress.com/\n"
+"POT-Creation-Date: 2019-07-04 09:34+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: GamiPress (https://gamipress.com/)\n"
+"Language-Team: GamiPress <contact@gamipress.com>\n"
+"X-Generator: Poedit 2.2.3\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"Language: en_US\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-Basepath: ..\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: libraries\n"
+
+#: gamipress-invite-anyone.php:132
+#, php-format
+msgid "GamiPress - Invite Anyone integration requires %s and %s in order to work. Please install and activate them."
+msgstr ""
+
+#: includes/admin.php:22
+msgid "Invite Anyone integration"
+msgstr ""
+
+#: includes/triggers.php:21
+msgid "Invite Anyone"
+msgstr ""
+
+#: includes/triggers.php:22
+msgid "Send an invitation"
+msgstr ""
+
+#: includes/triggers.php:23
+msgid "Accept an invitation"
+msgstr ""
+
+#: includes/triggers.php:24
+msgid "Get an invitation accepted"
+msgstr ""
+
+#: includes/triggers.php:119
+msgid "Email"
+msgstr ""
+
+#: includes/triggers.php:120
+msgid "Email user sent an invitation."
+msgstr ""
+
+#: includes/triggers.php:127
+msgid "Invited User"
+msgstr ""
+
+#: includes/triggers.php:128
+msgid "User that has been invited."
+msgstr ""
+
+#: includes/triggers.php:136
+msgid "Inviter User"
+msgstr ""
+
+#: includes/triggers.php:137
+msgid "User that has sent the invitation."
+msgstr ""
