@@ -280,6 +280,16 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
+### 2.6.5 ###
+
+* **Improvements**
+* Added new checks to load Youtube and Vimeo Javascript only when their block, shortcode or widget is in page.
+
+### 2.6.4 ###
+
+* **Bug Fixes**
+* Fixed typos in some strings.
+
 ### 2.6.3 ###
 
 * **New Features**

@@ -3,7 +3,7 @@ Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
 Tested up to: 6.2
-Stable tag: 2.6.3
+Stable tag: 2.6.5
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
@@ -272,6 +272,16 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 2.6.5 =
+
+* **Improvements**
+* Added new checks to load Youtube and Vimeo Javascript only when their block, shortcode or widget is in page.
+
+= 2.6.4 =
+
+* **Bug Fixes**
+* Fixed typos in some strings.
 
 = 2.6.3 =
 

@@ -89,6 +89,9 @@ function gamipress_vimeo_shortcode( $atts = array() ) {
         }
     }
 
+    // Enqueue scripts
+    gamipress_vimeo_enqueue_scripts();
+
     ob_start(); ?>
     <div id="<?php echo esc_attr( $video_id ); ?>" class="gamipress-vimeo-video"
          data-id="<?php echo esc_attr( $video_id ); ?>"

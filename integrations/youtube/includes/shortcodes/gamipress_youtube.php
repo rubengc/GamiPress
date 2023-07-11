@@ -90,6 +90,9 @@ function gamipress_youtube_shortcode( $atts = array() ) {
         $thumbnail_url = "https://img.youtube.com/vi/{$video_id}/maxresdefault.jpg";
     }
 
+    // Enqueue scripts
+    gamipress_youtube_enqueue_scripts();
+
     ob_start(); ?>
     <div id="<?php echo esc_attr( $video_id ); ?>" class="gamipress-youtube-video"
          data-id="<?php echo esc_attr( $video_id ); ?>"

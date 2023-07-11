@@ -34,6 +34,10 @@ add_action( 'init', 'gamipress_youtube_register_scripts' );
  */
 function gamipress_youtube_enqueue_scripts( $hook = null ) {
 
+    if( wp_script_is( 'gamipress-youtube-js', 'enqueued' ) ) {
+        return;
+    }
+
     /**
      * Allowed delay in seconds to allow set the video as watched
      * This delay is added as extra watched seconds to avoid delay issues caused, for example, by the browser or javascript slowdowns
@@ -60,7 +64,7 @@ function gamipress_youtube_enqueue_scripts( $hook = null ) {
     wp_enqueue_script( 'gamipress-youtube-js' );
 
 }
-add_action( 'wp_enqueue_scripts', 'gamipress_youtube_enqueue_scripts', 100 );
+//add_action( 'wp_enqueue_scripts', 'gamipress_youtube_enqueue_scripts', 100 );
 
 /**
  * Register admin scripts
