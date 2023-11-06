@@ -7,6 +7,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+$content = gamipress_get_email_footer_content();
 
 // For gmail compatibility, including CSS styles in head/body are stripped out therefore styles need to be inline. These variables contain rules which are added to the template inline.
 $template_footer = "
@@ -42,7 +43,7 @@ $credit = "
                                         <tr>
                                             <td colspan="2" valign="middle" id="credit" style="<?php echo $credit; ?>">
                                                 <?php echo wpautop( wp_kses_post( wptexturize(
-                                                    apply_filters( 'gamipress_email_footer_text', gamipress_get_option( 'email_footer_text', sprintf( __( '%s - Powered by GamiPress', 'gamipress' ), '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>' ) ) )
+                                                    apply_filters( 'gamipress_email_footer_text', $content, sprintf( __( '%s - Powered by GamiPress', 'gamipress' ), '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>' ) ) 
                                                 ) ) ); ?>
                                             </td>
                                         </tr>

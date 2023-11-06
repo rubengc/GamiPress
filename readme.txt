@@ -1,13 +1,13 @@
-﻿=== GamiPress - The most flexible and powerful gamification plugin for WordPress ===
+﻿=== GamiPress - The #1 gamification plugin to reward points, achievements, badges & ranks in WordPress ===
 Contributors: gamipress, rubengc, eneribs, pacogon, dioni00, flabernardez
 Tags: gamification, points, achievements, ranks, badges, awards, rewards, credits, engagement, leaderboard, emails, notifications, progress
 Requires at least: 4.4
-Tested up to: 6.2
-Stable tag: 2.6.5
+Tested up to: 6.4
+Stable tag: 5.7.0
 License: GNU AGPL v3.0
 License URI: http://www.gnu.org/licenses/agpl-3.0.html
 
-Reward your users with points, achievements, badges and ranks to increase your site activity and loyalty.
+Boost your gamification marketing & reward your users with points, achievements, badges & ranks to increase your site activity & loyalty!
 
 == Description ==
 
@@ -76,6 +76,10 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Thrive Apprentice](https://gamipress.com/add-ons/thrive-apprentice-integration/)
 * [WPLMS](https://gamipress.com/add-ons/wplms-integration/)
 * [MasterStudy LMS](https://gamipress.com/add-ons/masterstudy-lms-integration/)
+* [CoursePress](https://gamipress.com/add-ons/coursepress-integration/)
+* [eLearnCommerce](https://gamipress.com/add-ons/wpep-integration/)
+* [Sensei](https://gamipress.com/add-ons/sensei-integration/)
+* [WP Courseware](https://gamipress.com/add-ons/wp-courseware-integration/)
 
 = Forms integrations =
 
@@ -89,6 +93,12 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [WP Fluent Forms](https://gamipress.com/add-ons/fluentform-integration/)
 * [JetFormBuilder](https://gamipress.com/add-ons/jetformbuilder-integration/)
 * [WS Form](https://gamipress.com/add-ons/ws-form-integration/)
+* [Caldera Forms](https://gamipress.com/add-ons/caldera-forms-integration/)
+* [HappyForms](https://gamipress.com/add-ons/happyforms-integration/)
+* [WPForms](https://gamipress.com/add-ons/wp-forms-integration/)
+* [Thrive Ovation](https://gamipress.com/add-ons/thrive-ovation-integration/)
+* [Thrive Leads](https://gamipress.com/add-ons/thrive-leads-integration/)
+* [Kadence Blocks](https://gamipress.com/add-ons/kadence-blocks-integration/)
 
 = Community integrations =
 
@@ -100,6 +110,13 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Simple:Press](https://gamipress.com/add-ons/simplepress-integration/)
 * [WP User Manager](https://gamipress.com/add-ons/wp-user-manager-integration/)
 * [wpForo](https://gamipress.com/add-ons/wpforo-integration/)
+* [DigiMember](https://gamipress.com/add-ons/digimember-integration/)
+* [MemberPress](https://gamipress.com/add-ons/memberpress-integration/)
+* [Paid Memberships Pro](https://gamipress.com/add-ons/paid-memberships-pro-integration/)
+* [Simple:Press](https://gamipress.com/add-ons/simplepress-integration/)
+* [WishList Member](https://gamipress.com/add-ons/wishlist-member-integration/)
+* [wpDiscuz](https://gamipress.com/add-ons/wpdiscuz-integration/)
+* [ARMember](https://gamipress.com/add-ons/armember-integration/)
 
 = Other integrations =
 
@@ -114,6 +131,38 @@ GamiPress integrates with a large number of plugins allowing you to add gamifica
 * [Studiocart](https://gamipress.com/add-ons/studiocart-integration/)
 * [Download Manager](https://gamipress.com/add-ons/download-manager-integration/)
 * [Presto Player](https://gamipress.com/add-ons/presto-player-integration/)
+* [Advanced Ads](https://gamipress.com/add-ons/advanced-ads-integration/)
+* [Amelia](https://gamipress.com/add-ons/ameliabooking-integration/)
+* [AnsPress](https://gamipress.com/add-ons/anspress-integration/)
+* [FunnelKit Automations](https://gamipress.com/add-ons/autonami-integration/)
+* [Awesome Support](https://gamipress.com/add-ons/awesome-support-integration/)
+* [Easy Affiliate](https://gamipress.com/add-ons/easy-affiliate-integration/)
+* [Events Manager](https://gamipress.com/add-ons/events-manager-integration/)
+* [Favorites](https://gamipress.com/add-ons/favorites-integration/)
+* [Fluent Support](https://gamipress.com/add-ons/fluent-support-integration/)
+* [FluentCRM](https://gamipress.com/add-ons/fluentcrm-integration/)
+* [Give](https://gamipress.com/add-ons/give-integration/)
+* [Groundhogg](https://gamipress.com/add-ons/groundhogg-integration/)
+* [Invite Anyone](https://gamipress.com/add-ons/invite-anyone-integration/)
+* [JetEngine](https://gamipress.com/add-ons/jetengine-integration/)
+* [Jetpack](https://gamipress.com/add-ons/jetpack-integration/)
+* [Meta Box](https://gamipress.com/add-ons/meta-box-integration/)
+* [Modern Events Calendar](https://gamipress.com/add-ons/modern-events-calendar-integration/)
+* [Restrict Content Pro](https://gamipress.com/add-ons/restrict-content-pro-integration/)
+* [SliceWP](https://gamipress.com/add-ons/slicewp-integration/)
+* [SureCart](https://gamipress.com/add-ons/surecart-integration/)
+* [Thrive Quiz Builder](https://gamipress.com/add-ons/thrive-quiz-builder-integration/)
+* [Upsell Plugin](https://gamipress.com/add-ons/upsell-plugin-integration/)
+* [WP Job Manager](https://gamipress.com/add-ons/wp-job-manager-integration/)
+* [WP PostRatings](https://gamipress.com/add-ons/wp-postratings-integration/)
+* [WP Simple Pay](https://gamipress.com/add-ons/wp-simple-pay-integration/)
+* [WP Ulike](https://gamipress.com/add-ons/wp-ulike-integration/)
+* [WP-Polls](https://gamipress.com/add-ons/wp-polls-integration/)
+* [WPAdverts](https://gamipress.com/add-ons/wpadverts-integration/)
+* [Charitable](https://gamipress.com/add-ons/charitable-integration/)
+* [Gravity Kit](https://gamipress.com/add-ons/gravity-kit-integration/)
+* [Better Messages](https://gamipress.com/add-ons/better-messages-integration/)
+* [WooCommerce Shipstation](https://gamipress.com/add-ons/woocommerce-shipstation-integration/)
 
 [View all integrations](https://gamipress.com/integrations/)
 
@@ -148,6 +197,16 @@ If you’re looking for something endorsed and maintained by the developers who 
 * [Zapier](https://gamipress.com/add-ons/gamipress-zapier/)
 
 [View all add-ons](https://gamipress.com/add-ons/)
+
+= 3rd party integrations =
+
+Other teams have integrated GamiPress into their products like plugins, apps and themes, including:
+
+* (ActiveMember360)[https://gamipress.com/add-ons/activemember360-integration/]
+* (Better Messages)[https://gamipress.com/add-ons/better-messages-integration/]
+* (Masteriyo)[https://gamipress.com/add-ons/masteriyo-integration/]
+
+[View all 3rd party integrations](https://gamipress.com/add-ons/#3rd-party)
 
 = More plugins from the GamiPress team =
 
@@ -272,6 +331,129 @@ No, We're unable to provide custom development services, as our focus is develop
 Also, you can check [our customize section](https://gamipress.com/customize/) where you can find a huge number of code snippets to help you customize GamiPress!
 
 == Changelog ==
+
+= 5.7.0 =
+
+* **Improvements**
+* Ensure compatibility with PHP 8.2.
+
+= 5.4.0 =
+
+* **Bug Fixes**
+* Thrive Quiz Builder: Fixed selection of percentage type quizzes.
+* Thrive Apprentice: Fixed error in course selector for "Complete specific course" event.
+* Fixed achieving ranks consecutively.
+
+= 5.1.0 =
+
+* **Bug Fixes**
+* Fixed awards related to points earned with Bulk Awards.
+
+= 4.8.0 =
+
+* **Bug Fixes**
+* Fixed achieving ranks consecutively.
+
+= 4.5.0 =
+
+* **New Features**
+* New integration: Kadence Blocks.
+* Kadence Blocks: New event: Successful submit a form.
+* Kadence Blocks: New event: Successful submit a specific form.
+* Kadence Blocks: New event: Submit a specific field value.
+* Kadence Blocks: New event: Submit a specific field value on a specific form.
+
+= 4.2.0 =
+
+* **Improvements**
+* WooCommerce: Improved purchase event for a quantity to add larger quantities.
+* **Bug Fixes**
+* Advanced Custom Fields: Fixed user meta update event when the field is updated from the profile.
+
+= 3.9.0 =
+
+* **Improvements**
+* Improved Email Settings to add Site and User tags in footer text.
+* Updated GamiPress Add-ons section.
+* **Bug Fixes**
+* ARMember: Fixed compatibility with ARMember Complete Membership.
+
+= 3.6.0 =
+
+* **Bug Fixes**
+* Restrict Content PRO: Fixed renew subscription trigger when a change plan is performed.
+
+= 3.3.0 =
+
+* **New Features**
+* New integration: ARMember.
+* ARMember: New event: Add to membership plan.
+* ARMember: New event: Add to specific membership plan.
+* ARMember: New event: Cancel any membership plan.
+* ARMember: New event: Cancel a specific membership plan.
+* New integration: WooCommerce Shipstation.
+* WooCommerce Shipstation: New event: Get an order shipped.
+* WooCommerce Shipstation: New event: Get a product shipped.
+
+= 3.0.0 =
+
+* **Bug Fixes**
+* Restrict Content PRO: Fixed renew subscription trigger when a change plan is performed.
+
+= 2.7.2 =
+
+* **Improvements**
+* Improved upgrade process to avoid slowdowns.
+* Improved fucntion to get user achievevments.
+* **Bug Fixes**
+* Restrict Content PRO: Fixed detection of Restrict Content PRO plugin.
+* MetaBox: Fixed minified JS.
+* WP Simple Pay: Fixed "Renew a subscription" event
+
+= 2.7.1 =
+
+* **Bug Fixes**
+* Tutor LMS: Fixed events related to course enrollment to avoid run when order is in pending.
+* LearnDash: Fixed bug related to minimum percentage field.
+
+
+= 2.7.0 =
+
+* **New Features**
+* New integration: Gravity Kit.
+* Gravity Kit: New event: Entry approved from any form.
+* Gravity Kit: New event: Entry approved from specific form.
+* Gravity Kit: New event: Entry disapproved from any form.
+* Gravity Kit: New event: Entry disapproved from specific form.
+* **Improvements**
+* Improved how to display elements in [gamipress_email_settings] shortcode.
+
+= 2.6.9 =
+
+* **New Features**
+* New integration: Charitable.
+* Charitable: New event: Make a donation.
+* **Improvements**
+* Improved GamiPress add-ons section.
+
+= 2.6.8 =
+
+* **Bug Fixes**
+* Fixed bug in MetaBox integration to avoid incompatibility with themes.
+
+= 2.6.7 =
+
+* **Bug Fixes**
+* Fixed bug in JetEngine integration.
+
+= 2.6.6 =
+
+* **New Features**
+* New integration: Thrive Leads.
+* Thrive Leads: New event: Submit a form.
+* Thrive Leads: New event: Submit a specific form.
+* New integration: Thrive Ovation.
+* Thrive Ovation: New event: Submit a testimonial.
 
 = 2.6.5 =
 

@@ -19,7 +19,7 @@ function gamipress_youtube_track_watch_video_listener() {
     $post_id            = ( isset( $_REQUEST['post_id'] ) ? $_REQUEST['post_id'] : '' );
 
     if( absint( $user_id ) !== 0 && ! empty( $video_id ) ) {
-
+error_log (print_r($video_id, 1));
         // Trigger user watch Youtube video
         do_action( 'gamipress_youtube_watch_video', $video_id, $user_id, $seconds, $duration, $post_id );
 

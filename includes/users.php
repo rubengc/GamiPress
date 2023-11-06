@@ -180,35 +180,43 @@ function gamipress_get_user_achievements( $args = array() ) {
 
 	$ct_query = new CT_Query( $query_args );
 
-	$achievements = $ct_query->get_results();
+	$results = $ct_query->get_results();
 
-	foreach ( $achievements as $key => $achievement ) {
+	$achievements = array();
+
+	foreach ( $results as $key => $achievement ) {
+
+		// Unset if achievement is NULL
+		if( is_null( $achievement ) ) {
+            unset( $results[$key] );
+			continue;
+        }
 
 		// Update object for backward compatibility for usages previously to 1.2.7
 		$achievement->ID = $achievement->post_id;
 		$achievement->date_earned = strtotime( $achievement->date );
-
-		$achievements[$key] = $achievement;
-
+		
         // If achievements earned will be displayed, then need to pass some filters
 		if( isset( $args['display'] ) && $args['display'] ) {
 
-		    // Unset not existent achievements
+		    // If not existent achievements
 		    if( ! gamipress_post_exists( $achievement->post_id ) ) {
-                unset( $achievements[$key] );
+				continue;
             }
 
-		    // Unset not published achievements
+		    // If not published achievements
             if( gamipress_get_post_field( 'post_status', $achievement->post_id ) !== 'publish' ) {
-                unset( $achievements[$key] );
+				continue;
             }
 
-			// Unset hidden achievements on display context
+			// If hidden achievements on display context
 			if( gamipress_is_achievement_hidden( $achievement->post_id ) ) {
-				unset( $achievements[$key] );
+				continue;
             }
 
 		}
+
+		$achievements[$key] = $achievement;
 
 	}
 

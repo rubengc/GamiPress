@@ -13,10 +13,13 @@
         if(
             trigger_type === 'gamipress_ld_complete_quiz_grade'
             || trigger_type === 'gamipress_ld_complete_specific_quiz_grade'
+            || trigger_type === 'gamipress_ld_complete_quiz_specific_course_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_category_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_tag_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_max_grade'
             || trigger_type === 'gamipress_ld_complete_specific_quiz_max_grade'
+            || trigger_type === 'gamipress_ld_complete_specific_quiz_grade'
+            || trigger_type === 'gamipress_ld_complete_quiz_specific_course_max_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_category_max_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_tag_max_grade'
         ) {
@@ -147,10 +150,12 @@
         if(
             trigger_type === 'gamipress_ld_complete_quiz_grade'
             || trigger_type === 'gamipress_ld_complete_specific_quiz_grade'
+            || trigger_type === 'gamipress_ld_complete_quiz_specific_course_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_category_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_tag_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_max_grade'
             || trigger_type === 'gamipress_ld_complete_specific_quiz_max_grade'
+            || trigger_type === 'gamipress_ld_complete_quiz_specific_course_max_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_category_max_grade'
             || trigger_type === 'gamipress_ld_complete_quiz_course_tag_max_grade'
         ) {

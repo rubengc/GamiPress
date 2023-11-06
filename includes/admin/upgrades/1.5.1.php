@@ -35,9 +35,9 @@ function gamipress_151_upgrades( $stored_version ) {
     }
 
     // Check if there is something to migrate
-    $upgrade_size = gamipress_151_upgrade_size();
+    $upgrade_check = gamipress_151_maybe_upgrade();
 
-    if( $upgrade_size === 0 ) {
+    if( $upgrade_check === 0 ) {
 
         // There is nothing to update, so upgrade
         $stored_version = '1.5.1';
@@ -382,3 +382,55 @@ function gamipress_ajax_stop_process_151_upgrade() {
 
 }
 add_action( 'wp_ajax_gamipress_stop_process_151_upgrade', 'gamipress_ajax_stop_process_151_upgrade' );
+
+/**
+ * Check if it is necessary upgrade
+ *
+ * @return int
+ */
+function gamipress_151_maybe_upgrade() {
+
+    global $wpdb;
+
+    $upgrade_check = 0;
+
+    $p2p  = ( property_exists( $wpdb, 'p2p' ) ? $wpdb->p2p : $wpdb->prefix . 'p2p' );
+
+    // Multisite support
+    if( gamipress_is_network_wide_active() ) {
+        $p2p = $wpdb->base_prefix . 'p2p';
+    }
+
+    // Extra check for new installs
+    if( ! gamipress_database_table_exists( $p2p ) ) {
+        return 0;
+    }
+
+    // Retrieve the count of post upgrade
+    if( ! is_gamipress_upgrade_completed( 'update_requirements_relationships' ) ) {
+
+        // Setup vars
+        $posts              = GamiPress()->db->posts;
+        $requirements_types = gamipress_get_requirement_types_slugs();
+
+        $posts_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$posts} AS p WHERE p.post_type IN ( '" . implode( "', '", $requirements_types ) . "' ) AND p.post_parent = 0 LIMIT = 1" );
+
+        $upgrade_check += absint( $posts_count );
+
+    }
+
+    // Retrieve the count of meta data upgrade
+    if( ! is_gamipress_upgrade_completed( 'update_achievements_relationships' ) ) {
+
+        // Setup vars
+        $postmeta           = GamiPress()->db->postmeta;
+
+        $meta_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$postmeta} AS pm WHERE pm.post_id NOT IN ( SELECT spm.post_id FROM {$postmeta} AS spm WHERE spm.meta_key = '_gamipress_achievement_post' ) AND pm.meta_key = '_gamipress_trigger_type' AND pm.meta_value = 'specific-achievement' LIMIT = 1" );
+
+        $upgrade_check += absint( $meta_count );
+
+    }
+
+    return $upgrade_check;
+
+}

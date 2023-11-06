@@ -70,6 +70,11 @@ function gamipress_meta_box_requirement_ui_fields( $requirement_id, $post_id ) {
 
     // Meta Box User Meta Extension
     if ( defined( 'MBAIO_DIR' ) || class_exists( 'RWMB_User_Storage' ) ) {
+
+        if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
+            return;
+        }
+        
         $user_fields = rwmb_get_object_fields( 'user', 'user' );
     } 
 

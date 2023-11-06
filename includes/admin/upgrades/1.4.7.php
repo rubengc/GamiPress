@@ -40,9 +40,9 @@ function gamipress_147_upgrades( $stored_version ) {
     }
 
     // Check if there is something to migrate
-    $upgrade_size = gamipress_147_upgrade_size();
+    $upgrade_check = gamipress_147_maybe_upgrade();
 
-    if( $upgrade_size === 0 ) {
+    if( $upgrade_check === 0 ) {
 
         // There is nothing to update, so upgrade
         $stored_version = '1.4.7';
@@ -289,3 +289,29 @@ function gamipress_ajax_stop_process_147_upgrade() {
     wp_send_json_success();
 }
 add_action( 'wp_ajax_gamipress_stop_process_147_upgrade', 'gamipress_ajax_stop_process_147_upgrade' );
+
+/**
+ * Check if it is necessary upgrade
+ *
+ * @return int
+ */
+function gamipress_147_maybe_upgrade() {
+
+    global $wpdb;
+
+    $upgrade_check = 0;
+
+    // Retrieve the count of users earnings to upgrade
+    if( ! is_gamipress_upgrade_completed( 'update_logs_trigger_type' ) && gamipress_database_table_has_column( GamiPress()->db->logs, 'trigger_type' ) ) {
+
+        $logs = GamiPress()->db->logs;
+
+        $logs_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$logs} AS l WHERE l.trigger_type = '' LIMIT = 1" );
+
+        $upgrade_check += absint( $logs_count );
+
+    }
+
+    return $upgrade_check;
+
+}

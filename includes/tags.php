@@ -631,7 +631,7 @@ function gamipress_parse_tags( $pattern, $post_id, $user_id, $content ) {
         $replacements = gamipress_get_rank_earned_tags_replacements( $post_id, $user_id );
     } else if( $pattern === 'rank_requirement_completed' ) {
         $replacements = gamipress_get_rank_requirement_completed_tags_replacements( $post_id, $user_id );
-    } else {
+    } else if( $pattern === 'email_footer' ) {
         $replacements = gamipress_get_site_tags_replacements();
         $replacements = array_merge( $replacements, gamipress_get_user_tags_replacements( $user_id ) );
     }

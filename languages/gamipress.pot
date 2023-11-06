@@ -3,17 +3,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Gamipress\n"
 "Report-Msgid-Bugs-To: https://tsunoa.com/\n"
-"POT-Creation-Date: 2023-07-10 22:29+0200\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2023-09-28 14:01+0200\n"
 "PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Tsunoa (https://tsunoa.com/)\n"
 "Language-Team: Tsunoa <contact@tsunoa.com>\n"
-"X-Generator: Poedit 2.4.3\n"
-"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.3.2\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Textdomain-Support: yes\n"
@@ -40,7 +40,7 @@ msgstr ""
 #: includes/functions/achievement-types.php:184
 #: includes/functions/achievement-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:51
-#: includes/shortcodes/gamipress_email_settings.php:149
+#: includes/shortcodes/gamipress_email_settings.php:151
 #: integrations/bbpress/includes/admin.php:190
 #: integrations/buddyboss/includes/community/includes/admin.php:265
 #: integrations/buddyboss/includes/community/includes/admin.php:348
@@ -81,7 +81,7 @@ msgstr ""
 #: includes/functions/rank-types.php:186 includes/functions/rank-types.php:193
 #: includes/privacy/exporters/user-data.php:136
 #: includes/shortcodes/gamipress_earnings.php:61
-#: includes/shortcodes/gamipress_email_settings.php:168
+#: includes/shortcodes/gamipress_email_settings.php:171
 #: integrations/bbpress/includes/admin.php:204
 #: integrations/buddyboss/includes/community/includes/admin.php:279
 #: integrations/buddyboss/includes/community/includes/admin.php:423
@@ -909,7 +909,7 @@ msgstr ""
 #: includes/functions/points-types.php:191
 #: includes/shortcodes/gamipress_earnings.php:41
 #: includes/shortcodes/gamipress_earnings.php:334
-#: includes/shortcodes/gamipress_email_settings.php:130
+#: includes/shortcodes/gamipress_email_settings.php:131
 #: integrations/bbpress/includes/admin.php:179
 #: integrations/buddyboss/includes/community/includes/admin.php:254
 #: integrations/buddyboss/includes/community/includes/admin.php:320
@@ -1678,97 +1678,97 @@ msgstr ""
 msgid "Add-ons to extend and expand the functionality of GamiPress."
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:133 includes/admin/pages/add-ons.php:200
+#: includes/admin/pages/add-ons.php:135 includes/admin/pages/add-ons.php:143
 msgid "More Information"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:152
+#: includes/admin/pages/add-ons.php:162
 #, php-format
 msgid "Install %s now"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:152
+#: includes/admin/pages/add-ons.php:162
 msgid "Install Now"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:158
+#: includes/admin/pages/add-ons.php:168
 #, php-format
 msgid "Update %s now"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:158
+#: includes/admin/pages/add-ons.php:168
 msgid "Update Now"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:165
+#: includes/admin/pages/add-ons.php:175
 msgctxt "plugin"
 msgid "Active"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:167 includes/admin/pages/add-ons.php:244
+#: includes/admin/pages/add-ons.php:177 includes/admin/pages/add-ons.php:245
 msgid "Activate"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:168 includes/admin/pages/add-ons.php:245
+#: includes/admin/pages/add-ons.php:178 includes/admin/pages/add-ons.php:246
 #, php-format
 msgctxt "plugin"
 msgid "Activate %s"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:176 includes/admin/pages/add-ons.php:253
+#: includes/admin/pages/add-ons.php:186 includes/admin/pages/add-ons.php:254
 msgid "Network Activate"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:177 includes/admin/pages/add-ons.php:254
+#: includes/admin/pages/add-ons.php:187 includes/admin/pages/add-ons.php:255
 #, php-format
 msgctxt "plugin"
 msgid "Network Activate %s"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:188
+#: includes/admin/pages/add-ons.php:198
 msgctxt "plugin"
 msgid "Installed"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:229
+#: includes/admin/pages/add-ons.php:230
 msgid "Activate License"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:232
+#: includes/admin/pages/add-ons.php:233
 msgid "Active and License Registered"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:238
+#: includes/admin/pages/add-ons.php:239
 msgid "Active"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:269
+#: includes/admin/pages/add-ons.php:270
 msgid "Get this pass"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:274
+#: includes/admin/pages/add-ons.php:275
 msgid "Get this asset"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:279
+#: includes/admin/pages/add-ons.php:280
 msgid "Get this add-on"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:286
+#: includes/admin/pages/add-ons.php:287
 #, php-format
 msgid "More information about %s"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:286
+#: includes/admin/pages/add-ons.php:287
 msgid "More Details"
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:355 includes/admin/pages/add-ons.php:367
+#: includes/admin/pages/add-ons.php:356 includes/admin/pages/add-ons.php:368
 #, php-format
 msgid "An unexpected error occurred. Something may be wrong with gamipress.com or this server&#8217;s configuration. If you continue to have problems, please try to <a href=\"%s\">contact us</a>."
 msgstr ""
 
-#: includes/admin/pages/add-ons.php:357
+#: includes/admin/pages/add-ons.php:358
 msgid "(WordPress could not establish a secure connection to gamipress.com. Please contact your server administrator.)"
 msgstr ""
 
@@ -2083,7 +2083,7 @@ msgstr ""
 msgid "Text to be shown at email footer."
 msgstr ""
 
-#: includes/admin/settings/email.php:53 templates/emails/footer-default.php:45
+#: includes/admin/settings/email.php:53 templates/emails/footer-default.php:46
 #, php-format
 msgid "%s - Powered by GamiPress"
 msgstr ""
@@ -3822,7 +3822,7 @@ msgid "<strong>About this upgrade:</strong><br />This is a <strong><em>mandatory
 msgstr ""
 
 #: includes/admin/upgrades/2.3.7.php:109
-#, php-format
+#, no-php-format
 msgid "Depending on the number of user earnings found, this process could take a while, but there is <strong><em>no danger</em></strong> about lose any data because this process will only <strong><em>append</em></strong> information to old entries, so is <strong><em>100% safe to upgrade</em></strong>."
 msgstr ""
 
@@ -4316,79 +4316,79 @@ msgstr ""
 msgid "[GamiPress] Email failed to send to %s with subject: %s"
 msgstr ""
 
-#: includes/emails.php:346
+#: includes/emails.php:351
 msgid "Sample Achievement"
 msgstr ""
 
-#: includes/emails.php:349
+#: includes/emails.php:354
 msgid "Sample Achievement Excerpt"
 msgstr ""
 
-#: includes/emails.php:352
+#: includes/emails.php:357
 msgid "Not earned achievement step."
 msgstr ""
 
-#: includes/emails.php:353
+#: includes/emails.php:358
 msgid "Earned achievement step."
 msgstr ""
 
-#: includes/emails.php:355
+#: includes/emails.php:360
 msgid "Sample Achievement Type"
 msgstr ""
 
-#: includes/emails.php:356
+#: includes/emails.php:361
 msgid "Sample Achievement Congratulations Text"
 msgstr ""
 
-#: includes/emails.php:360
+#: includes/emails.php:365
 msgid "Sample Step Label"
 msgstr ""
 
-#: includes/emails.php:372
+#: includes/emails.php:377
 msgid "Sample Points Award Label"
 msgstr ""
 
-#: includes/emails.php:375 includes/emails.php:383
+#: includes/emails.php:380 includes/emails.php:388
 msgid "Sample Points Type"
 msgstr ""
 
-#: includes/emails.php:380
+#: includes/emails.php:385
 msgid "Sample Points Deduction Label"
 msgstr ""
 
-#: includes/emails.php:389
+#: includes/emails.php:394
 msgid "Sample Rank"
 msgstr ""
 
-#: includes/emails.php:392
+#: includes/emails.php:397
 msgid "Sample Rank Excerpt"
 msgstr ""
 
-#: includes/emails.php:395
+#: includes/emails.php:400
 msgid "Not completed rank requirement."
 msgstr ""
 
-#: includes/emails.php:396
+#: includes/emails.php:401
 msgid "Completed rank requirement."
 msgstr ""
 
-#: includes/emails.php:398
+#: includes/emails.php:403
 msgid "Sample Rank Type"
 msgstr ""
 
-#: includes/emails.php:399
+#: includes/emails.php:404
 msgid "Sample Rank Congratulations Text"
 msgstr ""
 
-#: includes/emails.php:403
+#: includes/emails.php:408
 msgid "Sample Rank Requirement Label"
 msgstr ""
 
-#: includes/emails.php:648
+#: includes/emails.php:657
 msgid "Email sent successfully!"
 msgstr ""
 
-#: includes/emails.php:652
+#: includes/emails.php:661
 msgid "There was a problem sending the email. Check your WordPress email configuration."
 msgstr ""
 
@@ -6329,26 +6329,26 @@ msgstr ""
 msgid "Receive emails related to gamification"
 msgstr ""
 
-#: includes/shortcodes/gamipress_email_settings.php:132
+#: includes/shortcodes/gamipress_email_settings.php:134
 msgid "Receive emails related to points balance movements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_email_settings.php:139
+#: includes/shortcodes/gamipress_email_settings.php:140
 #, php-format
 msgid "Receive emails related to %s balance movements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_email_settings.php:151
+#: includes/shortcodes/gamipress_email_settings.php:154
 msgid "Receive emails related to achievements"
 msgstr ""
 
-#: includes/shortcodes/gamipress_email_settings.php:158
-#: includes/shortcodes/gamipress_email_settings.php:177
+#: includes/shortcodes/gamipress_email_settings.php:160
+#: includes/shortcodes/gamipress_email_settings.php:180
 #, php-format
 msgid "Receive emails related to %s"
 msgstr ""
 
-#: includes/shortcodes/gamipress_email_settings.php:170
+#: includes/shortcodes/gamipress_email_settings.php:174
 msgid "Receive emails related to ranks"
 msgstr ""
 
@@ -7620,7 +7620,9 @@ msgstr ""
 #: integrations/happyforms/includes/triggers.php:221
 #: integrations/jetformbuilder/includes/requirements.php:52
 #: integrations/jetformbuilder/includes/triggers.php:221
-#: integrations/meta-box/includes/requirements.php:108
+#: integrations/kadence-blocks/includes/requirements.php:69
+#: integrations/kadence-blocks/includes/triggers.php:185
+#: integrations/meta-box/includes/requirements.php:113
 #: integrations/ninja-forms/includes/requirements.php:52
 #: integrations/ninja-forms/includes/triggers.php:301
 #: integrations/wp-forms/includes/requirements.php:52
@@ -7831,6 +7833,40 @@ msgstr ""
 
 #: integrations/anspress/includes/triggers.php:31
 msgid "Comment on question or answer"
+msgstr ""
+
+#: integrations/armember/includes/admin.php:22
+msgid "ARMember integration"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:22
+msgid "ARMember"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:23
+msgid "Add to membership plan"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:24
+msgid "Add to specific membership plan"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:25
+msgid "Cancel any membership plan"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:26
+msgid "Cancel a specific membership plan"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:61
+#, php-format
+msgid "Add to %s membership plan"
+msgstr ""
+
+#: integrations/armember/includes/triggers.php:62
+#, php-format
+msgid "Cancel %s membership plan"
 msgstr ""
 
 #: integrations/autonami/includes/admin.php:22
@@ -9639,7 +9675,9 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:23
 #: integrations/happyforms/includes/triggers.php:23
 #: integrations/jetformbuilder/includes/triggers.php:23
+#: integrations/kadence-blocks/includes/triggers.php:23
 #: integrations/ninja-forms/includes/triggers.php:23
+#: integrations/thrive-leads/includes/triggers.php:23
 #: integrations/wp-forms/includes/triggers.php:23
 #: integrations/ws-form/includes/triggers.php:23
 msgid "Successful submit a form"
@@ -9655,7 +9693,9 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:24
 #: integrations/happyforms/includes/triggers.php:24
 #: integrations/jetformbuilder/includes/triggers.php:24
+#: integrations/kadence-blocks/includes/triggers.php:24
 #: integrations/ninja-forms/includes/triggers.php:24
+#: integrations/thrive-leads/includes/triggers.php:24
 #: integrations/wp-forms/includes/triggers.php:24
 #: integrations/ws-form/includes/triggers.php:24
 msgid "Successful submit a specific form"
@@ -9670,6 +9710,7 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:25
 #: integrations/happyforms/includes/triggers.php:25
 #: integrations/jetformbuilder/includes/triggers.php:25
+#: integrations/kadence-blocks/includes/triggers.php:25
 #: integrations/ninja-forms/includes/triggers.php:25
 #: integrations/wp-forms/includes/triggers.php:25
 #: integrations/ws-form/includes/triggers.php:25
@@ -9686,6 +9727,7 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:26
 #: integrations/happyforms/includes/triggers.php:26
 #: integrations/jetformbuilder/includes/triggers.php:26
+#: integrations/kadence-blocks/includes/triggers.php:26
 #: integrations/ninja-forms/includes/triggers.php:26
 #: integrations/wp-forms/includes/triggers.php:26
 #: integrations/ws-form/includes/triggers.php:26
@@ -9701,7 +9743,10 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:94
 #: integrations/happyforms/includes/triggers.php:94
 #: integrations/jetformbuilder/includes/triggers.php:94
+#: integrations/kadence-blocks/includes/triggers.php:54
+#: integrations/kadence-blocks/includes/triggers.php:82
 #: integrations/ninja-forms/includes/triggers.php:94
+#: integrations/thrive-leads/includes/triggers.php:85
 #: integrations/wp-forms/includes/triggers.php:94
 #: integrations/ws-form/includes/triggers.php:94
 #, php-format
@@ -9718,6 +9763,7 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:70
 #: integrations/happyforms/includes/triggers.php:70
 #: integrations/jetformbuilder/includes/triggers.php:70
+#: integrations/kadence-blocks/includes/triggers.php:58
 #: integrations/ninja-forms/includes/triggers.php:70
 #: integrations/wp-forms/includes/triggers.php:70
 #: integrations/ws-form/includes/triggers.php:70
@@ -9735,6 +9781,7 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:76
 #: integrations/happyforms/includes/triggers.php:76
 #: integrations/jetformbuilder/includes/triggers.php:76
+#: integrations/kadence-blocks/includes/triggers.php:64
 #: integrations/ninja-forms/includes/triggers.php:76
 #: integrations/wp-forms/includes/triggers.php:76
 #: integrations/ws-form/includes/triggers.php:76
@@ -9749,6 +9796,7 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:95
 #: integrations/happyforms/includes/triggers.php:95
 #: integrations/jetformbuilder/includes/triggers.php:95
+#: integrations/kadence-blocks/includes/triggers.php:83
 #: integrations/ninja-forms/includes/triggers.php:95
 #: integrations/wp-forms/includes/triggers.php:95
 #: integrations/ws-form/includes/triggers.php:95
@@ -9780,10 +9828,24 @@ msgstr ""
 #: integrations/gravity-forms/includes/triggers.php:367
 #: integrations/happyforms/includes/triggers.php:222
 #: integrations/jetformbuilder/includes/triggers.php:222
+#: integrations/kadence-blocks/includes/triggers.php:186
 #: integrations/ninja-forms/includes/triggers.php:302
 #: integrations/wp-forms/includes/triggers.php:222
 #: integrations/ws-form/includes/triggers.php:359
 msgid "Field value attached to this log."
+msgstr ""
+
+#: integrations/charitable/includes/admin.php:22
+msgid "Charitable integration"
+msgstr ""
+
+#: integrations/charitable/includes/triggers.php:22
+msgid "Charitable"
+msgstr ""
+
+#: integrations/charitable/includes/triggers.php:24
+#: integrations/give/includes/triggers.php:23
+msgid "Make a donation"
 msgstr ""
 
 #: integrations/contact-form-7/includes/admin.php:22
@@ -10005,6 +10067,8 @@ msgstr ""
 #: integrations/elementor/includes/requirements.php:61
 #: integrations/gravity-forms/includes/requirements.php:51
 #: integrations/gravity-forms/includes/triggers.php:360
+#: integrations/kadence-blocks/includes/requirements.php:68
+#: integrations/kadence-blocks/includes/triggers.php:179
 #: integrations/ws-form/includes/requirements.php:51
 #: integrations/ws-form/includes/triggers.php:352
 msgid "Field ID"
@@ -10684,10 +10748,6 @@ msgstr ""
 msgid "Give"
 msgstr ""
 
-#: integrations/give/includes/triggers.php:23
-msgid "Make a donation"
-msgstr ""
-
 #: integrations/give/includes/triggers.php:24
 msgid "Make a donation of a minimum amount"
 msgstr ""
@@ -10715,8 +10775,43 @@ msgid "Gravity Forms"
 msgstr ""
 
 #: integrations/gravity-forms/includes/triggers.php:361
+#: integrations/kadence-blocks/includes/triggers.php:180
 #: integrations/ws-form/includes/triggers.php:353
 msgid "Field ID attached to this log."
+msgstr ""
+
+#: integrations/gravity-kit/includes/admin.php:22
+msgid "Gravity Kit integration"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:22
+msgid "Gravity Kit"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:23
+msgid "Entry approved from any form"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:24
+msgid "Entry approved from a specific form"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:25
+msgid "Entry disapproved from any form"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:26
+msgid "Entry disapproved from a specific form"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:61
+#, php-format
+msgid "Approved entry from %s"
+msgstr ""
+
+#: integrations/gravity-kit/includes/triggers.php:62
+#, php-format
+msgid "Disapproved entry from %s"
 msgstr ""
 
 #: integrations/groundhogg/includes/admin.php:22
@@ -11099,6 +11194,14 @@ msgstr ""
 
 #: integrations/jetpack/includes/triggers.php:24
 msgid "Comment subscription"
+msgstr ""
+
+#: integrations/kadence-blocks/includes/admin.php:22
+msgid "Kadence Blocks integration"
+msgstr ""
+
+#: integrations/kadence-blocks/includes/triggers.php:22
+msgid "Kadence Blocks"
 msgstr ""
 
 #: integrations/learndash/includes/admin.php:24
@@ -13026,6 +13129,26 @@ msgstr ""
 msgid "Complete %s module"
 msgstr ""
 
+#: integrations/thrive-leads/includes/admin.php:22
+msgid "Thrive Leads integration"
+msgstr ""
+
+#: integrations/thrive-leads/includes/triggers.php:22
+msgid "Thrive Leads"
+msgstr ""
+
+#: integrations/thrive-ovation/includes/admin.php:22
+msgid "Thrive Ovation integration"
+msgstr ""
+
+#: integrations/thrive-ovation/includes/triggers.php:22
+msgid "Thrive Ovation"
+msgstr ""
+
+#: integrations/thrive-ovation/includes/triggers.php:24
+msgid "Submit a testimonial"
+msgstr ""
+
 #: integrations/thrive-quiz-builder/includes/admin.php:22
 msgid "Thrive Quiz Builder integration"
 msgstr ""
@@ -13489,6 +13612,27 @@ msgstr ""
 #: integrations/wishlist-member/includes/triggers.php:111
 #, php-format
 msgid "Get uncancelled on %s level"
+msgstr ""
+
+#: integrations/woocommerce-shipstation/includes/admin.php:22
+msgid "WooCommerce Shipstation integration"
+msgstr ""
+
+#: integrations/woocommerce-shipstation/includes/triggers.php:22
+msgid "WooCommerce Shipstation"
+msgstr ""
+
+#: integrations/woocommerce-shipstation/includes/triggers.php:24
+msgid "Get an order shipped"
+msgstr ""
+
+#: integrations/woocommerce-shipstation/includes/triggers.php:25
+msgid "Get a product shipped"
+msgstr ""
+
+#: integrations/woocommerce-shipstation/includes/triggers.php:84
+#, php-format
+msgid "Get %s product shipped"
 msgstr ""
 
 #: integrations/woocommerce/includes/admin.php:36

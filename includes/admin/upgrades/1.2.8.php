@@ -40,9 +40,9 @@ function gamipress_128_upgrades( $stored_version ) {
     }
 
     // Check if there is something to migrate
-    $upgrade_size = gamipress_128_upgrade_size();
+    $upgrade_check = gamipress_128_maybe_upgrade();
 
-    if( $upgrade_size === 0 ) {
+    if( $upgrade_check === 0 ) {
 
         // There is nothing to update, so upgrade
         $stored_version = '1.2.8';
@@ -503,3 +503,55 @@ function gamipress_ajax_stop_process_128_upgrade() {
     wp_send_json_success();
 }
 add_action( 'wp_ajax_gamipress_stop_process_128_upgrade', 'gamipress_ajax_stop_process_128_upgrade' );
+
+/**
+ * Check if it is necessary upgrade
+ *
+ * @return int
+ */
+function gamipress_128_maybe_upgrade() {
+
+    global $wpdb;
+
+    $upgrade_check = 0;
+
+    // Retrieve the count of users earnings to upgrade
+    if( ! is_gamipress_upgrade_completed( 'migrate_user_earnings' ) ) {
+
+        $users_count = $wpdb->get_var($wpdb->prepare(
+            "SELECT COUNT(*)
+             FROM   $wpdb->usermeta AS u
+             WHERE  u.meta_key = %s
+             LIMIT = 1",
+            "_gamipress_achievements"
+        ));
+
+        $upgrade_check += absint($users_count);
+
+    }
+
+    // Retrieve the count of logs to upgrade
+    if( ! is_gamipress_upgrade_completed( 'migrate_logs' ) ) {
+
+        $posts      = GamiPress()->db->posts;
+        $logs_meta 	= GamiPress()->db->logs_meta;
+
+        $logs_count = $wpdb->get_var( $wpdb->prepare(
+            "SELECT COUNT(*)
+             FROM {$posts} AS p
+             WHERE p.post_type = %s
+              AND ID NOT IN (
+                SELECT lm.meta_value FROM {$logs_meta} AS lm WHERE lm.meta_key = %s
+              )
+            LIMIT = 1",
+            'gamipress-log',
+            '_gamipress_legacy_log_id'
+        ) );
+
+        $upgrade_check += absint( $logs_count );
+
+    }
+
+    return $upgrade_check;
+
+}

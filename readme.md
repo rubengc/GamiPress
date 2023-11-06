@@ -280,115 +280,27 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
-### 2.6.5 ###
+### 5.7.0 ###
 
 * **Improvements**
-* Added new checks to load Youtube and Vimeo Javascript only when their block, shortcode or widget is in page.
+* Ensure compatibility with PHP 8.2.
 
-### 2.6.4 ###
+### 5.5.0 ###
 
 * **Bug Fixes**
-* Fixed typos in some strings.
+* Thrive Quiz Builder: Fixed selection of percentage type quizzes.
 
-### 2.6.3 ###
-
-* **New Features**
-* Moved all integrations inside GamiPress! Now, is not required anymore to install integrations individually.
-
-### 2.6.2 ###
-
-* **New Features**
-* Added the field "Columns in small screens" to all blocks and widgets with support to columns.
-* Added the attribute "columns_small" to all shortcodes with support to columns.
-
-### 2.6.1 ###
+### 5.4.0 ###
 
 * **Bug Fixes**
-* Prevent to execute script tags while entering the requirement title to avoid XSS injection.
+* Thrive Apprentice: Fixed error in course selector for "Complete specific course" event.
 
-### 2.6.0 ###
-
-* **Bug Fixes**
-* Fixed issue with Gutenberg Blocks preview in backend.
-
-### 2.5.9.1 ###
-
-* **Developer Notes**
-* Fixed PHP notices caused by add_submenu_page() function when passing null as first parameter.
-
-### 2.5.9 ###
-
-* **Improvements**
-* Added new hook to detect complete achievement revoke.
-* Deprecated functions updated to adapt to PHP latest version.
-* Improved SQL queries to clean logs.
-* **Bug Fixes**
-* Fixed rank earners display in multisite with no network-wide activation.
-
-### 2.5.8 ###
-
-* **Improvements**
-* Added listeners when user and post metas are added to work with the user and post metas events.
-* **Bug Fixes**
-* Fixed typo that does not allows to check the metas in use correctly.
-
-### 2.5.7.1 ###
+### 5.3.0 ###
 
 * **Bug Fixes**
-* Fixed typo that caused User Earnings query not work correctly.
-* **Improvements**
-* Improved escaping of SQL queries.
+* Fixed achieving ranks consecutively.
 
-### 2.5.7 ###
-
-* **Improvements**
-* Added more permission checks to some ajax functions.
-* Added more nonce checks to prevent CSRF attacks.
-* Added more sanitization checks to database queries.
-
-### 2.5.6 ###
-
-* **New Features**
-* Added the attribute "force_responsive" to the [gamipress_earnings] shortcode.
-* Added the option "Force responsive" to Earnings block and widget.
-* **Improvements**
-* Improved the user earnings display in small areas or small screens.
-
-### 2.5.5 ###
-
-* **Improvements**
-* Updated some labels to better guide users when configuring GamiPress.
-
-### 2.5.4 ###
-
-* **Improvements**
-* Added more performance improvements to the user meta and post meta listeners.
-
-### 2.5.3 ###
-
-* **Improvements**
-* Moved the option "Log all events" to a WordPress hook to get enabled only through code.
-* Added several performance improvements to the user meta and post meta listeners.
-
-### 2.5.2 ###
-
-* **New Features**
-* New event: Get user meta updated with any value.
-* New event: Get user meta updated with a value.
-* New event: Post meta updated with any value.
-* New event: Post meta updated with any value.
-* **Bug Fixes**
-* Fixed incorrect use of gamipress_get_user_rank_id() in rank template (thanks @tambaqui fixes #24)
-
-### 2.5.1 ###
-
-* **Improvements**
-* Added more nonce checks to prevent CSRF attacks.
-
-### 2.5.0 ###
+### 5.1.0 ###
 
 * **Bug Fixes**
-* Prevent to use global options on multisite when GamiPress is not network wide active.
-* **Developer Notes**
-* Moved old changelog to changelog.txt file.
-* Set GamiPress 2.5.0 as new stable release! :)
+* Fixed awards related to points earned with Bulk Awards.

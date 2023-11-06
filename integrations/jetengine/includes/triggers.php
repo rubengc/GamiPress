@@ -51,7 +51,7 @@ add_filter( 'gamipress_activity_triggers', 'gamipress_jetengine_activity_trigger
  *
  * @return string
  */
-function gamipress_surecart_activity_trigger_label( $title, $requirement_id, $requirement ) {
+function gamipress_jetengine_activity_trigger_label( $title, $requirement_id, $requirement ) {
 
     $JE_post_type = ( isset( $requirement['jetengine_post_type'] ) ) ? $requirement['jetengine_post_type'] : '';
 
@@ -68,20 +68,20 @@ function gamipress_surecart_activity_trigger_label( $title, $requirement_id, $re
 
     switch( $requirement['trigger_type'] ) {
         case 'gamipress_jetengine_publish_post_specific_type':
-            return sprintf( __( 'Publish a post of %s type', 'gamipress-surecart-integration' ), $post_type_name );
+            return sprintf( __( 'Publish a post of %s type', 'gamipress-jetengine-integration' ), $post_type_name );
             break;
         case 'gamipress_jetengine_update_post_specific_type':
-            return sprintf( __( 'Update a post of %s type', 'gamipress-surecart-integration' ), $post_type_name );
+            return sprintf( __( 'Update a post of %s type', 'gamipress-jetengine-integration' ), $post_type_name );
             break;
         case 'gamipress_jetengine_delete_post_specific_type':
-            return sprintf( __( 'Delete a post of %s type', 'gamipress-surecart-integration' ), $post_type_name );
+            return sprintf( __( 'Delete a post of %s type', 'gamipress-jetengine-integration' ), $post_type_name );
             break;
         
     }
 
     return $title;
 }
-add_filter( 'gamipress_activity_trigger_label', 'gamipress_surecart_activity_trigger_label', 10, 3 );
+add_filter( 'gamipress_activity_trigger_label', 'gamipress_jetengine_activity_trigger_label', 10, 3 );
 
 
 /**

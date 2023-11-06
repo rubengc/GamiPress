@@ -760,8 +760,8 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
             }
 
             // Increase the points awarded of this loop since the achievement will be awarded
-            gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id );
-
+            gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id, $user_id );
+            
 		} else {
             $return = false;
         }
@@ -787,8 +787,11 @@ function gamipress_user_meets_points_requirement( $return = false, $user_id = 0,
             $minimum_time  	= current_time( 'timestamp' ) - 1;
             $last_activity  = absint( gamipress_achievement_last_user_activity( $achievement_id, $user_id ) );
 
-            if ( $last_activity > $minimum_time )
+            if ( 'rank-requirement' === gamipress_get_post_type( $achievement_id ) ) {
+                $return = true;
+            } elseif ( $last_activity > $minimum_time ) {
                 $return = false;
+            }
 
         } else {
             $return = false;
@@ -1347,7 +1350,7 @@ function gamipress_award_achievement_to_user( $achievement_id = 0, $user_id = 0,
 
 	// Log the earning of the award
 	gamipress_log_user_achievement_award( $user_id, $achievement_id, $admin_id, $trigger );
-
+    
 	// Available hook for unlocking any achievement of this achievement type
 	do_action( 'gamipress_unlock_' . $achievement->post_type, $user_id, $achievement_id, $trigger, $site_id, $args );
 
@@ -1503,7 +1506,6 @@ function gamipress_maybe_trigger_unlock_all( $user_id = 0, $achievement_id = 0 )
  * @param  int $achievement_id The given achievement's post ID
  */
 function gamipress_maybe_award_points( $user_id = 0, $achievement_id = 0 ) {
-
 	// Grab our points from the provided post
 	$points = absint( gamipress_get_post_meta( $achievement_id, '_gamipress_points' ) );
 	$points_type = gamipress_get_post_meta( $achievement_id, '_gamipress_points_type' );
@@ -1585,7 +1587,7 @@ function gamipress_maybe_award_multiple_points( $user_id = 0, $achievement_id = 
                     gamipress_award_achievement_to_user( $achievement_id, $user_id );
 
                     // On every loop increase the points awarded
-                    gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id );
+                    gamipress_update_user_points_awarded_in_loop( $points_required, $points_type_required, $achievement_id, $user_id );
                 }
 
                 // Ending multiple points award
@@ -1613,15 +1615,15 @@ function gamipress_maybe_award_rank( $user_id = 0, $achievement_id = 0 ) {
 	if( gamipress_get_post_type( $achievement_id ) !== 'rank-requirement' ) {
 		return;
     }
-
+    
 	// Get the requirement rank
 	$rank = gamipress_get_rank_requirement_rank( $achievement_id );
-
+    
 	if( ! $rank )
 		return;
 
-	$old_rank = gamipress_get_user_rank( $user_id );
-
+	$old_rank = gamipress_get_user_rank( $user_id, $rank->post_type );
+    
 	// Return if current rank is this one
 	if( $old_rank && $old_rank->ID === $rank->ID )
 		return;

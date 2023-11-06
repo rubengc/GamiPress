@@ -123,8 +123,10 @@ add_action( 'tutor_lesson_completed_after', 'gamipress_tutor_complete_lesson' );
  * @since 1.0.0
  *
  * @param int $course_id
+ * @param int $user_id
+ * @param bool $is_enrolled
  */
-function gamipress_tutor_enroll_course( $course_id ) {
+function gamipress_tutor_enroll_course( $course_id, $user_id, $is_enrolled ) {
 
     $user_id = get_current_user_id();
 
@@ -141,7 +143,7 @@ function gamipress_tutor_enroll_course( $course_id ) {
     do_action( 'gamipress_tutor_enroll_course_category', $course_id, $user_id, $terms_id );
 
 }
-add_action( 'tutor_after_enroll', 'gamipress_tutor_enroll_course' );
+add_action( 'tutor_after_enrolled', 'gamipress_tutor_enroll_course', 10, 3 );
 
 /**
  * Complete course listener

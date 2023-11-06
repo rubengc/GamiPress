@@ -58,6 +58,16 @@ function gamipress_pmpro_renew_membership( $morder ) {
     $user_id             = $user->ID;
     $membership_id       = $membership->id;
 
+    // Get all active membershipships for this user
+	$old_levels = pmpro_getMembershipLevelsForUser( $user_id );
+
+    foreach ( $old_levels as $level ) {
+        
+        if ($level->ID !== $membership_id) {
+            return;
+        } 
+    }
+
     // Bail if not is a renewal
     if( ! $morder->is_renewal() ) {
         return;
@@ -74,7 +84,6 @@ function gamipress_pmpro_renew_membership( $morder ) {
 
 }
 add_action( 'pmpro_added_order', 'gamipress_pmpro_renew_membership' );
-add_action( 'pmpro_updated_order', 'gamipress_pmpro_renew_membership' );
 
 /**
  * Cancel membership listener

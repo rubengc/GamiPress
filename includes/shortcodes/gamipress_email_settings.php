@@ -126,12 +126,13 @@ function gamipress_email_settings_shortcode( $atts = array(), $content = '' ) {
         // Only add the points types section if any of its emails is enabled
         if( ! gamipress_get_option( 'disable_points_award_completed_email', false ) || ! gamipress_get_option( 'disable_points_deduct_completed_email', false ) ) {
 
-            $email_settings['points_types'] = array(
-                'label' => __( 'Points', 'gamipress' ),
-                'settings' => array(
-                    'points_types' => __( 'Receive emails related to points balance movements', 'gamipress' ),
-                )
-            );
+            $number_point_types = count( gamipress_get_points_types() );
+
+            $email_settings['points_types']['label'] = __( 'Points', 'gamipress' );
+
+            if ( ( absint( $number_point_types < 2 && $atts['types'] === 'no') ) || absint( $number_point_types >= 2 ) ) {
+                $email_settings['points_types']['settings']['points_types'] = __( 'Receive emails related to points balance movements', 'gamipress' );
+            }
 
             // Add settings per type if enabled
             if( $atts['types'] === 'yes' ) {
@@ -145,12 +146,13 @@ function gamipress_email_settings_shortcode( $atts = array(), $content = '' ) {
         // Only add the achievement types section if any of its emails is enabled
         if( ! gamipress_get_option( 'disable_achievement_earned_email', false ) || ! gamipress_get_option( 'disable_step_completed_email', false ) ) {
 
-            $email_settings['achievement_types'] = array(
-                'label' => __( 'Achievements', 'gamipress' ),
-                'settings' => array(
-                    'achievement_types' => __( 'Receive emails related to achievements', 'gamipress' ),
-                )
-            );
+            $number_achievement_types = count( gamipress_get_achievement_types() );
+
+            $email_settings['achievement_types']['label'] = __( 'Achievements', 'gamipress' );
+
+            if ( ( absint( $number_achievement_types < 2 && $atts['types'] === 'no') ) || absint( $number_achievement_types >= 2 ) ) {
+                $email_settings['achievement_types']['settings']['achievement_types'] = __( 'Receive emails related to achievements', 'gamipress' );
+            }
 
             // Add settings per type if enabled
             if( $atts['types'] === 'yes' ) {
@@ -164,13 +166,14 @@ function gamipress_email_settings_shortcode( $atts = array(), $content = '' ) {
         // Only add the rank types section if any of its emails is enabled
         if( ! gamipress_get_option( 'disable_rank_earned_email', false ) || ! gamipress_get_option( 'disable_rank_requirement_completed_email', false ) ) {
 
-            $email_settings['rank_types'] = array(
-                'label' => __( 'Ranks', 'gamipress' ),
-                'settings' => array(
-                    'rank_types' => __( 'Receive emails related to ranks', 'gamipress' ),
-                )
-            );
+            $number_rank_types = count( gamipress_get_rank_types() );
 
+            $email_settings['rank_types']['label'] = __( 'Ranks', 'gamipress' );
+
+            if ( ( absint( $number_rank_types < 2 && $atts['types'] === 'no') ) || absint( $number_rank_types >= 2 ) ) {
+                $email_settings['rank_types']['settings']['rank_types'] = __( 'Receive emails related to ranks', 'gamipress' );
+            }
+            
             // Add settings per type if enabled
             if( $atts['types'] === 'yes' ) {
                 foreach ( gamipress_get_rank_types() as $type => $data ) {

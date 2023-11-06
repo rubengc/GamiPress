@@ -1343,8 +1343,7 @@ function gamipress_get_triggered_requirements( $user_id, $trigger, $site_id, $ar
  *
  * @return array
  */
-function gamipress_sort_triggered_rank_requirements( $triggered_requirements, $user_id, $trigger, $site_id, $args ) {
-
+function gamipress_sort_triggered_rank_requirements( $triggered_requirements, $user_id = 0, $trigger = '', $site_id = 0, $args = array() ) {
     $reordered_requirements = array();
 
     // Loop all triggered requirements
@@ -1360,7 +1359,7 @@ function gamipress_sort_triggered_rank_requirements( $triggered_requirements, $u
 
                 // Get the rank's priority and add the requirement to reordered requirements array
                 $priority = gamipress_get_rank_priority( $rank_id );
-
+                
                 if( ! isset( $reordered_requirements[$priority] ) )
                     $reordered_requirements[$priority] = array();
 
@@ -1375,6 +1374,9 @@ function gamipress_sort_triggered_rank_requirements( $triggered_requirements, $u
 
     }
 
+    // To order the requirements by priority
+    ksort( $reordered_requirements );
+    
     // Append rank requirements reordered to the triggered requirements array
     foreach( $reordered_requirements as $requirements ) {
         $triggered_requirements = array_merge( $triggered_requirements, $requirements );

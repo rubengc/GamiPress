@@ -428,7 +428,7 @@ function gamipress_ajax_bulk_awards_tool() {
     foreach( $users as $user ) {
 
         if( $bulk_award === 'points' ) {
-
+            
             // When an admin awards points to user is required to set the total points balance
             $user_points = gamipress_get_user_points( $user->ID, $points_type_to_award );
 

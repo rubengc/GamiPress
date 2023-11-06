@@ -279,6 +279,11 @@ function gamipress_parse_email_tags( $content, $to, $subject, $message, $attachm
 
         $replacements = gamipress_get_rank_requirement_completed_tags_replacements( $a['rank_requirement_id'], $a['user_id'] );
 
+    } else if( $a['type'] === 'email_footer' && isset( $a['user_id'] ) ) {
+
+        $replacements = gamipress_get_site_tags_replacements();
+        $replacements = array_merge( $replacements, gamipress_get_user_tags_replacements( $a['user_id'] ) );
+
     }
 
     // Setup the user
@@ -409,6 +414,10 @@ function gamipress_parse_preview_email_tags( $content, $to, $subject, $message, 
 
         // Restore the original type
         $gamipress_email_template_args['type'] = 'rank_requirement_completed';
+
+    } else if( $gamipress_email_template_args['type'] === 'email_footer' ) {
+
+        $content = gamipress_get_option( 'email_footer_text' );
 
     }
 
@@ -1205,4 +1214,35 @@ function gamipress_is_email_disabled_from_user_settings( $user_id, $post_id ) {
      */
     return apply_filters( 'gamipress_is_email_disabled_from_user_settings', $disabled, $user_id, $post_id );
 
+}
+
+/**
+ * Parse the email tags to footer
+ *
+ * @since 1.3.0
+ *
+ * @return string
+ */
+
+function gamipress_get_email_footer_content() {
+
+    global $gamipress_email_template_args;
+
+    if( ! is_array( $gamipress_email_template_args ) ) {
+        $gamipress_email_template_args = array();
+    }
+
+    // Ensure vars
+    if( ! isset( $gamipress_email_template_args['user_id'] ) ) {
+        $gamipress_email_template_args['user_id'] = get_current_user_id();
+    }
+
+    $gamipress_email_template_args['type'] = 'email_footer';
+
+    $content = gamipress_get_option( 'email_footer_text' );
+    
+    $content_footer = gamipress_parse_email_tags( $content, '', '', '', $attachments = '' );
+    
+    return apply_filters( 'gamipress_email_footer_content', $content_footer );
+    
 }

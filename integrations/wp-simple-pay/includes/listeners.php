@@ -98,7 +98,7 @@ add_action( 'simpay_webhook_payment_intent_succeeded', 'gamipress_wp_simple_pay_
  */
 function gamipress_wp_simple_pay_renew_subscription_listener( $event, $invoice, $subscription ) {
 
-    $user = get_user_by_email( $invoice->customer->email );
+    $user = get_user_by_email( $invoice->customer_email );
 
     // Bail if user can't be found
     if( ! $user ) {

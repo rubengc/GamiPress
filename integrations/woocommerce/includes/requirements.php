@@ -83,7 +83,7 @@ function gamipress_wc_requirement_ui_fields( $requirement_id, $post_id ) {
                 <option value="<?php echo esc_attr( $id ); ?>" <?php selected( $purchase_total_condition, $id ); ?>><?php echo esc_html( $name ); ?></option>
             <?php endforeach; ?>
         </select>
-        <input type="text" value="<?php echo esc_attr( $purchase_total ); ?>" size="5" maxlength="5" placeholder="100" />
+        <input type="text" value="<?php echo esc_attr( $purchase_total ); ?>" size="7" placeholder="100" />
     </span>
 
     <?php

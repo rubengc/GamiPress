@@ -3,13 +3,13 @@
  * Plugin Name:           GamiPress - Restrict Content Pro integration
  * Plugin URI:            https://wordpress.org/plugins/gamipress-restrict-content-pro-integration/
  * Description:           Connect GamiPress with Restrict Content Pro.
- * Version:               1.0.0
+ * Version:               1.0.1
  * Author:                GamiPress
  * Author URI:            https://gamipress.com/
  * Text Domain:           gamipress-restrict-content-pro-integration
  * Domain Path:           /languages/
  * Requires at least:     4.4
- * Tested up to:          6.2
+ * Tested up to:          6.3
  * License:               GNU AGPL v3.0 (http://www.gnu.org/licenses/agpl.txt)
  *
  * @package               GamiPress\Restrict_Content_Pro
@@ -53,7 +53,7 @@ final class GamiPress_Integration_Restrict_Content_Pro {
      */
     private function constants() {
         // Plugin version
-        define( 'GAMIPRESS_RESTRICT_CONTENT_PRO_VER', '1.0.0' );
+        define( 'GAMIPRESS_RESTRICT_CONTENT_PRO_VER', '1.0.1' );
 
         // Plugin path
         define( 'GAMIPRESS_RESTRICT_CONTENT_PRO_DIR', plugin_dir_path( __FILE__ ) );
@@ -137,7 +137,7 @@ final class GamiPress_Integration_Restrict_Content_Pro {
                 return true;
         }
 
-        if ( ! class_exists( 'RCP_Requirements_Check' ) )
+        if ( ! function_exists( 'rcp_get_membership_levels' ) )
             return false;
 
         return true;

@@ -45,7 +45,7 @@ class GamiPress_Database {
      *
      * @var string $user
      */
-    public $user = '';
+    public $usermeta = '';
 
     /**
      * Logs table name
@@ -82,5 +82,19 @@ class GamiPress_Database {
      * @var string $user_earnings_meta
      */
     public $user_earnings_meta = '';
+
+    /**
+     * @since 1.0.0
+     *
+     * @var string $p2p
+     */
+    public $p2p = '';
+
+    /**
+     * @since 1.0.0
+     *
+     * @var string $p2pmeta
+     */
+    public $p2pmeta = '';
 
 }

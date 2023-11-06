@@ -23,11 +23,6 @@ function gamipress_acf_user_field_update_listener( $meta_id, $object_id, $meta_k
 
     global $wpdb;
 
-    $user_id = get_current_user_id();
-
-    // Login is required
-    if ( $user_id === 0 ) return;
-
     $fields_allowed = gamipress_acf_check_acf_user_fields();
 
     // Bail if not exists ACF user fields
@@ -44,6 +39,8 @@ function gamipress_acf_user_field_update_listener( $meta_id, $object_id, $meta_k
         "SELECT a.ID FROM {$wpdb->prefix}posts AS a WHERE a.post_excerpt = %s",
          $meta_key
     ) );
+
+    $user_id = $object_id;
 
     // Update any user field with any value
     do_action( 'gamipress_acf_update_any_user_field_any_value', $user_id, $meta_id, $meta_key, $meta_value, $object_id );

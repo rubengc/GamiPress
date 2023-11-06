@@ -60,6 +60,6 @@ function gamipress_thrive_apprentice_get_course_title( $course_id ) {
 
     $course_title = get_term_by('id', $course_id, 'tva_courses');
 
-    return $course_title;
+    return $course_title->name;
 
 }

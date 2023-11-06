@@ -151,6 +151,9 @@ function gamipress_thrive_apprentice_trigger_get_user_id( $user_id, $trigger, $a
         // Modules
         case 'gamipress_thrive_apprentice_complete_module':
         case 'gamipress_thrive_apprentice_complete_specific_module':
+        // Courses
+        case 'gamipress_thrive_apprentice_complete_course':
+        case 'gamipress_thrive_apprentice_complete_specific_course':
             $user_id = $args[1];
             break;
     }
@@ -176,6 +179,7 @@ function gamipress_thrive_apprentice_specific_trigger_get_id( $specific_id, $tri
     switch ( $trigger ) {
         case 'gamipress_thrive_apprentice_complete_specific_lesson':
         case 'gamipress_thrive_apprentice_complete_specific_module':
+        case 'gamipress_thrive_apprentice_complete_specific_course':
             $specific_id = $args[0];
             break;
     }
@@ -215,6 +219,12 @@ function gamipress_thrive_apprentice_log_event_trigger_meta_data( $log_meta, $us
         case 'gamipress_thrive_apprentice_complete_specific_module':
             // Add the module ID
             $log_meta['module_id'] = $args[0];
+            break;
+        // Courses
+        case 'gamipress_thrive_apprentice_complete_course':
+        case 'gamipress_thrive_apprentice_complete_specific_course':
+            // Add the Course ID
+            $log_meta['course_id'] = $args[0];
             break;
     }
 

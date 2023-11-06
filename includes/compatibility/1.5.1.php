@@ -12,7 +12,7 @@ if( !defined( 'ABSPATH' ) ) exit;
 function gamipress_pre_init_151() {
 
     global $wpdb;
-
+    
     // Setup the P2P tables for backward compatibility
     GamiPress()->db->p2p        = ( property_exists( $wpdb, 'p2p' ) ? $wpdb->p2p : $wpdb->prefix . 'p2p' );
     GamiPress()->db->p2pmeta 	= ( property_exists( $wpdb, 'p2pmeta' ) ? $wpdb->p2pmeta : $wpdb->prefix . 'p2pmeta' );

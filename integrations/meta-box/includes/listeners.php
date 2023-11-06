@@ -28,6 +28,10 @@ function gamipress_meta_box_user_field_update_listener( $meta_id, $object_id, $m
     // Login is required
     if ( $user_id === 0 ) return;
 
+    if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
+        return;
+    }
+
     // Ensure modified meta is a meta box
     $fields_allowed = array_keys( rwmb_get_object_fields( 'user', 'user' ) );
 
@@ -75,6 +79,10 @@ function gamipress_meta_box_post_field_update_listener( $meta_id, $object_id, $m
     // Login is required
     if ( $user_id === 0 ) return;
 
+    if ( ! function_exists( 'rwmb_get_object_fields' ) ) {
+        return;
+    }
+    
     $fields_allowed = array_keys( rwmb_get_object_fields( $object_id ) );
 
     // Bail if not exists META_BOX fields

@@ -689,7 +689,7 @@ function gamipress_update_user_rank( $user_id = 0, $rank_id = 0, $admin_id = 0, 
         foreach ( gamipress_get_rank_based_achievements() as $achievement ) {
             gamipress_maybe_award_achievement_to_user( $achievement->ID, $user_id );
         }
-
+        
         return $new_rank;
     }
 

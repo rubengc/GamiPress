@@ -40,9 +40,9 @@ function gamipress_143_upgrades( $stored_version ) {
     }
 
     // Check if there is something to migrate
-    $upgrade_size = gamipress_143_upgrade_size();
+    $upgrade_check = gamipress_143_maybe_upgrade();
 
-    if( $upgrade_size === 0 ) {
+    if( $upgrade_check === 0 ) {
 
         // There is nothing to update, so upgrade
         $stored_version = '1.4.3';
@@ -262,3 +262,29 @@ function gamipress_ajax_stop_process_143_upgrade() {
     wp_send_json_success();
 }
 add_action( 'wp_ajax_gamipress_stop_process_143_upgrade', 'gamipress_ajax_stop_process_143_upgrade' );
+
+/**
+ * Check if it is necessary upgrade
+ *
+ * @return int
+ */
+function gamipress_143_maybe_upgrade() {
+
+    global $wpdb;
+
+    $upgrade_check = 0;
+
+    // Retrieve the count of users earnings to upgrade
+    if( ! is_gamipress_upgrade_completed( 'update_user_earnings' ) ) {
+
+        $user_earnings = GamiPress()->db->user_earnings;
+
+        $earnings_count = $wpdb->get_var( "SELECT COUNT(*) FROM {$user_earnings} AS e WHERE e.title = '' LIMIT = 1" );
+
+        $upgrade_check += absint( $earnings_count );
+
+    }
+
+    return $upgrade_check;
+
+}

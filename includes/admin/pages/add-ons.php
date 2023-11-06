@@ -122,12 +122,22 @@ function gamipress_render_plugin_card( $plugin ) {
     // Available actions for this plugin
     $action_links = array();
 
-    $details_link = esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $slug . '&TB_iframe=true&width=600&height=550' ) );
+    //$details_link = esc_url( network_admin_url( 'plugin-install.php?tab=plugin-information&plugin=' . $slug . '&TB_iframe=true&width=600&height=550' ) );
+    $details_link = esc_url( 'https://gamipress.com/add-ons/' . $plugin->info->slug );
 
-    if( gamipress_plugin_has_category( $plugin, 'integrations' ) ) {
+    if( gamipress_plugin_has_category( $plugin, '3rd-party' ) ) {
+
+        $class = 'gamipress-third-party-add-on';
+
+        $details_link = esc_url( 'https://gamipress.com/add-ons/' . $plugin->info->slug );
+
+        // "More Information" action
+        $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button" target="_blank">' . __( 'More Information', 'gamipress' ) . '</a>';
+
+    } else if( gamipress_plugin_has_category( $plugin, 'integrations' ) ) {
         $class = 'gamipress-integration-add-on';
 
-        $details_link = '';
+        $details_link = esc_url( 'https://gamipress.com/add-ons/' . $plugin->info->slug );
 
         // "More Information" action
         $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button" target="_blank">' . __( 'More Information', 'gamipress' ) . '</a>';
@@ -190,15 +200,6 @@ function gamipress_render_plugin_card( $plugin ) {
                     break;
             }
         }
-    } else if( gamipress_plugin_has_category( $plugin, '3rd-party' ) ) {
-
-        $class = 'gamipress-third-party-add-on';
-
-        $details_link = '';
-
-        // "More Information" action
-        $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="button" target="_blank">' . __( 'More Information', 'gamipress' ) . '</a>';
-
     } else {
         // Premium add-ons
 
@@ -283,7 +284,7 @@ function gamipress_render_plugin_card( $plugin ) {
 
     if( ! empty( $details_link ) ) {
         // "More Details" action
-        $action_links[] = '<a href="' . esc_url( $details_link ) . '" class="more-details thickbox open-plugin-details-modal" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '">' . __( 'More Details' ) . '</a>';
+        $action_links[] = '<a href="https://gamipress.com/add-ons/' . $plugin->info->slug . '" class="more-details" aria-label="' . esc_attr( sprintf( __( 'More information about %s' ), $name ) ) . '" data-title="' . esc_attr( $name ) . '" target="_blank">' . __( 'More Details' ) . '</a>';
     } ?>
 
     <div class="gamipress-plugin-card plugin-card plugin-card-<?php echo sanitize_html_class( $slug ); ?> <?php echo $class; ?>">
@@ -291,14 +292,14 @@ function gamipress_render_plugin_card( $plugin ) {
         <div class="plugin-card-top">
 
             <div class="thumbnail column-thumbnail">
-                <a href="<?php echo esc_url( $details_link ); ?>" class="thickbox open-plugin-details-modal">
+                <a href="<?php echo esc_url( $details_link ); ?>" class="open-plugin-details-modal" target="_blank">
                     <img src="<?php echo esc_attr( $plugin->info->thumbnail ) ?>" class="plugin-thumbnail" alt="">
                 </a>
             </div>
 
             <div class="name column-name">
                 <h3>
-                    <a href="<?php echo esc_url( $details_link ); ?>" class="thickbox open-plugin-details-modal">
+                    <a href="<?php echo esc_url( $details_link ); ?>" class="open-plugin-details-modal" target="_blank">
                         <?php echo $name; ?>
                     </a>
                 </h3>
@@ -624,7 +625,7 @@ function gamipress_plugin_has_category( $plugin, $category ) {
 
         // Loop plugin categories objects
         foreach( $plugin->info->category as $plugin_cat ) {
-
+            
             // Check if category slug is equal that category given
             if( $plugin_cat->slug === $category ) {
                 return true;

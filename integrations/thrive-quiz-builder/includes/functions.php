@@ -100,11 +100,17 @@ function gamipress_thrive_quiz_builder_get_percentage_quizzes( ) {
         'numberposts' => -1,
         'post_type' => 'tqb_quiz',
         'meta_query' => array(
+            'relation' => 'OR',
             array(
-                'key'       => 'tqb_quiz_type',
-                'value'     => 'percentage',
-                'compare'   => '=',
-            )
+                'key' => 'tqb_quiz_type',
+                'value' => 'percentage',
+                'compare' => '=',
+            ),
+            array(
+                'key' => 'tqb_quiz_type',
+                'value' => 's:10:"percentage";', 
+                'compare' => 'LIKE',
+            ),
         )
     ) );
 

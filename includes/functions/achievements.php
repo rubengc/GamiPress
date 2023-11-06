@@ -641,7 +641,9 @@ function gamipress_get_points_based_achievements( $points_type = '' ) {
 			'points-balance',					// (m2.meta_value) Requirements based on points balance
 			'points'							// (m3.meta_value) Achievements earned by points
 		) );
-
+		
+		$achievements = gamipress_sort_triggered_rank_requirements( $achievements );
+		
 		// Store these posts to a transient for 1 day
 		gamipress_set_transient( "gamipress_{$points_type}_based_achievements", $achievements, 60*60*24 );
 	}

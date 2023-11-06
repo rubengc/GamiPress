@@ -35,9 +35,9 @@ function gamipress_237_upgrades( $stored_version ) {
     }
 
     // Check if there is something to migrate
-    $upgrade_size = gamipress_237_upgrade_size();
+    $upgrade_check = gamipress_upgrade_237_maybe_upgrade();
 
-    if( $upgrade_size === 0 ) {
+    if( $upgrade_check === 0 ) {
 
         // There is nothing to update, so upgrade
         $stored_version = '2.3.7';
@@ -310,3 +310,36 @@ function gamipress_ajax_stop_process_237_upgrade() {
 
 }
 add_action( 'wp_ajax_gamipress_stop_process_237_upgrade', 'gamipress_ajax_stop_process_237_upgrade' );
+
+/**
+ * Check if it is necessary upgrade
+ *
+ * @return int
+ */
+function gamipress_upgrade_237_maybe_upgrade() {
+
+    global $wpdb;
+
+    $upgrade_check = 0;
+
+    // Retrieve the count of post upgrade
+    if( ! is_gamipress_upgrade_completed( 'update_earnings_parent_post_type_meta' ) && gamipress_database_table_exists( GamiPress()->db->user_earnings ) ) {
+
+        // Setup vars
+        $user_earnings      = GamiPress()->db->user_earnings;
+        $user_earnings_meta = GamiPress()->db->user_earnings_meta;
+
+        $upgrade_check = absint( $wpdb->get_var(
+            "SELECT COUNT(*) 
+            FROM {$user_earnings} AS ue 
+            LEFT JOIN {$user_earnings_meta} uem ON ( uem.user_earning_id = ue.user_earning_id AND uem.meta_key = '_gamipress_parent_post_type'  ) 
+            WHERE ue.post_type IN ( 'step', 'rank-requirement' ) 
+            AND uem.meta_value IS NULL
+            LIMIT = 1"
+        ) );
+
+    }
+
+    return $upgrade_check;
+
+}

@@ -48,7 +48,7 @@ function gamipress_settings_email_meta_boxes( $meta_boxes ) {
             ),
             'email_footer_text' => array(
                 'name' => __( 'Footer Text', 'gamipress' ),
-                'desc' => __( 'Text to be shown at email footer.', 'gamipress' ),
+                'desc' => __( 'Text to be shown at email footer.', 'gamipress' ) . gamipress_get_pattern_tags_html( 'email_footer' ),
                 'type' => 'textarea',
                 'default' => sprintf( __( '%s - Powered by GamiPress', 'gamipress' ), '<a href="' . esc_url( home_url() ) . '">' . get_bloginfo( 'name' ) . '</a>' ),
             ),
