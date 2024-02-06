@@ -2,6 +2,12 @@
 
 Reward your users with points, achievements, badges and ranks to increase your site activity and loyalty.
 
+## About this repository ##
+
+This repository is a place for discussion between developers about the GamiPress development.
+
+The code can be found in the wordpress.org repository.
+
 ## Description ##
 
 [Live Demo](https://demo.gamipress.com/ "GamiPress live demo website") | [Add-ons](https://gamipress.com/add-ons "Add-ons to extend GamiPress") | [Assets](https://gamipress.com/assets "Assets to decorate GamiPress") | [Documentation](https://gamipress.com/docs "Documentation for GamiPress") | [Code Snippets](https://gamipress.com/customize "Code snippets to customize GamiPress")
@@ -280,27 +286,4 @@ Also, you can check [our customize section](https://gamipress.com/customize/) wh
 
 ## Changelog ##
 
-### 5.7.0 ###
-
-* **Improvements**
-* Ensure compatibility with PHP 8.2.
-
-### 5.5.0 ###
-
-* **Bug Fixes**
-* Thrive Quiz Builder: Fixed selection of percentage type quizzes.
-
-### 5.4.0 ###
-
-* **Bug Fixes**
-* Thrive Apprentice: Fixed error in course selector for "Complete specific course" event.
-
-### 5.3.0 ###
-
-* **Bug Fixes**
-* Fixed achieving ranks consecutively.
-
-### 5.1.0 ###
-
-* **Bug Fixes**
-* Fixed awards related to points earned with Bulk Awards.
+Can be found [here](https://wordpress.org/plugins/gamipress/#developers).
